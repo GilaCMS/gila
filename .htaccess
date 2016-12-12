@@ -1,0 +1,12 @@
+RewriteEngine On
+
+
+#disable for these file types
+RewriteCond %{REQUEST_URI} !\.css$
+RewriteCond %{REQUEST_URI} !\.png$
+RewriteCond %{REQUEST_URI} !\.jpg$
+RewriteCond %{REQUEST_URI} !\.js$
+RewriteCond %{REQUEST_URI} !\.zip$
+RewriteCond %{REQUEST_URI} !\.html
+
+RewriteRule (.*)$ index.php?url=$1 [QSA,L]

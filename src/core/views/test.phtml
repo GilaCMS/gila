@@ -1,0 +1,82 @@
+
+<head>
+	<link type="text/css" rel="stylesheet" href="res/rj.css"/>
+	<script src="res/rj.js"></script>
+</head>
+
+<body>
+    <div class="col-3 tooltip" title="1st chart"><div></div></div>
+    <div class="col-3 tooltip" title="2nd chart"><div></div></div>
+    <div class="col-3 tooltip" title="3rd chart"><div></div></div>
+    <div class="col-3 tooltip" title="4th chart"><div></div></div>
+    <div class="col-3 tooltip" title="5th chart"><div></div></div>
+    <div class="col-3 tooltip" title="6th chart"><div></div></div>
+</body>
+<div id="tooltip">Toolbox</div>
+<script>
+let tt = document.getElementById('tooltip')
+
+function enableTips(){
+    var elems = document.getElementsByClassName('tooltip');
+    for(var i = 0; i < elems.length; i++) {
+        elems[i].addEventListener("mouseover", function(e){
+			en = e.target
+			while(en!=document) {
+				//console.log(en)
+				if(en.hasAttribute('class')) if(en.classList.contains('tooltip')) {
+				//if ((' ' + en.className + ' ').indexOf(' toolkit ') > -1) {
+					tt.style.visibility = 'visible'
+					tt.innerHTML = en.title
+					tt.style.left = (en.offsetLeft+en.offsetWidth/2)+'px';
+					tt.style.top = en.offsetTop-5;
+					console.log("ok")
+					return
+				}
+				en = en.parentNode
+			}
+
+			tt.style.visibility = 'hidden'
+
+		})
+
+        }
+    }
+
+data = [10, 15, 8, 22, 3, 12, 7, 17]
+rj(".col-3 div").style('border-bottom','1px solid #999').createNS('svg',{width:'200',height:'200'})
+
+for(j in data) {
+	let i = j
+	setTimeout(function () {
+	rj(".col-3 div svg").createNS('rect',{
+		x:10+i*20,
+		width:20,
+		'class':'trans-cubic-bezier',
+		title:data[i],
+		style:"fill:green;stroke-width:1;stroke:white;",
+		height:0,
+		y:200,
+
+	},{
+		height:data[i]*5,
+		y:200-data[i]*5,
+	})
+	enableTips()
+
+	}, 400+i*50)
+
+
+}
+
+
+</script>
+
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Cocur\Slugify\Slugify;
+
+$slugify = new Slugify();
+
+echo $slugify->slugify('Hello World, this is a long sentence and I need to make a slug from it!');
