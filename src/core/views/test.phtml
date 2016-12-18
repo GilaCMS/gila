@@ -1,7 +1,7 @@
 
 <head>
-	<link type="text/css" rel="stylesheet" href="res/rj.css"/>
-	<script src="res/rj.js"></script>
+	<link type="text/css" rel="stylesheet" href="libs/rj.css"/>
+	<script src="libs/rj.js"></script>
 </head>
 
 <body>
@@ -29,7 +29,7 @@ function enableTips(){
 					tt.innerHTML = en.title
 					tt.style.left = (en.offsetLeft+en.offsetWidth/2)+'px';
 					tt.style.top = en.offsetTop-5;
-					console.log("ok")
+					//console.log("ok")
 					return
 				}
 				en = en.parentNode
@@ -43,10 +43,11 @@ function enableTips(){
     }
 
 data = [10, 15, 8, 22, 3, 12, 7, 17]
-rj(".col-3 div").style('border-bottom','1px solid #999').createNS('svg',{width:'200',height:'200'})
+rj(".col-3 div").style('border-bottom','1px solid #999').createNS('svg',{width:200,height:200})
 
-for(j in data) {
+for(j=0; j<data.length; j++) {
 	let i = j
+
 	setTimeout(function () {
 	rj(".col-3 div svg").createNS('rect',{
 		x:10+i*20,
@@ -55,15 +56,14 @@ for(j in data) {
 		title:data[i],
 		style:"fill:green;stroke-width:1;stroke:white;",
 		height:0,
-		y:200,
-
+		y:200
 	},{
 		height:data[i]*5,
-		y:200-data[i]*5,
+		y:200-data[i]*5
 	})
 	enableTips()
 
-	}, 400+i*50)
+}, 400+i*150)
 
 
 }
@@ -72,7 +72,7 @@ for(j in data) {
 </script>
 
 <?php
-
+exit;
 require __DIR__ . '/vendor/autoload.php';
 
 use Cocur\Slugify\Slugify;

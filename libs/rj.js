@@ -50,12 +50,12 @@ function rjItem(){
 
 function rj(q){
 	if (typeof q === 'undefined') return new rjItem()
-	
+
 	if (q === rj_query)
 		return rj_item;
     else
 		 var rj_item = new rjItem()
-		
+
     if (typeof q === 'object'){
 		rj_item[0] = q
 	}else{
@@ -63,12 +63,12 @@ function rj(q){
     }
     return rj_item
     //d.forEach(function*(e){yield e})
-    
+
 }
 
 
 rjItem.prototype.html = function (html){
-    
+
     for(let value of this.domlist){
         value.innerHTML = html
     }
@@ -80,7 +80,7 @@ rjItem.prototype.attr = function (attr,val){
     for(let value of this.domlist){
         value.setAttribute(attr, val)
     }
-    
+
     return this
 }
 rjItem.prototype.style = function (attr,val){
@@ -94,12 +94,12 @@ rjItem.prototype.style = function (attr,val){
 
 
 rjItem.prototype.append = function (html,data,data_timeout){
-    
+
     for(let value of this.domlist){
         let template = document.createElement('template');
         template.innerHTML = html;
         value.appendChild(template.content.firstChild)
-        
+
         if (typeof data !== 'undefined') {
 			for(let attr in data){
 				template.content.firstChild[attr] = data[attr]
@@ -117,27 +117,27 @@ rjItem.prototype.append = function (html,data,data_timeout){
 }
 
 rjItem.prototype.createNS = function (node,data,data_timeout){
-    
+
     for(let value of this.domlist){
         let child = document.createElementNS("http://www.w3.org/2000/svg", node);
 
-        value.appendChild(child)
-
-        if (typeof data !== 'undefined') {
-			for(let attr in data){
+        //if (typeof data !== 'undefined') {
+			for(let attr in data) {
 				child.setAttribute(attr,data[attr])
 			}
-		}
-		
+		//}
+
+		value.appendChild(child)
+
         if (typeof data_timeout !== 'undefined') setTimeout(function () {
-			for(let attr in data_timeout){
+			for(let attr in data_timeout) {
 				child.setAttribute(attr,data_timeout[attr])
 			}
 		}, 100)
 
-        
+
     }
-		
+
     return this
 }
 
@@ -159,7 +159,7 @@ rjItem.prototype.node = function (node,data){
     return this
 }
 rjItem.prototype.create = function (node,data){
-    
+
     for(let value of this.domlist){
 		var nnode = document.createElement(node)
 		if (typeof data !== 'undefined') for(let attr in data){

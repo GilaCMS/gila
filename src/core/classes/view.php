@@ -8,9 +8,13 @@ class view
 		$this->part[$p]=$v;
 	}
 
-	function display($temp) {
+	function render($filePath) {
 		foreach ($this->part as $key => $value) { $$key = $value; echo $key."=".$value." "; }
-		echo $temp;
+        $filePath = __DIR__.'/../../'.$filePath;
+        if (file_exists($filePath)) {
+            include $filePath;
+        } else echo $filePath." file not found!";
+		//echo $temp;
 	}
 
     function displayFile($filepath) {

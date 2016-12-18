@@ -12,8 +12,7 @@ class welcome extends controller
   {
     $page = $args[1];
 
-    $this->view->display("a test view");
-    //$this->view->display("core/views/test.phtml");
+    $this->view->render("core/views/test.phtml");
   }
 
   function dogAction ($args)
