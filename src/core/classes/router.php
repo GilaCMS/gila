@@ -45,6 +45,7 @@ class router
                  array_splice($args, 0, 0, $action);
         	}
             $action_fn = $action.'Action';
+            
             $ctrl->$action_fn($args);
         }
     }
