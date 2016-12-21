@@ -30,8 +30,8 @@
 }
 
 .trans-cubic-bezier{
-	-webkit-transition: 1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-	transition: width 2s, height 4s;
+
+    transition: all 1s ease;
 }
 
 #tooltipv {
@@ -51,7 +51,7 @@
     transition: opacity 1s;
 }
 
-#tooltip {
+#gila-tooltip {
     width: 120px;
     background-color: #555;
     color: #fff;
@@ -66,7 +66,7 @@
     transition: opacity 1s;
 }
 
-#tooltip::after {
+#gila-tooltip::after {
     content: "";
     position: absolute;
     top: 100%;

@@ -1,48 +1,45 @@
+<link href="libs/rj.css" rel="stylesheet">
 
-<head>
-	<link type="text/css" rel="stylesheet" href="libs/rj.css"/>
-	<script src="libs/rj.js"></script>
-</head>
+<div class="col-3 gl-tt" data-tt="1st chart"><div></div></div>
+<div class="col-3 gl-tt" data-tt="2nd chart"><div></div></div>
+<div class="col-3 gl-tt" data-tt="3rd chart"><div></div></div>
+<div class="col-3 gl-tt" data-tt="4th chart"><div></div></div>
+<div class="col-3 gl-tt" tt="5th chart"><div></div></div>
+<div class="col-3 gl-tt" tt="6th chart"><div></div></div>
 
-<body>
-    <div class="col-3 tooltip" title="1st chart"><div></div></div>
-    <div class="col-3 tooltip" title="2nd chart"><div></div></div>
-    <div class="col-3 tooltip" title="3rd chart"><div></div></div>
-    <div class="col-3 tooltip" title="4th chart"><div></div></div>
-    <div class="col-3 tooltip" title="5th chart"><div></div></div>
-    <div class="col-3 tooltip" title="6th chart"><div></div></div>
-</body>
-<div id="tooltip">Toolbox</div>
+<div id="gila-tooltip">Toolbox</div>
+
+<script src="libs/rj.js"></script>
 <script>
-let tt = document.getElementById('tooltip')
+let gtt = document.getElementById('gila-tooltip')
 
 function enableTips(){
-    var elems = document.getElementsByClassName('tooltip');
+    var elems = document.getElementsByClassName('gl-tt');
     for(var i = 0; i < elems.length; i++) {
         elems[i].addEventListener("mouseover", function(e){
 			en = e.target
 			while(en!=document) {
 				//console.log(en)
-				if(en.hasAttribute('class')) if(en.classList.contains('tooltip')) {
+				if(en.hasAttribute('class')) if(en.classList.contains('gl-tt')) {
 				//if ((' ' + en.className + ' ').indexOf(' toolkit ') > -1) {
-					tt.style.visibility = 'visible'
-					tt.innerHTML = en.title
-					tt.style.left = (en.offsetLeft+en.offsetWidth/2)+'px';
-					tt.style.top = en.offsetTop-5;
-					//console.log("ok")
+					gtt.style.visibility = 'visible'
+					gtt.innerHTML = en.getAttribute('data-tt')
+					gtt.style.left = (en.offsetLeft+en.offsetWidth/2)+'px';
+					gtt.style.top = (en.offsetTop-5)+'px';
+					console.log(en.getAttribute('data-tt'))
 					return
 				}
 				en = en.parentNode
 			}
 
-			tt.style.visibility = 'hidden'
+			gtt.style.visibility = 'hidden'
 
 		})
 
         }
     }
 
-data = [10, 15, 8, 22, 3, 12, 7, 17]
+data = [10, 15, 8, 22, 3, 12, 37, 17]
 rj(".col-3 div").style('border-bottom','1px solid #999').createNS('svg',{width:200,height:200})
 
 for(j=0; j<data.length; j++) {
@@ -63,7 +60,7 @@ for(j=0; j<data.length; j++) {
 	})
 	enableTips()
 
-}, 400+i*150)
+}, 100+i*100)
 
 
 }
@@ -80,3 +77,4 @@ use Cocur\Slugify\Slugify;
 $slugify = new Slugify();
 
 echo $slugify->slugify('Hello World, this is a long sentence and I need to make a slug from it!');
+?>

@@ -4,7 +4,7 @@ $GLOBALS['default'] = [
 	'controller' => "welcome",
 ];
 $GLOBALS['path'] = array(
-	'app' => 'localhost/coan',
+	'base' => '//localhost/gila/',
 	'controller' => [
 		'welcome' => "core/controllers/welcome"
 	]

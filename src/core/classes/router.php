@@ -12,6 +12,11 @@ class router
 
         $controller = $GLOBALS['default']['controller'];
 
+        if (isset($args[0])) if ($args[0]=='admin') {
+            $administration = 1;
+            array_splice($args, 0, 1);
+        }
+
         if (isset($args[0])) {
         	if(isset($GLOBALS['path']["controller"][$args[0]])) {
         		$controller = $args[0];
@@ -45,8 +50,25 @@ class router
                  array_splice($args, 0, 0, $action);
         	}
             $action_fn = $action.'Action';
-            
-            $ctrl->$action_fn($args);
+
+
+
+            if(isset($administration)) {
+                include __DIR__."/../theme/header.php";
+                $ctrl->$action_fn($args);
+                include __DIR__."/../theme/footer.php";
+            }
+            else {
+                include __DIR__."/../../../themes/andia/header.php";
+                $ctrl->$action_fn($args);
+                include __DIR__."/../../../themes/andia/footer.php";
+            }
+
         }
+    }
+
+    private function admin()
+    {
+
     }
 }
