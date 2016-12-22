@@ -11,14 +11,17 @@ class router
         $args = explode("/", $_GET['url']);
 
         $controller = $GLOBALS['default']['controller'];
+        $ctrl_path = $GLOBALS['path']["controller"];
 
         if (isset($args[0])) if ($args[0]=='admin') {
             $administration = 1;
             array_splice($args, 0, 1);
+            $controller = $GLOBALS['default']['admin/controller'];
+            $ctrl_path = $GLOBALS['path']["admin/controller"];
         }
 
         if (isset($args[0])) {
-        	if(isset($GLOBALS['path']["controller"][$args[0]])) {
+        	if(isset($ctrl_path[$args[0]])) {
         		$controller = $args[0];
         	} else {
         		array_splice($args, 0, 0, $controller);
@@ -28,7 +31,7 @@ class router
         	array_splice($args, 0, 0, $controller);
         }
 
-        $controller_file = 'src/'.$GLOBALS['path']["controller"][$controller].'.php';
+        $controller_file = 'src/'.$ctrl_path[$controller].'.php';
 
         if(!file_exists($controller_file)) {
         	echo $controller.' controller cannot be found!<br>'.$controller_file;

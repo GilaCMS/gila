@@ -1,15 +1,33 @@
 <?php
 
+$GLOBALS['db'] = [
+	'user' => "localhost",
+	'user' => "root",
+	'pass' => "",
+	'name' => "gila"
+];
 $GLOBALS['default'] = [
 	'controller' => "welcome",
+	'admin/controller' => "dashboard",
 ];
 $GLOBALS['path'] = array(
 	'base' => '//localhost/gila/',
 	'controller' => [
 		'welcome' => "core/controllers/welcome"
+	],
+	'admin/controller' => [
+		'dashboard' => "core/controllers/dashboard",
+		'addons' => "core/controllers/addons",
+		'settings' => "core/controllers/settings",
 	]
 );
-
+$GLOBALS['menu'] = array(
+	'admin' => [
+		['Dashboard','admin/dashoard','icon'=>'icon'],
+		['Add-Ons','admin/addons','icon'=>'icon'],
+		['Settings','admin/settings','icon'=>'icon']
+	]
+);
 
 spl_autoload_register(function ($class) {
 	require_once 'src/core/classes/'.$class.'.php';

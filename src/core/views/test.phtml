@@ -13,15 +13,13 @@
 <script>
 let gtt = document.getElementById('gila-tooltip')
 
-function enableTips(){
+function enableTips() {
     var elems = document.getElementsByClassName('gl-tt');
     for(var i = 0; i < elems.length; i++) {
         elems[i].addEventListener("mouseover", function(e){
 			en = e.target
 			while(en!=document) {
-				//console.log(en)
 				if(en.hasAttribute('class')) if(en.classList.contains('gl-tt')) {
-				//if ((' ' + en.className + ' ').indexOf(' toolkit ') > -1) {
 					gtt.style.visibility = 'visible'
 					gtt.innerHTML = en.getAttribute('data-tt')
 					gtt.style.left = (en.offsetLeft+en.offsetWidth/2)+'px';
@@ -36,8 +34,8 @@ function enableTips(){
 
 		})
 
-        }
     }
+}
 
 data = [10, 15, 8, 22, 3, 12, 37, 17]
 rj(".col-3 div").style('border-bottom','1px solid #999').createNS('svg',{width:200,height:200})
@@ -69,7 +67,7 @@ for(j=0; j<data.length; j++) {
 </script>
 
 <?php
-exit;
+/*
 require __DIR__ . '/vendor/autoload.php';
 
 use Cocur\Slugify\Slugify;
@@ -77,4 +75,5 @@ use Cocur\Slugify\Slugify;
 $slugify = new Slugify();
 
 echo $slugify->slugify('Hello World, this is a long sentence and I need to make a slug from it!');
+*/
 ?>

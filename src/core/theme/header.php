@@ -35,32 +35,13 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#">
-                        Start Bootstrap
-                    </a>
-
+                    <a href="admin">Gila Admin</a>
                 </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">Shortcuts</a>
-                </li>
-                <li>
-                    <a href="#">Overview</a>
-                </li>
-                <li>
-                    <a href="#">Events</a>
-                </li>
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
+                <?php
+                    foreach ($GLOBALS['menu']['admin'] as $key => $value) {
+                        echo "<li><a href='{$value[1]}'>{$value[0]}</a></li>";
+                    }
+                ?>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
