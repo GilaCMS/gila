@@ -11,10 +11,15 @@ class view
 	function render($filePath) {
 		foreach ($this->part as $key => $value) { $$key = $value; echo $key."=".$value." "; }
         $filePath = __DIR__.'/../../'.$filePath;
+
         if (file_exists($filePath)) {
+            include $this->path_theme."header.php";
             include $filePath;
-        } else echo $filePath." file not found!";
-		//echo $temp;
+            include $this->path_theme."footer.php";
+        }
+        else {
+            echo $filePath." file not found!";
+        }
 	}
 
     function displayFile($filepath) {

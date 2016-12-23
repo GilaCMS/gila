@@ -57,15 +57,23 @@ class router
 
 
             if(isset($administration)) {
-                include __DIR__."/../theme/header.php";
-                $ctrl->$action_fn($args);
-                include __DIR__."/../theme/footer.php";
+                $path_theme = __DIR__.'/../../../'.$GLOBALS['path']['theme']['admin'];
             }
             else {
-                include __DIR__."/../../../themes/andia/header.php";
-                $ctrl->$action_fn($args);
-                include __DIR__."/../../../themes/andia/footer.php";
+                $path_theme = __DIR__.'/../../../'.$GLOBALS['path']['theme']['default'];
             }
+
+            if (isset($ctrl->THEME)) {
+                if ($ctrl->THEME == 0) {
+                    echo "<base href='{$GLOBALS['path']['base']}'>";
+                    $ctrl->$action_fn($args);
+                    return;
+                }
+            }
+
+            include $path_theme."header.php";
+            $ctrl->$action_fn($args);
+            include $path_theme."footer.php";
 
         }
     }

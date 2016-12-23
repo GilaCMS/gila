@@ -10,17 +10,22 @@ $GLOBALS['default'] = [
 	'controller' => "welcome",
 	'admin/controller' => "dashboard",
 ];
-$GLOBALS['path'] = array(
+$GLOBALS['path'] = [
 	'base' => '//localhost/gila/',
 	'controller' => [
-		'welcome' => "core/controllers/welcome"
+		'welcome' => "core/controllers/welcome",
+		'install' => "core/controllers/install",
 	],
 	'admin/controller' => [
 		'dashboard' => "core/controllers/dashboard",
 		'addons' => "core/controllers/addons",
 		'settings' => "core/controllers/settings",
+	],
+	'theme' => [
+		'default' => 'themes/andia/',
+		'admin' => 'src/core/theme/'
 	]
-);
+];
 $GLOBALS['menu'] = array(
 	'admin' => [
 		['Dashboard','admin/dashoard','icon'=>'icon'],
