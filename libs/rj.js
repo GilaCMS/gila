@@ -1,8 +1,5 @@
-
-var css ="*{box-sizing: border-box;margin:0;vertical-align:top}div,p,form{padding:8px;}[class^='col-']{display:inline-table}"
-css += 'label,input,form{display:block;width:100%;box-sizing: border-box}'
-css += '.box-shadow{box-shadow: 2px 2px 2px #888888}.border{border: 1px solid #888}'
-css += 'input{margin-bottom:8px;padding:4px}'
+/*
+var css="";
 //display-flex
 for(i=1; i<13; i++){
 	css += '.col-'+i+'{width:'+(i/0.12)+'%}\n'
@@ -11,7 +8,8 @@ for(i=1; i<13; i++){
 var sc = {
 margin: ['auto','0','4px','8px','16px'],
 display: ['inline','flex','block','8px','16px'],
-'align-items': ['center','flex-start','flex-end']
+'align-items': ['center','flex-start','flex-end'],
+'float': ['left','right'],
 
 }
 
@@ -27,7 +25,7 @@ if (style.styleSheet){
 }
 
 document.head.appendChild(style);
-
+*/
 
 /*
 document.addEventListener('DOMContentLoaded', function() {

@@ -17,6 +17,7 @@
 
     <!-- Custom CSS -->
     <link href="src/core/theme/simple-sidebar.css" rel="stylesheet">
+    <link href="libs/rj.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,7 +25,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+	<script src="libs/rj.js"></script>
 </head>
 
 <body>
@@ -48,6 +49,19 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+            <ul class="top-nav gl-nav">
+                <li>
+                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                </li>
+                <li>
+                    <a href="<?=$GLOBALS['path']['base']?>">Website</a>
+                </li>
+                <li class="float-right">
+                    User Name
+                    <a href="<?=$GLOBALS['path']['base']/logout?>">Logout</a>
+                </li>
+
+            </ul>
+
             <div class="container-fluid">
                 <div class="row">
