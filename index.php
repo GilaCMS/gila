@@ -1,41 +1,31 @@
 <?php
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+$starttime = microtime(true);
 
-$GLOBALS['db'] = [
-	'user' => "localhost",
-	'user' => "root",
-	'pass' => "",
-	'name' => "gila"
-];
-$GLOBALS['default'] = [
-	'controller' => "welcome",
-	'admin/controller' => "dashboard",
-];
-$GLOBALS['path'] = [
-	'base' => '//localhost/gila/',
-	'controller' => [
-		'welcome' => "core/controllers/welcome",
-		'install' => "core/controllers/install",
-	],
-	'admin/controller' => [
-		'dashboard' => "core/controllers/dashboard",
-		'addons' => "core/controllers/addons",
-		'settings' => "core/controllers/settings",
-	],
-	'theme' => [
-		'default' => 'themes/andia/',
-		'admin' => 'src/core/theme/'
-	]
-];
-$GLOBALS['menu'] = array(
-	'admin' => [
-		['Dashboard','admin/dashoard','icon'=>'icon'],
-		['Add-Ons','admin/addons','icon'=>'icon'],
-		['Settings','admin/settings','icon'=>'icon']
-	]
-);
+if (file_exists(__DIR__.'/config.php')) {
+	require_once 'config.php';
+} else require_once 'config.default.php';
+
 
 spl_autoload_register(function ($class) {
-	require_once 'src/core/classes/'.$class.'.php';
+
+	if (file_exists('src/core/classes/'.$class.'.php')) {
+		require_once 'src/core/classes/'.$class.'.php';
+	}
+	else {
+		$class=str_replace('\\','/',$class);
+		require_once 'libs/'.$class.'.php';
+		//$log->warning();
+	}
 });
 
 new router();
+/*
+$log = new Monolog\Logger('name');
+$log->pushHandler(new StreamHandler(__DIR__.'/log/warning2.log', Monolog\Logger::WARNING));
+$log->pushHandler(new StreamHandler('log/error2.log', Monolog\Logger::ERROR));
+
+// add records to the log
+$log->addWarning('Foo3');
+$log->addError('Bar3');*/

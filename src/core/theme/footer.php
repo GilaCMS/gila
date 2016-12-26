@@ -2,6 +2,12 @@
 </div>
 </div>
 </div>
+<?php
+global $starttime;
+$end = microtime(true);
+$creationtime = ($end - $starttime);
+printf("<br>Page created in %.6f seconds.", $creationtime);
+?>
 </div>
 <!-- /#page-content-wrapper -->
 

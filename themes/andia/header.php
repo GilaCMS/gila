@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster">
-        <link rel="stylesheet" href="themes/andia/assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="libs/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" href="themes/andia/assets/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="themes/andia/assets/css/animate.css">
         <link rel="stylesheet" href="themes/andia/assets/css/magnific-popup.css">
@@ -88,3 +88,4 @@
 				</div>
 			</div>
 		</nav>
+<div>

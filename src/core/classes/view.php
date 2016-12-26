@@ -13,9 +13,9 @@ class view
         $filePath = __DIR__.'/../../'.$filePath;
 
         if (file_exists($filePath)) {
-            include $this->path_theme."header.php";
+            //include $this->path_theme."header.php";
             include $filePath;
-            include $this->path_theme."footer.php";
+            //include $this->path_theme."footer.php";
         }
         else {
             echo $filePath." file not found!";

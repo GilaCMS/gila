@@ -8,7 +8,7 @@ class router
         //$uri = $_GET['url'];
         /*?><pre><?php echo var_export($_SERVER); ?></pre><br><?php
         echo $_GET['url']."<br>";*/
-        $args = explode("/", $_GET['url']);
+        if(isset($_GET['url'])) $args = explode("/", $_GET['url']); else $args = [];
 
         $controller = $GLOBALS['default']['controller'];
         $ctrl_path = $GLOBALS['path']["controller"];

@@ -11,5 +11,6 @@ RewriteCond %{REQUEST_URI} !\.zip$
 RewriteCond %{REQUEST_URI} !\.html$
 RewriteCond %{REQUEST_URI} !\.ttf$
 RewriteCond %{REQUEST_URI} !\.woff$
+#RewriteCond %{REQUEST_URI} \vendor\
 
 RewriteRule (.*)$ index.php?url=$1 [QSA,L]
