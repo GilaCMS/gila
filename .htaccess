@@ -2,15 +2,18 @@ RewriteEngine On
 
 
 #disable for these file types
-RewriteCond %{REQUEST_URI} !\.css$
-RewriteCond %{REQUEST_URI} !\.css.map$
-RewriteCond %{REQUEST_URI} !\.png$
-RewriteCond %{REQUEST_URI} !\.jpg$
-RewriteCond %{REQUEST_URI} !\.js$
-RewriteCond %{REQUEST_URI} !\.zip$
-RewriteCond %{REQUEST_URI} !\.html$
-RewriteCond %{REQUEST_URI} !\.ttf$
-RewriteCond %{REQUEST_URI} !\.woff$
-#RewriteCond %{REQUEST_URI} \vendor\
+#RewriteCond %{REQUEST_URI} !\.css$
+#RewriteCond %{REQUEST_URI} !\.css.map$
+#RewriteCond %{REQUEST_URI} !\.jpg$
+#RewriteCond %{REQUEST_URI} !\.js$
+#RewriteCond %{REQUEST_URI} !\.zip$
+#RewriteCond %{REQUEST_URI} !\.html$
+#RewriteCond %{REQUEST_URI} !\.ttf$
+#RewriteCond %{REQUEST_URI} !\.woff$
+RewriteCond %{REQUEST_URI} !vendor
+RewriteCond %{REQUEST_URI} !install
+RewriteCond %{REQUEST_URI} !themes
+RewriteCond %{REQUEST_URI} !libs
+RewriteCond %{REQUEST_URI} !assets
 
 RewriteRule (.*)$ index.php?url=$1 [QSA,L]

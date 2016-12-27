@@ -5,7 +5,12 @@ $starttime = microtime(true);
 
 if (file_exists(__DIR__.'/config.php')) {
 	require_once 'config.php';
-} else require_once 'config.default.php';
+}
+else {
+	echo "Gila CMS is not installed.";
+	exit;
+	//require_once 'config.default.php';
+}
 
 
 spl_autoload_register(function ($class) {
@@ -19,6 +24,7 @@ spl_autoload_register(function ($class) {
 		//$log->warning();
 	}
 });
+
 
 new router();
 /*

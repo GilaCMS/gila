@@ -16,7 +16,7 @@
     <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="src/core/theme/simple-sidebar.css" rel="stylesheet">
+    <link href="themes/admin/simple-sidebar.css" rel="stylesheet">
     <link href="libs/rj.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -58,7 +58,7 @@
                 </li>
                 <li class="float-right">
                     User Name
-                    <a href="<?=$GLOBALS['path']['base']/logout?>">Logout</a>
+                    <a href="<?=$GLOBALS['path']['base']?>/logout">Logout</a>
                 </li>
 
             </ul>

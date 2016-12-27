@@ -16,8 +16,8 @@ class router
         if (isset($args[0])) if ($args[0]=='admin') {
             $administration = 1;
             array_splice($args, 0, 1);
-            $controller = $GLOBALS['default']['admin/controller'];
-            $ctrl_path = $GLOBALS['path']["admin/controller"];
+            $controller = $GLOBALS['default']['admin controller'];
+            $ctrl_path = $GLOBALS['path']["admin controller"];
         }
 
         if (isset($args[0])) {
@@ -55,12 +55,12 @@ class router
             $action_fn = $action.'Action';
 
 
-
+            $path_theme = __DIR__.'/../../../themes/';
             if(isset($administration)) {
-                $path_theme = __DIR__.'/../../../'.$GLOBALS['path']['theme']['admin'];
+                $path_theme = $path_theme.$GLOBALS['path']['theme']['admin'];
             }
             else {
-                $path_theme = __DIR__.'/../../../'.$GLOBALS['path']['theme']['default'];
+                $path_theme = $path_theme.$GLOBALS['path']['theme']['default'];
             }
 
             if (isset($ctrl->THEME)) {
@@ -71,9 +71,9 @@ class router
                 }
             }
 
-            include $path_theme."header.php";
+            include $path_theme."/header.php";
             $ctrl->$action_fn($args);
-            include $path_theme."footer.php";
+            include $path_theme."/footer.php";
 
         }
     }

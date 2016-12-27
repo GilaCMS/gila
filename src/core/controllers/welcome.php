@@ -9,6 +9,8 @@ class welcome extends controller
 
   function indexAction ($args)
   {
+      //echo "<pre>".var_export($_SERVER,ture)."</pre>";
+      echo "//".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL']."<br>";
       echo "<br>Welcome to Gila CMS!<br>";
   }
 
@@ -19,7 +21,7 @@ class welcome extends controller
     $this->view->render("core/views/test.phtml");
   }
 
-  function dogAction ($args)
+  function logAction ($args)
   {
       //set_include_path('core/'); // get_include_path().PATH_SEPARATOR.
       //spl_autoload_extensions('.php');

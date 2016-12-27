@@ -1,37 +1,38 @@
 <?php
 
-/*
-$GLOBALS['db'] = [
-	'user' => "localhost",
-	'user' => "root",
-	'pass' => "",
-	'name' => "gila"
-];*/
 
+$GLOBALS['config'] = [
+	'title' => "Gila CMS",
+	'slogan' => "An awesome website!",
+	'base' => '//localhost/gila/',
+];
 $GLOBALS['default'] = [
 	'controller' => "welcome",
-	'admin/controller' => "dashboard",
+	'admin controller' => "dashboard",
 ];
 $GLOBALS['path'] = [
 	'base' => '//localhost/gila/',
 	'controller' => [
-		'welcome' => "core/controllers/welcome",
-		'install' => "core/controllers/install",
+		'welcome' => "core/controllers/welcome"
 	],
-	'admin/controller' => [
+	'admin controller' => [
 		'dashboard' => "core/controllers/dashboard",
 		'addons' => "core/controllers/addons",
+		'posts' => "core/controllers/posts",
+		'users' => "core/controllers/users",
 		'settings' => "core/controllers/settings",
 	],
 	'theme' => [
-		'default' => 'themes/andia/',
-		'admin' => 'src/core/theme/'
+		'default' => 'andia',
+		'admin' => 'admin'
 	]
 ];
 $GLOBALS['menu'] = array(
 	'admin' => [
 		['Dashboard','admin/dashoard','icon'=>'icon'],
 		['Add-Ons','admin/addons','icon'=>'icon'],
-		['Settings','admin/settings','icon'=>'icon']
+		['Posts','admin/posts','icon'=>'icon'],
+		['Users','admin/users','icon'=>'icon'],
+		['Settings','admin/settings','icon'=>'icon'],
 	]
 );

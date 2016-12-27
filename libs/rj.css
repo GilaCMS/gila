@@ -129,3 +129,24 @@ input{margin-bottom:8px;padding:4px}
 .vertical>li {
     display: block;
 }
+
+/* table */
+.pnk-table {
+  border-spacing:0;
+  border-top: 1px solid #CCC;
+  border-left: 1px solid #CCC;
+  width:100%;
+  table-layout: fixed;
+}
+.pnk-table tr:nth-child(odd) td{
+    background: #ddd;
+}
+
+.pnk-table th,
+.pnk-table td{
+    padding:6px 8px;
+    font-size:12px;
+    border-collapse:collapse;
+    border-bottom: 1px solid #CCC;
+    border-right: 1px solid #CCC
+}

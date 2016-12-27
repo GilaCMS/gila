@@ -9,20 +9,22 @@ example use
 $db = new dbClass('localhost', 'root', '', '');
 */
 
-class dbClass {
+class db {
 	private $dbhost, $user, $pass, $dsch;
 
-	function dbClass($dbhost = 'localhost', $user = 'root', $pass = '', $dsch = '')
+	function __construct($dbhost = 'localhost', $user = 'root', $pass = '', $dsch = '')
 	{
-		$this->dbhost = $dbhost;
-		$this->user = $user;
-		$this->pass = $pass;
-		$this->dsch = $dsch;
+			$this->dbhost = $dbhost;
+			$this->user = $user;
+			$this->pass = $pass;
+			$this->dsch = $dsch;
 	}
 
-	function query($q, $args = null)
+	public function query($q, $args = null)
 	{
-        if ($args === null) {
+		$link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
+
+		if ($args === null) {
             return $link->query($q);
         }
         else if (!is_array($args)) {
@@ -37,13 +39,13 @@ class dbClass {
         }
         $stmt->execute();
 
-		//$link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
 		//$link->set_charset("utf8");
 		// SET GLOBAL time_zone = '+8:00';
 		$res = $link->query($q);
-	  mysqli_close($link);
-	  return $res;
+	  	mysqli_close($link);
+	  	return $res;
 	}
+
 
 	function multi_query($q)
 	{
