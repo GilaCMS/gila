@@ -3,7 +3,7 @@
 class posts extends controller
 {
 
-  function indexAction ($args)
+  function indexAction ()
   {
       echo "<table class=\"pnk-table\"><tr><th>ID<th>Title<th>Slug<th>Post<th>User ID<th>Updated";
       $res = $this->db->query("SELECT * FROM post");

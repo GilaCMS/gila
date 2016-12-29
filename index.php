@@ -1,6 +1,6 @@
 <?php
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+//use Monolog\Logger;
+//use Monolog\Handler\StreamHandler;
 $starttime = microtime(true);
 
 if (file_exists(__DIR__.'/config.php')) {
@@ -25,7 +25,8 @@ spl_autoload_register(function ($class) {
 	}
 });
 
-
+$db = new db($GLOBALS['db']['host'], $GLOBALS['db']['user'], $GLOBALS['db']['pass'], $GLOBALS['db']['name']);
+new session();
 new router();
 /*
 $log = new Monolog\Logger('name');

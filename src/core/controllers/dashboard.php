@@ -3,7 +3,7 @@
 class dashboard extends controller
 {
 
-  function indexAction ($args)
+  function indexAction ()
   {
     echo "Dashboard!";
   }

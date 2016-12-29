@@ -3,7 +3,7 @@
 class settings extends controller
 {
 
-  function indexAction ($args)
+  function indexAction ()
   {
       echo "<div><h3>Website</h3>";
       foreach ($GLOBALS['config'] as $key => $value) {

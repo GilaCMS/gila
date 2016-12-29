@@ -2,6 +2,8 @@
 
 class router
 {
+    static $args = [];
+
     function __construct ()
     {
         //$uri = explode("?", $_SERVER["REQUEST_URI"]);
@@ -45,12 +47,16 @@ class router
         		if (method_exists($controller,$args[1].'Action')) {
                     $action = $args[1];
         		}
-        		else {
-                     array_splice($args, 0, 0, $action);
+        		else if (method_exists($controller,$args[1].'Admin')) {
+                    $action = $args[1];
+                    $administration = 1;
+        		}
+                else {
+                     array_splice($args, 1, 0, $action);
         		}
         	}
         	else {
-                 array_splice($args, 0, 0, $action);
+                 array_splice($args, 1, 0, $action);
         	}
             $action_fn = $action.'Action';
 
@@ -62,24 +68,31 @@ class router
             else {
                 $path_theme = $path_theme.$GLOBALS['path']['theme']['default'];
             }
-
+            /*
             if (isset($ctrl->THEME)) {
                 if ($ctrl->THEME == 0) {
                     echo "<base href='{$GLOBALS['path']['base']}'>";
-                    $ctrl->$action_fn($args);
+                    $ctrl->$action_fn();
                     return;
                 }
             }
+            */
+            router::$args = $args;
 
             include $path_theme."/header.php";
-            $ctrl->$action_fn($args);
+            $ctrl->$action_fn();
             include $path_theme."/footer.php";
 
         }
     }
 
-    private function admin()
+    static function get ($key, $n = null)
     {
-
+        if (isset($_GET['$key'])) {
+            return $_GET['$key'];
+        }
+        else {
+            return router::$args[$n+2];
+        }
     }
 }

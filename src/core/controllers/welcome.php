@@ -7,21 +7,20 @@ use Cocur\Slugify\Slugify;
 class welcome extends controller
 {
 
-  function indexAction ($args)
+  function indexAction ()
   {
       //echo "<pre>".var_export($_SERVER,ture)."</pre>";
       echo "//".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL']."<br>";
       echo "<br>Welcome to Gila CMS!<br>";
   }
 
-  function testAction ($args)
+  function testAction ()
   {
-    $page = $args[1];
 
     $this->view->render("core/views/test.phtml");
   }
 
-  function logAction ($args)
+  function logAction ()
   {
       //set_include_path('core/'); // get_include_path().PATH_SEPARATOR.
       //spl_autoload_extensions('.php');
@@ -48,7 +47,7 @@ class welcome extends controller
       $log->addDebug('Debug');
   }
 
-  function slugAction ($args) {
+  function slugAction () {
 
 
       $slugify = new Slugify();
