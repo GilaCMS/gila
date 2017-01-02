@@ -33,17 +33,29 @@ class db {
         }
 
         $stmt = $link->prepare($q);
-        for($i=1;$i<count($p);$i++) {
-            $x=$link->real_escape_string($p[$i]);
-            $stmt->bind_param($p[0][$i], $x );
+		$dt = "";
+		foreach($args as $value) {
+            $x=$link->real_escape_string($value);
+			if(is_int($value)){
+				$dt .= 'i';
+			}else if(is_double($value)){
+				$dt .= 'd';
+			}else if(is_string($value)){
+				$dt .= 's';
+			}else{
+				$dt .= 'b';
+			}
         }
-        $stmt->execute();
+		array_unshift($args, $dt);
+		$refarg = [];
+		foreach ($args as $key => $value) $refarg[] =& $args[$key];
 
-		//$link->set_charset("utf8");
-		// SET GLOBAL time_zone = '+8:00';
-		$res = $link->query($q);
-	  	mysqli_close($link);
-	  	return $res;
+		if(call_user_func_array([$stmt,'bind_param'], $refarg)) {
+            $stmt->execute();
+			return $stmt->get_result();
+		}
+
+		return false;
 	}
 
 
@@ -116,24 +128,7 @@ class db {
 	public function gen($q, $args = null)
 	{
 		$link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
-/*
-		if ($args === null) {
-            return $link->query($q);
-        }
-        else if (!is_array($args)) {
-            $argsBkp = $args;
-            $args = array($argsBkp);
-        }
 
-        $stmt = $link->prepare($q);
-        for($i=1;$i<count($p);$i++) {
-            $x=$link->real_escape_string($p[$i]);
-            $stmt->bind_param($p[0][$i], $x );
-        }
-        $stmt->execute();
-*/
-		//$link->set_charset("utf8");
-		// SET GLOBAL time_zone = '+8:00';
 		$res = $link->query($q);
 		mysqli_close($link);
 		while ($r = mysqli_fetch_array($res)) {
@@ -142,5 +137,15 @@ class db {
 
 	}
 
+	function value($q)
+	{
+		$arr = [];
+		$link = mysqli_connect($this->dbhost, $this->user, $this->pass,  $this->dsch);
+		$link->set_charset("utf8");
+		$res = $link->query($q);
+	  	mysqli_close($link);
+		if($res) while($r=mysqli_fetch_array($res)) return $r[0];
+		return null;
+	}
 
 }

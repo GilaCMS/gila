@@ -14,6 +14,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="themes/admin/simple-sidebar.css" rel="stylesheet">
@@ -25,7 +26,6 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script src="libs/rj.js"></script>
 </head>
 
 <body>
@@ -36,11 +36,11 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="admin">Gila Admin</a>
+                    <a href="admin">Admin</a>
                 </li>
                 <?php
                     foreach ($GLOBALS['menu']['admin'] as $key => $value) {
-                        echo "<li><a href='{$value[1]}'>{$value[0]}</a></li>";
+                        echo "<li><a href='{$value[1]}'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a></li>";
                     }
                 ?>
             </ul>
@@ -48,13 +48,13 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <ul class="top-nav gl-nav">
+        <div class="col-md-12">
+            <ul class="gl-nav">
                 <li>
-                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
                 </li>
                 <li>
-                    <a href="<?=$GLOBALS['path']['base']?>">Website</a>
+                    <a href="<?=$GLOBALS['path']['base']?>" class="btn btn-default" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
                 </li>
                 <li class="float-right">
                     User Name
@@ -62,6 +62,17 @@
                 </li>
 
             </ul>
-
-            <div class="container-fluid">
-                <div class="row">
+            <div style="background:#ddd; padding:6px" class="row">
+                <div style="font-size:22px; padding-left: 15px;">
+                    <?php
+                    $cn = router::controller();
+                    $c = new $cn();
+                    if (isset($c->icons)) {
+                        if (isset($c->icons[router::action()]))
+                            echo "<i class='fa fa-{$c->icons[router::action()]}'></i> ";
+                    }
+                     ?>
+                    <?=ucwords(router::action())?>
+                </div>
+            </div>
+            <div class="row">

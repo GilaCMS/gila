@@ -9,7 +9,7 @@ class view
 	}
 
 	function render($filePath) {
-		foreach ($this->part as $key => $value) { $$key = $value; echo $key."=".$value." "; }
+		foreach ($this->part as $key => $value) { $$key = $value; }
         $filePath = __DIR__.'/../../'.$filePath;
 
         if (file_exists($filePath)) {

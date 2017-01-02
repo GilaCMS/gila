@@ -1,0 +1,36 @@
+
+<div class="col-md-12">
+<label class="col-md-12">Title</label><br>
+<input value="<?=$title?>" />
+<label class="col-md-12">Text</label><br>
+<textarea><?=$text?></textarea>
+</div>
+<script src="_libs/tinymce/js/tinymce/tinymce.min.js"></script>
+<script>
+//cdn.tinymce.com/4/tinymce.min.js
+//tinymce.init({ selector:'textarea' });
+tinymce.init({
+  selector: 'textarea',
+  mode: 'none',
+  height: 300,
+  theme: 'modern',
+  plugins: [
+    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars code fullscreen',
+    'insertdatetime media nonbreaking save table contextmenu directionality',
+    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
+],
+  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
+  //theme_advanced_buttons3_add : "visualchars",
+  //toolbar2: 'print preview  |   emoticons | ',
+  image_advtab: true,
+  templates: [
+    { title: 'Test template 1', content: 'Test 1' }
+  ]
+/*  content_css: [
+    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+    '//www.tinymce.com/css/codepen.min.css'
+]*/
+ });
+
+</script>

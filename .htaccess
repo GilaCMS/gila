@@ -12,6 +12,7 @@ RewriteEngine On
 #RewriteCond %{REQUEST_URI} !\.woff$
 RewriteCond %{REQUEST_URI} !vendor
 RewriteCond %{REQUEST_URI} !install
+RewriteCond %{REQUEST_URI} !src
 RewriteCond %{REQUEST_URI} !themes
 RewriteCond %{REQUEST_URI} !libs
 RewriteCond %{REQUEST_URI} !assets

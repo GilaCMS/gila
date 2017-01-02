@@ -24,7 +24,7 @@ spl_autoload_register(function ($class) {
 		//$log->warning();
 	}
 });
-
+$GLOBALS['config']['db']['name'] = 'gila';
 $db = new db($GLOBALS['db']['host'], $GLOBALS['db']['user'], $GLOBALS['db']['pass'], $GLOBALS['db']['name']);
 new session();
 new router();

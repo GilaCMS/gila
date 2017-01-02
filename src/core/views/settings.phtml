@@ -1,0 +1,23 @@
+<div class="col-md-12">
+    <h3>Website</h3>
+    <label class="col-md-2 col-md-offset-1">Title</label>
+    <input value="<?=$GLOBALS['config']['title']?>" class="col-md-3" />
+    <label class="col-md-2 col-md-offset-1">Slogan</label>
+    <input value="<?=$GLOBALS['config']['slogan']?>" class="col-md-3" />
+    <label class="col-md-2 col-md-offset-1">Base Url</label>
+    <input value="<?=$GLOBALS['config']['base']?>" class="col-md-3" />
+</div>
+<div class="col-md-12">
+    <h3>Themes</h3>
+<?php
+foreach ($GLOBALS['path']['theme'] as $key => $value) {
+    echo '<div class="col-1"></div><label class="col-2">'.ucwords($key).'</label><input value="'.$value.'" class="col-3" />';
+}?>
+</div>
+<div class="col-md-12">
+    <h3>Default values</h3>
+<?php
+foreach ($GLOBALS['default'] as $key => $value) {
+    echo '<div class="col-1"></div><label class="col-2">'.ucwords($key).'</label><input value="'.$value.'" class="col-3 /">';
+}?>
+</div>

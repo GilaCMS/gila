@@ -8,19 +8,11 @@ $GLOBALS['config'] = [
 ];
 $GLOBALS['default'] = [
 	'controller' => "welcome",
-	'admin controller' => "dashboard",
 ];
 $GLOBALS['path'] = [
 	'base' => '//localhost/gila/',
 	'controller' => [
 		'welcome' => "core/controllers/welcome"
-	],
-	'admin controller' => [
-		'dashboard' => "core/controllers/dashboard",
-		'addons' => "core/controllers/addons",
-		'posts' => "core/controllers/posts",
-		'users' => "core/controllers/users",
-		'settings' => "core/controllers/settings",
 	],
 	'theme' => [
 		'default' => 'andia',
