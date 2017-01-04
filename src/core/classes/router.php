@@ -89,7 +89,7 @@ class router
                 $path_theme = $path_theme.$GLOBALS['path']['theme']['admin'];
             }
             else {
-                $path_theme = $path_theme.$GLOBALS['path']['theme']['default'];
+                $path_theme = $path_theme.$GLOBALS['config']['theme'];
             }
             /*
             if (isset($ctrl->THEME)) {
@@ -103,6 +103,7 @@ class router
             router::$args = $args;
 
             include $path_theme."/header.php";
+            include $path_theme."/page.php";
             $ctrl->$action_fn();
             include $path_theme."/footer.php";
 

@@ -1,6 +1,7 @@
 composer.phar
 /vendor/
 /_libs/
+/_themes/
 composer.json
 somposer.lock
 config.php

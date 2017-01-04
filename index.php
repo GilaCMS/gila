@@ -25,6 +25,7 @@ spl_autoload_register(function ($class) {
 	}
 });
 $GLOBALS['config']['db']['name'] = 'gila';
+$GLOBALS['config']['theme'] = 'bs-property';
 $db = new db($GLOBALS['db']['host'], $GLOBALS['db']['user'], $GLOBALS['db']['pass'], $GLOBALS['db']['name']);
 new session();
 new router();
