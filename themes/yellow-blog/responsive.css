@@ -1,0 +1,394 @@
+
+
+/*		Tablet Layout: 768px.
+		Gutters: 24px.
+		Outer margins: 28px.
+		Inherits styles from: Default Layout.
+-----------------------------------------------------------------
+cols    1     2      3      4      5      6      7      8
+px      68    160    252    344    436    528    620    712    */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.wrapper {
+		width: 712px;
+		padding: 48px 28px 60px;
+	}
+	#selectnav1{display:none;}
+	#nav{display:block;}
+.header_bottom ul li a {
+  font-size: 10px;
+  padding: 5px 13px;
+}
+.pgwSlider .ps-current span {
+  background: url("images/slider_arrow_tab.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}	
+.main_content {
+  margin-right: 0px;
+  width: 100%;
+  float:none !important;
+}
+.sidebar_container {
+  float: none;
+  margin: 25px auto 0px;
+}
+.footer_top_container {
+  margin-left: -10px;
+}
+.single_footer_top {
+  margin-left: 10px;
+  width: 230px;
+}
+
+/*  single page style */	
+.more_themes_container {
+  margin-left: -25px;
+}
+.single_more_themes {
+margin-left: 25px;
+}
+
+/* work archieve page style */
+.single_work_container {
+  margin-left: -35px;
+}
+.single_work {
+  margin-left: 35px;
+  margin-bottom:35px;
+}
+.work_pagination .newer, .work_pagination .older {
+
+  margin-left: 15px;
+}
+/* work single page style */
+
+.work_single_page_feature img {
+  width: 100%;
+}
+
+	
+}
+
+
+
+/*		Mobile Layout: 320px.
+		Gutters: 24px.
+		Outer margins: 34px.
+		Inherits styles from: Default Layout.
+---------------------------------------------
+cols    1     2      3
+px      68    160    252    */
+
+@media only screen and (max-width: 767px) {
+	
+	.wrapper {
+		width: 252px;
+		padding: 48px 34px 60px;
+	}
+	#selectnav1{display:block;height: 30px;width: 232px;}
+	#nav{display:none;}	
+	
+.main_content {
+margin-right: 0;
+width: 252px;
+float:none;
+}	
+.pgwSlider > ul > li {
+  height: 65px !important;
+}
+.pgwSlider .ps-current span {
+  background: url("images/slider_arrow_small_mobile.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.post_detail h2 {
+font-size: 12px !important;
+line-height: 15px;
+margin-bottom: 0;
+}
+.post-meta p span {
+font-size: 5px;
+padding: 3px;
+}
+.post_excerpt {
+  text-align: center;
+}
+.post_excerpt img {
+  float: none;
+}
+.post_detail > a {
+  float: none;
+  margin: 10px auto;
+}
+
+.footer_top_container {
+  margin-left: 0;
+}
+.single_footer_top {
+  float: none;
+  margin-bottom: 20px;
+  margin-left: 0;
+  width: 252px;
+}
+.copyright {
+  float: none;
+}
+.copyright p {
+  text-align: center;
+}
+.social {
+  float: none;
+  margin-top: 10px;
+}
+.social ul {
+  text-align: center;
+}
+.social ul li {
+  display: inline-block;
+  float:none;
+}
+
+/* changing rules */
+
+.logo {
+  float: none;
+}
+.logo a {
+  text-align: center;
+}
+.logo img{max-width:100%}
+.search input[type="text"] {
+  width: 192px;
+}
+.post_date {
+float: none;
+margin-bottom: 10px;
+margin-right: 0;
+}
+.post_date .date {
+  padding: 0;
+}
+.post_date h3 {
+  font-size: 10px !important;
+  margin-bottom: -10px;
+  margin-top: 0;
+}
+.post_date p {
+  font-size: 8px;
+}
+.post-meta {
+  margin-bottom: 5px;
+}
+.sidebar_container {
+  float: none;
+  margin: 30px auto 0;
+  width: 252px;
+}
+.newsletter form input[type="text"] {
+  width: 230px;
+}
+.newsletter input[type="email"] {
+  width: 235px;
+}
+
+.social ul li a {
+  font-size: 16px;
+}
+
+/* single page style*/
+.more_themes_container {
+  margin-left: 0;
+}
+.single_more_themes {
+  margin: 0px auto 10px;
+  float: none 
+}
+
+/* work archieve page style */
+.single_work_container {
+  margin-left: 0;
+}
+.single_work {
+  float: none;
+  margin: 0 auto 10px;
+  width:252px;
+  height:142px;
+}
+.single_work h2 {
+  font-size: 10px;
+  line-height: 20px;
+  padding: 0 5px;
+}
+.work_pagination {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* work single page style */
+.more_works_container {
+  margin-left: 0;
+}
+.single_more_works {
+  float: none;
+  margin: 0 auto 10px;
+}
+.single_more_works a h2 {
+  font-size: 8px;
+  line-height: 15px;
+  padding: 2px 5px;
+}
+
+
+	
+}
+
+
+
+/*		Wide Mobile Layout: 480px.
+		Gutters: 24px.
+		Outer margins: 22px.
+		Inherits styles from: Default Layout, Mobile Layout.
+------------------------------------------------------------
+cols    1     2      3      4      5
+px      68    160    252    344    436    */
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	
+	.wrapper {
+		width: 436px;
+		padding: 36px 22px 48px;
+	}
+	#selectnav1{display: block;
+height: 30px;
+width: 415px;}
+	#nav{display:none;}
+.main_content {
+margin-right: 0;
+width: 436px;
+float:none;
+}	
+.pgwSlider > ul > li {
+  height: 65px !important;
+}
+.pgwSlider .ps-current span {
+  background: url("images/slider_arrow_wide_mobile.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.post_detail h2 {
+  font-size: 20px !important;
+  line-height: 25px;
+}
+.post-meta p span {
+  padding: 5px 10px;
+  font-size: 8px;
+}
+.post_excerpt {
+  text-align: center;
+}
+.post_excerpt img {
+  float: none;
+}
+.post_detail > a {
+  float: none;
+  margin: 10px auto;
+}
+.sidebar_container {
+  float: none;
+  margin: 30px auto 0;
+  width:300px;
+}
+.footer_top_container {
+  margin-left: 0;
+}
+.single_footer_top {
+  float: none;
+  margin-bottom: 20px;
+  margin-left: 0;
+  width: 436px;
+}
+.copyright {
+  float: none;
+}
+.copyright p {
+  text-align: center;
+}
+.social {
+  float: none;
+  margin-top: 10px;
+}
+.social ul {
+  text-align: center;
+}
+.social ul li {
+  display: inline-block;
+  float:none;
+}
+
+.logo {
+  float: left;
+}
+.post_date {
+  float: left;
+  margin-bottom: 0px;
+  margin-right: 5px;
+}
+.post_date .date {
+  padding: 10px;
+}
+.social ul li a {
+  font-size: 20px;
+}
+
+/* Single page style */
+.more_themes_container {
+  margin-left: -10px;
+}
+.single_more_themes {
+  margin-left: 10px;
+  width: 138px;
+  float:left;
+}
+.more_post a {
+  margin-bottom: 5px;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+/* work archieve page style */
+.single_work_container {
+  margin-left: 0;
+}
+.single_work {
+  float: none;
+  margin: 0 auto 10px;
+  width:337px;
+  height:190px;  
+}
+/* work single page style */
+.more_works_container {
+  margin-left: -5px;
+}
+.single_more_works {
+  margin-left: 5px;
+  width: 142px;
+  float:left;
+}
+.single_more_works a h2 {
+  font-size: 8px;
+  line-height: 15px;
+  padding: 2px 5px;
+}
+
+}
+
+
+/*	Retina media query.
+	Overrides styles for devices with a 
+	device-pixel-ratio of 2+, such as iPhone 4.
+-----------------------------------------------    */
+
+@media 
+	only screen and (-webkit-min-device-pixel-ratio: 2),
+	only screen and (min-device-pixel-ratio: 2) {
+	
+	body {
+	
+	}
+	
+}

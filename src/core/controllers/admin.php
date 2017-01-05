@@ -28,7 +28,7 @@ class admin extends controller
 
             return;
         }
-        echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>Post<th>User ID<th>Updated<th>";
+        echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>User ID<th>Updated<th>";
         $page = router::get('page',1)?:1;
         $rpp = 10;
         $lstart = $page*$rpp-$rpp;
@@ -36,7 +36,7 @@ class admin extends controller
 
         $gen = $db->gen("SELECT * FROM post $limit");
         foreach ($gen as $r) {
-            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['title'].'<td>'.$r['slug'].'<td>'.$r['post'].'<td>'.$r['user_id'].'<td>'.$r['updated'].'<td><a href="admin/posts/'.$r['id'].'">Edit</a>';
+            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['title'].'<td>'.$r['slug'].'<td>'.$r['user_id'].'<td>'.$r['updated'].'<td><a href="admin/posts/'.$r['id'].'">Edit</a>';
         }
         echo "</table>";
 
@@ -77,7 +77,6 @@ class admin extends controller
 
     function addonsAdmin ()
     {
-        global $name;
         $dir = "src/";
         $packages = scandir($dir);
         $table = '<tr><th class="col-2"><th class="col-8"><th class="col-2">';

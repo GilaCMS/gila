@@ -8,11 +8,15 @@
     <input value="<?=$GLOBALS['config']['base']?>" class="col-md-3" />
 </div>
 <div class="col-md-12">
-    <h3>Themes</h3>
+    <label class="col-md-2 col-md-offset-1">Theme</label>
+    <select value="<?=$GLOBALS['config']['theme']?>" class="col-md-3">
 <?php
-foreach ($GLOBALS['path']['theme'] as $key => $value) {
-    echo '<div class="col-1"></div><label class="col-2">'.ucwords($key).'</label><input value="'.$value.'" class="col-3" />';
-}?>
+    $theme_list=scandir('themes/');
+    foreach ($theme_list as $value) if($value[0] != '.') {
+        echo '<option value="'.$value.'">'.ucwords($value).'</option>';
+    }
+?>
+    </select>
 </div>
 <div class="col-md-12">
     <h3>Default values</h3>

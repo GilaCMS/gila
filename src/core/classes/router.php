@@ -103,7 +103,7 @@ class router
             router::$args = $args;
 
             include $path_theme."/header.php";
-            include $path_theme."/page.php";
+            include $path_theme."/frontpage.php";
             $ctrl->$action_fn();
             include $path_theme."/footer.php";
 
