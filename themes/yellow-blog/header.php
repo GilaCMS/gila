@@ -9,7 +9,8 @@
 -->
 
 	<head>
-		<title>Welcome to my site</title>
+		<base href="<?=$GLOBALS['path']['base']?>">
+		<title><?=$GLOBALS['config']['title']?></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!--Oswald Font -->
@@ -18,7 +19,7 @@
 		<!-- home slider-->
 		<link href="themes/yellow-blog/css/pgwslider.css" rel="stylesheet">
 		<!-- Font Awesome -->
-		<link rel="stylesheet" href="libs/font-awesome/font-awesome.min.css">
+		<link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
 		<link href="themes/yellow-blog/style.css" rel="stylesheet" media="screen">
 		<link href="themes/yellow-blog/responsive.css" rel="stylesheet" media="screen">
 	</head>
@@ -29,7 +30,12 @@
 			<div class="wrapper header">
 				<div class="clearfix header_top">
 					<div class="clearfix logo floatleft">
-						<a href=""><h1><span>Yellow</span> Blog</h1></a>
+<?php
+$tt=explode(' ',$GLOBALS['config']['title']);
+$tt2="";
+for ($i=1;$i<count($tt);$i++) $tt2 .= $tt[$i];
+?>
+						<a href=""><h1><span><?=$tt[0]?></span> <?=$tt2?></h1></a>
 					</div>
 					<div class="clearfix search floatright">
 						<form>
@@ -39,35 +45,7 @@
 					</div>
 				</div>
 				<div class="header_bottom">
-					<nav>
-						<ul id="nav">
-							<li><a href="">Home</a></li>
-							<li><a href="">Category</a></li>
-							<li id="dropdown"><a href="">Drop Down</a>
-								<ul>
-									<li><a href="">Home</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">Category</a></li>
-									<li><a href="">About us</a></li>
-									<li><a href="">Contact us</a></li>
-								</ul>
-							</li>
-							<li><a href="">Category</a></li>
-							<li><a href="">Category</a></li>
-							<li><a href="">Category</a></li>
-							<li><a href="">Category</a></li>
-							<li><a href="">Category</a></li>
-							<li><a href="">Category</a></li>
-							<li><a href="">About us</a></li>
-							<li><a href="">Contact us</a></li>
-						</ul>
-					</nav>
+					<?php view::widget('menu'); ?>
 				</div>
 			</div>
 		</section>

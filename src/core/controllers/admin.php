@@ -21,9 +21,9 @@ class admin extends controller
         if ($id = router::get('id',1)) {
             $res = $db->query("SELECT * FROM post WHERE id=?",$id);
             while ($r = mysqli_fetch_array($res)) {
-                $this->view->set('title',$r['title']);
-                $this->view->set('text',$r['post']);
-                $this->view->render('core/views/edit_post.phtml');
+                view::set('title',$r['title']);
+                view::set('text',$r['post']);
+                view::render('views/edit_post.phtml');
             }
 
             return;
@@ -49,6 +49,33 @@ class admin extends controller
     }
 
     function usersAdmin ()
+    {
+        global $db;
+        if ($id = router::get('id',1)) {
+            echo "Edit user ".$id;
+            exit;
+        }
+        echo "<table class=\"table\"><tr><th>ID<th>Name<th>Email<th>Pass<th>";
+        $page = router::get('page',1)?:1;
+        $rpp = 10;
+        $lstart = $page*$rpp-$rpp;
+        $limit = "LIMIT $lstart,$rpp";
+
+        $gen = $db->gen("SELECT * FROM user $limit");
+        foreach ($gen as $r) {
+            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['name'].'<td>'.$r['email'].'<td>'.$r['pass'].'<td><a href="admin/users/'.$r['id'].'">Edit</a>';
+        }
+        echo "</table>";
+
+        $total = $db->value("SELECT COUNT(*) FROM user")?:0;
+        echo '<p>';
+        for ($i=1; $i<= $total/$rpp; $i++) {
+            echo " <a class='btn btn-primary' href='".router::url()."?page=$i'>$i</a>";
+        }
+        echo '</p>';
+    }
+
+    function widgetsAdmin ()
     {
         global $db;
         if ($id = router::get('id',1)) {
@@ -110,11 +137,11 @@ class admin extends controller
 
     function settingsAdmin ()
     {
-        $this->view->render('core/views/settings.phtml');
+        view::render('views/settings.phtml');
     }
     function loginAdmin ()
     {
-        $this->view->render('core/views/login.phtml');
+        view::render('views/login.phtml');
     }
     function logoutAdmin ()
     {

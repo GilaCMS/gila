@@ -19,7 +19,7 @@
 }
 
 .pgwSlider .ps-current span {
-background: url("../images/slider_arrow2.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+/*background: url("../images/slider_arrow2.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);*/
 bottom: -55px;
 color: #fff;
 font-size: 1rem;

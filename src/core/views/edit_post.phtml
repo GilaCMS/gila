@@ -1,10 +1,33 @@
-
-<div class="col-md-12">
-<label class="col-md-12">Title</label><br>
-<input value="<?=$title?>" />
-<label class="col-md-12">Text</label><br>
-<textarea><?=$text?></textarea>
+<?php
+include 'themes/'.$GLOBALS['config']['theme'].'/theme.php';
+?>
+<div class="col-md-10">
+    <div class="col-md-12">
+        <label class="col-md-12">Title</label><br>
+        <input value="<?=$title?>" />
+    </div>
+    <div class="col-md-12">
+        <label class="col-md-12">Text</label><br>
+        <textarea><?=$text?></textarea>
+    </div>
 </div>
+<div class="col-md-2">
+    <div class="radio">
+    <label><input type="radio" name="publish" value="0">Draft</label>
+    </div>
+    <div class="radio">
+    <label><input type="radio" name="publish" value="1">Publish</label>
+    </div>
+    <div class="btn-group">
+        <a class="btn btn-primary">Save</a>
+        <a class="btn btn-default">Close</a>
+    </div>
+    <div class="col-md-12">
+        <label class="col-md-12">Meta Values</label><br>
+        <input value="values here" />
+    </div>
+</div>
+
 <script src="_libs/tinymce/js/tinymce/tinymce.min.js"></script>
 <script>
 //cdn.tinymce.com/4/tinymce.min.js
@@ -24,17 +47,14 @@ tinymce.init({
   //theme_advanced_buttons3_add : "visualchars",
   //toolbar2: 'print preview  |   emoticons | ',
   image_advtab: true,
-  templates: [
-    { title: 'Test template 1', content: 'Test 1' }
-],
-document_base_url : "//localhost/gila/",
-  content_css: [
-    '//localhost/gila/libs/bootstrap/bootstrap.min.css',
-    '//localhost/gila/libs/font-awesome/css/font-awesome.min.css',
+  templates: <?php echo json_encode($templates); ?>,
+  document_base_url : "//localhost/gila/",
+  content_css: <?php echo json_encode($content_css); ?>
+    //'//localhost/gila/libs/bootstrap/bootstrap.min.css',
+    //'//localhost/gila/libs/font-awesome/css/font-awesome.min.css',
     //'//localhost/gila/themes/bs-property/style.css',
     //'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
     //'//www.tinymce.com/css/codepen.min.css'
-]
  });
 
 </script>

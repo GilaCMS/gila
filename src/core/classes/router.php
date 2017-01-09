@@ -10,7 +10,9 @@ class router
         //$uri = $_GET['url'];
         /*?><pre><?php echo var_export($_SERVER); ?></pre><br><?php
         //echo $_GET['url']."<br>";*/
-        $GLOBALS['path']['controller']['admin'] = "core/controllers/admin";
+        $GLOBALS['config']['default-controller'] = "blog";
+        $GLOBALS['config']['path']['controller']['admin'] = "core/controllers/admin";
+        $GLOBALS['config']['path']['controller']['blog'] = "core/controllers/blog";
         $GLOBALS['config']['packages'] = [];
         $GLOBALS['config']['version'] = '1.0';
         $GLOBALS['menu'] = array(
@@ -23,10 +25,11 @@ class router
         	]
         );
 
+
         if(isset($_GET['url'])) $args = explode("/", $_GET['url']); else $args = [];
 
-        $controller = $GLOBALS['default']['controller'];
-        $ctrl_path = $GLOBALS['path']["controller"];
+        $controller = $GLOBALS['config']['default-controller'];
+        $ctrl_path = $GLOBALS['config']['path']["controller"];
 /*
         if (isset($args[0])) if ($args[0]=='admin') {
             $administration = 1;
@@ -103,13 +106,15 @@ class router
             router::$args = $args;
 
             include $path_theme."/header.php";
-            include $path_theme."/frontpage.php";
             $ctrl->$action_fn();
             include $path_theme."/footer.php";
 
         }
     }
-
+/*
+@key 
+@n
+*/
     static function get ($key, $n = null)
     {
         if (isset($_GET[$key])) {

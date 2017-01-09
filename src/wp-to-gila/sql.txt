@@ -1,0 +1,4 @@
+
+// thumbnails
+insert into gila.postmeta(post_id,vartype,value)
+select p.ID,'thumbnail',c.guid from wp_posts p,wp_posts c,wp_postmeta m where m.post_id=p.ID and m.meta_key='_thumbnail_id' and m.meta_value=c.ID;
