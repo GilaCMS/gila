@@ -21,7 +21,8 @@ class router
         		['Add-Ons','admin/addons','icon'=>'dropbox'],
         		['Posts','admin/posts','icon'=>'pencil'],
         		['Users','admin/users','icon'=>'users'],
-        		['Settings','admin/settings','icon'=>'cogs'],
+                ['Settings','admin/settings','icon'=>'cogs'],
+                ['Widgets','admin/widgets','icon'=>'th-large'],
         	]
         );
 
@@ -112,7 +113,7 @@ class router
         }
     }
 /*
-@key 
+@key
 @n
 */
     static function get ($key, $n = null)

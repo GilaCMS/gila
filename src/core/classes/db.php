@@ -75,9 +75,9 @@ class db {
 		$link->set_charset("utf8");
 		//echo $q."<br>";
 		$res = $link->query($q);
-	  mysqli_close($link);
+	  	mysqli_close($link);
 		if($res) while($r=mysqli_fetch_array($res)) $arr[]=$r;
-	  return $arr;
+	  	return $arr;
 	}
 
 	function getRows($q)
@@ -87,9 +87,9 @@ class db {
 		$link->set_charset("utf8");
 		//echo $q."<br>";
 		$res = $link->query($q);
-	  mysqli_close($link);
+	 	mysqli_close($link);
 		while($r=mysqli_fetch_row($res)) $arr[]=$r;
-	  return $arr;
+	  	return $arr;
 	}
 
 	function getArray($q)
@@ -97,7 +97,15 @@ class db {
 		$arr=[];
 		$garr=$this->getRows($q);
 		foreach ($garr as $key => $value) $arr[]=$value[0];
-	  return $arr;
+	  	return $arr;
+	}
+
+	function getList($q)
+	{
+		$arr=[];
+		$garr=$this->getRows($q);
+		foreach ($garr as $key => $value) $arr[]=$value[0];
+	  	return $arr;
 	}
 
 	function insert($q)

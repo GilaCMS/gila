@@ -8,6 +8,7 @@ class admin extends controller
         'posts'=>'pencil',
         'users'=>'users',
         'settings'=>'cogs',
+        'widgets'=>'th-large',
     ];
 
     function indexAdmin ()
@@ -48,6 +49,28 @@ class admin extends controller
         echo '</p>';
     }
 
+    function widgetsAdmin ()
+    {
+        global $db;
+        if ($id = router::get('id',1)) {
+            $res = $db->query("SELECT * FROM post WHERE id=?",$id);
+            while ($r = mysqli_fetch_array($res)) {
+                view::set('title',$r['title']);
+                view::set('text',$r['post']);
+                view::render('views/edit_post.phtml');
+            }
+
+            return;
+        }
+        echo "<table class=\"table\"><tr><th>ID<th>Widget<th>Area<th>Position<th>";
+        /*
+        $gen = $db->gen("SELECT * FROM post $limit");
+        foreach ($gen as $r) {
+            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['title'].'<td>'.$r['slug'].'<td>'.$r['user_id'].'<td>'.$r['updated'].'<td><a href="admin/posts/'.$r['id'].'">Edit</a>';
+        }*/
+        echo "</table>";
+    }
+
     function usersAdmin ()
     {
         global $db;
@@ -75,32 +98,7 @@ class admin extends controller
         echo '</p>';
     }
 
-    function widgetsAdmin ()
-    {
-        global $db;
-        if ($id = router::get('id',1)) {
-            echo "Edit user ".$id;
-            exit;
-        }
-        echo "<table class=\"table\"><tr><th>ID<th>Name<th>Email<th>Pass<th>";
-        $page = router::get('page',1)?:1;
-        $rpp = 10;
-        $lstart = $page*$rpp-$rpp;
-        $limit = "LIMIT $lstart,$rpp";
 
-        $gen = $db->gen("SELECT * FROM user $limit");
-        foreach ($gen as $r) {
-            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['name'].'<td>'.$r['email'].'<td>'.$r['pass'].'<td><a href="admin/users/'.$r['id'].'">Edit</a>';
-        }
-        echo "</table>";
-
-        $total = $db->value("SELECT COUNT(*) FROM user")?:0;
-        echo '<p>';
-        for ($i=1; $i<= $total/$rpp; $i++) {
-            echo " <a class='btn btn-primary' href='".router::url()."?page=$i'>$i</a>";
-        }
-        echo '</p>';
-    }
 
     function addonsAdmin ()
     {

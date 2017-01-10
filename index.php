@@ -25,8 +25,14 @@ spl_autoload_register(function ($class) {
 	}
 });
 $GLOBALS['config']['db']['name'] = 'gila';
-$GLOBALS['config']['theme'] = 'yellow-blog';
+$GLOBALS['config']['theme'] = 'newsfeed';
 $db = new db($GLOBALS['db']['host'], $GLOBALS['db']['user'], $GLOBALS['db']['pass'], $GLOBALS['db']['name']);
+
+$GLOBALS['config']['packages'] = $db->getArray("SELECT value FROM option WHERE option='package'");
+foreach ($GLOBALS['config']['packages'] as $package) {
+	include "src/$package/package.php";
+}
+
 new session();
 new router();
 /*

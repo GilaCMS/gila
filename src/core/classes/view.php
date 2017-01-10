@@ -17,7 +17,7 @@ class view
             include $filePath;
         }
         else {
-            $filePath = __DIR__.$file;
+            $filePath = 'src/core/'.$file;
             if (file_exists($filePath)) {
                 include $filePath;
             }else  echo $filePath." file not found!";
@@ -31,7 +31,7 @@ class view
             include $filePath;
         }
         else {
-            $filePath = __DIR__.'/widgets/'.$widget.'.php';
+            $filePath = 'src/core//widgets/'.$widget.'.php';
             if (file_exists($filePath)) {
                 include $filePath;
             }// else  echo $filePath." file not found!";

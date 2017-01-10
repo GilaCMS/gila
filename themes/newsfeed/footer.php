@@ -35,6 +35,12 @@
   <div class="footer_bottom">
     <p class="copyright">Copyright &copy; 2045 <a href="index.html">NewsFeed</a></p>
     <p class="developer">Developed By Wpfreeware</p>
+    <p><?php
+    global $starttime;
+    $end = microtime(true);
+    $creationtime = ($end - $starttime);
+    printf("<br>Page created in %.6f seconds.", $creationtime);
+    ?></p>
   </div>
 </footer>
 </div>
