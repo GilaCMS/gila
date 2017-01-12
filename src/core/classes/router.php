@@ -14,6 +14,8 @@ class router
         $GLOBALS['config']['path']['controller']['admin'] = "core/controllers/admin";
         $GLOBALS['config']['path']['controller']['blog'] = "core/controllers/blog";
         $GLOBALS['config']['packages'] = [];
+        $GLOBALS['config']['base'] = '//192.168.1.69/gila/';
+        $GLOBALS['path']['base'] = '//192.168.1.69/gila/';
         $GLOBALS['config']['version'] = '1.0';
         $GLOBALS['menu'] = array(
         	'admin' => [
