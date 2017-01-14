@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<base href="<?=$GLOBALS['path']['base']?>">
-<title><?=$GLOBALS['config']['title']?></title>
+<base href="<?=gila::config('base')?>">
+<title><?=gila::config('title')?></title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,7 +62,7 @@
 $mm = gila::menu();
 //echo var_export($mm,true);
 foreach ($mm as $mi) {
-        if (!$mi['children']) {
+        if (!isset($mi['children'])) {
             echo "<li><a href=\"{$mi['url']}\">{$mi['title']}</a></li>";
         }
         else {
@@ -77,4 +77,11 @@ foreach ($mm as $mi) {
         </ul>
       </div>
     </nav>
+  </section>
+  <section id="newsSection">
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+          <?php view::widget('latest-newsarea'); ?>
+      </div>
+    </div>
   </section>

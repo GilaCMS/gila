@@ -15,10 +15,10 @@ class db {
 	function __construct($host = 'localhost', $user = 'root', $pass = '', $dsch = '')
 	{
 		if(is_array($host)) {
-			$this->dbhost = $host[0];
-			$this->user = $host[1];
-			$this->pass = $host[2];
-			$this->dsch = $host[3];
+			$this->dbhost = $host['host'];
+			$this->user = $host['user'];
+			$this->pass = $host['pass'];
+			$this->dsch = $host['name'];
 		}
 		else {
 			$this->dbhost = $host;

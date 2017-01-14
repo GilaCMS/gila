@@ -1,10 +1,3 @@
-<section id="newsSection">
-  <div class="row">
-    <div class="col-lg-12 col-md-12">
-        <?php view::widget('latest-newsarea'); ?>
-    </div>
-  </div>
-</section>
 <?php
 if($page==1) view::widget('slider');
 ?>

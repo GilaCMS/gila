@@ -32,7 +32,7 @@ $db = new db(gila::config('db'));
 gila::config('default-controller','blog');
 gila::config('base', '//192.168.1.69/gila/');
 gila::config('version', '1.0');
-gila::config('theme', 'yellow-blog');
+gila::config('theme', 'newsfeed');
 gila::controllers([
 	'admin'=> 'core/controllers/admin',
 	'blog'=> 'core/controllers/blog'

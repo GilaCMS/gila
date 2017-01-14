@@ -4,7 +4,7 @@
 $mm = gila::menu();
 //echo var_export($mm,true);
 foreach ($mm as $mi) {
-        if (!$mi['children']) {
+        if (!isset($mi['children'])) {
             echo "<li><a href=\"{$mi['url']}\">{$mi['title']}</a></li>";
         }
         else {
