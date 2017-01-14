@@ -21,6 +21,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $link->query('CREATE TABLE IF NOT EXISTS post(id int(11) NOT NULL auto_increment,user_id int(11),title varchar(80),slug varchar(80),post TEXT,updated DEFAULT TIMESTAMP CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS postmeta(id int(11) NOT NULL auto_increment,post_id int(11),vartype varchar(25),value varchar(80),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS option(id int(11) NOT NULL auto_increment,option varchar(80),value varchar(80),PRIMARY KEY (id));');
+      $link->query('CREATE TABLE IF NOT EXISTS widget(id int(11) NOT NULL auto_increment,widget varchar(80),area varchar(80),pos int(2),data TEXT,PRIMARY KEY (id));');
 
       $_user=$_POST['adm_user'];
       $_email=$_POST['adm_email'];

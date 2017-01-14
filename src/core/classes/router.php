@@ -10,29 +10,15 @@ class router
         //$uri = $_GET['url'];
         /*?><pre><?php echo var_export($_SERVER); ?></pre><br><?php
         //echo $_GET['url']."<br>";*/
-        $GLOBALS['config']['default-controller'] = "blog";
-        $GLOBALS['config']['path']['controller']['admin'] = "core/controllers/admin";
-        $GLOBALS['config']['path']['controller']['blog'] = "core/controllers/blog";
-        $GLOBALS['config']['packages'] = [];
-        $GLOBALS['config']['base'] = '//192.168.1.69/gila/';
-        $GLOBALS['path']['base'] = '//192.168.1.69/gila/';
-        $GLOBALS['config']['version'] = '1.0';
-        $GLOBALS['menu'] = array(
-        	'admin' => [
-        		['Dashboard','admin','icon'=>'dashboard'],
-        		['Add-Ons','admin/addons','icon'=>'dropbox'],
-        		['Posts','admin/posts','icon'=>'pencil'],
-        		['Users','admin/users','icon'=>'users'],
-                ['Settings','admin/settings','icon'=>'cogs'],
-                ['Widgets','admin/widgets','icon'=>'th-large'],
-        	]
-        );
+
 
 
         if(isset($_GET['url'])) $args = explode("/", $_GET['url']); else $args = [];
 
-        $controller = $GLOBALS['config']['default-controller'];
-        $ctrl_path = $GLOBALS['config']['path']["controller"];
+        $controller = gila::config('default-controller');
+        $ctrl_path = gila::config('controller'); //$GLOBALS['config']['controller'];
+        //$controller = $GLOBALS['config']['default-controller'];
+        //$ctrl_path = $GLOBALS['config']['path']["controller"];
 /*
         if (isset($args[0])) if ($args[0]=='admin') {
             $administration = 1;
@@ -90,12 +76,13 @@ class router
             }
 
 
-            $path_theme = __DIR__.'/../../../themes/';
+            //$path_theme = __DIR__.'/../../../themes/';
+            //$path_theme = 'themes/';
             if(isset($administration)) {
-                $path_theme = $path_theme.$GLOBALS['path']['theme']['admin'];
+                $path_theme = 'themes/admin';
             }
             else {
-                $path_theme = $path_theme.$GLOBALS['config']['theme'];
+                $path_theme = 'themes/'.gila::config('theme');
             }
             /*
             if (isset($ctrl->THEME)) {

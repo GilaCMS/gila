@@ -12,12 +12,20 @@ $db = new dbClass('localhost', 'root', '', '');
 class db {
 	private $dbhost, $user, $pass, $dsch;
 
-	function __construct($dbhost = 'localhost', $user = 'root', $pass = '', $dsch = '')
+	function __construct($host = 'localhost', $user = 'root', $pass = '', $dsch = '')
 	{
-			$this->dbhost = $dbhost;
+		if(is_array($host)) {
+			$this->dbhost = $host[0];
+			$this->user = $host[1];
+			$this->pass = $host[2];
+			$this->dsch = $host[3];
+		}
+		else {
+			$this->dbhost = $host;
 			$this->user = $user;
 			$this->pass = $pass;
 			$this->dsch = $dsch;
+		}
 	}
 
 	public function query($q, $args = null)

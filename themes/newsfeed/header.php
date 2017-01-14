@@ -57,21 +57,23 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav main_nav">
-          <li class="active"><a href="index.html"><span class="fa fa-home desktop-home"></span><span class="mobile-show">Home</span></a></li>
-          <li><a href="#">Technology</a></li>
-          <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Mobile</a>
-            <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Android</a></li>
-              <li><a href="#">Samsung</a></li>
-              <li><a href="#">Nokia</a></li>
-              <li><a href="#">Walton Mobile</a></li>
-              <li><a href="#">Sympony</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Laptops</a></li>
-          <li><a href="#">Tablets</a></li>
-          <li><a href="pages/contact.html">Contact Us</a></li>
-          <li><a href="pages/404.html">404 Page</a></li>
+            <li class="active"><a href=""><span class="fa fa-home desktop-home"></span><span class="mobile-show">Home</span></a></li>
+<?php
+$mm = gila::menu();
+//echo var_export($mm,true);
+foreach ($mm as $mi) {
+        if (!$mi['children']) {
+            echo "<li><a href=\"{$mi['url']}\">{$mi['title']}</a></li>";
+        }
+        else {
+            echo "<li class=\"dropdown\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-expanded=\"false\">";
+            echo "<a href=\"{$mi['url']}\" >{$mi['title']}</a>";
+            echo "<ul class=\"dropdown-menu\" role=\"menu\">";
+            foreach ($mi['children'] as $mii) {
+                echo "<li><a href=\"{$mii['url']}\">{$mii['title']}</a></li>"; }
+            echo "</ul></li>";
+        }
+} ?>
         </ul>
       </div>
     </nav>

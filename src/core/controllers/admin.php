@@ -53,21 +53,22 @@ class admin extends controller
     {
         global $db;
         if ($id = router::get('id',1)) {
-            $res = $db->query("SELECT * FROM post WHERE id=?",$id);
+            $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
             while ($r = mysqli_fetch_array($res)) {
-                view::set('title',$r['title']);
+                echo "Edit widget #".$r['id'];
+                /*view::set('title',$r['title']);
                 view::set('text',$r['post']);
-                view::render('views/edit_post.phtml');
+                view::render('widgets/edit_post.phtml');*/
             }
 
             return;
         }
         echo "<table class=\"table\"><tr><th>ID<th>Widget<th>Area<th>Position<th>";
-        /*
-        $gen = $db->gen("SELECT * FROM post $limit");
+
+        $gen = $db->gen("SELECT * FROM widget");
         foreach ($gen as $r) {
-            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['title'].'<td>'.$r['slug'].'<td>'.$r['user_id'].'<td>'.$r['updated'].'<td><a href="admin/posts/'.$r['id'].'">Edit</a>';
-        }*/
+            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['widget'].'<td>'.$r['area'].'<td>'.$r['pos'].'<td><a href="admin/widgets/'.$r['id'].'">Edit</a>';
+        }
         echo "</table>";
     }
 

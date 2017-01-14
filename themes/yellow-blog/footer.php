@@ -30,6 +30,12 @@
     <div class="clearfix wrapper footer_bottom">
         <div class="clearfix copyright floatleft">
             <p> Copyright &copy; All rights reserved by <span>Wpfreeware.com</span></p>
+            <?php
+            global $starttime;
+            $end = microtime(true);
+            $creationtime = ($end - $starttime);
+            printf("<br>Page created in %.6f seconds.", $creationtime);
+            ?>
         </div>
         <div class="clearfix social floatright">
             <ul>
@@ -66,13 +72,10 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.pgwSlider').pgwSlider({
-
-            intervalDuration: 5000
-
+            intervalDuration: 10000
         });
     });
 </script>
-<script type="text/javascript" src="themes/yellow-blog/js/placeholder_support_IE.js"></script>
 
 <!--
 ---- Clean html template by http://WpFreeware.com
@@ -80,11 +83,6 @@
 ---- You are allowed to change anything you like. Find out more Awesome Templates @ wpfreeware.com
 ---- Read License-readme.txt file to learn more.
 -->
-<?php
-global $starttime;
-$end = microtime(true);
-$creationtime = ($end - $starttime);
-printf("<br>Page created in %.6f seconds.", $creationtime);
-?>
+
 </body>
 </html>

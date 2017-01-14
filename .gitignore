@@ -2,6 +2,7 @@ composer.phar
 /vendor/
 /_libs/
 /_themes/
+/log/
 composer.json
 somposer.lock
 config.php
