@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <base href="<?=$GLOBALS['path']['base']?>">
+    <base href="<?=gila::config('base')?>">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,11 +54,11 @@
                     <a href="#menu-toggle" class="btn btn-default" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
                 </li>
                 <li>
-                    <a href="<?=$GLOBALS['path']['base']?>" class="btn btn-default" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
+                    <a href="<?=gila::config('base')?>" class="btn btn-default" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
                 </li>
                 <li class="float-right">
                     User Name
-                    <a href="<?=$GLOBALS['path']['base']?>/logout">Logout</a>
+                    <a href="<?=gila::config('base')?>/logout">Logout</a>
                 </li>
 
             </ul>

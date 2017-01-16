@@ -55,10 +55,10 @@ class admin extends controller
         if ($id = router::get('id',1)) {
             $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
             while ($r = mysqli_fetch_array($res)) {
-                echo "Edit widget #".$r['id'];
-                /*view::set('title',$r['title']);
-                view::set('text',$r['post']);
-                view::render('widgets/edit_post.phtml');*/
+                echo "<h2>Edit widget #".$r['id']."</h2>";
+                /*view::set('title',$r['title']);*/
+                view::set('widget_id',$r['id']);
+                view::render('widgets/'.$r['widget'].'/edit.phtml');
             }
 
             return;
@@ -70,6 +70,15 @@ class admin extends controller
             echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['widget'].'<td>'.$r['area'].'<td>'.$r['pos'].'<td><a href="admin/widgets/'.$r['id'].'">Edit</a>';
         }
         echo "</table>";
+    }
+
+    function update_widgetAjax ()
+    {
+        global $db;
+        if (isset($_POST['widget_data'])) {
+            $db->query("UPDATE widget SET data=? WHERE id=?",[$_POST['widget_data'],$_POST['widget_id']]);
+            echo "Widget updated";
+        }
     }
 
     function usersAdmin ()

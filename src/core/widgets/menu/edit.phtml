@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
+<link href="libs/jquery/jquery-sortable.css" rel="stylesheet" >
+<script src="libs/jquery/jquery-2.2.4.min.js"></script>
+<script src="libs/jquery/jquery-sortable.js"></script>
+
+
+
+<div class="col-md-2"></div>
+<div class="col-md-8">
+<div class="switch-container">
+	<div class="switch active" data-off="OFF" data-on="ON" data-toggle="switch"><span class="switch-track"></span><span class="switch-thumb" data-on="ON" data-off="OFF"></span></div>
+</div>
+<ol class="nested_with_switch serialization vertical">
+    <?php
+    $mm = gila::menu();
+    //echo var_export($mm,true);
+    foreach ($mm as $mi) {
+        echo "<li data-url=\"{$mi['url']}\" data-title=\"{$mi['title']}\"><i>||</i> {$mi['title']}<ol>";
+
+        if (isset($mi['children']))  foreach ($mi['children'] as $mii) {
+            echo "<li data-url=\"{$mii['url']}\" data-title=\"{$mi['title']}\"><i>||</i> {$mii['title']}</li>";
+        }
+        echo "</ol></li>";
+    } ?>
+
+</ol>
+</div>
+
+<div class="col-md-2">
+    <a class="btn btn-primary" onclick="update_widget()">Update</a>
+</div>
+
+
+<script>
+
+
+// nested lists
+var oldContainer;
+var group = $("ol.nested_with_switch").sortable({
+  group: 'nested',
+  handle: 'i',
+  afterMove: function (placeholder, container) {
+    if(oldContainer != container){
+      if(oldContainer)
+        oldContainer.el.removeClass("active");
+      container.el.addClass("active");
+
+      oldContainer = container;
+    }
+  },
+  //delay: 500,
+  onDrop: function ($item, container, _super) {
+    container.el.removeClass("active");
+    _super($item, container);
+
+
+ }
+});
+
+
+function update_widget() {
+	var data = group.sortable("serialize").get();
+    var jsonString = JSON.stringify(data[0]);
+
+    $.post(
+        "admin/update_widget",
+        {widget_data:jsonString, widget_id:<?=$widget_id?>},
+        function (response) {
+            alert(response);
+        }
+    );
+}
+
+$('ol li').attr("contenteditable",true);
+
+
+/*
+/widgets-name/
+	/widget-name.php
+		- __construct
+		- view
+		-
+*/
+</script>

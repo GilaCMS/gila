@@ -160,7 +160,10 @@ class db {
 		$link->set_charset("utf8");
 		$res = $link->query($q);
 	  	mysqli_close($link);
-		if($res) while($r=mysqli_fetch_array($res)) return $r[0];
+		if($res) {
+			$r=mysqli_fetch_array($res);
+			return $r[0];
+		}
 		return null;
 	}
 

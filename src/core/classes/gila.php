@@ -42,7 +42,17 @@ class gila {
 
   static function menu($id = null)
   {
-      $data = [
+      global $db;
+
+      $data = json_decode( $db->value("SELECT data FROM widget WHERE widget='menu' LIMIT 1"),true);
+      foreach ($data as $k=>$d) {
+          if (isset($d['children'])) {
+              if (is_array($d['children'])) $data[$k]['children'] = $d['children'][0];
+              if (count($data[$k]['children'])==0) unset($data[$k]['children']);
+          }
+      }
+      //echo "<pre>".var_export($data,true)."</pre>";
+      /*$data = [
           ['title'=>'Technology','url'=>'tech'],
           ['title'=>'Mobile','url'=>'#','children'=>[
               ['title'=>'Android','url'=>'#'],['title'=>'Samsung','url'=>'#'],['title'=>'Nokia','url'=>'#']
@@ -50,7 +60,7 @@ class gila {
           ['title'=>'Laptops','url'=>'latops'],
           ['title'=>'Tablets','url'=>'tablets'],
           ['title'=>'Contact Us','url'=>'pages/contact.html']
-      ];
+      ];*/
 
       if ($id == null) return $data;
 

@@ -1,0 +1,44 @@
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.4;
+  z-index: 2000;
+}
+
+ol {
+	/*border-left: 3px solid blue;*/
+	padding-left: 16px;
+	background: #ddd;
+}
+ol li {
+	padding: 12px;
+	padding-left :0;
+	border: 1px solid #bbb;
+	background: #fff;
+	/*max-width; 400px;*/
+	min-height:20px;
+	list-style-type: none;
+}
+ol li i {
+	margin:0 16px;
+	cursor: pointer;
+}
+
+ol li p {
+	display:inline;
+	/*border-right: 1px solid #bbb;*/
+	padding:0 12;
+	width: 400px;
+}
+ol li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol li.placeholder:before {
+  position: absolute;
+  margin-righ: 10px;
+  /** Define arrowhead **/
+}

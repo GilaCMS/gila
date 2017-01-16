@@ -50,7 +50,7 @@ class router
 
         	$action = 'index';
         	if (isset($args[1])) {
-                if (method_exists($controller,$args[1].'Action') || method_exists($controller,$args[1].'Admin')) {
+                if (method_exists($controller,$args[1].'Action') || method_exists($controller,$args[1].'Admin') || method_exists($controller,$args[1].'Ajax')) {
                     $action = $args[1];
                 } else array_splice($args, 1, 0, $action);
             }
@@ -69,6 +69,12 @@ class router
                 $action_fn = $action.'Admin';
                 $administration = 1;
 
+            }
+            else if (method_exists($controller,$action.'Ajax')) {
+                router::$args = $args;
+                $action_fn = $action.'Ajax';
+                $ctrl->$action_fn();
+                exit;
             }
             else {
                 echo  $action." action not found!";
