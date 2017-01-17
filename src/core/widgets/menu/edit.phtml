@@ -1,9 +1,53 @@
-<link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
-<link href="libs/jquery/jquery-sortable.css" rel="stylesheet" >
+<!--link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css"-->
 <script src="libs/jquery/jquery-2.2.4.min.js"></script>
 <script src="libs/jquery/jquery-sortable.js"></script>
 
+<style>
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
 
+.dragged {
+  position: absolute;
+  opacity: 0.4;
+  z-index: 2000;
+}
+
+ol {
+	padding-left: 16px;
+	background: #ddd;
+}
+ol li {
+	padding: 0px;
+	/*padding-left :0;*/
+    margin-right: -1px;
+    margin-bottom:-1px;
+	border: 1px solid #bbb;
+	background: #fff;
+	/*max-width; 400px;*/
+	min-height:20px;
+    line-height: 3;
+	list-style-type: none;
+}
+ol li i {
+	margin:0 16px;
+	cursor: ns-resize;
+}
+
+ol li p {
+	display:inline;
+	/*border-right: 1px solid #bbb;*/
+	padding:0 12;
+	width: 400px;
+}
+ol li.placeholder {
+  position: relative;
+}
+ol li.placeholder:before {
+  position: absolute;
+  margin-right: 10px;
+}
+</style>
 
 <div class="col-md-2"></div>
 <div class="col-md-8">
