@@ -1,0 +1,54 @@
+<?php
+$config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL' ];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    foreach ($config_list as $key => $value) {
+        $GLOBALS['config'][$key] = $_POST['gila_'.$key];
+        $GLOBALS['config']['theme'] = $_POST['gila_theme'];
+        $GLOBALS['config']['timezone'] = $_POST['gila_timezone'];
+    }
+    $filedata = "<?php\n\n\$GLOBALS = ".var_export($GLOBALS['config'], true);
+    file_put_contents('config2.php', $filedata);
+    echo "<div class='alert success'>Changes have been saved successfully!</div>";
+}
+?>
+
+<div class="col-md-12">
+    <form method="post" action="admin/settings">
+
+<?php
+
+foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
+    <br><div class="col-md-12">
+    <label class="col-md-2 col-md-offset-1"><?=$value?></label>
+    <input name="gila_<?=$key?>" value="<?=gila::config($key)?>" class="col-md-4" />
+    </div>
+<?php } ?>
+
+    <br><div class="col-md-12">
+    <label class="col-md-2 col-md-offset-1">Theme</label>
+    <select name="gila_theme" value="<?=$GLOBALS['config']['theme']?>" class="col-md-3">
+    <?php
+    $theme_list=scandir('themes/');
+    foreach ($theme_list as $value) if($value[0] != '.') {
+        $sel = (gila::config('theme')==$value?'selected':'');
+        echo '<option value="'.$value."\" $sel>".ucwords($value).'</option>';
+    }
+    ?>
+    </select>
+    </div>
+
+    <br><div class="col-md-12">
+        <label class="col-md-2 col-md-offset-1">Timezone</label>
+        <select name="gila_timezone" value="<?=$GLOBALS['config']['theme']?>" class="col-md-3">
+        <?php
+        $theme_list=scandir('themes/');
+        foreach (DateTimeZone::listIdentifiers() as $value) {
+            echo '<option value="'.$value.'">'.ucwords($value).'</option>';
+        }
+        ?>
+        </select>
+    </div>
+
+    <br><input type="submit" class="btn btn-primary col-md-1 col-md-offset-1"  />
+    </form>
+</div>

@@ -145,7 +145,7 @@ class admin extends controller
 
     function settingsAdmin ()
     {
-        view::render('views/settings.phtml');
+        view::render('views/admin/settings.phtml');
     }
     function loginAdmin ()
     {
