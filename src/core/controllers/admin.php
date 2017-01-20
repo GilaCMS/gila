@@ -22,8 +22,10 @@ class admin extends controller
         if ($id = router::get('id',1)) {
             $res = $db->query("SELECT * FROM post WHERE id=?",$id);
             while ($r = mysqli_fetch_array($res)) {
+                view::set('id',$r['id']);
                 view::set('title',$r['title']);
                 view::set('text',$r['post']);
+                view::set('publish',$r['publish']);
                 view::render('views/edit_post.phtml');
             }
 

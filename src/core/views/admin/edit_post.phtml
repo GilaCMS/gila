@@ -4,16 +4,16 @@ $p_list = ['title', 'post', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['p_title'];
     $text = $_POST['p_post'];
-    $publish = $_POST['p_publish']?:0;
-    $slugify = new Cocur\Slugify\Slugify();
-    $slug = $slugify->slugify($title);
-    $db->query("UPDATE post SET title=?,post=?,publish=?,slug=? WHERE id=$id",[$title,$text,$publish,$slug]);
+    $publish = $_POST['p_publish'];
+    $slugify = new Slugify();
+    $slug = $slugify($title);
+    $db->query("UPDATE post(title,post,publish,slug) VALUES(?,?,?,?)",[$title,$text,$publish,$slug]);
     echo "<div class='alert success'>Changes have been saved successfully!</div>";
 }
 ?>
 
 <div class="col-md-12">
-<form id="postForm" method="post" action="admin/posts/<?=$id?>">
+<form>
     <div class="col-md-12">
         <label class="col-md-12">Title</label><br>
         <input value="<?=$title?>" name="p_title"/>
@@ -25,7 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="col-md-12">
-        <label><input type="checkbox" name="p_publish" value="1"<?=($publish=='1'?' checked':'')?>>Publish</label>
+        <div class="radio">
+            <label><input type="radio" name="p_publish" value="0">Draft</label>
+        </div>
+        <div class="radio">
+            <label><input type="radio" name="p_publish" value="1">Publish</label>
+        </div>
     </div>
 
 
@@ -36,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="col-md-12">
         <div class="btn-group">
-            <a class="btn btn-primary" onclick="document.getElementById('postForm').submit()">Save</a>
+            <a class="btn btn-primary" onclick="submit()">Save</a>
             <a class="btn btn-default">Close</a>
         </div>
     </div>
