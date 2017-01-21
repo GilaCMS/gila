@@ -11,6 +11,7 @@ $db = new dbClass('localhost', 'root', '', '');
 
 class db {
 	private $dbhost, $user, $pass, $dsch;
+	public $insert_id;
 
 	function __construct($host = 'localhost', $user = 'root', $pass = '', $dsch = '')
 	{
@@ -60,6 +61,7 @@ class db {
 
 		if(call_user_func_array([$stmt,'bind_param'], $refarg)) {
             $stmt->execute();
+			$this->insert_id = $link->insert_id;
 			return $stmt->get_result();
 		}
 
@@ -114,17 +116,6 @@ class db {
 		$garr=$this->getRows($q);
 		foreach ($garr as $key => $value) $arr[]=$value[0];
 	  	return $arr;
-	}
-
-	function insert($q)
-	{
-		$link = mysqli_connect($this->dbhost, $this->user, $this->pass,  $this->dsch);
-		$link->set_charset("utf8");
-		//if( $link->query($q) ) $res = $link->insert_id; else $res = 0;
-		$link->query($q);
-		$res = $link->insert_id;
-	  mysqli_close($link);
-	  return $res;
 	}
 
 	function getCSV($q)

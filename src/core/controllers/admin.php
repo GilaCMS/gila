@@ -20,8 +20,18 @@ class admin extends controller
     {
         global $db;
         if ($id = router::get('id',1)) {
+            if ($id == 'new') {
+                view::set('page_title','New Post');
+                view::set('id',$_POST['p_id']);
+                view::set('title','');
+                view::set('text','text');
+                view::set('publish',1);
+                view::render('views/edit_post.phtml');
+                return;
+            }
             $res = $db->query("SELECT * FROM post WHERE id=?",$id);
             while ($r = mysqli_fetch_array($res)) {
+                view::set('page_title','Edit Post');
                 view::set('id',$r['id']);
                 view::set('title',$r['title']);
                 view::set('text',$r['post']);
@@ -31,24 +41,14 @@ class admin extends controller
 
             return;
         }
-        echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>User ID<th>Updated<th>";
-        $page = router::get('page',1)?:1;
-        $rpp = 10;
-        $lstart = $page*$rpp-$rpp;
-        $limit = "LIMIT $lstart,$rpp";
 
-        $gen = $db->gen("SELECT * FROM post $limit");
-        foreach ($gen as $r) {
-            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['title'].'<td>'.$r['slug'].'<td>'.$r['user_id'].'<td>'.$r['updated'].'<td><a href="admin/posts/'.$r['id'].'">Edit</a>';
-        }
-        echo "</table>";
-
-        $total = $db->value("SELECT COUNT(*) FROM post")?:0;
-        echo '<p>';
-        for ($i=1; $i<= $total/$rpp+1; $i++) {
-            echo " <a class='btn btn-primary' href='".router::url()."?page=$i'>$i</a>";
-        }
-        echo '</p>';
+        view::set('page_title','Posts');
+        view::set('page', (router::get('page',1)?:1));
+        view::set('rpp', 10);
+        view::render('views/admin/list_post.phtml');
+        //echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>User ID<th>Updated<th>";
+        //$page = router::get('page',1)?:1;
+        //$rpp = 10;
     }
 
     function widgetsAdmin ()

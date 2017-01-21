@@ -1,3 +1,10 @@
+<div class="col-md-12">
+    <h1 class="col-md-6"><?=$page_title?></h1>
+    <div style="alignright">
+        <a class="btn btn-primary">New Post</a>
+    </div>
+</div>
+
 <?php
 global $db;
 $p_list = ['title', 'post', 'publish' ];
@@ -7,13 +14,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $publish = $_POST['p_publish']?:0;
     $slugify = new Cocur\Slugify\Slugify();
     $slug = $slugify->slugify($title);
-    $db->query("UPDATE post SET title=?,post=?,publish=?,slug=? WHERE id=$id",[$title,$text,$publish,$slug]);
+    $args = [$title,$text,$publish,$slug];
+    if ($id == "new") {
+        $db->query("INSERT INTO post(title,post,publish,slug) VALUES(?,?,?,?)",$args);
+        $id = $db->insert_id;
+    }
+    else {
+        $db->query("UPDATE post SET title=?,post=?,publish=?,slug=? WHERE id=$id",$args);
+    }
     echo "<div class='alert success'>Changes have been saved successfully!</div>";
 }
 ?>
 
 <div class="col-md-12">
-<form id="postForm" method="post" action="admin/posts/<?=$id?>">
+<form id="postForm" method="post" action="admin/posts/<?=($id?:'new')?>">
+    <input value="<?=($id?:'new')?>" name="p_id" type="hidden"/>
     <div class="col-md-12">
         <label class="col-md-12">Title</label><br>
         <input value="<?=$title?>" name="p_title"/>
@@ -53,12 +68,12 @@ tinymce.init({
   height: 300,
   theme: 'modern',
   plugins: [
-    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    'advlist autolink lists link image bbcode imagetools charmap print preview hr anchor pagebreak',
     'searchreplace wordcount visualblocks visualchars code fullscreen',
     'insertdatetime media nonbreaking save table contextmenu directionality',
-    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc'
+    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc example_dependency'
 ],
-  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
+  toolbar1: 'save styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
   //theme_advanced_buttons3_add : "visualchars",
   //toolbar2: 'print preview  |   emoticons | ',
   image_advtab: true,
