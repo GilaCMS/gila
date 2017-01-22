@@ -12,23 +12,12 @@ class router
         //echo $_GET['url']."<br>";*/
 
 
-
         if(isset($_GET['url'])) $args = explode("/", $_GET['url']); else $args = [];
 
         $controller = gila::config('default-controller');
-        $ctrl_path = gila::config('controller'); //$GLOBALS['config']['controller'];
-        //$controller = $GLOBALS['config']['default-controller'];
-        //$ctrl_path = $GLOBALS['config']['path']["controller"];
-/*
-        if (isset($args[0])) if ($args[0]=='admin') {
-            $administration = 1;
-            array_splice($args, 0, 1);
-            $controller = $GLOBALS['default']['admin controller'];
-            $ctrl_path = $GLOBALS['path']["admin controller"];
-        }
-*/
+
         if (isset($args[0])) {
-        	if(isset($ctrl_path[$args[0]])) {
+        	if(isset(gila::$controller[$args[0]])) {
         		$controller = $args[0];
         	} else {
         		array_splice($args, 0, 0, $controller);
@@ -38,7 +27,7 @@ class router
         	array_splice($args, 0, 0, $controller);
         }
 
-        $controller_file = 'src/'.$ctrl_path[$controller].'.php';
+        $controller_file = 'src/'.gila::$controller[$controller].'.php';
 
         if(!file_exists($controller_file)) {
         	echo $controller.' controller cannot be found!<br>'.$controller_file;
@@ -81,24 +70,13 @@ class router
                 exit;
             }
 
-
-            //$path_theme = __DIR__.'/../../../themes/';
-            //$path_theme = 'themes/';
             if(isset($administration)) {
-                $path_theme = 'themes/admin';
+                $path_theme = 'src/core/views/admin';
             }
             else {
                 $path_theme = 'themes/'.gila::config('theme');
             }
-            /*
-            if (isset($ctrl->THEME)) {
-                if ($ctrl->THEME == 0) {
-                    echo "<base href='{$GLOBALS['path']['base']}'>";
-                    $ctrl->$action_fn();
-                    return;
-                }
-            }
-            */
+
             router::$args = $args;
 
             include $path_theme."/header.php";
@@ -107,10 +85,7 @@ class router
 
         }
     }
-/*
-@key
-@n
-*/
+
     static function get ($key, $n = null)
     {
         if (isset($_GET[$key])) {

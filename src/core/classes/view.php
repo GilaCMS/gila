@@ -8,19 +8,27 @@ class view
 		self::$part[$p]=$v;
 	}
 
-	static function render($file) {
+	static function render($file, $package = null) {
 		foreach (self::$part as $key => $value) { $$key = $value; }
-        //$filePath = __DIR__.'/../../'.$filePath;
+
+        if ($package != null) {
+            $filePath = 'src/'.$package.'/views/'.$file;
+            if (file_exists($filePath)) {
+                include $filePath;
+                return;
+            }
+        }
+
         $filePath = 'themes/'.gila::config('theme').'/'.$file; // '/views/'.
 
         if (file_exists($filePath)) {
             include $filePath;
         }
         else {
-            $filePath = 'src/core/'.$file;
+            $filePath = 'src/core/views/'.$file;
             if (file_exists($filePath)) {
                 include $filePath;
-            }else  echo $filePath." file not found!";
+            } else trigger_error("View file not found ($filePath)");
         }
 	}
 

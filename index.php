@@ -1,4 +1,10 @@
 <?php
+/*!
+ * Gila CMS
+ * Copyright 2017 Vasileios Zoumpourlis
+ * Licensed under MIT LICENSE
+ */
+
 //use Monolog\Logger;
 //use Monolog\Handler\StreamHandler;
 $starttime = microtime(true);
@@ -33,33 +39,14 @@ gila::config('default-controller','blog');
 gila::config('base', '//192.168.1.69/gila/');
 gila::config('version', '1.0');
 gila::config('theme', 'newsfeed');
-gila::controllers([
-	'admin'=> 'core/controllers/admin',
-	'blog'=> 'core/controllers/blog'
-]);
-/*$GLOBALS['config']['default-controller'] = "blog";
-$GLOBALS['config']['path']['controller']['admin'] = "core/controllers/admin";
-$GLOBALS['config']['path']['controller']['blog'] = "core/controllers/blog";
-$GLOBALS['config']['base'] = '//192.168.1.69/gila/';
-$GLOBALS['path']['base'] = '//192.168.1.69/gila/';
-$GLOBALS['config']['version'] = '1.0';*/
-$GLOBALS['menu'] = array(
-	'admin' => [
-		['Dashboard','admin','icon'=>'dashboard'],
-		['Add-Ons','admin/addons','icon'=>'dropbox'],
-		['Posts','admin/posts','icon'=>'pencil'],
-		['Users','admin/users','icon'=>'users'],
-		['Settings','admin/settings','icon'=>'cogs'],
-		['Widgets','admin/widgets','icon'=>'th-large'],
-	]
-);
-$GLOBALS['config']['packages'] = [];
 
-$GLOBALS['config']['packages'] = $db->getArray("SELECT value FROM option WHERE option='package'");
-foreach ($GLOBALS['config']['packages'] as $package) {
+
+$packages = $db->getArray("SELECT value FROM option WHERE option='package'");
+foreach ($packages as $package) {
 	include "src/$package/package.php";
 }
 
+new gila();
 new session();
 new router();
 /*

@@ -17,7 +17,7 @@
     <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="themes/admin/simple-sidebar.css" rel="stylesheet">
+    <link href="src/core/assets/simple-sidebar.css" rel="stylesheet">
     <link href="libs/rj.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -39,7 +39,7 @@
                     <a href="admin">Admin</a>
                 </li>
                 <?php
-                    foreach ($GLOBALS['menu']['admin'] as $key => $value) {
+                    foreach (gila::$amenu as $key => $value) {
                         echo "<li><a href='{$value[1]}'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a></li>";
                     }
                 ?>

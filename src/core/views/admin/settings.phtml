@@ -6,8 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $GLOBALS['config']['theme'] = $_POST['gila_theme'];
         $GLOBALS['config']['timezone'] = $_POST['gila_timezone'];
     }
-    $filedata = "<?php\n\n\$GLOBALS = ".var_export($GLOBALS['config'], true);
-    file_put_contents('config2.php', $filedata);
+    $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true);
+    file_put_contents('config.php', $filedata);
     echo "<div class='alert success'>Changes have been saved successfully!</div>";
 }
 ?>

@@ -3,67 +3,75 @@
 //  common functions will be put here
 
 class gila {
+    static $controller;
+    static $widget;
+    static $amenu;
 
     function __construct()
+    {
+        gila::controllers([
+        	'admin'=> 'core/controllers/admin',
+        	'blog'=> 'core/controllers/blog'
+        ]);
+        gila::amenu([
+    		['Dashboard','admin','icon'=>'dashboard'],
+    		['Add-Ons','admin/addons','icon'=>'dropbox'],
+    		['Posts','admin/posts','icon'=>'pencil'],
+    		['Users','admin/users','icon'=>'users'],
+    		['Settings','admin/settings','icon'=>'cogs'],
+    		['Widgets','admin/widgets','icon'=>'th-large'],
+        ]);
+    }
+
+    static function controllers($list)
+    {
+      foreach ($list as $k=>$item) {
+            gila::$controller[$k]=$item;
+        }
+    }
+
+    static function widgets($list)
+    {
+        foreach ($list as $k=>$item) {
+          gila::$widget[$k]=$item;
+        }
+    }
+
+    static function amenu($list)
+    {
+        foreach ($list as $k=>$item) {
+            gila::$amenu[]=$item;
+        }
+    }
+
+    static function post($id)
     {
 
     }
 
-  static function controllers($list)
-  {
-    if (!is_array($list)) $list[0]=$list;
-    foreach ($list as $k=>$item) {
-      $GLOBALS['config']['controller'][$k]=$item;
+    static function config($key, $value = null)
+    {
+        if ($value == null) {
+            return $GLOBALS['config'][$key];
+        }
+        else {
+            $GLOBALS['config'][$key] = $value;
+        }
     }
-  }
 
-  static function widgets($list)
-  {
-    if (!is_array($list)) $list[0]=$list;
-    foreach ($list as $k=>$item) {
-      $GLOBALS['config']['widget'][$k]=$item;
+    static function menu($id = null)
+    {
+        global $db;
+
+        $data = json_decode( $db->value("SELECT data FROM widget WHERE widget='menu' LIMIT 1"),true);
+        foreach ($data as $k=>$d) {
+            if (isset($d['children'])) {
+                if (is_array($d['children'])) $data[$k]['children'] = $d['children'][0];
+                if (count($data[$k]['children'])==0) unset($data[$k]['children']);
+            }
+        }
+
+        if ($id == null) return $data;
     }
-  }
-
-  static function post($id)
-  {
-
-  }
-
-  static function config($key, $value = null)
-  {
-      if ($value == null) {
-          return $GLOBALS['config'][$key];
-      }
-      else {
-          $GLOBALS['config'][$key] = $value;
-      }
-  }
-
-  static function menu($id = null)
-  {
-      global $db;
-
-      $data = json_decode( $db->value("SELECT data FROM widget WHERE widget='menu' LIMIT 1"),true);
-      foreach ($data as $k=>$d) {
-          if (isset($d['children'])) {
-              if (is_array($d['children'])) $data[$k]['children'] = $d['children'][0];
-              if (count($data[$k]['children'])==0) unset($data[$k]['children']);
-          }
-      }
-      //echo "<pre>".var_export($data,true)."</pre>";
-      /*$data = [
-          ['title'=>'Technology','url'=>'tech'],
-          ['title'=>'Mobile','url'=>'#','children'=>[
-              ['title'=>'Android','url'=>'#'],['title'=>'Samsung','url'=>'#'],['title'=>'Nokia','url'=>'#']
-              ]],
-          ['title'=>'Laptops','url'=>'latops'],
-          ['title'=>'Tablets','url'=>'tablets'],
-          ['title'=>'Contact Us','url'=>'pages/contact.html']
-      ];*/
-
-      if ($id == null) return $data;
-
-  }
 
 }

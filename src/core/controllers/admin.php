@@ -26,7 +26,7 @@ class admin extends controller
                 view::set('title','');
                 view::set('text','text');
                 view::set('publish',1);
-                view::render('views/edit_post.phtml');
+                view::render('admin/edit_post.phtml');
                 return;
             }
             $res = $db->query("SELECT * FROM post WHERE id=?",$id);
@@ -36,7 +36,7 @@ class admin extends controller
                 view::set('title',$r['title']);
                 view::set('text',$r['post']);
                 view::set('publish',$r['publish']);
-                view::render('views/edit_post.phtml');
+                view::render('admin/edit_post.phtml');
             }
 
             return;
@@ -45,7 +45,7 @@ class admin extends controller
         view::set('page_title','Posts');
         view::set('page', (router::get('page',1)?:1));
         view::set('rpp', 10);
-        view::render('views/admin/list_post.phtml');
+        view::render('admin/list_post.phtml');
         //echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>User ID<th>Updated<th>";
         //$page = router::get('page',1)?:1;
         //$rpp = 10;
@@ -147,11 +147,11 @@ class admin extends controller
 
     function settingsAdmin ()
     {
-        view::render('views/admin/settings.phtml');
+        view::render('admin/settings.phtml');
     }
     function loginAdmin ()
     {
-        view::render('views/login.phtml');
+        view::render('login.phtml');
     }
     function logoutAdmin ()
     {
