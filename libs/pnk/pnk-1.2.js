@@ -146,7 +146,7 @@ function pnk_table_head(div, tableid, data){
       if(Pnk.tools[tl].extra) xtr=Pnk.tools[tl].extra; else xtr="";
       if(Pnk.tools[tl].after) aftr=Pnk.tools[tl].after; else aftr="";
       if(Pnk.tools[tl].fa) tfa='<i class="fa fa-'+Pnk.tools[tl].fa+'"></i>'; else tfa="";
-      tls+='<button type="button" class="btn btn-default" tool="'+tl+'" '+bc+xtr+'>'+tfa+" "+tb+'</button>'+aftr;
+      tls+='<button type="button" class="btn btn-default" tool="'+tl+'" '+bc+xtr+'>'+tfa+" "+tb+aftr+'</button>';
     }
 	}
 
@@ -207,7 +207,9 @@ function pnk_load(id)
 		//$( "#"+id+" tbody" ).sortable();
 
     if (typeof pnk_end_load_table === 'function') pnk_end_load_table();
+    if(typeof Pnk.load_fn !== 'undefined') Pnk.load_fn();
 	});
+
 
 }
 
@@ -299,9 +301,11 @@ function pnk_load_rows(pnkt, data,args={})
     if(args.filters) row_filters=' filters="'+args.filters+'"';
     if(args.trclass) row_class=' class="'+args.trclass+'"';
     if(group_level) row_group_level=' group_level="'+group_level+'"';
-
-		gtr=gtr+'<tr '+row_id+row_class+row_group_level+row_filters+'>'+chtd+gtd+ctd+'</tr>';
+        newtr = '<tr '+row_id+row_class+row_group_level+row_filters+'>'+chtd+gtd+ctd+'</tr>';
+        //if(typeof Pnk.tr_fn !== 'undefined') Pnk.tr_fn(newtr);
+		gtr=gtr+newtr;
 	}
+
 	return gtr;
 }
 
@@ -638,17 +642,17 @@ $(document).on('click','.pnk-table tr .col-ch p',function()
 	var col=cell.attr('col');
 	var v=cell.attr('value');
 	if(v=='0') v=1; else v=0;
-	$.ajax({
-		url: pnkPath + "pnk.php?t="+t+"&action=uc",
-		data: { 'col' : col, 'v' : v, 'rid' : tr.attr('row-id') },
-		dataType: "json",
-		type: 'post',
-		success: function(data) {
-			tr.replaceWith( pnk_load_rows( pnk_src[t] ,data ) );
+	$.post(
+		pnkPath + "pnk.php?t="+t+"&action=uc",
+		{ 'col' : col, 'v' : v, 'rid' : tr.attr('row-id') },
+		 function(data) {
+            xx = pnk_load_rows( pnk_src[t] ,data );
+			tr.replaceWith( xx );
 			tr.attr("class","main-row");
-      $('.pnk-com').tooltip();
+            if (Pnk.load_fn !== 'undefined') Pnk.load_fn();
+            $('.pnk-com').tooltip();
 		}
-	});
+	,'json');
 });
 $(document).on('click','.pnk-table .up-button',function()
 {

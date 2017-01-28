@@ -6,11 +6,6 @@ class router
 
     function __construct ()
     {
-        //$uri = explode("?", $_SERVER["REQUEST_URI"]);
-        //$uri = $_GET['url'];
-        /*?><pre><?php echo var_export($_SERVER); ?></pre><br><?php
-        //echo $_GET['url']."<br>";*/
-
 
         if(isset($_GET['url'])) $args = explode("/", $_GET['url']); else $args = [];
 

@@ -5,8 +5,7 @@
  * Licensed under MIT LICENSE
  */
 
-//use Monolog\Logger;
-//use Monolog\Handler\StreamHandler;
+
 $starttime = microtime(true);
 
 if (file_exists(__DIR__.'/config.php')) {
@@ -31,29 +30,15 @@ spl_autoload_register(function ($class) {
 	}
 });
 
-//$GLOBALS['config']['db']['name'] = 'gila';
+
 
 $db = new db(gila::config('db'));
 
-gila::config('default-controller','blog');
-gila::config('base', '//192.168.1.69/gila/');
-gila::config('version', '1.0');
-gila::config('theme', 'newsfeed');
-
-
 $packages = $db->getArray("SELECT value FROM option WHERE option='package'");
 foreach ($packages as $package) {
-	include "src/$package/package.php";
+	include "src/$package/load.php";
 }
 
 new gila();
 new session();
 new router();
-/*
-$log = new Monolog\Logger('name');
-$log->pushHandler(new StreamHandler(__DIR__.'/log/warning2.log', Monolog\Logger::WARNING));
-$log->pushHandler(new StreamHandler('log/error2.log', Monolog\Logger::ERROR));
-
-// add records to the log
-$log->addWarning('Foo3');
-$log->addError('Bar3');*/

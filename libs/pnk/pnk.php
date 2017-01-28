@@ -195,22 +195,26 @@ function action_list(){
 }
 
 function action_uc(){
-	global $data;
+	global $data,$db;
 	global $table;
 
 	$c=$_POST["col"];
 	$v=$_POST["v"];
 
-	if(!editable($c)) return;
+	if(!editable($c)) {
+		echo "cannot edit";
+		return;
+	}
 
 	$row_id=$_POST["rid"];
 	$query="UPDATE ".$table["name"]." SET `$c`='$v' WHERE `".$table["id"]."`='$row_id';";
 	$db->query($query);
 
 	$qs = get_fields_query();
-	$resust = $db->query("SELECT $qs FROM ".$table['name']." WHERE ".$table['id']."=$row_id;");
+	$result = $db->query("SELECT $qs FROM ".$table['name']." WHERE ".$table['id']."=$row_id;");
 
 	fill_data_rows($result);
+
 	echo json_encode($data);
 }
 
@@ -491,9 +495,15 @@ function check_v(&$var,$v){
 function editable($fid){
 	global $table;
 	if(!in_array($fid,array_keys($table['fields']))) return false;
+	if(isset($table['fields'][$fid]["edit"])) if ($table['fields'][$fid]["edit"] == true) return true;
 	if(isset($table['fields'][$fid]["qcolumn"])) return false;
 	//if(!check_v($table['commands']['edit'],true)) if(!check_v($table['fields'][$fid]['edit'],true)) return false;
-	if(!in_array('edit',$table['commands'])) if(!check_v($table['fields'][$fid]['edit'],true)) return false;
+	if (isset($table['commands'])) {
+		if(!in_array('edit',$table['commands'])) {
+			if(!check_v($table['fields'][$fid]['edit'],true)) return false;
+		}
+	}else return false;
+
 	if(check_v($table['fields'][$fid]['edit'],false)) return false;
 	return true;
 }
