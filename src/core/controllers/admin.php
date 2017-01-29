@@ -13,7 +13,9 @@ class admin extends controller
 
     function indexAdmin ()
     {
+        include 'src/core/views/admin/header.php';
       echo "Dashboard!";
+      include 'src/core/views/admin/footer.php';
     }
 
     function postsAdmin ()
@@ -26,7 +28,7 @@ class admin extends controller
                 view::set('title','');
                 view::set('text','text');
                 view::set('publish',1);
-                view::render('admin/edit_post.phtml');
+                view::renderAdmin('admin/edit_post.phtml');
                 return;
             }
             $res = $db->query("SELECT * FROM post WHERE id=?",$id);
@@ -36,7 +38,7 @@ class admin extends controller
                 view::set('title',$r['title']);
                 view::set('text',$r['post']);
                 view::set('publish',$r['publish']);
-                view::render('admin/edit_post.phtml');
+                view::renderAdmin('admin/edit_post.phtml');
             }
 
             return;
@@ -45,7 +47,7 @@ class admin extends controller
         view::set('page_title','Posts');
         view::set('page', (router::get('page',1)?:1));
         view::set('rpp', 10);
-        view::render('admin/list_post.phtml');
+        view::renderAdmin('admin/list_post.phtml');
         //echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>User ID<th>Updated<th>";
         //$page = router::get('page',1)?:1;
         //$rpp = 10;
@@ -60,7 +62,7 @@ class admin extends controller
                 echo "<h2>Edit widget #".$r['id']."</h2>";
                 /*view::set('title',$r['title']);*/
                 view::set('widget_id',$r['id']);
-                view::render('widgets/'.$r['widget'].'/edit.phtml');
+                view::renderAdmin('widgets/'.$r['widget'].'/edit.phtml');
             }
 
             return;
@@ -90,11 +92,14 @@ class admin extends controller
             echo "Edit user ".$id;
             exit;
         }
+        view::renderAdmin('admin/user.phtml');
+/*        include 'src/core/views/admin/header.php';
         echo "<table class=\"table\"><tr><th>ID<th>Name<th>Email<th>Pass<th>";
         $page = router::get('page',1)?:1;
         $rpp = 10;
         $lstart = $page*$rpp-$rpp;
         $limit = "LIMIT $lstart,$rpp";
+
 
         $gen = $db->gen("SELECT * FROM user $limit");
         foreach ($gen as $r) {
@@ -108,12 +113,14 @@ class admin extends controller
             echo " <a class='btn btn-primary' href='".router::url()."?page=$i'>$i</a>";
         }
         echo '</p>';
+        include 'src/core/views/admin/footer.php';*/
     }
 
 
 
     function addonsAdmin ()
     {
+        include 'src/core/views/admin/header.php';
         $dir = "src/";
         $packages = scandir($dir);
         $table = '<tr><th class="col-2"><th class="col-8"><th class="col-2">';
@@ -143,15 +150,16 @@ class admin extends controller
         }
         //echo "<span>$pn packages found</span>";
         echo "<table class='table'>$table</table>";
+        include 'src/core/views/admin/footer.php';
     }
 
     function settingsAdmin ()
     {
-        view::render('admin/settings.phtml');
+        view::renderAdmin('admin/settings.phtml');
     }
     function loginAdmin ()
     {
-        view::render('login.phtml');
+        view::renderAdmin('login.phtml');
     }
     function logoutAdmin ()
     {

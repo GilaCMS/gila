@@ -8,12 +8,30 @@ class view
 		self::$part[$p]=$v;
 	}
 
-	static function render($file, $package = null) {
+    static function renderAdmin($file, $package = null)
+    {
+        $path_theme = 'src/core/views/admin';
+        include $path_theme."/header.php";
+        self::renderFile($file, $package);
+        include $path_theme."/footer.php";
+    }
+
+    static function render($file, $package = null)
+    {
+        $path_theme = 'themes/'.gila::config('theme');
+        include $path_theme."/header.php";
+        self::renderFile($file, $package);
+        include $path_theme."/footer.php";
+    }
+
+	static function renderFile($file, $package = null)
+    {
 		foreach (self::$part as $key => $value) { $$key = $value; }
 
         if ($package != null) {
             $filePath = 'src/'.$package.'/views/'.$file;
             if (file_exists($filePath)) {
+                echo "sssssg";
                 include $filePath;
                 return;
             }

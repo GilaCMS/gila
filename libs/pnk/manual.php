@@ -31,8 +31,9 @@
 	'create'	// Set value this field in new registry. Default table's setting
 	'type'		// Type of the field, affect the dispay and input. Options: "text","number","email","password","checkbox","datalist"
 			"roles" // create links with another table by one join table()
-			"joins" // create links with another table by multiselect, require: table indexes>id , field indexes>jt,ot,qoptions/options
-							// ex. "jt"=>['user_install', 'UserID', 'InstallID'],	"ot"=>['install','ID','Name'],
+			"joins" // create links with another table by multiselect,
+					//require: table indexes>id , field indexes>jt,ot,qoptions/options
+					// ex. "jt"=>['user_install', 'UserID', 'InstallID'],	"ot"=>['install','ID','Name'],
 			"date" // Show data as date, can have optional field index 'searchbox' with options: "period","month", default: equal date
 	'fields'	// 2 Columns of the join table(for roles field), 1st has id from current table,2nd from the roles table (ex. ["user_id","company_id"])
 	'dateFormat'// Format of a date field (ex. "d-M-y" )
@@ -50,6 +51,7 @@
 	'csv'		// List the field in exported csv. Default: true
 	'list'		// Read and list the field. Default: true
 	x'onchange'	// Function to run when value is changed
+	'onupdate'	// Function to run before when value is changed
 	'eval'		// A string with js commands to display the value (ex. "dv=pad(cv,5);") to turn 17 into 00017
 				// cv the current value, dv the display value, rv[] other values of the registry
 	'png_url'	// The address of the png image to be shown instead of the value, value and .png will be added later (ex. "/img/status")

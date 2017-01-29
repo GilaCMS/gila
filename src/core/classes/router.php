@@ -21,8 +21,8 @@ class router
         else {
         	array_splice($args, 0, 0, $controller);
         }
-
         $controller_file = 'src/'.gila::$controller[$controller].'.php';
+
 
         if(!file_exists($controller_file)) {
         	echo $controller.' controller cannot be found!<br>'.$controller_file;
@@ -65,18 +65,9 @@ class router
                 exit;
             }
 
-            if(isset($administration)) {
-                $path_theme = 'src/core/views/admin';
-            }
-            else {
-                $path_theme = 'themes/'.gila::config('theme');
-            }
-
             router::$args = $args;
 
-            include $path_theme."/header.php";
             $ctrl->$action_fn();
-            include $path_theme."/footer.php";
 
         }
     }

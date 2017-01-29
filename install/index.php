@@ -36,16 +36,16 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       // create config.php
       $filedata = file_get_contents(__DIR__.'/../config.default.php');
-      $GLOBALS['db'] = [
+      $GLOBALS['config']['db'] = [
           'host' => $host, //localhost
           'user' => $db_user, // root
           'pass' => $db_pass, //
           'name' => $db_name //
       ];
-      $GLOBALS['path']['base'] = "//".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL'];
+      $GLOBALS['config']['base'] = "//".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL'];
       $globkeys = ['db']; //,'default','path','menu'
       foreach ($globkeys as $key) {
-          $filedata .= "\n\$GLOBALS['$key'] = ".(var_export($GLOBALS[$key], true)).";";
+          $filedata .= "\n\$GLOBALS['config']['$key'] = ".(var_export($GLOBALS['config'][$key], true)).";";
       }
 
       file_put_contents($configfile, $filedata); //, FILE_APPEND | LOCK_EX

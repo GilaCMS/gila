@@ -4,6 +4,9 @@ composer.phar
 /_themes/
 /log/
 /_src/
+/src/gila-shop/
+/src/classifieds/
+
 composer.json
 composer.lock
 config.php

@@ -10,7 +10,8 @@ class gila {
     function __construct()
     {
         gila::controllers([
-        	'admin'=> 'core/controllers/admin',
+            'admin'=> 'core/controllers/admin',
+            'pnk'=> 'core/controllers/pnk',
         	'blog'=> 'core/controllers/blog'
         ]);
         gila::amenu([
