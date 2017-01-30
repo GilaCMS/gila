@@ -8,12 +8,21 @@ class pnk extends controller
 	{
 		global $table;
 		define('UPLOAD_FOLDER',"/../../uploads/");
-		define('TABLE_FOLDER','/../tables/');
+		//define('TABLE_FOLDER','/../tables/');
 		define('PNK_URL','pnk/');
 		define('PDF_FOLDER',"/");
 
 
-		if(isset($_GET['t'])) include __DIR__.TABLE_FOLDER.$_GET['t'].".php";
+		if(isset($_GET['t'])) {
+			$tfile = $_GET['t'].".php";
+			if (file_exists($tfile)) {
+				include $tfile;
+			}
+			else echo "File $tfile could not be found";
+
+		}
+		else echo "Table not specified";
+
 		foreach($table['fields'] as $key=>$field) {
 			if(check_v($field['type'],'joins')) {
 				$jt = $field['jt']; $ot = $field['ot']; $this_id = $table['name'].".".$table['id'];
@@ -102,7 +111,8 @@ class pnk extends controller
 				$result="";
 			}else{
 				$query="INSERT INTO ".$table["name"]."($c) VALUES($v);";
-				$erow_id=$db->insert($query);
+				$db->query($query);
+				$erow_id=$db->insert_id;
 			}
 
 			foreach($erow as $col=>$value) {

@@ -31,7 +31,6 @@ class view
         if ($package != null) {
             $filePath = 'src/'.$package.'/views/'.$file;
             if (file_exists($filePath)) {
-                echo "sssssg";
                 include $filePath;
                 return;
             }

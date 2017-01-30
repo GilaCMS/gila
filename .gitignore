@@ -6,6 +6,9 @@ composer.phar
 /_src/
 /src/gila-shop/
 /src/classifieds/
+/src/gila-shop/
+/themes/
+/assets/
 
 composer.json
 composer.lock
