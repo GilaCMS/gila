@@ -57,7 +57,7 @@ class blog extends controller
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post ORDER BY id DESC LIMIT $start_from,$ppp");
 
-        while ($r = mysqli_fetch_array($res)) {
+        if ($res) while ($r = mysqli_fetch_array($res)) {
             yield $r;
         }
     }

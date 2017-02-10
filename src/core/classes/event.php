@@ -10,10 +10,10 @@ class event {
     event::$handlers[$event][] = $handler;
   }
 
-  static function fire($event, $params)
+  static function fire($event, $params = null)
   {
     if (isset(event::$handlers[$event])) foreach (event::$handlers[$event] as $handler) {
-        $handler($params);
+        if ($params == null) $handler(); else $handler($params);
     }
   }
 

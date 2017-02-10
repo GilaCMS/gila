@@ -156,15 +156,15 @@ class db {
 
 	function value($q)
 	{
-		$arr = [];
-		if (!$this->connected) $this->connect();
-		$res = $this->link->query($q);
+			$arr = [];
+			if (!$this->connected) $this->connect();
+			$res = $this->link->query($q);
 	  	$this->close();
-		if($res) {
-			$r=mysqli_fetch_array($res);
-			return $r[0];
-		}
-		return null;
+			if($res) {
+					$r=mysqli_fetch_array($res);
+					return $r[0];
+			}
+			return null;
 	}
 
 }

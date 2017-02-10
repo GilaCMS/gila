@@ -24,9 +24,9 @@ class view
         include $path_theme."/footer.php";
     }
 
-	static function renderFile($file, $package = null)
+    static function renderFile($file, $package = null)
     {
-		foreach (self::$part as $key => $value) { $$key = $value;}
+		    foreach (self::$part as $key => $value) { $$key = $value; }
 
         if ($package != null) {
             $filePath = 'src/'.$package.'/views/'.$file;
@@ -47,10 +47,17 @@ class view
                 include $filePath;
             } else trigger_error("View file not found ($filePath)");
         }
-	}
+	  }
 
-    static function widget ($widget) {
+/**
+ * Widget
+ *
+ * @widget  name of the widget
+ *
+ */
 
+    static function widget ($widget)
+    {
         $filePath = 'themes/'.gila::config('theme').'/widgets/'.$widget.'.php'; // '/views/'.
 
         if (file_exists($filePath)) {
@@ -65,6 +72,18 @@ class view
                 echo $filePath." file not found!";
             }
         }
+    }
+
+    static function block ($area)
+    {
+        global $db,$widget_data;
+        $widgets = $db->get("SELECT * FROM widget WHERE area=? ORDER BY pos ;",[$area]);
+        if ($widgets) foreach ($widgets as $widget) {
+          $widget_data = $widget['data'];
+          $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
+          include $widget_file;
+        }
+        event::fire($area);
     }
 /*
     function displayFile($filepath) {

@@ -1,12 +1,11 @@
 <?php
 $config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    foreach ($config_list as $key => $value) {
-        $GLOBALS['config'][$key] = $_POST['gila_'.$key];
-        $GLOBALS['config']['theme'] = $_POST['gila_theme'];
-        $GLOBALS['config']['default-controller'] = $_POST['gila_dc'];
-        $GLOBALS['config']['timezone'] = $_POST['gila_timezone'];
-    }
+    foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
+    $GLOBALS['config']['theme'] = $_POST['gila_theme'];
+    $GLOBALS['config']['default-controller'] = $_POST['gila_dc'];
+    $GLOBALS['config']['timezone'] = $_POST['gila_timezone'];
+
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents('config.php', $filedata);
     echo "<div class='alert success'>Changes have been saved successfully!</div>";

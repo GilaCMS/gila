@@ -12,15 +12,20 @@ class gila {
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'pnk'=> 'core/controllers/pnk',
-        	'blog'=> 'core/controllers/blog'
+            'blog'=> 'core/controllers/blog'
         ]);
         gila::amenu([
-    		['Dashboard','admin','icon'=>'dashboard'],
-    		['Add-Ons','admin/addons','icon'=>'dropbox'],
-    		['Posts','admin/posts','icon'=>'pencil'],
-    		['Users','admin/users','icon'=>'users'],
-    		['Settings','admin/settings','icon'=>'cogs'],
-    		['Widgets','admin/widgets','icon'=>'th-large'],
+    		    ['Dashboard','admin','icon'=>'dashboard'],
+    		    ['Add-Ons','admin/addons','icon'=>'dropbox'],
+    		    ['Posts','admin/posts','icon'=>'pencil'],
+    		    ['Users','admin/users','icon'=>'users'],
+    		    ['Settings','admin/settings','icon'=>'cogs'],
+    		    ['Widgets','admin/widgets','icon'=>'th-large']
+        ]);
+        gila::widgets([
+          'menu'=>'core/widgets/menu',
+          'text'=>'core/widgets/text',
+          'latest-post'=>'core/widgets/latest-post'
         ]);
     }
 
@@ -65,6 +70,7 @@ class gila {
         global $db;
 
         $data = json_decode( $db->value("SELECT data FROM widget WHERE widget='menu' LIMIT 1"),true);
+
         foreach ($data as $k=>$d) {
             if (isset($d['children'])) {
                 if (is_array($d['children'])) $data[$k]['children'] = $d['children'][0];

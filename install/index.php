@@ -32,6 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $link->query("INSERT INTO option VALUES(1,'menu','mainmenu');");
       $link->query("INSERT INTO menuitem VALUES(1,'Hello World','hello_world','',0);");
       $link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post',CURRENT_TIMESTAMP);");
+      $link->query("INSERT INTO widget VALUES(1,'menu','','','[{\"title\":\"Home\",\"url\":\"\"},{\"title\":\"Page 1\",\"url\":\"Page1\"},{\"title\":\"Page 2\",\"url\":\"Page2\"}]');");
       echo "<div class='alert success'>Installation executed successfully!</div>";
 
       // create config.php
@@ -43,10 +44,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
           'name' => $db_name //
       ];
       $GLOBALS['config']['base'] = "//".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL'];
-      $globkeys = ['db']; //,'default','path','menu'
+      /*$globkeys = ['db']; //,'default','path','menu'
       foreach ($globkeys as $key) {
           $filedata .= "\n\$GLOBALS['config']['$key'] = ".(var_export($GLOBALS['config'][$key], true)).";";
-      }
+      }*/
+
+      //foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
+      $GLOBALS['config']['theme'] = 'yellow-blog';
+      $GLOBALS['config']['title'] = 'Gila CMS';
+      $GLOBALS['config']['slogan'] = 'An awesome website!';
+      $GLOBALS['config']['default-controller'] = 'blog';
+      $GLOBALS['config']['timezone'] = 'America/Mexico_City';
+
+      $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
 
       file_put_contents($configfile, $filedata); //, FILE_APPEND | LOCK_EX
 
