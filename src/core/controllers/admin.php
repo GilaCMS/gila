@@ -56,17 +56,20 @@ class admin extends controller
     function widgetsAdmin ()
     {
         global $db;
+
         if ($id = router::get('id',1)) {
             $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
             while ($r = mysqli_fetch_array($res)) {
-                echo "<h2>Edit widget #".$r['id']."</h2>";
+                //echo "<h2>Edit widget #".$r['id']."</h2>";
                 /*view::set('title',$r['title']);*/
                 view::set('widget_id',$r['id']);
-                view::renderAdmin('widgets/'.$r['widget'].'/edit.phtml');
+                view::renderAdmin('../widgets/'.$r['widget'].'/edit.phtml');
             }
 
             return;
         }
+        include 'src/core/views/admin/header.php';
+
         echo "<table class=\"table\"><tr><th>ID<th>Widget<th>Area<th>Position<th>";
 
         $gen = $db->gen("SELECT * FROM widget");
@@ -74,6 +77,7 @@ class admin extends controller
             echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['widget'].'<td>'.$r['area'].'<td>'.$r['pos'].'<td><a href="admin/widgets/'.$r['id'].'">Edit</a>';
         }
         echo "</table>";
+        include 'src/core/views/admin/footer.php';
     }
 
     function update_widgetAjax ()

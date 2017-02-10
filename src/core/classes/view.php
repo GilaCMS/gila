@@ -26,7 +26,7 @@ class view
 
 	static function renderFile($file, $package = null)
     {
-		foreach (self::$part as $key => $value) { $$key = $value; }
+		foreach (self::$part as $key => $value) { $$key = $value;}
 
         if ($package != null) {
             $filePath = 'src/'.$package.'/views/'.$file;

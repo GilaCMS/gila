@@ -11,6 +11,7 @@ $db = new dbClass('localhost', 'root', '', '');
 
 class db {
 	private $dbhost, $user, $pass, $dsch;
+	private $connected,$link;
 	public $insert_id;
 
 	function __construct($host = 'localhost', $user = 'root', $pass = '', $dsch = '')
@@ -27,24 +28,40 @@ class db {
 			$this->pass = $pass;
 			$this->dsch = $dsch;
 		}
+		$this->connected = false;
+	}
+
+	public function connect ()
+	{
+		$this->link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
+		$this->link->set_charset("utf8");
+		$this->connected = true;
+	}
+
+	public function close ()
+	{
+		if ($this->connected) mysqli_close($this->link);
+		$this->connected = false;
 	}
 
 	public function query($q, $args = null)
 	{
-		$link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
+		if (!$this->connected) $this->connect();
 
 		if ($args === null) {
-            return $link->query($q);
+            $res = $this->link->query($q);
+			$this->insert_id = $this->link->insert_id;
+			return $res;
         }
         else if (!is_array($args)) {
             $argsBkp = $args;
             $args = array($argsBkp);
         }
 
-        $stmt = $link->prepare($q);
+        $stmt = $this->link->prepare($q);
 		$dt = "";
 		foreach($args as $value) {
-            $x=$link->real_escape_string($value);
+            $x=$this->link->real_escape_string($value);
 			if(is_int($value)){
 				$dt .= 'i';
 			}else if(is_double($value)){
@@ -61,7 +78,7 @@ class db {
 
 		if(call_user_func_array([$stmt,'bind_param'], $refarg)) {
             $stmt->execute();
-			$this->insert_id = $link->insert_id;
+			$this->insert_id = $this->link->insert_id;
 			return $stmt->get_result();
 		}
 
@@ -71,21 +88,17 @@ class db {
 
 	function multi_query($q)
 	{
-		$link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
-		$link->set_charset("utf8");
-		$res = $link->multi_query($q);
-	  mysqli_close($link);
-	  return $res;
+		if (!$this->connected) $this->connect();
+		$res = $this->link->multi_query($q);
+	  	$this->close();
+	  	return $res;
 	}
 
-	function get($q)
+	public function get($q, $args = null)
 	{
 		$arr = [];
-		$link = mysqli_connect($this->dbhost, $this->user, $this->pass,  $this->dsch);
-		$link->set_charset("utf8");
-		//echo $q."<br>";
-		$res = $link->query($q);
-	  	mysqli_close($link);
+		$res = $this->query($q, $args);
+	  	$this->close();
 		if($res) while($r=mysqli_fetch_array($res)) $arr[]=$r;
 	  	return $arr;
 	}
@@ -93,11 +106,8 @@ class db {
 	function getRows($q)
 	{
 		$arr = [];
-		$link = mysqli_connect($this->dbhost, $this->user, $this->pass,  $this->dsch);
-		$link->set_charset("utf8");
-		//echo $q."<br>";
-		$res = $link->query($q);
-	 	mysqli_close($link);
+		$res = $this->query($q);
+	 	$this->close();
 		while($r=mysqli_fetch_row($res)) $arr[]=$r;
 	  	return $arr;
 	}
@@ -134,10 +144,10 @@ class db {
 
 	public function gen($q, $args = null)
 	{
-		$link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
+		if (!$this->connected) $this->connect();
 
-		$res = $link->query($q);
-		mysqli_close($link);
+		$res = $this->link->query($q);
+		$this->close();
 		while ($r = mysqli_fetch_array($res)) {
 			yield $r;
 		}
@@ -147,10 +157,9 @@ class db {
 	function value($q)
 	{
 		$arr = [];
-		$link = mysqli_connect($this->dbhost, $this->user, $this->pass,  $this->dsch);
-		$link->set_charset("utf8");
-		$res = $link->query($q);
-	  	mysqli_close($link);
+		if (!$this->connected) $this->connect();
+		$res = $this->link->query($q);
+	  	$this->close();
 		if($res) {
 			$r=mysqli_fetch_array($res);
 			return $r[0];

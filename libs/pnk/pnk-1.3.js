@@ -924,7 +924,7 @@ $(document).on('click','.pnk-table .com-refresh',function()
 
 ////  Method to return the field Input
 function createInput(df,v){
-
+    let arrv = new Array();
 	// Select Dropdown
 	if(df['options']) if(df['type']!="roles"){
 		var sopt='';

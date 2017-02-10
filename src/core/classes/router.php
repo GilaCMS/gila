@@ -72,12 +72,17 @@ class router
         }
     }
 
+    /*
+    @key parameter
+    @n place in url
+    */
     static function get ($key, $n = null)
     {
         if (isset($_GET[$key])) {
             return $_GET[$key];
         }
         else if (isset(router::$args[$n+1])){
+            if ($n == null) return null;
             return router::$args[$n+1];
         }
         else {

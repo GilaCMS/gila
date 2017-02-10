@@ -106,7 +106,7 @@ class pnk extends controller
 			}
 
 			if($erow_id!=""){
-				$query="UPDATE `".$table["name"]."` SET $q WHERE `".$table["id"]."`='$erow_id';";
+				$query="UPDATE `{$table["name"]}` SET $q WHERE `{$table["id"]}`='$erow_id';";
 				$db->query($query);
 				$result="";
 			}else{
@@ -119,6 +119,7 @@ class pnk extends controller
 				if(check_v($table['fields'][$col]['type'],'joins')) {
 					$jt = $table['fields'][$col]["jt"];
 					$arrv = explode(",",$value);
+					echo $arrv;
 					$db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$erow_id' AND `{$jt[2]}` NOT IN($value);");
 					foreach($arrv as $arrv_k=>$arrv_v){
 						$db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$erow_id','$arrv_v');");
@@ -137,14 +138,14 @@ class pnk extends controller
 				}
 			}
 
-		}
+
 		$qs=get_fields_query();
 		$result=$db->query("SELECT $qs FROM ".$table['name']." WHERE ".$table['id']."=$erow_id;");
 
 		fill_data_rows($result);
-		if(isset($table['onupdate'])){
+		/*if(isset($table['onupdate'])){
 			$result2=$db->query("SELECT $qs FROM ".$table['name']." WHERE ".$table['id']."=$erow_id;");
-			while($row=mysqli_fetch_array($result2)) $table['onupdate']($row);
+			while($row=mysqli_fetch_array($result2)) $table['onupdate']($row);*/
 		}
 		echo json_encode($data);
 	}

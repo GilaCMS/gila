@@ -19,15 +19,15 @@ else {
 ini_set("error_log", "log/error.log");
 
 spl_autoload_register(function ($class) {
+	$class=str_replace('\\','/',$class);
 
 	if (file_exists('src/core/classes/'.$class.'.php')) {
 		require_once 'src/core/classes/'.$class.'.php';
 	}
-	else {
-		$class=str_replace('\\','/',$class);
+	else if (file_exists('libs/'.$class.'.php')) {
 		require_once 'libs/'.$class.'.php';
 		//$log->warning();
-	}
+	}//else trigger_error("File $class could not found with autoload.")
 });
 
 

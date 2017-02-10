@@ -55,7 +55,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     <label class="col-md-2 col-md-offset-1">Default Controller</label>
     <select name="gila_dc" value="<?=gila::config('default-controller')?>" class="col-md-3">
     <?php
-    foreach (gila::config('controller') as $k=>$value) if($value[0] != '.') {
+    foreach (gila::$controller as $k=>$value) if($value[0] != '.') {
         $sel = (gila::config('default-controller')==$k?'selected':'');
         echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
     }
