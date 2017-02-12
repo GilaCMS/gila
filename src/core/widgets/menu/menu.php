@@ -1,6 +1,8 @@
 <ul id="nav">
 <?php
-foreach ($widget_data as $mi) {
+$menu_items = json_decode($widget_data,true);
+
+foreach ($menu_items as $mi) {
         if (!isset($mi['children'])) {
             echo "<li><a href=\"{$mi['url']}\">{$mi['title']}</a></li>";
         }

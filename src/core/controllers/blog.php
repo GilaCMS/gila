@@ -15,11 +15,15 @@ class blog extends controller
     {
         global $db;
         if ($id=router::get('post_id',1)) {
-            $res = $db->query("SELECT * FROM post WHERE id=?",$id);
-            while ($r = mysqli_fetch_array($res)) {
+            $res = $db->query("SELECT title,post,`value` as img FROM post,postmeta WHERE post.id=? AND vartype='thumbnail' AND post_id=post.id;",$id);
+            if ($r = mysqli_fetch_array($res)) {
                 view::set('title',$r['title']);
                 view::set('text',$r['post']);
+                view::set('img',$r['img']);
                 view::render('single-post.php');
+            }
+            else {
+                view::render('404.phtml');
             }
             return;
         }
@@ -33,15 +37,7 @@ class blog extends controller
         $ppp = 8;
         //$page=(router::get('page',1))?:1;
         view::set('page',blog::$page);
-
         view::render('frontpage.php');
-
-            /*$res = $db->query("SELECT * FROM post WHERE LIMIT $start_from,$ppp");
-            while ($r = mysqli_fetch_array($res)) {
-                view::set('title',$r['title']);
-                view::set('text',$r['post']);
-                view::render('../themes/yellow-blog/single-post.php');
-            }*/
     }
 
     static function ppp () {

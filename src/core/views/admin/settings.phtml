@@ -1,6 +1,6 @@
 <?php
-$config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL' ];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL', 'ssl'=>'SSL URL' ];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited'){
     foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
     $GLOBALS['config']['theme'] = $_POST['gila_theme'];
     $GLOBALS['config']['default-controller'] = $_POST['gila_dc'];
@@ -62,6 +62,6 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     </select>
     </div>
 
-    <br><input type="submit" class="btn btn-primary col-md-1 col-md-offset-1"  />
+    <br><input type="submit" name="submit-btn" onclick="this.value='submited'" class="btn btn-primary col-md-1 col-md-offset-1"  />
     </form>
 </div>

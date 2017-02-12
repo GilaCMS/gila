@@ -8,7 +8,7 @@
 <?php
 global $db;
 $p_list = ['title', 'post', 'publish' ];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited'){
     $title = $_POST['p_title'];
     $text = $_POST['p_post'];
     $publish = $_POST['p_publish']?:0;
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="col-md-12">
         <div class="btn-group">
-            <a class="btn btn-primary" onclick="document.getElementById('postForm').submit()">Save</a>
+            <input type="submit" name="submit-btn" class="btn btn-primary" onclick="this.value='submited'" />
             <a class="btn btn-default">Close</a>
         </div>
     </div>
