@@ -1,13 +1,12 @@
 composer.phar
 /vendor/
 /_libs/
-/_themes/
 /log/
 /_src/
 /src/gila-shop/
 /src/classifieds/
 /src/gila-shop/
-/themes/
+/themes_/
 /assets/
 
 composer.json
