@@ -29,10 +29,9 @@ ol li {
     line-height: 3;
 	list-style-type: none;
 }
-ol li i {
-	margin:0 16px;
-	cursor: ns-resize;
-}
+ol li i { margin:0 16px; }
+ol li i.sort-item { cursor: ns-resize; }
+ol li i.deletebtn { cursor: pointer; }
 
 ol li p {
 	display:inline;
@@ -47,31 +46,48 @@ ol li.placeholder:before {
   position: absolute;
   margin-right: 10px;
 }
+
+input {
+    border: 0; display: inline-block; width: auto;
+}
+input:focus {
+    outline: none;
+}
+.menu_headers {padding-left: 48px}
+.menu_headers div,
+.menu_nested input {width:150px; display: inline-block;}
 </style>
 
 <div class="col-md-2"></div>
 <div class="col-md-8">
-<div class="switch-container">
-	<div class="switch active" data-off="OFF" data-on="ON" data-toggle="switch"><span class="switch-track"></span><span class="switch-thumb" data-on="ON" data-off="OFF"></span></div>
+
+<div class="menu_headers">
+    <div>Title</div>
+    <div>Url</div>
 </div>
-<ol class="nested_with_switch serialization vertical">
+
+<ol class="menu_nested serialization vertical" style="display: inline-block;">
     <?php
     $mm = gila::menu();
-    //echo var_export($mm,true);
-    foreach ($mm as $mi) {
-        echo "<li data-url=\"{$mi['url']}\" data-title=\"{$mi['title']}\"><i>||</i> {$mi['title']}<ol>";
+    echo_children ($mm);
 
-        if (isset($mi['children']))  foreach ($mi['children'] as $mii) {
-            echo "<li data-url=\"{$mii['url']}\" data-title=\"{$mi['title']}\"><i>||</i> {$mii['title']}</li>";
+    function echo_children ($mm)
+    {
+        foreach ($mm as $mi) {
+            echo "<li data-url=\"{$mi['url']}\" data-title=\"{$mi['title']}\"><i class='sort-item'>||</i>";
+            echo "<input class='_title' value='{$mi['title']}'/><input class='_url' value='{$mi['url']}'/><i class='deletebtn fa fa-remove'></i><ol>";
+            if (isset($mi['children'])) echo_children ($mi['children']);
+            echo "</ol></li>";
         }
-        echo "</ol></li>";
-    } ?>
+    }
+    ?>
 
 </ol>
 </div>
 
 <div class="col-md-2">
     <a class="btn btn-primary" onclick="update_widget()">Update</a>
+    <a class="btn btn-primary" onclick="add_item()">Add Item</a>
 </div>
 
 
@@ -80,9 +96,9 @@ ol li.placeholder:before {
 
 // nested lists
 var oldContainer;
-var group = $("ol.nested_with_switch").sortable({
+var group = $("ol.menu_nested").sortable({
   group: 'nested',
-  handle: 'i',
+  handle: '.sort-item',
   afterMove: function (placeholder, container) {
     if(oldContainer != container){
       if(oldContainer)
@@ -101,6 +117,9 @@ var group = $("ol.nested_with_switch").sortable({
  }
 });
 
+function add_item () {
+    group.prepend('<li data-url="" data-title="Item"><i class="sort-item">||</i><input class="_title" value="Item"/><input class="_url" value=""/><i class="deletebtn fa fa-remove"></i><ol></ol></li>');
+}
 
 function update_widget() {
 	var data = group.sortable("serialize").get();
@@ -115,7 +134,22 @@ function update_widget() {
     );
 }
 
-$('ol li').attr("contenteditable",true);
+//$('ol li').attr("contenteditable",true);
+
+$(document).on('change', '._title', function (){
+    this.parentNode.attributes['data-title'].value = this.value;
+});
+$(document).on('change', '._url', function (){
+    this.parentNode.attributes['data-url'].value = this.value;
+});
+$(document).on('click', '.deletebtn', function (){
+    ol = this.parentNode.getElementsByTagName("OL")[0];
+    if (ol.innerHTML != '') {
+        response = confirm('Are you sure you want to delete this item an all its children?');
+        if (response == false) return;
+    }
+    this.parentNode.remove();
+});
 
 
 /*

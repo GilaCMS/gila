@@ -68,14 +68,14 @@ tinymce.init({
   height: 300,
   //theme: 'modern',
   plugins: [
-    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-    'searchreplace wordcount visualblocks visualchars code fullscreen',
-    'insertdatetime media nonbreaking save table contextmenu directionality',
-    'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc example_dependency'
+    'advlist autolink lists link image charmap print  hr anchor pagebreak',
+    'searchreplace wordcount  visualchars code ',
+    'insertdatetime media nonbreaking table contextmenu ', //directionality fullscreen visualblocks preview
+    'template paste textcolor colorpicker textpattern imagetools codesample toc' //example_dependency emoticons
 ],
-  toolbar1: 'save styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
+  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
   //theme_advanced_buttons3_add : "visualchars",
-  //toolbar2: 'print preview  |   emoticons | ',
+  //toolbar2: 'print preview  |   emoticons | table',
   //image_advtab: true,
   templates: <?php echo json_encode(($templates?:[])); ?>,
   document_base_url : "//localhost/gila/",

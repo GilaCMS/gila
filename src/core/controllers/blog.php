@@ -15,11 +15,19 @@ class blog extends controller
     {
         global $db;
         if ($id=router::get('post_id',1)) {
-            $res = $db->query("SELECT title,post,`value` as img FROM post,postmeta WHERE post.id=? AND vartype='thumbnail' AND post_id=post.id;",$id);
+            $res = $db->query("SELECT id,title,post FROM post WHERE post.id=? OR post.slug=?;",[$id,$id]);
             if ($r = mysqli_fetch_array($res)) {
+                $id = $r['id'];
+
                 view::set('title',$r['title']);
                 view::set('text',$r['post']);
-                view::set('img',$r['img']);
+
+                $res = $db->query("SELECT `value` as img FROM post,postmeta WHERE vartype='thumbnail' AND post_id=$id;");
+                if ($res) {
+                    $r = mysqli_fetch_array($res);
+                    view::set('img',$r['img']);
+                } else view::set('img',$r['img']);
+
                 view::render('single-post.php');
             }
             else {
