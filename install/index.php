@@ -55,6 +55,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $GLOBALS['config']['slogan'] = 'An awesome website!';
       $GLOBALS['config']['default-controller'] = 'blog';
       $GLOBALS['config']['timezone'] = 'America/Mexico_City';
+      $GLOBALS['config']['ssl'] = '';
+      $GLOBALS['config']['env'] = 'dev';
 
       $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
 

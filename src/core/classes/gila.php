@@ -81,4 +81,11 @@ class gila {
         if ($id == null) return $data;
     }
 
+    static function equal($v1,$v2)
+    {
+        if (!isset($v1)) return false;
+        if (!isset($v2)) return false;
+        if ($v1 == $v2) return true;
+        return false;
+    }
 }

@@ -1,10 +1,11 @@
 <?php
-$config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL', 'ssl'=>'SSL URL' ];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited'){
+$config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL', 'ssl'=>'SSL URL'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') if (gila::equal($_POST['submit-btn'],'submited')){
     foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
     $GLOBALS['config']['theme'] = $_POST['gila_theme'];
     $GLOBALS['config']['default-controller'] = $_POST['gila_dc'];
     $GLOBALS['config']['timezone'] = $_POST['gila_timezone'];
+    $GLOBALS['config']['env'] = $_POST['gila_env'];
 
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents('config.php', $filedata);
@@ -56,6 +57,19 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     <?php
     foreach (gila::$controller as $k=>$value) if($value[0] != '.') {
         $sel = (gila::config('default-controller')==$k?'selected':'');
+        echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
+    }
+    ?>
+    </select>
+    </div>
+
+    <br><div class="col-md-12">
+    <label class="col-md-2 col-md-offset-1">Environment</label>
+    <select name="gila_env" value="<?=gila::config('default-controller')?>" class="col-md-3">
+    <?php
+    $environments = ['pro'=>'Production','dev'=>'Development'];
+    foreach ($environments as $k=>$value) if($value[0] != '.') {
+        $sel = (gila::config('env')==$k?'selected':'');
         echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
     }
     ?>

@@ -76,7 +76,7 @@ class db {
 		$refarg = [];
 		foreach ($args as $key => $value) $refarg[] =& $args[$key];
 
-		if(call_user_func_array([$stmt,'bind_param'], $refarg)) {
+		if($stmt) if(call_user_func_array([$stmt,'bind_param'], $refarg)) {
             $stmt->execute();
 			$this->insert_id = $this->link->insert_id;
 			return $stmt->get_result();

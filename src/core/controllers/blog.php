@@ -16,7 +16,7 @@ class blog extends controller
         global $db;
         if ($id=router::get('post_id',1)) {
             $res = $db->query("SELECT id,title,post FROM post WHERE post.id=? OR post.slug=?;",[$id,$id]);
-            if ($r = mysqli_fetch_array($res)) {
+            if ($res) if ($r = mysqli_fetch_array($res)) {
                 $id = $r['id'];
 
                 view::set('title',$r['title']);

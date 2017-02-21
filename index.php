@@ -8,8 +8,20 @@
 
 $starttime = microtime(true);
 
+
+
 if (file_exists(__DIR__.'/config.php')) {
 	require_once 'config.php';
+	if ($GLOBALS['config']['env'] == 'dev') {
+			error_reporting(E_ALL);
+			ini_set('display_errors', '1');
+			ini_set('display_startup_errors', '1');
+	}
+	else {
+			error_reporting(E_ERROR);
+			ini_set('display_errors', 0);
+			ini_set('display_startup_errors', 0);
+	}
 }
 else {
 	echo "Gila CMS is not installed.";
@@ -26,8 +38,7 @@ spl_autoload_register(function ($class) {
 	}
 	else if (file_exists('libs/'.$class.'.php')) {
 		require_once 'libs/'.$class.'.php';
-		//$log->warning();
-	}//else trigger_error("File $class could not found with autoload.")
+	} else trigger_error("File $class could not be found with autoload.", E_NOTICE);
 });
 
 
