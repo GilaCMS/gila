@@ -19,6 +19,7 @@
     <!-- Custom CSS -->
     <link href="src/core/assets/simple-sidebar.css" rel="stylesheet">
     <link href="libs/rj.css" rel="stylesheet">
+    <!--link href="libs/gila.min.css" rel="stylesheet"-->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,7 +50,7 @@
 
         <!-- Page Content -->
         <div class="col-md-12">
-            <ul class="gl-nav">
+            <ul class="g-toolbar">
                 <li>
                     <a href="#menu-toggle" class="btn btn-default" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
                 </li>

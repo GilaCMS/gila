@@ -1,20 +1,23 @@
 <?php
 $config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL', 'ssl'=>'SSL URL'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (gila::equal($_POST['submit-btn'],'submited')){
-    foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
-    $GLOBALS['config']['theme'] = $_POST['gila_theme'];
-    $GLOBALS['config']['default-controller'] = $_POST['gila_dc'];
-    $GLOBALS['config']['timezone'] = $_POST['gila_timezone'];
-    $GLOBALS['config']['env'] = $_POST['gila_env'];
-
-    $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
-    file_put_contents('config.php', $filedata);
-    echo "<div class='alert success'>Changes have been saved successfully!</div>";
+//    foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
+//    $GLOBALS['config']['theme'] = $_POST['gila_theme'];
+//    $GLOBALS['config']['default-controller'] = $_POST['gila_dc'];
+//    $GLOBALS['config']['timezone'] = $_POST['gila_timezone'];
+//    $GLOBALS['config']['env'] = $_POST['gila_env'];
+    foreach ($config_list as $key => $value) gila::config('$key',$_POST['gila_'.$key]);
+    gila::config('theme',$_POST['gila_theme']);
+    gila::config('default-controller',$_POST['giila_dc']);
+    gila::config('timezone',$_POST['gila_timezone']);
+    gila::config('env',$_POST['gila_env']);
+    if (gila::updateConfigFile())
+        echo "<div class='alert success'>Changes have been saved successfully!</div>";
 }
 ?>
 
 <div class="col-md-12">
-    <form method="post" action="admin/settings">
+    <form method="post" action="admin/settings" class="g-form">
 
 <?php
 
@@ -76,6 +79,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     </select>
     </div>
 
-    <br><input type="submit" name="submit-btn" onclick="this.value='submited'" class="btn btn-primary col-md-1 col-md-offset-1"  />
+    <br><input type="submit" name="submit-btn" onclick="this.value='submited'"
+    class="btn btn-primary col-md-1 col-md-offset-1 gm-1"  />
     </form>
 </div>

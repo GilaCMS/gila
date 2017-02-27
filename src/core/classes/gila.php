@@ -5,6 +5,7 @@
 class gila {
     static $controller;
     static $widget;
+    static $package;
     static $amenu;
 
     function __construct()
@@ -27,6 +28,7 @@ class gila {
           'text'=>'core/widgets/text',
           'latest-post'=>'core/widgets/latest-post'
         ]);
+        gila::$package = $GLOBALS['package']?:[];
     }
 
     static function controllers($list)
@@ -37,6 +39,13 @@ class gila {
     }
 
     static function widgets($list)
+    {
+        foreach ($list as $k=>$item) {
+          gila::$widget[$k]=$item;
+        }
+    }
+
+    static function packages()
     {
         foreach ($list as $k=>$item) {
           gila::$widget[$k]=$item;
@@ -63,6 +72,13 @@ class gila {
         else {
             $GLOBALS['config'][$key] = $value;
         }
+    }
+
+    static function updateConfigFile ()
+    {
+        $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
+        rename('config.php', 'log/config.'.date("Y-m-d").'.php');
+        return file_put_contents('config.php', $filedata);
     }
 
     static function menu($id = null)

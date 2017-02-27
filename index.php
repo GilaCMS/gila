@@ -45,8 +45,8 @@ spl_autoload_register(function ($class) {
 
 $db = new db(gila::config('db'));
 
-$packages = $db->getArray("SELECT value FROM option WHERE option='package'");
-foreach ($packages as $package) {
+//$packages = $db->getArray("SELECT value FROM option WHERE option='package'");
+foreach ($GLOBALS['config']['packages'] as $package) {
 	include "src/$package/load.php";
 }
 

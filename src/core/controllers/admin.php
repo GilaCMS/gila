@@ -97,27 +97,6 @@ class admin extends controller
             exit;
         }
         view::renderAdmin('admin/user.phtml');
-/*        include 'src/core/views/admin/header.php';
-        echo "<table class=\"table\"><tr><th>ID<th>Name<th>Email<th>Pass<th>";
-        $page = router::get('page',1)?:1;
-        $rpp = 10;
-        $lstart = $page*$rpp-$rpp;
-        $limit = "LIMIT $lstart,$rpp";
-
-
-        $gen = $db->gen("SELECT * FROM user $limit");
-        foreach ($gen as $r) {
-            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['name'].'<td>'.$r['email'].'<td>'.$r['pass'].'<td><a href="admin/users/'.$r['id'].'">Edit</a>';
-        }
-        echo "</table>";
-
-        $total = $db->value("SELECT COUNT(*) FROM user")?:0;
-        echo '<p>';
-        for ($i=1; $i<= $total/$rpp; $i++) {
-            echo " <a class='btn btn-primary' href='".router::url()."?page=$i'>$i</a>";
-        }
-        echo '</p>';
-        include 'src/core/views/admin/footer.php';*/
     }
 
 
@@ -127,7 +106,7 @@ class admin extends controller
         include 'src/core/views/admin/header.php';
         $dir = "src/";
         $packages = scandir($dir);
-        $table = '<tr><th class="col-2"><th class="col-8"><th class="col-2">';
+        $table = '<tr><th class="gs-2 col-xs-2"><th class="gs-2 col-xs-8"><th class="gs-2 col-xs-2">';
         $pn = 0;
 
         foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
@@ -145,10 +124,10 @@ class admin extends controller
 
             if (in_array($p,$GLOBALS['config']['packages'])) {
                 //if (new_version) $table .= 'Upgrade<br>';
-                $table .= 'Uninstall';
+                $table .= "<a href='admin/addons/deactivate={$p}' class='btn error'>Deactivate</a>";
             }
             else {
-                $table .= 'Install';
+                $table .= "<a href='admin/addons/activate={$p}' class='btn success'>Activate</a>";
             }
             $pn++;
         }
@@ -168,7 +147,6 @@ class admin extends controller
     function logoutAdmin ()
     {
         session::destroy();
-
     }
 
 }
