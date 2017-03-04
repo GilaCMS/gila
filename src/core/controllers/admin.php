@@ -103,11 +103,31 @@ class admin extends controller
 
     function addonsAdmin ()
     {
-        include 'src/core/views/admin/header.php';
         $dir = "src/";
         $packages = scandir($dir);
         $table = '<tr><th class="gs-2 col-xs-2"><th class="gs-2 col-xs-8"><th class="gs-2 col-xs-2">';
-        $pn = 0;
+        $pn = 0; $alert = '';
+
+        $activate = router::get('activate');
+        if (array_search($activate,$packages)) {
+            if(($key = array_search($activate, $GLOBALS['config']['packages'])) === false) {
+                $GLOBALS['config']['packages'][] = $activate;
+                gila::updateConfigFile();
+                $alert = gila::alert('success','Package activated');
+            }
+        }
+
+        $deactivate = router::get('deactivate');
+        if (array_search($deactivate,$packages)) {
+            if(($key = array_search($deactivate, $GLOBALS['config']['packages'])) !== false) {
+                unset($GLOBALS['config']['packages'][$key]);
+                gila::updateConfigFile();
+                $alert = gila::alert('success','Package deactivated');
+            }
+        }
+
+        include 'src/core/views/admin/header.php';
+        echo $alert;
 
         foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
             include $dir."$p/package.php";
@@ -124,10 +144,10 @@ class admin extends controller
 
             if (in_array($p,$GLOBALS['config']['packages'])) {
                 //if (new_version) $table .= 'Upgrade<br>';
-                $table .= "<a href='admin/addons/deactivate={$p}' class='btn error'>Deactivate</a>";
+                $table .= "<a href='admin/addons?deactivate={$p}' class='btn error'>Deactivate</a>";
             }
             else {
-                $table .= "<a href='admin/addons/activate={$p}' class='btn success'>Activate</a>";
+                $table .= "<a href='admin/addons?activate={$p}' class='btn success'>Activate</a>";
             }
             $pn++;
         }

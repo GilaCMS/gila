@@ -28,7 +28,7 @@ class gila {
           'text'=>'core/widgets/text',
           'latest-post'=>'core/widgets/latest-post'
         ]);
-        gila::$package = $GLOBALS['package']?:[];
+        //gila::$package = $GLOBALS['package']?:[];
     }
 
     static function controllers($list)
@@ -79,6 +79,12 @@ class gila {
         $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
         rename('config.php', 'log/config.'.date("Y-m-d").'.php');
         return file_put_contents('config.php', $filedata);
+    }
+
+    static function alert ($type, $msg)
+    {
+        if ($type == 'alert') $type = '';
+        return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
     }
 
     static function menu($id = null)

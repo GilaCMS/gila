@@ -8,11 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (gila::equal($_POST['submit-btn'],
 //    $GLOBALS['config']['env'] = $_POST['gila_env'];
     foreach ($config_list as $key => $value) gila::config('$key',$_POST['gila_'.$key]);
     gila::config('theme',$_POST['gila_theme']);
-    gila::config('default-controller',$_POST['giila_dc']);
+    gila::config('default-controller',$_POST['gila_dc']);
     gila::config('timezone',$_POST['gila_timezone']);
     gila::config('env',$_POST['gila_env']);
     if (gila::updateConfigFile())
-        echo "<div class='alert success'>Changes have been saved successfully!</div>";
+        echo gila::alert('success','Changes have been saved successfully!');
 }
 ?>
 
