@@ -7,7 +7,7 @@
                 <div class="post-heading">
                     <h1><?=$title?></h1>
                     <!--h2 class="subheading">Problems look mighty small from 150 miles up</h2-->
-                    <span class="meta">Posted by <a href="#">Start Bootstrap</a> on August 24, 2014</span>
+                    <span class="meta">Posted by <a href="#"><?=$author?></a> on <?=date('F j, Y',strtotime($updated))?></span>
                 </div>
             </div>
         </div>

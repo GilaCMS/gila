@@ -21,55 +21,53 @@ class router
         else {
         	array_splice($args, 0, 0, $controller);
         }
+
+        if (!isset(gila::$controller[$controller])) $controller = 'blog';
+
         $controller_file = 'src/'.gila::$controller[$controller].'.php';
 
-
         if(!file_exists($controller_file)) {
-        	echo $controller.' controller cannot be found!<br>'.$controller_file;
+            trigger_error("Controller could not be found: $controller=>$controller_file", E_NOTICE);
+            exit;
+        }
+
+        require_once $controller_file;
+    	$ctrl = new $controller();
+    	$action = 'index';
+
+    	if (isset($args[1])) {
+            if (method_exists($controller,$args[1].'Action') || method_exists($controller,$args[1].'Admin') || method_exists($controller,$args[1].'Ajax')) {
+                $action = $args[1];
+            } else array_splice($args, 1, 0, $action);
+        }
+    	else {
+             array_splice($args, 1, 0, $action);
+    	}
+
+        if (method_exists($controller,$action.'Action')) {
+            $action_fn = $action.'Action';
+        }
+        else if (method_exists($controller,$action.'Admin')) {
+            if (session::user_id() == 0) {
+                include __DIR__."/../views/login.phtml";
+                exit;
+            }
+            $action_fn = $action.'Admin';
+            $administration = 1;
+        }
+        else if (method_exists($controller,$action.'Ajax')) {
+            router::$args = $args;
+            $action_fn = $action.'Ajax';
+            $ctrl->$action_fn();
             exit;
         }
         else {
-            require_once $controller_file;
-        	$ctrl = new $controller();
-
-        	$action = 'index';
-        	if (isset($args[1])) {
-                if (method_exists($controller,$args[1].'Action') || method_exists($controller,$args[1].'Admin') || method_exists($controller,$args[1].'Ajax')) {
-                    $action = $args[1];
-                } else array_splice($args, 1, 0, $action);
-            }
-        	else {
-                 array_splice($args, 1, 0, $action);
-        	}
-
-            if (method_exists($controller,$action.'Action')) {
-                $action_fn = $action.'Action';
-            }
-            else if (method_exists($controller,$action.'Admin')) {
-                if (session::user_id() == 0) {
-                    include __DIR__."/../views/login.phtml";
-                    exit;
-                }
-                $action_fn = $action.'Admin';
-                $administration = 1;
-
-            }
-            else if (method_exists($controller,$action.'Ajax')) {
-                router::$args = $args;
-                $action_fn = $action.'Ajax';
-                $ctrl->$action_fn();
-                exit;
-            }
-            else {
-                echo  $action." action not found!";
-                exit;
-            }
-
-            router::$args = $args;
-
-            $ctrl->$action_fn();
-
+            echo  $action." action not found!";
+            exit;
         }
+
+        router::$args = $args;
+        $ctrl->$action_fn();
     }
 
     /*
