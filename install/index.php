@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $link->query('CREATE TABLE IF NOT EXISTS user(id int(11) NOT NULL auto_increment,name varchar(80),email varchar(80),pass varchar(60),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS usermeta(id int(11) NOT NULL auto_increment,user_id int(11),vartype varchar(80),value varchar(80),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS menuitem(id int(11) NOT NULL auto_increment,title varchar(80),url varchar(80),icon varchar(80),parent_id int(11),PRIMARY KEY (id));');
-      $link->query('CREATE TABLE IF NOT EXISTS post(id int(11) NOT NULL auto_increment,user_id int(11),title varchar(80),slug varchar(80),post TEXT,updated DEFAULT TIMESTAMP CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id));');
+      $link->query('CREATE TABLE IF NOT EXISTS post(id int(11) NOT NULL auto_increment,user_id int(11),title varchar(80),slug varchar(80),post TEXT,updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS postmeta(id int(11) NOT NULL auto_increment,post_id int(11),vartype varchar(25),value varchar(80),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS option(id int(11) NOT NULL auto_increment,option varchar(80),value varchar(80),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS widget(id int(11) NOT NULL auto_increment,widget varchar(80),area varchar(80),pos int(2),data TEXT,PRIMARY KEY (id));');
@@ -26,6 +26,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_user=$_POST['adm_user'];
       $_email=$_POST['adm_email'];
       $_pass=$_POST['adm_pass'];
+      $_base_url=$_POST['base_url'];
 
       $link->query("INSERT INTO user VALUES(1,'$_user','$_email','$_pass');");
       $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
@@ -43,14 +44,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
           'pass' => $db_pass, //
           'name' => $db_name //
       ];
-      $GLOBALS['config']['base'] = "//".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL'];
+      $GLOBALS['config']['packages'] = [];
+      $GLOBALS['config']['base'] = $_base_url;
       /*$globkeys = ['db']; //,'default','path','menu'
       foreach ($globkeys as $key) {
           $filedata .= "\n\$GLOBALS['config']['$key'] = ".(var_export($GLOBALS['config'][$key], true)).";";
       }*/
 
       //foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
-      $GLOBALS['config']['theme'] = 'yellow-blog';
+      $GLOBALS['config']['theme'] = 'startbootstrap-clean-blog';
       $GLOBALS['config']['title'] = 'Gila CMS';
       $GLOBALS['config']['slogan'] = 'An awesome website!';
       $GLOBALS['config']['default-controller'] = 'blog';

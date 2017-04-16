@@ -13,20 +13,18 @@
     <title>Gila CMS - Administration</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet" async>
+    <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" async>
 
     <!-- Custom CSS -->
-    <link href="src/core/assets/simple-sidebar.css" rel="stylesheet">
-    <link href="libs/rj.css" rel="stylesheet">
-    <!--link href="libs/gila.min.css" rel="stylesheet"-->
+    <link href="src/core/assets/simple-sidebar.css" rel="stylesheet" async>
+    <link href="libs/gila.min.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="libs/jquery/jquery-2.2.4.min.js"></script>
+    <script src="libs/bootstrap/bootstrap.min.js"></script>
+    <script src="libs/gila.min.js"></script>
+
+
 </head>
 
 <body>

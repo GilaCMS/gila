@@ -22,25 +22,8 @@ class admin extends controller
     {
         global $db;
         if ($id = router::get('id',1)) {
-            if ($id == 'new') {
-                view::set('page_title','New Post');
-                view::set('id',$_POST['p_id']);
-                view::set('title','');
-                view::set('text','text');
-                view::set('publish',1);
-                view::renderAdmin('admin/edit_post.phtml');
-                return;
-            }
-            $res = $db->query("SELECT * FROM post WHERE id=?",$id);
-            while ($r = mysqli_fetch_array($res)) {
-                view::set('page_title','Edit Post');
-                view::set('id',$r['id']);
-                view::set('title',$r['title']);
-                view::set('text',$r['post']);
-                view::set('publish',$r['publish']);
-                view::renderAdmin('admin/edit_post.phtml');
-            }
-
+            view::set('id',$id);
+            view::renderAdmin('admin/edit_post.phtml');
             return;
         }
 
@@ -48,9 +31,6 @@ class admin extends controller
         view::set('page', (router::get('page',1)?:1));
         view::set('rpp', 10);
         view::renderAdmin('admin/list_post.phtml');
-        //echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>User ID<th>Updated<th>";
-        //$page = router::get('page',1)?:1;
-        //$rpp = 10;
     }
 
     function widgetsAdmin ()
@@ -105,25 +85,26 @@ class admin extends controller
     {
         $dir = "src/";
         $packages = scandir($dir);
-        $table = '<tr><th class="gs-2 col-xs-2"><th class="gs-2 col-xs-8"><th class="gs-2 col-xs-2">';
+        $table = '<tr><th class="col-xs-2 gm-2"><th class="col-xs-8 gm-8"><th class="col-xs-2 gm-2">';
         $pn = 0; $alert = '';
 
         $activate = router::get('activate');
-        if (array_search($activate,$packages)) {
-            if(($key = array_search($activate, $GLOBALS['config']['packages'])) === false) {
-                $GLOBALS['config']['packages'][] = $activate;
-                gila::updateConfigFile();
+        if (in_array($activate,$packages)) {
+            if(!in_array($activate, $GLOBALS['config']['packages'])) {
+                $GLOBALS['config']['packages'][]=$activate;
+                $response = gila::updateConfigFile();
                 $alert = gila::alert('success','Package activated');
+                exit;
             }
         }
 
         $deactivate = router::get('deactivate');
-        if (array_search($deactivate,$packages)) {
-            if(($key = array_search($deactivate, $GLOBALS['config']['packages'])) !== false) {
+        if (in_array($deactivate,$GLOBALS['config']['packages'])) {
+            $key = array_search($deactivate, $GLOBALS['config']['packages']);
                 unset($GLOBALS['config']['packages'][$key]);
-                gila::updateConfigFile();
-                $alert = gila::alert('success','Package deactivated');
-            }
+                $response = gila::updateConfigFile();
+                $alert = gila::alert('success',"Package $key deactivated");
+                exit;
         }
 
         include 'src/core/views/admin/header.php';
@@ -144,16 +125,29 @@ class admin extends controller
 
             if (in_array($p,$GLOBALS['config']['packages'])) {
                 //if (new_version) $table .= 'Upgrade<br>';
-                $table .= "<a href='admin/addons?deactivate={$p}' class='btn error'>Deactivate</a>";
+                $table .= "<a onclick='addon_deactivate(\"{$p}\")' class='btn error'>Deactivate</a>";
             }
             else {
-                $table .= "<a href='admin/addons?activate={$p}' class='btn success'>Activate</a>";
+                $table .= "<a onclick='addon_activate(\"{$p}\")' class='btn success'>Activate</a>";
             }
             $pn++;
         }
         //echo "<span>$pn packages found</span>";
-        echo "<table class='table'>$table</table>";
+        echo "<table class='g-table'>$table</table>";
+        echo "<script>
+        function addon_activate(p){ g.ajax('admin/addons?activate='+p,function(x){
+            g.alert('Package successfully activated!','success','location.reload()');
+            })};
+        function addon_deactivate(p){ g.ajax('admin/addons?deactivate='+p,function(x){
+            g.alert('Package deactivated!','notice','location.reload()');
+             })};
+        </script>";
         include 'src/core/views/admin/footer.php';
+        /*setTimeout(function () {
+			for(let attr in data){
+				template.content.firstChild[attr] = data[attr]
+			}
+		}, 100)*/
     }
 
     function settingsAdmin ()

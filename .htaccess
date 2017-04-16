@@ -16,5 +16,7 @@ RewriteCond %{REQUEST_URI} !src
 RewriteCond %{REQUEST_URI} !themes
 RewriteCond %{REQUEST_URI} !libs
 RewriteCond %{REQUEST_URI} !assets
+RewriteCond %{REQUEST_URI} !service-worker.js
+RewriteCond %{REQUEST_URI} !manifest.json
 
 RewriteRule (.*)$ index.php?url=$1 [QSA,L]

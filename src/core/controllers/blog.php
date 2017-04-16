@@ -64,6 +64,7 @@ class blog extends controller
         global $db;
         $ppp = 8;
         $start_from = (self::$page-1)*$ppp+3;
+        $where = '';
 
         $res = $db->query("SELECT id,title,SUBSTRING(post,1,300) as post,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
@@ -73,4 +74,30 @@ class blog extends controller
             yield $r;
         }
     }
+    static function latestposts ($n) {
+        global $db;
+
+        $res = $db->query("SELECT id,title,SUBSTRING(post,1,300) as post,
+            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
+            FROM post ORDER BY id DESC LIMIT 0,$n");
+
+        if ($res) while ($r = mysqli_fetch_object($res)) {
+            yield $r;
+        }
+    }
+    static function posts () {
+        global $db;
+        $ppp = 8;
+        $start_from = (self::$page-1)*$ppp+3;
+        $where = '';
+
+        $res = $db->query("SELECT id,title,SUBSTRING(post,1,300) as post,
+            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
+            FROM post ORDER BY id DESC LIMIT $start_from,$ppp");
+
+        if ($res) while ($r = mysqli_fetch_object($res)) {
+            yield $r;
+        }
+    }
+    
 }

@@ -56,17 +56,18 @@ class view
  *
  */
 
-    static function widget ($widget)
+    static function widget ($widget,$widget_exp=null)
     {
         global $db,$widget_data;
         $filePath = 'themes/'.gila::config('theme').'/widgets/'.$widget.'.php';
         $widget_data = $db->get("SELECT data FROM widget WHERE widget=? LIMIT 1;", $widget)[0][0];
+        if($widget_exp==null) $widget_exp=$widget;
 
         if (file_exists($filePath)) {
             include $filePath;
         }
         else {
-            $filePath = 'src/core/widgets/'.$widget.'/'.$widget.'.php';
+            $filePath = 'src/core/widgets/'.$widget.'/'.$widget_exp.'.php';
             if (file_exists($filePath)) {
                 include $filePath;
             }

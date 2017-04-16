@@ -47,7 +47,7 @@ $db = new db(gila::config('db'));
 
 //$packages = $db->getArray("SELECT value FROM option WHERE option='package'");
 foreach ($GLOBALS['config']['packages'] as $package) {
-	include "src/$package/load.php";
+	if(file_exists("src/$package/load.php")) include "src/$package/load.php";
 }
 
 new gila();
