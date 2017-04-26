@@ -32,45 +32,50 @@ else {
 
 ?>
 
-<div class="col-md-12">
+<div class="row ">
 <form id="postForm" method="post" class="g-form" action="admin/posts/<?=($p->id?:'new')?>">
     <input value="<?=($p->id?:'new')?>" name="p_id" type="hidden"/>
 
-    <div class="col-md-12">
-        <label class="col-md-2">Title</label>
-        <input class="col-md-10" value="<?=$p->title?>" name="p_title"/>
+    <div class="row ">
+        <label class="gm-2">Title</label>
+        <input class="gm-10" value="<?=$p->title?>" name="p_title"/>
     </div>
 
-    <div class="col-md-12">
-        <label class="col-md-2">Thumbnail</label>
-        <input class="col-md-10" value="<?=$p->img?>" name="p_thumbnail"/>
+    <div class="row ">
+        <label class="gm-2">Thumbnail</label>
+        <input class="gm-10" value="<?=$p->img?>" name="p_thumbnail"/>
     </div>
 
-    <div class="col-md-12">
-        <label class="col-md-2">Tags</label>
-        <input class="col-md-10" placeholder="values seperated by comma" />
+    <div class="row ">
+        <label class="gm-2">Tags</label>
+        <input class="gm-10" placeholder="values seperated by comma" />
     </div>
-    <div class="col-md-12">
-        <label class="col-md-2">Category</label>
-        <select class="select2" multiple class="col-md-10 gm-10" style="width:83.333%">
+    <div class="row ">
+        <label class="gm-2">Category</label>
+        <select class="select2" multiple class="gm-10 gm-10" style="width:83.333%">
             <option value="1">Category1</option>
             <option value="1">Category2</option>
             <option value="1">Category3</option><option value="1">Category4</option> </select>
     </div>
 
-    <div class="col-md-12">
-        <label class="col-md-3">Publish<input type="checkbox" name="p_publish" value="1"<?=($p->publish=='1'?' checked':'')?>></label>
+    <div class="row ">
+        <label class="gm-2" for="p_publish">Public</label>
+        <label class="g-switch gm-4"  for="p_publish">
+            <input type="checkbox" id="p_publish" name="p_publish" value="<?=($p->publish=='1'?' checked':'')?>">
+            <div class="g-slider"></div>
+        </label>
+        <!--label class="col-md-3">Public<input type="checkbox" name="p_publish" value="1"></label-->
     </div>
     <hr>
 
-    <div class="col-md-12">
-        <label class="col-md-12">Text</label><br>
+    <div class="row wrapper">
+        <!--label class="row ">Text</label><br-->
         <textarea name="p_post"><?=$p->post?></textarea>
     </div>
 
-    <div class="col-md-12">
+    <div class="row ">
         <div class="btn-group">
-            <input type="submit" name="submit-btn" class="btn btn-primary" onclick="this.value='submited'" />
+            <input type="submit" name="submit-btn" class="btn btn-primary primary" onclick="this.value='submited'" />
         </div>
     </div>
 </form>
@@ -98,25 +103,10 @@ tinymce.init({
   templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,
   document_base_url : "//localhost/gila/",
   content_css: <?php echo json_encode(isset($content_css)?$content_css:[]); ?>
-    //'//localhost/gila/libs/bootstrap/bootstrap.min.css',
-    //'//localhost/gila/libs/font-awesome/css/font-awesome.min.css',
-    //'//localhost/gila/themes/bs-property/style.css',
-    //'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-    //'//www.tinymce.com/css/codepen.min.css'
  });
 
- var requiredRes = {
-   "sweetalert": {
-     js: "sweetalert/sweetalert.min.js",
-     css: "sweetalert/sweetalert.css",
-     dep: "bootstrap"
-   },
-   'webui-popover': {
-     js: "popup/jquery.webui-popover.min.js",
-     css: "popup/jquery.webui-popover.min.css",
-     dep: "jquery"
-   }
-}
+if(typeof requiredRes=='undefined') requiredRes = {}
+
 g.require('libs/jquery/jquery-2.2.4.min.js',function(){
     g.loadCSS('libs/select2/select2.min.css');
     g.require(['libs/select2/select2.min.js'],function(){

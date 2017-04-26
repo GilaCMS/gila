@@ -26,11 +26,14 @@ class admin extends controller
             view::renderAdmin('admin/edit_post.phtml');
             return;
         }
-
-        view::set('page_title','Posts');
         view::set('page', (router::get('page',1)?:1));
         view::set('rpp', 10);
         view::renderAdmin('admin/list_post.phtml');
+    }
+
+    function postcategoriesAdmin ()
+    {
+        view::renderAdmin('admin/postcategory.phtml');
     }
 
     function widgetsAdmin ()

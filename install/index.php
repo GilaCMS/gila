@@ -20,6 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $link->query('CREATE TABLE IF NOT EXISTS menuitem(id int(11) NOT NULL auto_increment,title varchar(80),url varchar(80),icon varchar(80),parent_id int(11),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS post(id int(11) NOT NULL auto_increment,user_id int(11),title varchar(80),slug varchar(80),post TEXT,updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS postmeta(id int(11) NOT NULL auto_increment,post_id int(11),vartype varchar(25),value varchar(80),PRIMARY KEY (id));');
+      $link->query('CREATE TABLE IF NOT EXISTS postcategory(id int(11) NOT NULL auto_increment,name varchar(80),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS option(id int(11) NOT NULL auto_increment,option varchar(80),value varchar(80),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS widget(id int(11) NOT NULL auto_increment,widget varchar(80),area varchar(80),pos int(2),data TEXT,PRIMARY KEY (id));');
 

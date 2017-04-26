@@ -31,7 +31,7 @@
 
     <div id="wrapper">
 
-        <!-- Sidebar -->
+        <!-- Sidebar g-nav vertical -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
@@ -39,7 +39,15 @@
                 </li>
                 <?php
                     foreach (gila::$amenu as $key => $value) {
-                        echo "<li><a href='{$value[1]}'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a></li>";
+                        echo "<li><a href='{$value[1]}'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a>";
+                        if(isset($value['children'])) {
+                            echo "<ul class=\"dropdown\">";
+                            foreach ($value['children'] as $subkey => $subvalue) {
+                                echo "<li><a href='{$subvalue[1]}'><i class='fa fa-{$subvalue['icon']}'></i> {$subvalue[0]}</a></li>";
+                            }
+                            echo "</ul>";
+                        }
+                        echo "</li>";
                     }
                 ?>
             </ul>
@@ -61,7 +69,7 @@
                 </li>
 
             </ul>
-            <div style="background:#ddd; padding:6px" class="row">
+            <div style="background:#ddd; padding:6px" class="row caption">
                 <div style="font-size:22px; padding-left: 15px;">
                     <?php
                     $cn = router::controller();
@@ -74,4 +82,4 @@
                     <?=ucwords(router::action())?>
                 </div>
             </div>
-            <div class="row">
+            <div class="wrapper">

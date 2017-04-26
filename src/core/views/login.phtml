@@ -12,7 +12,8 @@
     <title>Gila CMS - Login</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!--link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet"-->
+    <link href="libs/gila.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -21,7 +22,31 @@
 
 <body>
 
-    <div class="container">
+    <div class="g-card gl-3 centered">
+        <div class="border-buttom-main text-align-center">
+            <div class="gxs-3">
+                <img src="assets/gila-logo.png">
+            </div>
+        </div>
+
+        <form role="form" method="post" action="" class="g-form wrapper">
+                <div class="form-group">
+                    <input class="form-control" placeholder="E-mail" name="username" type="email" autofocus>
+                </div>
+                <div class="form-group ">
+                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                </div>
+                <input type="submit" class="btn btn-primary btn-block" value="Login">
+
+        </form>
+    </div>
+    <!--div class="checkbox">
+        <label>
+            <input name="remember" type="checkbox" value="Remember Me">Remember Me
+        </label>
+    </div-->
+
+    <!--div class="container">
         <div class="row" style="margin-top:10%">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
@@ -38,11 +63,6 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
-                                <!--div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                </div-->
                                 <input type="submit" class="btn btn-lg btn-primary btn-block" value="Login">
 
                             </fieldset>
@@ -51,7 +71,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div-->
 
 </body>
 

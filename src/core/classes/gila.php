@@ -17,11 +17,14 @@ class gila {
         ]);
         gila::amenu([
     		    ['Dashboard','admin','icon'=>'dashboard'],
-    		    ['Add-Ons','admin/addons','icon'=>'dropbox'],
-    		    ['Posts','admin/posts','icon'=>'pencil'],
-    		    ['Users','admin/users','icon'=>'users'],
-    		    ['Settings','admin/settings','icon'=>'cogs'],
-    		    ['Widgets','admin/widgets','icon'=>'th-large']
+    		    ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin writer'],
+    		    ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer','children'=>[
+                    //['Add-Ons','admin/addons','icon'=>'dropbox']
+                    ]],
+                ['Categories','admin/postcategories','icon'=>'pencil','access'=>'admin'],
+    		    ['Users','admin/users','icon'=>'users','access'=>'admin'],
+    		    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
+    		    ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin']
         ]);
         gila::widgets([
           'menu'=>'core/widgets/menu',
