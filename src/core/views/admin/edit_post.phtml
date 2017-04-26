@@ -28,6 +28,9 @@ else {
         FROM post WHERE id=$id";
     $res = $db->query($ql);
     if ($res) $p=mysqli_fetch_object($res); else die("The post '$id' could not be found in db!");
+
+    $ql="SELECT id,title FROM postcategory";
+    $categories = $db->get($ql);
 }
 
 ?>
@@ -47,20 +50,21 @@ else {
     </div>
 
     <div class="row ">
-        <label class="gm-2">Tags</label>
-        <input class="gm-10" placeholder="values seperated by comma" />
+        <label class="gm-2">Categories</label>
+        <select class="select2" multiple class="gm-10 gm-10" style="width:83.333%">
+            <?php foreach ($categories as $key => $value) {
+                echo '<option value="'.$value[0].'">'.$value[1].'</option>';
+            } ?>
+        </select>
     </div>
     <div class="row ">
-        <label class="gm-2">Category</label>
-        <select class="select2" multiple class="gm-10 gm-10" style="width:83.333%">
-            <option value="1">Category1</option>
-            <option value="1">Category2</option>
-            <option value="1">Category3</option><option value="1">Category4</option> </select>
+        <label class="gm-2">Tags</label>
+        <input class="gm-10" placeholder="values seperated by comma" />
     </div>
 
     <div class="row ">
         <label class="gm-2" for="p_publish">Public</label>
-        <label class="g-switch gm-4"  for="p_publish">
+        <label class="g-switch"  for="p_publish">
             <input type="checkbox" id="p_publish" name="p_publish" value="<?=($p->publish=='1'?' checked':'')?>">
             <div class="g-slider"></div>
         </label>
@@ -73,7 +77,7 @@ else {
         <textarea name="p_post"><?=$p->post?></textarea>
     </div>
 
-    <div class="row ">
+    <div class="row wrapper">
         <div class="btn-group">
             <input type="submit" name="submit-btn" class="btn btn-primary primary" onclick="this.value='submited'" />
         </div>
