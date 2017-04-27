@@ -2,33 +2,35 @@
 <head>
 	<link type="text/css" rel="stylesheet" href="../libs/gila.min.css"/>
 	<link type="text/css" rel="stylesheet" href="../libs/rj.css"/>
+	<title>Install Gila CMS</title>
 	<!--script src="../libs/rj.js"></script-->
 </head>
 <body class="bg-lightgrey">
-<div class="col-6 display-flex margin-auto align-items-center " style="height:100%">
-<form method='post' class="col-12 gs-12 border box-shadow g-form bg-white">
-	<div class="col-6 gs-6">
+<div class="gm-6 centered row" style="">
+    <div class="gm-12 wrapper text-align-center">
+        <h1 class="margin-0">Gila CMS Installation</h1>
+    </div>
+<form method="post" class="row gap-16px bordered box-shadow g-form bg-white">
+	<div class="gl-6">
 	<label class="gs-12">Hostname</label>
-	<input name="db_host" value="localhost"/>
+	<input name="db_host" value="localhost">
 	<label class="gs-12">Database</label>
-	<input name="db_name"/>
+	<input name="db_name">
 	<label class="gs-12">DB Username</label>
-	<input name="db_user"/>
+	<input name="db_user">
 	<label class="gs-12">DB Password</label>
-	<input name="db_pass" type="password"/>
+	<input name="db_pass" type="password">
 	</div>
-	<div class="col-6 gs-6">
+	<div class="gl-6">
 	<label class="gs-12">Admin Username</label>
-	<input name="adm_user"/>
+	<input name="adm_user">
 	<label class="gs-12">Admin Email</label>
-	<input name="adm_email" type="email"/>
+	<input name="adm_email" type="email">
 	<label class="gs-12">Admin Password</label>
-	<input name="adm_pass" type="password"/>
+	<input name="adm_pass" type="password">
 	<label class="gs-12">Base URL</label>
-	<?php $base_path="//".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']; ?>
-	<input name="base_url" value="<?=substr($base_path, 0, strpos($base_path, "install"))?>"/>
+		<input name="base_url" value="//localhost/gila/">
 	</div>
-	<div class="col-12 gs-12"><input class="btn" type="submit"/></div>
+	<div class="gl-12"><input class="btn success" type="submit"></div>
 </form>
 </div>
-</body>
