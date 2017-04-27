@@ -5,7 +5,10 @@ $p_list = ['title', 'post', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited'){
     $title = $_POST['p_title'];
     $text = $_POST['p_post'];
-    $publish = $_POST['p_publish']?:0;
+    $img = trim($_POST['p_img']);
+    $tags = $_POST['p_tags'];
+    $categories = isset($_POST['p_categories'])?$_POST['p_categories']:[];
+    $publish = isset($_POST['p_publish'])?1:0;
     $slugify = new Cocur\Slugify\Slugify();
     $slug = $slugify->slugify($title);
     $args = [$title,$text,$publish,$slug];
@@ -16,6 +19,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited')
     else {
         $db->query("UPDATE post SET title=?,post=?,publish=?,slug=? WHERE id=$id",$args);
     }
+
+    $db->query("DELETE FROM postmeta WHERE $id=? AND vartype IN('category','tag','thumbnail')",$id);
+    if($img!='') $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'thumbnail',?);",[$id,$img]);
+    if($categories) foreach($categories as $c)
+        $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'category',?);",[$id,$c]);
+    if($tags) foreach(explode(',',$tags) as $t) {
+        $t = trim($t);
+        if($t!='') $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'tag',?);",[$id,$t]);
+    }
+
     echo "<div class='alert success'>Changes have been saved successfully!</div>";
 }
 
@@ -24,13 +37,16 @@ if ($id == 'new') {
 }
 else {
     $ql="SELECT id,title,post,publish,
-        (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
+        (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
+        (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
         FROM post WHERE id=$id";
     $res = $db->query($ql);
     if ($res) $p=mysqli_fetch_object($res); else die("The post '$id' could not be found in db!");
 
     $ql="SELECT id,title FROM postcategory";
     $categories = $db->get($ql);
+    $ql="SELECT value FROM postmeta WHERE vartype='category' AND post_id=$id";
+    $selectedcategories = $db->getList($ql);
 }
 
 ?>
@@ -46,26 +62,26 @@ else {
 
     <div class="row ">
         <label class="gm-2">Thumbnail</label>
-        <input class="gm-10" value="<?=$p->img?>" name="p_thumbnail"/>
+        <input class="gm-10" value="<?=$p->img?>" name="p_img"/>
     </div>
 
     <div class="row ">
         <label class="gm-2">Categories</label>
-        <select class="select2" multiple class="gm-10 gm-10" style="width:83.333%">
+        <select class="select2" multiple class="gm-10 gm-10" style="width:83.333%" name="p_categories[]">
             <?php foreach ($categories as $key => $value) {
-                echo '<option value="'.$value[0].'">'.$value[1].'</option>';
+                echo '<option value="'.$value[0].'"'.(in_array($value[0],$selectedcategories)?' selected':'').'>'.$value[1].'</option>';
             } ?>
         </select>
     </div>
     <div class="row ">
         <label class="gm-2">Tags</label>
-        <input class="gm-10" placeholder="values seperated by comma" />
+        <input class="gm-10" placeholder="values seperated by comma" name="p_tags" value="<?=$p->tags?>"/>
     </div>
 
     <div class="row ">
         <label class="gm-2" for="p_publish">Public</label>
         <label class="g-switch"  for="p_publish">
-            <input type="checkbox" id="p_publish" name="p_publish" value="<?=($p->publish=='1'?' checked':'')?>">
+            <input type="checkbox" id="p_publish" name="p_publish" <?=($p->publish==1?' checked':'')?>>
             <div class="g-slider"></div>
         </label>
         <!--label class="col-md-3">Public<input type="checkbox" name="p_publish" value="1"></label-->
@@ -73,7 +89,6 @@ else {
     <hr>
 
     <div class="row wrapper">
-        <!--label class="row ">Text</label><br-->
         <textarea name="p_post"><?=$p->post?></textarea>
     </div>
 
