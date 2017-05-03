@@ -1,0 +1,14 @@
+
+<div class="gm-12">
+<label class="gm-3">Area</label>
+<select name="gila_env" value="<?=gila::config('default-controller')?>" class="gm-3">
+<?php
+$environments = ['pro'=>'Production','dev'=>'Development'];
+foreach ($environments as $k=>$value) if($value[0] != '.') {
+    $sel = (gila::config('env')==$k?'selected':'');
+    echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
+}
+?>
+</select>
+</div>
+<hr>

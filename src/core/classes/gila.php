@@ -17,14 +17,14 @@ class gila {
         ]);
         gila::amenu([
     		    ['Dashboard','admin','icon'=>'dashboard'],
-    		    ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin writer'],
-    		    ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer','children'=>[
-                    //['Add-Ons','admin/addons','icon'=>'dropbox']
+                ['Pages','admin/pages','icon'=>'pencil','access'=>'admin'],
+                ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer','children'=>[
+                    ['Categories','admin/postcategories','icon'=>'pencil','access'=>'admin'],
                     ]],
-                ['Categories','admin/postcategories','icon'=>'pencil','access'=>'admin'],
+                ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
     		    ['Users','admin/users','icon'=>'users','access'=>'admin'],
+                ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin writer'],
     		    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
-    		    ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin']
         ]);
         gila::widgets([
           'menu'=>'core/widgets/menu',
@@ -80,8 +80,8 @@ class gila {
     static function updateConfigFile ()
     {
         $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
-        rename('config.php', 'log/config.'.date("Y-m-d").'.php');
-        return file_put_contents('config.php', $filedata);
+        //rename('config.php', 'log/config.'.date("Y-m-d").'.php');
+        file_put_contents('config.php', $filedata);
     }
 
     static function alert ($type, $msg)

@@ -31,6 +31,19 @@ class admin extends controller
         view::renderAdmin('admin/list_post.phtml');
     }
 
+    function pagesAdmin ()
+    {
+        global $db;
+        if ($id = router::get('id',1)) {
+            view::set('id',$id);
+            view::renderAdmin('admin/edit_page.phtml');
+            return;
+        }
+        view::set('page', (router::get('page',1)?:1));
+        view::set('rpp', 10);
+        view::renderAdmin('admin/list_page.phtml');
+    }
+
     function postcategoriesAdmin ()
     {
         view::renderAdmin('admin/postcategory.phtml');
@@ -46,7 +59,8 @@ class admin extends controller
                 //echo "<h2>Edit widget #".$r['id']."</h2>";
                 /*view::set('title',$r['title']);*/
                 view::set('widget_id',$r['id']);
-                view::renderAdmin('../widgets/'.$r['widget'].'/edit.phtml');
+                view::renderFile('admin/edit_widget.phtml');
+                view::renderFile('../widgets/'.$r['widget'].'/edit.phtml');
             }
 
             return;
@@ -57,9 +71,11 @@ class admin extends controller
 
         $gen = $db->gen("SELECT * FROM widget");
         foreach ($gen as $r) {
-            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['widget'].'<td>'.$r['area'].'<td>'.$r['pos'].'<td><a href="admin/widgets/'.$r['id'].'">Edit</a>';
+            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['widget'].'<td>'.$r['area'].'<td>'.$r['pos'].'<td>';
+            echo '<a class="open-dialog" hr="admin/widgets/'.$r['id'].'">Edit</a>';
         }
         echo "</table>";
+        echo "<script>g.click(\".open-dialog\",function(){href=event.target.getAttribute('hr');g.ajax(href,function(data){g.dialog({class:'lightscreen',title:'title',body:data})});return false;})</script>";
         include 'src/core/views/admin/footer.php';
     }
 
@@ -95,7 +111,8 @@ class admin extends controller
         if (in_array($activate,$packages)) {
             if(!in_array($activate, $GLOBALS['config']['packages'])) {
                 $GLOBALS['config']['packages'][]=$activate;
-                $response = gila::updateConfigFile();
+                gila::updateConfigFile();
+                usleep(100);
                 $alert = gila::alert('success','Package activated');
                 exit;
             }
@@ -105,7 +122,8 @@ class admin extends controller
         if (in_array($deactivate,$GLOBALS['config']['packages'])) {
             $key = array_search($deactivate, $GLOBALS['config']['packages']);
                 unset($GLOBALS['config']['packages'][$key]);
-                $response = gila::updateConfigFile();
+                gila::updateConfigFile();
+                usleep(100);
                 $alert = gila::alert('success',"Package $key deactivated");
                 exit;
         }

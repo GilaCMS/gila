@@ -11,22 +11,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (gila::equal($_POST['submit-btn'],
 }
 ?>
 
-<div class="col-md-12">
+<div class="gm-12">
     <form method="post" action="admin/settings" class="g-form">
 
 <?php
 
 foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
-    <br><div class="col-md-12">
-    <label class="col-md-2 col-md-offset-1"><?=$value?></label>
-    <input name="gila_<?=$key?>" value="<?=gila::config($key)?>" class="col-md-4" />
+    <br><div class="gm-12">
+    <label class="gm-3"><?=$value?></label>
+    <input name="gila_<?=$key?>" value="<?=gila::config($key)?>" class="gm-3" />
     </div>
 <?php } ?>
 
 
-    <br><div class="col-md-12">
-    <label class="col-md-2 col-md-offset-1">Theme</label>
-    <select name="gila_theme" value="<?=gila::config('theme')?>" class="col-md-3">
+    <br><div class="gm-12">
+    <label class="gm-3">Theme</label>
+    <select name="gila_theme" value="<?=gila::config('theme')?>" class="gm-3">
     <?php
     $theme_list=scandir('themes/');
     foreach ($theme_list as $value) if($value[0] != '.') {
@@ -37,9 +37,9 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     </select>
     </div>
 
-    <br><div class="col-md-12">
-        <label class="col-md-2 col-md-offset-1">Timezone</label>
-        <select name="gila_timezone" value="<?=gila::config('timezone')?>" class="col-md-3">
+    <br><div class="gm-12">
+        <label class="gm-3">Timezone</label>
+        <select name="gila_timezone" value="<?=gila::config('timezone')?>" class="gm-3">
         <?php
         foreach (DateTimeZone::listIdentifiers() as $value) {
             $sel = (gila::config('timezone')==$value?'selected':'');
@@ -49,9 +49,9 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
         </select>
     </div>
 
-    <br><div class="col-md-12">
-    <label class="col-md-2 col-md-offset-1">Default Controller</label>
-    <select name="gila_dc" value="<?=gila::config('default-controller')?>" class="col-md-3">
+    <br><div class="gm-12">
+    <label class="gm-3">Default Controller</label>
+    <select name="gila_dc" value="<?=gila::config('default-controller')?>" class="gm-3">
     <?php
     foreach (gila::$controller as $k=>$value) if($value[0] != '.') {
         $sel = (gila::config('default-controller')==$k?'selected':'');
@@ -61,9 +61,9 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     </select>
     </div>
 
-    <br><div class="col-md-12">
-    <label class="col-md-2 col-md-offset-1">Environment</label>
-    <select name="gila_env" value="<?=gila::config('default-controller')?>" class="col-md-3">
+    <br><div class="gm-12">
+    <label class="gm-3">Environment</label>
+    <select name="gila_env" value="<?=gila::config('default-controller')?>" class="gm-3">
     <?php
     $environments = ['pro'=>'Production','dev'=>'Development'];
     foreach ($environments as $k=>$value) if($value[0] != '.') {

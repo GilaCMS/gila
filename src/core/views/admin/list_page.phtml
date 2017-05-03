@@ -1,0 +1,24 @@
+<div class="col-md-12">
+    <div style="alignright">
+        <a class="btn btn-primary" href="admin/posts/new">New Post</a>
+    </div>
+</div>
+
+<?php
+global $db;
+echo "<table class=\"table\"><tr><th>ID<th>Title<th>Slug<th>User ID<th>Updated<th>";
+$lstart = $page*$rpp-$rpp;
+$limit = "LIMIT $lstart,$rpp";
+
+$gen = $db->gen("SELECT * FROM post $limit");
+foreach ($gen as $r) {
+    echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['title'].'<td>'.$r['slug'].'<td>'.$r['user_id'].'<td>'.$r['updated'].'<td><a href="admin/posts/'.$r['id'].'">Edit</a>';
+}
+echo "</table>";
+
+$total = $db->value("SELECT COUNT(*) FROM post")?:0;
+echo '<p>';
+for ($i=1; $i<= $total/$rpp+1; $i++) {
+    echo " <a class='btn btn-primary' href='".router::url()."?page=$i'>$i</a>";
+}
+echo '</p>';
