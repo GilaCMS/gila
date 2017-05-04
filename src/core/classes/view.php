@@ -88,6 +88,58 @@ class view
         }
         event::fire($area);
     }
+
+    static function thumb ($src)
+    {
+      $file = 'assets/img_cache/'.$src;
+      $max_width=30;
+      $max_height=60;
+      //$pathf = explode('\\');
+      if (!file_exists($file)) {
+        $image = getimagesize($src);
+        list($src_width,$src_height)=$image;
+        $newwidth=$max_width;
+        $newheight=$max_height;
+
+        if($src_width>$max_width) {
+          $newheight=($src_height/$src_width)*$newwidth;
+        }else if($src_height>$max_height){
+          $newwidth=($src_width/$src_height)*$newheight;
+        }else{
+          copy($src,$file);
+          return;
+        }
+
+        $tmp=imagecreatetruecolor($newwidth,$newheight);
+
+        switch($image[2]) {
+          case 1:
+          $timg = imageCreateFromGIF($src);
+          break;
+          case 2:
+          $timg = imageCreateFromJPEG($src);
+          break;
+          case 3:
+          $timg = imageCreateFromPNG($src);
+          break;
+        }
+        imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
+
+        switch($image[2]) {
+          case 1:
+          $timg = imagegif($tmp,$file);
+          break;
+          case 2:
+          $timg = imagejpeg($tmp,$file,100);
+          break;
+          case 3:
+          $timg = imagepng($tmp,$file);
+          break;
+        }
+        imagedestroy($img_src);
+        imagedestroy($tmp);
+      }
+    }
 /*
     function displayFile($filepath) {
 		$replace = array();

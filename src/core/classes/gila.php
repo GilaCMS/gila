@@ -18,13 +18,13 @@ class gila {
         ]);
         gila::amenu([
     		    ['Dashboard','admin','icon'=>'dashboard'],
-                ['Pages','admin/pages','icon'=>'pencil','access'=>'admin'],
-                ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer','children'=>[
-                    ['Categories','admin/postcategories','icon'=>'pencil','access'=>'admin'],
-                    ]],
-                ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
+            ['Pages','admin/pages','icon'=>'pencil','access'=>'admin'],
+            ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer','children'=>[
+                ['Categories','admin/postcategories','icon'=>'pencil','access'=>'admin'],
+                ]],
+            ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
     		    ['Users','admin/users','icon'=>'users','access'=>'admin'],
-                ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin writer'],
+            ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin writer'],
     		    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
         ]);
         gila::widgets([
@@ -32,7 +32,6 @@ class gila {
           'text'=>'core/widgets/text',
           'latest-post'=>'core/widgets/latest-post'
         ]);
-        gila::$widget_area = ['head','foot','sidebar'];
         //gila::$package = $GLOBALS['package']?:[];
     }
 
@@ -115,4 +114,5 @@ class gila {
         if ($v1 == $v2) return true;
         return false;
     }
+
 }
