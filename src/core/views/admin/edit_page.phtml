@@ -1,81 +1,45 @@
 
 <?php
 global $db;
-$p_list = ['title', 'post', 'publish' ];
+$p_list = ['title', 'page', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited'){
     $title = $_POST['p_title'];
-    $text = $_POST['p_post'];
-    $img = trim($_POST['p_img']);
-    $tags = $_POST['p_tags'];
-    $categories = isset($_POST['p_categories'])?$_POST['p_categories']:[];
+    $text = $_POST['p_page'];
     $publish = isset($_POST['p_publish'])?1:0;
     $slugify = new Cocur\Slugify\Slugify();
     $slug = $slugify->slugify($title);
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {
-        $db->query("INSERT INTO post(title,post,publish,slug) VALUES(?,?,?,?)",$args);
+		echo "INSERT INTO page(title,`page`,publish,slug) VALUES('$title','$text','$publish',$slug)";
+        $db->query("INSERT INTO page(title,page,publish,slug) VALUES(?,?,?,?)",$args);
         $id = $db->insert_id;
     }
     else {
-        $db->query("UPDATE post SET title=?,post=?,publish=?,slug=? WHERE id=$id",$args);
-    }
-
-    $db->query("DELETE FROM postmeta WHERE $id=? AND vartype IN('category','tag','thumbnail')",$id);
-    if($img!='') $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'thumbnail',?);",[$id,$img]);
-    if($categories) foreach($categories as $c)
-        $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'category',?);",[$id,$c]);
-    if($tags) foreach(explode(',',$tags) as $t) {
-        $t = trim($t);
-        if($t!='') $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'tag',?);",[$id,$t]);
+        $db->query("UPDATE page SET title=?,page=?,publish=?,slug=? WHERE id=$id",$args);
     }
 
     echo "<div class='alert success'>Changes have been saved successfully!</div>";
 }
 
 if ($id == 'new') {
-    $p = (object)['img'=>'','title'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
+    $p = (object)['title'=>'','page'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
-    $ql="SELECT id,title,post,publish,
-        (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
-        (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
-        FROM post WHERE id=$id";
+    $ql="SELECT id,title,page,publish
+        FROM page WHERE id=$id";
     $res = $db->query($ql);
-    if ($res) $p=mysqli_fetch_object($res); else die("The post '$id' could not be found in db!");
-
-    $ql="SELECT id,title FROM postcategory";
-    $categories = $db->get($ql);
-    $ql="SELECT value FROM postmeta WHERE vartype='category' AND post_id=$id";
-    $selectedcategories = $db->getList($ql);
+    if ($res) $p=mysqli_fetch_object($res); else die("The page '$id' could not be found in db!");
 }
 
 ?>
 
 <div class="row ">
-<form id="postForm" method="post" class="g-form" action="admin/posts/<?=($p->id?:'new')?>">
+<form id="postForm" method="post" class="g-form" action="admin/pages/<?=($p->id?:'new')?>">
     <input value="<?=($p->id?:'new')?>" name="p_id" type="hidden"/>
 
     <div class="row ">
         <label class="gm-2">Title</label>
         <input class="gm-10" value="<?=$p->title?>" name="p_title"/>
-    </div>
-
-    <div class="row ">
-        <label class="gm-2">Thumbnail</label>
-        <input class="gm-10" value="<?=$p->img?>" name="p_img"/>
-    </div>
-
-    <div class="row ">
-        <label class="gm-2">Categories</label>
-        <select class="select2" multiple class="gm-10 gm-10" style="width:83.333%" name="p_categories[]">
-            <?php foreach ($categories as $key => $value) {
-                echo '<option value="'.$value[0].'"'.(in_array($value[0],$selectedcategories)?' selected':'').'>'.$value[1].'</option>';
-            } ?>
-        </select>
-    </div>
-    <div class="row ">
-        <label class="gm-2">Tags</label>
-        <input class="gm-10" placeholder="values seperated by comma" name="p_tags" value="<?=$p->tags?>"/>
     </div>
 
     <div class="row ">
@@ -89,7 +53,7 @@ else {
     <hr>
 
     <div class="row wrapper">
-        <textarea name="p_post"><?=$p->post?></textarea>
+        <textarea name="p_page"><?=$p->page?></textarea>
     </div>
 
     <div class="row wrapper">
@@ -105,7 +69,7 @@ else {
 //cdn.tinymce.com/4/tinymce.min.js
 //tinymce.init({ selector:'textarea' });
 tinymce.init({
-  selector: '[name=p_post]',
+  selector: '[name=p_page]',
   mode: 'none',
   height: 300,
   //theme: 'modern',
@@ -124,12 +88,5 @@ tinymce.init({
   content_css: <?php echo json_encode(isset($content_css)?$content_css:[]); ?>
  });
 
-if(typeof requiredRes=='undefined') requiredRes = {}
 
-g.require('libs/jquery/jquery-2.2.4.min.js',function(){
-    g.loadCSS('libs/select2/select2.min.css');
-    g.require(['libs/select2/select2.min.js'],function(){
-        $('.select2').select2();
-    })
-})
 </script>

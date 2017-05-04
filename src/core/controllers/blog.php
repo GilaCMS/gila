@@ -39,7 +39,12 @@ class blog extends controller
                 view::render('single-post.php');
             }
             else {
-                view::render('404.phtml');
+                $res = $db->query("SELECT id,title,page,updated FROM page WHERE page.id=? OR page.slug=?;",[$id,$id]);
+                if ($res) if ($r = mysqli_fetch_array($res)) {
+                    view::set('title',$r['title']);
+                    view::set('text',$r['page']);
+                    view::render('page.php');
+                }else view::render('404.phtml');
             }
             return;
         }
@@ -99,5 +104,5 @@ class blog extends controller
             yield $r;
         }
     }
-    
+
 }

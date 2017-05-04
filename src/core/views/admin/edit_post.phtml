@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited')
 }
 
 if ($id == 'new') {
-    $p = (object)['img'=>'','title'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
+    $p = (object)['tags'=>'','img'=>'','title'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
     $ql="SELECT id,title,post,publish,
