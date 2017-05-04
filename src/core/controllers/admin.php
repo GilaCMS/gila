@@ -29,6 +29,7 @@ class admin extends controller
         view::set('page', (router::get('page',1)?:1));
         view::set('rpp', 10);
         view::renderAdmin('admin/list_post.phtml');
+        //view::renderHtml('<div class="pnk-table" pnk-src="src/core/tables/post"></div><script>pnk_populate_tables()</script>');
     }
 
     function pagesAdmin ()
@@ -55,36 +56,32 @@ class admin extends controller
 
         if ($id = router::get('id',1)) {
             $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
-            while ($r = mysqli_fetch_array($res)) {
+            if ($r = mysqli_fetch_object($res)) {
                 //echo "<h2>Edit widget #".$r['id']."</h2>";
                 /*view::set('title',$r['title']);*/
-                view::set('widget_id',$r['id']);
+                view::set('widget',$r);
+                view::renderFile('../widgets/'.$r->widget.'/edit.phtml');
                 view::renderFile('admin/edit_widget.phtml');
-                view::renderFile('../widgets/'.$r['widget'].'/edit.phtml');
             }
 
             return;
         }
-        include 'src/core/views/admin/header.php';
-
-        echo "<table class=\"table\"><tr><th>ID<th>Widget<th>Area<th>Position<th>";
-
-        $gen = $db->gen("SELECT * FROM widget");
-        foreach ($gen as $r) {
-            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['widget'].'<td>'.$r['area'].'<td>'.$r['pos'].'<td>';
-            echo '<a class="open-dialog" hr="admin/widgets/'.$r['id'].'">Edit</a>';
-        }
-        echo "</table>";
-        echo "<script>g.click(\".open-dialog\",function(){href=event.target.getAttribute('hr');g.ajax(href,function(data){g.dialog({class:'lightscreen',title:'title',body:data})});return false;})</script>";
-        include 'src/core/views/admin/footer.php';
+        view::set('page', (router::get('page',1)?:1));
+        view::set('rpp', 10);
+        view::renderAdmin('admin/list_widget.phtml');
+        //include 'src/core/views/admin/header.php';
+        //include 'src/core/views/admin/footer.php';
     }
 
     function update_widgetAjax ()
     {
         global $db;
+        echo $_POST['widget_data'];
+        //echo $_POST['widget_id'];
+
         if (isset($_POST['widget_data'])) {
-            $db->query("UPDATE widget SET data=? WHERE id=?",[$_POST['widget_data'],$_POST['widget_id']]);
-            echo "Widget updated";
+            $db->query("UPDATE widget SET data=?,area=? WHERE id=?",[$_POST['widget_data'],$_POST['widget_area'],$_POST['widget_id']]);
+            echo $_POST['widget_id'];
         }
     }
 

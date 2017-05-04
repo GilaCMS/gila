@@ -1,14 +1,12 @@
-
+<hr>
 <div class="gm-12">
-<label class="gm-3">Area</label>
-<select name="gila_env" value="<?=gila::config('default-controller')?>" class="gm-3">
+<label class="gm-4">Widget Area</label>
+<select id="widget_area" value="<?=gila::config('default-controller')?>" class="gm-6 g-input">
 <?php
-$environments = ['pro'=>'Production','dev'=>'Development'];
-foreach ($environments as $k=>$value) if($value[0] != '.') {
-    $sel = (gila::config('env')==$k?'selected':'');
-    echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
+foreach (gila::$widget_area as $value) {
+    $sel = ($widget->area==$value?'selected':'');
+    echo '<option value="'.$value."\" $sel>".ucwords($value).'</option>';
 }
 ?>
 </select>
-</div>
-<hr>
+<input type="hidden" value="<?=$widget->id?>" id='widget_id'>

@@ -7,6 +7,7 @@ class gila {
     static $widget;
     static $package;
     static $amenu;
+    static $widget_area;
 
     function __construct()
     {
@@ -31,6 +32,7 @@ class gila {
           'text'=>'core/widgets/text',
           'latest-post'=>'core/widgets/latest-post'
         ]);
+        gila::$widget_area = ['head','foot','sidebar'];
         //gila::$package = $GLOBALS['package']?:[];
     }
 

@@ -1,0 +1,46 @@
+
+<table class="table"><tr><th>ID<th>Widget<th>Area<th>Position<th>
+<?php
+  global $db;
+        $gen = $db->gen("SELECT * FROM widget");
+        foreach ($gen as $r) {
+            echo '<tr>'.'<td>'.$r['id'].'<td>'.$r['widget'].'<td>'.$r['area'].'<td>'.$r['pos'].'<td>';
+            echo '<a class="open-dialog" hr="admin/widgets/'.$r['id'].'">Edit</a>';
+        }
+?>
+</table>
+
+<script>
+function widget_data_serialize () {
+  return 'gggh';
+}
+g.dialog.buttons.update_widget = {title:'Update',fn:function(){
+    widget_data = widget_data_serialize()
+    widget_id = document.getElementById('widget_id').value
+    widget_area = document.getElementById('widget_area').value
+    $.post(
+        "admin/update_widget",
+        {widget_data:widget_data, widget_id:widget_id, widget_area:widget_area},
+        function (response) {
+            g('#gila-darkscreen').remove();
+        }
+    );
+}};
+g.dialog.buttons.close_widget = {title:'Cancel',fn:function(){
+    g('#gila-darkscreen').remove();
+}};
+
+g.click(".open-dialog",function(){
+  href=event.target.getAttribute('hr');
+  g.ajax(href,function(data){
+    g.dialog({class:'lightscreen',title:'title',body:data,buttons:'update_widget close_widget'})
+    g.require('http://localhost/gila/libs/jquery/jquery-sortable.js',function(){
+      g.require('//localhost/gila/src/core/widgets/menu/edit.js');
+    });
+  });
+  requiredRes = []
+
+
+  return false;
+})
+</script>
