@@ -65,7 +65,7 @@
                 </li>
                 <li class="float-right">
                     User Name
-                    <a href="<?=gila::config('base')?>/logout">Logout</a>
+                    <a href="<?=gila::config('base')?>admin/logout">Logout</a>
                 </li>
 
             </ul>

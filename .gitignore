@@ -1,14 +1,15 @@
-composer.phar
-/vendor/
-/_libs/
-/log/
-/_src/
-/src/gila-shop/
-/src/classifieds/
-/src/gila-shop/
-/themes_/
-/assets/
+vendor/
+_libs/
+log/
+_src/
+src/*
+!src/core/
+themes/*
+!themes/startbootstrap-clean-blog/
+themes_/
+assets/
 
+composer.phar
 composer.json
 composer.lock
 config.php
