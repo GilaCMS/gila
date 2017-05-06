@@ -62,7 +62,10 @@ else {
 
     <div class="row ">
         <label class="gm-2">Thumbnail</label>
-        <input class="gm-10" value="<?=$p->img?>" name="p_img"/>
+        <div class="gm-10" style="display:table-row">
+          <span class="box" style="display:table-cell;width:28px" onclick="open_gallery()"><i class="fa fa-image"></i></span>
+          <span style="display:table-cell;width:100%"><input value="<?=$p->img?>" name="p_img"/><span>
+        </div>
     </div>
 
     <div class="row ">
@@ -132,4 +135,14 @@ g.require('libs/jquery/jquery-2.2.4.min.js',function(){
         $('.select2').select2();
     })
 })
+
+function open_gallery() {
+
+  g.ajax("admin/media",function(gal){ //{path:'assets'},
+    g.dialog({title:"Gila gallery",body:gal})
+  })
+  g.click('.gal-path',function(){
+    console.log(event.target.getAttribute('data-path'))
+  })
+}
 </script>

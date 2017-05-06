@@ -181,4 +181,20 @@ class admin extends controller
         session::destroy();
     }
 
+    function mediaAction()
+    {
+      $files = scandir("assets");
+      foreach($files as $file) if($file[0]!='.'){
+        $exp = explode('.',$file);
+        if(count($exp)==1) {
+          $type='folder-o';
+        } else {
+          $imgx = ['jpg','jpeg','png','gif'];
+          if(in_array($exp[count($exp)-1],$imgx)) $type='image'; else $type='file';
+        }
+
+        echo '<span class="" ><i class="fa fa-'.$type.' gal-path" data-path="'.$file.'"><span>esrg</span></i>'.$file.'<span><br>';
+      }
+    }
+
 }
