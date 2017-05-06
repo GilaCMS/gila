@@ -19,17 +19,17 @@
 }
 
 #wrapper.toggled {
-    padding-left: 200px;
+    padding-left: 160px;
 }
 
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
-    left: 200px;
+    left: 160px;
     width: 0;
     height: 100%;
-    margin-left: -200px;
-    overflow-y: auto;
+    margin-left: -160px;
+    overflow-y: visible;
     background: #000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -38,7 +38,8 @@
 }
 
 #wrapper.toggled #sidebar-wrapper {
-    width: 200px;
+    width: 160px;
+    overflow-y: auto;
 }
 
 #page-content-wrapper {
@@ -49,29 +50,27 @@
 
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
-    margin-right: -200px;
+    margin-right: -160px;
 }
 
 /* Sidebar Styles */
 
 .sidebar-nav {
-    position: absolute;
-    top: 0;
-    width: 200px;
+    width: 160px;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.sidebar-nav li {
-    text-indent: 10px;
-    line-height: 40px;
-}
 
 .sidebar-nav li a {
-    display: block;
-    text-decoration: none;
     color: #999999;
+    padding: 12px!important;
+}
+.sidebar-nav li ul {
+    color: black;
+    border: 1px solid #888;
+    width: auto;
 }
 
 .sidebar-nav li a:hover {
@@ -79,30 +78,19 @@
     color: #fff;
     background: rgba(255,255,255,0.2);
 }
+.sidebar-nav li ul li a, .sidebar-nav li ul li a:hover {
+    text-decoration: none;
+    color: #444;
+}
 
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
     text-decoration: none;
 }
 
-.sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 18px;
-    line-height: 60px;
-}
-
-.sidebar-nav > .sidebar-brand a {
-    color: #999999;
-}
-
-.sidebar-nav > .sidebar-brand a:hover {
-    color: #fff;
-    background: none;
-}
-
 @media(min-width:768px) {
     #wrapper {
-        padding-left: 200px;
+        padding-left: 160px;
     }
 
     #wrapper.toggled {
@@ -110,7 +98,8 @@
     }
 
     #sidebar-wrapper {
-        width: 200px;
+        width: 160px;
+        overflow-y: visible;
     }
 
     #wrapper.toggled #sidebar-wrapper {

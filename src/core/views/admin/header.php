@@ -33,10 +33,10 @@
 
         <!-- Sidebar g-nav vertical -->
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="admin">Admin</a>
-                </li>
+            <div style="position: relative;height: 100px;">
+                <img style="width:60px" src="install/logo.png" class="centered">
+            </div>
+            <ul class="g-nav vertical sidebar-nav ">
                 <?php
                     foreach (gila::$amenu as $key => $value) {
                         echo "<li><a href='{$value[1]}'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a>";
