@@ -1,0 +1,11 @@
+<link rel="stylesheet" type="text/css" href="libs/pnk/pnk.css?">
+<div class='pnk-table' pnk-src='src/core/tables/page' id='tpage'></div>
+
+<script src='libs\jquery\jquery-2.2.4.min.js'></script>
+<script src='libs\pnk\pnk-1.3.js?v=4'></script>
+<script>
+Pnk.tools.new_page = {title:'New',fn:function(){
+    windows.location.href ='admin/pages/new'
+}}
+pnk_populate_tables(document);
+</script>

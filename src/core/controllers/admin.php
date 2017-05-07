@@ -26,10 +26,10 @@ class admin extends controller
             view::renderAdmin('admin/edit_post.phtml');
             return;
         }
-        view::set('page', (router::get('page',1)?:1));
+        /*view::set('page', (router::get('page',1)?:1));
         view::set('rpp', 10);
-        view::renderAdmin('admin/list_post.phtml');
-        //view::renderHtml('<div class="pnk-table" pnk-src="src/core/tables/post"></div><script>pnk_populate_tables()</script>');
+        view::renderAdmin('admin/list_post.phtml');*/
+        view::renderAdmin('admin/post.phtml');
     }
 
     function pagesAdmin ()
@@ -40,9 +40,10 @@ class admin extends controller
             view::renderAdmin('admin/edit_page.phtml');
             return;
         }
-        view::set('page', (router::get('page',1)?:1));
-        view::set('rpp', 10);
-        view::renderAdmin('admin/list_page.phtml');
+        //view::set('page', (router::get('page',1)?:1));
+        //view::set('rpp', 10);
+        //view::renderAdmin('admin/list_page.phtml');
+        view::renderAdmin('admin/page.phtml');
     }
 
     function postcategoriesAdmin ()
@@ -154,10 +155,10 @@ class admin extends controller
         echo "<table class='g-table'>$table</table>";
         echo "<script>
         function addon_activate(p){ g.ajax('admin/addons?activate='+p,function(x){
-            g.alert('Package successfully activated!','success','location.reload()');
+            g.alert('Package successfully activated!','success','location.reload(true)');
             })};
         function addon_deactivate(p){ g.ajax('admin/addons?deactivate='+p,function(x){
-            g.alert('Package deactivated!','notice','location.reload()');
+            g.alert('Package deactivated!','notice','location.reload(true)');
              })};
         </script>";
         include 'src/core/views/admin/footer.php';
