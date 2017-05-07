@@ -6,8 +6,8 @@ src/*
 !src/core/
 themes/*
 !themes/startbootstrap-clean-blog/
-themes_/
-assets/
+assets/*
+!assets/gila-logo.png
 
 composer.phar
 composer.json
