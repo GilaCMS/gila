@@ -183,18 +183,27 @@ class admin extends controller
 
     function mediaAction()
     {
-      $files = scandir("assets");
+        $path = router::post('path','assets');
+      $files = scandir($path);
+      $disabled = ($path=='assets')?'disabled':'';
+      $path_array = explode('/',$path);
+      array_splice($path_array,count($path_array)-1);
+      $uppath=implode('/',$path_array);
+      echo "<div class='g-group fullwidth bordered'><a class='btn-white g-group-item fa' id='fm-goup' data-path='$uppath' $disabled><i class='fa fa-arrow-left'></i></a><span class='g-group'>$path</span></div>";
+      echo "<input id='selected-path' type='hidden'>";
+      echo "<div class='wrapper gap-8px' style='max-height:250px;overflow-y:scroll;'>";
       foreach($files as $file) if($file[0]!='.'){
         $exp = explode('.',$file);
         if(count($exp)==1) {
-          $type='folder-o';
+          $type='folder';
         } else {
           $imgx = ['jpg','jpeg','png','gif'];
           if(in_array($exp[count($exp)-1],$imgx)) $type='image'; else $type='file';
         }
-
-        echo '<span class="" ><i class="fa fa-'.$type.' gal-path" data-path="'.$file.'"><span>esrg</span></i>'.$file.'<span><br>';
+        $file=$path.'/'.$file;
+        echo '<div style="display:inline-block;width:110px; text-align:center" class=""><i  data-path="'.$file.'"class="gal-path wrapper gal-'.$type.' fa fa-4x fa-'.$type.' " ></i><br><span>'.$file.'</span></div>';
       }
+      echo "</div>";
     }
 
 }

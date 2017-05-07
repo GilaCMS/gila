@@ -27,7 +27,7 @@
 
 </head>
 
-<body>
+<body style="background:#f5f5f5">
 
     <div id="wrapper">
 
@@ -56,19 +56,16 @@
 
         <!-- Page Content -->
         <div class="col-md-12">
-            <ul class="g-toolbar">
-                <li>
-                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
-                </li>
-                <li>
-                    <a href="<?=gila::config('base')?>" class="btn btn-default" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
-                </li>
-                <li class="float-right">
+            <div class="g-group fullwidth margin-8px" style="vertical-align:baseline">
+                <span class="g-group bordered">
+                    <a href="#menu-toggle" class="btn btn-white g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
+                    <a href="<?=gila::config('base')?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
+                    </span>
+                <span class="g-group-item fullscreen text-align-right">
                     User Name
                     <a href="<?=gila::config('base')?>admin/logout">Logout</a>
-                </li>
-
-            </ul>
+                </span>
+            </div>
             <div style="background:#ddd; padding:6px" class="row caption">
                 <div style="font-size:22px; padding-left: 15px;">
                     <?php

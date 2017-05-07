@@ -62,9 +62,9 @@ else {
 
     <div class="row ">
         <label class="gm-2">Thumbnail</label>
-        <div class="gm-10" style="display:table-row">
-          <span class="box" style="display:table-cell;width:28px" onclick="open_gallery()"><i class="fa fa-image"></i></span>
-          <span style="display:table-cell;width:100%"><input value="<?=$p->img?>" name="p_img"/><span>
+        <div class="gm-10 g-group">
+          <span class="btn g-group-item" style="width:28px" onclick="open_gallery()"><i class="fa fa-image"></i></span>
+          <span class="g-group-item"><input class="fullwidth" value="<?=$p->img?>" name="p_img"/><span>
         </div>
     </div>
 
@@ -136,13 +136,34 @@ g.require('libs/jquery/jquery-2.2.4.min.js',function(){
     })
 })
 
-function open_gallery() {
+g.dialog.buttons.select_path = {
+    title:'Select',fn:function(){
+        let v = g('#selected-path').attr('value')
+        if(v!=null) g('[name=p_img]').attr('value',v)
+        g('#gila-darkscreen').remove();
+    }
+}
+g.click(".gal-image",function(){
+    g('.gal-path').removeClass('g-selected');
+    g(event.target).addClass('g-selected');
+    g('#selected-path').attr('value',event.target.getAttribute('data-path'))
+})
+g.click(".gal-folder",function(){
+    let path=event.target.getAttribute('data-path')
+    g.post("admin/media","path="+path,function(gal){ //
+        g('#gila-popup>.body').html(gal)
+    })
+})
+g.click("#fm-goup",function(){
+    let path=event.target.getAttribute('data-path')
+    g.post("admin/media","path="+path,function(gal){ //
+        g('#gila-popup>.body').html(gal)
+    })
+})
 
-  g.ajax("admin/media",function(gal){ //{path:'assets'},
-    g.dialog({title:"Gila gallery",body:gal})
-  })
-  g.click('.gal-path',function(){
-    console.log(event.target.getAttribute('data-path'))
-  })
+function open_gallery() {
+    g.post("admin/media","path=assets",function(gal){ //
+        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path'})
+    })
 }
 </script>
