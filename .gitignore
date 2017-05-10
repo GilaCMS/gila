@@ -1,7 +1,6 @@
 
 # Gila ignores
 vendor/
-_libs/
 log/
 src/*
 themes/*

@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <title><?=gila::config('base')?></title>
 
-    <link href="libs/gila.min.css" rel="stylesheet">
+    <link href="lib/gila.min.css" rel="stylesheet">
 </head>
 
 <body>

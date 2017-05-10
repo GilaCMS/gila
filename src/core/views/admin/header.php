@@ -13,8 +13,8 @@
     <title>Gila CMS - Administration</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="libs/bootstrap/bootstrap.min.css" rel="stylesheet" async>
-    <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" async>
+    <link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet" async>
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" async>
 
     <!-- Custom CSS -->
     <link href="src/core/assets/simple-sidebar.css" rel="stylesheet" async>
@@ -30,8 +30,8 @@
     .dark-orange li ul li a:hover{ color:white; }*/
     </style>
 
-    <script src="libs/jquery/jquery-2.2.4.min.js"></script>
-    <script src="libs/bootstrap/bootstrap.min.js"></script>
+    <script src="lib/jquery/jquery-2.2.4.min.js"></script>
+    <script src="lib/bootstrap/bootstrap.min.js"></script>
     <script src="//localhost/test/gilajs/dist/gila.min.js"></script>
 
 

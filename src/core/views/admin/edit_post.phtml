@@ -103,7 +103,7 @@ else {
 </form>
 </div>
 
-<script src="libs/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="lib/tinymce/js/tinymce/tinymce.min.js"></script>
 <script>
 //cdn.tinymce.com/4/tinymce.min.js
 //tinymce.init({ selector:'textarea' });
@@ -129,9 +129,9 @@ tinymce.init({
 
 if(typeof requiredRes=='undefined') requiredRes = {}
 
-g.require('libs/jquery/jquery-2.2.4.min.js',function(){
-    g.loadCSS('libs/select2/select2.min.css');
-    g.require(['libs/select2/select2.min.js'],function(){
+g.require('lib/jquery/jquery-2.2.4.min.js',function(){
+    g.loadCSS('lib/select2/select2.min.css');
+    g.require(['lib/select2/select2.min.js'],function(){
         $('.select2').select2();
     })
 })

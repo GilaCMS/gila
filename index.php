@@ -36,8 +36,8 @@ spl_autoload_register(function ($class) {
 	if (file_exists('src/core/classes/'.$class.'.php')) {
 		require_once 'src/core/classes/'.$class.'.php';
 	}
-	else if (file_exists('libs/'.$class.'.php')) {
-		require_once 'libs/'.$class.'.php';
+	else if (file_exists('lib/'.$class.'.php')) {
+		require_once 'lib/'.$class.'.php';
 	} else trigger_error("File $class could not be found with autoload.", E_NOTICE);
 });
 
