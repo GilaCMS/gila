@@ -97,7 +97,7 @@ else {
 
     <div class="row wrapper">
         <div class="btn-group">
-            <input type="submit" name="submit-btn" class="btn btn-primary primary" onclick="this.value='submited'" />
+            <input type="submit" name="submit-btn" class="btn btn-primary primary" onclick="el.value='submited'" />
         </div>
     </div>
 </form>
@@ -143,19 +143,19 @@ g.dialog.buttons.select_path = {
         g('#gila-darkscreen').remove();
     }
 }
-g.click(".gal-image",function(){
+g.click(".gal-image",function(el){
     g('.gal-path').removeClass('g-selected');
-    g(event.target).addClass('g-selected');
-    g('#selected-path').attr('value',event.target.getAttribute('data-path'))
+    g(this).addClass('g-selected');
+    g('#selected-path').attr('value',this.getAttribute('data-path'))
 })
-g.click(".gal-folder",function(){
-    let path=event.target.getAttribute('data-path')
+g.click(".gal-folder",function(el){
+    let path=this.getAttribute('data-path')
     g.post("admin/media","path="+path,function(gal){ //
         g('#gila-popup>.body').html(gal)
     })
 })
-g.click("#fm-goup",function(){
-    let path=event.target.getAttribute('data-path')
+g.click("#fm-goup",function(el){
+    let path=this.getAttribute('data-path')
     g.post("admin/media","path="+path,function(gal){ //
         g('#gila-popup>.body').html(gal)
     })

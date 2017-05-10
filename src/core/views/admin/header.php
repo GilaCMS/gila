@@ -18,11 +18,21 @@
 
     <!-- Custom CSS -->
     <link href="src/core/assets/simple-sidebar.css" rel="stylesheet" async>
-    <link href="libs/gila.min.css" rel="stylesheet">
+    <link href="//localhost/test/gilajs/dist/gila.min.css" rel="stylesheet">
+    <style>
+    .g-nav li{ color:#fff; }
+    .g-nav li a{ color:#aaa; }
+    .g-nav li ul li a{ color:#444; }
+    .g-nav li a:hover{ background:var(--main-dark-color);color:white }
+    /*.dark-orange li ul{ background-color: #fff; }
+    .dark-orange li ul li{ color: var(--main-color); }
+    .dark-orange li ul li a{ color: var(--main-color); }
+    .dark-orange li ul li a:hover{ color:white; }*/
+    </style>
 
     <script src="libs/jquery/jquery-2.2.4.min.js"></script>
     <script src="libs/bootstrap/bootstrap.min.js"></script>
-    <script src="libs/gila.min.js"></script>
+    <script src="//localhost/test/gilajs/dist/gila.min.js"></script>
 
 
 </head>
@@ -36,7 +46,7 @@
             <div style="position: relative;height: 100px;">
                 <img style="width:60px" src="install/logo.png" class="centered">
             </div>
-            <ul class="g-nav vertical sidebar-nav ">
+            <ul class="g-nav vertical">
                 <?php
                     foreach (gila::$amenu as $key => $value) {
                         echo "<li><a href='{$value[1]}'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a>";

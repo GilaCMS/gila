@@ -192,7 +192,7 @@ class admin extends controller
       $uppath=implode('/',$path_array);
       echo "<div class='g-group fullwidth bordered'><a class='btn-white g-group-item fa' id='fm-goup' data-path='$uppath' $disabled><i class='fa fa-arrow-left'></i></a><span class='g-group'>$path</span></div>";
       echo "<input id='selected-path' type='hidden'>";
-      echo "<div class='wrapper gap-8px' style='max-height:250px;overflow-y:scroll;'>";
+      echo "<div class='g-gal wrapper gap-8px' style='max-height:250px;overflow-y:scroll;'>";
       foreach($files as $file) if($file[0]!='.'){
         $exp = explode('.',$file);
         if(count($exp)==1) {
@@ -202,7 +202,10 @@ class admin extends controller
           if(in_array($exp[count($exp)-1],$imgx)) $type='image'; else $type='file';
         }
         $file=$path.'/'.$file;
-        echo '<div style="display:inline-block;width:110px; text-align:center" class=""><i  data-path="'.$file.'"class="gal-path wrapper gal-'.$type.' fa fa-4x fa-'.$type.' " ></i><br><span>'.$file.'</span></div>';
+        if($type=='image') {
+            $img='<img src="'.$file.'">';
+        } else $img='<i class="fa fa-4x fa-'.$type.' " ></i>';
+        echo '<div data-path="'.$file.'"class="gal-path gal-'.$type.'">'.$img.'<br><span>'.$file.'</span></div>';
       }
       echo "</div>";
     }

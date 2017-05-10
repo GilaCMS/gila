@@ -29,7 +29,7 @@
     width: 0;
     height: 100%;
     margin-left: -160px;
-    overflow-y: visible;
+    overflow-y: auto;
     background: #000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -39,7 +39,8 @@
 
 #wrapper.toggled #sidebar-wrapper {
     width: 160px;
-    overflow-y: auto;
+    overflow-y: visible;
+
 }
 
 #page-content-wrapper {
@@ -53,40 +54,6 @@
     margin-right: -160px;
 }
 
-/* Sidebar Styles */
-
-.sidebar-nav {
-    width: 160px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-
-.sidebar-nav li a {
-    color: #999999;
-    padding: 12px!important;
-}
-.sidebar-nav li ul {
-    color: black;
-    border: 1px solid #888;
-    width: auto;
-}
-
-.sidebar-nav li a:hover {
-    text-decoration: none;
-    color: #fff;
-    background: rgba(255,255,255,0.2);
-}
-.sidebar-nav li ul li a, .sidebar-nav li ul li a:hover {
-    text-decoration: none;
-    color: #444;
-}
-
-.sidebar-nav li a:active,
-.sidebar-nav li a:focus {
-    text-decoration: none;
-}
 
 @media(min-width:768px) {
     #wrapper {
@@ -104,6 +71,7 @@
 
     #wrapper.toggled #sidebar-wrapper {
         width: 0;
+        overflow-y: auto;
     }
 
     #page-content-wrapper {

@@ -1,15 +1,18 @@
+
+# Gila ignores
 vendor/
 _libs/
 log/
-_src/
 src/*
-!src/core/
 themes/*
-!themes/startbootstrap-clean-blog/
 assets/*
-!assets/gila-logo.png
-
 composer.phar
 composer.json
 composer.lock
 config.php
+
+# excluded
+!src/core/
+!themes/startbootstrap-clean-blog/
+!themes/base/
+!assets/gila-logo.png
