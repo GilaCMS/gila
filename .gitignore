@@ -3,7 +3,7 @@
 vendor/
 _libs/
 log/
-#src/*
+src/*
 themes/*
 assets/*
 composer.phar
