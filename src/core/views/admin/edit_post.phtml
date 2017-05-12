@@ -2,7 +2,7 @@
 <?php
 global $db;
 $p_list = ['title', 'post', 'publish' ];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $title = $_POST['p_title'];
     $text = $_POST['p_post'];
     $img = trim($_POST['p_img']);
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited')
         $db->query("UPDATE post SET title=?,post=?,publish=?,slug=? WHERE id=$id",$args);
     }
 
-    $db->query("DELETE FROM postmeta WHERE $id=? AND vartype IN('category','tag','thumbnail')",$id);
+    $db->query("DELETE FROM postmeta WHERE post_id=? AND vartype IN('category','tag','thumbnail')",$id);
     if($img!='') $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'thumbnail',?);",[$id,$img]);
     if($categories) foreach($categories as $c)
         $db->query("INSERT INTO postmeta(post_id,vartype,value) VALUES(?,'category',?);",[$id,$c]);
@@ -97,7 +97,7 @@ else {
 
     <div class="row wrapper">
         <div class="btn-group">
-            <input type="submit" name="submit-btn" class="btn btn-primary primary" onclick="el.value='submited'" />
+            <input type="submit" name="submit-btn" class="btn btn-primary primary" onclick="this.value='submited'" />
         </div>
     </div>
 </form>
@@ -143,23 +143,34 @@ g.dialog.buttons.select_path = {
         g('#gila-darkscreen').remove();
     }
 }
-g.click(".gal-image",function(el){
+g.click(".gal-image",function(){
     g('.gal-path').removeClass('g-selected');
     g(this).addClass('g-selected');
     g('#selected-path').attr('value',this.getAttribute('data-path'))
 })
-g.click(".gal-folder",function(el){
+g.click(".gal-folder",function(){
     let path=this.getAttribute('data-path')
     g.post("admin/media","path="+path,function(gal){ //
         g('#gila-popup>.body').html(gal)
     })
 })
-g.click("#fm-goup",function(el){
+g.click("#fm-goup",function(){
+    if(this.getAttribute('data-path')=='') return;
+
     let path=this.getAttribute('data-path')
     g.post("admin/media","path="+path,function(gal){ //
         g('#gila-popup>.body').html(gal)
     })
 })
+
+function gallery_upload_files() {
+    let fm=new FormData() //g.el('upload_files_form')
+    fm.append('uploadfiles', g.el('upload_files').files[0]);
+    fm.append('path', g.el('upload_files').getAttribute('data-path'));
+    g.upload("admin/media_upload",fm,function(gal){
+        g('#gila-popup>.body').html(gal)
+    })
+}
 
 function open_gallery() {
     g.post("admin/media","path=assets",function(gal){ //

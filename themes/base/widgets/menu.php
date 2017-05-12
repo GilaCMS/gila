@@ -1,4 +1,4 @@
-<ul class="g-nav dark-orange">
+<ul class="g-nav g-navbar">
 <?php
 $menu_items = json_decode($widget_data,true);
 
@@ -9,10 +9,13 @@ foreach ($menu_items as $mi) {
         else {
             echo "<li>";
             echo "<a href=\"{$mi['url']}\" >{$mi['title']}</a>";
-            echo "<ul class=\"dropdown-menu\" role=\"menu\">";
-            foreach ($mi['children'][0] as $mii) if(isset($mii['url'])){
-                echo "<li><a href=\"{$mii['url']}\">{$mii['title']}</a></li>"; }
-            echo "</ul></li>";
+            if (isset($mi['children'][0])) {
+                echo "<ul class=\"dropdown-menu\" role=\"menu\">";
+                foreach ($mi['children'][0] as $mii) if(isset($mii['url'])){
+                    echo "<li><a href=\"{$mii['url']}\">{$mii['title']}</a></li>";
+                }
+                echo "</ul></li>";
+            }
         }
 } ?>
 </ul>

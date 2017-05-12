@@ -90,10 +90,6 @@ class router
     static function post ($key,$default=null)
     {
         return isset($_POST[$key])?$_POST[$key]:$default;
-        /*if (isset($_POST[$key])) {
-            return $_POST[$key];
-        }
-        return null;*/
     }
 
     static function url ()

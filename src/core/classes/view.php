@@ -89,13 +89,15 @@ class view
         event::fire($area);
     }
 
-    static function thumb ($src)
+    static function thumb ($src,$id,$max=180)
     {
-      $file = 'assets/img_cache/'.$src;
-      $max_width=30;
-      $max_height=60;
+        if($src==null) return false;
+      $file = 'assets/cache/'.$id;
+      $max_width=$max;
+      $max_height=$max;
+      //return $file;
       //$pathf = explode('\\');
-      if (!file_exists($file)) {
+      if($src!='') if (!file_exists($file)) {
         $image = getimagesize($src);
         list($src_width,$src_height)=$image;
         $newwidth=$max_width;
@@ -114,31 +116,32 @@ class view
 
         switch($image[2]) {
           case 1:
-          $timg = imageCreateFromGIF($src);
+          $img_src = imageCreateFromGIF($src);
           break;
           case 2:
-          $timg = imageCreateFromJPEG($src);
+          $img_src = imageCreateFromJPEG($src);
           break;
           case 3:
-          $timg = imageCreateFromPNG($src);
+          $img_src = imageCreateFromPNG($src);
           break;
         }
         imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
-
-        switch($image[2]) {
+imagejpeg($tmp,$file,80);
+        /*switch($image[2]) {
           case 1:
-          $timg = imagegif($tmp,$file);
+          imagegif($tmp,$file);
           break;
           case 2:
-          $timg = imagejpeg($tmp,$file,100);
+          imagejpeg($tmp,$file,100);
           break;
           case 3:
-          $timg = imagepng($tmp,$file);
+          imagepng($tmp,$file);
           break;
-        }
+      }*/
         imagedestroy($img_src);
         imagedestroy($tmp);
       }
+      return $file;
     }
 /*
     function displayFile($filepath) {

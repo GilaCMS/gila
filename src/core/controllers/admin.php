@@ -182,6 +182,18 @@ class admin extends controller
         session::destroy();
     }
 
+    function media_uploadAction(){
+        if(isset($_FILES['uploadfiles'])) {
+            if (isset($_FILES['upload_files']["error"])) if ($_FILES['upload_files']["error"] > 0) {
+                echo "Error: " . $_FILES['upload_files']['error'] . "<br>";
+            }
+            $path = router::post('path','assets');
+            if(!move_uploaded_file($_FILES['uploadfiles']['tmp_name'],$path.'/'.$_FILES['uploadfiles']['name'].'.jpg')) {
+                echo "Error: could not upload file!<br>";
+            }
+        }
+        self::mediaAction();
+    }
     function mediaAction()
     {
         $path = router::post('path','assets');
@@ -190,7 +202,7 @@ class admin extends controller
       $path_array = explode('/',$path);
       array_splice($path_array,count($path_array)-1);
       $uppath=implode('/',$path_array);
-      echo "<div class='g-group fullwidth bordered'><a class='btn-white g-group-item fa' id='fm-goup' data-path='$uppath' $disabled><i class='fa fa-arrow-left'></i></a><span class='g-group'>$path</span></div>";
+      echo "<div class='g-group fullwidth bordered'><a class='btn btn-white g-group-item' id='fm-goup' data-path='$uppath' $disabled><i class='fa fa-arrow-left'></i></a><span class='g-group-item'>$path</span><input type='file' class='g-group-item' id='upload_files' onchange='gallery_upload_files()' multiple data-path=\"$path\"></div>";
       echo "<input id='selected-path' type='hidden'>";
       echo "<div class='g-gal wrapper gap-8px' style='max-height:250px;overflow-y:scroll;'>";
       foreach($files as $file) if($file[0]!='.'){

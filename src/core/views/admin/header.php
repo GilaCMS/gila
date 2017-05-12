@@ -18,7 +18,7 @@
 
     <!-- Custom CSS -->
     <link href="src/core/assets/simple-sidebar.css" rel="stylesheet" async>
-    <link href="//localhost/test/gilajs/dist/gila.min.css" rel="stylesheet">
+    <link href="lib/gila.min.css" rel="stylesheet">
     <style>
     .g-nav li{ color:#fff; }
     .g-nav li a{ color:#aaa; }
@@ -32,7 +32,7 @@
 
     <script src="lib/jquery/jquery-2.2.4.min.js"></script>
     <script src="lib/bootstrap/bootstrap.min.js"></script>
-    <script src="//localhost/test/gilajs/dist/gila.min.js"></script>
+    <script src="lib/gila.min.js"></script>
 
 
 </head>

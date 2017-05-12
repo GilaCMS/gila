@@ -18,7 +18,12 @@
     <?php foreach (blog::post() as $r) { ?>
     <div class="bordered wrapper margin-16px row" style="background:white">
         <div class="gm-2">
-            <img src="<?=view::thumb($r['img'],$r['id'].'_sm.jpg',180)?>" style=" max-width:100%; height:auto">
+            <?php
+            if($img=view::thumb($r['img'],$r['id'].'_sm.jpg',180)){
+                echo '<img src="'.$img.'" style=" max-width:100%; height:auto">';
+            }
+             ?>
+
         </div>
         <div class="gm-10" style="padding-left:20px">
             <a href="<?=$r['id']?>">
@@ -35,3 +40,9 @@
         </li>
     </ul>
 </div>
+<?php
+global $starttime;
+$end = microtime(true);
+$creationtime = ($end - $starttime);
+printf("<br>Page created in %.6f seconds.", $creationtime);
+?>
