@@ -167,9 +167,12 @@ function gallery_upload_files() {
     let fm=new FormData() //g.el('upload_files_form')
     fm.append('uploadfiles', g.el('upload_files').files[0]);
     fm.append('path', g.el('upload_files').getAttribute('data-path'));
-    g.upload("admin/media_upload",fm,function(gal){
+    g.ajax({url:"admin/media_upload",method:'POST',data:fm, fn: function (gal){
         g('#gila-popup>.body').html(gal)
-    })
+    }})
+    /*g.upload("admin/media_upload",fm,function(gal){
+        g('#gila-popup>.body').html(gal)
+    })*/
 }
 
 function open_gallery() {

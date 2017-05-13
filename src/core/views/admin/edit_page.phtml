@@ -10,8 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     $slug = $slugify->slugify($title);
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {
-		echo "INSERT INTO page(title,`page`,publish,slug) VALUES('$title','$text','$publish',$slug)";
-        $db->query("INSERT INTO page(title,page,publish,slug) VALUES(?,?,?,?)",$args);
+		$db->query("INSERT INTO page(title,page,publish,slug) VALUES(?,?,?,?)",$args);
         $id = $db->insert_id;
     }
     else {

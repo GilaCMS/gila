@@ -34,8 +34,8 @@ g.click(".open-dialog",function(){
   href=event.target.getAttribute('hr');
   g.ajax(href,function(data){
     g.dialog({class:'lightscreen',title:'title',body:data,buttons:'update_widget close_widget'})
-    g.require('http://localhost/gila/libs/jquery/jquery-sortable.js',function(){
-      g.require('//localhost/gila/src/core/widgets/menu/edit.js');
+    g.require('<?=gila::config('base')?>lib/jquery/jquery-sortable.js',function(){
+      g.require('<?=gila::config('base')?>src/core/widgets/menu/edit.js');
     });
   });
   requiredRes = []
