@@ -2,7 +2,7 @@
 <?php
 global $db;
 $p_list = ['title', 'page', 'publish' ];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') if ($_POST['submit-btn']=='submited'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $title = $_POST['p_title'];
     $text = $_POST['p_page'];
     $publish = isset($_POST['p_publish'])?1:0;

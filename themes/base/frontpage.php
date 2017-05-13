@@ -19,10 +19,10 @@
     <div class="bordered wrapper margin-16px row" style="background:white">
         <div class="gm-2">
             <?php
-            if($img=view::thumb($r['img'],$r['id'].'_sm.jpg',180)){
-                echo '<img src="'.$img.'" style=" max-width:100%; height:auto">';
+            if($img=view::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
+                echo '<img src="'.$img.'" style="width:100%; height:auto">';
             }
-             ?>
+            ?>
 
         </div>
         <div class="gm-10" style="padding-left:20px">

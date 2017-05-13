@@ -3,25 +3,62 @@
 class view
 {
     private static $part = array();
+    private static $stylesheet = array();
 
 	static function set($p,$v) {
 		self::$part[$p]=$v;
 	}
 
-    static function renderAdmin($file, $package = null)
+    static function stylesheet($v)
+    {
+        self::$stylesheet[]=$v;
+    }
+
+    static function getThemePath()
+    {
+        return 'themes/'.gila::config('theme');
+    }
+    /*static function renderAdmin($file, $package = null)
     {
         $path_theme = 'src/core/views/admin';
         include $path_theme."/header.php";
         self::renderFile($file, $package);
         include $path_theme."/footer.php";
+    }*/
+
+    static function renderAdmin($file, $package = null)
+    {
+        $path_theme = self::getThemePath().'/admin';
+        $core_theme = 'src/core/views/admin';
+        if(file_exists($path_theme."/header.php")) include $path_theme."/header.php"; else include $core_theme."/header.php";
+        self::renderFile($file, $package);
+        if(file_exists($path_theme."/footer.php")) include $path_theme."/footer.php"; else include $core_theme."/footer.php";
     }
+
 
     static function render($file, $package = null)
     {
-        $path_theme = 'themes/'.gila::config('theme');
+        $path_theme = self::getThemePath();//'themes/'.gila::config('theme');
         include $path_theme."/header.php";
         self::renderFile($file, $package);
         include $path_theme."/footer.php";
+    }
+
+    static function head()
+    {
+        echo '<head>';
+        echo '<base href="'.gila::config('base').'">';
+        echo '<meta charset="utf-8">';
+        echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
+        //<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        //<meta name="description" content="">
+        //<meta name="author" content="">
+        echo '<title>'.gila::config('base').'</title>';
+
+        foreach($stylesheet as $link) {
+            echo '<link href="'.$link.'" rel="stylesheet">';
+        }
+        echo '</head>';
     }
 
     static function renderFile($file, $package = null)
@@ -36,7 +73,7 @@ class view
             }
         }
 
-        $filePath = 'themes/'.gila::config('theme').'/'.$file; // '/views/'.
+        $filePath = self::getThemePath().'/'.$file; // '/views/'. gila::config('theme').'/'.
 
         if (file_exists($filePath)) {
             include $filePath;
@@ -59,7 +96,7 @@ class view
     static function widget ($widget,$widget_exp=null)
     {
         global $db,$widget_data;
-        $filePath = 'themes/'.gila::config('theme').'/widgets/'.$widget.'.php';
+        $filePath = gila::config('theme').'/widgets/'.$widget.'.php';
         $widget_data = $db->get("SELECT data FROM widget WHERE widget=? LIMIT 1;", $widget)[0][0];
         if($widget_exp==null) $widget_exp=$widget;
 
@@ -92,63 +129,35 @@ class view
     static function thumb ($src,$id,$max=180)
     {
         if($src==null) return false;
-      $file = 'assets/cache/'.$id;
-      $max_width=$max;
-      $max_height=$max;
-      //return $file;
-      //$pathf = explode('\\');
-      if($src!='') if (!file_exists($file)) {
-        $image = getimagesize($src);
-        list($src_width,$src_height)=$image;
-        $newwidth=$max_width;
-        $newheight=$max_height;
-
-        if($src_width>$max_width) {
-          $newheight=($src_height/$src_width)*$newwidth;
-        }else if($src_height>$max_height){
-          $newwidth=($src_width/$src_height)*$newheight;
-        }else{
-          copy($src,$file);
-          return;
+        $file = 'assets/cache/'.$id;
+        $max_width=$max;
+        $max_height=$max;
+        if($src=='') return false;
+        if (!file_exists($file)) {
+            image::make_thumb($src,$file,$max_width,$max_height);
         }
-
-        $tmp=imagecreatetruecolor($newwidth,$newheight);
-
-        switch($image[2]) {
-          case 1:
-          $img_src = imageCreateFromGIF($src);
-          break;
-          case 2:
-          $img_src = imageCreateFromJPEG($src);
-          break;
-          case 3:
-          $img_src = imageCreateFromPNG($src);
-          break;
-        }
-        imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
-imagejpeg($tmp,$file,80);
-        /*switch($image[2]) {
-          case 1:
-          imagegif($tmp,$file);
-          break;
-          case 2:
-          imagejpeg($tmp,$file,100);
-          break;
-          case 3:
-          imagepng($tmp,$file);
-          break;
-      }*/
-        imagedestroy($img_src);
-        imagedestroy($tmp);
-      }
-      return $file;
+        return $file;
     }
-/*
-    function displayFile($filepath) {
-		$replace = array();
-		foreach ($this->part as $key => $value) { $replace[$key] = '{'.$key.'}'; }
-		//foreach ($this->part as $key => $value) { $$key = $value; }
-		$temp = file_get_contents($filepath);
-		echo str_replace($replace, $this->part, $temp);
-	}*/
+
+    static function thumb_xs ($src,$id)
+    {
+        return view::thumb($src,$id,80);
+    }
+    static function thumb_sm ($src,$id)
+    {
+        return view::thumb($src,$id,160);
+    }
+    static function thumb_md ($src,$id)
+    {
+        return view::thumb($src,$id,320);
+    }
+    static function thumb_lg ($src,$id)
+    {
+        return view::thumb($src,$id,640);
+    }
+    static function thumb_xl ($src,$id)
+    {
+        return view::thumb($src,$id,1200);
+    }
+
 }
