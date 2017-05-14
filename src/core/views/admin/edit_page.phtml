@@ -51,8 +51,53 @@ else {
     </div>
     <hr>
 
-    <div class="row wrapper">
-        <textarea name="p_page"><?=$p->page?></textarea>
+    <div class="row ">
+        <div id="quill-toolbar-container">
+            <span class="ql-formats">
+               <select class="ql-font"></select>
+               <select class="ql-size"></select>
+             </span>
+             <span class="ql-formats">
+               <button class="ql-bold"></button>
+               <button class="ql-italic"></button>
+               <button class="ql-underline"></button>
+               <button class="ql-strike"></button>
+             </span>
+             <span class="ql-formats">
+               <select class="ql-color"></select>
+               <select class="ql-background"></select>
+             </span>
+             <span class="ql-formats">
+               <button class="ql-script" value="sub"></button>
+               <button class="ql-script" value="super"></button>
+             </span>
+             <span class="ql-formats">
+               <button class="ql-header" value="1"></button>
+               <button class="ql-header" value="2"></button>
+               <button class="ql-blockquote"></button>
+               <button class="ql-code-block"></button>
+             </span>
+             <span class="ql-formats">
+               <button class="ql-list" value="ordered"></button>
+               <button class="ql-list" value="bullet"></button>
+               <button class="ql-indent" value="-1"></button>
+               <button class="ql-indent" value="+1"></button>
+             </span>
+             <span class="ql-formats">
+               <button class="ql-direction" value="rtl"></button>
+               <select class="ql-align"></select>
+             </span>
+             <span class="ql-formats">
+               <button class="ql-link"></button>
+               <button class="ql-image"></button>
+               <button class="ql-video"></button>
+               <!--button class="ql-formula"></button-->
+             </span>
+             <span class="ql-formats">
+               <button class="ql-clean"></button>
+             </span>
+        </div>
+        <div name="p_post" id="quill-container" style="width:100%;background:white;height:350px"><?=nl2br($p->page)?></div>
     </div>
 
     <div class="row wrapper">
@@ -63,29 +108,20 @@ else {
 </form>
 </div>
 
-<script src="lib/tinymce/js/tinymce/tinymce.min.js"></script>
-<script>
-//cdn.tinymce.com/4/tinymce.min.js
-//tinymce.init({ selector:'textarea' });
-tinymce.init({
-  selector: '[name=p_page]',
-  mode: 'none',
-  height: 300,
-  //theme: 'modern',
-  plugins: [
-    'advlist autolink lists link image charmap print  hr anchor pagebreak',
-    'searchreplace wordcount  visualchars code ',
-    'insertdatetime media nonbreaking table contextmenu ', //directionality fullscreen visualblocks preview
-    'template paste textcolor colorpicker textpattern imagetools codesample toc' //example_dependency emoticons
-],
-  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
-  //theme_advanced_buttons3_add : "visualchars",
-  //toolbar2: 'print preview  |   emoticons | table',
-  //image_advtab: true,
-  templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,
-  document_base_url : "//localhost/gila/",
-  content_css: <?php echo json_encode(isset($content_css)?$content_css:[]); ?>
- });
+<!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script-->
+<link rel="stylesheet" href="lib/quill/quill.snow.css" />
+<script type="text/javascript" src="lib/quill/quill.min.js"></script>
 
+<script type="text/javascript">
+  var quill = new Quill('#quill-container', {
+    modules: {
+      //formula: true,
+      //syntax: true,
+      toolbar: '#quill-toolbar-container'
+    },
+    placeholder: 'Compose an epic...',
+    theme: 'snow'
+  });
 </script>

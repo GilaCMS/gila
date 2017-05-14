@@ -153,7 +153,7 @@ class view
     }
     static function thumb_lg ($src,$id)
     {
-        return view::thumb($src,$id,640);
+        return self::thumb($src,$id,640);
     }
     static function thumb_xl ($src,$id)
     {

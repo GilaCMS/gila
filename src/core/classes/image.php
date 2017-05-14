@@ -5,8 +5,9 @@ class image {
 
     static function make_thumb ($src,$file,$max_width,$max_height)
     {
-        if(!file_exists($src)) return false;
-        $image = getimagesize($src);
+        //if(!file_exists($src)) return false;
+        if(!$image = @getimagesize($src)) return false;
+
         list($src_width,$src_height)=$image;
         $newwidth=$max_width;
         $newheight=$max_height;

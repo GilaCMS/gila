@@ -197,6 +197,7 @@ class admin extends controller
     function mediaAction()
     {
         $path = router::post('path','assets');
+        echo $path;
       $files = scandir($path);
       $disabled = ($path=='assets')?'disabled':'';
       $path_array = explode('/',$path);

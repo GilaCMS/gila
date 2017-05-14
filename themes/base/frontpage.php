@@ -14,10 +14,11 @@
 </header-->
 
 <!-- Posts -->
-<div class="wrapper" style="background:#e8e8e8">
+<div class="wrapper row gap-8px" style="background:#e8e8e8">
     <?php foreach (blog::post() as $r) { ?>
-    <div class="bordered wrapper margin-16px row" style="background:white">
-        <div class="gm-2">
+    <div class="gl-12 gm-4 gs-6">
+    <div class="bordered  row" style="background:white">
+        <div class="gl-2 wrapper">
             <?php
             if($img=view::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
                 echo '<img src="'.$img.'" style="width:100%; height:auto">';
@@ -25,12 +26,13 @@
             ?>
 
         </div>
-        <div class="gm-10" style="padding-left:20px">
+        <div class="gl-10 wrapper">
             <a href="<?=$r['id']?>">
                 <h3 class="post-title" style="margin-top:0"><?=$r['title']?></h3>
             </a>
             <?=nl2br(strip_tags($r['post']))?>
         </div>
+    </div>
     </div>
     <?php } ?>
     <!-- Pagination -->
