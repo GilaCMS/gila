@@ -27,6 +27,7 @@ class router
         $controller_file = 'src/'.gila::$controller[$controller].'.php';
 
         if(!file_exists($controller_file)) {
+            echo $controller_file;
             trigger_error("Controller could not be found: $controller=>$controller_file", E_NOTICE);
             exit;
         }
@@ -76,12 +77,12 @@ class router
     */
     static function get ($key, $n = null)
     {
-        if (isset($_GET[$key])) {
-            return $_GET[$key];
-        }
-        else if (isset(router::$args[$n+1])){
-            if ($n == null) return null;
+        if ((isset(router::$args[$n+1])) && ($n != null) && (router::$args[$n+1]!=null)){
+            //if ($n == null) return null;
             return router::$args[$n+1];
+        }
+        else if (isset($_GET[$key])) {
+            return $_GET[$key];
         }
         else {
             return null;

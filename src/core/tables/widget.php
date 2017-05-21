@@ -1,22 +1,23 @@
 <?php
 
+$widget_areas = [];
+foreach (gila::$widget_area as $value) {
+    $widget_areas[$value] = $value;
+}
+
 $table = [
-    'name'=> 'page',
-    'title'=> 'Pages',
-    'pagination'=> 15,
+    'name'=> 'widget',
+    'title'=> 'Widgets',
     'id'=>'id',
-    'tools'=>['new_page','csv'],
+    'tools'=>['add'],
+    'commands'=>['edit','delete'],
     'csv'=> ['id','title','slug','updated','publish','page'],
     'fields'=> [
-        'id'=> [],
-        'title'=> [],
-        'slug'=> [],
-        'updated'=> [],
-        'publish'=> [],
-        'publish'=> [],
-        'commands'=>[
-            'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/pages/'+rv.id+'\">Edit</a>';"
-        ]
-        //'page'=> ['list'=>false]
+        'id'=> ['title'=>'ID', 'edit'=>false],
+        'widget'=> ['title'=>'Widget'], //'edit'=>false, 'create'=>true
+        //'title'=> [],
+        'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
+        'pos'=> ['title'=>'Position'],
+        'data'=> ['title'=>'Data', 'show'=>false, 'type'=>'text'],
     ]
 ];

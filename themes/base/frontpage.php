@@ -15,7 +15,7 @@
 
 <!-- Posts -->
 <div class="wrapper row gap-8px" style="background:#e8e8e8">
-    <?php foreach (blog::post() as $r) { ?>
+    <?php foreach (blog::post({'posts'=>12}) as $r) { ?>
     <div class="gl-12 gm-4 gs-6">
     <div class="bordered  row" style="background:white">
         <div class="gl-2 wrapper">

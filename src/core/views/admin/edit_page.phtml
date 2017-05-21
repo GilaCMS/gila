@@ -97,12 +97,14 @@ else {
                <button class="ql-clean"></button>
              </span>
         </div>
-        <div name="p_post" id="quill-container" style="width:100%;background:white;height:350px"><?=nl2br($p->page)?></div>
+        <input type="hidden" name="p_page" id="p_page">
+        <input type="hidden" name="submit-btn" id="submit-btn">
+        <div id="quill-container" style="width:100%;background:white;height:350px"><?=nl2br($p->page)?></div>
     </div>
 
     <div class="row wrapper">
         <div class="btn-group">
-            <input type="submit" name="submit-btn" class="btn btn-primary primary" onclick="this.value='submited'" />
+            <button onclick="g('#p_page').attr('value',g('#quill-container .ql-editor').all[0].innerHTML);g.el('submit-btn').value='submited'; submit()" class="btn btn-primary primary" >Submit</button>
         </div>
     </div>
 </form>

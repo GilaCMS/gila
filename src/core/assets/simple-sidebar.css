@@ -19,26 +19,29 @@
 }
 
 #wrapper.toggled {
-    padding-left: 160px;
+    padding-left: 200px;
 }
 
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
-    left: 160px;
+    left: 200px;
     width: 0;
     height: 100%;
-    margin-left: -160px;
+    margin-left: -200px;
     overflow-y: auto;
     background: #000;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-}
 
+}
+#sidebar-wrapper a{
+    font-weight: 700;
+}
 #wrapper.toggled #sidebar-wrapper {
-    width: 160px;
+    width: 200px;
     overflow-y: visible;
 
 }
@@ -51,13 +54,13 @@
 
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
-    margin-right: -160px;
+    margin-right: -200px;
 }
 
 
 @media(min-width:768px) {
     #wrapper {
-        padding-left: 160px;
+        padding-left: 200px;
     }
 
     #wrapper.toggled {
@@ -65,7 +68,7 @@
     }
 
     #sidebar-wrapper {
-        width: 160px;
+        width: 200px;
         overflow-y: visible;
     }
 

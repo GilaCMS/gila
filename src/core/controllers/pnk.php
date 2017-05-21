@@ -42,7 +42,9 @@ class pnk extends controller
 
 	function indexAction ()
 	{
-		$this->fieldsAction();
+		$action = $_GET['action'].'Action';
+		if(method_exists('pnk',$action)) $this->$action();
+		//$this->fieldsAction();
 	}
 
 	function fieldsAction ()
