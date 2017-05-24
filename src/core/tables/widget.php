@@ -18,6 +18,6 @@ $table = [
         //'title'=> [],
         'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
         'pos'=> ['title'=>'Position'],
-        'data'=> ['title'=>'Data', 'show'=>false, 'type'=>'text'],
+        'data'=> ['title'=>'Data', 'show'=>false, 'edit'=>true, 'qcolumn'=>"REPLACE(data,'\"','\\\"')", 'type'=>'text'],
     ]
 ];

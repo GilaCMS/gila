@@ -40,10 +40,13 @@ class blog extends controller
             view::set('text',$r['post']);
             view::set('updated',$r['updated']);
 
+            view::set('og_url',gila::config('base').$r['id']);
+
             $res = $db->query("SELECT `value` as img FROM post,postmeta WHERE vartype='thumbnail' AND post_id=$id;");
             if ($res) {
                 $r = mysqli_fetch_array($res);
                 view::set('img',$r['img']);
+                view::set('og_image',$r['img']);
             } else view::set('img',$r['img']);
 
             $res = $db->query("SELECT name FROM user WHERE id='$user_id';");

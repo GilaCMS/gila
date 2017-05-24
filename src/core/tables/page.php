@@ -7,6 +7,7 @@ $table = [
     'id'=>'id',
     'tools'=>['new_page','csv'],
     'csv'=> ['id','title','slug','updated','publish','page'],
+    'commands'=> ['delete'],
     'fields'=> [
         'id'=> [],
         'title'=> [],

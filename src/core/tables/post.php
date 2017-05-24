@@ -7,6 +7,7 @@ $table = [
     'id'=>'id',
     'tools'=>['new_post','csv'],
     'csv'=> ['id','title','slug','user_id','updated','publish','post'],
+    'commands'=> ['delete'],
     'fields'=> [
         'id'=> ['style'=>'width:5%'],
         'title'=> [],
