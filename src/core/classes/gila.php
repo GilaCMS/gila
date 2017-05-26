@@ -32,6 +32,7 @@ class gila {
           'text'=>'core/widgets/text',
           'latest-post'=>'core/widgets/latest-post'
         ]);
+        gila::$widget_area=[];
         //gila::$package = $GLOBALS['package']?:[];
     }
 

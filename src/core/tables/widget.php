@@ -1,6 +1,6 @@
 <?php
 
-$widget_areas = [];
+$widget_areas = ['x'=>'(None)'];
 foreach (gila::$widget_area as $value) {
     $widget_areas[$value] = $value;
 }
