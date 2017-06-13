@@ -26,7 +26,7 @@ class session
 
     static function key ($var,$val = null, $t = 0) {
         if ($val == null) {
-            return $_SESSION[session::md5($var)];
+            if(isset($_SESSION[session::md5($var)])) return $_SESSION[session::md5($var)]; else return null;
         }
         $_SESSION[session::md5($var)] = $val;
 

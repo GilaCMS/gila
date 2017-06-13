@@ -116,6 +116,10 @@ class view
 
     static function block ($area)
     {
+        view::widget_area($area);
+    }
+    static function widget_area ($area)
+    {
         global $db,$widget_data;
         $widgets = $db->get("SELECT * FROM widget WHERE area=? ORDER BY pos ;",[$area]);
         if ($widgets) foreach ($widgets as $widget) {

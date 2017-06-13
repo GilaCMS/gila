@@ -1,15 +1,18 @@
+
+# 1 WEEK - possible to be changed, unlikely
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif|swf)$">
+#Header set Cache-Control "max-age=604800, public"
+</FilesMatch>
+
+<IfModule mod_gzip.c>
+  mod_gzip_on       Yes
+  mod_gzip_dechunk  Yes
+  mod_gzip_item_include file  \.(html?|txt|css|js|php|pl|jpg|png|gif)$
+</IfModule>
+
 RewriteEngine On
 
-
 #disable for these file types
-#RewriteCond %{REQUEST_URI} !\.css$
-#RewriteCond %{REQUEST_URI} !\.css.map$
-#RewriteCond %{REQUEST_URI} !\.jpg$
-#RewriteCond %{REQUEST_URI} !\.js$
-#RewriteCond %{REQUEST_URI} !\.zip$
-#RewriteCond %{REQUEST_URI} !\.html$
-#RewriteCond %{REQUEST_URI} !\.ttf$
-#RewriteCond %{REQUEST_URI} !\.woff$
 RewriteCond %{REQUEST_URI} !vendor
 RewriteCond %{REQUEST_URI} !install
 RewriteCond %{REQUEST_URI} !src

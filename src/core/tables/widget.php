@@ -4,6 +4,10 @@ $widget_areas = ['x'=>'(None)'];
 foreach (gila::$widget_area as $value) {
     $widget_areas[$value] = $value;
 }
+$widgets = [];
+foreach (gila::$widget as $k=>$value) {
+    $widgets[$k] = $k;
+}
 
 $table = [
     'name'=> 'widget',
@@ -14,7 +18,7 @@ $table = [
     'csv'=> ['id','title','slug','updated','publish','page'],
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],
-        'widget'=> ['title'=>'Widget'], //'edit'=>false, 'create'=>true
+        'widget'=> ['title'=>'Widget', 'options'=>$widgets,  'create'=>true], //'edit'=>false,
         //'title'=> [],
         'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
         'pos'=> ['title'=>'Position'],

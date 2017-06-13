@@ -20,10 +20,10 @@
     <link href="src/core/assets/simple-sidebar.css" rel="stylesheet" async>
     <link href="lib/gila.min.css" rel="stylesheet">
     <style>
-    .g-nav li{ color:#fff; }
-    .g-nav li a{ color:#aaa; }
-    .g-nav li ul li a{ color:#444; }
-    .g-nav li a:hover{ background:var(--main-dark-color);color:white }
+    #sidebar-wrapper .g-nav li{ color:#fff; }
+    #sidebar-wrapper .g-nav li a{ color:#aaa; }
+    #sidebar-wrapper .g-nav li ul li a{ color:#444; }
+    #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
     /*.dark-orange li ul{ background-color: #fff; }
     .dark-orange li ul li{ color: var(--main-color); }
     .dark-orange li ul li a{ color: var(--main-color); }
