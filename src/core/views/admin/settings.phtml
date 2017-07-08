@@ -1,5 +1,5 @@
 <?php
-$config_list = ['title'=>'Title', 'slogan'=>'Slogan', 'base'=>'Website URL', 'ssl'=>'SSL URL'];
+$config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'ssl'=>'SSL URL'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     foreach ($config_list as $key => $value) gila::config($key,$_POST['gila_'.$key]);
     gila::config('theme',$_POST['gila_theme']);

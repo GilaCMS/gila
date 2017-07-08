@@ -31,10 +31,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       $link->query("INSERT INTO user VALUES(1,'$_user','$_email','$_pass');");
       $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
-      $link->query("INSERT INTO option VALUES(1,'menu','mainmenu');");
-      $link->query("INSERT INTO menuitem VALUES(1,'Hello World','hello_world','',0);");
       $link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post',CURRENT_TIMESTAMP);");
-      $link->query("INSERT INTO widget VALUES(1,'menu','','','[{\"title\":\"Home\",\"url\":\"\"},{\"title\":\"Page 1\",\"url\":\"Page1\"},{\"title\":\"Page 2\",\"url\":\"Page2\"}]');");
+      $link->query("INSERT INTO page VALUES(1,'About','about','This is a page to describe your website',CURRENT_TIMESTAMP);");
+      $link->query("INSERT INTO widget VALUES(1,'menu','','','[{\"title\":\"Home\",\"url\":\"\"},{\"title\":\"Page\",\"url\":\"about\"}]');");
+
       echo "<div class='alert success'>Installation executed successfully!</div>";
 
       // create config.php
@@ -53,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       }*/
 
       //foreach ($config_list as $key => $value) $GLOBALS['config'][$key] = $_POST['gila_'.$key];
-      $GLOBALS['config']['theme'] = 'startbootstrap-clean-blog';
+      $GLOBALS['config']['theme'] = 'base';
       $GLOBALS['config']['title'] = 'Gila CMS';
       $GLOBALS['config']['slogan'] = 'An awesome website!';
       $GLOBALS['config']['default-controller'] = 'blog';
