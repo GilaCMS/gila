@@ -7,6 +7,8 @@ class session
         global $db;
         //ini_set("session.save_handler", "files");
         //ini_set("session.save_path", __DIR__."/../../../sessions");
+        ini_set('session.gc_maxlifetime', 3600);
+        session_set_cookie_params(3600);
         session_start();
         session::define(['user_id'=>0]);
 

@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       echo "<div class='alert'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>Error: Unable to connect to MySQL.".PHP_EOL;
       echo "<br>#".mysqli_connect_errno().PHP_EOL." : ".mysqli_connect_error().PHP_EOL."</div>";
   } else {
-      $link->query('CREATE TABLE IF NOT EXISTS user(id int(11) NOT NULL auto_increment,name varchar(80),email varchar(80),pass varchar(60),PRIMARY KEY (id));');
+      $link->query('CREATE TABLE IF NOT EXISTS user(id int(11) NOT NULL auto_increment,name varchar(80),email varchar(80),pass varchar(60),reset_code varchar(60),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS usermeta(id int(11) NOT NULL auto_increment,user_id int(11),vartype varchar(80),value varchar(80),PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS post(id int(11) NOT NULL auto_increment,user_id int(11),title varchar(80),slug varchar(80),post TEXT,publish int(1),updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (id));');
       $link->query('CREATE TABLE IF NOT EXISTS postmeta(id int(11) NOT NULL auto_increment,post_id int(11),vartype varchar(25),value varchar(80),PRIMARY KEY (id));');
