@@ -91,14 +91,14 @@ else {
     </div>
     <hr>
 
-    <input type="hidden" name="p_page" id="p_page">
+    <!--input type="hidden" name="p_post" id="p_post"-->
     <input type="hidden" name="submit-btn" id="submit-btn">
-    <?php include __DIR__.'/edit_quill_editor.php'; ?>
+    <?php include __DIR__.'/edit_mce_editor.php'; ?>
 
 
     <div class="row wrapper">
         <div class="btn-group">
-            <button onclick="g('#p_post').attr('value',get_text_to_save());g.el('submit-btn').value='submited'; submit()" class="btn btn-primary primary" >Submit</button>
+            <button onclick="g.el('submit-btn').value='submited'; submit()" class="btn btn-primary primary" >Submit</button>
         </div>
     </div>
 </form>
