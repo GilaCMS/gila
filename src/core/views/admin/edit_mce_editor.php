@@ -1,32 +1,27 @@
 
 <div id="code-tab"  class="gs-12" style="height:350px">
-    <textarea name="p_post"><?=isset($p->page)?$p->page:$p->post?></textarea>
+    <textarea name="<?=$textarea?>"><?=isset($p->page)?$p->page:$p->post?></textarea>
 </div>
 
 <script src="lib/tinymce/js/tinymce/tinymce.min.js"></script>
 <script>
 
 function get_text_to_save() {
-    return g('name=p_post]').all[0].innerHTML;
+    return g('[name=p_post]').all[0].innerHTML;
 }
-//cdn.tinymce.com/4/tinymce.min.js
-//tinymce.init({ selector:'textarea' });
 
 tinymce.init({
-  selector: '[name=p_post]',
+  selector: '[name=<?=$textarea?>]',
   mode: 'none',
   height: 300,
   //theme: 'modern',
   plugins: [
-    'advlist autolink lists link image charmap print  hr anchor pagebreak',
-    'searchreplace wordcount  visualchars code ',
-    'insertdatetime media nonbreaking table contextmenu ', //directionality fullscreen visualblocks preview
-    'template paste textcolor colorpicker textpattern imagetools codesample toc' //example_dependency emoticons
+    'lists link image charmap hr anchor pagebreak',
+    'searchreplace wordcount visualchars code',
+    'insertdatetime media nonbreaking table contextmenu ',
+    'template paste textcolor colorpicker textpattern codesample toc'
 ],
   toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
-  //theme_advanced_buttons3_add : "visualchars",
-  //toolbar2: 'print preview  |   emoticons | table',
-  //image_advtab: true,
   templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,
   document_base_url : "//localhost/gila/",
   content_css: <?php echo json_encode(isset($content_css)?$content_css:[]); ?>

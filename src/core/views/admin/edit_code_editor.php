@@ -8,7 +8,7 @@
 
 
     <div id="code-tab"  class="gs-12" style="height:350px">
-        <textarea><?=nl2br((isset($p->page)?$p->page:$p->post))?></textarea>
+        <textarea><?=isset($p->page)?$p->page:$p->post?></textarea>
     </div>
 
 <script>

@@ -1,3 +1,16 @@
+
+<script>
+function quill_add_embed(embed) {
+    title:'Select',fn:function(){
+        if(!quill.getSelection()) return
+        index=quill.getSelection().index
+        let v = g('#selected-path').attr('value')
+        if(v!=null) quill.insertEmbed(index, embed, v);
+    }
+}
+</script>
+
+
 <div id="quill-toolbar-container">
     <span class="ql-formats">
        <select class="ql-font"></select>
@@ -36,6 +49,7 @@
      <span class="ql-formats">
        <button class="ql-link"></button>
        <button class="ql-add-image" onclick="if(quill.getSelection()) open_gallery_post()"><i class="fa fa-image"></i></button>
+       <button class="ql-add-table" onclick="quill_add_embed('table')"><i class="fa fa-table"></i></button>
        <button class="ql-video"></button>
        <!--button class="ql-formula"></button-->
      </span>

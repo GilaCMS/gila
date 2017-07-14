@@ -14,19 +14,21 @@
 </header-->
 
 <!-- Posts -->
-<div class="wrapper row gap-8px" style="background:#e8e8e8">
-    <?php foreach (blog::post({'posts'=>12}) as $r) { ?>
-    <div class="gl-12 gm-4 gs-6">
+<div class="wrapper row gap-8px" style="background:#e8e8e8;display: flex; justify-content: center;">
+    <div class="gs-12" style="max-width:900px">
+    <?php foreach (blog::post(['posts'=>12]) as $r) { ?>
+    <div class="gs-12">
     <div class="bordered  row" style="background:white">
-        <div class="gl-2 wrapper">
             <?php
             if($img=view::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
+		$title_gl='gs-9';
+		echo '<div class="gs-3 wrapper">';
                 echo '<img src="'.$img.'" style="width:100%; height:auto">';
-            }
+		echo '</div>';
+            } else $title_gl='gs-12';
             ?>
 
-        </div>
-        <div class="gl-10 wrapper">
+        <div class="<?=$title_gl?> wrapper">
             <a href="<?=$r['id']?>">
                 <h3 class="post-title" style="margin-top:0"><?=$r['title']?></h3>
             </a>
@@ -41,10 +43,6 @@
             <a href="?page=<?=$page+1?>">Older Posts &rarr;</a>
         </li>
     </ul>
+    </div>
 </div>
-<?php
-global $starttime;
-$end = microtime(true);
-$creationtime = ($end - $starttime);
-printf("<br>Page created in %.6f seconds.", $creationtime);
-?>
+

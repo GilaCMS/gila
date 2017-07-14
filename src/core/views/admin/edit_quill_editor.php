@@ -6,7 +6,7 @@
 <div class="gs-12">
     <div id='quill-tab' class="gs-12 quill-tab">
         <?php include __DIR__.'/edit_quill_bar.php'; ?>
-        <div id="quill-container" style="width:100%;background:white;height:350px"><?=nl2br(isset($p->page)?$p->page:$p->post)?></div>
+        <div id="quill-container" style="width:100%;background:white;height:350px"><?=isset($p->page)?$p->page:$p->post?></div>
     </div>
 </div>
 <script>
@@ -52,6 +52,7 @@ g.dialog.buttons.select_path_post = {
         g('#gila-darkscreen').remove();
     }
 }
+
 g.click(".gal-image",function(){
     g('.gal-path').removeClass('g-selected');
     g(this).addClass('g-selected');
