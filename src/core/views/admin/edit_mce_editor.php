@@ -3,7 +3,8 @@
     <textarea name="<?=$textarea?>"><?=isset($p->page)?$p->page:$p->post?></textarea>
 </div>
 
-<script src="lib/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="lib/tinymce/tinymce.min.js"></script>
+<script src="lib/prism/prism.js"></script>
 <script>
 
 function get_text_to_save() {
@@ -35,7 +36,7 @@ g.require('lib/jquery/jquery-2.2.4.min.js',function(){
         $('.select2').select2();
     })
 })
-
+/*
 g.dialog.buttons.select_path = {
     title:'Select',fn:function(){
         let v = g('#selected-path').attr('value')
@@ -79,9 +80,6 @@ function gallery_upload_files() {
     g.ajax({url:"admin/media_upload",method:'POST',data:fm, fn: function (gal){
         g('#gila-popup>.body').html(gal)
     }})
-    /*g.upload("admin/media_upload",fm,function(gal){
-        g('#gila-popup>.body').html(gal)
-    })*/
 }
 
 function open_gallery() {
@@ -93,5 +91,5 @@ function open_gallery_post() {
     g.post("admin/media","path=assets",function(gal){ //
         g.dialog({title:"Gila gallery",body:gal,buttons:'select_path_post'})
     })
-}
+}*/
 </script>

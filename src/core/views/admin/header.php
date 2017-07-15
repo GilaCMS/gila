@@ -13,7 +13,7 @@
     <title>Gila CMS - Administration</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet" async>
+    <link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" async>
 
     <!-- Custom CSS -->
@@ -24,6 +24,7 @@
     #sidebar-wrapper .g-nav li a{ color:#aaa; }
     #sidebar-wrapper .g-nav li ul li a{ color:#444; }
     #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
+    .g-nav li ul{min-width: 200px}
     /*.dark-orange li ul{ background-color: #fff; }
     .dark-orange li ul li{ color: var(--main-color); }
     .dark-orange li ul li a{ color: var(--main-color); }
@@ -31,7 +32,7 @@
     </style>
 
     <script src="lib/jquery/jquery-2.2.4.min.js"></script>
-    <script src="lib/bootstrap/bootstrap.min.js"></script>
+    <!--script src="lib/bootstrap/bootstrap.min.js"></script-->
     <script src="lib/gila.min.js"></script>
 
 
@@ -89,4 +90,4 @@
                     <?=ucwords(router::action())?>
                 </div>
             </div>
-            <div class="wrapper">
+            <div class="wrapper" id='main-wrapper'>

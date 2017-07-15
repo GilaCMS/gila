@@ -48,6 +48,8 @@ spl_autoload_register(function ($class) {
 
 $db = new db(gila::config('db'));
 
+new gila();
+
 //$packages = $db->getArray("SELECT value FROM option WHERE option='package'");
 foreach ($GLOBALS['config']['packages'] as $package) {
 	if(file_exists("src/$package/load.php")) include "src/$package/load.php";
@@ -56,7 +58,5 @@ foreach ($GLOBALS['config']['packages'] as $package) {
 $theme = $GLOBALS['config']['theme'];
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
 
-
-new gila();
 new session();
 new router();

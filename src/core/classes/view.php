@@ -18,16 +18,13 @@ class view
     {
         return 'themes/'.gila::config('theme');
     }
-    /*static function renderAdmin($file, $package = null)
-    {
-        $path_theme = 'src/core/views/admin';
-        include $path_theme."/header.php";
-        self::renderFile($file, $package);
-        include $path_theme."/footer.php";
-    }*/
 
     static function renderAdmin($file, $package = null)
     {
+        if(router::post('g_response')=='content') {
+            self::renderFile($file, $package);
+            return;
+        }
         $path_theme = self::getThemePath().'/admin';
         $core_theme = 'src/core/views/admin';
         if(file_exists($path_theme."/header.php")) include $path_theme."/header.php"; else include $core_theme."/header.php";
@@ -38,6 +35,10 @@ class view
 
     static function render($file, $package = null)
     {
+        if(router::post('g_response')=='content') {
+            self::renderFile($file, $package);
+            return;
+        }
         $path_theme = self::getThemePath();//'themes/'.gila::config('theme');
         include $path_theme."/header.php";
         self::renderFile($file, $package);
