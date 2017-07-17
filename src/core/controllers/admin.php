@@ -26,9 +26,6 @@ class admin extends controller
             view::renderAdmin('admin/edit_post.phtml');
             return;
         }
-        /*view::set('page', (router::get('page',1)?:1));
-        view::set('rpp', 10);
-        view::renderAdmin('admin/list_post.phtml');*/
         view::renderAdmin('admin/post.phtml');
     }
 
@@ -40,9 +37,6 @@ class admin extends controller
             view::renderAdmin('admin/edit_page.phtml');
             return;
         }
-        //view::set('page', (router::get('page',1)?:1));
-        //view::set('rpp', 10);
-        //view::renderAdmin('admin/list_page.phtml');
         view::renderAdmin('admin/page.phtml');
     }
 
@@ -70,8 +64,6 @@ class admin extends controller
         view::set('page', (router::get('page',1)?:1));
         view::set('rpp', 10);
         view::renderAdmin('admin/list_widget.phtml');
-        //include 'src/core/views/admin/header.php';
-        //include 'src/core/views/admin/footer.php';
     }
 
     function update_widgetAjax ()

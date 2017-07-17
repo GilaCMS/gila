@@ -24,7 +24,7 @@ tinymce.init({
 ],
   toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
   templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,
-  document_base_url : "//localhost/gila/",
+  document_base_url : "<?=gila::config('base')?>",
   content_css: <?php echo json_encode(isset($content_css)?$content_css:[]); ?>
  });
 

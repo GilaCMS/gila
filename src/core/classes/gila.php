@@ -13,8 +13,8 @@ class gila {
     {
         gila::controllers([
             'admin'=> 'core/controllers/admin',
-            'pnk'=> 'core/controllers/pnk',
-            'login'=> 'core/controllers/login',
+            //'pnk'=> 'core/controllers/pnk',
+            //'login'=> 'core/controllers/login',
             'blog'=> 'core/controllers/blog'
         ]);
         gila::amenu([

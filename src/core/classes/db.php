@@ -12,7 +12,7 @@ $db = new dbClass('localhost', 'root', '', '');
 class db {
 	private $dbhost, $user, $pass, $dsch;
 	private $connected,$link;
-	public $insert_id;
+	public $insert_id,$result;
 
 	function __construct($host = 'localhost', $user = 'root', $pass = '', $dsch = '')
 	{
@@ -81,7 +81,6 @@ class db {
 			$this->insert_id = $this->link->insert_id;
 			return $stmt->get_result();
 		}
-
 		return false;
 	}
 
@@ -114,10 +113,7 @@ class db {
 
 	function getArray($q)
 	{
-		$arr=[];
-		$garr=$this->getRows($q);
-		foreach ($garr as $key => $value) $arr[]=$value[0];
-	  	return $arr;
+	  	return $this->getList;
 	}
 
 	function getList($q)
@@ -142,29 +138,28 @@ class db {
 		return addslashes($_REQUEST[$p]);
 	}
 
-	public function gen($q, $args = null)
+	public function gen($q, $p = null)
 	{
 		if (!$this->connected) $this->connect();
 
-		$res = $this->link->query($q);
+		$res = $this->link->query($q,$p);
 		$this->close();
 		while ($r = mysqli_fetch_array($res)) {
 			yield $r;
 		}
-
 	}
 
-	function value($q)
+	function value($q,$p=null)
 	{
-			$arr = [];
-			if (!$this->connected) $this->connect();
-			$res = $this->link->query($q);
+		$arr = [];
+		if (!$this->connected) $this->connect();
+		$res = $this->query($q,$p);
 	  	$this->close();
-			if($res) {
-					$r=mysqli_fetch_array($res);
-					return $r[0];
-			}
-			return null;
+		if($res) {
+			$r=mysqli_fetch_row($res);
+			return $r[0];
+		}
+		return null;
 	}
 
 }

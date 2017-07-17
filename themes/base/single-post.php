@@ -1,11 +1,11 @@
-<style>
+<!--style>
 pre{
     background-color: #f0f0f0;
     border-radius: 3px;
     padding: 6px;
     border: 1px solid #ccc;
 }
-</style>
+</style-->
 
 <!-- Post Header -->
 <div style="background:#e8e8e8;display: flex; justify-content: center;">
@@ -14,9 +14,9 @@ pre{
       <span class="meta">Posted by <a href="#"><?=$author?></a> on <?=date('F j, Y',strtotime($updated))?></span>
   <hr>
 
-  <!-- Post Content -->
+  <!-- Post Content nl2br($text) -->
   <article>
-      <?=nl2br($text)?>
+      <?=$text?>
   </article>
 </div>
 </div>

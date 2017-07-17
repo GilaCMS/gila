@@ -1,6 +1,7 @@
 <?php
 
 
+use core\models\user as user;
 
 class login extends controller
 {
@@ -22,17 +23,15 @@ class login extends controller
 
 	function password_resetAction()
 	{
-		if(isset($_POST['rp'])) {
-			$res = $dbMain->query("SELECT id FROM user where reset_code='?' and reset_code!='';",$_GET['rp']);
-			$r = mysqli_fetch_array($res);
+		if(isset($_GET['rp'])) {
+            $r = user::getByResetCode($_GET['rp']);
 			if (!$r) {
+                echo 'fgg';
   				exit;
 			}
 			else if(isset($_POST['pass'])) {
 				$idUser=$r[0];
-				$ql = "UPDATE user SET Password='".password_hash($_POST['pass'], PASSWORD_BCRYPT)."', reset_code='' where id='$idUser' and reset_code='{$_GET['rp']}';";
-				$dbMain->query($ql);
-				echo $ql;
+                user::updatePassword($idUser,$_POST['pass']));
 				exit;
 			} else {
 				include 'src/core/views/new_password.phtml';
@@ -48,8 +47,7 @@ class login extends controller
 		$email = $_POST['email'];
 		$out = [];
 
-		$res = $db->query("SELECT * FROM user WHERE email=?",$email);
-		$r = mysqli_fetch_array($res);
+		$r = user::getByEmail($email);
 
 		if ($r == false) {
   			echo "No user found with this email.";
@@ -65,7 +63,8 @@ class login extends controller
 		$message .= "If you didn't ask to change the password please ignore this email";
 
 		$headers = 'From: <no-reply@x3ntaur.com>';
-		$dbMain->query("UPDATE user SET reset_code='' WHERE id=?",[$reset_code,$r['id']]);
+		user::meta($r['id'],'reset_code',$reset_code);
+        //$dbMain->query("UPDATE user SET reset_code='' WHERE id=?",[$reset_code,$r['id']]);
 		mail($to,$subject,$message,$headers);
 
 		$out['success'] = true;

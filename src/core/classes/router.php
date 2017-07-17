@@ -14,6 +14,9 @@ class router
         if (isset($args[0])) {
         	if(isset(gila::$controller[$args[0]])) {
         		$controller = $args[0];
+            } else if  (file_exists('src/core/controllers/'.$args[0].'.php')) {
+                $controller = $args[0];
+                gila::$controller[$controller] = 'core/controllers/'.$controller;
         	} else {
         		array_splice($args, 0, 0, $controller);
         	}
@@ -25,6 +28,7 @@ class router
         if (!isset(gila::$controller[$controller])) $controller = 'blog';
 
         $controller_file = 'src/'.gila::$controller[$controller].'.php';
+
 
         if(!file_exists($controller_file)) {
             echo $controller_file;
