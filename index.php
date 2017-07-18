@@ -33,10 +33,7 @@ ini_set("error_log", "log/error.log");
 spl_autoload_register(function ($class) {
 	$class=str_replace('\\','/',$class);
 
-	/*if (file_exists('src/core2/classes/'.$class.'.php')) {
-		require_once 'src/core2/classes/'.$class.'.php';
-	}
-	else*/ if (file_exists('src/core/classes/'.$class.'.php')) {
+	if (file_exists('src/core/classes/'.$class.'.php')) {
 		require_once 'src/core/classes/'.$class.'.php';
 	}
 	else if (file_exists('src/'.$class.'.php')) {

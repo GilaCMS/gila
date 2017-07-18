@@ -25,7 +25,20 @@ tinymce.init({
   toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
   templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,
   document_base_url : "<?=gila::config('base')?>",
-  content_css: <?php echo json_encode(isset($content_css)?$content_css:[]); ?>
+  content_css: <?php echo json_encode(isset($content_css)?$content_css:[]); ?>,
+  file_picker_callback: function(cb, value, meta) {
+    input_filename = cb;
+    open_gallery_post();
+  },
+  /*setup: function(editor) {
+    editor.addMenuItem('myitem', {
+      text: 'My menu item',
+      context: 'table',
+      onclick: function() {
+        editor.insertContent('&nbsp;<table><tr><th>Ena<th>Dio</tr><tr><td><td>000</table>&nbsp;');
+      }
+    });
+  },*/
  });
 
 if(typeof requiredRes=='undefined') requiredRes = {}
@@ -36,7 +49,7 @@ g.require('lib/jquery/jquery-2.2.4.min.js',function(){
         $('.select2').select2();
     })
 })
-/*
+
 g.dialog.buttons.select_path = {
     title:'Select',fn:function(){
         let v = g('#selected-path').attr('value')
@@ -46,13 +59,26 @@ g.dialog.buttons.select_path = {
 }
 g.dialog.buttons.select_path_post = {
     title:'Select',fn:function(){
-        if(!quill.getSelection()) return
-        index=quill.getSelection().index
+        //if(!quill.getSelection()) return
+        //index=quill.getSelection().index
         let v = g('#selected-path').attr('value')
-        if(v!=null) quill.insertEmbed(index, 'image', v);
+        if(v!=null) input_filename(v);
+        //if(v!=null) quill.insertEmbed(index, 'image', v);
         g('#gila-darkscreen').remove();
     }
 }
+function open_gallery() {
+    g.post("admin/media","g_response=content&path=assets",function(gal){ //
+        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path'})
+    })
+}
+function open_gallery_post() {
+    g.post("admin/media","g_response=content&path=assets",function(gal){ //
+        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path_post'})
+    })
+}
+
+/////////////
 g.click(".gal-image",function(){
     g('.gal-path').removeClass('g-selected');
     g(this).addClass('g-selected');
@@ -60,7 +86,7 @@ g.click(".gal-image",function(){
 })
 g.click(".gal-folder",function(){
     let path=this.getAttribute('data-path')
-    g.ajax({url:"admin/media",method:"POST",header:"application/x-www-form-urlencoded",data:"path="+path,fn:function(gal){ //
+    g.ajax({url:"admin/media",method:"POST",header:"application/x-www-form-urlencoded",data:"g_response=content&path="+path,fn:function(gal){ //
         g('#gila-popup>.body').html(gal)
     }})
 })
@@ -68,7 +94,7 @@ g.click("#fm-goup",function(){
     if(this.getAttribute('data-path')=='') return;
 
     let path=this.getAttribute('data-path')
-    g.post("admin/media","path="+path,function(gal){ //
+    g.post("admin/media","g_response=content&path="+path,function(gal){ //
         g('#gila-popup>.body').html(gal)
     })
 })
@@ -82,14 +108,11 @@ function gallery_upload_files() {
     }})
 }
 
-function open_gallery() {
-    g.post("admin/media","path=assets",function(gal){ //
-        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path'})
-    })
-}
-function open_gallery_post() {
-    g.post("admin/media","path=assets",function(gal){ //
-        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path_post'})
-    })
-}*/
+/*
+window.getZIndex = function (e) {
+  var z = window.document.defaultView.getComputedStyle(e).getPropertyValue('z-index');
+  if (isNaN(z)) return window.getZIndex(e.parentNode);
+  return z;
+};
+*/
 </script>

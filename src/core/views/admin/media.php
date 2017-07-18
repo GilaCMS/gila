@@ -25,7 +25,7 @@ echo '<div data-path="'.$file.'"class="gal-path gal-'.$type.'">'.$img.'<br><span
 }
 echo "</div>";
 
- ?>
+?>
 <script>
 g.click(".gal-image",function(){
     g('.gal-path').removeClass('g-selected');
