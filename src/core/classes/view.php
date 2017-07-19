@@ -4,14 +4,24 @@ class view
 {
     private static $part = array();
     private static $stylesheet = array();
+    private static $script = array();
 
 	static function set($p,$v) {
-		self::$part[$p]=$v;
+	    self::$part[$p]=$v;
 	}
 
     static function stylesheet($v)
     {
         self::$stylesheet[]=$v;
+    }
+    static function links()
+    {
+        foreach (self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
+    }
+
+    static function script($v)
+    {
+        self::$script[]=$v;
     }
 
     static function getThemePath()
@@ -19,36 +29,36 @@ class view
         return 'themes/'.gila::config('theme');
     }
 
-    static function renderAdmin($file, $package = null)
+    static function renderAdmin($file, $package = 'core')
     {
         if(router::post('g_response')=='content') {
             self::renderFile($file, $package);
             return;
         }
-        $path_theme = self::getThemePath().'/admin';
-        $core_theme = 'src/core/views/admin';
-        if(file_exists($path_theme."/header.php")) include $path_theme."/header.php"; else include $core_theme."/header.php";
+        self::include('admin/header.php');
         self::renderFile($file, $package);
-        if(file_exists($path_theme."/footer.php")) include $path_theme."/footer.php"; else include $core_theme."/footer.php";
+        self::include('admin/footer.php');
     }
 
 
-    static function render($file, $package = null)
+    static function render($file, $package = 'core')
     {
         if(router::post('g_response')=='content') {
             self::renderFile($file, $package);
             return;
         }
-        $path_theme = self::getThemePath();//'themes/'.gila::config('theme');
-        include $path_theme."/header.php";
+        self::include('header.php');
         self::renderFile($file, $package);
-        include $path_theme."/footer.php";
+        self::include('footer.php');
     }
-
-    static function head()
+/*
+    static function head($meta=[])
     {
         echo '<head>';
         echo '<base href="'.gila::config('base').'">';
+        foreach ($meta as $key=>$value) {
+          echo '<meta '.$key.'="'.$value.'">';
+        }
         echo '<meta charset="utf-8">';
         echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
         //<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -60,32 +70,40 @@ class view
             echo '<link href="'.$link.'" rel="stylesheet">';
         }
         echo '</head>';
-    }
+    }*/
 
-    static function renderFile($file, $package = null)
+    static function renderFile($file, $package = 'core')
     {
-		foreach (self::$part as $key => $value) { $$key = $value; }
+		    foreach (self::$part as $key => $value) { $$key = $value; }
+        //self::include($file, $package);
 
-        if ($package != null) {
-            $filePath = 'src/'.$package.'/views/'.$file;
-            if (file_exists($filePath)) {
-                include $filePath;
-                return;
-            }
+        $tpath = self::getThemePath().'/'.$file;
+        if(file_exists($tpath)) {
+            include $tpath;
+            return;
+        }else {
+          $spath = 'src/'.$package.'/views/'.$file;
+          if(file_exists($spath)) {
+              include $spath;
+          }
         }
 
-        $filePath = self::getThemePath().'/'.$file; // '/views/'. gila::config('theme').'/'.
+        if(router::post('g_response')!='content')
+            foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
+	}
 
-        if (file_exists($filePath)) {
-            include $filePath;
+    static function include($filepath,$pack='core')
+    {
+        $tpath = self::getThemePath().'/'.$filepath;
+        if(file_exists($tpath)) {
+            include $tpath;
+            return;
         }
-        else {
-            $filePath = 'src/core/views/'.$file;
-            if (file_exists($filePath)) {
-                include $filePath;
-            } else trigger_error("View file not found ($filePath)");
+        $spath = 'src/'.$pack.'/views/'.$filepath;
+        if(file_exists($spath)) {
+            include $spath;
         }
-	  }
+    }
 
 /**
  * Widget

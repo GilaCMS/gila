@@ -9,8 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title><?=gila::config('base')?></title>
-
-    <link href="lib/gila.min.css" rel="stylesheet">
+    <?php view::links(); ?>
+    <!--link href="lib/gila.min.css" rel="stylesheet"-->
 </head>
 
 <body>

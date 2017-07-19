@@ -23,6 +23,7 @@ class admin extends controller
         global $db;
         if ($id = router::get('id',1)) {
             view::set('id',$id);
+            view::script('src/core/assets/admin/media.js');
             view::renderAdmin('admin/edit_post.phtml');
             return;
         }
@@ -188,6 +189,7 @@ class admin extends controller
     }
     function mediaAction()
     {
+        view::script('src/core/assets/admin/media.js');
         view::renderAdmin('admin/media.php');
     }
 
