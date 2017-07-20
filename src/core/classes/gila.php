@@ -120,4 +120,8 @@ class gila {
         return false;
     }
 
+    static function hash($pass)
+    {
+        return password_hash($pass, PASSWORD_BCRYPT);
+    }
 }

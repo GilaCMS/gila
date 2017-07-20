@@ -42,6 +42,6 @@ class user
     static function updatePassword($id,$pass)
     {
         global $db;
-        return $db->query("UPDATE user SET pass=? where id=?;",[password_hash($pass, PASSWORD_BCRYPT),$id]);
+        return $db->query("UPDATE user SET pass=? where id=?;",[gila::hash($pass),$id]);
     }
 }

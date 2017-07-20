@@ -13,6 +13,7 @@ class session
         session::define(['user_id'=>0]);
 
         if (isset($_POST['username']) && isset($_POST['password'])) {
+            $password = gila::hash($_POST['password']);
             $res = $db->query("SELECT id FROM user WHERE email=? AND pass=?",[$_POST['username'],$_POST['password']]);
             while ($r = mysqli_fetch_array($res)) {
                 $_SESSION[session::md5('user_id')] = $r[0];

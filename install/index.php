@@ -4,7 +4,6 @@ $configfile = __DIR__.'/../config.php';
 
 if (file_exists($configfile)) {
     echo "<div class='alert'>config.php is already installed. You have to remove it before reinstalling the software</div>";
-    //exit;
 }
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $host=$_POST['db_host'];$db_user=$_POST['db_user'];
@@ -26,7 +25,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       $_user=$_POST['adm_user'];
       $_email=$_POST['adm_email'];
-      $_pass=$_POST['adm_pass'];
+      $_pass=password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
       $_base_url=$_POST['base_url'];
 
       $link->query("INSERT INTO user VALUES(1,'$_user','$_email','$_pass','');");
@@ -40,10 +39,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       // create config.php
       $filedata = file_get_contents(__DIR__.'/../config.default.php');
       $GLOBALS['config']['db'] = [
-          'host' => $host, //localhost
-          'user' => $db_user, // root
-          'pass' => $db_pass, //
-          'name' => $db_name //
+          'host' => $host,
+          'user' => $db_user,
+          'pass' => $db_pass,
+          'name' => $db_name
       ];
       $GLOBALS['config']['packages'] = [];
       $GLOBALS['config']['base'] = $_base_url;
