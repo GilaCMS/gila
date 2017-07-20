@@ -1,0 +1,78 @@
+
+<?php
+$dir = "src/";
+$packages = scandir($dir);
+//$table = '<tr><th class="col-xs-8 gm-8"><th class="col-xs-2 gm-2">';
+$table = '';
+$pn = 0; $alert = '';
+
+$activate = router::get('activate');
+if (in_array($activate,$packages)) {
+    if(!in_array($activate, $GLOBALS['config']['packages'])) {
+        $GLOBALS['config']['packages'][]=$activate;
+        gila::updateConfigFile();
+        usleep(100);
+        $alert = gila::alert('success','Package activated');
+        exit;
+    }
+}
+
+$deactivate = router::get('deactivate');
+if (in_array($deactivate,$GLOBALS['config']['packages'])) {
+    $key = array_search($deactivate, $GLOBALS['config']['packages']);
+        unset($GLOBALS['config']['packages'][$key]);
+        gila::updateConfigFile();
+        usleep(100);
+        $alert = gila::alert('success',"Package $key deactivated");
+        exit;
+}
+
+$options = router::post('options');
+if (in_array($options,$GLOBALS['config']['packages'])) {
+    die('options');
+}
+
+foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
+    include $dir."$p/package.php";
+    $table .= '<tr>';
+    /*if (file_exists($dir."$p/logo.png")) {
+        $table .= '<td><div><img src="'."src/$p/logo.png".'" style="width:100%" /></div>';
+    }
+    else {
+        $table .= '<td style="background:#999; align:middle"><span>'.($name?:$p).'</span>';
+    }*/
+
+    $table .= '<td style="width:100%"><h4>'.($name?:$p).' '.($version?:'');
+    $table .= '</h4>'.(isset($description)?$description:'No description');
+    $table .= '<br><b>Author:</b> '.(isset($author)?$author:'');
+    $table .= (isset($url)?' <b>Url:</b> <a href="'.$url.'" target="_blank">'.$url.'</a>':'');
+    $table .= (isset($contact)?' <b>Contact:</b> '.$contact:'');
+
+    if (in_array($p,$GLOBALS['config']['packages'])) {
+        //if (new_version) $table .= 'Upgrade<br>';
+        $table .= "<td><a onclick='addon_options(\"{$p}\")' class='g-btn warning'>Options</a><td>";
+        $table .= "<a onclick='addon_deactivate(\"{$p}\")' class='g-btn error'>Deactivate</a>";
+    }
+    else {
+        $table .= "<td><td><a onclick='addon_activate(\"{$p}\")' class='g-btn success'>Activate</a>";
+    }
+    $pn++;
+}
+?>
+<?=$alert?>
+<table class='g-table'><?=$table?></table>
+
+<script>
+function addon_activate(p){ g.ajax('admin/addons?g_response=content&activate='+p,function(x){
+    g.alert('Package successfully activated!','success','location.reload(true)');
+})};
+function addon_deactivate(p){ g.ajax('admin/addons?g_response=content&deactivate='+p,function(x){
+    g.alert('Package deactivated!','notice','location.reload(true)');
+})};
+function addon_options(p) {
+ g.post("admin/addons",'g_response=content&options='+p,function(x){
+     g.dialog({title:"Options",body:x})
+ })
+}
+
+</script>

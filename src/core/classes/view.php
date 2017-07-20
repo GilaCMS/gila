@@ -6,9 +6,9 @@ class view
     private static $stylesheet = array();
     private static $script = array();
 
-	static function set($p,$v) {
-	    self::$part[$p]=$v;
-	}
+	  static function set($p,$v) {
+		    self::$part[$p]=$v;
+	  }
 
     static function stylesheet($v)
     {
@@ -31,7 +31,7 @@ class view
 
     static function renderAdmin($file, $package = 'core')
     {
-        if(router::post('g_response')=='content') {
+        if(router::request('g_response')=='content') {
             self::renderFile($file, $package);
             return;
         }
@@ -43,7 +43,7 @@ class view
 
     static function render($file, $package = 'core')
     {
-        if(router::post('g_response')=='content') {
+        if(router::request('g_response')=='content') {
             self::renderFile($file, $package);
             return;
         }
@@ -88,9 +88,9 @@ class view
           }
         }
 
-        if(router::post('g_response')!='content')
+        if(router::request('g_response')!='content')
             foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
-	}
+	  }
 
     static function include($filepath,$pack='core')
     {

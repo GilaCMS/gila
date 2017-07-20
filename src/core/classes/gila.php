@@ -21,12 +21,11 @@ class gila {
                 ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
                 ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],
                 ['Categories','admin/postcategories','icon'=>'list','access'=>'admin'],
+                ['Media','admin/media','icon'=>'image','access'=>'admin'],
                 ]],
-            ['Media','admin/media','icon'=>'image','access'=>'admin'],
             ['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
                 ['Users','admin/users','icon'=>'users','access'=>'admin'],
                 ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
-                ['Categories','admin/postcategories','icon'=>'list','access'=>'admin'],
                 ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin writer'],
                 ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
                 ]],

@@ -18,5 +18,6 @@ pre{
   <article>
       <?=$text?>
   </article>
+  <?php view::widget_area('post.after'); ?>
 </div>
 </div>

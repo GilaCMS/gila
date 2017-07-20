@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+    <?php view::widget_area('body'); ?>
     <!-- Navigation -->
     <nav>
         <?php view::widget('menu'); ?>

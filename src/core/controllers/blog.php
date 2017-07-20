@@ -25,6 +25,30 @@ class blog extends controller
         $this->pageAction();
         //include __DIR__.'/../../../themes/'.$GLOBALS['config']['theme']."/frontpage.php";
     }
+    function tagAction()
+    {
+          view::set('posts_by_tag',blog::postByTag(['posts'=>12,'tag'=>router::get('tag',1)]));
+          view::render('blog-tag.php');
+    }
+    static function postByTag ($args = []) {
+        global $db;
+        $ppp = isset($args['posts'])?$args['posts']:8;
+        $tag = isset($args['tag'])?$args['tag']:'';
+        $start_from = (self::$page-1)*$ppp;
+        $where = '';
+
+        $ql="SELECT id,title,SUBSTRING(post,1,300) as post,
+            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
+            FROM post WHERE publish=1
+            AND id IN(SELECT post_id from postmeta where vartype='tag' and value='$tag')
+            ORDER BY id DESC LIMIT $start_from,$ppp";
+        $res = $db->query($ql);
+        echo $ql;
+
+        if ($res) while ($r = mysqli_fetch_assoc($res)) {
+            yield $r;
+        }
+    }
 
 
     function postShow($id=null)

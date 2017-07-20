@@ -3,11 +3,12 @@
 class router
 {
     static $args = [];
+    static $url;
 
     function __construct ()
     {
-
-        if(isset($_GET['url'])) $args = explode("/", $_GET['url']); else $args = [];
+        router::$url = strip_tags($_GET['url']);
+        if(isset($_GET['url'])) $args = explode("/", router::$url); else $args = [];
 
         $controller = gila::config('default-controller');
 
@@ -95,6 +96,11 @@ class router
     static function post ($key,$default=null)
     {
         return isset($_POST[$key])?$_POST[$key]:$default;
+    }
+
+    static function request ($key,$default=null)
+    {
+        return isset($_REQUEST[$key])?$_REQUEST[$key]:$default;
     }
 
     static function url ()

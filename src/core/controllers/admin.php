@@ -2,20 +2,24 @@
 
 class admin extends controller
 {
-    public $icons = [
+    /*public $icons = [
         'index'=>'dashboard',
         'addons'=>'dropbox',
         'posts'=>'pencil',
         'users'=>'users',
         'settings'=>'cogs',
         'widgets'=>'th-large',
-    ];
+    ];*/
 
     function indexAdmin ()
     {
-        include 'src/core/views/admin/header.php';
-      echo "Dashboard!";
-      include 'src/core/views/admin/footer.php';
+      global $posts,$pages,$users,$packages;
+      global $db;
+      $posts = $db->value('SELECT count(*) from post;');
+      $pages = $db->value('SELECT count(*) from page;');
+      $users = $db->value('SELECT count(*) from user;');
+      $packages = count($GLOBALS['config']['packages']);
+      view::renderAdmin('admin/dashboard.phtml');
     }
 
     function postsAdmin ()
@@ -93,73 +97,7 @@ class admin extends controller
 
     function addonsAdmin ()
     {
-        $dir = "src/";
-        $packages = scandir($dir);
-        $table = '<tr><th class="col-xs-2 gm-2"><th class="col-xs-8 gm-8"><th class="col-xs-2 gm-2">';
-        $pn = 0; $alert = '';
-
-        $activate = router::get('activate');
-        if (in_array($activate,$packages)) {
-            if(!in_array($activate, $GLOBALS['config']['packages'])) {
-                $GLOBALS['config']['packages'][]=$activate;
-                gila::updateConfigFile();
-                usleep(100);
-                $alert = gila::alert('success','Package activated');
-                exit;
-            }
-        }
-
-        $deactivate = router::get('deactivate');
-        if (in_array($deactivate,$GLOBALS['config']['packages'])) {
-            $key = array_search($deactivate, $GLOBALS['config']['packages']);
-                unset($GLOBALS['config']['packages'][$key]);
-                gila::updateConfigFile();
-                usleep(100);
-                $alert = gila::alert('success',"Package $key deactivated");
-                exit;
-        }
-
-        include 'src/core/views/admin/header.php';
-        echo $alert;
-
-        foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
-            include $dir."$p/package.php";
-
-            if (file_exists($dir."$p/logo.png")) {
-                $table .= '<tr><td><div><img src="'."src/$p/logo.png".'" style="width:100%" /></div>';
-            }
-            else {
-                $table .= '<tr><td style="background:#999; align:middle"><span>'.($name?:$p).'</span>';
-            }
-
-            $table .= '<td><h4>'.($name?:$p).' '.($version?:'').'</h4>'.($description?:'No description');
-            $table .= '<td>';
-
-            if (in_array($p,$GLOBALS['config']['packages'])) {
-                //if (new_version) $table .= 'Upgrade<br>';
-                $table .= "<a onclick='addon_deactivate(\"{$p}\")' class='btn error'>Deactivate</a>";
-            }
-            else {
-                $table .= "<a onclick='addon_activate(\"{$p}\")' class='btn success'>Activate</a>";
-            }
-            $pn++;
-        }
-        //echo "<span>$pn packages found</span>";
-        echo "<table class='g-table'>$table</table>";
-        echo "<script>
-        function addon_activate(p){ g.ajax('admin/addons?activate='+p,function(x){
-            g.alert('Package successfully activated!','success','location.reload(true)');
-            })};
-        function addon_deactivate(p){ g.ajax('admin/addons?deactivate='+p,function(x){
-            g.alert('Package deactivated!','notice','location.reload(true)');
-             })};
-        </script>";
-        include 'src/core/views/admin/footer.php';
-        /*setTimeout(function () {
-			for(let attr in data){
-				template.content.firstChild[attr] = data[attr]
-			}
-		}, 100)*/
+      view::renderAdmin('admin/addons.phtml');
     }
 
     function settingsAdmin ()
