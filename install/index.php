@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
       $link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post',1,CURRENT_TIMESTAMP);");
       $link->query("INSERT INTO page VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
-      $link->query("INSERT INTO widget VALUES(1,'menu','','','[{\"title\":\"Home\",\"url\":\"\"},{\"title\":\"Page\",\"url\":\"about\"}]');");
+      $link->query("INSERT INTO widget VALUES(1,'menu','','','[\n\t{\"title\":\"Home\",\"url\":\"\"},\n\t{\"title\":\"Page\",\"url\":\"about\"}\n]');");
 
       // create config.php
       $filedata = file_get_contents(__DIR__.'/../config.default.php');
