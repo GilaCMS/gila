@@ -12,6 +12,8 @@ config.php
 
 # excluded
 !src/core/
+!src/gila_fb_comments/
+!src/gila_disqus/
 !themes/startbootstrap-clean-blog/
 !themes/base/
 !assets/gila-logo.png

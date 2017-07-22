@@ -110,7 +110,7 @@ class blog extends controller
         $start_from = (self::$page-1)*$ppp;
         $where = '';
 
-        $res = $db->query("SELECT id,title,SUBSTRING(post,1,300) as post,
+        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post WHERE publish=1 ORDER BY id DESC LIMIT $start_from,$ppp");
 
@@ -121,7 +121,7 @@ class blog extends controller
     static function latestposts ($n) {
         global $db;
 
-        $res = $db->query("SELECT id,title,SUBSTRING(post,1,300) as post,
+        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post ORDER BY id DESC LIMIT 0,$n");
 
@@ -153,4 +153,8 @@ class blog extends controller
         } else return 0;
     }
 
+    static function get_url($id,$slug=NULL)
+    {
+        return gila::make_url('blog','',[$id,$slug]);
+    }
 }

@@ -29,8 +29,41 @@ if (in_array($deactivate,$GLOBALS['config']['packages'])) {
 
 $options = router::post('options');
 if (in_array($options,$GLOBALS['config']['packages'])) {
-    die('options');
+    echo '<form id="addon_options_form"><input id="addon_id" value="'.$options.'" type="hidden">';
+    $pack=$options;
+    include __DIR__.'/../../../'.$options.'/package.php';
+    foreach($options as $key=>$op) {
+        echo '<div class="gm-12">';
+        echo '<label class="gm-4">'.(isset($op['title'])?$op['title']:ucwords($key)).'</label>';
+        $ov = gila::option($pack.'.'.$key);
+        if(isset($op['type'])) {
+            if($op['type']=='select') {
+                if(!isset($op['options'])) die("<b>Option $key require options</b>");
+                echo '<select class="g-input gm-8" name="option['.$key.']">';
+                foreach($op['options'] as $value=>$name) {
+                    echo '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
+                }
+                echo '</select>';
+            }
+        } else echo '<input class="g-input gm-8" name="option['.$key.']" value="'.$ov.'">';
+        echo '</div><br>';
+    }
+    echo "</form>";
+    return;
 }
+
+
+$save_options = router::get('save_options');
+if (in_array($save_options,$GLOBALS['config']['packages'])) {
+	global $db;
+	foreach($_POST['option'] as $key=>$value) {
+		$ql="INSERT INTO `option`(`option`,`value`) VALUES('$save_options.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
+		echo $ql;
+		$db->query($ql);
+	}
+    return;
+}
+
 
 foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
     include $dir."$p/package.php";
@@ -50,7 +83,7 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
 
     if (in_array($p,$GLOBALS['config']['packages'])) {
         //if (new_version) $table .= 'Upgrade<br>';
-        $table .= "<td><a onclick='addon_options(\"{$p}\")' class='g-btn warning'>Options</a><td>";
+        $table .= "<td><a onclick='addon_options(\"{$p}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a><td>";
         $table .= "<a onclick='addon_deactivate(\"{$p}\")' class='g-btn error'>Deactivate</a>";
     }
     else {
@@ -69,9 +102,20 @@ function addon_activate(p){ g.ajax('admin/addons?g_response=content&activate='+p
 function addon_deactivate(p){ g.ajax('admin/addons?g_response=content&deactivate='+p,function(x){
     g.alert('Package deactivated!','notice','location.reload(true)');
 })};
+
+g.dialog.buttons.save_options = {
+    title:'Save Options',fn:function(){
+		let p = g.el('addon_id').value;
+		let fm=new FormData(g.el('addon_options_form'))
+        g.ajax({url:'admin/addons?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
+			g('#gila-darkscreen').remove();
+		}})
+    }
+}
+
 function addon_options(p) {
  g.post("admin/addons",'g_response=content&options='+p,function(x){
-     g.dialog({title:"Options",body:x})
+     g.dialog({title:"Options",body:x,buttons:'save_options'})
  })
 }
 

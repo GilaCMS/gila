@@ -8,9 +8,11 @@ class gila {
     static $package;
     static $amenu;
     static $widget_area;
+    static $option;
 
     function __construct()
     {
+		global $db;
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog'
@@ -37,6 +39,10 @@ class gila {
         ]);
         gila::$widget_area=[];
         //gila::$package = $GLOBALS['package']?:[];
+
+		gila::$option=[];
+		$res = $db->get('SELECT option,value FROM option;');
+		foreach($res as $r) gila::$option[$r[0]] = $r[1];
     }
 
     static function controllers($list)
@@ -122,5 +128,22 @@ class gila {
     static function hash($pass)
     {
         return password_hash($pass, PASSWORD_BCRYPT);
+    }
+
+	static function option($option)
+    {
+        if(isset(gila::$option[$option])) return gila::$option[$option];
+        return '';
+    }
+
+    static function make_url($c, $action, $args)
+    {
+        $params='';
+        foreach($args as $key=>$value) {
+            $params.='/'.$value;
+        }
+        if($action!='') $c.='/';
+        if(router::controller()==$c) return $action.$args[0];
+        return $c.$action.$params;
     }
 }

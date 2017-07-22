@@ -97,7 +97,7 @@ class admin extends controller
 
     function addonsAdmin ()
     {
-      view::renderAdmin('admin/addons.phtml');
+		view::renderAdmin('admin/addons.php');
     }
 
     function settingsAdmin ()

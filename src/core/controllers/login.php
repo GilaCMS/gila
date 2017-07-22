@@ -31,7 +31,7 @@ class login extends controller
 			}
 			else if(isset($_POST['pass'])) {
 				$idUser=$r[0];
-                user::updatePassword($idUser,$_POST['pass']));
+                user::updatePassword($idUser,$_POST['pass']);
 				exit;
 			} else {
 				include 'src/core/views/new_password.phtml';
