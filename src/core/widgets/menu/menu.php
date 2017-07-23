@@ -1,6 +1,6 @@
 <ul class="g-nav g-navbar">
 <?php
-$menu_items = json_decode($widget_data,true);
+$menu_items = json_decode($widget_data->menu,true);
 
 echo_menu_items($menu_items);
 

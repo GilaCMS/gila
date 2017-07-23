@@ -2,14 +2,6 @@
 
 class admin extends controller
 {
-    /*public $icons = [
-        'index'=>'dashboard',
-        'addons'=>'dropbox',
-        'posts'=>'pencil',
-        'users'=>'users',
-        'settings'=>'cogs',
-        'widgets'=>'th-large',
-    ];*/
 
     function indexAdmin ()
     {
@@ -57,28 +49,21 @@ class admin extends controller
         if ($id = router::get('id',1)) {
             $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
             if ($r = mysqli_fetch_object($res)) {
-                //echo "<h2>Edit widget #".$r['id']."</h2>";
-                /*view::set('title',$r['title']);*/
                 view::set('widget',$r);
-                view::renderFile('../widgets/'.$r->widget.'/edit.phtml');
-                view::renderFile('admin/edit_widget.phtml');
+                view::renderFile('admin/edit_widget.php');
             }
-
             return;
         }
-        view::set('page', (router::get('page',1)?:1));
-        view::set('rpp', 10);
-        view::renderAdmin('admin/list_widget.phtml');
+        view::renderAdmin('admin/list_widget.php');
     }
 
     function update_widgetAjax ()
     {
         global $db;
-        echo $_POST['widget_data'];
-        //echo $_POST['widget_id'];
-
-        if (isset($_POST['widget_data'])) {
-            $db->query("UPDATE widget SET data=?,area=? WHERE id=?",[$_POST['widget_data'],$_POST['widget_area'],$_POST['widget_id']]);
+        $widget_data =json_encode($_POST['option']);
+        echo $widget_data;
+        if (isset($_POST['option'])) {
+            $db->query("UPDATE widget SET data=?,area=?,pos=? WHERE id=?",[$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_id']]);
             echo $_POST['widget_id'];
         }
     }
@@ -92,7 +77,6 @@ class admin extends controller
         }
         view::renderAdmin('admin/user.phtml');
     }
-
 
 
     function addonsAdmin ()
@@ -125,11 +109,11 @@ class admin extends controller
         }
         self::mediaAction();
     }
+
     function mediaAction()
     {
         view::script('src/core/assets/admin/media.js');
         view::renderAdmin('admin/media.php');
     }
-
 
 }

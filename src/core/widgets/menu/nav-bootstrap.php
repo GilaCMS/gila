@@ -1,6 +1,6 @@
 <ul id="nav" class="nav navbar-nav">
 <?php
-$menu_items = json_decode($widget_data,true);
+$menu_items = json_decode($widget_data->menu,true);
 
 foreach ($menu_items as $mi) {
         if (isset($mi['children']) && isset($mi['children'][0]['url'])) {

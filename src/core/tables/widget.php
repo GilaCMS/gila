@@ -14,7 +14,7 @@ $table = [
     'title'=> 'Widgets',
     'id'=>'id',
     'tools'=>['add'],
-    'commands'=>['edit','delete'],
+    'commands'=>['edit_widget','delete'],
     'csv'=> ['id','title','slug','updated','publish','page'],
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],

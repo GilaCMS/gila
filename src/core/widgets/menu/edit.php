@@ -80,6 +80,26 @@ input:focus {
             echo "</ol></li>";
         }
     }
+
+    /*
+            g.require('<?=gila::config('base')?>lib/jquery/jquery-sortable.js',function(){
+                g.require('<?=gila::config('base')?>src/core/assets/menu_edit.js');
+            });*/
+    /*
+    var textareas = document.getElementsByTagName('textarea');
+    var count = textareas.length;
+    for(var i=0;i<count;i++){
+        textareas[i].onkeydown = function(e){
+            if(e.keyCode==9 || e.which==9){
+                e.preventDefault();
+                var s = this.selectionStart;
+                this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
+                this.selectionEnd = s+1;
+            }
+        }
+    }
+    */
+
     ?>
 
 </ol>

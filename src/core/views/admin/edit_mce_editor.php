@@ -35,7 +35,7 @@ tinymce.init({
     'lists link image charmap hr anchor pagebreak',
     'searchreplace wordcount visualchars code',
     'insertdatetime media nonbreaking table contextmenu ',
-    'template paste textcolor colorpicker textpattern codesample toc'
+    'template paste textcolor colorpicker textpattern codesample'
 ],
   toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
   templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,

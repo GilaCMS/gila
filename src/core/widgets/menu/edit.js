@@ -45,7 +45,7 @@ $(document).on('click', '.deletebtn', function (){
 });
 
 
-widget_data_serialize = function () {
+widget_menu_serialize = function () {
 	var data = group.sortable("serialize").get();
-  return JSON.stringify(data[0]);
+    return JSON.stringify(data[0]);
 }
