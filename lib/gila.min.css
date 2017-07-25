@@ -103,6 +103,7 @@ script{display:none!important}
 .display-flex{display:flex}
 .display-block{display:block}
 .display-grid{display:grid}
+.inline-flex{display:inline-flex}
 
 .text-align-center{text-align:center}
 .text-align-left{text-align:left}

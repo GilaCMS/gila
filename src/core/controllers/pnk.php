@@ -82,7 +82,6 @@ class pnk extends controller
 		global $data, $table, $db;
 
 		$erows = json_decode($_POST["erows"],true);
-		echo "<pre>".var_export($erows)."</pre>";
 
 		foreach ($erows as $erow_id=>$erow) {
 			$q="";$c="";$v="";
