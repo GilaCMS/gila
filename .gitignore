@@ -4,7 +4,6 @@ vendor/
 log/
 src/*
 themes/*
-assets/*
 composer.phar
 composer.json
 composer.lock

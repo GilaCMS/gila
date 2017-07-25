@@ -94,7 +94,12 @@ class admin extends controller
     }
     function logoutAdmin ()
     {
+        global $db;
         session::destroy();
+        if(isset($_COOKIE['GSESSIONID'])) {
+           $res = $db->query("DELETE FROM usermeta WHERE value=? AND vartype='GSESSIONID';",[$_COOKIE['GSESSIONID']]);
+       }
+       echo "<meta http-equiv='refresh' content='0;url=//".gila::config('base')."' />";
     }
 
     function media_uploadAction(){
@@ -103,7 +108,7 @@ class admin extends controller
                 echo "Error: " . $_FILES['upload_files']['error'] . "<br>";
             }
             $path = router::post('path','assets');
-            if(!move_uploaded_file($_FILES['uploadfiles']['tmp_name'],$path.'/'.$_FILES['uploadfiles']['name'].'.jpg')) {
+            if(!move_uploaded_file($_FILES['uploadfiles']['tmp_name'],$path.'/'.$_FILES['uploadfiles']['name'])) {
                 echo "Error: could not upload file!<br>";
             }
         }
