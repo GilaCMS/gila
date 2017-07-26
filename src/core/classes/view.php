@@ -152,7 +152,7 @@ class view
     static function thumb ($src,$id,$max=180)
     {
         if($src==null) return false;
-        $file = 'assets/cache/'.$id;
+        $file = 'tmp/'.$id;
         $max_width=$max;
         $max_height=$max;
         if($src=='') return false;

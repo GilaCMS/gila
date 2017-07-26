@@ -19,6 +19,7 @@ RewriteCond %{REQUEST_URI} !src
 RewriteCond %{REQUEST_URI} !themes
 RewriteCond %{REQUEST_URI} !lib
 RewriteCond %{REQUEST_URI} !assets
+RewriteCond %{REQUEST_URI} !tmp
 
 
 RewriteRule (.*)$ index.php?url=$1 [QSA,L]

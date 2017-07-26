@@ -1,9 +1,11 @@
 
 # Gila ignores
 vendor/
-log/
+log/*
 src/*
 themes/*
+assets/*
+tmp/*
 composer.phar
 composer.json
 composer.lock

@@ -35,18 +35,18 @@ class image {
             break;
         }
         imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
-        imagejpeg($tmp,$file,80);
-        /*switch($image[2]) {
+        //imagejpeg($tmp,$file,80);
+        switch($image[2]) {
         case 1:
-        imagegif($tmp,$file);
-        break;
+            imagegif($tmp,$file);
+            break;
         case 2:
-        imagejpeg($tmp,$file,100);
-        break;
+            imagejpeg($tmp,$file,80);
+            break;
         case 3:
-        imagepng($tmp,$file);
-        break;
-        }*/
+            imagepng($tmp,$file);
+            break;
+        }
         imagedestroy($img_src);
         imagedestroy($tmp);
         return true;
