@@ -1,11 +1,11 @@
 
 # Gila ignores
 vendor/
-log/*
 src/*
 themes/*
 assets/*
 tmp/*
+log/*
 composer.phar
 composer.json
 composer.lock
@@ -17,4 +17,6 @@ config.php
 !src/gila_disqus/
 !themes/startbootstrap-clean-blog/
 !themes/base/
+!log/.gitkeep
+!tmp/index.html
 !assets/gila-logo.png
