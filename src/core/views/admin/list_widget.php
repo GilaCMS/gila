@@ -25,7 +25,7 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
 	}})
 }}
 
-Pnk.commands.edit_widget = { fa: "pencil", title: "Edit", fn: function(e){
+PNK.commands.edit_widget = { fa: "pencil", title: "Edit", fn: function(e){
     href='admin/widgets?id='+e.row_id;
     g.ajax(href,function(data){
         g.dialog({class:'lightscreen',body:data,buttons:'update_widget'})

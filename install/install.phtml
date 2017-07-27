@@ -11,23 +11,23 @@
 <form method="post" class="row gap-16px bordered box-shadow g-form bg-white">
 	<div class="gl-6">
 	<label class="gs-12">Hostname</label>
-	<input name="db_host" value="localhost">
+	<input name="db_host" value="localhost" required>
 	<label class="gs-12">Database</label>
-	<input name="db_name">
+	<input name="db_name" required>
 	<label class="gs-12">DB Username</label>
-	<input name="db_user">
+	<input name="db_user" required>
 	<label class="gs-12">DB Password</label>
 	<input name="db_pass" type="password">
 	</div>
 	<div class="gl-6">
 	<label class="gs-12">Admin Username</label>
-	<input name="adm_user">
+	<input name="adm_user" required>
 	<label class="gs-12">Admin Email</label>
-	<input name="adm_email" type="email">
+	<input name="adm_email" type="email" required>
 	<label class="gs-12">Admin Password</label>
-	<input name="adm_pass" type="password">
+	<input name="adm_pass" type="password" required>
 	<label class="gs-12">Base URL</label>
-		<input name="base_url" value="//localhost/gila/">
+		<input name="base_url" value="" required>
 	</div>
 	<div class="gl-12"><input class="btn success" type="submit"></div>
 </form>

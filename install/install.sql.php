@@ -88,4 +88,5 @@ $link->query("INSERT INTO user VALUES(1,'$_user','$_email','$_pass','');");
 $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
 $link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post',1,CURRENT_TIMESTAMP);");
 $link->query("INSERT INTO page VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
-$link->query("INSERT INTO widget VALUES(1,'menu','','','{\"menu\":\"[\r\n  {\"title\":\"Home\",\"url\":\"\"},\r\n  {\"title\":\"About\",\"url\":\"about\"}\r\n]\"}');");
+$data = '{"menu":"[\\\r\\\t{\\\"title\\\":\\\"Home\\\",\\\"url\\\":\\\"\\\"},\\\r\\\t{\\\"title\\\":\\\"Page\\\",\\\"url\\\":\\\"page\\\"}\\\r]"}';
+$link->query("INSERT INTO widget VALUES(1,'menu','head','','$data');");
