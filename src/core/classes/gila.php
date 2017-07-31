@@ -139,11 +139,15 @@ class gila {
     static function make_url($c, $action, $args)
     {
         $params='';
+        $params_='';
         foreach($args as $key=>$value) {
             $params.='/'.$value;
+            $params_.='&'.$key.'='.$value;
         }
-        if($action!='') $c.='/';
-        if(router::controller()==$c) return $action.$args[0];
-        return $c.$action.$params;
+//        if($action!='') $c.='/';
+//        if(router::controller()==$c) $c.='';
+
+        //return gila::config('base').$c.$action.$params;
+        return gila::config('base')."?c=$c&action=$action$params_";
     }
 }

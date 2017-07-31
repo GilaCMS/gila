@@ -7,29 +7,17 @@ class router
 
     function __construct ()
     {
-        router::$url = strip_tags($_GET['url']);
-        if(isset($_GET['url'])) $args = explode("/", router::$url); else $args = [];
-
-        $controller = gila::config('default-controller');
-
-        if (isset($args[0])) {
-        	if(isset(gila::$controller[$args[0]])) {
-        		$controller = $args[0];
-            } else if  (file_exists('src/core/controllers/'.$args[0].'.php')) {
-                $controller = $args[0];
-                gila::$controller[$controller] = 'core/controllers/'.$controller;
-        	} else {
-        		array_splice($args, 0, 0, $controller);
-        	}
+        if(isset($_GET['url'])) {
+            router::$url = strip_tags($_GET['url']);
+            $args = explode("/", router::$url);
         }
         else {
-        	array_splice($args, 0, 0, $controller);
+            router::$url = false;
+            $args = [];
         }
 
-        if (!isset(gila::$controller[$controller])) $controller = 'blog';
-
+        $controller = router::get_controller($args);
         $controller_file = 'src/'.gila::$controller[$controller].'.php';
-
 
         if(!file_exists($controller_file)) {
             echo $controller_file;
@@ -48,6 +36,7 @@ class router
         }
     	else {
              array_splice($args, 1, 0, $action);
+             echo "oookk";
     	}
 
         if (method_exists($controller,$action.'Action')) {
@@ -74,6 +63,31 @@ class router
 
         router::$args = $args;
         $ctrl->$action_fn();
+    }
+
+
+    static function get_controller (&$args)
+    {
+
+        $controller = router::request('c',gila::config('default-controller'));
+
+        if (isset($args[0])) {
+            if(isset(gila::$controller[$args[0]])) {
+                $controller = $args[0];
+            } else if  (file_exists('src/core/controllers/'.$args[0].'.php')) {
+                $controller = $args[0];
+                gila::$controller[$controller] = 'core/controllers/'.$controller;
+            } else {
+                array_splice($args, 0, 0, $controller);
+            }
+        }
+        else {
+            array_splice($args, 0, 0, $controller);
+        }
+
+        if (!isset(gila::$controller[$controller])) $controller = 'blog';
+// Here must update config.php file on default-controller
+        return $controller;
     }
 
     /*

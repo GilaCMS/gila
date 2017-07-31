@@ -10,19 +10,27 @@ $table = [
     'commands'=> ['delete'],
     'search-boxes'=> ['title','user_id','updated'],
     'fields'=> [
-        'id'=> ['style'=>'width:5%'],
-        'title'=> [],
+        'id'=> [
+            'title'=>'ID',
+            'style'=>'width:5%'
+        ],
+        'title'=> [
+            'title'=>'Title',
+        ],
         /*'slug'=> [],*/
         'user_id'=> [
-            'search-options'=>[0=>'Zero',1=>'One']
+            'title'=>'User',
+            'qoptions'=>"id AS `Index`, name AS `Text` FROM user"
         ],
         'updated'=> [
+            'title'=>'Last updated',
             'type'=>'date',
             'searchbox'=>'period'
         ],
         'publish'=> [
-            'style'=>'width:5%',
-            'type'=>'checkbox','edit'=>false
+            'title'=>'Public',
+            'style'=>'width:8%',
+            'type'=>'checkbox','edit'=>true
         ],
         'commands'=>[
             'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/posts/'+rv.id+'\">Edit</a>';"

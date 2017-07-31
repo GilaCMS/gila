@@ -155,6 +155,6 @@ class blog extends controller
 
     static function get_url($id,$slug=NULL)
     {
-        return gila::make_url('blog','',[$id,$slug]);
+        return gila::make_url('blog','',['p'=>$id,'slug'=>$slug]);
     }
 }

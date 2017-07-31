@@ -9,12 +9,22 @@ $table = [
     'csv'=> ['id','title','slug','updated','publish','page'],
     'commands'=> ['delete'],
     'fields'=> [
-        'id'=> [],
-        'title'=> [],
-        'slug'=> [],
-        'updated'=> [],
-        'publish'=> [],
-        'publish'=> [],
+        'id'=> [
+            'title'=>'ID',
+            'style'=>'width:5%'
+        ],
+        'title'=> [
+            'title'=>'Title',
+        ],
+        'slug'=> [
+            'title'=>'Slug',
+        ],
+        //'updated'=> [],
+        'publish'=> [
+            'title'=>'Public',
+            'style'=>'width:8%',
+            'type'=>'checkbox','edit'=>true
+        ],
         'commands'=>[
             'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/pages/'+rv.id+'\">Edit</a>';"
         ]
