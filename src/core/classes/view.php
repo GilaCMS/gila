@@ -43,6 +43,17 @@ class view
 
     static function render($file, $package = 'core')
     {
+      if(router::request('g_response')=='json') {
+          foreach (self::$part as $key => $value) if(is_object($value)) {
+            self::$part[$key]=[];
+            foreach($value as $r){
+              self::$part[$key][]=$r;
+            }
+          }
+          echo json_encode(self::$part);
+          exit;
+      }
+
         if(router::request('g_response')=='content') {
             self::renderFile($file, $package);
             return;
@@ -75,7 +86,6 @@ class view
     static function renderFile($file, $package = 'core')
     {
 		    foreach (self::$part as $key => $value) { $$key = $value; }
-        //self::include($file, $package);
 
         $tpath = self::getThemePath().'/'.$file;
         if(file_exists($tpath)) {

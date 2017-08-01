@@ -2,10 +2,7 @@
 <?php
 $menu_items = json_decode($widget_data->menu,true);
 
-echo_menu_items($menu_items);
 
-function echo_menu_items($menu_items)
-{
     foreach ($menu_items as $mi) {
             if (!isset($mi['children'])) {
                 echo "<li><a href=\"{$mi['url']}\">{$mi['title']}</a></li>";
@@ -22,7 +19,6 @@ function echo_menu_items($menu_items)
                 }
             }
     }
-}
 
  ?>
 </ul>

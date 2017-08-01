@@ -22,6 +22,20 @@ $table = [
         //'title'=> [],
         'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
         'pos'=> ['title'=>'Position'],
-        'data'=> ['title'=>'Data', 'show'=>false, 'edit'=>true, 'qcolumn'=>"REPLACE(data,'\"','\\\"')", 'type'=>'text'],
-    ]
+        'data'=> [
+          'title'=>'Data', 'show'=>false, 'edit'=>false,
+          'qcolumn'=>"REPLACE(data,'\"','\\\"')", 'type'=>'text'
+        ],
+    ],
+    'oncreate'=>function(&$row){
+      include 'src/'.gila::$widget[$row['widget']].'/widget.php';
+      $default_data=[];
+      foreach($options as $key=>$op) {
+        if(isset($op['default'])) $def=$op['default']; else $def='';
+        $default_data[$key]=$def;
+      }
+
+      $row['data']=json_encode($default_data);
+      //(isset($default_data)?$default_data:'{}');
+    }
 ];

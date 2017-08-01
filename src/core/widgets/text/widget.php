@@ -2,6 +2,7 @@
 
 $options=[
     'text'=>[
-        'type'=>'textarea'
+        'type'=>'textarea',
+        'default'=>'This is a text/html widget'
     ]
 ];

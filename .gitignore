@@ -6,6 +6,7 @@ themes/*
 assets/*
 tmp/*
 log/*
+log/sessions/*
 composer.phar
 composer.json
 composer.lock
@@ -17,6 +18,8 @@ config.php
 !src/gila_disqus/
 !themes/startbootstrap-clean-blog/
 !themes/base/
+!themes/gila-blog/
 !log/.gitkeep
+!log/sessions/.gitkeep
 !tmp/index.html
 !assets/gila-logo.png

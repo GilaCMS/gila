@@ -92,6 +92,8 @@ script{display:none!important}
 .padding-8px{padding:8px}
 .padding-16px{padding:16px}
 
+.pad{padding:var(--main-padding)}
+
 .gap-0px>*{padding:0px}
 .gap-1px>*{padding:1px}
 .gap-2px>*{padding:2px}
@@ -527,6 +529,10 @@ input:focus + .helptext{
     .gl-10{width:83.33%;}
     .gl-11{width:91.66%;}
     .gl-12{width:100%;}
+}
+
+.g-f4{
+    font:normal normal normal 14px/1 Arial
 }
 
 

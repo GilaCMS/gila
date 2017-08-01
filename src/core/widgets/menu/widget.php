@@ -2,6 +2,7 @@
 
 $options=[
     'menu'=>[
-        'type'=>'textarea'
+        'type'=>'textarea',
+        'default'=>'[{\"title\":\"Home\",\"url\":\"\"},{\"title\":\"Page\",\"url\":\"page\"}]'
     ]
 ];

@@ -27,7 +27,7 @@ class blog extends controller
     }
     function tagAction()
     {
-          view::set('posts_by_tag',blog::postByTag(['posts'=>12,'tag'=>router::get('tag',1)]));
+          view::set('posts',blog::postByTag(['posts'=>12,'tag'=>router::get('tag',1)]));
           view::render('blog-tag.php');
     }
     static function postByTag ($args = []) {
@@ -37,15 +37,26 @@ class blog extends controller
         $start_from = (self::$page-1)*$ppp;
         $where = '';
 
-        $ql="SELECT id,title,SUBSTRING(post,1,300) as post,
+        $ql="SELECT id,title,slug,SUBSTRING(post,1,300) as post,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post WHERE publish=1
             AND id IN(SELECT post_id from postmeta where vartype='tag' and value='$tag')
             ORDER BY id DESC LIMIT $start_from,$ppp";
         $res = $db->query($ql);
-        echo $ql;
 
         if ($res) while ($r = mysqli_fetch_assoc($res)) {
+            yield $r;
+        }
+    }
+
+
+    static function searchposts ($s) {
+        global $db;
+
+        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
+            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
+            FROM post WHERE match(title,post) AGAINST('$s' IN NATURAL LANGUAGE MODE) ORDER BY id DESC");
+        if ($res) while ($r = mysqli_fetch_array($res)) {
             yield $r;
         }
     }
@@ -95,8 +106,14 @@ class blog extends controller
     {
         global $db;
         $ppp = 8;
+        if ($s=router::get('search')) {
+			      view::set('posts',blog::searchposts($s));
+			      view::render('blog-search.php');
+            return;
+        }
         //$page=(router::get('page',1))?:1;
         view::set('page',blog::$page);
+        view::set('posts',blog::post(['posts'=>12]));
         view::render('frontpage.php');
     }
 

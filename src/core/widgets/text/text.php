@@ -1,3 +1,1 @@
-<?php
-
-echo $widget_data->text;
+<p><?=$widget_data->text;?></p>

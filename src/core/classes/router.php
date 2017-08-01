@@ -36,7 +36,6 @@ class router
         }
     	else {
              array_splice($args, 1, 0, $action);
-             echo "oookk";
     	}
 
         if (method_exists($controller,$action.'Action')) {
@@ -86,7 +85,7 @@ class router
         }
 
         if (!isset(gila::$controller[$controller])) $controller = 'blog';
-// Here must update config.php file on default-controller
+        // Here must update config.php file on default-controller
         return $controller;
     }
 

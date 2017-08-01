@@ -1,4 +1,4 @@
-<ul class="g-nav g-navbar">
+<ul>
 <?php
 $menu_items = json_decode($widget_data,true);
 

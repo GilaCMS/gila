@@ -27,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       ];
       $GLOBALS['config']['packages'] = [];
       $GLOBALS['config']['base'] = $_base_url;
-      $GLOBALS['config']['theme'] = 'base';
+      $GLOBALS['config']['theme'] = 'gila-blog';
       $GLOBALS['config']['title'] = 'Gila CMS';
       $GLOBALS['config']['slogan'] = 'An awesome website!';
       $GLOBALS['config']['default-controller'] = 'blog';

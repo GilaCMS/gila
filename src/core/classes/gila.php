@@ -35,7 +35,8 @@ class gila {
         gila::widgets([
           'menu'=>'core/widgets/menu',
           'text'=>'core/widgets/text',
-          'latest-post'=>'core/widgets/latest-post'
+          'latest-post'=>'core/widgets/latest-post',
+          'tag'=>'core/widgets/tag'
         ]);
         gila::$widget_area=[];
         //gila::$package = $GLOBALS['package']?:[];
@@ -136,18 +137,20 @@ class gila {
         return '';
     }
 
-    static function make_url($c, $action, $args)
+    static function make_url($c, $action='', $args=[])
     {
         $params='';
-        $params_='';
         foreach($args as $key=>$value) {
             $params.='/'.$value;
-            $params_.='&'.$key.'='.$value;
         }
-//        if($action!='') $c.='/';
-//        if(router::controller()==$c) $c.='';
-
-        //return gila::config('base').$c.$action.$params;
-        return gila::config('base')."?c=$c&action=$action$params_";
+		    if(router::controller()==$c) $c.='';
+        if($action!='') if($c!='') $c.='/';
+        return gila::config('base').$c.$action.$params;
+		/*
+        foreach($args as $key=>$value) {
+            $params.='&'.$key.'='.$value;
+        }
+        return gila::config('base')."?c=$c&action=$action$params";
+		*/
     }
 }
