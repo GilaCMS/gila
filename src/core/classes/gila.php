@@ -42,7 +42,7 @@ class gila {
         //gila::$package = $GLOBALS['package']?:[];
 
 		gila::$option=[];
-		$res = $db->get('SELECT option,value FROM option;');
+		$res = $db->get('SELECT `option`,`value` FROM `option`;');
 		foreach($res as $r) gila::$option[$r[0]] = $r[1];
     }
 

@@ -73,7 +73,7 @@
                     <a href="<?=gila::config('base')?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
                     </span>
                 <span class="g-group-item fullscreen text-align-right">
-                    User Name
+                    <?=session::key('user_name')?> 
                     <a href="<?=gila::config('base')?>admin/logout">Logout</a>
                 </span>
             </div>

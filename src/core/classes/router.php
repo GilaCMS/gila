@@ -85,7 +85,7 @@ class router
         }
 
         if (!isset(gila::$controller[$controller])) $controller = 'blog';
-        // Here must update config.php file on default-controller
+// Here must update config.php file on default-controller
         return $controller;
     }
 

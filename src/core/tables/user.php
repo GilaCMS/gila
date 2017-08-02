@@ -9,10 +9,17 @@ $table = [
     'id'=>'id',
     'csv'=> ['id','name','email'],
     'fields'=> [
-        'id'=> ['edit'=>false],
-        'name'=> [],
-        'email'=> [],
-        'pass'=> ['list'=>false],
+        'id'=> [
+          "title"=>"ID",
+          'edit'=>false
+        ],
+        'username'=> [
+          "title"=>"Name"
+        ],
+        'email'=> [
+          "title"=>"Email"
+        ],
+        'pass'=> ['list'=>false,'type'=>'password'],
         "privileges"=>[
             //'list'=>false,
             'type'=>'meta',

@@ -126,7 +126,7 @@ class view
     {
         global $db,$widget_data;
         $filePath = gila::config('theme').'/widgets/'.$widget.'.php';
-        $widget_data = json_decode($db->get("SELECT data FROM widget WHERE widget=? LIMIT 1;", $widget)[0][0]);
+        $widget_data = json_decode($db->get("SELECT data FROM widget WHERE active=1 AND widget=? LIMIT 1;", $widget)[0][0]);
         if($widget_exp==null) $widget_exp=$widget;
 
         if (file_exists($filePath)) {
@@ -150,7 +150,7 @@ class view
     static function widget_area ($area)
     {
         global $db,$widget_data;
-        $widgets = $db->get("SELECT * FROM widget WHERE area=? ORDER BY pos ;",[$area]);
+        $widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
         if ($widgets) foreach ($widgets as $widget) {
           $widget_data = json_decode($widget['data']);
           $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";

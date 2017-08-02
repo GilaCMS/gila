@@ -8,7 +8,7 @@ $table = [
     'tools'=>['new_post','csv'],
     'csv'=> ['id','title','slug','user_id','updated','publish','post'],
     'commands'=> ['delete'],
-    'search-boxes'=> ['title','user_id','updated'],
+    'search-boxes'=> ['title','user_id'],
     'fields'=> [
         'id'=> [
             'title'=>'ID',
@@ -20,7 +20,7 @@ $table = [
         /*'slug'=> [],*/
         'user_id'=> [
             'title'=>'User',
-            'qoptions'=>"id AS `Index`, name AS `Text` FROM user"
+            'qoptions'=>"id AS `Index`, username AS `Text` FROM user"
         ],
         'updated'=> [
             'title'=>'Last updated',

@@ -33,7 +33,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
 
 $link->query('CREATE TABLE IF NOT EXISTS `postcategory` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) DEFAULT NULL,
+  `title` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
@@ -49,7 +49,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `page` (
 
 $link->query('CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) DEFAULT NULL,
+  `username` varchar(80) DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
   `pass` varchar(120) DEFAULT NULL,
   `reset_code` varchar(60) DEFAULT NULL,
@@ -69,6 +69,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `widget` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `widget` varchar(80) DEFAULT NULL,
   `area` varchar(80) DEFAULT NULL,
+  `active` int(1) DEFAULT 1,
   `pos` int(2) DEFAULT NULL,
   `data` text,
   PRIMARY KEY (`id`)

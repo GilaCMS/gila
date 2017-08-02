@@ -22,6 +22,10 @@ $table = [
         //'title'=> [],
         'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
         'pos'=> ['title'=>'Position'],
+        'active'=> [
+          'title'=>'Active',
+          'type'=>'checkbox','edit'=>true
+        ],
         'data'=> [
           'title'=>'Data', 'show'=>false, 'edit'=>false,
           'qcolumn'=>"REPLACE(data,'\"','\\\"')", 'type'=>'text'

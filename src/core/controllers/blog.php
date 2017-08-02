@@ -1,8 +1,8 @@
 <?php
 
+//namespace core\controllers;
 
-
-class blog extends controller
+class blog  //extends controller
 {
     public static $page;
     public static $totalPosts;
@@ -25,11 +25,28 @@ class blog extends controller
         $this->pageAction();
         //include __DIR__.'/../../../themes/'.$GLOBALS['config']['theme']."/frontpage.php";
     }
+
+    function feedAction()
+    {
+        $title=gila::config('title');
+        $link=gila::config('base');
+        $description=gila::config('slogan');
+        $items=blog::latestposts();
+        include 'src/core/views/rss.php';
+    }
+
     function tagAction()
     {
           view::set('posts',blog::postByTag(['posts'=>12,'tag'=>router::get('tag',1)]));
           view::render('blog-tag.php');
     }
+
+    function cAction()
+    {
+          //view::set('posts',blog::postByCategory(['posts'=>12,'cat'=>router::get('cat',1)]));
+          //view::render('blog-tag.php');
+    }
+
     static function postByTag ($args = []) {
         global $db;
         $ppp = isset($args['posts'])?$args['posts']:8;
@@ -37,7 +54,7 @@ class blog extends controller
         $start_from = (self::$page-1)*$ppp;
         $where = '';
 
-        $ql="SELECT id,title,slug,SUBSTRING(post,1,300) as post,
+        $ql="SELECT id,title,SUBSTRING(post,1,300) as post,slug,updated,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post WHERE publish=1
             AND id IN(SELECT post_id from postmeta where vartype='tag' and value='$tag')
@@ -135,10 +152,10 @@ class blog extends controller
             yield $r;
         }
     }
-    static function latestposts ($n) {
+    static function latestposts ($n=12) {
         global $db;
 
-        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
+        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,updated,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post ORDER BY id DESC LIMIT 0,$n");
 
@@ -152,7 +169,7 @@ class blog extends controller
         $start_from = (self::$page-1)*$ppp;
         $where = '';
 
-        $res = $db->query("SELECT id,title,SUBSTRING(post,1,300) as post,
+        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post WHERE publish=1 ORDER BY id DESC LIMIT $start_from,$ppp");
 
