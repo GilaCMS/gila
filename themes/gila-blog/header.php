@@ -10,6 +10,18 @@
     <meta name="author" content="">
     <title><?=gila::config('base')?></title>
     <?php view::links(); ?>
+    <style>
+    body{font-family:"Roboto","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif}
+    .g-widget{padding: 0; margin-top: 12px; border: 1px solid #ccc;}
+    .g-widget .g-nav.vertical li a{color: #181818;padding: 4px 12px}
+    .g-widget .g-nav.vertical li a:hover{color: orangered;}
+    .widget_title{border-top: 4px solid orangered; background: #181818; color: #ddd;}
+    .post-review{border-bottom: 1px dashed #ccc;}
+    .post-review a{color: #181818;}
+    .post-review a:hover{color: orangered;}
+    .sidebar{border-left: 1px dashed #ccc;padding-left:8px; min-height:200px}
+    .header{margin-bottom: 20px}
+    </style>
     <!--link href="lib/gila.min.css" rel="stylesheet"-->
 </head>
 
@@ -17,12 +29,12 @@
   <div  style="max-width:1000px; margin:auto">
     <div class="header">
         <?php view::widget_area('body'); ?>
-        <div>
-          <h1><a href="<?=gila::config('base')?>"><?=gila::config('title')?></a></h1>
+        <div class="inline-block">
+          <h1><a href="<?=gila::config('base')?>" style="color:#333;font-family:Arial;margin-left:8px"><?=gila::config('title')?></a></h1>
         </div>
         <!-- Navigation -->
-        <nav class="inline-flex fullwidth">
-            <span class="fullwidth"><?php view::widget('menu'); ?></span>
+        <nav class="inline-flex fullwidth g-navbar">
+            <span class="fullwidth" style="border-top: 4px solid orangered"><?php view::widget('menu'); ?></span>
             <!--form method="get" class="inline-flex" action="<?=gila::make_url('blog')?>">
               <input name='search' class="g-input" value="<?=(isset($_GET['search'])?$_GET['search']:'')?>">
               <button class="g-btn" onclick='submit'>Search</button>

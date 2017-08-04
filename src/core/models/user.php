@@ -14,7 +14,7 @@ class user
 
     }
 
-    function meta($id, $meta, $value = null)
+    static function meta($id, $meta, $value = null)
     {
         global $db;
         if ($value==null) {
@@ -25,9 +25,10 @@ class user
         return $db->query($ql,[$id, $meta, $value]);
     }
 
-    function getByEmail($email)
+    static function getByEmail($email)
     {
-        return $db->get("SELECT * FROM user WHERE email=?",$email);
+        global $db;
+        return $db->get("SELECT * FROM user WHERE email=?",$email)[0];
     }
 
     static function getByResetCode($rp)

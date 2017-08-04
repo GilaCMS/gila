@@ -147,14 +147,16 @@ class view
     {
         view::widget_area($area);
     }
-    static function widget_area ($area)
+    static function widget_area ($area,$div=true)
     {
         global $db,$widget_data;
         $widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
         if ($widgets) foreach ($widgets as $widget) {
           $widget_data = json_decode($widget['data']);
           $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
+          if($div) echo '<div class="g-widget">';
           include $widget_file;
+          if($div) echo '</div>';
         }
         event::fire($area);
     }
