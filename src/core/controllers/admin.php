@@ -99,7 +99,7 @@ class admin extends controller
         if(isset($_COOKIE['GSESSIONID'])) {
            $res = $db->query("DELETE FROM usermeta WHERE value=? AND vartype='GSESSIONID';",[$_COOKIE['GSESSIONID']]);
        }
-       echo "<meta http-equiv='refresh' content='0;url=//".gila::config('base')."' />";
+       echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
     }
 
     function media_uploadAction(){

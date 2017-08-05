@@ -12,6 +12,12 @@ class blog  //extends controller
         self::$page = (router::get('page',1))?:1;
     }
 
+    function bbAction(){
+      global $db;
+      $data = '{"menu":"[\\\r\\\t{\\\"title\\\":\\\"Home\\\",\\\"url\\\":\\\"\\\"},\\\r\\\t{\\\"title\\\":\\\"Page\\\",\\\"url\\\":\\\"page\\\"}\\\r]"}';
+      $db->query("INSERT INTO widget VALUES(5,'menu','head',1,1,'$data');");
+
+    }
     function indexAction()
     {
         if ($id=router::get('page_id',1)) {
@@ -34,6 +40,44 @@ class blog  //extends controller
         $items=blog::latestposts();
         include 'src/core/views/rss.php';
     }
+
+    function readerAction()
+    {
+	$rss = new DOMDocument();
+	$rss->load('http://gilacms.com/blog/feed/');
+	$feed = array();
+	foreach ($rss->getElementsByTagName('item') as $node) {
+		$item = array (
+			'title' => $node->getElementsByTagName('title')->item(0)->nodeValue,
+			'desc' => $node->getElementsByTagName('description')->item(0)->nodeValue,
+			'link' => $node->getElementsByTagName('link')->item(0)->nodeValue,
+			'date' => $node->getElementsByTagName('pubDate')->item(0)->nodeValue,
+			);
+		array_push($feed, $item);
+	}
+	$limit = 5;
+/*	for($x=0;$x<$limit;$x++) {
+		$title = str_replace(' & ', ' &amp; ', $feed[$x]['title']);
+		$link = $feed[$x]['link'];
+		$description = $feed[$x]['desc'];
+		$date = date('l F d, Y', strtotime($feed[$x]['date']));
+		echo '<p><h2><a href="'.$link.'" title="'.$title.'">'.$title.'</a></h2><br />';
+		echo '<small><em>Posted on '.$date.'</em></small></p>';
+		echo '<p>'.$description.'</p>';
+	}*/
+  $posts =[];
+  	for($x=0;$x<$limit;$x++) {
+      $posts[$x]=[];
+  		$posts[$x]['title'] = str_replace(' & ', ' &amp; ', $feed[$x]['title']);
+  		$posts[$x]['slug'] = $feed[$x]['link'];
+      $posts[$x]['post'] = $feed[$x]['desc'];
+      $posts[$x]['img'] = '';
+      $posts[$x]['id'] = '';
+  		$posts[$x]['date'] = date('l F d, Y', strtotime($feed[$x]['date']));
+  	}
+  view::set('posts',$posts);
+  view::render('blog-list.php');
+}
 
     function tagAction()
     {
@@ -61,6 +105,7 @@ class blog  //extends controller
             ORDER BY id DESC LIMIT $start_from,$ppp";
         $res = $db->query($ql);
 
+
         if ($res) while ($r = mysqli_fetch_assoc($res)) {
             yield $r;
         }
@@ -83,8 +128,8 @@ class blog  //extends controller
     {
         global $db;
 
-        $res = $db->query("SELECT id,title,post,updated,user_id FROM post WHERE post.id=? OR post.slug=?;",[$id,$id]);
-        if ($res) if ($r = mysqli_fetch_array($res)) {
+        $res = $db->query("SELECT id,title,post,updated,user_id FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
+        f ($res && $r = mysqli_fetch_array($res)) {
             $id = $r['id'];
             $user_id = $r['user_id'];
 
@@ -101,17 +146,17 @@ class blog  //extends controller
                 view::set('og_image',$r['img']);
             } else view::set('img',$r['img']);
 
-            $res = $db->query("SELECT name FROM user WHERE id='$user_id';");
+            $res = $db->query("SELECT username FROM user WHERE id='$user_id';");
             if ($res) {
                 $r = mysqli_fetch_array($res);
-                view::set('author',$r['name']);
+                view::set('author',$r['username']);
             } else view::set('author','unknown');
 
             view::render('single-post.php');
         }
         else {
-            $res = $db->query("SELECT id,title,page,updated FROM page WHERE page.id=? OR page.slug=?;",[$id,$id]);
-            if ($res) if ($r = mysqli_fetch_array($res)) {
+            $res = $db->query("SELECT id,title,page,updated FROM page WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
+            f ($res && $r = mysqli_fetch_array($res)) {
                 view::set('title',$r['title']);
                 view::set('text',$r['page']);
                 view::render('page.php');
@@ -119,16 +164,15 @@ class blog  //extends controller
         }
     }
 
-    function pageAction()
+    function searchAction()
     {
         global $db;
         $ppp = 8;
-        if ($s=router::get('search')) {
-			      view::set('posts',blog::searchposts($s));
-			      view::render('blog-search.php');
+        if ($s=router::get('search',1)) {
+		      view::set('posts',blog::searchposts($s));
+		      view::render('blog-search.php');
             return;
         }
-        //$page=(router::get('page',1))?:1;
         view::set('page',blog::$page);
         view::set('posts',blog::post(['posts'=>12]));
         view::render('frontpage.php');

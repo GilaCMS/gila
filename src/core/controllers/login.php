@@ -13,8 +13,13 @@ class login extends controller
 
 	function indexAction()
     {
+        if(session::key('user_id')>0) {
+           echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
+           exit;
+        }
 		include 'src/core/views/login.phtml';
     }
+
 
 	function registerAction()
     {
@@ -60,7 +65,7 @@ class login extends controller
 		$reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,50);
         $message = "Hello {$r['username']}\n\n";
         $message .= "This is the link to change your password in $baseurl\n\n";
-		$message .= $baseurl."login/password_reset.php?rp=$reset_code\n\n";
+        $message .= $baseurl."login/password_reset?rp=$reset_code\n\n";
 		$message .= "If you didn't ask to change the password please ignore this email";
 
 		$headers = "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
