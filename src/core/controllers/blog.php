@@ -28,8 +28,9 @@ class blog  //extends controller
             $this->postShow($id);
             return;
         }
-        $this->pageAction();
-        //include __DIR__.'/../../../themes/'.$GLOBALS['config']['theme']."/frontpage.php";
+        view::set('page',blog::$page);
+        view::set('posts',blog::post(['posts'=>12]));
+        view::render('frontpage.php');
     }
 
     function feedAction()
@@ -43,41 +44,32 @@ class blog  //extends controller
 
     function readerAction()
     {
-	$rss = new DOMDocument();
-	$rss->load('http://gilacms.com/blog/feed/');
-	$feed = array();
-	foreach ($rss->getElementsByTagName('item') as $node) {
-		$item = array (
-			'title' => $node->getElementsByTagName('title')->item(0)->nodeValue,
-			'desc' => $node->getElementsByTagName('description')->item(0)->nodeValue,
-			'link' => $node->getElementsByTagName('link')->item(0)->nodeValue,
-			'date' => $node->getElementsByTagName('pubDate')->item(0)->nodeValue,
-			);
-		array_push($feed, $item);
-	}
-	$limit = 5;
-/*	for($x=0;$x<$limit;$x++) {
-		$title = str_replace(' & ', ' &amp; ', $feed[$x]['title']);
-		$link = $feed[$x]['link'];
-		$description = $feed[$x]['desc'];
-		$date = date('l F d, Y', strtotime($feed[$x]['date']));
-		echo '<p><h2><a href="'.$link.'" title="'.$title.'">'.$title.'</a></h2><br />';
-		echo '<small><em>Posted on '.$date.'</em></small></p>';
-		echo '<p>'.$description.'</p>';
-	}*/
-  $posts =[];
-  	for($x=0;$x<$limit;$x++) {
-      $posts[$x]=[];
-  		$posts[$x]['title'] = str_replace(' & ', ' &amp; ', $feed[$x]['title']);
-  		$posts[$x]['slug'] = $feed[$x]['link'];
-      $posts[$x]['post'] = $feed[$x]['desc'];
-      $posts[$x]['img'] = '';
-      $posts[$x]['id'] = '';
-  		$posts[$x]['date'] = date('l F d, Y', strtotime($feed[$x]['date']));
-  	}
-  view::set('posts',$posts);
-  view::render('blog-list.php');
-}
+        $rss = new DOMDocument();
+        $rss->load('http://gilacms.com/blog/feed/');
+        $feed = array();
+        foreach ($rss->getElementsByTagName('item') as $node) {
+            $item = [
+                'title' => $node->getElementsByTagName('title')->item(0)->nodeValue,
+                'desc' => $node->getElementsByTagName('description')->item(0)->nodeValue,
+                'link' => $node->getElementsByTagName('link')->item(0)->nodeValue,
+                'date' => $node->getElementsByTagName('pubDate')->item(0)->nodeValue,
+            ];
+            array_push($feed, $item);
+        }
+        $limit = 5;
+        $posts =[];
+        for($x=0;$x<$limit;$x++) {
+            $posts[$x]=[];
+            $posts[$x]['title'] = str_replace(' & ', ' &amp; ', $feed[$x]['title']);
+            $posts[$x]['slug'] = $feed[$x]['link'];
+            $posts[$x]['post'] = $feed[$x]['desc'];
+            $posts[$x]['img'] = '';
+            $posts[$x]['id'] = '';
+            $posts[$x]['date'] = date('l F d, Y', strtotime($feed[$x]['date']));
+        }
+        view::set('posts',$posts);
+        view::render('blog-list.php');
+    }
 
     function tagAction()
     {
@@ -129,7 +121,7 @@ class blog  //extends controller
         global $db;
 
         $res = $db->query("SELECT id,title,post,updated,user_id FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
-        f ($res && $r = mysqli_fetch_array($res)) {
+        if ($res && $r = mysqli_fetch_array($res)) {
             $id = $r['id'];
             $user_id = $r['user_id'];
 
@@ -156,7 +148,7 @@ class blog  //extends controller
         }
         else {
             $res = $db->query("SELECT id,title,page,updated FROM page WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
-            f ($res && $r = mysqli_fetch_array($res)) {
+            if ($res && $r = mysqli_fetch_array($res)) {
                 view::set('title',$r['title']);
                 view::set('text',$r['page']);
                 view::render('page.php');

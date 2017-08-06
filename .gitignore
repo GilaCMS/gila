@@ -19,7 +19,7 @@ config.php
 !themes/startbootstrap-clean-blog/
 !themes/base/
 !themes/gila-blog/
-!log/.gitkeep
+!log/sessions/
 !log/sessions/.gitkeep
 !tmp/index.html
 !assets/gila-logo.png
