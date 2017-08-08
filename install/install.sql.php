@@ -68,6 +68,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `usermeta` (
 $link->query('CREATE TABLE IF NOT EXISTS `widget` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `widget` varchar(80) DEFAULT NULL,
+  `title` varchar(80) DEFAULT NULL,
   `area` varchar(80) DEFAULT NULL,
   `active` int(1) DEFAULT 1,
   `pos` int(2) DEFAULT NULL,

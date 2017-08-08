@@ -154,9 +154,13 @@ class view
         if ($widgets) foreach ($widgets as $widget) {
           $widget_data = json_decode($widget['data']);
           $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
-          if($div) echo '<div class="g-widget">';
+          if($div){
+              echo '<div class="widget">';
+              if($widget->title) echo '<div class="widget-title">'.$widget->title.'</div>';
+              echo '<div class="widget-body">';
+          }
           include $widget_file;
-          if($div) echo '</div>';
+          if($div) echo '</div></div>';
         }
         event::fire($area);
     }

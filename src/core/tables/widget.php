@@ -19,12 +19,12 @@ $table = [
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],
         'widget'=> ['title'=>'Widget', 'options'=>$widgets,  'create'=>true], //'edit'=>false,
-        //'title'=> [],
+        'title'=> ['title'=>'Title'],
         'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
         'pos'=> ['title'=>'Position'],
         'active'=> [
           'title'=>'Active',
-          'type'=>'checkbox','edit'=>true
+          'type'=>'checkbox','edit'=>true,'create'=>false
         ],
         'data'=> [
           'title'=>'Data', 'show'=>false, 'edit'=>false,

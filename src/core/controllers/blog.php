@@ -1,6 +1,6 @@
 <?php
 
-//namespace core\controllers;
+use core\models\post as post;
 
 class blog  //extends controller
 {
@@ -12,12 +12,6 @@ class blog  //extends controller
         self::$page = (router::get('page',1))?:1;
     }
 
-    function bbAction(){
-      global $db;
-      $data = '{"menu":"[\\\r\\\t{\\\"title\\\":\\\"Home\\\",\\\"url\\\":\\\"\\\"},\\\r\\\t{\\\"title\\\":\\\"Page\\\",\\\"url\\\":\\\"page\\\"}\\\r]"}';
-      $db->query("INSERT INTO widget VALUES(5,'menu','head',1,1,'$data');");
-
-    }
     function indexAction()
     {
         if ($id=router::get('page_id',1)) {
@@ -29,7 +23,7 @@ class blog  //extends controller
             return;
         }
         view::set('page',blog::$page);
-        view::set('posts',blog::post(['posts'=>12]));
+        view::set('posts',post::getPostArray(['posts'=>12]));
         view::render('frontpage.php');
     }
 
@@ -73,36 +67,9 @@ class blog  //extends controller
 
     function tagAction()
     {
-          view::set('posts',blog::postByTag(['posts'=>12,'tag'=>router::get('tag',1)]));
+          view::set('posts',post::getByTag(['posts'=>12,'tag'=>router::get('tag',1)]));
           view::render('blog-tag.php');
     }
-
-    function cAction()
-    {
-          //view::set('posts',blog::postByCategory(['posts'=>12,'cat'=>router::get('cat',1)]));
-          //view::render('blog-tag.php');
-    }
-
-    static function postByTag ($args = []) {
-        global $db;
-        $ppp = isset($args['posts'])?$args['posts']:8;
-        $tag = isset($args['tag'])?$args['tag']:'';
-        $start_from = (self::$page-1)*$ppp;
-        $where = '';
-
-        $ql="SELECT id,title,SUBSTRING(post,1,300) as post,slug,updated,
-            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
-            FROM post WHERE publish=1
-            AND id IN(SELECT post_id from postmeta where vartype='tag' and value='$tag')
-            ORDER BY id DESC LIMIT $start_from,$ppp";
-        $res = $db->query($ql);
-
-
-        if ($res) while ($r = mysqli_fetch_assoc($res)) {
-            yield $r;
-        }
-    }
-
 
     static function searchposts ($s) {
         global $db;
@@ -127,6 +94,7 @@ class blog  //extends controller
 
             view::set('title',$r['title']);
             view::set('text',$r['post']);
+            view::set('id',$r['id']);
             view::set('updated',$r['updated']);
 
             view::set('og_url',gila::config('base').$r['id']);
@@ -170,57 +138,20 @@ class blog  //extends controller
         view::render('frontpage.php');
     }
 
-    static function ppp () {
-        return 8;
+    static function post ($args = []) {
+        return post::getPostArray($args);
     }
 
-    static function post () {
-        global $db;
-        $ppp = isset($args['posts'])?$args['posts']:8;
-        $start_from = (self::$page-1)*$ppp;
-        $where = '';
-
-        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
-            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
-            FROM post WHERE publish=1 ORDER BY id DESC LIMIT $start_from,$ppp");
-
-        if ($res) while ($r = mysqli_fetch_array($res)) {
-            yield $r;
-        }
-    }
     static function latestposts ($n=12) {
-        global $db;
-
-        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,updated,
-            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
-            FROM post ORDER BY id DESC LIMIT 0,$n");
-
-        if ($res) while ($r = mysqli_fetch_object($res)) {
-            yield $r;
-        }
+        return post::getLatest($n);
     }
+
     static function posts ($args = []) {
-        global $db;
-        $ppp = isset($args['posts'])?$args['posts']:8;
-        $start_from = (self::$page-1)*$ppp;
-        $where = '';
-
-        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
-            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
-            FROM post WHERE publish=1 ORDER BY id DESC LIMIT $start_from,$ppp");
-
-        if ($res) while ($r = mysqli_fetch_object($res)) {
-            yield $r;
-        }
+        return post::getPosts($args);
     }
 
     static function totalposts ($args = []) {
-        global $db;
-        $res = $db->query("SELECT * FROM post WHERE publish=1;");
-
-        if ($r = mysqli_fetch_array($res)) {
-            return $r[0];
-        } else return 0;
+        return post::total($args);
     }
 
     static function get_url($id,$slug=NULL)

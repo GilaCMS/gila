@@ -63,7 +63,7 @@ class admin extends controller
         $widget_data =json_encode($_POST['option']);
         echo $widget_data;
         if (isset($_POST['option'])) {
-            $db->query("UPDATE widget SET data=?,area=?,pos=? WHERE id=?",[$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_id']]);
+            $db->query("UPDATE widget SET data=?,area=?,pos=?,title=? WHERE id=?",[$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_title'],$_POST['widget_id']]);
             echo $_POST['widget_id'];
         }
     }
