@@ -1,4 +1,4 @@
-<div class="widget_title pad"><b>Latest Posts</b></div>
+
 <ul class="g-nav vertical">
 <?php
 global $db;

@@ -91,4 +91,4 @@ $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
 $link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post',1,CURRENT_TIMESTAMP);");
 $link->query("INSERT INTO page VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
 $data = '{"menu":"[\\\n\\\t{\\\"title\\\":\\\"Home\\\",\\\"url\\\":\\\"\\\"},\\\n\\\t{\\\"title\\\":\\\"Page\\\",\\\"url\\\":\\\"page\\\"}\\\n]"}';
-$link->query("INSERT INTO widget VALUES(1,'menu','head',1,1,'$data');");
+$link->query("INSERT INTO widget VALUES(1,'menu','','head',1,1,'$data');");

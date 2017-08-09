@@ -24,7 +24,6 @@
     <label class="gm-4">Title</label>
     <input id="widget_title" name="widget_title" value="<?=$widget->title?>" class="gm-6 g-input">
 </div>
-</div>
 <hr>
 
 <?php

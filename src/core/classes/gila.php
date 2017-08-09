@@ -18,7 +18,7 @@ class gila {
             'blog'=> 'core/controllers/blog'
         ]);
         gila::amenu([
-    		['Dashboard','admin','icon'=>'dashboard'],
+    		    ['Dashboard','admin','icon'=>'dashboard'],
             ['Content','admin','icon'=>'newspaper-o','access'=>'writer','children'=>[
                 ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
                 ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],
@@ -28,7 +28,8 @@ class gila {
             ['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
                 ['Users','admin/users','icon'=>'users','access'=>'admin'],
                 ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
-                ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin writer'],
+                ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin'],
+                ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
                 ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
                 ]],
         ]);
@@ -131,10 +132,10 @@ class gila {
         return password_hash($pass, PASSWORD_BCRYPT);
     }
 
-	static function option($option)
+	static function option($option,$default='')
     {
         if(isset(gila::$option[$option])) return gila::$option[$option];
-        return '';
+        return $default;
     }
 
     static function make_url($c, $action='', $args=[])

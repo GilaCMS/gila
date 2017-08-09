@@ -3,7 +3,7 @@
 class admin extends controller
 {
 
-    function indexAdmin ()
+    function indexAction ()
     {
       global $posts,$pages,$users,$packages;
       global $db;
@@ -14,7 +14,7 @@ class admin extends controller
       view::renderAdmin('admin/dashboard.phtml');
     }
 
-    function postsAdmin ()
+    function postsAction ()
     {
         global $db;
         if ($id = router::get('id',1)) {
@@ -26,7 +26,7 @@ class admin extends controller
         view::renderAdmin('admin/post.phtml');
     }
 
-    function pagesAdmin ()
+    function pagesAction ()
     {
         global $db;
         if ($id = router::get('id',1)) {
@@ -37,12 +37,12 @@ class admin extends controller
         view::renderAdmin('admin/page.phtml');
     }
 
-    function postcategoriesAdmin ()
+    function postcategoriesAction ()
     {
         view::renderAdmin('admin/postcategory.phtml');
     }
 
-    function widgetsAdmin ()
+    function widgetsAction ()
     {
         global $db;
 
@@ -68,31 +68,32 @@ class admin extends controller
         }
     }
 
-    function usersAdmin ()
+    function usersAction ()
     {
-        global $db;
-        if ($id = router::get('id',1)) {
-            echo "Edit user ".$id;
-            exit;
-        }
         view::renderAdmin('admin/user.phtml');
     }
 
 
-    function addonsAdmin ()
+    function addonsAction ()
     {
 		view::renderAdmin('admin/addons.php');
     }
 
-    function settingsAdmin ()
+    function themesAction ()
+    {
+        view::script('src/core/assets/admin/media.js');
+		view::renderAdmin('admin/themes.php');
+    }
+
+    function settingsAction ()
     {
         view::renderAdmin('admin/settings.php');
     }
-    function loginAdmin ()
+    function loginAction ()
     {
         view::renderAdmin('login.phtml');
     }
-    function logoutAdmin ()
+    function logoutAction ()
     {
         global $db;
         session::destroy();

@@ -156,7 +156,7 @@ class view
           $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
           if($div){
               echo '<div class="widget">';
-              if($widget->title) echo '<div class="widget-title">'.$widget->title.'</div>';
+              if($widget['title']!='') echo '<div class="widget-title">'.$widget['title'].'</div>';
               echo '<div class="widget-body">';
           }
           include $widget_file;
