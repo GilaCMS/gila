@@ -365,7 +365,7 @@ input:focus + .helptext{
 
 
 
-#gila-darkscreen{
+.gila-darkscreen{
     background-color:rgba(0, 0, 0, 0.5);
     position:fixed;
     display:flex;
@@ -375,48 +375,48 @@ input:focus + .helptext{
     top:0;
     bottom:0;
     right:0;
-    z-index:99000;
 }
 
-#gila-popup{
+.gila-popup{
     position:absolute;
     padding:12px;
     top:10%;
     margin-left:25%;
     width:50%;
     height:auto;
+    border:1px solid var(--main-border-color);
 }
 
-#gila-popup.large{
+.gila-popup.large{
     top:10%;
     margin-left:10%;
     width:80%;
 }
-#gila-popup>.title{
+.gila-popup>.title{
     background-color:var(--main-bg-color);
     border-bottom:1px solid var(--main-border-color);
 }
-#gila-popup>.foot,
-#gila-popup>.footer{
+.gila-popup>.foot,
+.gila-popup>.footer{
     background-color:var(--main-bg-color);
     border-top:1px solid var(--main-border-color);
 }
-#gila-popup>.closebtn{
+.gila-popup>.closebtn{
     font-size:1.5em;
 }
 
-#gila-popup>*{
+.gila-popup>*{
     padding:12px;
     margin:-12px;
 }
-#gila-popup>.body{
+.gila-popup>.body{
     margin:12px -12px;
 }
-#gila-popup.curved>.title{
+.gila-popup.curved>.title{
     border-top-left-radius:var(--main-radius);
     border-top-right-radius:var(--main-radius);
 }
-#gila-popup.curved>.foot, #gila-popup.curved>.footer{
+.gila-popup.curved>.foot, .gila-popup.curved>.footer{
     border-radius:0px 0px var(--main-radius) var(--main-radius);
 }
 
@@ -432,7 +432,7 @@ input:focus + .helptext{
 
 @media only screen{
     
-    #gila-popup-s, #gila-popup, #gila-popup-m, #gila-popup-l{
+    .gila-popup-s, .gila-popup, .gila-popup-m, .gila-popup-l{
         top:10%;
         margin-left:10%;
         width:80%;
@@ -441,9 +441,9 @@ input:focus + .helptext{
 }
 
 @media only screen and (min-width:600px){
-    #gila-popup{
+    .gila-popup{
         top:10%;
-        -webkit-animation-name:gilapopupanimation; 
+        -webkit-animation-name:gila-popup-animation; 
         -webkit-animation-duration:.3s; 
         animation-name:gilapopupanimation;
         animation-duration:.3s;
@@ -451,7 +451,7 @@ input:focus + .helptext{
         width:50%;
         min-height:80px;
     }
-    #gila-popup.small{
+    .gila-popup.small{
         margin-left:37.5%;
         width:33%;
     }
@@ -459,7 +459,7 @@ input:focus + .helptext{
 
 @media only screen and (min-width:1024px){
     
-    #gila-popup.large{
+    .gila-popup.large{
         top:10%;
         left:50%;
         margin-left:-450px;

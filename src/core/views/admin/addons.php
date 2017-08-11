@@ -115,7 +115,7 @@ g.dialog.buttons.save_options = {
 
 function addon_options(p) {
  g.post("admin/addons",'g_response=content&options='+p,function(x){
-     g.dialog({title:"Options",body:x,buttons:'save_options'})
+     g.modal({title:"Options",body:x,buttons:'save_options'})
  })
 }
 

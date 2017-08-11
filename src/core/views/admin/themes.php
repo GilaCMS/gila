@@ -95,8 +95,7 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
 
 <script>
 function theme_activate(p){ g.ajax('admin/themes?g_response=content&activate='+p,function(x){
-  location.reload(true)
-  //  g.alert('Theme successfully selected!','success','location.reload(true)');
+    g.alert('Theme selected!','success','location.reload(true)');
 })};
 
 
@@ -112,7 +111,7 @@ g.dialog.buttons.save_options = {
 
 function theme_options(p) {
  g.post("admin/themes",'g_response=content&options='+p,function(x){
-     g.dialog({title:"Options",body:x,buttons:'save_options',type:'modal'})
+     g.modal({title:"Options",body:x,buttons:'save_options',type:'modal'})
  })
 }
 

@@ -8,7 +8,13 @@
 
 $starttime = microtime(true);
 
-
+echo nl2br(json_encode($_SERVER,JSON_PRETTY_PRINT)).'<br>';
+/*$url=explode('/',$_SERVER['REQUEST_URI']); //SCRIPT_NAME
+if($url[1]=='pages') {
+  array_shift($url);
+  echo 'file is '.implode('/',$url).'<br>';
+} else echo 'is 1';
+}*/
 
 if (file_exists(__DIR__.'/config.php')) {
 	require_once 'config.php';

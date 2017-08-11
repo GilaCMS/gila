@@ -27,3 +27,18 @@ function gallery_upload_files() {
         g('#admin-media-div').parent().html(gal)
     }})
 }
+
+var media_path_input;
+g.dialog.buttons.select_media_path = {
+    title:'Select',fn:function(){
+        let v = g('#selected-path').attr('value')
+        if(v!=null) g(media_path_input).attr('value',v)
+        g('#media_dialog').remove();
+    }
+}
+function open_media_gallery(mpi) {
+    media_path_input = mpi;
+    g.post("admin/media","g_response=content&path=assets",function(gal){
+        g.dialog({title:"Gila gallery",body:gal,buttons:'select_media_path',id:'media_dialog'})
+    })
+}

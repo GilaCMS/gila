@@ -1,0 +1,11 @@
+runtime: php55
+api_version: 1
+
+
+handlers:
+- url: /lib
+  static_dir: lib
+- url: /assets
+  static_dir: assets
+- url: /*
+  static_dir: index.php
