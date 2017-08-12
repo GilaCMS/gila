@@ -9,18 +9,11 @@ $link->query('CREATE TABLE IF NOT EXISTS `post` (
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `publish` (`publish`),
-  KEY `user_id` (`user_id`),
-  FULLTEXT KEY `title` (`title`,`post`)
-)');
-
-$link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) DEFAULT NULL,
-  `vartype` varchar(25) DEFAULT NULL,
-  `value` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `post_id` (`post_id`)
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+
+$link->query('ALTER TABLE post ADD  FULLTEXT KEY `title` (`title`,`post`);');
+
 
 $link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

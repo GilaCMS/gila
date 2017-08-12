@@ -23,3 +23,4 @@ config.php
 !log/sessions/.gitkeep
 !tmp/index.html
 !assets/gila-logo.png
+!assets/gila-logo.svg

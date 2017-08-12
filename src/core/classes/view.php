@@ -35,9 +35,9 @@ class view
             self::renderFile($file, $package);
             return;
         }
-        self::include('admin/header.php');
+        self::includeFile('admin/header.php');
         self::renderFile($file, $package);
-        self::include('admin/footer.php');
+        self::includeFile('admin/footer.php');
     }
 
 
@@ -58,9 +58,9 @@ class view
             self::renderFile($file, $package);
             return;
         }
-        self::include('header.php');
+        self::includeFile('header.php');
         self::renderFile($file, $package);
-        self::include('footer.php');
+        self::includeFile('footer.php');
     }
 /*
     static function head($meta=[])
@@ -102,7 +102,7 @@ class view
             foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
 	  }
 
-    static function include($filepath,$pack='core')
+    static function includeFile($filepath,$pack='core')
     {
         $tpath = self::getThemePath().'/'.$filepath;
         if(file_exists($tpath)) {

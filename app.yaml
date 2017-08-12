@@ -7,5 +7,5 @@ handlers:
   static_dir: lib
 - url: /assets
   static_dir: assets
-- url: /*
+- url: /.*
   static_dir: index.php

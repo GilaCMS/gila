@@ -3,6 +3,11 @@
 class admin extends controller
 {
 
+    function __construct ()
+    {
+        if(session::key('user_id')==0) exit;
+    }
+
     function indexAction ()
     {
       global $posts,$pages,$users,$packages;
@@ -73,9 +78,9 @@ class admin extends controller
         view::renderAdmin('admin/user.phtml');
     }
 
-
     function addonsAction ()
     {
+        view::script('src/core/assets/admin/media.js');
 		view::renderAdmin('admin/addons.php');
     }
 
@@ -87,20 +92,22 @@ class admin extends controller
 
     function settingsAction ()
     {
+        view::script('src/core/assets/admin/media.js');
         view::renderAdmin('admin/settings.php');
     }
+    
     function loginAction ()
     {
         view::renderAdmin('login.phtml');
     }
+
     function logoutAction ()
     {
         global $db;
+        //if(isset($_COOKIE['GSESSIONID']))
+            $res = $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype='GSESSIONID';",[session::key('user_id')]);
         session::destroy();
-        if(isset($_COOKIE['GSESSIONID'])) {
-           $res = $db->query("DELETE FROM usermeta WHERE value=? AND vartype='GSESSIONID';",[$_COOKIE['GSESSIONID']]);
-       }
-       echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
+        echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
     }
 
     function media_uploadAction(){

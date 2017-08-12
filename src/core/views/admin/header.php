@@ -45,7 +45,7 @@
         <!-- Sidebar g-nav vertical -->
         <div id="sidebar-wrapper">
             <div style="position: relative;height: 100px;">
-                <img style="width:60px" src="install/logo.png" class="centered">
+                <img style="width:60px" src="assets/gila-logo.svg" class="centered">
             </div>
             <ul class="g-nav vertical">
                 <?php
@@ -73,7 +73,7 @@
                     <a href="<?=gila::config('base')?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
                     </span>
                 <span class="g-group-item fullscreen text-align-right">
-                    <?=session::key('user_name')?> 
+                    <?=session::key('user_name')?>
                     <a href="<?=gila::config('base')?>admin/logout">Logout</a>
                 </span>
             </div>

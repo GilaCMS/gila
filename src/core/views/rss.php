@@ -10,7 +10,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <description><?=$description?></description>
 <atom:link href="<?=gila::config('base')?>rss" rel="self" type="application/rss+xml" />
 <image>
-  <url><?=gila::config('base')?>assets/gila-logo.png</url>
+  <url><?=gila::config('base')?>assets/gila-logo.svg</url>
   <title><?=$title?></title>
   <link><?=gila::config('base')?></link>
 </image>

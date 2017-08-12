@@ -39,9 +39,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       file_put_contents($configfile, $filedata); //, FILE_APPEND | LOCK_EX
 
-      include "installed.phtml";
+      include "installed.php";
       exit;
   }
 }
 
-include "install.phtml";
+include "install.php";
