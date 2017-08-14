@@ -58,7 +58,6 @@ if (in_array($save_options,$GLOBALS['config']['packages'])) {
 	global $db;
 	foreach($_POST['option'] as $key=>$value) {
 		$ql="INSERT INTO `option`(`option`,`value`) VALUES('$save_options.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
-		echo $ql;
 		$db->query($ql);
 	}
     return;
@@ -108,7 +107,7 @@ g.dialog.buttons.save_options = {
 		let p = g.el('addon_id').value;
 		let fm=new FormData(g.el('addon_options_form'))
         g.ajax({url:'admin/addons?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
-			g('#gila-darkscreen').remove();
+			g('.gila-darkscreen').remove();
 		}})
     }
 }

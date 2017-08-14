@@ -5,7 +5,10 @@ class admin extends controller
 
     function __construct ()
     {
-        if(session::key('user_id')==0) exit;
+        if(session::key('user_id')==0) {
+            view::renderFile('login.phtml');
+            exit;
+        }
     }
 
     function indexAction ()
@@ -95,7 +98,7 @@ class admin extends controller
         view::script('src/core/assets/admin/media.js');
         view::renderAdmin('admin/settings.php');
     }
-    
+
     function loginAction ()
     {
         view::renderAdmin('login.phtml');

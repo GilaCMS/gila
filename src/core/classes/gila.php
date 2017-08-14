@@ -18,7 +18,7 @@ class gila {
             'blog'=> 'core/controllers/blog'
         ]);
         gila::amenu([
-    		    ['Dashboard','admin','icon'=>'dashboard'],
+    	    ['Dashboard','admin','icon'=>'dashboard'],
             ['Content','admin','icon'=>'newspaper-o','access'=>'writer','children'=>[
                 ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
                 ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],

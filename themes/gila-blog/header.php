@@ -10,6 +10,7 @@
     <meta name="author" content="">
     <title><?=gila::config('base')?></title>
     <?php view::links(); ?>
+
     <style>
     <?php $theme_color=gila::option('theme.color','orangered'); ?>
     body{font-family:"Roboto","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif}

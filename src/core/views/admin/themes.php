@@ -56,7 +56,6 @@ if ($save_options==gila::config('theme')) {
 	global $db;
 	foreach($_POST['option'] as $key=>$value) {
 		$ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
-		echo $ql;
 		$db->query($ql);
 	}
     return;
@@ -104,7 +103,7 @@ g.dialog.buttons.save_options = {
 		let p = g.el('theme_id').value;
 		let fm=new FormData(g.el('theme_options_form'))
         g.ajax({url:'admin/themes?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
-			  g('#gila-darkscreen').remove();
+			  g('.gila-darkscreen').remove();
 		}})
     }
 }
