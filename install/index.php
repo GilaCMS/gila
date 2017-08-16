@@ -5,7 +5,7 @@ $configfile = __DIR__.'/../config.php';
 if (file_exists($configfile)) {
     echo "<div class='alert'>config.php is already installed. You have to remove it before reinstalling the software</div>";
 }
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+else if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $host=$_POST['db_host'];$db_user=$_POST['db_user'];
   $db_pass=$_POST['db_pass'];$db_name=$_POST['db_name'];
   $_base_url=$_POST['base_url'];

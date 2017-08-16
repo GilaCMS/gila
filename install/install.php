@@ -8,6 +8,11 @@
     <div class="gm-12 wrapper text-align-center">
         <h1 class="margin-0">Gila CMS Installation</h1>
     </div>
+<?php
+$ext = ['mysqli'];
+foreach($ext as $k=>$v) if(!extension_loaded($v))
+		echo "<span class='alert fullwidth'>Extension $v in not loaded on php.ini</span>";
+?>
 <form method="post" class="row gap-16px bordered box-shadow g-form bg-white">
 	<div class="gl-6">
 	<label class="gs-12">Hostname</label>
@@ -31,4 +36,5 @@
 	</div>
 	<div class="gl-12"><input class="btn success" type="submit"></div>
 </form>
+
 </div>

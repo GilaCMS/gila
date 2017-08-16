@@ -19,7 +19,7 @@ if (in_array($activate,$packages)) {
 
 $options = router::post('options');
 if ($options==gila::config('theme')) {
-    echo '<form id="theme_options_form"><input id="theme_id" value="'.$options.'" type="hidden">';
+    echo '<form id="theme_options_form g-form"><input id="theme_id" value="'.$options.'" type="hidden">';
     $pack=$options;
     include __DIR__.'/../../../../themes/'.$options.'/package.php';
     foreach($options as $key=>$op) {

@@ -66,17 +66,16 @@
         <!-- /#sidebar-wrapper -->
 
         <!-- Page Content -->
+        <div class="g-group fullwidth bordered" style="vertical-align:baseline; background:white;">
+                <a href="#menu-toggle" class="btn btn-white g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
+                <a href="<?=gila::config('base')?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
+            <span class="g-group-item fullwidth text-align-right pad">
+                <?=session::key('user_name')?>
+                <a href="<?=gila::config('base')?>admin/logout">Logout</a>
+            </span>
+        </div>
         <div class="col-md-12">
-            <div class="g-group fullwidth margin-8px" style="vertical-align:baseline">
-                <span class="g-group bordered">
-                    <a href="#menu-toggle" class="btn btn-white g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
-                    <a href="<?=gila::config('base')?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
-                    </span>
-                <span class="g-group-item fullscreen text-align-right">
-                    <?=session::key('user_name')?>
-                    <a href="<?=gila::config('base')?>admin/logout">Logout</a>
-                </span>
-            </div>
+
             <div style="background:#ddd; padding:6px" class="row caption">
                 <div style="font-size:22px; padding-left: 15px;">
                     <?php

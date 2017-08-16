@@ -107,7 +107,14 @@ td[col] .pnk-input{ margin:0px; }
 .select2-container{ max-width:80%; }
 
 
-.pnk-searchbox .pnk-input{ width:120px; margin:0; }
+.pnk-searchbox .pnk-input{
+      width:120px;
+      padding:var(--main-padding);
+      font:14px Arial;
+      transition:0s;
+      margin:0;
+}
+
 .pnk-searchbox .select2-container--default{ padding:0px 5px; margin:0px 4px; }
 .pnk-searchbox{ margin: 0; font-size: 14px; }
 

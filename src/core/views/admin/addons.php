@@ -29,7 +29,7 @@ if (in_array($deactivate,$GLOBALS['config']['packages'])) {
 
 $options = router::post('options');
 if (in_array($options,$GLOBALS['config']['packages'])) {
-    echo '<form id="addon_options_form"><input id="addon_id" value="'.$options.'" type="hidden">';
+    echo '<form id="addon_options_form g-form"><input id="addon_id" value="'.$options.'" type="hidden">';
     $pack=$options;
     include __DIR__.'/../../../'.$options.'/package.php';
     foreach($options as $key=>$op) {
