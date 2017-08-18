@@ -81,10 +81,21 @@ class admin extends controller
         view::renderAdmin('admin/user.phtml');
     }
 
+    function packagesAction ()
+    {
+        if(!$contents=file_get_contents('http://gilacms.com/packages/')) {
+            echo "<br>Could not connect to packages list. Please try later.";
+            exit;
+        }
+        $packages = json_decode($contents);
+        view::set('packages',$packages);
+        view::renderFile('admin/packages.php');
+    }
+
     function addonsAction ()
     {
         view::script('src/core/assets/admin/media.js');
-		view::renderAdmin('admin/addons.php');
+		    view::renderAdmin('admin/addons.php');
     }
 
     function themesAction ()

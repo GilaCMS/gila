@@ -1,4 +1,3 @@
-
 <?php
 $dir = "src/";
 $packages = scandir($dir);
@@ -10,6 +9,8 @@ $activate = router::get('activate');
 if (in_array($activate,$packages)) {
     if(!in_array($activate, $GLOBALS['config']['packages'])) {
         $GLOBALS['config']['packages'][]=$activate;
+        $updatefile = 'src/'.$activate.'/update.php';
+        if(file_exists($updatefile)) include $updatefile;
         gila::updateConfigFile();
         usleep(100);
         $alert = gila::alert('success','Package activated');
@@ -27,9 +28,29 @@ if (in_array($deactivate,$GLOBALS['config']['packages'])) {
         exit;
 }
 
+$download = router::get('download');
+if ($download) {
+  $zip = new ZipArchive;
+  $target = 'src/'.$download;
+  $file = 'http://gilacms.com/assets/packages/'.$download.'.zip';
+  $localfile = 'src/'.$download.'.zip';
+  if (!copy($file, $localfile)) {
+    echo "Failed to download package!";
+  }
+  if ($zip->open($localfile) === TRUE) {
+    if(!file_exists($target)) mkdir($target);
+    $zip->extractTo($target);
+    $zip->close();
+    echo 'ok';
+  } else {
+    echo 'Failed to download package!';
+  }
+  exit;
+}
+
 $options = router::post('options');
 if (in_array($options,$GLOBALS['config']['packages'])) {
-    echo '<form id="addon_options_form g-form"><input id="addon_id" value="'.$options.'" type="hidden">';
+    echo '<form id="addon_options_form"><input id="addon_id" value="'.$options.'" type="hidden">';
     $pack=$options;
     include __DIR__.'/../../../'.$options.'/package.php';
     foreach($options as $key=>$op) {
@@ -92,7 +113,18 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
 }
 ?>
 <?=$alert?>
-<table class='g-table'><?=$table?></table>
+
+<ul class="g-nav g-tabs gs-12" id="addon-tabs">
+  <li class="active"><a href="#downloaded">Downloaded</a></li>
+  <li><a href="#newest">Newest</a></li>
+</ul>
+<div class="tab-content gs-12">
+  <div id="downloaded">
+    <table class='g-table'><?=$table?></table>
+  </div>
+  <div id="newest" data-src="admin/packages"></div>
+</div>
+
 
 <script>
 function addon_activate(p){ g.ajax('admin/addons?g_response=content&activate='+p,function(x){
@@ -100,6 +132,13 @@ function addon_activate(p){ g.ajax('admin/addons?g_response=content&activate='+p
 })};
 function addon_deactivate(p){ g.ajax('admin/addons?g_response=content&deactivate='+p,function(x){
     g.alert('Package deactivated!','notice','location.reload(true)');
+})};
+function addon_download(p){ g.ajax('admin/addons?g_response=content&download='+p,function(x){
+    // something to show progress
+    if(x=='ok')
+      g.alert('Package downloaded!','success');
+    else   g.alert('Package not downloaded!','warning');
+    this.style.color="#000";
 })};
 
 g.dialog.buttons.save_options = {
@@ -117,5 +156,21 @@ function addon_options(p) {
      g.modal({title:"Options",body:x,buttons:'save_options'})
  })
 }
+
+g.click('#addon-tabs a',function(){
+    g(event.target).findUp('.g-tabs').children().removeClass('active');
+    g(event.target).findUp('li').addClass('active');
+    event.preventDefault();
+    hash=event.target.href.split('#');
+    if(typeof hash[1]!=='undefined') if(hash[1]!==''){
+        x='#'+hash[1];
+        g(x).parent().children().style('display','none');
+        g(x).style('display','block');
+        if (g(x).attr('data-src')) g.post(g(x).attr('data-src'),'',function(response){
+            g(x).all[0].innerHTML=response
+        })
+    }
+    return false;
+})
 
 </script>
