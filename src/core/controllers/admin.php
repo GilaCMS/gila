@@ -92,6 +92,17 @@ class admin extends controller
         view::renderFile('admin/packages.php');
     }
 
+    function newthemesAction ()
+    {
+        if(!$contents=file_get_contents('http://gilacms.com/packages/themes')) {
+            echo "<br>Could not connect to themes list. Please try later.";
+            exit;
+        }
+        $packages = json_decode($contents);
+        view::set('packages',$packages);
+        view::renderFile('admin/newthemes.php');
+    }
+
     function addonsAction ()
     {
         view::script('src/core/assets/admin/media.js');

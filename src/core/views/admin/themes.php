@@ -1,4 +1,3 @@
-
 <?php
 $dir = "themes/";
 $packages = scandir($dir);
@@ -16,10 +15,29 @@ if (in_array($activate,$packages)) {
     }
 }
 
+$download = router::get('download');
+if ($download) {
+  $zip = new ZipArchive;
+  $target = 'themes/'.$download;
+  $file = 'http://gilacms.com/assets/themes/'.$download.'.zip';
+  $localfile = 'theme/'.$download.'.zip';
+  if (!copy($file, $localfile)) {
+    echo "Failed to download theme!";
+  }
+  if ($zip->open($localfile) === TRUE) {
+    if(!file_exists($target)) mkdir($target);
+    $zip->extractTo($target);
+    $zip->close();
+    echo 'ok';
+  } else {
+    echo 'Failed to download theme!';
+  }
+  exit;
+}
 
 $options = router::post('options');
 if ($options==gila::config('theme')) {
-    echo '<form id="theme_options_form g-form"><input id="theme_id" value="'.$options.'" type="hidden">';
+    echo '<form id="theme_options_form" class="g-form"><input id="theme_id" value="'.$options.'" type="hidden">';
     $pack=$options;
     include __DIR__.'/../../../../themes/'.$options.'/package.php';
     foreach($options as $key=>$op) {
@@ -90,13 +108,29 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
 }
 ?>
 <?=$alert?>
-<table class='g-table'><?=$table?></table>
+
+<ul class="g-nav g-tabs gs-12" id="theme-tabs">
+  <li class="active"><a href="#downloaded">Downloaded</a></li>
+  <li><a href="#newest">Newest</a></li>
+</ul>
+<div class="tab-content gs-12">
+  <div id="downloaded">
+    <table class='g-table'><?=$table?></table>
+  </div>
+  <div id="newest" data-src="admin/newthemes"></div>
+</div>
 
 <script>
 function theme_activate(p){ g.ajax('admin/themes?g_response=content&activate='+p,function(x){
     g.alert('Theme selected!','success','location.reload(true)');
 })};
-
+function theme_download(p){ g.ajax('admin/themes?g_response=content&download='+p,function(x){
+    // something to show progress
+    if(x=='ok')
+      g.alert('Theme downloaded!','success');
+    else  g.alert('Theme not downloaded!','warning');
+    this.style.color="#000";
+})};
 
 g.dialog.buttons.save_options = {
     title:'Save Options',fn:function(){
@@ -113,5 +147,21 @@ function theme_options(p) {
      g.modal({title:"Options",body:x,buttons:'save_options',type:'modal'})
  })
 }
+
+g.click('#theme-tabs a',function(){
+    g(event.target).findUp('.g-tabs').children().removeClass('active');
+    g(event.target).findUp('li').addClass('active');
+    event.preventDefault();
+    hash=event.target.href.split('#');
+    if(typeof hash[1]!=='undefined') if(hash[1]!==''){
+        x='#'+hash[1];
+        g(x).parent().children().style('display','none');
+        g(x).style('display','block');
+        if (g(x).attr('data-src')) g.post(g(x).attr('data-src'),'',function(response){
+            g(x).all[0].innerHTML=response
+        })
+    }
+    return false;
+})
 
 </script>
