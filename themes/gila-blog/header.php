@@ -17,7 +17,7 @@
     .widget{padding: 0; margin-top: 12px; border: 1px solid #ccc;}
     .widget .g-nav.vertical li a{color: #181818;padding: 4px 12px}
     .widget .g-nav.vertical li a:hover{color: <?=$theme_color?>;}
-    .widget-title{border-top: 4px solid <?=$theme_color?>; background: #181818; color: #ddd;padding:8px}
+    .widget-title{ background: <?=$theme_color?>; color: white;padding:8px}
     .post-review{border-bottom: 1px dashed #ccc;}
     .post-review a{color: #181818;}
     .post-review a:hover{color: <?=$theme_color?>;}

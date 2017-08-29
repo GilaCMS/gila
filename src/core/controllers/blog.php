@@ -22,8 +22,13 @@ class blog  //extends controller
             $this->postShow($id);
             return;
         }
+        if ($s=router::get('search')) {
+            view::set('posts',post::search($s));
+            view::render('blog-search.php');
+            return;
+        }
         view::set('page',blog::$page);
-        view::set('posts',post::getPostArray(['posts'=>12]));
+        view::set('posts',post::getPosts(['posts'=>12]));
         view::render('frontpage.php');
     }
 
@@ -36,50 +41,10 @@ class blog  //extends controller
         include 'src/core/views/rss.php';
     }
 
-    function readerAction()
-    {
-        $rss = new DOMDocument();
-        $rss->load('http://gilacms.com/blog/feed/');
-        $feed = array();
-        foreach ($rss->getElementsByTagName('item') as $node) {
-            $item = [
-                'title' => $node->getElementsByTagName('title')->item(0)->nodeValue,
-                'desc' => $node->getElementsByTagName('description')->item(0)->nodeValue,
-                'link' => $node->getElementsByTagName('link')->item(0)->nodeValue,
-                'date' => $node->getElementsByTagName('pubDate')->item(0)->nodeValue,
-            ];
-            array_push($feed, $item);
-        }
-        $limit = 5;
-        $posts =[];
-        for($x=0;$x<$limit;$x++) {
-            $posts[$x]=[];
-            $posts[$x]['title'] = str_replace(' & ', ' &amp; ', $feed[$x]['title']);
-            $posts[$x]['slug'] = $feed[$x]['link'];
-            $posts[$x]['post'] = $feed[$x]['desc'];
-            $posts[$x]['img'] = '';
-            $posts[$x]['id'] = '';
-            $posts[$x]['date'] = date('l F d, Y', strtotime($feed[$x]['date']));
-        }
-        view::set('posts',$posts);
-        view::render('blog-list.php');
-    }
-
     function tagAction()
     {
-          view::set('posts',post::getByTag(['posts'=>12,'tag'=>router::get('tag',1)]));
+          view::set('posts',post::getPosts(['posts'=>12,'tag'=>router::get('tag',1)]));
           view::render('blog-tag.php');
-    }
-
-    static function searchposts ($s) {
-        global $db;
-
-        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
-            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
-            FROM post WHERE match(title,post) AGAINST('$s' IN NATURAL LANGUAGE MODE) ORDER BY id DESC");
-        if ($res) while ($r = mysqli_fetch_array($res)) {
-            yield $r;
-        }
     }
 
 
@@ -129,7 +94,7 @@ class blog  //extends controller
         global $db;
         $ppp = 8;
         if ($s=router::get('search',1)) {
-		      view::set('posts',blog::searchposts($s));
+		      view::set('posts',post::search($s));
 		      view::render('blog-search.php');
             return;
         }
@@ -139,7 +104,7 @@ class blog  //extends controller
     }
 
     static function post ($args = []) {
-        return post::getPostArray($args);
+        return post::getPosts($args);
     }
 
     static function latestposts ($n=12) {
