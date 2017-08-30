@@ -1,5 +1,7 @@
 <?php
 
+use core\models\widget;
+
 class admin extends controller
 {
 
@@ -55,8 +57,7 @@ class admin extends controller
         global $db;
 
         if ($id = router::get('id',1)) {
-            $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
-            if ($r = mysqli_fetch_object($res)) {
+            foreach (widget::getById($id) as $r) {
                 view::set('widget',$r);
                 view::renderFile('admin/edit_widget.php');
             }

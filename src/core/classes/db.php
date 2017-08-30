@@ -93,6 +93,14 @@ class db {
 	  	return $res;
 	}
 
+	public function insert($table,$params=[])
+	{
+		if (!$this->connected) $this->connect();
+		$cols = implode(", ", array_keys($params));
+		$vals = implode(", ", $params);
+		$this->link->query("INSERT INTO $table($cols) VALUES($vals)");
+	}
+
 	public function get($q, $args = null)
 	{
 		$arr = [];
@@ -138,16 +146,6 @@ class db {
 		return addslashes($_REQUEST[$p]);
 	}
 
-	public function gen($q, $p = null)
-	{
-		if (!$this->connected) $this->connect();
-
-		$res = $this->link->query($q,$p);
-		$this->close();
-		while ($r = mysqli_fetch_array($res)) {
-			yield $r;
-		}
-	}
 
 	function value($q,$p=null)
 	{

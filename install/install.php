@@ -9,9 +9,10 @@
         <h1 class="margin-0">Gila CMS Installation</h1>
     </div>
 <?php
-$ext = ['mysqli'];
+$ext = ['mysqli','zip','mysqlnd'];
+
 foreach($ext as $k=>$v) if(!extension_loaded($v))
-		echo "<span class='alert fullwidth'>Extension $v in not loaded on php.ini</span>";
+		echo "<span class='alert fullwidth'>Extension $v in not loaded.</span>";
 ?>
 <form method="post" class="row gap-16px bordered box-shadow g-form bg-white">
 	<div class="gl-6">

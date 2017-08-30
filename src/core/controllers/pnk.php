@@ -179,7 +179,8 @@ class pnk extends controller
 		global $data, $table;
 
 		$fields="";$values="";
-		$last_id = $db->insert("INSERT INTO ".$table['name']." VALUES();");
+		$db->query("INSERT INTO ".$table['name']." VALUES();");
+		$last_id = $db->last_id;
 		$qs=get_fields_query();
 
 		$result=$db->query("SELECT $qs FROM ".$table['name']." WHERE ".$table['id']."=$last_id;");

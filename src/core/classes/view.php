@@ -6,9 +6,9 @@ class view
     private static $stylesheet = array();
     private static $script = array();
 
-	  static function set($p,$v) {
-		    self::$part[$p]=$v;
-	  }
+	static function set($p,$v) {
+        self::$part[$p]=$v;
+	}
 
     static function stylesheet($v)
     {
@@ -62,7 +62,7 @@ class view
         self::renderFile($file, $package);
         self::includeFile('footer.php');
     }
-/*
+
     static function head($meta=[])
     {
         echo '<head>';
@@ -72,16 +72,15 @@ class view
         }
         echo '<meta charset="utf-8">';
         echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
-        //<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">';
         //<meta name="description" content="">
         //<meta name="author" content="">
         echo '<title>'.gila::config('base').'</title>';
 
-        foreach($stylesheet as $link) {
-            echo '<link href="'.$link.'" rel="stylesheet">';
-        }
+        foreach($stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
+
         echo '</head>';
-    }*/
+    }
 
     static function renderFile($file, $package = 'core')
     {

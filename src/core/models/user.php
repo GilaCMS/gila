@@ -25,6 +25,12 @@ class user
         return $db->query($ql,[$id, $meta, $value]);
     }
 
+    static function getIdByMeta($vartype,$value)
+    {
+        global $db;
+        return $db->get("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';",[$value]);
+    }
+
     static function getByEmail($email)
     {
         global $db;
