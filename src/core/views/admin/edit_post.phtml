@@ -13,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     $slug = $slugify->slugify($title);
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {
-        $db->query("INSERT INTO post(title,post,publish,slug) VALUES(?,?,?,?)",$args);
+        array_push($args,session::key('user_id'));
+        $db->query("INSERT INTO post(title,post,publish,slug,user_id) VALUES(?,?,?,?,?)",$args);
         $id = $db->insert_id;
     }
     else {
