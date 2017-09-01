@@ -7,5 +7,11 @@ handlers:
   static_dir: lib
 - url: /assets
   static_dir: assets
-- url: /.*
-  static_dir: index.php
+- url: /src
+  static_dir: src
+- url: /themes
+  static_dir: themes
+- url: /(.+)
+  script: index.php
+- url: /install
+  script: install/index.php

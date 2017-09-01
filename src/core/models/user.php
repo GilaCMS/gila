@@ -21,7 +21,7 @@ class user
             $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
             return $db->value($ql,[$id, $meta]);
         }
-        $ql = "INSERT INTO usermeta(user_id,vartype,value) VALUES('?','?','?');";
+        $ql = "INSERT INTO usermeta(user_id,vartype,value) VALUES(?,?,?);";
         return $db->query($ql,[$id, $meta, $value]);
     }
 

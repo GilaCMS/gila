@@ -16,6 +16,7 @@ config.php
 !src/core/
 !src/gila_fb_comments/
 !src/gila_disqus/
+!src/featured_grid/
 !themes/startbootstrap-clean-blog/
 !themes/base/
 !themes/gila-blog/

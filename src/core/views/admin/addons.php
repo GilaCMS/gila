@@ -50,6 +50,7 @@ if ($download) {
 
 $options = router::post('options');
 if (in_array($options,$GLOBALS['config']['packages'])) {
+    global $db;
     echo '<form id="addon_options_form"><input id="addon_id" value="'.$options.'" type="hidden">';
     $pack=$options;
     include __DIR__.'/../../../'.$options.'/package.php';
@@ -63,6 +64,15 @@ if (in_array($options,$GLOBALS['config']['packages'])) {
                 echo '<select class="g-input gm-8" name="option['.$key.']">';
                 foreach($op['options'] as $value=>$name) {
                     echo '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
+                }
+                echo '</select>';
+            }
+            if($op['type']=='postcategory') {
+                echo '<select class="g-input gm-8" name="option['.$key.']">';
+                $res=$db->get('SELECT id,title FROM postcategory;');
+                echo '<option value=""'.(''==$ov?' selected':'').'>'.'[All]'.'</option>';
+                foreach($res as $r) {
+                    echo '<option value="'.$r[0].'"'.($r[0]==$ov?' selected':'').'>'.$r[1].'</option>';
                 }
                 echo '</select>';
             }

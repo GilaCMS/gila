@@ -1,6 +1,8 @@
 <?php
 $config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
+    $_lc=mb_substr($_POST['gila_base'],-1);
+    if($_lc!='/' && $_lc!='\\') $_POST['gila_base'].='/';
     foreach ($config_list as $key => $value) gila::config($key,$_POST['gila_'.$key]);
     gila::config('theme',$_POST['gila_theme']);
     gila::config('default-controller',$_POST['gila_dc']);
