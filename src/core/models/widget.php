@@ -12,6 +12,7 @@ class widget
     static function getById($id)
     {
         global $db;
-        return $db->get("SELECT * FROM widget WHERE id=?",$id)[0];
+        $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
+        return mysqli_fetch_object($res);
     }
 }

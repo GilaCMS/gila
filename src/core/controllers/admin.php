@@ -57,10 +57,8 @@ class admin extends controller
         global $db;
 
         if ($id = router::get('id',1)) {
-            foreach (widget::getById($id) as $r) {
-                view::set('widget',$r);
-                view::renderFile('admin/edit_widget.php');
-            }
+            view::set('widget',widget::getById($id));
+            view::renderFile('admin/edit_widget.php');
             return;
         }
         view::renderAdmin('admin/list_widget.php');
