@@ -8,7 +8,7 @@
     --main-border-color:#ccc;
     --main-dark-color:#181818;
     --main-primary-color:steelblue;
-    --main-success-color:forestgreen; 
+    --main-success-color:forestgreen;
     --main-warning-color:darkorange;
     --main-error-color:firebrick;
     --main-radius:4px;
@@ -18,7 +18,7 @@
 
 *{
     box-sizing:border-box;
-    
+
 }
 
 body{ padding:0px; margin:0px}
@@ -189,8 +189,8 @@ script{display:none!important}
 
 
 .column-2, .column-3, .column-4, .column-5, .column-6{
-    -webkit-column-gap:20px; 
-    -moz-column-gap:20px; 
+    -webkit-column-gap:20px;
+    -moz-column-gap:20px;
     column-gap:20px;
 }
 .column-2{ -webkit-column-count:2; -moz-column-count:2; column-count:2; }
@@ -199,11 +199,11 @@ script{display:none!important}
 .column-5{ -webkit-column-count:5; -moz-column-count:5; column-count:5; }
 .column-6{ -webkit-column-count:6; -moz-column-count:6; column-count:6; }
 .column-rule{
-    -webkit-column-rule-style:solid; 
-    -moz-column-rule-style:solid; 
+    -webkit-column-rule-style:solid;
+    -moz-column-rule-style:solid;
     column-rule-style:solid;
-    -webkit-column-rule-width:1px; 
-    -moz-column-rule-width:1px; 
+    -webkit-column-rule-width:1px;
+    -moz-column-rule-width:1px;
     column-rule-width:1px;
     column-rule-color:var(--main-color);
 }
@@ -219,17 +219,17 @@ script{display:none!important}
 
 .alert{
     padding:20px;
-    background-color:var(--main-error-color); 
+    background-color:var(--main-error-color);
     color:white;
     margin-bottom:15px;
 }
 
 button{
-    
+
     color:var(--main-color);
 	background:var(--main-bg-color);
 	padding:var(--main-padding);
-    
+
     border:1px solid var(--main-color);
     border-radius:var(--main-radius);
     font:15px Arial;
@@ -238,10 +238,10 @@ button{
 button:hover{
     cursor:pointer;
     color:var(--main-color);
-    
+
 }
 .btn,.g-btn{
-    
+
     color:white;
 	background:var(--main-primary-color);
 	padding:var(--main-padding);
@@ -275,7 +275,7 @@ button:hover{
     font:14px Arial;
     transition:0s;
     margin:0;
-    
+
     background:var(--main-input-color);
 }
 .g-form input:focus, .g-form select:focus, .g-input:focus{
@@ -285,14 +285,14 @@ button:hover{
 }
 input + .helptext{
   opacity:0;
-  
+
   font-size:0.8em;
   padding:4px;
   transition:0s;
 }
 input:focus + .helptext{
   opacity:0.8;
-  
+
   transition:.5s;
   z-index:0;
 }
@@ -300,7 +300,7 @@ input:focus + .helptext{
 
 *:focus{
     outline:none;
-    
+
 }
 .g-form label{
     padding:var(--main-padding);
@@ -421,7 +421,7 @@ input:focus + .helptext{
 }
 
 
-@-webkit-keyframes gila-popup-animation,{ 
+@-webkit-keyframes gila-popup-animation,{
     from{top:0%;opacity:0}
     to{top:10%;opacity:1}
 }
@@ -431,7 +431,7 @@ input:focus + .helptext{
 }
 
 @media only screen{
-    
+
     .gila-popup-s, .gila-popup, .gila-popup-m, .gila-popup-l{
         top:10%;
         margin-left:10%;
@@ -443,8 +443,8 @@ input:focus + .helptext{
 @media only screen and (min-width:600px){
     .gila-popup{
         top:10%;
-        -webkit-animation-name:gila-popup-animation; 
-        -webkit-animation-duration:.3s; 
+        -webkit-animation-name:gila-popup-animation;
+        -webkit-animation-duration:.3s;
         animation-name:gilapopupanimation;
         animation-duration:.3s;
         margin-left:25%;
@@ -458,7 +458,7 @@ input:focus + .helptext{
 }
 
 @media only screen and (min-width:1024px){
-    
+
     .gila-popup.large{
         top:10%;
         left:50%;
@@ -485,7 +485,7 @@ input:focus + .helptext{
 
 
 @media only screen and (min-width:300px){
-    
+
     .gs-1{width:8.33%;}
     .gs-2{width:16.66%;}
     .gs-3{width:25%;}
@@ -501,7 +501,7 @@ input:focus + .helptext{
 }
 
 @media only screen and (min-width:600px){
-    
+
     .gm-1{width:8.33%;}
     .gm-2{width:16.66%;}
     .gm-3{width:25%;}
@@ -516,7 +516,7 @@ input:focus + .helptext{
     .gm-12{width:100%;}
 }
 @media only screen and (min-width:768px){
-    
+
     .gl-1{width:8.33%;}
     .gl-2{width:16.66%;}
     .gl-3{width:25%;}
@@ -624,7 +624,7 @@ input:focus + .helptext{
 }
 .g-group-item{
     display:table-cell;
-    
+
     border-radius:0;
 }
 .g-square,.g-icon{
@@ -641,7 +641,7 @@ input:focus + .helptext{
 .g-table{
   border-spacing:0;
   width:100%;
-  
+
   color:var(--main-color);
   border-width:0;
   font:14px Arial;
@@ -728,7 +728,7 @@ input:focus + .helptext{
 
 .g-gal>*{
     display:inline-block;
-    width:100px; 
+    width:100px;
     text-align:center;
     vertical-align:top;
     word-wrap:break-word;

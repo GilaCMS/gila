@@ -81,23 +81,32 @@ if ($save_options==gila::config('theme')) {
 
 
 foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
-    include $dir."$p/package.php";
     $table .= '<tr>';
     if (file_exists($dir."$p/screenshot.png")) {
-        $table .= '<td style="width:20%"><div ><img src="'."themes/$p/screenshot.png".'"  /></div>';
+        $table .= '<td style="width:33%"><div ><img src="'."themes/$p/screenshot.png".'"  /></div>';
     }
     else {
         $table .= '<td>';
     }
 
-    $table .= '<td style="width:80%"><h4>'.($name?:$p).' '.($version?:'');
-    $table .= '</h4>'.(isset($description)?$description:'No description');
-    $table .= '<br><b>Author:</b> '.(isset($author)?$author:'');
-    $table .= (isset($url)?' <b>Url:</b> <a href="'.$url.'" target="_blank">'.$url.'</a>':'');
-    $table .= (isset($contact)?' <b>Contact:</b> '.$contact:'');
+    if(file_exists($dir."$p/package.json")) {
+        $pac=json_decode(file_get_contents($dir."$p/package.json"));
+        $table .= '<td style="width:66%"><h4>'.($pac->name?:$p).' '.($pac->version?:'');
+        $table .= '</h4>'.(isset($pac->description)?$pac->description:'No description');
+        $table .= '<br><b>Author:</b> '.(isset($pac->author)?$pac->author:'');
+        $table .= (isset($pac->url)?' <b>Url:</b> <a href="'.$pac->url.'" target="_blank">'.$pac->url.'</a>':'');
+        $table .= (isset($pac->contact)?' <b>Contact:</b> '.$pac->contact:'');
+        unset($options);
+    }else{
+        include $dir."$p/package.php";
+        $table .= '<td style="width:66%"><h4>'.($name?:$p).' '.($version?:'');
+        $table .= '</h4>'.(isset($description)?$description:'No description');
+        $table .= '<br><b>Author:</b> '.(isset($author)?$author:'');
+        $table .= (isset($url)?' <b>Url:</b> <a href="'.$url.'" target="_blank">'.$url.'</a>':'');
+        $table .= (isset($contact)?' <b>Contact:</b> '.$contact:'');
+    }
 
     if ($p==gila::config('theme')) {
-        //if (new_version) $table .= 'Upgrade<br>';
         $table .= "<td><a onclick='theme_options(\"{$p}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a><td>";
         $table .= "<a onclick='#' class='g-btn success'>Selected</a>";
     }

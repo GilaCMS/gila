@@ -9,7 +9,7 @@
         <h1 class="margin-0">Gila CMS Installation</h1>
     </div>
 <?php
-$ext = ['mysqli','zip','mysqlnd'];
+$ext = ['mysqli','zip','mysqlnd','json'];
 
 foreach($ext as $k=>$v) if(!extension_loaded($v))
 		echo "<span class='alert fullwidth'>Extension $v in not loaded.</span>";

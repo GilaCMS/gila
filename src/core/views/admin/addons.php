@@ -53,7 +53,11 @@ if (in_array($options,$GLOBALS['config']['packages'])) {
     global $db;
     echo '<form id="addon_options_form"><input id="addon_id" value="'.$options.'" type="hidden">';
     $pack=$options;
-    include __DIR__.'/../../../'.$options.'/package.php';
+    if(file_exists('src/'.$options.'/package.json')) {
+        $pac=json_decode(file_get_contents('src/'.$options.'/package.json'),true);
+        $options=$pac['options'];
+    } else include 'src/'.$options.'/package.php';
+
     foreach($options as $key=>$op) {
         echo '<div class="gm-12">';
         echo '<label class="gm-4">'.(isset($op['title'])?$op['title']:ucwords($key)).'</label>';
@@ -95,26 +99,39 @@ if (in_array($save_options,$GLOBALS['config']['packages'])) {
 }
 
 
-foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
-    include $dir."$p/package.php";
-    $table .= '<tr>';
-    /*if (file_exists($dir."$p/logo.png")) {
-        $table .= '<td><div><img src="'."src/$p/logo.png".'" style="width:100%" /></div>';
+foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php") || file_exists($dir."$p/package.json")) {
+/*if (file_exists($dir."$p/logo.png")) {
+    $table .= '<td><div><img src="'."src/$p/logo.png".'" style="width:100%" /></div>';
+}
+else {
+    $table .= '<td style="background:#999; align:middle"><span>'.($name?:$p).'</span>';
+}*/
+    $pac=[];
+    if(file_exists($dir."$p/package.json")) {
+        $pac=json_decode(file_get_contents($dir."$p/package.json"));
+        $table .= '<tr>';
+        $table .= '<td style="width:100%"><h4>'.($pac->name?:$p).' '.($pac->version?:'');
+        $table .= '</h4>'.(isset($pac->description)?$pac->description:'No description');
+        $table .= '<br><b>Author:</b> '.(isset($pac->author)?$pac->author:'');
+        $table .= (isset($pac->url)?' <b>Url:</b> <a href="'.$pac->url.'" target="_blank">'.$pac->url.'</a>':'');
+        $table .= (isset($pac->contact)?' <b>Contact:</b> '.$pac->contact:'');
+        unset($options);
+    }else{
+        include $dir."$p/package.php";
+        $table .= '<tr>';
+        $table .= '<td style="width:100%"><h4>'.($name?:$p).' '.($version?:'');
+        $table .= '</h4>'.(isset($description)?$description:'No description');
+        $table .= '<br><b>Author:</b> '.(isset($author)?$author:'');
+        $table .= (isset($url)?' <b>Url:</b> <a href="'.$url.'" target="_blank">'.$url.'</a>':'');
+        $table .= (isset($contact)?' <b>Contact:</b> '.$contact:'');
     }
-    else {
-        $table .= '<td style="background:#999; align:middle"><span>'.($name?:$p).'</span>';
-    }*/
 
-    $table .= '<td style="width:100%"><h4>'.($name?:$p).' '.($version?:'');
-    $table .= '</h4>'.(isset($description)?$description:'No description');
-    $table .= '<br><b>Author:</b> '.(isset($author)?$author:'');
-    $table .= (isset($url)?' <b>Url:</b> <a href="'.$url.'" target="_blank">'.$url.'</a>':'');
-    $table .= (isset($contact)?' <b>Contact:</b> '.$contact:'');
 
     if (in_array($p,$GLOBALS['config']['packages'])) {
         //if (new_version) $table .= 'Upgrade<br>';
-        $table .= "<td><a onclick='addon_options(\"{$p}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a><td>";
-        $table .= "<a onclick='addon_deactivate(\"{$p}\")' class='g-btn error'>Deactivate</a>";
+        $table .= '<td>';
+        if(isset($pac->options) || isset($options)) $table .= "<a onclick='addon_options(\"{$p}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a>";
+        $table .= "<td><a onclick='addon_deactivate(\"{$p}\")' class='g-btn error'>Deactivate</a>";
     }
     else {
         $table .= "<td><td><a onclick='addon_activate(\"{$p}\")' class='g-btn success'>Activate</a>";

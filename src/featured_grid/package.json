@@ -1,0 +1,17 @@
+{
+	"name":"Featured Posts Grid",
+	"version":"0.1",
+	"description":"Adds a featured post grid section in the fronpage. Template must have a <i>slide</i> widget area.",
+	"url":"gilacms.com",
+	"options":{
+		"category":{
+			"type":"postcategory"
+		},
+		"height":{
+			"type":"select",
+			"options":{
+				"500px":"500px","400px":"400px"
+			}
+		}
+	}
+}
