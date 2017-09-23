@@ -80,7 +80,7 @@ if ($save_options==gila::config('theme')) {
 }
 
 
-foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")){
+foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php") || file_exists($dir."$p/package.json")) {
     $table .= '<tr>';
     if (file_exists($dir."$p/screenshot.png")) {
         $table .= '<td style="width:33%"><div ><img src="'."themes/$p/screenshot.png".'"  /></div>';
