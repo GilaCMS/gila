@@ -1,7 +1,7 @@
 
 
 <footer class="wrapper" style="background:#464a49;margin-top:10px;color:white">
-    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+    <p class="copyright text-muted"><?=gila::option('theme.footer-text','Copyright &copy; Your Website 2017');?></p>
 <?php
 global $starttime;
 $end = microtime(true);

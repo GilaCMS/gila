@@ -105,7 +105,7 @@ class admin extends controller
     function addonsAction ()
     {
         view::script('src/core/assets/admin/media.js');
-		    view::renderAdmin('admin/addons.php');
+		view::renderAdmin('admin/addons.php');
     }
 
     function themesAction ()
@@ -151,6 +151,33 @@ class admin extends controller
     {
         view::script('src/core/assets/admin/media.js');
         view::renderAdmin('admin/media.php');
+    }
+
+    function db_backupAction()
+    {
+        view::includeFile('admin/header.php');
+        new db_backup();
+        view::includeFile('admin/footer.php');
+    }
+
+    function updateAction()
+    {
+        $zip = new ZipArchive;
+        $target = 'src/core';
+        $file = 'http://gilacms.com/assets/packages/core'.$download.'.zip';
+        $localfile = 'src/core.zip';
+        if (!copy($file, $localfile)) {
+          echo "Failed to download new version!";
+        }
+        if ($zip->open($localfile) === TRUE) {
+          if(!file_exists($target)) mkdir($target);
+          $zip->extractTo($target);
+          $zip->close();
+          include 'src/core/update.php';
+          echo 'Gila CMS successfully updated to '.$version;
+        } else {
+          echo 'Failed to download new version!';
+        }
     }
 
 }

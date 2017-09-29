@@ -39,9 +39,14 @@ $options = router::post('options');
 if ($options==gila::config('theme')) {
     echo '<form id="theme_options_form" class="g-form"><input id="theme_id" value="'.$options.'" type="hidden">';
     $pack=$options;
-    include __DIR__.'/../../../../themes/'.$options.'/package.php';
+    //include __DIR__.'/../../../../themes/'.$options.'/package.php';
+    if(file_exists('themes/'.$options.'/package.json')) {
+        $pac=json_decode(file_get_contents('themes/'.$options.'/package.json'),true);
+        $options=$pac['options'];
+    } else include 'themes/'.$options.'/package.php';
+
     foreach($options as $key=>$op) {
-        echo '<div class="gm-12">';
+        echo '<div class="gm-12 row">';
         echo '<label class="gm-4">'.(isset($op['title'])?$op['title']:ucwords($key)).'</label>';
         $ov = gila::option('theme.'.$key);
         if(!$ov) if(isset($op['default'])) $ov = $op['default'];
@@ -56,7 +61,7 @@ if ($options==gila::config('theme')) {
                 echo '</select>';
             }
             if($op['type']=='media') { ?>
-                <div class="gm-10 g-group">
+                <div class="gm-8 g-group">
                   <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery('#m_<?=$key?>')"><i class="fa fa-image"></i></span>
                   <span class="g-group-item"><input class="fullwidth" value="<?=$ov?>" id="m_<?=$key?>" name="option[<?=$key?>]"><span>
                 </span></span></div>
@@ -82,7 +87,10 @@ if ($save_options==gila::config('theme')) {
 
 foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php") || file_exists($dir."$p/package.json")) {
     $table .= '<tr>';
-    if (file_exists($dir."$p/screenshot.png")) {
+    if (file_exists($dir."$p/screenshot.jpg")) {
+        $table .= '<td style="width:33%"><div ><img src="'."themes/$p/screenshot.jpg".'"  /></div>';
+    }
+    else if (file_exists($dir."$p/screenshot.png")) {
         $table .= '<td style="width:33%"><div ><img src="'."themes/$p/screenshot.png".'"  /></div>';
     }
     else {
@@ -91,7 +99,7 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
 
     if(file_exists($dir."$p/package.json")) {
         $pac=json_decode(file_get_contents($dir."$p/package.json"));
-        $table .= '<td style="width:66%"><h4>'.($pac->name?:$p).' '.($pac->version?:'');
+        $table .= '<td style="width:66%"><h4>'.(isset($pac->name)?$pac->name:$p).' '.(isset($pac->version)?$pac->version:'');
         $table .= '</h4>'.(isset($pac->description)?$pac->description:'No description');
         $table .= '<br><b>Author:</b> '.(isset($pac->author)?$pac->author:'');
         $table .= (isset($pac->url)?' <b>Url:</b> <a href="'.$pac->url.'" target="_blank">'.$pac->url.'</a>':'');

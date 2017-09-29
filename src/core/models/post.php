@@ -29,7 +29,7 @@ class post
     static function total ()
     {
         global $db;
-        return $db->value("SELECT * FROM post WHERE publish=1;");
+        return $db->value("SELECT COUNT(*) FROM post WHERE publish=1;");
     }
 
     static function getLatest($n=8)

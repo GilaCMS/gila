@@ -160,4 +160,9 @@ class db {
 		return null;
 	}
 
+	function credentials()
+	{
+		return [$this->dbhost,$this->user,$this->pass,$this->dsch];
+	}
+
 }

@@ -17,22 +17,23 @@ class gila {
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog'
         ]);
-        gila::amenu([
+        gila::$amenu = [
     	    ['Dashboard','admin','icon'=>'dashboard'],
-            ['Content','admin','icon'=>'newspaper-o','access'=>'writer','children'=>[
+            'context'=>['Content','admin','icon'=>'newspaper-o','access'=>'writer','children'=>[
                 ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
                 ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],
                 ['Categories','admin/postcategories','icon'=>'list','access'=>'admin'],
                 ['Media','admin/media','icon'=>'image','access'=>'admin'],
+                ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
                 ]],
-            ['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
+            'admin'=>['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
                 ['Users','admin/users','icon'=>'users','access'=>'admin'],
                 ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
                 ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin'],
                 ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
                 ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
                 ]],
-        ]);
+        ];
         gila::widgets([
           'menu'=>'core/widgets/menu',
           'text'=>'core/widgets/text',
@@ -75,6 +76,12 @@ class gila {
         }
     }
 
+    static function amenu_child($h,$item)
+    {
+        if(!isset(gila::$amenu[$h]['children'])) gila::$amenu[$h]['children']=[];
+        gila::$amenu[$h]['children'][]=$item;
+    }
+
     static function post($id)
     {
 
@@ -88,6 +95,11 @@ class gila {
         else {
             $GLOBALS['config'][$key] = $value;
         }
+    }
+
+    static function setConfig($key, $value)
+    {
+        $GLOBALS['config'][$key] = $value;
     }
 
     static function updateConfigFile ()

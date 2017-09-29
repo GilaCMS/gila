@@ -6,10 +6,13 @@ class blog  //extends controller
 {
     public static $page;
     public static $totalPosts;
+    public static $totalPages;
+    public static $ppp;
 
     function __construct ()
     {
         self::$page = (router::get('page',1))?:1;
+        self::$ppp = 12;
     }
 
     function indexAction()
@@ -28,7 +31,7 @@ class blog  //extends controller
             return;
         }
         view::set('page',blog::$page);
-        view::set('posts',post::getPosts(['posts'=>12]));
+        view::set('posts',post::getPosts(['posts'=>self::$ppp]));
         view::render('frontpage.php');
     }
 
@@ -43,7 +46,7 @@ class blog  //extends controller
 
     function tagAction()
     {
-          view::set('posts',post::getPosts(['posts'=>12,'tag'=>router::get('tag',1)]));
+          view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>router::get('tag',1)]));
           view::render('blog-tag.php');
     }
 
@@ -99,7 +102,7 @@ class blog  //extends controller
             return;
         }
         view::set('page',blog::$page);
-        view::set('posts',blog::post(['posts'=>12]));
+        view::set('posts',blog::post(['posts'=>(self::$ppp)]));
         view::render('frontpage.php');
     }
 
@@ -107,7 +110,7 @@ class blog  //extends controller
         return post::getPosts($args);
     }
 
-    static function latestposts ($n=12) {
+    static function latestposts ($n) {
         return post::getLatest($n);
     }
 
@@ -119,8 +122,15 @@ class blog  //extends controller
         return post::total($args);
     }
 
+    static function totalpages ($args = []) {
+        self::$totalPosts = blog::totalposts($args);
+        self::$totalPages = floor((self::$totalPosts+self::$ppp)/self::$ppp);
+        return self::$totalPages;
+    }
+
     static function get_url($id,$slug=NULL)
     {
         return gila::make_url('blog','',['p'=>$id,'slug'=>$slug]);
     }
+
 }

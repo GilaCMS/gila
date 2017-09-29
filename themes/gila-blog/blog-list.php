@@ -23,9 +23,13 @@
     <?php } ?>
     <!-- Pagination -->
     <ul class="g-nav pagination">
-        <li class="">
-            <a href="?page=<?=$page+1?>">Older Posts &rarr;</a>
+        <?php
+        $totalpages = blog::totalpages();
+        for($pl=0;$pl<$totalpages;$pl++) { ?>
+        <li>
+            <a href="?page=<?=$pl+1?>"><?=($pl+1)?></a>
         </li>
+        <?php } ?>
     </ul>
     </div>
     <div class="gm-3 sidebar">

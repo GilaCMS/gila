@@ -41,6 +41,7 @@ if ($download) {
     if(!file_exists($target)) mkdir($target);
     $zip->extractTo($target);
     $zip->close();
+    if(file_exists('src/core/update.php')) include 'src/core/update.php';
     echo 'ok';
   } else {
     echo 'Failed to download package!';
@@ -107,10 +108,11 @@ else {
     $table .= '<td style="background:#999; align:middle"><span>'.($name?:$p).'</span>';
 }*/
     $pac=[];
+    if($p=='core') continue;
     if(file_exists($dir."$p/package.json")) {
         $pac=json_decode(file_get_contents($dir."$p/package.json"));
         $table .= '<tr>';
-        $table .= '<td style="width:100%"><h4>'.($pac->name?:$p).' '.($pac->version?:'');
+        $table .= '<td style="width:100%"><h4>'.(isset($pac->name)?$pac->name:$p).' '.(isset($pac->version)?$pac->version:'');
         $table .= '</h4>'.(isset($pac->description)?$pac->description:'No description');
         $table .= '<br><b>Author:</b> '.(isset($pac->author)?$pac->author:'');
         $table .= (isset($pac->url)?' <b>Url:</b> <a href="'.$pac->url.'" target="_blank">'.$pac->url.'</a>':'');
@@ -125,7 +127,6 @@ else {
         $table .= (isset($url)?' <b>Url:</b> <a href="'.$url.'" target="_blank">'.$url.'</a>':'');
         $table .= (isset($contact)?' <b>Contact:</b> '.$contact:'');
     }
-
 
     if (in_array($p,$GLOBALS['config']['packages'])) {
         //if (new_version) $table .= 'Upgrade<br>';

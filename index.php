@@ -2,7 +2,7 @@
 /*!
  * Gila CMS
  * Copyright 2017 Vasileios Zoumpourlis
- * Licensed under MIT LICENSE
+ * Licensed under BSD 3-Clause License
  */
 
 
