@@ -73,7 +73,7 @@ class router
         if (isset($args[0])) {
             if(isset(gila::$controller[$args[0]])) {
                 $controller = $args[0];
-            } else if  (file_exists('src/core/controllers/'.$args[0].'.php')) {
+            } else if (file_exists('src/core/controllers/'.$args[0].'.php')) {
                 $controller = $args[0];
                 gila::$controller[$controller] = 'core/controllers/'.$controller;
             } else {
@@ -85,7 +85,7 @@ class router
         }
 
         if (!isset(gila::$controller[$controller])) $controller = 'blog';
-// Here must update config.php file on default-controller
+        // TODO: Here must update config.php file on default-controller
         return $controller;
     }
 

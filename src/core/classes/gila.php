@@ -13,6 +13,7 @@ class gila {
     function __construct()
     {
 		global $db;
+        $GLOBALS['version']='1.2.0';
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog'
@@ -41,7 +42,6 @@ class gila {
           'tag'=>'core/widgets/tag'
         ]);
         gila::$widget_area=[];
-        //gila::$package = $GLOBALS['package']?:[];
 
 		gila::$option=[];
 		$res = $db->get('SELECT `option`,`value` FROM `option`;');

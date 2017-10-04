@@ -41,6 +41,7 @@ class image {
             imagegif($tmp,$file);
             break;
         case 2:
+            imageinterlace($tmp, 1); //convert to progressive ?
             imagejpeg($tmp,$file,80);
             break;
         case 3:

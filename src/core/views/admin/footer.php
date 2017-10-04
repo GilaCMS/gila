@@ -11,12 +11,14 @@ document.getElementById("menu-toggle").addEventListener("click", function(e) {
 
 </div>
 
-<div><hr>
+<div class="pad"><hr>
 <?php
 global $starttime;
 $end = microtime(true);
 $creationtime = ($end - $starttime);
 printf("<br>Page created in %.6f seconds.", $creationtime);
+echo "<br>Gila CMS version ".$GLOBALS['version'];
+echo " <a href='https://github.com/GilaCMS/gila' target='_blank'><i class='fa fa-github'></i></a>"
 ?>
 </div>
 

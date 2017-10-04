@@ -43,16 +43,16 @@ class view
 
     static function render($file, $package = 'core')
     {
-      if(router::request('g_response')=='json') {
-          foreach (self::$part as $key => $value) if(is_object($value)) {
-            self::$part[$key]=[];
-            foreach($value as $r){
-              self::$part[$key][]=$r;
+        if(router::request('g_response')=='json') {
+            foreach (self::$part as $key => $value) if(is_object($value)) {
+                self::$part[$key]=[];
+                foreach($value as $r) {
+                    self::$part[$key][]=$r;
+                }
             }
-          }
-          echo json_encode(self::$part);
-          exit;
-      }
+            echo json_encode(self::$part);
+            exit;
+        }
 
         if(router::request('g_response')=='content') {
             self::renderFile($file, $package);
@@ -82,9 +82,23 @@ class view
         echo '</head>';
     }
 
+    static function findPath($file, $package = 'core')
+    {
+        $tpath = self::getThemePath().'/'.$file;
+        if(file_exists($tpath)) {
+            return $tpath;
+        } else {
+          $spath = 'src/'.$package.'/views/'.$file;
+          if(file_exists($spath)) {
+              return $spath;
+          }
+        }
+        return false;
+    }
+
     static function renderFile($file, $package = 'core')
     {
-		    foreach (self::$part as $key => $value) { $$key = $value; }
+        foreach (self::$part as $key => $value) { $$key = $value; }
 
         $tpath = self::getThemePath().'/'.$file;
         if(file_exists($tpath)) {

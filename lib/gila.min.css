@@ -18,7 +18,6 @@
 
 *{
     box-sizing:border-box;
-
 }
 
 body{ padding:0px; margin:0px}
@@ -300,7 +299,6 @@ input:focus + .helptext{
 
 *:focus{
     outline:none;
-
 }
 .g-form label{
     padding:var(--main-padding);
@@ -431,7 +429,6 @@ input:focus + .helptext{
 }
 
 @media only screen{
-
     .gila-popup-s, .gila-popup, .gila-popup-m, .gila-popup-l{
         top:10%;
         margin-left:10%;
@@ -458,7 +455,6 @@ input:focus + .helptext{
 }
 
 @media only screen and (min-width:1024px){
-
     .gila-popup.large{
         top:10%;
         left:50%;
@@ -641,7 +637,6 @@ input:focus + .helptext{
 .g-table{
   border-spacing:0;
   width:100%;
-
   color:var(--main-color);
   border-width:0;
   font:14px Arial;

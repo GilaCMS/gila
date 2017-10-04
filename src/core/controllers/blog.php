@@ -30,9 +30,13 @@ class blog  //extends controller
             view::render('blog-search.php');
             return;
         }
-        view::set('page',blog::$page);
-        view::set('posts',post::getPosts(['posts'=>self::$ppp]));
-        view::render('frontpage.php');
+
+        if($_GET['url']!='' || view::findPath('landpage.php')==false) {
+            view::set('page',blog::$page);
+            view::set('posts',post::getPosts(['posts'=>self::$ppp]));
+            view::render('frontpage.php');
+        }
+        else view::render('landpage.php');
     }
 
     function feedAction()
