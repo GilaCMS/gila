@@ -21,7 +21,7 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
 	}
 	let fm=new FormData(g.el('widget_options_form'))
     g.ajax({url:'admin/update_widget?g_response=content',method:'POST',data:fm,fn:function(x){
-		g('#gila-darkscreen').remove();
+		g('#gila-popup').remove();
 	}})
 }}
 

@@ -1,13 +1,13 @@
 {
-	"name":"Gila Blog",
+	"name":"Gila Mag",
 	"version":"0.1",
 	"description":"A simple blog tempelate.",
 	"url":"gilacms.com",
 	"options":{
 		"color":{
-			"default":"grey"
+			"default":"orangered"
 		},
-		"header-image":{
+		"header-logo":{
 			"type":"media"
 		},
 		"footer-text":{

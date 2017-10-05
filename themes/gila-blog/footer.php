@@ -1,16 +1,14 @@
 
+</div>
+</div>
 
-<footer class="wrapper" style="background:#464a49;margin-top:10px;color:white">
+<footer  class="fullwidth pad"  style="background:#464a49;margin-top:10px;color:white">
+  <div style="max-width:900px; margin:auto">
     <p class="copyright text-muted"><?=gila::option('theme.footer-text','Copyright &copy; Your Website 2017');?></p>
-<?php
-global $starttime;
-$end = microtime(true);
-$creationtime = ($end - $starttime);
-//printf("<p>Page created in %.6f seconds.</p>", $creationtime);
-?>
+  </div>
 </footer>
 
-</div>
+
 </body>
 
 </html>

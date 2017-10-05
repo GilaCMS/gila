@@ -52,7 +52,7 @@ if ($download) {
 $options = router::post('options');
 if (in_array($options,$GLOBALS['config']['packages'])) {
     global $db;
-    echo '<form id="addon_options_form"><input id="addon_id" value="'.$options.'" type="hidden">';
+    echo '<form id="addon_options_form" class="g-form"><input id="addon_id" value="'.$options.'" type="hidden">';
     $pack=$options;
     if(file_exists('src/'.$options.'/package.json')) {
         $pac=json_decode(file_get_contents('src/'.$options.'/package.json'),true);

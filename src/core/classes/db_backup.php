@@ -14,7 +14,7 @@ class db_backup {
 
 
         echo "<form action='admin/db_backup' method='post'><input type='hidden' name='backup' value='1'>
-        <button class='btn-primary' onclick='submit();'>Make a new backup</button></form>";
+        <button class='g-btn' onclick='submit();'>Make a new backup</button></form>";
 
         echo "<br><br><br>";
         $files1 = scandir($this->dir);
