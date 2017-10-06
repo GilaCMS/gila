@@ -386,6 +386,7 @@ input:focus + .helptext{
     max-height:80%;
     border:1px solid var(--main-border-color);
     z-index:99999;
+    overflow:scroll;
 }
 .gila-darkscreen .gila-popup{
     position:absolute;

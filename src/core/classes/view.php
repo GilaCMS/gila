@@ -5,11 +5,16 @@ class view
     private static $part = array();
     private static $stylesheet = array();
     private static $script = array();
+    private static $meta = array();
 
 	static function set($p,$v) {
         self::$part[$p]=$v;
 	}
 
+    static function meta($m,$v)
+    {
+        self::$meta[$m]=$v;
+    }
     static function stylesheet($v)
     {
         self::$stylesheet[]=$v;
@@ -67,17 +72,16 @@ class view
     {
         echo '<head>';
         echo '<base href="'.gila::config('base').'">';
-        foreach ($meta as $key=>$value) {
-          echo '<meta '.$key.'="'.$value.'">';
-        }
         echo '<meta charset="utf-8">';
         echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
         echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">';
-        //<meta name="description" content="">
-        //<meta name="author" content="">
+        foreach ($meta as $key=>$value) {
+          echo '<meta name="'.$key.'" content="'.$value.'">';
+        }
+        foreach(self::$meta as $key=>$value) echo '<meta name="'.$key.'" content="'.$value.'">';
         echo '<title>'.gila::config('base').'</title>';
-
-        foreach($stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
+        event::fire('head.meta');
+        foreach(self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
 
         echo '</head>';
     }

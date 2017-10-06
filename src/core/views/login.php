@@ -34,6 +34,7 @@
                     <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="">
                 </div>
                 <input type="submit" class="btn btn-primary btn-block" value="Login">
+                <?php event::fire('login.btn'); ?>
         </form>
         <p>
             <a href="login/password_reset">Forgot password?</a><!-- | <a href="login/register">Register</a>-->

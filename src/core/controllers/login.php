@@ -17,13 +17,17 @@ class login extends controller
            echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
            exit;
         }
-		include 'src/core/views/login.phtml';
+		include 'src/core/views/login.php';
     }
 
+    function callbackAction()
+    {
+        event::fire('login.callback');
+    }
 
 	function registerAction()
     {
-		include 'src/core/views/register.phtml';
+		include 'src/core/views/register.php';
     }
 
 	function password_resetAction()
@@ -36,10 +40,10 @@ class login extends controller
 			}
 			else if(isset($_POST['pass'])) {
 				$idUser=$r[0];
-        user::updatePassword($idUser,$_POST['pass']);
+                user::updatePassword($idUser,$_POST['pass']);
 				exit;
 			} else {
-				include 'src/core/views/new_password.phtml';
+				include 'src/core/views/new_password.php';
 				exit;
 			}
 		}
@@ -60,7 +64,8 @@ class login extends controller
   			$out['msg'] = "No user found with this email.";
   			exit;
 		}
-    $baseurl = gila::config('base');
+
+        $baseurl = gila::config('base');
 		$subject = "Change Password Code for ".$r['username'];
 		$reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,50);
         $message = "Hello {$r['username']}\n\n";
