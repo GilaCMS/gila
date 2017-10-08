@@ -1,8 +1,18 @@
 <?php
 
 $options=[
-    'list'=>[
-        'type'=>'textarea',
-        'default'=>'[{\"icon\":\"twitter\",\"url\":\"\"},{\"icon\":\"facebook\",\"url\":\"\"}]'
-    ]
+	'facebook'=>[],
+	'twitter'=>[],
+	'google'=>[],
+	'linkedin'=>[],
+	'pinterest'=>[],
+	'youtube'=>[],
+	'instagram'=>[],
+	'twitch'=>[],
+	'slack'=>[],
+	'github'=>[],
+	'tumblr'=>[],
+	'vk'=>[],
+	'rss'=>[],
+	'soundcloud'=>[]
 ];

@@ -27,7 +27,6 @@
     .featured-posts{margin-bottom: 20px}
     .header-logo{max-height: 80px; margin:10px}
     </style>
-    <!--link href="lib/gila.min.css" rel="stylesheet"-->
 </head>
 
 <body>

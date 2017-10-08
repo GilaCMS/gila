@@ -1,2 +1,2 @@
 <?php
-echo $widget_data;
+echo $widget_data->text;
