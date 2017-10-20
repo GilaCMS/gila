@@ -52,7 +52,7 @@ class view
             foreach (self::$part as $key => $value) if(is_object($value)) {
                 self::$part[$key]=[];
                 foreach($value as $r) {
-                    self::$part[$key][]=$r;
+                    self::$part[$key][]=(array)$r;
                 }
             }
             echo json_encode(self::$part);

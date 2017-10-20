@@ -66,30 +66,27 @@ g.require('lib/jquery/jquery-2.2.4.min.js',function(){
 })
 
 g.dialog.buttons.select_path = {
-    title:'Select',fn:function(){
+    title:'Select',fn: function(){
         let v = g('#selected-path').attr('value')
         if(v!=null) g('[name=p_img]').attr('value',v)
-        g('#gila-darkscreen').remove();
+        g('#media_dialog').remove();
     }
 }
 g.dialog.buttons.select_path_post = {
-    title:'Select',fn:function(){
-        //if(!quill.getSelection()) return
-        //index=quill.getSelection().index
+    title:'Select', fn: function() {
         let v = g('#selected-path').attr('value')
         if(v!=null) input_filename(v);
-        //if(v!=null) quill.insertEmbed(index, 'image', v);
-        g('#gila-darkscreen').remove();
+        g('#media_dialog').remove();
     }
 }
 function open_gallery() {
-    g.post("admin/media","g_response=content&path=assets",function(gal){ //
-        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path'})
+    g.post("admin/media","g_response=content&path=assets",function(gal){
+        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path',id:'media_dialog'})
     })
 }
 function open_gallery_post() {
     g.post("admin/media","g_response=content&path=assets",function(gal){ //
-        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path_post'})
+        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path_post',id:'media_dialog'})
     })
 }
 
