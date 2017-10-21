@@ -8,7 +8,7 @@ class admin extends controller
     function __construct ()
     {
         if(session::key('user_id')==0) {
-            view::renderFile('login.phtml');
+            view::renderFile('login.php');
             exit;
         }
     }

@@ -20,7 +20,7 @@ if ($download) {
   $zip = new ZipArchive;
   $target = 'themes/'.$download;
   $file = 'http://gilacms.com/assets/themes/'.$download.'.zip';
-  $localfile = 'theme/'.$download.'.zip';
+  $localfile = 'themes/'.$download.'.zip';
   if (!copy($file, $localfile)) {
     echo "Failed to download theme!";
   }
