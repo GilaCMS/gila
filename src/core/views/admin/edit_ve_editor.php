@@ -14,6 +14,8 @@ function get_text_to_save() {
     return g('[name=p_post]').all[0].innerHTML;
 }
 
+mydata.buttons_def.img.args = ['FIGURE','<img src="assets/gila-logo.png" ><figcaption>Image Caption</figcaption>',false]
+
 var ve_editor = new Vue({
 	el: '#editor',
 })

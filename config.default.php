@@ -17,6 +17,5 @@ $GLOBALS['config'] = array (
   'slogan' => 'An awesome website!',
   'default-controller' => 'blog',
   'timezone' => 'America/Mexico_City',
-  'ssl' => '',
   'env' => 'dev',
 );

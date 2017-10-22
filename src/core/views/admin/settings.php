@@ -33,7 +33,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     <select name="gila_theme" value="<?=gila::config('theme')?>" class="gm-3">
     <?php
     $theme_list=scandir('themes/');
-    foreach ($theme_list as $value) if($value[0] != '.') {
+    foreach ($theme_list as $value) if($value[0] != '.') if(count(explode('.',$value))==1) {
         $sel = (gila::config('theme')==$value?'selected':'');
         echo '<option value="'.$value."\" $sel>".ucwords($value).'</option>';
     }

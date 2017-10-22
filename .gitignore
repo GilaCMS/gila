@@ -1,16 +1,19 @@
 
 # Gila ignores
-vendor/
 src/*
 themes/*
 assets/*
 tmp/*
 log/*
 log/sessions/*
+
+vendor/
+node_modules/
 composer.phar
 composer.json
 composer.lock
 config.php
+npm-debug.log
 
 # excluded
 !src/core/
