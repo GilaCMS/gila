@@ -13,6 +13,7 @@
 RewriteEngine On
 
 #exclude these folders
+RewriteCond %{REQUEST_URI} !\.json$
 RewriteCond %{REQUEST_URI} !/vendor/
 RewriteCond %{REQUEST_URI} !/install/
 RewriteCond %{REQUEST_URI} !/src/
@@ -20,7 +21,8 @@ RewriteCond %{REQUEST_URI} !/themes/
 RewriteCond %{REQUEST_URI} !/lib/
 RewriteCond %{REQUEST_URI} !/assets/
 RewriteCond %{REQUEST_URI} !/tmp/
-RewriteCond %{REQUEST_URI} !manifest.json
 RewriteCond %{REQUEST_URI} !service-worker.js
+RewriteCond %{REQUEST_URI} !sw.js
+RewriteCond %{REQUEST_URI} !manifest.json$
 
 RewriteRule (.*)$ index.php?url=$1 [QSA,L]

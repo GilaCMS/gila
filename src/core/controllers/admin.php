@@ -1,6 +1,7 @@
 <?php
 
 use core\models\widget;
+use core\models\user;
 
 class admin extends controller
 {
@@ -178,6 +179,15 @@ class admin extends controller
         } else {
           echo 'Failed to download new version!';
         }
+    }
+
+    function profileAction()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
+            user::updateName(session::key('user_id'),$_POST['gila_username']);
+                //echo "<span class='alert success'>Name changed successfully<span>";
+        }
+        view::renderAdmin('admin/myprofile.php');
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 //  common functions will be put here
+use core\models\user as user;
 
 class gila {
     static $controller;
@@ -9,6 +10,7 @@ class gila {
     static $amenu;
     static $widget_area;
     static $option;
+    static $privilege;
 
     function __construct()
     {
@@ -20,7 +22,7 @@ class gila {
         ]);
         gila::$amenu = [
     	    ['Dashboard','admin','icon'=>'dashboard'],
-            'context'=>['Content','admin','icon'=>'newspaper-o','access'=>'writer','children'=>[
+            'content'=>['Content','admin','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
                 ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
                 ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],
                 ['Categories','admin/postcategories','icon'=>'list','access'=>'admin'],
@@ -47,6 +49,10 @@ class gila {
 		gila::$option=[];
 		$res = $db->get('SELECT `option`,`value` FROM `option`;');
 		foreach($res as $r) gila::$option[$r[0]] = $r[1];
+
+        gila::$privilege['admin']="Administrator access.";
+        gila::$privilege['editor']="Can publish or edit posts from other users.";
+        gila::$privilege['developer']="Special access in developer tools.";
     }
 
     static function controllers($list)
@@ -166,5 +172,16 @@ class gila {
         }
         return gila::config('base')."?c=$c&action=$action$params";
 		*/
+    }
+
+    static function hasPrivilege ($pri)
+    {
+        if(!is_array($pri)) $pri=explode(' ',$pri);
+        if(!isset($GLOBALS['user_privileges'])) {
+            $GLOBALS['user_privileges'] = user::metaList( session::user_id(), 'privilege');
+        }
+        
+        foreach($pri as $p) if(in_array($p,$GLOBALS['user_privileges'])) return true;
+        return false;
     }
 }

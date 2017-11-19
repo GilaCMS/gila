@@ -1,5 +1,5 @@
 #!/bin/bash
-# update dependencies
+# update dependencies of Gila CMS using package.json
 npm install
 
 cp node_modules/gilajs/dist/gila.min.js lib/gila.min.js

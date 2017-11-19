@@ -19,10 +19,11 @@ class session
         session::define(['user_id'=>0]);
 
         if (isset($_POST['username']) && isset($_POST['password'])) {
-            $res = $db->query("SELECT id,pass,username FROM user WHERE email=?;",[$_POST['username']]);
+            $res = $db->query("SELECT id,pass,username,email FROM user WHERE email=?;",[$_POST['username']]);
             while ($r = mysqli_fetch_array($res)) if(password_verify($_POST['password'],$r[1])){
                 session::key('user_id',$r[0]);
                 session::key('user_name',$r[2]);
+                session::key('user_email',$r[3]);
                 $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
                 $gsession='';
                 for ($p = 0; $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];

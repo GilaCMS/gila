@@ -50,10 +50,12 @@
             <ul class="g-nav vertical">
                 <?php
                     foreach (gila::$amenu as $key => $value) {
+                        if(isset($value['access'])) if(!gila::hasPrivilege($value['access'])) continue;
                         echo "<li><a href='{$value[1]}'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a>";
                         if(isset($value['children'])) {
                             echo "<ul class=\"dropdown\">";
                             foreach ($value['children'] as $subkey => $subvalue) {
+                                if(isset($subvalue['access'])) if(!gila::hasPrivilege($subvalue['access'])) continue;
                                 echo "<li><a href='{$subvalue[1]}'><i class='fa fa-{$subvalue['icon']}'></i> {$subvalue[0]}</a></li>";
                             }
                             echo "</ul>";
@@ -70,8 +72,16 @@
                 <a href="#menu-toggle" class="btn btn-white g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
                 <a href="<?=gila::config('base')?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
             <span class="g-group-item fullwidth text-align-right pad">
-                <?=session::key('user_name')?>
-                <a href="<?=gila::config('base')?>admin/logout">Logout</a>
+
+
+                <ul class="g-nav">
+                <li ><i class="fa fa-user"></i> <?=session::key('user_name')?> <i class="fa fa-angle-down"></i>
+                    <ul class="text-align-left" style="right:0">
+                        <li><a href="<?=gila::config('base')?>admin/profile">My Profile</a></li>
+                        <li><a href="<?=gila::config('base')?>admin/logout">Logout</a></li>
+                    </ul>
+                </li>
+                </ul>
             </span>
         </div>
         <div class="col-md-12">

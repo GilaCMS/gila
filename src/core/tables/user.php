@@ -22,10 +22,12 @@ $table = [
         'pass'=> ['list'=>false,'type'=>'password'],
         "privileges"=>[
             //'list'=>false,
+            'edit'=>true,
             'type'=>'meta',
             "mt"=>['usermeta', 'user_id', 'value'],
             'metatype'=>['vartype', 'privilege'],
-            "title"=>"Privileges"
+            "title"=>"Privileges",
+            "options"=>[]
         ]
     ],
     "onupdate"=>function(&$registry_row){
@@ -35,3 +37,8 @@ $table = [
         //$registry_row['Password'] = password_hash($registry_row['Password'], PASSWORD_BCRYPT);
     }
 ];
+
+foreach(gila::$privilege as $k=>$p) {
+    $table['fields']['privileges']['options'][$k] = ucfirst($k);
+}
+//

@@ -32,6 +32,7 @@ class pnk extends controller
 			if(check_v($field['type'],'meta')) {
 				$mt = $field['mt']; $vt= $field['metatype']; $this_id = $table['name'].".".$table['id'];
 				$ql = "(SELECT GROUP_CONCAT({$mt[2]}) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}')";
+				//$table['fields'][$key]['qoptions'] = "`{$mt[2]}` AS `Index`,`{$mt[2]}` AS `Text` FROM {$mt[0]} WHERE {$vt[0]}='{$vt[1]}' GROUP BY `{$mt[2]}`;";
 				$table['fields'][$key]['qcolumn'] = $ql;
 			}
 
@@ -451,10 +452,11 @@ function fill_field_options(){
 	foreach ($table["fields"] as $field_id=>$field) {
 		if (isset($field['qoptions'])) {
 			$result = $db->query("SELECT ".$field['qoptions']);
+			$table["fields"][$field_id]['options'] = [];
 			$options_array = array();
 			if (!$result) break;
 			while ($row=mysqli_fetch_array($result)){
-				$table["fields"][$field_id]['options'][ $row['Index'] ]= $row['Text'];
+				$table["fields"][$field_id]['options'][ $row[0] ]= $row[1];
 			}
 		}
 	}

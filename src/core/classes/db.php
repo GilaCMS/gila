@@ -110,10 +110,10 @@ class db {
 	  	return $arr;
 	}
 
-	function getRows($q)
+	function getRows($q, $args = null)
 	{
 		$arr = [];
-		$res = $this->query($q);
+		$res = $this->query($q, $args);
 	 	$this->close();
 		while($r=mysqli_fetch_row($res)) $arr[]=$r;
 	  	return $arr;
@@ -124,10 +124,10 @@ class db {
 	  	return $this->getList;
 	}
 
-	function getList($q)
+	function getList($q, $args = null)
 	{
 		$arr=[];
-		$garr=$this->getRows($q);
+		$garr=$this->getRows($q, $args);
 		foreach ($garr as $key => $value) $arr[]=$value[0];
 	  	return $arr;
 	}

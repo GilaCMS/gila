@@ -33,7 +33,10 @@
 			"roles" // create links with another table by one join table()
 			"joins" // create links with another table by multiselect,
 					//require: table indexes>id , field indexes>jt,ot,qoptions/options
-					// ex. "jt"=>['user_install', 'UserID', 'InstallID'],	"ot"=>['install','ID','Name'],
+					// ex. "jt"=>['user_role', 'user_id', 'role_id'],	"ot"=>['role','id','rolename'],
+			"meta"  // use meta values ,
+					//require: table indexes>id , field indexes>mt,metatype,qoptions/options
+					// ex. "mt"=>['usermeta', 'user_id', 'metavalue'],	"metatype"=>['metatype','role'],
 			"date" // Show data as date, can have optional field index 'searchbox' with options: "period","month", default: equal date
 	'fields'	// 2 Columns of the join table(for roles field), 1st has id from current table,2nd from the roles table (ex. ["user_id","company_id"])
 	'dateFormat'// Format of a date field (ex. "d-M-y" )

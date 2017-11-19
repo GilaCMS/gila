@@ -18,11 +18,21 @@ class user
     {
         global $db;
         if ($value==null) {
-            $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
+            $ql = "SELECT value FROM usermeta where user_id=? and vartype=? LIST 1;";
             return $db->value($ql,[$id, $meta]);
         }
         $ql = "INSERT INTO usermeta(user_id,vartype,value) VALUES(?,?,?);";
         return $db->query($ql,[$id, $meta, $value]);
+    }
+
+    static function metaList($id, $meta, $values = null)
+    {
+        global $db;
+        if ($values==null) {
+            $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
+            return $db->getList($ql,[$id, $meta]);
+        }
+        //// todo
     }
 
     static function getIdByMeta($vartype,$value)
@@ -50,5 +60,12 @@ class user
     {
         global $db;
         return $db->query("UPDATE user SET pass=? where id=?;",[\gila::hash($pass),$id]);
+    }
+
+    static function updateName($id,$name)
+    {
+        global $db;
+        if(\session::key('user_id')==$id) \session::key('user_name',$name);
+        return $db->query("UPDATE user SET username=? where id=?;",[$name,$id]);
     }
 }
