@@ -19,7 +19,7 @@ $table = [
         'email'=> [
           "title"=>"Email"
         ],
-        'pass'=> ['list'=>false,'type'=>'password'],
+        'pass'=> ['list'=>false,'type'=>'password','title'=>'Password'],
         "privileges"=>[
             //'list'=>false,
             'edit'=>true,
@@ -30,11 +30,12 @@ $table = [
             "options"=>[]
         ]
     ],
-    "onupdate"=>function(&$registry_row){
-        //$registry_row['Password'] = password_hash($registry_row['Password'], PASSWORD_BCRYPT);
+    "onchange"=>function(&$row){
+        if( substr( $row['pass'], 0, 7 ) != "$2y$10$" )
+            $row['pass'] = gila::hash($row['pass']);
     },
-    "oncreate"=>function(&$registry_row){
-        //$registry_row['Password'] = password_hash($registry_row['Password'], PASSWORD_BCRYPT);
+    "oncreate"=>function(&$row){
+        $row['pass'] = gila::hash($row['pass']);
     }
 ];
 

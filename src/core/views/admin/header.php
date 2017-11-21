@@ -45,7 +45,9 @@
         <!-- Sidebar g-nav vertical -->
         <div id="sidebar-wrapper">
             <div style="position: relative;height: 100px;">
-                <img style="width:60px" src="assets/gila-logo.svg" class="centered">
+                <a href="admin">
+                    <img style="width:60px" src="assets/gila-logo.svg" class="centered">
+                </a>
             </div>
             <ul class="g-nav vertical">
                 <?php

@@ -15,7 +15,7 @@ class gila {
     function __construct()
     {
 		global $db;
-        $GLOBALS['version']='1.2.0';
+        $GLOBALS['version']='1.3.0';
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog'
@@ -32,7 +32,7 @@ class gila {
             'admin'=>['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
                 ['Users','admin/users','icon'=>'users','access'=>'admin'],
                 ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
-                ['Add-Ons','admin/addons','icon'=>'dropbox','access'=>'admin'],
+                ['Packages','admin/addons','icon'=>'dropbox','access'=>'admin'],
                 ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
                 ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
                 ]],
@@ -180,7 +180,7 @@ class gila {
         if(!isset($GLOBALS['user_privileges'])) {
             $GLOBALS['user_privileges'] = user::metaList( session::user_id(), 'privilege');
         }
-        
+
         foreach($pri as $p) if(in_array($p,$GLOBALS['user_privileges'])) return true;
         return false;
     }

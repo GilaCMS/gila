@@ -9,7 +9,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $host=$_POST['db_host'];$db_user=$_POST['db_user'];
   $db_pass=$_POST['db_pass'];$db_name=$_POST['db_name'];
   $_base_url=$_POST['base_url'];
-  $_lc=mb_substr($_base_url,-1);//[sizeof($_base_url)-1];
+  $_lc=substr($_base_url,-1);
   if($_lc!='/' && $_lc!='\\') $_base_url.='/';
 
   $link = mysqli_connect($host,$db_user,$db_pass,$db_name);
