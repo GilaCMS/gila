@@ -24,7 +24,7 @@ if (file_exists(__DIR__.'/config.php')) {
 	}
 }
 else {
-	echo "Gila CMS is not installed.";
+	echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=install\" />";
 	exit;
 }
 

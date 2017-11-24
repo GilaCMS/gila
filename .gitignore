@@ -15,6 +15,7 @@ composer.lock
 config.php
 npm-debug.log
 
+
 # excluded
 !src/core/
 !src/gila_fb_comments/
