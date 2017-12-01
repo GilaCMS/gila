@@ -163,7 +163,8 @@ class gila {
         foreach($args as $key=>$value) {
             $params.='/'.$value;
         }
-		    if(router::controller()==$c) $c.='';
+
+        if(router::controller()==$c) $c.='';
         if($action!='') if($c!='') $c.='/';
         return gila::config('base').$c.$action.$params;
 		/*
