@@ -12,7 +12,7 @@ event::listen('slide',function(){
         if(gila::option('featured_grid.category')!='') $params['category']=gila::option('featured_grid.category');
         foreach (blog::posts($params) as $p) {
             echo "<div class=\"img\" style=\"background-image: url('".view::thumb_lg($p['img'],"featured_img_{$p['id']}.jpg")."')\">";
-            echo "<a href=\"{$p['id']}\">";
+            echo "<a href=\"".blog::get_url($p['id'],$p['slug'])."\">";
             echo "<div class=\"featured-title\">{$p['title']}</div>";
             echo "</a></div>";
         }

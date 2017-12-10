@@ -15,7 +15,7 @@ class gila {
     function __construct()
     {
 		global $db;
-        $GLOBALS['version']='1.3.0';
+        $GLOBALS['version']='1.4.0';
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog'
@@ -76,10 +76,15 @@ class gila {
         }
     }
 
-    static function amenu($list)
+    static function amenu($list,$arg2=[])
     {
+        if(!is_array($list)) $list[$list]=$arg2;
         foreach ($list as $k=>$item) {
-            gila::$amenu[]=$item;
+            if(is_numeric($k)) {
+                gila::$amenu[]=$item; // depreciated
+            } else {
+                gila::$amenu[$k]=$item;
+            }
         }
     }
 
@@ -157,22 +162,40 @@ class gila {
         return $default;
     }
 
+    static function url($url)
+    {
+        if(gila::option('rewrite',false)==true) return $url;
+        $burl = explode('?',$url);
+        $burl1 = explode('/',$burl[0]);
+        if(isset($burl1[1])) $burl1[1]='&action='.$burl1[1]; else $burl1[1]='';
+        if(isset($burl[1])) $burl[1]='&'.$burl[1]; else $burl[1]='';
+
+        for($i=2; $i<count($burl1); $i++) {
+            if($burl1[$i]!='') $burl[1]='&var'.($i-1).'='.$burl1[$i].$burl[1];
+        }
+
+        return gila::config('base').'?c='.$burl1[0].$burl1[1].$burl[1];
+
+    }
+
     static function make_url($c, $action='', $args=[])
     {
         $params='';
-        foreach($args as $key=>$value) {
-            $params.='/'.$value;
-        }
+        if(gila::option('rewrite',false)) {
+            foreach($args as $key=>$value) {
+                $params.='/'.$value;
+            }
 
-        if(router::controller()==$c) $c.='';
-        if($action!='') if($c!='') $c.='/';
-        return gila::config('base').$c.$action.$params;
-		/*
-        foreach($args as $key=>$value) {
-            $params.='&'.$key.'='.$value;
+            if(router::controller()==$c) $c.='';
+            if($action!='') if($c!='') $c.='/';
+            return gila::config('base').$c.$action.$params;
         }
-        return gila::config('base')."?c=$c&action=$action$params";
-		*/
+        else {
+            foreach($args as $key=>$value) {
+                $params.='&'.$key.'='.$value;
+            }
+            return gila::config('base')."?c=$c&action=$action$params";
+        }
     }
 
     static function hasPrivilege ($pri)

@@ -27,7 +27,7 @@ class router
 
         require_once $controller_file;
     	$ctrl = new $controller();
-    	$action = 'index';
+    	$action = self::request('action','index');
 
     	if (isset($args[1])) {
             if (method_exists($controller,$args[1].'Action') || method_exists($controller,$args[1].'Admin') || method_exists($controller,$args[1].'Ajax')) {
@@ -100,6 +100,9 @@ class router
             return router::$args[$n+1];
         }
         else if (isset($_GET[$key])) {
+            return $_GET[$key];
+        }
+        else if (isset($_GET['var'.$n])) {
             return $_GET[$key];
         }
         else {

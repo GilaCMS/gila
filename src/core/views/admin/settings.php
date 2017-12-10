@@ -10,13 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('default-controller',$_POST['gila_dc']);
     gila::config('timezone',$_POST['gila_timezone']);
     gila::config('env',$_POST['gila_env']);
+    gila::config('rewrite',$_POST['gila_rewrite']);
     if (gila::updateConfigFile())
         echo gila::alert('success','Changes have been saved successfully!');
 }
 ?>
 
 <div class="gm-12">
-    <form method="post" action="admin/settings" class="g-form">
+    <form method="post" action="<?=gila::make_url('admin','settings')?>" class="g-form">
 
 <?php
 
@@ -67,12 +68,25 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 
     <br><div class="gm-12">
     <label class="gm-3">Environment</label>
-    <select name="gila_env" value="<?=gila::config('default-controller')?>" class="gm-3">
+    <select name="gila_env" class="gm-3">
     <?php
     $environments = ['pro'=>'Production','dev'=>'Development'];
-    foreach ($environments as $k=>$value) if($value[0] != '.') {
+    foreach ($environments as $k=>$value) {
         $sel = (gila::config('env')==$k?'selected':'');
-        echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
+        echo '<option value="'.$k."\" $sel>".ucwords($value).'</option>';
+    }
+    ?>
+    </select>
+    </div>
+
+    <br><div class="gm-12">
+    <label class="gm-3">Pretty Urls</label>
+    <select name="gila_rewrite" class="gm-3">
+    <?php
+    $purls = [true=>'Yes',false=>'No'];
+    foreach ($purls as $k=>$value) {
+        $sel = (gila::config('rewrite')==$k?'selected':'');
+        echo '<option value="'.$k."\" $sel>".$value.'</option>';
     }
     ?>
     </select>
