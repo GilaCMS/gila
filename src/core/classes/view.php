@@ -7,26 +7,26 @@ class view
     private static $script = array();
     private static $meta = array();
 
-	static function set($p,$v) {
-        self::$part[$p]=$v;
+	static function set($param,$value) {
+        self::$part[$param]=$value;
 	}
 
-    static function meta($m,$v)
+    static function meta($meta,$value)
     {
-        self::$meta[$m]=$v;
+        self::$meta[$meta]=$value;
     }
-    static function stylesheet($v)
+    static function stylesheet($href)
     {
-        self::$stylesheet[]=$v;
+        self::$stylesheet[]=$href;
     }
     static function links()
     {
         foreach (self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
     }
 
-    static function script($v)
+    static function script($script)
     {
-        self::$script[]=$v;
+        self::$script[]=$script;
     }
 
     static function getThemePath()
@@ -104,29 +104,20 @@ class view
     {
         foreach (self::$part as $key => $value) { $$key = $value; }
 
-        $tpath = self::getThemePath().'/'.$file;
-        if(file_exists($tpath)) {
-            include $tpath;
-            return;
-        }else {
-          $spath = 'src/'.$package.'/views/'.$file;
-          if(file_exists($spath)) {
-              include $spath;
-          }
-        }
+        includeFile($file, $package);
 
         if(router::request('g_response')!='content')
             foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
 	  }
 
-    static function includeFile($filepath,$pack='core')
+    static function includeFile($file,$package='core')
     {
-        $tpath = self::getThemePath().'/'.$filepath;
+        $tpath = self::getThemePath().'/'.$file;
         if(file_exists($tpath)) {
             include $tpath;
             return;
         }
-        $spath = 'src/'.$pack.'/views/'.$filepath;
+        $spath = 'src/'.$package.'/views/'.$file;
         if(file_exists($spath)) {
             include $spath;
         }
