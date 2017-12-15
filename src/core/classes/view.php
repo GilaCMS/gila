@@ -102,9 +102,7 @@ class view
 
     static function renderFile($file, $package = 'core')
     {
-        foreach (self::$part as $key => $value) { $$key = $value; }
-
-        includeFile($file, $package);
+        self::includeFile($file, $package);
 
         if(router::request('g_response')!='content')
             foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
@@ -112,6 +110,8 @@ class view
 
     static function includeFile($file,$package='core')
     {
+        foreach (self::$part as $key => $value) { $$key = $value; }
+
         $tpath = self::getThemePath().'/'.$file;
         if(file_exists($tpath)) {
             include $tpath;

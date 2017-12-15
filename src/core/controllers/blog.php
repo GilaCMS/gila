@@ -54,6 +54,14 @@ class blog  //extends controller
           view::render('blog-tag.php');
     }
 
+    function categoryAction()
+    {
+        $category = router::get('category',1);
+        view::set('category',$category);
+        view::set('posts',post::getPosts(['posts'=>self::$ppp,'category'=>$category]));
+        view::render('blog-list.php');
+    }
+
 
     function postShow($id=null)
     {

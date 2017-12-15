@@ -41,7 +41,7 @@ class post
     {
         global $db;
         $ppp = isset($args['posts'])?$args['posts']:8;
-        $category = isset($args['category'])?"AND '{$args['category']}' IN(SELECT `value` from postmeta where vartype='category' and post_id=post.id)":"";
+        $category = isset($args['category'])?"AND id IN(SELECT post_id from postmeta where vartype='category' and value='{$args['category']}')":"";
         $tag = isset($args['tag'])?"AND id IN(SELECT post_id from postmeta where vartype='tag' and value='{$args['tag']}')":"";
         $start_from = (\blog::$page-1)*$ppp;
         $where = '';
