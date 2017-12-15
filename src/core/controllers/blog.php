@@ -56,10 +56,12 @@ class blog  //extends controller
 
     function categoryAction()
     {
+        global $db;
         $category = router::get('category',1);
-        view::set('category',$category);
+        $res = $db->get("SELECT title from postcategory WHERE id=?",$category);
+        view::set('category',$res[0][0]);
         view::set('posts',post::getPosts(['posts'=>self::$ppp,'category'=>$category]));
-        view::render('blog-list.php');
+        view::render('blog-category.php');
     }
 
 

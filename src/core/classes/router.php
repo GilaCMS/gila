@@ -7,6 +7,7 @@ class router
 
     function __construct ()
     {
+        global $c;
         if(isset($_GET['url'])) {
             router::$url = strip_tags($_GET['url']);
             $args = explode("/", router::$url);
@@ -26,8 +27,9 @@ class router
         }
 
         require_once $controller_file;
-    	$ctrl = new $controller();
-    	$action = self::request('action','index');
+    	$c = new $controller();
+    	$action = self::request('action','');
+        if($action=='') $action='index';
 
     	if (isset($args[1])) {
             if (method_exists($controller,$args[1].'Action') || method_exists($controller,$args[1].'Admin') || method_exists($controller,$args[1].'Ajax')) {
@@ -52,7 +54,7 @@ class router
         else if (method_exists($controller,$action.'Ajax')) {
             router::$args = $args;
             $action_fn = $action.'Ajax';
-            $ctrl->$action_fn();
+            $c->$action_fn();
             exit;
         }
         else {
@@ -61,7 +63,7 @@ class router
         }
 
         router::$args = $args;
-        $ctrl->$action_fn();
+        $c->$action_fn();
     }
 
 
