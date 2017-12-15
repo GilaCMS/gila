@@ -105,7 +105,7 @@ class view
         global $c;
         foreach (self::$part as $key => $value) {
             $$key = $value;
-            $c->$key = $value;
+            @$c->$key = $value;
         }
 
         $tpath = self::getThemePath().'/'.$file;
