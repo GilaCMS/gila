@@ -146,9 +146,15 @@ class view
     static function widget ($widget,$widget_exp=null)
     {
         global $db,$widget_data;
-        $filePath = gila::config('theme').'/widgets/'.$widget.'.php';
-        $widget_data = json_decode($db->get("SELECT data FROM widget WHERE active=1 AND widget=? LIMIT 1;", $widget)[0][0]);
         if($widget_exp==null) $widget_exp=$widget;
+        $mm = gila::config('default.'.$widget);
+        if($mm > 0) {
+            $res = $db->get("SELECT data FROM widget WHERE id=?;",[$mm])[0];
+            $widget_data = json_decode($res['data']);
+        }
+
+        $filePath = gila::config('theme').'/widgets/'.$widget.'.php';
+        //$widget_data = json_decode($db->get("SELECT data FROM widget WHERE active=1 AND widget=? LIMIT 1;", $widget)[0][0]);
 
         if (file_exists($filePath)) {
             include $filePath;

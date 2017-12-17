@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('timezone',$_POST['gila_timezone']);
     gila::config('env',$_POST['gila_env']);
     gila::config('rewrite',$_POST['gila_rewrite']);
+    gila::config('default.menu',$_POST['gila_defaultmenu']);
     if (gila::updateConfigFile())
         echo gila::alert('success','Changes have been saved successfully!');
 }
@@ -28,6 +29,33 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     </div>
 <?php } ?>
 
+<br><div class="gm-12">
+<label class="gm-3">Pretty Urls</label>
+<select name="gila_rewrite" class="gm-3">
+<?php
+$purls = [true=>'Yes',false=>'No'];
+foreach ($purls as $k=>$value) {
+    $sel = (gila::config('rewrite')==$k?'selected':'');
+    echo '<option value="'.$k."\" $sel>".$value.'</option>';
+}
+?>
+</select>
+</div>
+
+<br><div class="gm-12">
+<label class="gm-3">Main Menu</label>
+<select name="gila_defaultmenu" class="gm-3">
+<?php
+$res = core\models\widget::getByWidget("menu");
+$sel_wm = gila::config('default.menu');
+echo '<option value="0">(default)';
+foreach ($res as $k=>$wm) {
+    $sel = ($sel_wm==$wm['id']?'selected':'');
+    echo '<option value="'.$wm['id']."\" $sel>".$wm['title'];
+}
+?>
+</select>
+</div>
 
     <br><div class="gm-12">
     <label class="gm-3">Theme</label>
@@ -74,19 +102,6 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     foreach ($environments as $k=>$value) {
         $sel = (gila::config('env')==$k?'selected':'');
         echo '<option value="'.$k."\" $sel>".ucwords($value).'</option>';
-    }
-    ?>
-    </select>
-    </div>
-
-    <br><div class="gm-12">
-    <label class="gm-3">Pretty Urls</label>
-    <select name="gila_rewrite" class="gm-3">
-    <?php
-    $purls = [true=>'Yes',false=>'No'];
-    foreach ($purls as $k=>$value) {
-        $sel = (gila::config('rewrite')==$k?'selected':'');
-        echo '<option value="'.$k."\" $sel>".$value.'</option>';
     }
     ?>
     </select>
