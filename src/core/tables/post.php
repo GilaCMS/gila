@@ -27,6 +27,23 @@ $table = [
             'type'=>'date',
             'searchbox'=>'period'
         ],
+        "categories"=>[
+            'edit'=>true,
+            'type'=>'meta',
+            "mt"=>['postmeta', 'post_id', 'value'],
+            'metatype'=>['vartype', 'category'],
+            "title"=>"Categories",
+            "qoptions"=>"id,title FROM postcategory"
+        ],
+        "tags"=>[
+            'list'=>false,
+            'edit'=>true,
+            'type'=>'meta',
+            "mt"=>['postmeta', 'post_id', 'value'],
+            'metatype'=>['vartype', 'tag'],
+            "title"=>"Tags",
+            //"qoptions"=>"id,title FROM postcategory"
+        ],
         'publish'=> [
             'title'=>'Public',
             'style'=>'width:8%',
@@ -34,6 +51,9 @@ $table = [
         ],
         'commands'=>[
             'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/posts/'+rv.id+'\">Edit</a>';"
+        ],
+        'post'=>[
+            'list'=>false, 'type'=>'text'
         ]
     ]
 ];

@@ -5,6 +5,7 @@ class view
     private static $part = array();
     private static $stylesheet = array();
     private static $script = array();
+    private static $scriptAsync = array();
     private static $meta = array();
 
 	static function set($param,$value) {
@@ -17,8 +18,10 @@ class view
     }
     static function stylesheet($href)
     {
+        if(in_array($href,self::$stylesheet)) return;
         self::$stylesheet[]=$href;
     }
+
     static function links()
     {
         foreach (self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
@@ -26,7 +29,14 @@ class view
 
     static function script($script)
     {
+        if(in_array($script,self::$script)) return;
         self::$script[]=$script;
+    }
+
+    static function scriptAsync($script)
+    {
+        if(in_array($script,self::$scriptAsync)) return;
+        self::$scriptAsync[]=$script;
     }
 
     static function getThemePath()
@@ -68,22 +78,9 @@ class view
         self::includeFile('footer.php');
     }
 
-    static function head($meta=[])
+    static function head()
     {
-        echo '<head>';
-        echo '<base href="'.gila::config('base').'">';
-        echo '<meta charset="utf-8">';
-        echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
-        echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">';
-        foreach ($meta as $key=>$value) {
-          echo '<meta name="'.$key.'" content="'.$value.'">';
-        }
-        foreach(self::$meta as $key=>$value) echo '<meta name="'.$key.'" content="'.$value.'">';
-        echo '<title>'.gila::config('base').'</title>';
-        event::fire('head.meta');
-        foreach(self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
-
-        echo '</head>';
+        self::includeFile('head.php');
     }
 
     static function findPath($file, $package = 'core')
@@ -120,7 +117,7 @@ class view
 
         if(router::request('g_response')!='content')
             foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
-	  }
+	}
 
     static function includeFile($file,$package='core')
     {

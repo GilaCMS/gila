@@ -190,4 +190,11 @@ class admin extends controller
         view::renderAdmin('admin/myprofile.php');
     }
 
+    function phpinfoAction()
+    {
+        view::includeFile('admin/header.php');
+        phpinfo();
+        view::includeFile('admin/footer.php');
+    }
+
 }

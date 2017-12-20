@@ -27,6 +27,19 @@ class login extends controller
 
 	function registerAction()
     {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true)) {
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $name = $_POST['name'];
+            if(user::getByEmail($email)) {
+                // throw error
+            }
+            else {
+                // register the user
+                user::create($email,$password,$name);
+            }
+        }
 		include 'src/core/views/register.php';
     }
 

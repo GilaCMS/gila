@@ -10,6 +10,10 @@
 		"header-image":{
 			"type":"media"
 		},
+		"header-position":{
+			"type":"select",
+			"options":{"center":"Center","top":"Top","bottom":"Bottom"}
+		},
 		"footer-text":{
 		}
 	}

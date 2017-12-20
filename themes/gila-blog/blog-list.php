@@ -1,6 +1,6 @@
 
 <!-- Posts -->
-<div class="row" style="">
+<div class="row wrapper">
     <div class="gm-9">
     <?php foreach ($c->posts as $r) { ?>
     <div class="gm-12 row gap-8px post-review">

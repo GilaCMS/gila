@@ -9,9 +9,11 @@ class user
 
     }
 
-    function create($email, $password = null)
+    function create($email, $password, $name = '')
     {
-
+        global $db;
+        $pass = \gila::hash($password);
+        $db->query("INSERT INTO user(email,pass,username) VALUES(?,?,?);",[$email, $pass, $name]);
     }
 
     static function meta($id, $meta, $value = null)
@@ -44,7 +46,9 @@ class user
     static function getByEmail($email)
     {
         global $db;
-        return $db->get("SELECT * FROM user WHERE email=?",$email)[0];
+        $res = $db->get("SELECT * FROM user WHERE email=?",$email);
+        if($res) return $res[0];
+        return false;
     }
 
     static function getByResetCode($rp)

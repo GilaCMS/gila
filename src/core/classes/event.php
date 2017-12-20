@@ -17,4 +17,15 @@ class event {
     }
   }
 
+  static function get($event, $default, $params = null)
+  {
+      if (isset(event::$handlers[$event])) {
+          if ($params == null)
+            return event::$handlers[$event][0]();
+          else $handler($params);
+            return event::$handlers[$event][0]($params);
+      }
+      return $default;
+  }
+
 }

@@ -161,7 +161,7 @@ class gila {
 
 	static function option($option,$default='')
     {
-        if(isset(gila::$option[$option])) return gila::$option[$option];
+        if(isset(gila::$option[$option]) && gila::$option[$option]!='') return gila::$option[$option];
         return $default;
     }
 
@@ -184,7 +184,7 @@ class gila {
     static function make_url($c, $action='', $args=[])
     {
         $params='';
-        if(gila::option('rewrite',false)) {
+        if(gila::config('rewrite')) {
             foreach($args as $key=>$value) {
                 $params.='/'.$value;
             }

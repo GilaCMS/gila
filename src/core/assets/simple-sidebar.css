@@ -39,6 +39,7 @@
 }
 #sidebar-wrapper a{
     font-weight: 700;
+    background: inherit;
 }
 #wrapper.toggled #sidebar-wrapper {
     width: 200px;

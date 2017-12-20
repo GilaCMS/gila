@@ -69,7 +69,7 @@ class blog  //extends controller
     {
         global $db;
 
-        $res = $db->query("SELECT id,title,post,updated,user_id FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
+        $res = $db->query("SELECT id,title,post,updated,user_id,slug FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
         if ($res && $r = mysqli_fetch_array($res)) {
             $id = $r['id'];
             $user_id = $r['user_id'];
@@ -79,20 +79,25 @@ class blog  //extends controller
             view::set('id',$r['id']);
             view::set('updated',$r['updated']);
 
-            view::set('og_url',gila::config('base').$r['id']);
+            view::meta('og:title',$r['title']);
+            view::meta('og:type','website');
+            view::meta('og:url',self::get_url($r['id'],$r['slug']));
 
             $res = $db->query("SELECT `value` as img FROM post,postmeta WHERE vartype='thumbnail' AND post_id=$id;");
             if ($res) {
                 $r = mysqli_fetch_array($res);
                 view::set('img',$r['img']);
-                view::set('og_image',$r['img']);
-            } else view::set('img',$r['img']);
+                view::meta('og:image',$r['img']);
+            } else view::set('img','');
 
             $res = $db->query("SELECT username FROM user WHERE id='$user_id';");
             if ($res) {
                 $r = mysqli_fetch_array($res);
                 view::set('author',$r['username']);
+                view::meta('author',$r['username']);
             } else view::set('author','unknown');
+
+            view::meta('description',$r['username']);
 
             view::render('single-post.php');
         }

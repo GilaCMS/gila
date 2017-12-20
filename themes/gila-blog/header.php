@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php view::head()?>
 
-<head>
-    <base href="<?=gila::config('base')?>">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title><?=gila::config('base')?></title>
-    <?php view::links(); ?>
     <style>
     <?php $theme_color=gila::option('theme.color','orangered'); ?>
     body{font-family:'Arial', sans-serif;}
@@ -31,7 +23,7 @@
     if($bgimg) echo "background: url($bgimg);"
     ?>
     background-size: cover;
-    background-position-y: center;
+    background-position-y: <?=gila::option('theme.header-position','center')?>;
     background-position-x: center;}
     .widget-social-icons {list-style: none;padding:0 }
     .widget-social-icons li{margin: 15px 10px 0 0; float: left; text-align: center; opacity: 0.8}
@@ -46,7 +38,7 @@
     }
     .widget-social-icons li a i:hover:before{background: <?=$theme_color?>;}
     </style>
-</head>
+
 
 <body>
     <div class="header" style="padding:0 10px">

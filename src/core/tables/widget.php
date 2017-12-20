@@ -27,8 +27,9 @@ $table = [
           'type'=>'checkbox','edit'=>true,'create'=>false
         ],
         'data'=> [
-          'title'=>'Data', 'show'=>false, 'edit'=>false,
-          'qcolumn'=>"REPLACE(data,'\"','\\\"')", 'type'=>'text'
+          'title'=>'Data', 'list'=>false, //'edit'=>false,
+          //'qcolumn'=>"REPLACE(data,'\"','\\\"')",
+          'type'=>'text'
         ],
     ],
     'oncreate'=>function(&$row){

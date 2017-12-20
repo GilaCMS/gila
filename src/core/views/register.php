@@ -17,7 +17,7 @@
 
     <!-- Custom Fonts -->
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <?php event::fire('register.head')?>
 </head>
 
 <body>
@@ -43,6 +43,7 @@
             <div class="form-group ">
                 <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="">
             </div>
+            <?php event::fire('register.form')?>
             <input type="submit" class="btn btn-primary btn-block" value="Register">
         </form>
         <p>

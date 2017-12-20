@@ -1,4 +1,4 @@
-<div class="row" style="">
+<div class="row wrapper">
 <div class="gm-9">
   <h1><?=$title?></h1>
       <span class="meta">Posted by <a href="#"><?=$author?></a> on <?=date('F j, Y',strtotime($updated))?></span>
