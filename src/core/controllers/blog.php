@@ -87,6 +87,9 @@ class blog  //extends controller
             view::set('id',$r['id']);
             view::set('updated',$r['updated']);
 
+            view::meta('twitter:card','summary');
+            //if() view::meta('twitter:site','@site');
+
             view::meta('og:title',$r['title']);
             view::meta('og:type','website');
             view::meta('og:url',self::get_url($r['id'],$r['slug']));
@@ -103,6 +106,7 @@ class blog  //extends controller
                 $r = mysqli_fetch_array($res);
                 view::set('author',$r['username']);
                 view::meta('author',$r['username']);
+                // view::meta('twitter:creator','@nickbilton');
             } else view::set('author','unknown');
 
             view::meta('description',$r['username']);
@@ -115,7 +119,7 @@ class blog  //extends controller
                 view::set('title',$r['title']);
                 view::set('text',$r['page']);
                 view::render('page.php');
-            }else view::render('404.phtml');
+            } else view::render('404.phtml');
         }
     }
 
