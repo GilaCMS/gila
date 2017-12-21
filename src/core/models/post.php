@@ -13,11 +13,18 @@ class post
     {
         global $db;
         if ($value==null) {
-            $ql = "SELECT value FROM postmeta where user_id=? and vartype=?;";
+            $ql = "SELECT value FROM postmeta where post_id=? and vartype=?;";
             return $db->value($ql,[$id, $meta]);
         }
-        $ql = "INSERT INTO postmeta(user_id,vartype,value) VALUES('?','?','?');";
+        $ql = "INSERT INTO postmeta(post_id,vartype,value) VALUES('?','?','?');";
         return $db->query($ql,[$id, $meta, $value]);
+    }
+
+    static function getMeta($meta)
+    {
+        global $db;
+        $ql = "SELECT value,COUNT(*) AS count FROM postmeta where vartype=? GROUP BY value;";
+        return $db->get($ql,[$meta]);
     }
 
     static function getByUserID($id)

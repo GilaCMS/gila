@@ -50,8 +50,16 @@ class blog  //extends controller
 
     function tagAction()
     {
-          view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>router::get('tag',1)]));
-          view::render('blog-tag.php');
+        $tag = router::get('tag',1);
+        view::set('tag',$tag);
+        view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>$tag]));
+        view::render('blog-tag.php');
+    }
+
+    function tagsAction()
+    {
+          view::set('tags',post::getMeta('tag'));
+          view::render('blog-tags.php');
     }
 
     function categoryAction()

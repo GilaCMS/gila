@@ -186,11 +186,15 @@ class gila {
         $params='';
         if(gila::config('rewrite')) {
             foreach($args as $key=>$value) {
-                $params.='/'.$value;
+                if($params!='') $params.='/';
+                $params.=$value;
             }
 
-            if(router::controller()==$c) $c.='';
-            if($action!='') if($c!='') $c.='/';
+            if(router::controller()==$c) $c='';
+            if($action!='') {
+                if($c!='') $c.='/';
+                $action.='/';
+            }
             return gila::config('base').$c.$action.$params;
         }
         else {

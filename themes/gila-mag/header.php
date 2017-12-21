@@ -13,7 +13,7 @@
 
     <style>
     <?php $theme_color=gila::option('theme.color','orangered'); ?>
-    body{font-family:"Roboto","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif}
+    body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
     .widget{padding: 0; margin-top: 12px; border: 1px solid #ccc;}
     .widget .g-nav.vertical li a{color: #181818;padding: 4px 12px}
     .widget .g-nav.vertical li a:hover{color: <?=$theme_color?>;}

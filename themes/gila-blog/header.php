@@ -5,7 +5,7 @@
     <style>
     <?php $theme_color=gila::option('theme.color','orangered'); ?>
     body{font-family:'Arial', sans-serif;}
-    h1,h2,h3,.widget-title,.header{font-family:'Saira Extra Condensed', sans-serif;}
+    h1,h2,h3,.widget-title,.header{font-family:Arial,sans-serif;}
     .widget-title,.header{font-size:1.1em}
     .widget{margin-top: 20px; padding: 0 8px}
     .widget-title{border-bottom: 4px solid <?=$theme_color?>; display:inline-block;}
@@ -41,12 +41,12 @@
 
 
 <body>
-    <div class="header" style="padding:0 10px">
-    <div style="max-width:900px; margin:auto">
+    <div class="header" style="padding:0 10px;">
+    <div style="max-width:900px; margin:auto;">
         <?php view::widget_area('body'); ?>
-        <div class="gl-9">
+        <div class="gl-9" style="height:200px;text-shadow:0 0 6px black">
           <h1><a href="<?=gila::config('base')?>" style="color:#f5f5f5;"><?=gila::config('title')?></a></h1>
-          <div style="color:#ccc;margin-bottom:6px"><?=gila::config('slogan')?></div>
+          <div style="color:#d6d6d6;margin-bottom:6px"><?=gila::config('slogan')?></div>
         </div>
         <!-- Navigation -->
         <div class="gl-9">
