@@ -115,7 +115,7 @@ class db {
 		$arr = [];
 		$res = $this->query($q, $args);
 	 	$this->close();
-		while($r=mysqli_fetch_row($res)) $arr[]=$r;
+		if($res) while($r=mysqli_fetch_row($res)) $arr[]=$r;
 	  	return $arr;
 	}
 
@@ -149,10 +149,9 @@ class db {
 
 	function value($q,$p=null)
 	{
-		$arr = [];
-		if (!$this->connected) $this->connect();
+		//if (!$this->connected) $this->connect();
 		$res = $this->query($q,$p);
-	  	$this->close();
+	  	//$this->close();
 		if($res) {
 			$r=mysqli_fetch_row($res);
 			return $r[0];

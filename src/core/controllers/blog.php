@@ -1,6 +1,7 @@
 <?php
 
 use core\models\post as post;
+use core\models\user as user;
 
 class blog  //extends controller
 {
@@ -106,10 +107,11 @@ class blog  //extends controller
                 $r = mysqli_fetch_array($res);
                 view::set('author',$r['username']);
                 view::meta('author',$r['username']);
-                // view::meta('twitter:creator','@nickbilton');
+                if($creator = user::meta($user_id,'twitter_account'))
+                    view::meta('twitter:creator','@'.$creator);
             } else view::set('author','unknown');
 
-            view::meta('description',$r['username']);
+            // view::meta('description',$r['username']);
 
             view::render('single-post.php');
         }

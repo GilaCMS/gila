@@ -183,10 +183,13 @@ class admin extends controller
 
     function profileAction()
     {
+        $user_id = session::key('user_id');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
-            user::updateName(session::key('user_id'),$_POST['gila_username']);
-                //echo "<span class='alert success'>Name changed successfully<span>";
+            user::updateName($user_id, $_POST['gila_username']);
+            user::meta($user_id, 'twitter_account', $_POST['twitter_account']);
+            //echo "<span class='alert success'>Name changed successfully<span>";
         }
+        view::set('twitter_account',user::meta($user_id,'twitter_account'));
         view::renderAdmin('admin/myprofile.php');
     }
 

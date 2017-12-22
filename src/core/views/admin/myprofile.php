@@ -14,6 +14,11 @@
     <input disabled value="<?=session::key('user_email')?>" class="gm-3" />
     </div>
 
+    <br><div class="gm-12">
+    <label class="gm-3">Twitter Account</label>
+    <input name='twitter_account' value="<?=$c->twitter_account?>" class="gm-3" />
+    </div>
+
     <br><input type="submit" name="submit-btn" onclick="this.value='submited'"
     class="btn btn-primary col-md-1 col-md-offset-1 gm-1"  />
     </form>
