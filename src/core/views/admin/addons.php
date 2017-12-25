@@ -108,10 +108,10 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
         $table .= '<tr>';
         $table .= '<td style="color:grey;text-align:center">';
         if (file_exists($dir."$p/logo.png")) {
-            $table .= '<img class="fa-4x" src="'."src/$p/logo.png".'" />';
+            $table .= '<img class="fa fa-3x" src="'."src/$p/logo.png".'" />';
         }
         else {
-            $table .= '<i class="fa-4x fa-dropbox"></i>';
+            $table .= '<i class="fa fa-3x fa-dropbox"></i>';
         }
         $table .= '<td style="width:100%"><h4>'.(isset($pac->name)?$pac->name:$p).' '.(isset($pac->version)?$pac->version:'');
         $table .= '</h4>'.(isset($pac->description)?$pac->description:'No description');
@@ -122,7 +122,7 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
     }else{
         include $dir."$p/package.php";
         $table .= '<tr>';
-        $table .= '<td style="color:grey;text-align:center"><i class="fa-4x fa-download"></i>';
+        $table .= '<td style="color:grey;text-align:center"><i class="fa fa-3x fa-download"></i>';
         $table .= '<td style="width:100%"><h4>'.($name?:$p).' '.($version?:'');
         $table .= '</h4>'.(isset($description)?$description:'No description');
         $table .= '<br><b>Author:</b> '.(isset($author)?$author:'');

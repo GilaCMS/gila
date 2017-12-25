@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="icon" type="image/png" href="assets/gila-logo.png">
 
     <title>Gila CMS - Administration</title>
 
@@ -26,14 +27,13 @@
     #sidebar-wrapper .g-nav li ul li a{ color:#444; }
     #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
     .g-nav li ul{min-width: 200px}
-    /*.dark-orange li ul{ background-color: #fff; }
+    .dark-orange li ul{ background-color: #fff; }
     .dark-orange li ul li{ color: var(--main-color); }
     .dark-orange li ul li a{ color: var(--main-color); }
-    .dark-orange li ul li a:hover{ color:white; }*/
+    .dark-orange li ul li a:hover{ color:white; }
     </style>
 
     <script src="lib/jquery/jquery-2.2.4.min.js"></script>
-    <!--script src="lib/bootstrap/bootstrap.min.js"></script-->
     <script src="lib/gila.min.js"></script>
 
 

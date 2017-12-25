@@ -2,7 +2,7 @@
 $dir = "themes/";
 $packages = scandir($dir);
 
-$table = '';
+$table = '<br>';
 $pn = 0; $alert = '';
 
 $activate = router::get('activate');
@@ -84,44 +84,40 @@ if ($save_options==gila::config('theme')) {
     return;
 }
 
-
-foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php") || file_exists($dir."$p/package.json")) {
-    $table .= '<tr>';
+foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.json")) {
+    //$table .= '<tr>';
+    if ($p==gila::config('theme')) $border=" bordered"; else $border="";
+    $table .= '<div class="gm-4'.$border.'" style="padding:4px;vertical-align: top;">';
+    $table .= '<h4>'.(isset($pac->name)?$pac->name:$p).' '.(isset($pac->version)?$pac->version:'').'</h4>';
+    $table .= '<div class="" style="background:grey;">';
     if (file_exists($dir."$p/screenshot.jpg")) {
-        $table .= '<td style="width:33%"><div ><img src="'."themes/$p/screenshot.jpg".'"  /></div>';
+        $table .= '<img src="'."themes/$p/screenshot.jpg".'"  />';
     }
     else if (file_exists($dir."$p/screenshot.png")) {
-        $table .= '<td style="width:33%"><div ><img src="'."themes/$p/screenshot.png".'"  /></div>';
-    }
-    else {
-        $table .= '<td>';
+        $table .= '<img src="'."themes/$p/screenshot.png".'"  />';
     }
 
+    $table.="</div>";
+/*
     if(file_exists($dir."$p/package.json")) {
         $pac=json_decode(file_get_contents($dir."$p/package.json"));
-        $table .= '<td style="width:66%"><h4>'.(isset($pac->name)?$pac->name:$p).' '.(isset($pac->version)?$pac->version:'');
-        $table .= '</h4>'.(isset($pac->description)?$pac->description:'No description');
+        $table .= (isset($pac->description)?$pac->description:'No description');
         $table .= '<br><b>Author:</b> '.(isset($pac->author)?$pac->author:'');
         $table .= (isset($pac->url)?' <b>Url:</b> <a href="'.$pac->url.'" target="_blank">'.$pac->url.'</a>':'');
         $table .= (isset($pac->contact)?' <b>Contact:</b> '.$pac->contact:'');
         unset($options);
-    }else{
-        include $dir."$p/package.php";
-        $table .= '<td style="width:66%"><h4>'.($name?:$p).' '.($version?:'');
-        $table .= '</h4>'.(isset($description)?$description:'No description');
-        $table .= '<br><b>Author:</b> '.(isset($author)?$author:'');
-        $table .= (isset($url)?' <b>Url:</b> <a href="'.$url.'" target="_blank">'.$url.'</a>':'');
-        $table .= (isset($contact)?' <b>Contact:</b> '.$contact:'');
-    }
-
+    }*/
+    $table .= "<br>";
     if ($p==gila::config('theme')) {
-        $table .= "<td><a onclick='theme_options(\"{$p}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a><td>";
-        $table .= "<a onclick='#' class='g-btn success'>Selected</a>";
+        $table .= "<a onclick='theme_options(\"{$p}\")' class='g-btn btn-success' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a> ";
+        //$table .= "<a onclick='#' class='g-btn success'>Selected</a>";
     }
     else {
-        $table .= "<td><td><a onclick='theme_activate(\"{$p}\")' class='g-btn default'>Select</a>";
+        $table .= "<a onclick='theme_activate(\"{$p}\")' class='g-btn default'>Select</a> ";
+        $table .= "<a href='".gila::config('base')."?g_preview_theme={$p}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;Preview</a> ";
     }
     $pn++;
+    $table .= "</div>";
 }
 ?>
 <?=$alert?>
@@ -132,7 +128,7 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
 </ul>
 <div class="tab-content gs-12">
   <div id="downloaded">
-    <table class='g-table'><?=$table?></table>
+    <div class=''><?=$table?></div>
   </div>
   <div id="newest" data-src="admin/newthemes"></div>
 </div>

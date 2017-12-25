@@ -89,7 +89,7 @@ class admin extends controller
         }
         $packages = json_decode($contents);
         view::set('packages',$packages);
-        view::renderFile('admin/packages.php');
+        view::renderFile('admin/addons.php');
     }
 
     function newthemesAction ()

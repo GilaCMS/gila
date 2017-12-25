@@ -167,7 +167,7 @@ class gila {
 
     static function url($url)
     {
-        if(gila::option('rewrite',false)==true) return $url;
+        if(gila::config('rewrite')) return $url;
         $burl = explode('?',$url);
         $burl1 = explode('/',$burl[0]);
         if(isset($burl1[1])) $burl1[1]='&action='.$burl1[1]; else $burl1[1]='';
@@ -195,14 +195,17 @@ class gila {
                 if($c!='') $c.='/';
                 $action.='/';
             }
+            if(isset($_GET['g_preview_theme'])) $params.='?g_preview_theme='.$_GET['g_preview_theme'];
             return gila::config('base').$c.$action.$params;
         }
         else {
             foreach($args as $key=>$value) {
                 $params.='&'.$key.'='.$value;
             }
+            if(isset($_GET['g_preview_theme'])) $params.='&g_preview_theme='.$_GET['g_preview_theme'];
             return gila::config('base')."?c=$c&action=$action$params";
         }
+
     }
 
     static function hasPrivilege ($pri)

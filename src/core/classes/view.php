@@ -41,6 +41,7 @@ class view
 
     static function getThemePath()
     {
+        if(isset($_GET['g_preview_theme'])) return 'themes/'.$_GET['g_preview_theme'];
         return 'themes/'.gila::config('theme');
     }
 
