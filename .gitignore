@@ -20,6 +20,7 @@ npm-debug.log
 !src/core/
 !src/gila_fb_comments/
 !src/gila_disqus/
+!src/ganalytics/
 !src/featured_grid/
 !themes/startbootstrap-clean-blog/
 !themes/gila-mag/

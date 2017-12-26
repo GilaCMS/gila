@@ -15,7 +15,7 @@ class gila {
     function __construct()
     {
 		global $db;
-        $GLOBALS['version']='1.4.0';
+        $GLOBALS['version']='1.4.2';
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog'
