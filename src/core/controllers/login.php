@@ -37,10 +37,16 @@ class login extends controller
             }
             else {
                 // register the user
-                user::create($email,$password,$name);
+                if(user::create($email,$password,$name)) {
+                    // success
+                    view::includeFile('login-register-success.php');
+                    return;
+                } else {
+                    // throw error
+                }
             }
         }
-		include 'src/core/views/register.php';
+        include 'src/core/views/register.php';
     }
 
 	function password_resetAction()

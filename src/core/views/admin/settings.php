@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('timezone',$_POST['gila_timezone']);
     gila::config('env',$_POST['gila_env']);
     gila::config('rewrite',$_POST['gila_rewrite']);
+    gila::config('user_register',$_POST['gila_user_register']);
     gila::config('default.menu',$_POST['gila_defaultmenu']);
     if (gila::updateConfigFile())
         echo gila::alert('success','Changes have been saved successfully!');
@@ -52,6 +53,19 @@ echo '<option value="0">(default)';
 foreach ($res as $k=>$wm) {
     $sel = ($sel_wm==$wm['id']?'selected':'');
     echo '<option value="'.$wm['id']."\" $sel>".$wm['title'];
+}
+?>
+</select>
+</div>
+
+<br><div class="gm-12">
+<label class="gm-3">New users can register</label>
+<select name="gila_user_register" class="gm-3">
+<?php
+$sel_urs = [true=>'Yes',false=>'No'];
+foreach ($sel_urs as $k=>$value) {
+    $sel = (gila::config('user_register')==$k?'selected':'');
+    echo '<option value="'.$k."\" $sel>".$value.'</option>';
 }
 ?>
 </select>

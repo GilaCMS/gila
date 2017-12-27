@@ -9,11 +9,12 @@ class user
 
     }
 
-    function create($email, $password, $name = '')
+    static function create($email, $password, $name = '')
     {
         global $db;
         $pass = \gila::hash($password);
         $db->query("INSERT INTO user(email,pass,username) VALUES(?,?,?);",[$email, $pass, $name]);
+        return $db->insert_id;
     }
 
     static function meta($id, $meta, $value = null)

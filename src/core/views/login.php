@@ -37,7 +37,8 @@
                 <?php event::fire('login.btn'); ?>
         </form>
         <p>
-            <a href="login/password_reset">Forgot password?</a><!-- | <a href="login/register">Register</a>-->
+            <a href="login/password_reset">Forgot password?</a>
+            <?php if(gila::config('new_register')) echo '| <a href="login/register">Register</a>';?>
         </p>
     </div>
     <!--div class="checkbox">

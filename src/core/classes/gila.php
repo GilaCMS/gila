@@ -15,7 +15,7 @@ class gila {
     function __construct()
     {
 		global $db;
-        $GLOBALS['version']='1.4.2';
+        $GLOBALS['version']='1.4.3';
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog'
@@ -190,7 +190,7 @@ class gila {
                 $params.=$value;
             }
 
-            if(router::controller()==$c) $c='';
+            if(gila::config('default-controller') == $c) $c='';
             if($action!='') {
                 if($c!='') $c.='/';
                 $action.='/';
