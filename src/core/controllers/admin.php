@@ -156,9 +156,7 @@ class admin extends controller
 
     function db_backupAction()
     {
-        view::includeFile('admin/header.php');
         new db_backup();
-        view::includeFile('admin/footer.php');
     }
 
     function updateAction()
