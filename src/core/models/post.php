@@ -50,13 +50,15 @@ class post
         $ppp = isset($args['posts'])?$args['posts']:8;
         $category = isset($args['category'])?"AND id IN(SELECT post_id from postmeta where vartype='category' and value='{$args['category']}')":"";
         $tag = isset($args['tag'])?"AND id IN(SELECT post_id from postmeta where vartype='tag' and value='{$args['tag']}')":"";
+        $user_id = isset($args['user_id'])?"AND user_id='{$args['user_id']}'":"";
         $start_from = (\blog::$page-1)*$ppp;
         $where = '';
 
-        $ql = "SELECT id,title,slug,SUBSTRING(post,1,300) as post,updated,
-            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
+        $ql = "SELECT id,title,slug,SUBSTRING(post,1,300) as post,updated,user_id,
+            (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img,
+            (SELECT username FROM user WHERE post.user_id=id) as author
             FROM post
-            WHERE publish=1 $category $tag
+            WHERE publish=1 $category $tag $user_id
             ORDER BY id DESC LIMIT $start_from,$ppp";
         $res = $db->query($ql);
         if ($res) while ($r = mysqli_fetch_assoc($res)) {

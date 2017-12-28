@@ -73,6 +73,16 @@ class blog  //extends controller
         view::render('blog-category.php');
     }
 
+    function authorAction()
+    {
+        global $db;
+        $user_id = router::get('author',1);
+        $res = $db->get("SELECT username from user WHERE id=?",$user_id);
+        view::set('author',$res[0][0]);
+        view::set('posts',post::getPosts(['posts'=>self::$ppp,'user_id'=>$user_id]));
+        view::render('blog-author.php');
+    }
+
 
     function postShow($id=null)
     {

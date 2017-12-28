@@ -86,6 +86,7 @@ if ($save_options==gila::config('theme')) {
 
 foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.json")) {
     //$table .= '<tr>';
+    $pac=json_decode(file_get_contents($dir."$p/package.json"));
     if ($p==gila::config('theme')) $border=" bordered"; else $border="";
     $table .= '<div class="gm-4'.$border.'" style="padding:4px;vertical-align: top;">';
     $table .= '<h4>'.(isset($pac->name)?$pac->name:$p).' '.(isset($pac->version)?$pac->version:'').'</h4>';

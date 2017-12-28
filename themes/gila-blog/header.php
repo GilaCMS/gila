@@ -46,7 +46,7 @@
         <?php view::widget_area('body'); ?>
         <div class="gl-9" style="height:200px;text-shadow:0 0 6px black">
           <h1><a href="<?=gila::config('base')?>" style="color:#f5f5f5;"><?=gila::config('title')?></a></h1>
-          <div style="color:#d6d6d6;margin-bottom:6px"><?=gila::config('slogan')?></div>
+          <div style="color:#f5f5f5;margin-bottom:6px"><?=gila::config('slogan')?></div>
         </div>
         <!-- Navigation -->
         <div class="gl-9">

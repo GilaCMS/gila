@@ -20,7 +20,6 @@
     <!-- Custom CSS -->
     <link href="src/core/assets/simple-sidebar.css" rel="stylesheet" async>
     <link href="lib/gila.min.css" rel="stylesheet">
-    <?=view::links()?>
     <style>
     #sidebar-wrapper .g-nav li{ color:#fff; }
     #sidebar-wrapper .g-nav li a{ color:#aaa; }
