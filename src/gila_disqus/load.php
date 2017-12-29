@@ -14,12 +14,6 @@ event::listen('post.after',function(){
 	?>
 	<div id="disqus_thread"></div>
 	<script>
-
-	/*var disqus_config = function () {
-	this.page.url = '<?=$href?>';
-	this.page.identifier = <?=router::get('id',1)?>;
-	};*/
-
 	(function() {
 	var d = document, s = d.createElement('script');
 	s.src = 'https://<?=$shortname?>.disqus.com/embed.js';

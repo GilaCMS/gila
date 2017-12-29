@@ -1,41 +1,51 @@
-
-<head>
-	<link type="text/css" rel="stylesheet" href="../lib/gila.min.css"/>
-	<title>Install Gila CMS</title>
-</head>
-<body class="bg-lightgrey">
-<div class="gm-6 centered row" style="">
-    <div class="gm-12 wrapper text-align-center">
-        <h1 class="margin-0">Gila CMS Installation</h1>
-    </div>
 <?php
-$ext = ['mysqli','zip','mysqlnd','json'];
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+$configfile = __DIR__.'/../config.php';
 
-foreach($ext as $k=>$v) if(!extension_loaded($v))
-		echo "<span class='alert fullwidth'>Extension $v in not loaded.</span>";
-?>
-<form method="post" class="row gap-16px bordered box-shadow g-form bg-white">
-	<div class="gl-6">
-	<label class="gs-12">Hostname</label>
-	<input name="db_host" value="localhost" required>
-	<label class="gs-12">Database</label>
-	<input name="db_name" required>
-	<label class="gs-12">DB Username</label>
-	<input name="db_user" required>
-	<label class="gs-12">DB Password</label>
-	<input name="db_pass" type="password">
-	</div>
-	<div class="gl-6">
-	<label class="gs-12">Admin Username</label>
-	<input name="adm_user" required>
-	<label class="gs-12">Admin Email</label>
-	<input name="adm_email" type="email" required>
-	<label class="gs-12">Admin Password</label>
-	<input name="adm_pass" type="password" required>
-	<label class="gs-12">Base URL</label>
-		<input name="base_url" value="" required>
-	</div>
-	<div class="gl-12"><input class="btn success" type="submit"></div>
-</form>
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $host=$_POST['db_host'];$db_user=$_POST['db_user'];
+    $db_pass=$_POST['db_pass'];$db_name=$_POST['db_name'];
+    $_base_url=$_POST['base_url'];
+    $_lc=substr($_base_url,-1);
+    if($_lc!='/' && $_lc!='\\') $_base_url.='/';
 
-</div>
+    $link = mysqli_connect($host,$db_user,$db_pass,$db_name);
+    if (!$link) {
+        echo "<div class='alert'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>Error: Unable to connect to MySQL.".PHP_EOL;
+        echo "<br>#".mysqli_connect_errno().PHP_EOL." : ".mysqli_connect_error().PHP_EOL."</div>";
+    } else {
+        include 'install.sql.php';
+
+        // create config.php
+        $filedata = file_get_contents(__DIR__.'/../config.default.php');
+        $GLOBALS['config']['db'] = [
+            'host' => $host,
+            'user' => $db_user,
+            'pass' => $db_pass,
+            'name' => $db_name
+        ];
+        $GLOBALS['config']['packages'] = [];
+        $GLOBALS['config']['base'] = $_base_url;
+        $GLOBALS['config']['theme'] = 'gila-blog';
+        $GLOBALS['config']['title'] = 'Gila CMS';
+        $GLOBALS['config']['slogan'] = 'An awesome website!';
+        $GLOBALS['config']['default-controller'] = 'blog';
+        $GLOBALS['config']['timezone'] = 'America/Mexico_City';
+        $GLOBALS['config']['ssl'] = '';
+        $GLOBALS['config']['env'] = 'pro';
+        $GLOBALS['config']['rewrite'] = false;
+        if(NULL != apache_get_modules())  if(!in_array('mod_rewrite', apache_get_modules()))
+            $GLOBALS['config']['rewrite'] = true;
+
+        $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
+
+        file_put_contents($configfile, $filedata); //, FILE_APPEND | LOCK_EX
+
+        include "installed.php";
+        exit;
+    }
+}
+
+include "install.form.php";

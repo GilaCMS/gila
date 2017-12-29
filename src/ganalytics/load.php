@@ -10,7 +10,7 @@ event::listen('head',function(){
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'UA-111492867-1');
+    gtag('config', '<?=$trackingID?>');
     </script>
     <?php
 });
