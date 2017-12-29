@@ -17,7 +17,7 @@ class login extends controller
            echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
            exit;
         }
-		include 'src/core/views/login.php';
+		view::includeFile('login.php');
     }
 
     function callbackAction()
@@ -46,7 +46,7 @@ class login extends controller
                 }
             }
         }
-        include 'src/core/views/register.php';
+        view::includeFile('register.php');
     }
 
 	function password_resetAction()
@@ -54,21 +54,22 @@ class login extends controller
 		if(isset($_GET['rp'])) {
             $r = user::getByResetCode($_GET['rp']);
 			if (!$r) {
-            echo 'This reset password code has been expired or used.';
-  				  exit;
+                echo 'This reset password code has been expired or used.';
+  				exit;
 			}
 			else if(isset($_POST['pass'])) {
 				$idUser=$r[0];
                 user::updatePassword($idUser,$_POST['pass']);
+                view::includeFile('login-change-success.php');
 				exit;
 			} else {
-				include 'src/core/views/new_password.php';
+				view::includeFile('login-change-new.php');
 				exit;
 			}
 		}
 
 		if(!isset($_POST['email'])) {
-			include 'src/core/views/reset_password.php';
+			view::includeFile('login-change-password.php');
 			return;
 		}
 
@@ -96,8 +97,6 @@ class login extends controller
 		user::meta($r['id'],'reset_code',$reset_code);
 		mail($email,$subject,$message,$headers);
 
-		$out['success'] = true;
-		$out['msg'] = "An email has been send to you in order to reset you password.";
-		echo "OK";
+		view::includeFile('login-change-emailed.php');
 	}
 }
