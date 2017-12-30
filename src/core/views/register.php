@@ -21,7 +21,7 @@
 </head>
 
 <body>
-
+    <?php view::alerts()?>
     <div class="gl-4 centered">
         <div class="border-buttom-main_ text-align-center">
             <div style="width:16%;display:inline-block">
@@ -33,15 +33,15 @@
         <form role="form" method="post" action="" class="g-form wrapper g-card">
             <label>Name</label>
             <div class="form-group">
-                <input class="form-control fullwidth" placeholder="name" name="name" autofocus>
+                <input class="form-control fullwidth" placeholder="name" name="name" autofocus required>
             </div>
             <label>E-mail</label>
             <div class="form-group">
-                <input class="form-control fullwidth" placeholder="E-mail" name="email" type="email">
+                <input class="form-control fullwidth" placeholder="E-mail" name="email" type="email" required>
             </div>
             <label>Password</label>
             <div class="form-group ">
-                <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="">
+                <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="" required>
             </div>
             <?php event::fire('register.form')?>
             <input type="submit" class="btn btn-primary btn-block" value="Register">

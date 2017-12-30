@@ -33,7 +33,7 @@ class login extends controller
             $password = $_POST['password'];
             $name = $_POST['name'];
             if(user::getByEmail($email)) {
-                // throw error
+                view::alert('error','This email is already taken from another user.');
             }
             else {
                 // register the user
@@ -42,7 +42,7 @@ class login extends controller
                     view::includeFile('login-register-success.php');
                     return;
                 } else {
-                    // throw error
+                    view::alert('error','User could not be registered.');
                 }
             }
         }

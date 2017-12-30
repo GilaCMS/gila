@@ -7,6 +7,7 @@ class view
     private static $script = array();
     private static $scriptAsync = array();
     private static $meta = array();
+    private static $alert = array();
 
 	static function set($param,$value) {
         self::$part[$param]=$value;
@@ -16,6 +17,7 @@ class view
     {
         self::$meta[$meta]=$value;
     }
+
     static function stylesheet($href)
     {
         if(in_array($href,self::$stylesheet)) return;
@@ -25,6 +27,16 @@ class view
     static function links()
     {
         foreach (self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
+    }
+
+    static function alert($type,$msg)
+    {
+        self::$alert[]=[$type,$msg];
+    }
+
+    static function alerts()
+    {
+        foreach (self::$alert as $a) echo '<div class="alert '.$a[0].'"><span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>'.$a[1].'</div>';
     }
 
     static function script($script)
