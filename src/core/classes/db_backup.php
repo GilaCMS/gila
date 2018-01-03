@@ -77,7 +77,7 @@ class db_backup {
                         	$row[$j] = addslashes($row[$j]);
                         	$row[$j] = preg_replace("/\n/","\\n",$row[$j]);
                         	if (isset($row[$j])) {
-                            	if (ctype_digit($row[$j])) {
+                            	if (ctype_digit($row[$j]))
                                 	$fline .= $row[$j];
                             	else
 									$fline .= '"'.$row[$j].'"';

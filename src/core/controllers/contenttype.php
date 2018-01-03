@@ -17,7 +17,7 @@ class contenttype extends controller
         // list here all the content types
         //global $c;
         $this->hola2 = "estwththt";
-        //view::set('contenttype',self::contenttypeGen());
+        view::set('contenttype',self::contenttypeGen());
         //$this->contenttype = self::contenttypeGen();
 
         view::renderAdmin('admin/contenttype.php');
@@ -40,6 +40,10 @@ class contenttype extends controller
                     yield explode('.',$table)[0];
                 }
             }
+        }
+        $tables = @scandir('src/core/tables/');
+        if(is_array($tables)) foreach ($tables as $table) if ($table[0]!='.'){
+            yield explode('.',$table)[0];
         }
     }
 

@@ -18,7 +18,8 @@ class gila {
         $GLOBALS['version']='1.4.3';
         gila::controllers([
             'admin'=> 'core/controllers/admin',
-            'blog'=> 'core/controllers/blog'
+            'blog'=> 'core/controllers/blog',
+            'fm'=> 'core/controllers/fm'
         ]);
         gila::$amenu = [
     	    ['Dashboard','admin','icon'=>'dashboard'],
@@ -35,8 +36,11 @@ class gila {
                 ['Packages','admin/addons','icon'=>'dropbox','access'=>'admin'],
                 ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
                 ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
+                ['File Manager','fm','icon'=>'folder','access'=>'admin'],
+                ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin'],
                 ]],
         ];
+
         gila::widgets([
           'menu'=>'core/widgets/menu',
           'text'=>'core/widgets/text',

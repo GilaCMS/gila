@@ -14,7 +14,7 @@
     <title>Gila CMS - Administration</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!--link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet"-->
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" async>
 
     <!-- Custom CSS -->
