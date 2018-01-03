@@ -9,8 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     $tags = $_POST['p_tags'];
     $categories = isset($_POST['p_categories'])?$_POST['p_categories']:[];
     $publish = isset($_POST['p_publish'])?1:0;
-    $slugify = new Cocur\Slugify\Slugify();
-    $slug = $slugify->slugify($title);
+    $slug = $_POST['p_slug'];
+    if($slug == '') {
+        $slugify = new Cocur\Slugify\Slugify();
+        $slug = $slugify->slugify($title);
+    }
+
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {
         array_push($args,session::key('user_id'));
@@ -34,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
 }
 
 if ($id == 'new') {
-    $p = (object)['tags'=>'','img'=>'','title'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
+    $p = (object)['tags'=>'','img'=>'','slug'=>'','title'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
-    $ql="SELECT id,title,post,publish,
+    $ql="SELECT id,title,post,publish,slug,
         (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
         (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
         FROM post WHERE id=$id";
@@ -59,6 +63,11 @@ else {
     <div class="row ">
         <label class="gm-2">Title</label>
         <input class="gm-10" value="<?=$p->title?>" name="p_title"/>
+    </div>
+
+    <div class="row">
+        <label class="gm-2">Slug</label>
+        <input class="gm-10" value="<?=$p->slug?>" name="p_slug" placeholder="Generate from title" />
     </div>
 
     <div class="row ">

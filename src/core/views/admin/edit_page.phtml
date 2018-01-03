@@ -6,8 +6,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     $title = $_POST['p_title'];
     $text = $_POST['p_page'];
     $publish = isset($_POST['p_publish'])?1:0;
-    $slugify = new Cocur\Slugify\Slugify();
-    $slug = $slugify->slugify($title);
+    $slug = $_POST['p_slug'];
+    if($slug == '') {
+        $slugify = new Cocur\Slugify\Slugify();
+        $slug = $slugify->slugify($title);
+    }
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {
 		$db->query("INSERT INTO page(title,page,publish,slug) VALUES(?,?,?,?)",$args);
@@ -21,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
 }
 
 if ($id == 'new') {
-    $p = (object)['title'=>'','page'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
+    $p = (object)['slug'=>'','title'=>'','page'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
-    $ql="SELECT id,title,page,publish
+    $ql="SELECT id,title,page,publish,slug
         FROM page WHERE id=$id";
     $res = $db->query($ql);
     if ($res) $p=mysqli_fetch_object($res); else die("The page '$id' could not be found in db!");
@@ -39,6 +42,11 @@ else {
     <div class="row ">
         <label class="gm-2">Title</label>
         <input class="gm-10" value="<?=$p->title?>" name="p_title"/>
+    </div>
+
+    <div class="row ">
+        <label class="gm-2">Slug</label>
+        <input class="gm-10" value="<?=$p->slug?>" name="p_slug" placeholder="Generate from title" />
     </div>
 
     <div class="row ">
