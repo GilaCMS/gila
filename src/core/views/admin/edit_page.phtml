@@ -57,16 +57,16 @@ else {
         </label>
         <!--label class="col-md-3">Public<input type="checkbox" name="p_publish" value="1"></label-->
     </div>
-    <hr>
 
     <input type="hidden" name="submit-btn" id="submit-btn">
-    <?php $textarea='p_page'; include __DIR__.'/edit_mce_editor.php'; ?>
+    <div class="row"><div class="gl-12">
+        <?php $textarea='p_page'; include __DIR__.'/edit_mce_editor.php'; ?>
+    </div></div>
 
-
-    <div class="row wrapper">
-        <div class="btn-group">
-            <button onclick="g.el('submit-btn').value='submited'; submit()" class="btn btn-primary primary" >Submit</button>
-        </div>
+    <br>
+    <div class="btn-group">
+        <button onclick="g.el('submit-btn').value='submited'; submit()" class="btn btn-primary primary" >Submit</button>
     </div>
+
 </form>
 </div>

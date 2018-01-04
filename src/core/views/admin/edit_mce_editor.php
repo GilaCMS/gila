@@ -14,9 +14,7 @@ if(file_exists($pages_path)) {
 }
 ?>
 
-<div id="code-tab"  class="gs-12" style="height:350px">
-    <textarea name="<?=$textarea?>"><?=isset($p->page)?$p->page:$p->post?></textarea>
-</div>
+<textarea name="<?=$textarea?>"><?=isset($p->page)?$p->page:$p->post?></textarea>
 
 <script src="lib/tinymce/tinymce.min.js"></script>
 
@@ -28,9 +26,9 @@ function get_text_to_save() {
 
 tinymce.init({
   selector: '[name=<?=$textarea?>]',
-  mode: 'none',
+  //mode: 'none',
   height: 300,
-  theme: 'modern',
+  //theme: 'modern',
   plugins: [
     'lists link image charmap hr anchor pagebreak',
     'searchreplace wordcount visualchars code',

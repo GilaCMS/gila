@@ -1,6 +1,5 @@
 
 .pnk-table{
-  text-align:center;
   width:100%;
   margin-bottom:30px;
   font-family: "Arial", serif;
@@ -13,6 +12,8 @@
 .pnk-table table thead tr {  background:#e5e5e5; color: #000; padding:6px 12px}
 
 .pnk-table table tbody tr {  background:#fff; }
+.pnk-table table tbody tr:hover td{  background:#e8e8e8; }
+.pnk-table table tbody tr:hover .pnk-com {opacity:0.6}
 .pnk-table table .hightlight {  background:yellow; }
 
 .pnk-table table .col-roles,
@@ -35,12 +36,8 @@
 
 .pnk-table table tbody td{ background: #fff; }
 
-/*.pnk-table table tbody tr:nth-child(odd) td{ background: #ddd; }*/
-
 .pnk-table table th,
-.pnk-table table td{  padding:8px;font-size:12px;border-collapse:collapse; border-top: 1px solid #CCC;}
-/*.pnk-table table td p{  padding:0; margin:0; }*/
-
+.pnk-table table td{  padding:10px 8px;font-size:13px;border-collapse:collapse; border-top: 1px solid #CCC;}
 
 .pnk-dialog{ width:auto !important; font-size:14px; }
 .pnk-dialog .update-div{ width: 50%; line-height: 1.4; padding:4px; display:inline-flex; }
@@ -57,31 +54,29 @@
 .update-div label{ vertical-align: top;  }
 .update-div select{ max-width: 80%;  }
 
-.pnk-searchbox{ background:#f5f5f5; text-align:left; /*border:1px solid #CCC*/ }
+.pnk-searchbox{ text-align:left; }
 .pnk-searchbox>div{ display:inline-block; margin:4px; margin-left: 12px; padding:0; }
 
 .pnk-table table tbody .show-details { background: #fff888; }
 .pnk-table table tbody .detail-row td { padding: 0; padding-left: 10px; }
 .pnk-table table tbody .detail-row {  border-bottom:1px solid #ccc }
-
 .pnk-table table .main-row:hover{ background: #f5f5f5; }
-/*
-.pnk-table table .group-row{ background: #fffddd; cursor:pointer; font-weight: bold; }
-.pnk-table table .group-row:hover{ background: #fff888; }
-
-.pnk-table .parent-row td{ border-right-width:0; border-bottom-width:0; }
-.pnk-table .parent-row td:last-child{ border-right:1px solid #CCC; }
-*/
 .pnk-table table td, .pnk-table table th { overflow:hidden ; text-align: left;  }
 .pnk-table table td p { margin: 0; }
 
 
-.pnk-tools{ margin-bottom: 8px; }
+.pnk-tools{ margin-bottom: 8px; margin-top: 8px; }
 .detail-row .pnk-tools button { font-size:14px; padding:8px; }
-.pnk-table .pnk-com{ font-size:16px; padding:0 4px; display:table-cell; margin:4px; cursor:pointer; border-width:0 }
 
-.pnk-table .pnk-com {opacity:0.5}
-.pnk-table .pnk-com:hover {opacity:1}
+.pnk-table .pnk-com{
+    font-size:16px;
+    padding:0 4px;
+    display:table-cell; margin:4px;
+    cursor:pointer;
+    border-width:0;
+    opacity:0.1;
+}
+.pnk-table table tbody tr .pnk-com:hover {opacity:1}
 
 .pnk-tool-active {background:#fbf}
 
@@ -99,7 +94,7 @@
 .pnk-sorti { opacity:0.2; float: right; display: table-cell;}
 th:hover .pnk-sorti, .sort-desc, .sort-asc { opacity: 1 }
 
-.pnk-input{ font:inherit; padding:4px; margin:0; /*margin-left:4px; background:#FFFED1;*/ border: 1px solid #bbb }
+.pnk-input{ font:inherit; padding:4px; margin:0; border: 1px solid #bbb }
 
 td[col] .pnk-input{ margin:0px; }
 
@@ -108,24 +103,20 @@ td[col] .pnk-input{ margin:0px; }
 
 
 .pnk-searchbox .pnk-input{
-      width:120px;
-      padding:var(--main-padding);
-      font:14px Arial;
-      transition:0s;
-      margin:0;
+      width: 120px;
+      padding: 11px;
+      font: 14px Arial;
+      transition: 0s;
+      margin: 0;
 }
 
 .pnk-searchbox .select2-container--default{ padding:0px 5px; margin:0px 4px; }
-.pnk-searchbox{ margin: 0; font-size: 14px; }
-
-.to-save{ color:#666; background: #f6f6e0; }
+.pnk-searchbox{ margin: 0; font-size: 14px; text-align: left;}
 
 .bg-option{ border-radius:2px;padding:3px;margin:0px 3px; font-size:12px }
 
 .grbut,
 
-/*td p{ display:table-row; }*/
-/*.grbut, .sprht, th p{ display:table-cell; }*/
 .grbut, .sprht{ opacity:0.2; margin:0 6px;}
 .grbut:hover, .sprht:hover{ opacity:1; }
 
@@ -142,3 +133,20 @@ td[col] .pnk-input{ margin:0px; }
 }
 
 .pnk-table tfoot .pagination, .pnk-table tfoot ul {margin: 6px 0; float:right}
+
+.pnk-pagination li {
+    list-style-type: none;
+    border: 1px solid #ccc;
+}
+.pnk-pagination a {
+    padding: 6px 8px;
+    color: #666;
+    border: 0;
+    font: 15px Arial;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+}
+.pnk-pagination .active a {
+    color: white;
+}

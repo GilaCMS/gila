@@ -11,7 +11,7 @@ document.getElementById("menu-toggle").addEventListener("click", function(e) {
 
 </div>
 
-<div class="pad"><hr>
+<div class="pad">
 <?php
 global $starttime;
 $end = microtime(true);
