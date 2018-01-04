@@ -25,6 +25,8 @@
     background-size: cover;
     background-position-y: <?=gila::option('theme.header-position','center')?>;
     background-position-x: center;}
+    footer{background:#464a49;margin-top:10px;color:white}
+    footer a,footer a:hover{color:white;text-decoration: underline; }
     .widget-social-icons {list-style: none;padding:0 }
     .widget-social-icons li{margin: 15px 10px 0 0; float: left; text-align: center; opacity: 0.8}
     .widget-social-icons li a i:before{

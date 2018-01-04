@@ -26,6 +26,8 @@
     .header h1{font-family:Arial;margin-left:8px}
     .featured-posts{margin-bottom: 20px}
     .header-logo{max-height: 80px; margin:10px}
+    footer{background:#464a49;margin-top:10px;color:white}
+    footer a,footer a:hover{color:white;text-decoration: underline; }
     </style>
 </head>
 

@@ -126,7 +126,9 @@ class view
         $spath = 'src/'.$package.'/views/'.$file;
         if(file_exists($spath)) {
             include $spath;
+            return;
         }
+        self::includeFile('404.php');
 
         if(router::request('g_response')!='content')
             foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
@@ -143,7 +145,9 @@ class view
         $spath = 'src/'.$package.'/views/'.$file;
         if(file_exists($spath)) {
             include $spath;
+            return;
         }
+        self::includeFile('404.phtml');
     }
 
 /**

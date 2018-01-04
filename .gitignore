@@ -22,7 +22,6 @@ npm-debug.log
 !src/gila_disqus/
 !src/ganalytics/
 !src/featured_grid/
-!themes/startbootstrap-clean-blog/
 !themes/gila-mag/
 !themes/gila-blog/
 !log/sessions/
