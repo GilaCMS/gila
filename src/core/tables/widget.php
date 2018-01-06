@@ -27,7 +27,7 @@ $table = [
           'type'=>'checkbox','edit'=>true,'create'=>false
         ],
         'data'=> [
-          'title'=>'Data', 'list'=>false, //'edit'=>false,
+          'title'=>'Data', 'list'=>false, 'edit'=>false,
           //'qcolumn'=>"REPLACE(data,'\"','\\\"')",
           'type'=>'text'
         ],
@@ -41,6 +41,5 @@ $table = [
       }
 
       $row['data']=json_encode($default_data);
-      //(isset($default_data)?$default_data:'{}');
     }
 ];

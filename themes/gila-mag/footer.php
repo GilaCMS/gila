@@ -1,4 +1,7 @@
 
+<div class="footer-widget">
+    <?php view::widget_area('foot')?>
+</div>
 <footer class="wrapper" style="">
     <p class="copyright text-muted">
         <?=gila::option('theme.footer-text','Copyright &copy; Your Website 2017');?>

@@ -6,7 +6,7 @@ use core\models\user;
 class admin extends controller
 {
 
-    function __construct ()
+    public function __construct ()
     {
         if(session::key('user_id')==0) {
             view::renderFile('login.php');
@@ -16,12 +16,15 @@ class admin extends controller
 
     function indexAction ()
     {
-      global $posts,$pages,$users,$packages;
       global $db;
-      $posts = $db->value('SELECT count(*) from post;');
-      $pages = $db->value('SELECT count(*) from page;');
-      $users = $db->value('SELECT count(*) from user;');
-      $packages = count($GLOBALS['config']['packages']);
+      $wfolders=['log','themes','src','tmp','assets'];
+      foreach($wfolders as $wf) if(is_writable($wf)==false) {
+          view::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
+      }
+      view::set('posts',$db->value('SELECT count(*) from post;'));
+      view::set('pages',$db->value('SELECT count(*) from page;'));
+      view::set('users',$db->value('SELECT count(*) from user;'));
+      view::set('packages',count($GLOBALS['config']['packages']));
       view::renderAdmin('admin/dashboard.phtml');
     }
 

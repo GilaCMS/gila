@@ -1,13 +1,3 @@
-<script>
-/*jQuery(document).on('click',"#menu-toggle",function(e) {
-    e.preventDefault();
-    jQuery("#wrapper").toggleClass("toggled");
-});*/
-document.getElementById("menu-toggle").addEventListener("click", function(e) {
-    e.preventDefault();
-    document.getElementById("wrapper").classList.toggle('toggled');
-});
-</script>
 
 </div>
 
@@ -22,9 +12,15 @@ echo " <a href='https://github.com/GilaCMS/gila' target='_blank'><i class='fa fa
 ?>
 </div>
 
-</div>
-<!-- /#wrapper -->
+</div><!-- /#wrapper -->
+
+<script>
+document.getElementById("menu-toggle").addEventListener("click", function(e) {
+    e.preventDefault();
+    document.getElementById("wrapper").classList.toggle('toggled');
+});
+</script>
+<?php view::scripts()?>
 
 </body>
-
 </html>

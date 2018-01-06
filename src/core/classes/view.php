@@ -29,6 +29,11 @@ class view
         foreach (self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
     }
 
+    static function scripts()
+    {
+        foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
+    }
+
     static function alert($type,$msg)
     {
         self::$alert[]=[$type,$msg];
@@ -63,6 +68,7 @@ class view
             self::renderFile($file, $package);
             return;
         }
+
         self::includeFile('admin/header.php');
         self::renderFile($file, $package);
         self::includeFile('admin/footer.php');
@@ -110,6 +116,14 @@ class view
         return false;
     }
 
+    static function updateC() {
+        global $c;
+        foreach (self::$part as $key => $value) {
+            $$key = $value;
+            @$c->$key = $value;
+        }
+    }
+
     static function renderFile($file, $package = 'core')
     {
         global $c;
@@ -130,13 +144,15 @@ class view
         }
         self::includeFile('404.php');
 
-        if(router::request('g_response')!='content')
-            foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
 	}
 
     static function includeFile($file,$package='core')
     {
         global $c;
+        foreach (self::$part as $key => $value) {
+            $$key = $value;
+        }
+
         $tpath = self::getThemePath().'/'.$file;
         if(file_exists($tpath)) {
             include $tpath;
