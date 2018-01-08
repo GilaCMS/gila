@@ -118,6 +118,13 @@ foreach ($packages as $p) if($p[0] != '.') if(file_exists($dir."$p/package.php")
         $table .= '<br><b>Author:</b> '.(isset($pac->author)?$pac->author:'');
         $table .= (isset($pac->url)?' <b>Url:</b> <a href="'.$pac->url.'" target="_blank">'.$pac->url.'</a>':'');
         $table .= (isset($pac->contact)?' <b>Contact:</b> '.$pac->contact:'');
+        if(isset($pac->require)) {
+            $table .= "<br>Requires: ";
+            foreach($pac->require as $req=>$ver) {
+                $table .= $req."($ver) ";
+            }
+        }
+        $table .= (isset($pac->contact)?' <b>Contact:</b> '.$pac->contact:'');
         unset($options);
     }else{
         include $dir."$p/package.php";

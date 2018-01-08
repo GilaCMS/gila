@@ -42,11 +42,11 @@ class blog  //extends controller
 
     function feedAction()
     {
-        $title=gila::config('title');
-        $link=gila::config('base');
-        $description=gila::config('slogan');
-        $items=blog::latestposts();
-        include 'src/core/views/rss.php';
+        $title = gila::config('title');
+        $link = gila::config('base');
+        $description = gila::config('slogan');
+        $items = blog::latestposts(20);
+        include 'src/core/views/blog-feed.php';
     }
 
     function tagAction()
@@ -153,7 +153,7 @@ class blog  //extends controller
         return post::getPosts($args);
     }
 
-    static function latestposts ($n) {
+    static function latestposts ($n = 10) {
         return post::getLatest($n);
     }
 
@@ -175,6 +175,12 @@ class blog  //extends controller
     {
         if($slug==NULL) return gila::make_url('blog','',['p'=>$id]);
         return gila::make_url('blog','',['p'=>$id,'slug'=>$slug]);
+    }
+
+    static function thumb_sm($img,$id)
+    {
+        $target = 'post_sm/'.str_replace(["://",":\\\\","\\","/",":"], "_", $img);
+        return view::thumb_sm($img, $target);
     }
 
 }

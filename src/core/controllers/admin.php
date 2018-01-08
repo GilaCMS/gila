@@ -84,6 +84,14 @@ class admin extends controller
         view::renderAdmin('admin/user.phtml');
     }
 
+    function addonsAction ()
+    {
+        //view::script('src/core/assets/admin/media.js');
+        //new package();
+        //view::set('packages', package::scan());
+		view::renderAdmin('admin/addons.php');
+    }
+
     function packagesAction ()
     {
         if(!$contents=file_get_contents('http://gilacms.com/packages/')) {
@@ -92,7 +100,7 @@ class admin extends controller
         }
         $packages = json_decode($contents);
         view::set('packages',$packages);
-        view::renderFile('admin/addons.php');
+        view::renderFile('admin/packages.php');
     }
 
     function newthemesAction ()
@@ -104,12 +112,6 @@ class admin extends controller
         $packages = json_decode($contents);
         view::set('packages',$packages);
         view::renderFile('admin/newthemes.php');
-    }
-
-    function addonsAction ()
-    {
-        view::script('src/core/assets/admin/media.js');
-		view::renderAdmin('admin/addons.php');
     }
 
     function themesAction ()

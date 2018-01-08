@@ -14,7 +14,9 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
   <title><?=$title?></title>
   <link><?=gila::config('base')?></link>
 </image>
-<?php foreach($items as $item) { ?>
+<?php foreach($items as $_item) {
+$item = (object)$_item;
+?>
 <item>
 <title><?=$item->title?></title>
   <link><?=gila::config('base').'blog/'.$item->id?></link>

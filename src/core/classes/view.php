@@ -222,12 +222,12 @@ class view
         event::fire($area);
     }
 
-    static function thumb ($src,$id,$max=180)
+    static function thumb ($src, $prefix, $max=180)
     {
         if($src==null) return false;
-        $file = 'tmp/'.$id;
-        $max_width=$max;
-        $max_height=$max;
+        $file = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $prefix.$src);
+        $max_width = $max;
+        $max_height = $max;
         if($src=='') return false;
         if (!file_exists($file)) {
             image::make_thumb($src,$file,$max_width,$max_height);
@@ -235,25 +235,25 @@ class view
         return $file;
     }
 
-    static function thumb_xs ($src,$id)
+    static function thumb_xs ($src,$id=null)
     {
-        return view::thumb($src,$id,80);
+        return view::thumb($src,'xs_',80);
     }
-    static function thumb_sm ($src,$id)
+    static function thumb_sm ($src,$id=null)
     {
-        return view::thumb($src,$id,160);
+        return view::thumb($src,'sm_',160);
     }
-    static function thumb_md ($src,$id)
+    static function thumb_md ($src,$id=null)
     {
-        return view::thumb($src,$id,320);
+        return view::thumb($src,'md_',320);
     }
-    static function thumb_lg ($src,$id)
+    static function thumb_lg ($src,$id=null)
     {
-        return self::thumb($src,$id,640);
+        return self::thumb($src,'lg_',640);
     }
-    static function thumb_xl ($src,$id)
+    static function thumb_xl ($src,$id=null)
     {
-        return view::thumb($src,$id,1200);
+        return view::thumb($src,'xl_',1200);
     }
 
 }
