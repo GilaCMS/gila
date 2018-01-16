@@ -30,6 +30,9 @@
     .dark-orange li ul li{ color: var(--main-color); }
     .dark-orange li ul li a{ color: var(--main-color); }
     .dark-orange li ul li a:hover{ color:white; }
+    .widget-area-dashboard{display: grid; grid-template-columns: auto auto auto;grid-auto-columns: minmax(320px, 100%);grid-gap: 10px;}
+    .widget-area-dashboard > * {box-shadow: 0px 1px 6px #999; margin:0}
+    .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: 6px}
     </style>
 
     <script src="lib/jquery/jquery-2.2.4.min.js"></script>

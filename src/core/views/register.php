@@ -43,7 +43,7 @@
             <div class="form-group ">
                 <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="" required>
             </div>
-            <?php event::fire('register.form')?>
+            <?php event::fire('recapcha.form')?>
             <input type="submit" class="btn btn-primary btn-block" value="Register">
         </form>
         <p>

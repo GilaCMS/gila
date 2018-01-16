@@ -51,7 +51,7 @@ class post
         $category = isset($args['category'])?"AND id IN(SELECT post_id from postmeta where vartype='category' and value='{$args['category']}')":"";
         $tag = isset($args['tag'])?"AND id IN(SELECT post_id from postmeta where vartype='tag' and value='{$args['tag']}')":"";
         $user_id = isset($args['user_id'])?"AND user_id='{$args['user_id']}'":"";
-        $start_from = (\blog::$page-1)*$ppp;
+        $start_from = (\blog::$page-1)*$ppp?:0;
         $where = '';
 
         $ql = "SELECT id,title,slug,SUBSTRING(post,1,300) as post,updated,user_id,

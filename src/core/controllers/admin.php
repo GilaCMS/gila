@@ -203,4 +203,28 @@ class admin extends controller
         view::includeFile('admin/footer.php');
     }
 
+    function sendmailAction()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true)) {
+            $baseurl = gila::config('base');
+            $email = gila::config('admin_email');
+            $email = "v.zuburlis@gmail.com";
+            $subject = "Message from ".$baseurl;
+            $message = "";
+            $headers = "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
+
+            foreach($_POST as $key=>$post) {
+                $message .= "$key:\n$post\n\n";
+            }
+
+            echo "<textarea>$message</textarea>";
+
+            mail($email,$subject,$message,$headers);
+        }
+
+        view::set("title","Contact Us");
+        view::set("text","Lorum");
+        view::render('page-contact.php');
+    }
+
 }

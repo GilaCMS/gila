@@ -131,12 +131,14 @@ class pnk extends controller
 					continue;
 				}
 				if(check_v($table['fields'][$col]['type'],'meta')) {
+
 					$mt = $table['fields'][$col]["mt"];
 					$vt = $table['fields'][$col]["metatype"];
 					$arrv = explode(",",$value);
-					$db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$erow_id' AND `{$vt[0]}`='{$vt[1]}' AND `{$mt[2]}` NOT IN($value);");
-					foreach($arrv as $arrv_k=>$arrv_v){
-						$db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$erow_id','$arrv_v','{$vt[1]});");
+
+					$db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$erow_id' AND `{$vt[0]}`='{$vt[1]}';");
+					foreach($arrv as $arrv_k=>$arrv_v) {
+						$db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$erow_id','$arrv_v','{$vt[1]}');");
 					}
 					continue;
 				}

@@ -22,10 +22,15 @@ npm-debug.log
 !src/gila_disqus/
 !src/ganalytics/
 !src/featured_grid/
+!src/reCAPTCHA/
+!src/.htaccess
+
 !themes/gila-mag/
 !themes/gila-blog/
+
 !log/sessions/
 !log/sessions/.gitkeep
+
 !tmp/index.html
 !assets/gila-logo.png
 !assets/gila-logo.svg

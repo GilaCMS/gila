@@ -1,0 +1,10 @@
+{
+	"name":"reCAPTCHA",
+	"version":"0.1.0",
+	"description":"Adds recaptcha in register form. <br><b>More info to get the site/secret keys: </b>https://developers.google.com/recaptcha/",
+	"url":"gilacms.com",
+	"options":{
+		"site_key":[],
+		"secret_key": []
+	}
+}

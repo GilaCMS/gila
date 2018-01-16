@@ -1,3 +1,4 @@
+<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <style>
 .widget-social-icons {list-style: none;padding:0; display: inline-block}
 .widget-social-icons li{margin: 15px 10px 0 0; float: left; text-align: center; opacity: 0.8}
