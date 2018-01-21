@@ -86,10 +86,29 @@ class admin extends controller
 
     function addonsAction ()
     {
-        //view::script('src/core/assets/admin/media.js');
-        //new package();
-        //view::set('packages', package::scan());
-		view::renderAdmin('admin/addons.php');
+        new package();
+        view::script('src/core/assets/admin/media.js');
+        $tab = router::get('tab',1);
+        $packages = [];
+
+        if($tab == 'new') {
+            if(!$contents=file_get_contents('http://gilacms.com/packages/')) {
+                view::alert('error',"Could not connect to packages list. Please try later.");
+                exit;
+            }
+            $packages = json_decode($contents);
+        } else if($tab == 'search'){
+            $search = router::get('search',2);
+            if(!$contents=file_get_contents('http://gilacms.com/packages/?search='.$search)) {
+                view::alert('error',"Could not connect to packages list. Please try later.");
+                exit;
+            }
+            $packages = json_decode($contents);
+        } else {
+            $packages = package::scan();
+        }
+        view::set('packages',$packages);
+		view::renderAdmin('admin/package-list.php');
     }
 
     function packagesAction ()

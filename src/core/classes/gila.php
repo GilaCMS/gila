@@ -11,6 +11,7 @@ class gila {
     static $widget_area;
     static $option;
     static $privilege;
+    static $content;
 
     function __construct()
     {
@@ -58,6 +59,8 @@ class gila {
         gila::$privilege['admin']="Administrator access.";
         gila::$privilege['editor']="Can publish or edit posts from other users.";
         gila::$privilege['developer']="Special access in developer tools.";
+
+        gila::content('post','core/tables/post.php');
     }
 
     static function controllers($list)
@@ -74,11 +77,14 @@ class gila {
         }
     }
 
+    static function content($key, $path)
+    {
+        self::$content[$key] = $path;
+    }
+
     static function packages()
     {
-        foreach ($list as $k=>$item) {
-          gila::$widget[$k]=$item;
-        }
+        return $GLOBALS['config']['packages'];
     }
 
     static function amenu($list,$arg2=[])

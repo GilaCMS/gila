@@ -9,25 +9,44 @@ class package {
         if($activate) self::activate($activate);
         $deactivate = router::get('deactivate');
         if($deactivate) self::deactivate($deactivate);
+        $download = router::get('download');
+        if($download) self::download($download);
         $save_options = router::get('save_options');
-        if($activate) self::save_options($save_options);
+        if($save_options) self::save_options($save_options);
         $options = router::post('options');
-        if($activate) self::options($options);
+        if($options) self::options($options);
     }
 
     static function activate($activate)
     {
-        if (in_array($activate,$packages)) {
+        if (in_array($activate, scandir('src/'))) {
             if(!in_array($activate, $GLOBALS['config']['packages'])) {
-                $GLOBALS['config']['packages'][]=$activate;
-                $updatefile = 'src/'.$activate.'/update.php';
-                if(file_exists($updatefile)) include $updatefile;
-                gila::updateConfigFile();
-                usleep(300);
-                $alert = gila::alert('success','Package activated');
-                exit;
-            }
-        }
+                $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'),true);
+                $require = [];
+                if(isset($pac['require'])) foreach ($pac['require'] as $key => $value) {
+                    if(!in_array($key, gila::packages()))
+                        $require[$key]=$key.' v'.$value;
+                    else {
+                        $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'),true);
+                        if(version_compare($pacx['version'], $value) < 0) $require[$key]=$key.' v'.$value;
+                    }
+                }
+                if($require==[]) {
+                    $GLOBALS['config']['packages'][]=$activate;
+                    $updatefile = 'src/'.$activate.'/update.php';
+                    if(file_exists($updatefile)) include $updatefile;
+                    gila::updateConfigFile();
+                    usleep(300);
+                    view::alert('success','Package activated');
+                    echo 'ok';
+                }
+                else {
+                    echo "These packages must be activated:";
+                    foreach($require as $k=>$r) echo "<br><a href='admin/addons/search/$k'>$r</a>";
+                }
+            } else echo "Package is already active";
+        } else echo "Package is not downloaded";
+        exit;
     }
 
     static function deactivate($deactivate)
@@ -40,6 +59,7 @@ class package {
                 $alert = gila::alert('success',"Package $key deactivated");
                 exit;
         }
+        exit;
     }
 
     static function download($download)
@@ -73,10 +93,10 @@ class package {
             $pack=$options;
             if(file_exists('src/'.$options.'/package.json')) {
                 $pac=json_decode(file_get_contents('src/'.$options.'/package.json'),true);
-                $options=$pac['options'];
+                @$options=$pac['options'];
             } else include 'src/'.$options.'/package.php';
 
-            foreach($options as $key=>$op) {
+            if(is_array($options)) foreach($options as $key=>$op) {
                 echo '<div class="gm-12">';
                 echo '<label class="gm-4">'.(isset($op['title'])?$op['title']:ucwords($key)).'</label>';
                 $ov = gila::option($pack.'.'.$key);
@@ -102,8 +122,9 @@ class package {
                 echo '</div><br>';
             }
             echo "</form>";
-            return;
+            exit;
         }
+        exit;
     }
 
     static function save_options($save_options)
@@ -114,7 +135,7 @@ class package {
         		$ql="INSERT INTO `option`(`option`,`value`) VALUES('$save_options.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
         		$db->query($ql);
         	}
-            return;
+            exit;
         }
     }
 
@@ -122,17 +143,18 @@ class package {
     {
         $dir = "src/";
         $scanned = scandir($dir);
-        $packages = [];
-        foreach($scanned as $folder) {
+        $_packages = [];
+        foreach($scanned as $folder) if($folder[0] != '.'){
             $json = $dir.$folder.'/package.json';
             if(file_exists($json)) {
                 $data = json_decode(file_get_contents($json));
                 $data->title = $data->name;
+                $data->package = $folder;
                 $data->url = isset($data->url)?$data->url:'';
-                $packages[$folder] = $data;
+                $_packages[$folder] = $data;
             }
         }
-        return $packages;
+        return $_packages;
     }
 
 }

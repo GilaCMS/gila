@@ -15,36 +15,24 @@ class contenttype extends controller
     function indexAction ()
     {
         // list here all the content types
-        //global $c;
-        $this->hola2 = "estwththt";
         view::set('contenttype',self::contenttypeGen());
-        //$this->contenttype = self::contenttypeGen();
-
         view::renderAdmin('admin/contenttype.php');
-
     }
 
     function editAction ()
     {
-        view::set('table',router::get('table',1));
-        view::renderAdmin('admin/contenttype-edit.php');
+        $table = router::get('table',1);
+        if(isset(gila::$content[$table])) {
+            view::set('table',gila::$content[$table]);
+            view::renderAdmin('admin/contenttype-edit.php');
+        }else {
+            self::indexAction();
+        }
     }
 
     function contenttypeGen()
     {
-        foreach (gila::config('packages') as $pack) {
-            $fol = 'src/'.$pack.'/tables/';
-            if (file_exists($fol)) {
-                $tables = @scandir($fol);
-                if(is_array($tables)) foreach ($tables as $table) if ($table[0]!='.'){
-                    yield explode('.',$table)[0];
-                }
-            }
-        }
-        $tables = @scandir('src/core/tables/');
-        if(is_array($tables)) foreach ($tables as $table) if ($table[0]!='.'){
-            yield explode('.',$table)[0];
-        }
+        foreach(gila::$content as $key=>$type)
+            yield $key;
     }
-
 }

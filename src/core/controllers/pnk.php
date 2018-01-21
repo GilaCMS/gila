@@ -18,6 +18,9 @@ class pnk extends controller
 			if (file_exists($tfile)) {
 				include $tfile;
 			}
+			else if (file_exists($_GET['t'])) {
+				include $_GET['t'];
+			}
 			else echo "File $tfile could not be found";
 
 		}

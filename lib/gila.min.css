@@ -53,7 +53,7 @@ script{display:none!important}
 .bordered{
     border:1px solid var(--main-border-color);
 }
-.g-selected,.active{
+.g-selected,.g-selected a,.active{
     background-color:var(--main-primary-color);
     color:white;
 }
@@ -386,7 +386,7 @@ input:focus + .helptext{
     max-height:80%;
     border:1px solid var(--main-border-color);
     z-index:99999;
-    overflow:scroll;
+    overflow:auto;
 }
 .gila-darkscreen .gila-popup{
     position:absolute;

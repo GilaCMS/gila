@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="lib/pnk/pnk.css?">
 <link rel="stylesheet" type="text/css" href="lib/select2/select2.min.css">
 
-<div class='pnk-table' pnk-src='src/core/tables/<?=$table?>' id='tpost'></div>
+<div class='pnk-table' pnk-src='src/<?=$table?>' id='tcontent'></div>
 
 <script src='lib\jquery\jquery-2.2.4.min.js'></script>
 <script src='lib\pnk\pnk-1.3.js?v=4'></script>
