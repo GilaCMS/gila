@@ -1,20 +1,23 @@
-<style>.addon-i{opacity:0.2}</style>
+<style>.addon-i{opacity:0.2}.logo-3x{min-width:1em}</style>
 <?php
 $dir = "src/";
 $table = '';
-$pn = 0; $alert = '';
-
+$pn = 0;
 
 
 foreach ($packages as $pkey=>$p) if($p->package!='core') {
-        $table .= '<tr>';
-        $table .= '<td style="color:grey;text-align:center">';
-        if (file_exists($dir."{$p->package}/logo.png")) {
-            $table .= '<img class="fa fa-3x" src="'."src/{$p->package}/logo.png".'" />';
-        }
-        else {
+        if (file_exists('src/'.$p->package)) {
+            if (in_array($p->package,$GLOBALS['config']['packages'])) {
+                $border = "border-left:4px solid lightgreen";
+            } else $border = "border-left:4px solid lightgrey";
+        } else $border = "";
+        $table .= '<tr><td style="color:grey;text-align:center;width: 3em;'.$border.'">';
+
+        if (file_exists($dir."{$p->package}/logo.png"))
+            $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'" />';
+        else
             $table .= '<i class="fa fa-3x fa-dropbox"></i>';
-        }
+
         $table .= '<td style="width:100%"><b>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'');
         $table .= '</b><p>'.(isset($p->description)?$p->description:'No description');
         $table .= '</p><i class="fa fa-user addon-i"></i> '.(isset($p->author)?$p->author:'');
@@ -43,14 +46,14 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
             if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Upgrade</a>";
             $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></a>";
         } else {
-            $table .= "<td><td><a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Download</a>";
+            $table .= "<td><td><td><a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Download</a>";
         }
     $pn++;
 }
 ?>
 <?php
 $links=[
-['Downloads','admin/addons'],
+['Downloaded','admin/addons'],
 ['Newest','admin/addons/new']
 ];
 view::alerts();
@@ -61,9 +64,10 @@ view::alerts();
         $active = (router::url()==$link[1]?'g-selected':'');
         echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.$link[0].'</a></li>';
     }
-    ?></ul>
+    ?>
+    </ul>
     <div class="tab-content gs-10">
-        <table class='g-table'><?=$table?></table>
+        <table class='g-table' style="margin-left:5px"><?=$table?></table>
     </div>
 </div>
 
@@ -102,21 +106,5 @@ function addon_options(p) {
      g.modal({title:"Options",body:x,buttons:'save_options'})
  })
 }
-/*
-g.click('#addon-tabs a',function(){
-    g(event.target).findUp('.g-nav').children().removeClass('active');
-    g(event.target).findUp('li').addClass('active');
-    event.preventDefault();
-    hash=event.target.href.split('#');
-    if(typeof hash[1]!=='undefined') if(hash[1]!==''){
-        x='#'+hash[1];
-        g(x).parent().children().style('display','none');
-        g(x).style('display','block');
-        if (g(x).attr('data-src')) g.post(g(x).attr('data-src'),'',function(response){
-            g(x).all[0].innerHTML=response
-        })
-    }
-    return false;
-})
-*/
+
 </script>

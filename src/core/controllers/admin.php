@@ -103,6 +103,7 @@ class admin extends controller
                 view::alert('error',"Could not connect to packages list. Please try later.");
                 exit;
             }
+            //$packages = package::scan();
             $packages = json_decode($contents);
         } else {
             $packages = package::scan();
