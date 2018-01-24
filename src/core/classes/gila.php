@@ -1,6 +1,6 @@
 <?php
 
-//  common functions will be put here
+/** Common methods for Gila CMS */
 use core\models\user as user;
 
 class gila {
@@ -63,6 +63,13 @@ class gila {
         gila::content('post','core/tables/post.php');
     }
 
+    /**
+    * Registers new controllers
+    * @param $list (Assoc Array) Controllers to register
+    * @code
+    * gila::controllers( [‘ctrl’=>’my_package/controllers/ctrl’] );
+    * @endcode
+    */
     static function controllers($list)
     {
       foreach ($list as $k=>$item) {
@@ -70,6 +77,11 @@ class gila {
         }
     }
 
+    /**
+    * Registers new widgets
+    * @param $list (Assoc Array) Widgets to register
+    * @code gila::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
+    */
     static function widgets($list)
     {
         foreach ($list as $k=>$item) {
@@ -128,6 +140,9 @@ class gila {
         $GLOBALS['config'][$key] = $value;
     }
 
+    /**
+    * Rewrites the config.php file
+    */
     static function updateConfigFile ()
     {
         $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";

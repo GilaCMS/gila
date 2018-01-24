@@ -21,7 +21,7 @@
 
         <div class="border-buttom-main_ text-align-center">
             <div style="width:16%;display:inline-block">
-                <i class="fa fa-5x fa-email" style="color:green"></i>
+                <i class="fa fa-5x fa-envelope" style="color:green"></i>
             </div>
             <h3>Reset Password Email Sent</h3>
             <p>An email has been send to you in order to change your password. Check your email in a few minutes and follow the link. If you cannot find the email in your inbox look also in your spam folder.</p>

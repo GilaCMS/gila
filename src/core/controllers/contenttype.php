@@ -1,24 +1,30 @@
 <?php
 
-
+/**
+* Lists content types and shows grid content data
+*/
 class contenttype extends controller
 {
-    public $hola2;
+
 
     function __construct ()
     {
         $this->contenttype = self::contenttypeGen();
-        $this->hola = "estwththt";
-        //$this->hola2 = "ttt";
     }
 
+    /**
+    * Lists all the registered content types
+    * @see gila::content()
+    */
     function indexAction ()
     {
-        // list here all the content types
         view::set('contenttype',self::contenttypeGen());
         view::renderAdmin('admin/contenttype.php');
     }
 
+    /**
+    * Diplays content data for editing
+    */
     function editAction ()
     {
         $table = router::get('table',1);

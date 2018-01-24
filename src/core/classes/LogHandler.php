@@ -1,5 +1,8 @@
 <?php
 
+/**
+* LogHandler instance
+*/
 class LogHandler {
 
   function __construct () {

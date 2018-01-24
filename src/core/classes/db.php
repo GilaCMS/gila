@@ -2,13 +2,10 @@
 /* db.php
 Created: 04/10/2016 by Vasilis Zoumpourlis
 Updated: 18/10/2016 by Vasilis Zoumpourlis
-
-A simple class for a mysqli connection
-
-example use
-$db = new dbClass('localhost', 'root', '', '');
 */
-
+/**
+* A simple class for a mysqli connection
+*/
 class db {
 	private $dbhost, $user, $pass, $dsch;
 	private $connected,$link;
@@ -165,3 +162,11 @@ class db {
 	}
 
 }
+
+/**
+* @example $db
+* @code
+* global $db;
+* $db = new dbClass('localhost', 'root', '', '');
+* @endcode
+*/

@@ -10,6 +10,9 @@ class logger
     private $handlers = [];
     private $file = null;
 
+    /**
+     * If filepath is set logs will be printed on it
+     */
     function __construct($filepath = null) {
         if ($filepath != null) $this->file = $filepath;
     }
@@ -20,6 +23,7 @@ class logger
     public function emergency($message, array $context = array()) {
         $this->log('emergency',$message,$context);
     }
+
     /**
      * Action must be taken immediately.
      */
@@ -32,6 +36,7 @@ class logger
     public function critical($message, array $context = array()) {
         $this->log('critical',$message,$context);
     }
+
     /**
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
@@ -39,6 +44,7 @@ class logger
     public function error($message, array $context = array()) {
         $this->log('error',$message,$context);
     }
+
     /**
      * Exceptional occurrences that are not errors.
      *
@@ -48,12 +54,14 @@ class logger
     public function warning($message, array $context = array()) {
         $this->log('warning',$message,$context);
     }
+
     /**
      * Normal but significant events.
      */
     public function notice($message, array $context = array()) {
         $this->log('notice',$message,$context);
     }
+
     /**
      * Interesting events.
      *
@@ -88,11 +96,3 @@ class logger
         array_unshift($this->handlers, $handler);
     }
 }
-
-/*
-$parameters = implode(' ', $this->parameters);
-foreach ($this->to as $to) {
-    mail($to, $subject, $content, $headers, $parameters);
-
-$log->pushHandler(new StreamHandler('path/to/your.log', Logger::WARNING));
-*/

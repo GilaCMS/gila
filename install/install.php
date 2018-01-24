@@ -35,8 +35,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $GLOBALS['config']['timezone'] = 'America/Mexico_City';
         $GLOBALS['config']['ssl'] = '';
         $GLOBALS['config']['env'] = 'pro';
+        $GLOBALS['config']['admin_email'] = $_POST['adm_email'];
         $GLOBALS['config']['rewrite'] = false;
-        if(NULL != apache_get_modules())  if(!in_array('mod_rewrite', apache_get_modules()))
+        if(function_exists("apache_get_modules"))  if(!in_array('mod_rewrite', apache_get_modules()))
             $GLOBALS['config']['rewrite'] = true;
 
         $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";

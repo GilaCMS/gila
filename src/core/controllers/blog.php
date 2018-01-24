@@ -3,12 +3,15 @@
 use core\models\post as post;
 use core\models\user as user;
 
-class blog  //extends controller
+/**
+* The blog controller, get calls for display of posts
+*/
+class blog extends controller
 {
-    public static $page;
+    public static $page; /** The page number */
     public static $totalPosts;
     public static $totalPages;
-    public static $ppp;
+    public static $ppp; /** Posts per page */
 
     function __construct ()
     {
@@ -16,6 +19,13 @@ class blog  //extends controller
         self::$ppp = 12;
     }
 
+    /**
+    * The default action.
+    * First checks if there is parameter for a post and calls postShow()
+    * Then check if there is search parameter and renders blog-search.php
+    * If none, will render landpage.php or frontpage.php
+    * @see postShow()
+    */
     function indexAction()
     {
         if ($id=router::get('page_id',1)) {
@@ -49,6 +59,9 @@ class blog  //extends controller
         include 'src/core/views/blog-feed.php';
     }
 
+    //! Displays posts with a specific tag
+    //! blog/tag/<tag> /
+    //! c=blog&action=tag&tag=<tag>
     function tagAction()
     {
         $tag = router::get('tag',1);

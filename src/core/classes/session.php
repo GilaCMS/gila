@@ -42,6 +42,10 @@ class session
         }
     }
 
+    /**
+    * Define new session variables
+    * @param $vars Associative Array
+    */
     static function define ($vars) {
         foreach ($vars as $k=>$v) {
             if(!isset($_SESSION[session::md5($k)])) $_SESSION[session::md5($k)]=$v;
@@ -62,16 +66,22 @@ class session
         }
     }
 
-    static function md5 ($key) {
+    private static function md5 ($key) {
         $dbname = $GLOBALS['config']['db']['name'];
         return md5($dbname.$key);
     }
 
+    /**
+    * Return user id
+    */
     static function user_id ()
     {
         return $_SESSION[session::md5('user_id')];
     }
 
+    /**
+    * Destroys session
+    */
     static function destroy ()
     {
         session_destroy();

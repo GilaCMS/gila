@@ -14,6 +14,9 @@ class admin extends controller
         }
     }
 
+    /**
+    * Renders admin/dashboard.phtml
+    */
     function indexAction ()
     {
       global $db;
@@ -28,6 +31,9 @@ class admin extends controller
       view::renderAdmin('admin/dashboard.phtml');
     }
 
+    /**
+    * List and edit posts
+    */
     function postsAction ()
     {
         global $db;
@@ -40,6 +46,9 @@ class admin extends controller
         view::renderAdmin('admin/post.phtml');
     }
 
+    /**
+    * List and edit pages
+    */
     function pagesAction ()
     {
         global $db;
@@ -51,11 +60,17 @@ class admin extends controller
         view::renderAdmin('admin/page.phtml');
     }
 
+    /**
+    * List and edit post categories
+    */
     function postcategoriesAction ()
     {
         view::renderAdmin('admin/postcategory.phtml');
     }
 
+    /**
+    * List and edit widgets
+    */
     function widgetsAction ()
     {
         global $db;
@@ -84,6 +99,10 @@ class admin extends controller
         view::renderAdmin('admin/user.phtml');
     }
 
+    /**
+    * List and manage installed packages
+    * @photo
+    */
     function addonsAction ()
     {
         new package();
@@ -228,7 +247,6 @@ class admin extends controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true)) {
             $baseurl = gila::config('base');
             $email = gila::config('admin_email');
-            $email = "v.zuburlis@gmail.com";
             $subject = "Message from ".$baseurl;
             $message = "";
             $headers = "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";

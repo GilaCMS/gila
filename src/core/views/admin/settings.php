@@ -1,5 +1,5 @@
 <?php
-$config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL'];
+$config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $_lc=mb_substr($_POST['gila_base'],-1);
     if($_lc!='/' && $_lc!='\\') $_POST['gila_base'].='/';
@@ -13,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('rewrite',$_POST['gila_rewrite']);
     gila::config('user_register',$_POST['gila_user_register']);
     gila::config('default.menu',$_POST['gila_defaultmenu']);
-    if (gila::updateConfigFile())
-        echo gila::alert('success','Changes have been saved successfully!');
+    view::alert('success','Changes have been saved successfully!');
 }
 ?>
 
 <div class="gm-12">
+    <?php view::alerts(); ?>
     <form method="post" action="<?=gila::make_url('admin','settings')?>" class="g-form">
 
 <?php
