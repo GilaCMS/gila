@@ -18,8 +18,8 @@
 
 $social_ = ['facebook','twitter','google','linkedin','pinterest','youtube','instagram','twitch','slack','github','tumblr','vk','rss','soundcloud'];
 
-foreach ($social_ as $s) if($widget_data->$s!=''){
-  echo "<li class=\"social-{$s}\"><a href=\"{$s}\"><i class='fa fa-{$s}' aria-hidden='true'></i></a></li>";
+foreach ($social_ as $s) if($widget_data->$s!='') {
+  echo "<li class=\"social-{$s}\"><a href=\"{$widget_data->$s}\" target=\"_blank\"><i class='fa fa-{$s}' aria-hidden='true'></i></a></li>";
 }
 
 ?>

@@ -1,12 +1,13 @@
 <ul class="g-nav">
 <?php
-if (!isset($widget_data)) include 'default-data.php';
 
-if (!is_array($widget_data->menu))
+if(@$widget_data == null) include __DIR__.'/default-data.php';
+
+if(!is_array($widget_data->menu)) {
     $menu_items = json_decode($widget_data->menu,true);
-else
+} else {
     $menu_items = $widget_data->menu;
-
+}
 
 foreach ($menu_items as $mi) {
     if (!isset($mi['children'])) {

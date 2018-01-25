@@ -166,12 +166,11 @@ class view
         self::includeFile('404.phtml');
     }
 
-/**
- * Widget
- *
- * @widget  name of the widget
- *
- */
+    /**
+    * Widget
+    * @param widget (string) Name of the widget type
+    *
+    */
 
     static function widget ($widget,$widget_exp=null)
     {
@@ -181,10 +180,11 @@ class view
         if($mm > 0) {
             $res = $db->get("SELECT data FROM widget WHERE id=?;",[$mm])[0];
             $widget_data = json_decode($res['data']);
+        } else {
+            $widget_data = null;
         }
 
-        $filePath = gila::config('theme').'/widgets/'.$widget.'.php';
-        //$widget_data = json_decode($db->get("SELECT data FROM widget WHERE active=1 AND widget=? LIMIT 1;", $widget)[0][0]);
+        $filePath = self::getThemePath().'/widgets/'.$widget.'.php';
 
         if (file_exists($filePath)) {
             include $filePath;
@@ -204,20 +204,31 @@ class view
     {
         view::widget_area($area);
     }
+
+    /**
+    * Dsiplays the widgets of an area
+    * @param $area (string) Area name
+    * @param $div (optional boolean) If true, widget body will be printed as child of <div class="widget"> item.
+    */
     static function widget_area ($area,$div=true)
     {
         global $db,$widget_data;
         $widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
         if ($widgets) foreach ($widgets as $widget) {
-          $widget_data = json_decode($widget['data']);
-          $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
-          if($div){
-              echo '<div class="widget">';
-              if($widget['title']!='') echo '<div class="widget-title">'.$widget['title'].'</div>';
-              echo '<div class="widget-body">';
-          }
-          include $widget_file;
-          if($div) echo '</div></div>';
+            $widget_data = json_decode($widget['data']);
+
+            if($div){
+                echo '<div class="widget">';
+                if($widget['title']!='') echo '<div class="widget-title">'.$widget['title'].'</div>';
+                echo '<div class="widget-body">';
+            }
+
+            $widget_file = self::getThemePath().'/widgets/'.$widget['widget'].'.php';
+            if(file_exists($widget_file) == false)
+                $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
+            include $widget_file;
+
+            if($div) echo '</div></div>';
         }
         event::fire($area);
     }

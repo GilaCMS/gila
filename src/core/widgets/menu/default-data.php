@@ -1,6 +1,6 @@
 <?php
 global $db;
-@$widget_data->menu = [];
+$widget_data=(object) array('menu' => []);
 
 $widget_data->menu[] = ['url'=>'','title'=>'Home'];
 
