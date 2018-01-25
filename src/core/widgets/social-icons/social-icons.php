@@ -16,7 +16,7 @@
 <ul class="widget-social-icons">
 <?php
 
-$social_ = ['facebook','twitter','google','linkedin','pinterest','youtube','instagram','twitch','slack','github','tumblr','vk','rss','soundcloud'];
+$social_ = ['facebook','twitter','google','linkedin','pinterest','youtube','instagram','medium','tumblr','github','codepen','twitch','slack','stack-overflow','vk','rss','soundcloud'];
 
 foreach ($social_ as $s) if($widget_data->$s!='') {
   echo "<li class=\"social-{$s}\"><a href=\"{$widget_data->$s}\" target=\"_blank\"><i class='fa fa-{$s}' aria-hidden='true'></i></a></li>";

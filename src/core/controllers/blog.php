@@ -107,6 +107,7 @@ class blog extends controller
             $user_id = $r['user_id'];
 
             view::set('title',$r['title']);
+            view::set('slug',$r['slug']);
             view::set('text',$r['post']);
             view::set('id',$r['id']);
             view::set('updated',$r['updated']);

@@ -3,16 +3,19 @@
 $options=[
 	'facebook'=>[],
 	'twitter'=>[],
-	'google'=>[],
 	'linkedin'=>[],
 	'pinterest'=>[],
 	'youtube'=>[],
 	'instagram'=>[],
-	'twitch'=>[],
-	'slack'=>[],
+	'google'=>[],
+	'medium'=>[],
 	'github'=>[],
 	'tumblr'=>[],
 	'vk'=>[],
-	'rss'=>[],
-	'soundcloud'=>[]
+	'twitch'=>[],
+	'slack'=>[],
+	'codepen'=>[],
+	'stack-overflow'=>[],
+	'soundcloud'=>[],
+	'rss'=>[]
 ];
