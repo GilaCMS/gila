@@ -89,16 +89,33 @@ class gila {
         }
     }
 
+    /**
+    * Registers new content type
+    * @param $key (string) Name of content type
+    * @param $path (string) Path to the table file
+    * @code gila::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
+    */
     static function content($key, $path)
     {
         self::$content[$key] = $path;
     }
 
+    /**
+    * Returns the list of active packages
+    * @return Array
+    */
     static function packages()
     {
         return $GLOBALS['config']['packages'];
     }
 
+    /**
+    * Add new elements on administration menu
+    * @param $list (string) Index name
+    * @param $list (assoc array) Array with data<br>
+    * Indices 0 for Display name, 1 for action link
+    * @code gila::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
+    */
     static function amenu($list,$arg2=[])
     {
         if(!is_array($list)) $list[$list]=$arg2;
@@ -111,6 +128,12 @@ class gila {
         }
     }
 
+    /**
+    * Add a child element on administration menu item
+    * @param $key (string) Index of parent item
+    * @param $value (assoc array) Array with data<br>
+    * @code gila::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
+    */
     static function amenu_child($h,$item)
     {
         if(!isset(gila::$amenu[$h]['children'])) gila::$amenu[$h]['children']=[];
@@ -122,6 +145,12 @@ class gila {
 
     }
 
+    /**
+    * Sets or gets the value of configuration attribute
+    * @param $key (string) Name of the attribute
+    * @param $value (optional) The value to set @see setConfig()
+    * @return The value if parameter $value is not sent
+    */
     static function config($key, $value = null)
     {
         if ($value == null) {
@@ -150,6 +179,9 @@ class gila {
         file_put_contents('config.php', $filedata);
     }
 
+    /**
+    * DEPRECIATED @see view::alert()
+    */
     static function alert ($type, $msg)
     {
         if ($type == 'alert') $type = '';
@@ -172,6 +204,10 @@ class gila {
         if ($id == null) return $data;
     }
 
+    /**
+    * Compares two string values. Returns false if any of two is not defined
+    * @return Boolean
+    */
     static function equal($v1,$v2)
     {
         if (!isset($v1)) return false;
@@ -180,11 +216,20 @@ class gila {
         return false;
     }
 
+    /**
+    * @return Password hash
+    */
     static function hash($pass)
     {
         return password_hash($pass, PASSWORD_BCRYPT);
     }
 
+    /**
+    * Returns an option value
+    * @param $option (string) Option name
+    * @param $default (optional) The value to return if this option has not saved value
+    * @return The option value
+    */
 	static function option($option,$default='')
     {
         if(isset(gila::$option[$option]) && gila::$option[$option]!='') return gila::$option[$option];
@@ -207,6 +252,13 @@ class gila {
 
     }
 
+    /**
+    * Creates a url
+    * @param $c (string) Controller name
+    * @param $action (string) Action name
+    * @param $args (array) Action name
+    * @return The full url to print
+    */
     static function make_url($c, $action='', $args=[])
     {
         $params='';
@@ -234,6 +286,11 @@ class gila {
 
     }
 
+    /**
+    * Checks if logged in user has at least one of the required privileges
+    * @param $pri (string/array) The privilege(s) to check
+    * @return Boolean
+    */
     static function hasPrivilege ($pri)
     {
         if(!is_array($pri)) $pri=explode(' ',$pri);
