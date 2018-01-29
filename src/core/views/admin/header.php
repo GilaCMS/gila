@@ -56,12 +56,14 @@
                 <?php
                     foreach (gila::$amenu as $key => $value) {
                         if(isset($value['access'])) if(!gila::hasPrivilege($value['access'])) continue;
-                        echo "<li><a href='".gila::url($value[1])."'><i class='fa fa-{$value['icon']}'></i> {$value[0]}</a>";
+                        if(isset($value['icon'])) $icon = 'fa-'.$value['icon']; else $icon='';
+                        echo "<li><a href='".gila::url($value[1])."'><i class='fa {$icon}'></i> {$value[0]}</a>";
                         if(isset($value['children'])) {
                             echo "<ul class=\"dropdown\">";
                             foreach ($value['children'] as $subkey => $subvalue) {
                                 if(isset($subvalue['access'])) if(!gila::hasPrivilege($subvalue['access'])) continue;
-                                echo "<li><a href='".gila::url($subvalue[1])."'><i class='fa fa-{$subvalue['icon']}'></i> {$subvalue[0]}</a></li>";
+                                if(isset($subvalue['icon'])) $icon = 'fa-'.$subvalue['icon']; else $icon='';
+                                echo "<li><a href='".gila::url($subvalue[1])."'><i class='fa {$icon}'></i> {$subvalue[0]}</a></li>";
                             }
                             echo "</ul>";
                         }

@@ -1,7 +1,7 @@
 <?php
 $config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
-    $_lc=mb_substr($_POST['gila_base'],-1);
+    $_lc=substr($_POST['gila_base'],-1);
     if($_lc!='/' && $_lc!='\\') $_POST['gila_base'].='/';
     foreach ($config_list as $key => $value) {
         gila::setConfig($key,$_POST['gila_'.$key]);
@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('rewrite',$_POST['gila_rewrite']);
     gila::config('user_register',$_POST['gila_user_register']);
     gila::config('default.menu',$_POST['gila_defaultmenu']);
+    gila::updateConfigFile();
     view::alert('success','Changes have been saved successfully!');
 }
 ?>
@@ -52,7 +53,7 @@ $sel_wm = gila::config('default.menu');
 echo '<option value="0">(default)';
 foreach ($res as $k=>$wm) {
     $sel = ($sel_wm==$wm['id']?'selected':'');
-    echo '<option value="'.$wm['id']."\" $sel>".$wm['title'];
+    echo '<option value="'.$wm['id']."\" $sel>".@$wm['title'];
 }
 ?>
 </select>

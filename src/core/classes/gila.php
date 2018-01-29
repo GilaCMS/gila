@@ -27,7 +27,7 @@ class gila {
             'content'=>['Content','admin','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
                 ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
                 ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],
-                ['Categories','admin/postcategories','icon'=>'list','access'=>'admin'],
+                ['Categories','admin/postcategories','access'=>'admin'],
                 ['Media','admin/media','icon'=>'image','access'=>'admin'],
                 ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
                 ]],
