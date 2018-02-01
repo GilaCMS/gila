@@ -17,7 +17,7 @@
             <a href="<?=blog::get_url($r['id'],$r['slug'])?>">
                 <h2 class="post-title" style="margin-top:0"><?=$r['title']?></h2>
             </a>
-            <?=strip_tags($r['post'])?>
+            <?=$r['description']?>
         </div>
     </div><!--hr-->
     <?php } ?>

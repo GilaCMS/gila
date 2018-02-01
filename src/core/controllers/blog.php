@@ -90,9 +90,14 @@ class blog extends controller
     {
         global $db;
         $user_id = router::get('author',1);
-        $res = $db->get("SELECT username from user WHERE id=?",$user_id);
-        view::set('author',$res[0][0]);
-        view::set('posts',post::getPosts(['posts'=>self::$ppp,'user_id'=>$user_id]));
+        $res = $db->get("SELECT username,id from user WHERE id=? OR username=?",[$user_id,$user_id]);
+        if($res) {
+            view::set('author',$res[0][0]);
+            view::set('posts',post::getPosts(['posts'=>self::$ppp,'user_id'=>$res[0][1]]));
+        } else {
+            view::set('author','not found');
+            view::set('posts',[]);
+        }
         view::render('blog-author.php');
     }
 
@@ -101,7 +106,7 @@ class blog extends controller
     {
         global $db;
 
-        $res = $db->query("SELECT id,title,post,updated,user_id,slug FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
+        $res = $db->query("SELECT id,title,description,post,updated,user_id,slug FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
         if ($res && $r = mysqli_fetch_array($res)) {
             $id = $r['id'];
             $user_id = $r['user_id'];
@@ -118,6 +123,7 @@ class blog extends controller
             view::meta('og:title',$r['title']);
             view::meta('og:type','website');
             view::meta('og:url',self::get_url($r['id'],$r['slug']));
+            view::meta('og:description',$r['description']);
 
             $res = $db->query("SELECT `value` as img FROM post,postmeta WHERE vartype='thumbnail' AND post_id=$id;");
             if ($res) {
@@ -134,8 +140,6 @@ class blog extends controller
                 if($creator = user::meta($user_id,'twitter_account'))
                     view::meta('twitter:creator','@'.$creator);
             } else view::set('author','unknown');
-
-            // view::meta('description',$r['username']);
 
             view::render('single-post.php');
         }

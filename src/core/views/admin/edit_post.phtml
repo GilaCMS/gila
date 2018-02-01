@@ -4,6 +4,7 @@ global $db;
 $p_list = ['title', 'post', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $title = $_POST['p_title'];
+    $description = $_POST['p_description'];
     $text = $_POST['p_post'];
     $img = trim($_POST['p_img']);
     $tags = $_POST['p_tags'];
@@ -15,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
         $slug = $slugify->slugify($title);
     }
 
-    $args = [$title,$text,$publish,$slug];
+    $args = [$title,$description,$text,$publish,$slug];
     if ($id == "new") {
         array_push($args,session::key('user_id'));
-        $db->query("INSERT INTO post(title,post,publish,slug,user_id) VALUES(?,?,?,?,?)",$args);
+        $db->query("INSERT INTO post(title,description,post,publish,slug,user_id) VALUES(?,?,?,?,?)",$args);
         $id = $db->insert_id;
     }
     else {
-        $db->query("UPDATE post SET title=?,post=?,publish=?,slug=? WHERE id=$id",$args);
+        $db->query("UPDATE post SET title=?,description=?,post=?,publish=?,slug=? WHERE id=$id",$args);
     }
 
     $db->query("DELETE FROM postmeta WHERE post_id=? AND vartype IN('category','tag','thumbnail')",$id);
@@ -38,10 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
 }
 
 if ($id == 'new') {
-    $p = (object)['tags'=>'','img'=>'','slug'=>'','title'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
+    $p = (object)['tags'=>'','img'=>'','slug'=>'','title'=>'','description'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
-    $ql="SELECT id,title,post,publish,slug,
+    $ql="SELECT id,description,title,post,publish,slug,
         (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
         (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
         FROM post WHERE id=$id";
@@ -68,6 +69,11 @@ else {
     <div class="row">
         <label class="gm-2">Slug</label>
         <input class="gm-10" value="<?=$p->slug?>" name="p_slug" placeholder="Generate from title" />
+    </div>
+
+    <div class="row">
+        <label class="gm-2">Description</label>
+        <input class="gm-10" value="<?=$p->description?>" name="p_description" maxlength="200" placeholder="A small description of 200 characters" />
     </div>
 
     <div class="row ">

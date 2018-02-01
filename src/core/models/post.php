@@ -54,7 +54,7 @@ class post
         $start_from = (\blog::$page-1)*$ppp?:0;
         $where = '';
 
-        $ql = "SELECT id,title,slug,SUBSTRING(post,1,300) as post,updated,user_id,
+        $ql = "SELECT id,title,description,slug,SUBSTRING(post,1,300) as post,updated,user_id,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img,
             (SELECT username FROM user WHERE post.user_id=id) as author
             FROM post
@@ -69,7 +69,7 @@ class post
     static function search ($s) {
         global $db;
 
-        $res = $db->query("SELECT id,title,slug,SUBSTRING(post,1,300) as post,
+        $res = $db->query("SELECT id,description,title,slug,SUBSTRING(post,1,300) as post,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
             FROM post WHERE match(title,post) AGAINST('$s' IN NATURAL LANGUAGE MODE) ORDER BY id DESC");
         if ($res) while ($r = mysqli_fetch_array($res)) {
