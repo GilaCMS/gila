@@ -39,7 +39,18 @@ g.dialog.buttons.select_media_path = {
 function open_media_gallery(mpi) {
     media_path_input = mpi;
     g.post("admin/media","g_response=content&path=assets",function(gal){
-        console.log('here')
         g.dialog({title:"Gila gallery",body:gal,buttons:'select_media_path',id:'media_dialog'})
     })
+}
+
+function filter_files(query,value) {
+ var list = document.querySelectorAll(query)
+console.log(value+':')
+ list.forEach(function(entry){
+     console.log(entry.getAttribute('data-path'))
+  if(!entry.getAttribute('data-path').includes(value))
+   entry.style.display='none';
+  else
+   entry.style.display='inline-block';
+ })
 }
