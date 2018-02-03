@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     $args = [$title,$description,$text,$publish,$slug];
     if ($id == "new") {
         array_push($args,session::key('user_id'));
-        $db->query("INSERT INTO post(title,description,post,publish,slug,user_id) VALUES(?,?,?,?,?)",$args);
+        $db->query("INSERT INTO post(title,description,post,publish,slug,user_id) VALUES(?,?,?,?,?,?)",$args);
         $id = $db->insert_id;
     }
     else {

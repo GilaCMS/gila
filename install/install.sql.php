@@ -82,5 +82,5 @@ $_pass=password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
 
 $link->query("INSERT INTO user VALUES(1,'$_user','$_email','$_pass','');");
 $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
-$link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post',1,CURRENT_TIMESTAMP);");
+$link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
 $link->query("INSERT INTO page VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");

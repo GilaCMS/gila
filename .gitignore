@@ -30,6 +30,7 @@ npm-debug.log
 
 !log/sessions/
 !log/sessions/.gitkeep
+!tmp/.gitkeep
 
 !tmp/index.html
 !assets/gila-logo.png
