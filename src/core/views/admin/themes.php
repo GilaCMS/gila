@@ -6,13 +6,11 @@ $table = '<br>';
 $pn = 0; $alert = '';
 
 $activate = router::get('activate');
-if (in_array($activate,$packages)) {
-    if(!in_array($activate, $GLOBALS['config']['packages'])) {
-        $GLOBALS['config']['theme']=$activate;
-        gila::updateConfigFile();
-        usleep(100);
-        exit;
-    }
+if ($activate) {
+    $GLOBALS['config']['theme']=$activate;
+    gila::updateConfigFile();
+    usleep(100);
+    exit;
 }
 
 $download = router::get('download');

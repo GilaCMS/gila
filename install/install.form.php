@@ -31,6 +31,6 @@
 	</div>
 	<div class="gl-12"><input class="btn success" type="submit"></div>
 </form>
-<p>If you have difficulties to finish the installation ask for help on <a href="https://gilacms.slack.com" target="_blank">Slack</a>, <a href="https://gitter.im/GilaCMS/Lobby" target="_blank">Gitter</a> or <a href="http://gilacms.com/forum" target="_blank">Forum</a></p>
+<p>If you have difficulties to finish the installation you can ask for help on <a href="http://gilacms.com/forum" target="_blank">Forum</a></p>
 
 </div>

@@ -16,7 +16,7 @@ class gila {
     function __construct()
     {
 		global $db;
-        $GLOBALS['version']='1.4.3';
+        $GLOBALS['version']='1.5.0';
         gila::controllers([
             'admin'=> 'core/controllers/admin',
             'blog'=> 'core/controllers/blog',
@@ -27,7 +27,7 @@ class gila {
             'content'=>['Content','admin','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
                 ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
                 ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],
-                ['Categories','admin/postcategories','access'=>'admin'],
+                ['Categories','admin/postcategories','icon'=>'bars','access'=>'admin'],
                 ['Media','admin/media','icon'=>'image','access'=>'admin'],
                 ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
                 ]],
