@@ -255,14 +255,12 @@ class admin extends controller
                 $message .= "$key:\n$post\n\n";
             }
 
-            echo "<textarea>$message</textarea>";
-
             mail($email,$subject,$message,$headers);
-        }
 
-        view::set("title","Contact Us");
-        view::set("text","Lorum");
-        view::render('page-contact.php');
+            echo "ok";
+            return;
+        }
+        echo "<meta http-equiv=\"refresh\" content=\"2;url=/\" />";
     }
 
 }

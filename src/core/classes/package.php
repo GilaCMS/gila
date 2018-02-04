@@ -24,7 +24,7 @@ class package {
                 $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'),true);
                 $require = [];
                 if(isset($pac['require'])) foreach ($pac['require'] as $key => $value) {
-                    if(!in_array($key, gila::packages()))
+                    if(!in_array($key, gila::packages())&&($key!='core'))
                         $require[$key]=$key.' v'.$value;
                     else {
                         $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'),true);
