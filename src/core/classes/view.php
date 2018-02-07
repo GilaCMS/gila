@@ -224,9 +224,12 @@ class view
             }
 
             $widget_file = self::getThemePath().'/widgets/'.$widget['widget'].'.php';
-            if(file_exists($widget_file) == false)
-                $widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
-            include $widget_file;
+            if(file_exists($widget_file) == false) {
+                @$widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
+                if(!isset(gila::$widget[$widget['widget']])) echo "Widget <b>".$widget['widget']."</b> is not found";
+            }
+
+            @include $widget_file;
 
             if($div) echo '</div></div>';
         }

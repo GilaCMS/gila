@@ -47,8 +47,7 @@ class gila {
           'text'=>'core/widgets/text',
           'latest-post'=>'core/widgets/latest-post',
           'social-icons'=>'core/widgets/social-icons',
-          'tag'=>'core/widgets/tag',
-          'contact-form'=>'core/widgets/contact-form'
+          'tag'=>'core/widgets/tag'
         ]);
         gila::$widget_area=[];
 
