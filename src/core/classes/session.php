@@ -66,6 +66,11 @@ class session
         }
     }
 
+    static function unset ($var)
+    {
+        unset($_SESSION[session::md5($var)]);
+    }
+
     private static function md5 ($key) {
         $dbname = $GLOBALS['config']['db']['name'];
         return md5($dbname.$key);

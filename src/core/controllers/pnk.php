@@ -368,7 +368,11 @@ function read_data_rows(){
 		$xfilter.=")";
 		$filters.=$xfilter;
 	}
-	if(isset($table['order-by'])) $orderby="ORDER BY ".$table['order-by']; else $orderby="";
+	if(isset($table['order-by'])) {
+		$orderby="ORDER BY ".$table['order-by'];
+	} else if(isset($table['id'])){
+		$orderby="ORDER BY ".$table['id']." DESC";
+	}
 	if(isset($_GET['orderby'])){
 		foreach($table["fields"] as $field_id=>$field){
 			if($_GET['orderby']==$field_id."_d") $orderby="ORDER BY `$field_id` DESC";
