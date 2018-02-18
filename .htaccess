@@ -21,7 +21,6 @@ RewriteCond %{REQUEST_URI} !/themes/
 RewriteCond %{REQUEST_URI} !/lib/
 RewriteCond %{REQUEST_URI} !/assets/
 RewriteCond %{REQUEST_URI} !/tmp/
-RewriteCond %{REQUEST_URI} !googlee8e85b60fd5460a9.html
 RewriteCond %{REQUEST_URI} !service-worker.js
 RewriteCond %{REQUEST_URI} !sw.js
 RewriteCond %{REQUEST_URI} !manifest.json$

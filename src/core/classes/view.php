@@ -10,7 +10,9 @@ class view
     private static $alert = array();
 
 	static function set($param,$value) {
+        global $g;
         self::$part[$param]=$value;
+        @$g->$param = $value;
 	}
 
     static function meta($meta,$value)
