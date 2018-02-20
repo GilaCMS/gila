@@ -53,11 +53,21 @@ class package {
     {
         if (in_array($deactivate,$GLOBALS['config']['packages'])) {
             $key = array_search($deactivate, $GLOBALS['config']['packages']);
-                unset($GLOBALS['config']['packages'][$key]);
-                gila::updateConfigFile();
-                usleep(100);
-                $alert = gila::alert('success',"Package $key deactivated");
-                exit;
+            unset($GLOBALS['config']['packages'][$key]);
+
+            // deactivate other packages that require $deactivate
+            foreach($GLOBALS['config']['packages'] as $p) {
+                $string = file_get_contents("/src/$p/package.json");
+                $json_p = json_decode($string, true);
+                if(isset($json_p['require'])) if(isset($json_p['require'][$deactivate])) {
+                    $key = array_search($deactivate, $GLOBALS['config']['packages']);
+                    if($key !== false) unset($GLOBALS['config']['packages'][$key]);
+                }
+            }
+            gila::updateConfigFile();
+            usleep(100);
+            $alert = gila::alert('success',"Package $key deactivated");
+            exit;
         }
         exit;
     }
@@ -148,7 +158,7 @@ class package {
             $json = $dir.$folder.'/package.json';
             if(file_exists($json)) {
                 $data = json_decode(file_get_contents($json));
-                $data->title = $data->name;
+                @$data->title = @$data->name;
                 $data->package = $folder;
                 $data->url = isset($data->url)?$data->url:'';
                 $_packages[$folder] = $data;
