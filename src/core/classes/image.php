@@ -3,6 +3,14 @@
 
 class image {
 
+    /**
+     * Creates a thumbnail image from a file.
+     * @param $src (string) Path to the original image
+     * @param $file (string) Path to the thumbnail to create
+     * @param $max_width (int) Maximun width in pixels for the new image
+     * @param $max_height (int) Maximun height in pixels for the new image
+     * @return boolean True if the thumbnail is created successfully
+     */
     static function make_thumb ($src,$file,$max_width,$max_height)
     {
         //if(!file_exists($src)) return false;
@@ -18,7 +26,7 @@ class image {
             $newwidth=($src_width/$src_height)*$newheight;
         }else{
             copy($src,$file);
-            return;
+            return true;
         }
 
         $tmp=imagecreatetruecolor($newwidth,$newheight);

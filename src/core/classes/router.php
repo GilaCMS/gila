@@ -86,14 +86,20 @@ class router
             array_splice($args, 0, 0, $controller);
         }
 
-        if (!isset(gila::$controller[$controller])) $controller = 'blog';
-        // TODO: Here must update config.php file on default-controller
+        if (!isset(gila::$controller[$controller])) {
+            // default-controller not found so have to reset on config.php file
+            $controller = 'blog';
+            gila::config('default-controller','blog');
+            gila::updateConfigFile();
+        }
         return $controller;
     }
 
-    /*
-    @key parameter
-    @n place in url
+    /**
+    * Returns a get parameter value
+    * @param $key (string) Parameter's name
+    * @param $n optional (int) Parameter's expected position in a pretty url.
+    * @return Parameter's value or null if paremeter is not found.
     */
     static function get ($key, $n = null)
     {
@@ -111,6 +117,12 @@ class router
             return null;
         }
     }
+
+    /**
+    * Returns the value of a post parameter
+    * @param $key (string) Parameter's name
+    * @return null if the parameter is not set
+    */
     static function post ($key,$default=null)
     {
         return isset($_POST[$key])?$_POST[$key]:$default;
@@ -125,10 +137,18 @@ class router
     {
         return $_GET['url'];
     }
+
+    /**
+    * Returns the name of the controller
+    */
     static function controller ()
     {
         return router::$args[0];
     }
+
+    /**
+    * Returns the name of the action
+    */
     static function action ()
     {
         return router::$args[1];

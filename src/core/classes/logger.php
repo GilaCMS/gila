@@ -92,6 +92,9 @@ class logger
         }
     }
 
+    /**
+     * Adds a new handler to the logger.
+     */
     public function pushHandler(LogHandler $handler) {
         array_unshift($this->handlers, $handler);
     }

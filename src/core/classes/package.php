@@ -17,6 +17,10 @@ class package {
         if($options) self::options($options);
     }
 
+    /**
+    * Activates a package
+    * @param $activate (string) Package name to activate
+    */
     static function activate($activate)
     {
         if (in_array($activate, scandir('src/'))) {
@@ -49,6 +53,10 @@ class package {
         exit;
     }
 
+    /**
+    * Deactivates a package and its dependecies
+    * @param $deactivate (string) Package name to deactivate
+    */
     static function deactivate($deactivate)
     {
         if (in_array($deactivate,$GLOBALS['config']['packages'])) {
@@ -72,13 +80,17 @@ class package {
         exit;
     }
 
-    static function download($download)
+    /**
+    * Downloads a package from gilacms.com assets in zip
+    * @param $package (string) Package name to download
+    */
+    static function download($package)
     {
-        if ($download) {
+        if ($package) {
           $zip = new ZipArchive;
-          $target = 'src/'.$download;
-          $file = 'http://gilacms.com/assets/packages/'.$download.'.zip';
-          $localfile = 'src/'.$download.'.zip';
+          $target = 'src/'.$package;
+          $file = 'http://gilacms.com/assets/packages/'.$package.'.zip';
+          $localfile = 'src/'.$package.'.zip';
           if (!copy($file, $localfile)) {
             echo "Failed to download package!";
           }
@@ -95,16 +107,20 @@ class package {
         }
     }
 
-    static function options($options)
+    /**
+    * Returns the package options on html
+    * @param $package (string) Package name to generate the options code
+    */
+    static function options($package)
     {
-        if (in_array($options,$GLOBALS['config']['packages'])) {
+        if (in_array($package,$GLOBALS['config']['packages'])) {
             global $db;
             echo '<form id="addon_options_form" class="g-form"><input id="addon_id" value="'.$options.'" type="hidden">';
-            $pack=$options;
-            if(file_exists('src/'.$options.'/package.json')) {
-                $pac=json_decode(file_get_contents('src/'.$options.'/package.json'),true);
+            $pack=$package;
+            if(file_exists('src/'.$package.'/package.json')) {
+                $pac=json_decode(file_get_contents('src/'.$package.'/package.json'),true);
                 @$options=$pac['options'];
-            } else include 'src/'.$options.'/package.php';
+            } else die('Could not find src/'.$package.'/package.json');
 
             if(is_array($options)) foreach($options as $key=>$op) {
                 echo '<div class="gm-12">';
@@ -137,18 +153,26 @@ class package {
         exit;
     }
 
-    static function save_options($save_options)
+    /**
+    * Saves option values for a package
+    * @param $package (string) Package name
+    */
+    static function save_options($package)
     {
-        if (in_array($save_options,$GLOBALS['config']['packages'])) {
+        if (in_array($package,$GLOBALS['config']['packages'])) {
         	global $db;
         	foreach($_POST['option'] as $key=>$value) {
-        		$ql="INSERT INTO `option`(`option`,`value`) VALUES('$save_options.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
+        		$ql="INSERT INTO `option`(`option`,`value`) VALUES('$package.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
         		$db->query($ql);
         	}
             exit;
         }
     }
 
+    /**
+    * Returns the installed packages in an array option values for a package
+    * @return Array Packages
+    */
     static function scan()
     {
         $dir = "src/";

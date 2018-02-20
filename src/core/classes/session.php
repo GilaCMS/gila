@@ -52,6 +52,13 @@ class session
         }
     }
 
+    /**
+    * Returns or sets value for a session variable
+    * @param $var (string) Variable name
+    * @param $val (optional) Variable value, if is not set the function will return the current value
+    * @param $t optional (int) Time in seconds to save the variable in the cookie (not saved if not set)
+    * @return Variable value
+    */
     static function key ($var,$val = null, $t = 0) {
         if ($val == null) {
             if(isset($_SESSION[session::md5($var)])) return $_SESSION[session::md5($var)]; else return null;
@@ -66,6 +73,10 @@ class session
         }
     }
 
+    /**
+    * Unsets a session variable
+    * @param $var (string) Variable name
+    */
     static function unset ($var)
     {
         unset($_SESSION[session::md5($var)]);
@@ -77,7 +88,8 @@ class session
     }
 
     /**
-    * Return user id
+    * Returns user id
+    * @return int User's id. 0 if user is not logged in.
     */
     static function user_id ()
     {
@@ -85,7 +97,7 @@ class session
     }
 
     /**
-    * Destroys session
+    * Destroys the session session
     */
     static function destroy ()
     {

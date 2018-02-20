@@ -21,7 +21,10 @@ class db_backup {
 
     }
 
-    /* backup the db OR just a table */
+    /**
+	* Backup the whole database or just a table
+	* @param $tables optional (Array) The tables to backup. Default: '*'(all)
+	*/
     function backup_tables($tables = '*')
     {
     	global $db;
@@ -98,12 +101,20 @@ class db_backup {
     	fclose($handle);
     }
 
+	/**
+	* Restore  database from a source file
+	* @param $file (string) Relative path of the file
+	*/
     function source($file) {
         global $db;
         $db->multi_query(file_get_contents($file));
         echo "Backup loaded successfully!";
     }
 
+	/**
+	* Returns a source file for download
+	* @param $file (string) Relative path of the file
+	*/
 	function download($file) {
 		header("Content-Disposition:attachment;filename='$file'");
 		readfile($file);
