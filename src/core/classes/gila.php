@@ -60,8 +60,7 @@ class gila {
         gila::$privilege['developer']="Special access in developer tools.";
 
         gila::content('post','core/tables/post.php');
-
-        $GLOBALS['lang']['core'] = json_decode(file_get_contents('src/core/lang/'.gila::config('language').'.json'),true);
+        gila::addLang('core/lang/');
 
     }
 
@@ -77,6 +76,17 @@ class gila {
       foreach ($list as $k=>$item) {
             gila::$controller[$k]=$item;
         }
+    }
+
+    /**
+    * Adds language translations from a json file
+    * @param $path (string) Path to the folder/prefix of language json files
+    */
+    static function addLang($path)
+    {
+        $GLOBALS['lang'] = array_merge($GLOBALS['lang'],
+            json_decode(file_get_contents('src/'.$path.gila::config('language').'.json'),true)
+        );
     }
 
     /**
@@ -305,11 +315,12 @@ class gila {
     }
 }
 
+$GLOBALS['lang'] = [];
 
-function __($slug, $package = 'core') {
-    if(@isset($GLOBALS['lang'][$package][$slug])) {
-        if($GLOBALS['lang'][$package][$slug] != '')
-            return $GLOBALS['lang'][$package][$slug];
+function __($slug) {
+    if(@isset($GLOBALS['lang'][$slug])) {
+        if($GLOBALS['lang'][$slug] != '')
+            return $GLOBALS['lang'][$slug];
     }
     return $slug;
 }
