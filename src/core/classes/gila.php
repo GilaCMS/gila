@@ -60,6 +60,9 @@ class gila {
         gila::$privilege['developer']="Special access in developer tools.";
 
         gila::content('post','core/tables/post.php');
+
+        $GLOBALS['lang']['core'] = json_decode(file_get_contents('src/core/lang/'.gila::config('language').'.json'),true);
+
     }
 
     /**
@@ -300,4 +303,13 @@ class gila {
         foreach($pri as $p) if(in_array($p,$GLOBALS['user_privileges'])) return true;
         return false;
     }
+}
+
+
+function __($slug, $package = 'core') {
+    if(@isset($GLOBALS['lang'][$package][$slug])) {
+        if($GLOBALS['lang'][$package][$slug] != '')
+            return $GLOBALS['lang'][$package][$slug];
+    }
+    return $slug;
 }

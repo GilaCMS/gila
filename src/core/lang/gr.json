@@ -1,0 +1,17 @@
+{
+    "Home": "Αρχική",
+    "Search": "Αναζήτηση",
+    "Submit": "Υποβολή",
+    "Title": "Τίτλος",
+    "Description": "rty",
+    "Website URL": "",
+    "Admin Email": "Email Διαχειριστή",
+    "Pretty Urls": "",
+    "Main Menu": "Βασικό Μενού",
+    "Theme": "Θέμα",
+    "Timezone": "Ζώνη ωρας",
+    "Language": "Γλώσσα",
+    "Default Controller": "Προκαθορισμένο Controller",
+    "Environment": "Περιβάλλον",
+    "New users can register": "Εγγραφή νέων χρηστών"
+}

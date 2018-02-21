@@ -2,7 +2,7 @@
 global $db;
 $widget_data=(object) array('menu' => []);
 
-$widget_data->menu[] = ['url'=>'','title'=>'Home'];
+$widget_data->menu[] = ['url'=>'','title'=>__('Home')];
 
 $ql = "SELECT id,title FROM postcategory;";
 $pages = $db->get($ql);
