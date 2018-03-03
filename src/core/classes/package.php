@@ -115,7 +115,7 @@ class package {
     {
         if (in_array($package,$GLOBALS['config']['packages'])) {
             global $db;
-            echo '<form id="addon_options_form" class="g-form"><input id="addon_id" value="'.$options.'" type="hidden">';
+            echo '<form id="addon_options_form" class="g-form"><input id="addon_id" value="'.$package.'" type="hidden">';
             $pack=$package;
             if(file_exists('src/'.$package.'/package.json')) {
                 $pac=json_decode(file_get_contents('src/'.$package.'/package.json'),true);

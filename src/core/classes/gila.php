@@ -60,6 +60,9 @@ class gila {
         gila::$privilege['developer']="Special access in developer tools.";
 
         gila::content('post','core/tables/post.php');
+        gila::content('user','core/tables/user.php');
+        gila::content('page','core/tables/page.php');
+        gila::content('widget','core/tables/widget.php');
         gila::addLang('core/lang/');
 
     }
