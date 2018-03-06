@@ -43,7 +43,7 @@ class blog extends controller
         }
 
         if($_GET['url']!='' || view::findPath('landpage.php')==false) {
-            view::set('page',blog::$page);
+            view::set('page',self::$page);
             view::set('posts',post::getPosts(['posts'=>self::$ppp]));
             view::render('frontpage.php');
         }
@@ -55,7 +55,7 @@ class blog extends controller
         $title = gila::config('title');
         $link = gila::config('base');
         $description = gila::config('slogan');
-        $items = blog::latestposts(20);
+        $items = self::latestposts(20);
         include 'src/core/views/blog-feed.php';
     }
 
@@ -162,8 +162,8 @@ class blog extends controller
 		      view::render('blog-search.php');
             return;
         }
-        view::set('page',blog::$page);
-        view::set('posts',blog::post(['posts'=>(self::$ppp)]));
+        view::set('page',self::$page);
+        view::set('posts',self::post(['posts'=>(self::$ppp)]));
         view::render('frontpage.php');
     }
 
@@ -184,7 +184,7 @@ class blog extends controller
     }
 
     static function totalpages ($args = []) {
-        self::$totalPosts = blog::totalposts($args);
+        self::$totalPosts = self::totalposts($args);
         self::$totalPages = floor((self::$totalPosts+self::$ppp)/self::$ppp);
         return self::$totalPages;
     }

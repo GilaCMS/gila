@@ -19,8 +19,7 @@ class api extends controller
         } else exit;
 
         if(!file_exists($controller_file)) {
-            echo $controller_file;
-            trigger_error("Controller could not be found: $controller=>$controller_file", E_NOTICE);
+            trigger_error("Controller could not be found: $controller=>$controller_file");
             exit;
         }
         array_shift(router::$args);

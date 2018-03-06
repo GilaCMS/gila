@@ -8,6 +8,7 @@ log/*
 log/sessions/*
 
 vendor/
+tests/
 node_modules/
 composer.phar
 composer.json

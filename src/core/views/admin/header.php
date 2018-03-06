@@ -95,14 +95,6 @@
 
             <div style="background:#d6d6d6; padding:12px" class="row caption">
                 <div style="font-size:16px; padding-left: 15px;">
-                    <?php
-                    $cn = router::controller();
-                    $c = new $cn();
-                    if (isset($c->icons)) {
-                        if (isset($c->icons[router::action()]))
-                            echo "<i class='fa fa-{$c->icons[router::action()]}'></i> ";
-                    }
-                    ?>
                     <?=ucwords(router::action())?>
                 </div>
             </div>

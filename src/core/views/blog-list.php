@@ -14,7 +14,7 @@
             ?>
 
         <div class="<?=$title_gl?>">
-            <a href="<?=blog::get_url($r['id'],$r['slug'])?>">
+            <a href="<?=$c->get_url($r['id'],$r['slug'])?>">
                 <h2 class="post-title" style="margin-top:0"><?=$r['title']?></h2>
             </a>
             <?=strip_tags($r['post'])?>
@@ -25,7 +25,7 @@
     <ul class="g-nav pagination">
         <ul class="g-nav pagination">
             <?php
-            $totalpages = blog::totalpages();
+            $totalpages = $c->totalpages();
             for($pl=0;$pl<$totalpages;$pl++) { ?>
             <li class="">
                 <a href="?page=<?=$pl+1?>"><?=($pl+1)?></a>
