@@ -191,4 +191,30 @@ class package {
         return $_packages;
     }
 
+    /**
+    * Combines all package load.php files in log/load.php
+    * @return Array Packages
+    */
+    static function updateLoadFile()
+    {
+        $file = "log/load.php";
+        $contents = file_get_contents('src/core/load.php');//"/*--- Load file ---*/";
+        foreach(gila::packages() as $package) {
+            $handle = @fopen("src/$package/load.php", "r");
+            if ($handle) {
+                $line = fgets($handle);
+                $contents .= "\n\n/*--- $package ---*/";
+                while (($line = fgets($handle)) !== false) {
+                    $contents .= $line;
+                }
+
+                fclose($handle);
+            } else {
+                // error op
+            }
+        }
+
+        file_put_contents($file, $contents);
+    }
+
 }

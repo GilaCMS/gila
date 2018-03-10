@@ -50,9 +50,11 @@ $db = new db(gila::config('db'));
 
 new gila();
 
-foreach ($GLOBALS['config']['packages'] as $package) {
-	if(file_exists("src/$package/load.php")) include "src/$package/load.php";
+if(!file_exists('log/load.php')) {
+	package::updateLoadFile();
 }
+include 'log/load.php';
+
 
 $theme = $GLOBALS['config']['theme'];
 if(isset($_GET['g_preview_theme'])) $theme=$_GET['g_preview_theme'];

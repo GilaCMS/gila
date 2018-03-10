@@ -88,8 +88,8 @@ class router
 
         if (!isset(gila::$controller[$controller])) {
             // default-controller not found so have to reset on config.php file
-            $controller = 'blog';
-            gila::config('default-controller','blog');
+            $controller = 'admin';
+            gila::config('default-controller','admin');
             gila::updateConfigFile();
         }
         return $controller;
