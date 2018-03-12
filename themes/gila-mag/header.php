@@ -21,7 +21,7 @@
     .featured-posts{margin-bottom: 20px}
     .header-logo{max-height: 80px; margin:10px}
     footer{background:#464a49;margin-top:10px;color:white}
-    footer a,footer a:hover{color:white;text-decoration: underline; }
+    .footer-text,footer a,footer a:hover{color:#ccc; }
     </style>
 </head>
 
@@ -43,3 +43,4 @@
             <span class="fullwidth" style="border-top: 4px solid <?=$theme_color?>"><?php view::widget('menu'); ?></span>
       </nav>
     </div>
+    <div class="wrapper">

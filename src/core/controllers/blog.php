@@ -110,6 +110,7 @@ class blog extends controller
         if ($res && $r = mysqli_fetch_array($res)) {
             $id = $r['id'];
             $user_id = $r['user_id'];
+            view::set('author_id',$user_id);
 
             view::set('title',$r['title']);
             view::set('slug',$r['slug']);

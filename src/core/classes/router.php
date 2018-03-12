@@ -111,7 +111,7 @@ class router
             return $_GET[$key];
         }
         else if (isset($_GET['var'.$n])) {
-            return $_GET[$key];
+            return $_GET['var'.$n];
         }
         else {
             return null;

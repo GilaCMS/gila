@@ -4,9 +4,9 @@
 
 <footer  class="fullwidth pad"  style="">
   <div style="max-width:900px; margin:auto">
-    <p class="copyright text-muted">
+    <p class="copyright footer-text">
         <?=gila::option('theme.footer-text','Copyright &copy; Your Website 2017');?>
-        <br>Powered by <a href="http://gilacms.com" target="_blank">Gila</a>
+        <span style="float:right">Powered by <a href="http://gilacms.com" target="_blank">Gila CMS</a></span>
     </p>
   </div>
 </footer>

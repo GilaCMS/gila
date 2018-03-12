@@ -1,7 +1,7 @@
 
 <!-- Posts -->
 <div class="row" style="">
-    <div class="gm-9">
+    <div class="gm-9 wrapper">
     <?php foreach ($c->posts as $r) { ?>
     <div class="gm-12 row gap-8px post-review">
             <?php
