@@ -33,7 +33,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 <?php } ?>
 
 <br><div class="gm-12">
-<label class="gm-3">Pretty Urls</label>
+<label class="gm-3"><?=__("Pretty Urls")?></label>
 <select name="gila_rewrite" class="gm-4">
 <?php
 $purls = [true=>'Yes',false=>'No'];
@@ -46,7 +46,7 @@ foreach ($purls as $k=>$value) {
 </div>
 
 <br><div class="gm-12">
-<label class="gm-3">Main Menu</label>
+<label class="gm-3"><?=__("Main Menu")?></label>
 <select name="gila_defaultmenu" class="gm-4">
 <?php
 $res = core\models\widget::getByWidget("menu");
@@ -61,7 +61,7 @@ foreach ($res as $k=>$wm) {
 </div>
 
 <br><div class="gm-12">
-<label class="gm-3">New users can register</label>
+<label class="gm-3"><?=__("New users can register")?></label>
 <select name="gila_user_register" class="gm-4">
 <?php
 $sel_urs = [true=>'Yes',false=>'No'];
@@ -74,7 +74,7 @@ foreach ($sel_urs as $k=>$value) {
 </div>
 
     <br><div class="gm-12">
-    <label class="gm-3">Theme</label>
+    <label class="gm-3"><?=__("Theme")?></label>
     <select name="gila_theme" value="<?=gila::config('theme')?>" class="gm-4">
     <?php
     $theme_list=scandir('themes/');
@@ -87,7 +87,7 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-        <label class="gm-3">Timezone</label>
+        <label class="gm-3"><?=__("Timezone")?></label>
         <select name="gila_timezone" value="<?=gila::config('timezone')?>" class="gm-4">
         <?php
         foreach (DateTimeZone::listIdentifiers() as $value) {
@@ -99,10 +99,10 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-        <label class="gm-3">Language</label>
+        <label class="gm-3"><?=__("Language")?></label>
         <select name="gila_language" value="<?=gila::config('language')?>" class="gm-4">
         <?php
-        $languages = ['en'=>'English','es'=>'Español','gr'=>'Ελληνικά'];
+        $languages = ['en'=>'English','es'=>'Español','gr'=>'Ελληνικά','et'=>'Eesti'];
         foreach ($languages as $k=>$value) {
             $sel = (gila::config('language')==$k?'selected':'');
             echo '<option value="'.$k."\" $sel>".ucwords($value).'</option>';
@@ -112,7 +112,7 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-    <label class="gm-3">Default Controller</label>
+    <label class="gm-3"><?=__("Default Controller")?></label>
     <select name="gila_dc" value="<?=gila::config('default-controller')?>" class="gm-4">
     <?php
     foreach (gila::$controller as $k=>$value) if($value[0] != '.') {
@@ -124,7 +124,7 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-    <label class="gm-3">Environment</label>
+    <label class="gm-3"><?=__("Environment")?></label>
     <select name="gila_env" class="gm-4">
     <?php
     $environments = ['pro'=>'Production','dev'=>'Development'];

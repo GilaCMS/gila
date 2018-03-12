@@ -40,6 +40,7 @@ class package {
                     $updatefile = 'src/'.$activate.'/update.php';
                     if(file_exists($updatefile)) include $updatefile;
                     gila::updateConfigFile();
+                    self::updateLoadFile();
                     usleep(300);
                     view::alert('success','Package activated');
                     echo 'ok';
@@ -73,6 +74,7 @@ class package {
                 }
             }
             gila::updateConfigFile();
+            self::updateLoadFile();
             usleep(100);
             $alert = gila::alert('success',"Package $key deactivated");
             exit;

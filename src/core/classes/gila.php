@@ -38,9 +38,12 @@ class gila {
     */
     static function addLang($path)
     {
-        $GLOBALS['lang'] = array_merge($GLOBALS['lang'],
-            json_decode(file_get_contents('src/'.$path.gila::config('language').'.json'),true)
-        );
+        $filepath = 'src/'.$path.gila::config('language').'.json';
+        if(file_exists($filepath)) {
+            $GLOBALS['lang'] = array_merge($GLOBALS['lang'],
+                json_decode(file_get_contents($filepath),true)
+            );
+        }
     }
 
     /**
@@ -204,7 +207,13 @@ class gila {
 
     static function url($url)
     {
-        if(gila::config('rewrite')) return $url;
+        if(gila::config('rewrite')) {
+            $var = explode('/',$url);
+            if(gila::config('default-controller') == $var[0]) {
+                return substr($url, strlen($var[0])+1);
+            }
+            return $url;
+        }
         $burl = explode('?',$url);
         $burl1 = explode('/',$burl[0]);
         if(isset($burl1[1])) $burl1[1]='&action='.$burl1[1]; else $burl1[1]='';
