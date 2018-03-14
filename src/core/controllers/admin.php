@@ -242,6 +242,19 @@ class admin extends controller
         view::includeFile('admin/footer.php');
     }
 
+    function menuAction()
+    {
+        if($_SERVER['REQUEST_METHOD'] == 'POST') if(gila::hasPrivilege('admin')) {
+            if(isset($_POST['menu'])) {
+                file_put_contents("log/menus/mainmenu.json",$_POST['menu']);
+                echo json_encode(["msg"=>"saved"]);
+                //echo $_POST['menu'];
+            }
+            exit;
+        }
+        view::renderAdmin('admin/menu_editor.php');
+    }
+
     function sendmailAction()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true)) {
