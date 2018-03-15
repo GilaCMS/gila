@@ -168,6 +168,15 @@ class view
         self::includeFile('404.phtml');
     }
 
+    static function menu ($menu='mainmenu')
+    {
+        $file = 'log/menus/'.$menu.'.json';
+        if(file_exists($file)) {
+            $menu_data = json_decode(file_get_contents($file),true);
+            include 'src/core/views/menu.tmp.php';
+        } else self::widget('menu');
+    }
+
     /**
     * Widget
     * @param widget (string) Name of the widget type

@@ -40,7 +40,7 @@
         </div>
         <!-- Navigation -->
         <nav class="inline-flex fullwidth g-navbar">
-            <span class="fullwidth" style="border-top: 4px solid <?=$theme_color?>"><?php view::widget('menu'); ?></span>
+            <span class="fullwidth" style="border-top: 4px solid <?=$theme_color?>"><?php view::menu(); ?></span>
       </nav>
     </div>
     <div class="wrapper">

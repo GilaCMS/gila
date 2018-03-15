@@ -53,7 +53,7 @@
         <!-- Navigation -->
         <div class="gl-9">
         <nav class="inline-flex g-navbar">
-            <span style=""><?php view::widget('menu'); ?></span>
+            <span style=""><?php view::menu(); ?></span>
         </nav>
         </div>
     </div>

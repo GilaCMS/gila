@@ -246,9 +246,9 @@ class admin extends controller
     {
         if($_SERVER['REQUEST_METHOD'] == 'POST') if(gila::hasPrivilege('admin')) {
             if(isset($_POST['menu'])) {
+                if(!file_exists('log/menus/')) mkdir('log/menus/', 0755,true);
                 file_put_contents("log/menus/mainmenu.json",$_POST['menu']);
                 echo json_encode(["msg"=>"saved"]);
-                //echo $_POST['menu'];
             }
             exit;
         }

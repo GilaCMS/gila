@@ -19,6 +19,7 @@ gila::$amenu = [
         ]],
     'admin'=>['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
         ['Users','admin/users','icon'=>'users','access'=>'admin'],
+        ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin'],
         ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
         ['Packages','admin/addons','icon'=>'dropbox','access'=>'admin'],
         ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],

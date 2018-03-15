@@ -76,21 +76,21 @@ $itemTypes = [
             "name"=>"New Link",
             "url"=>"#"
         ],
-        "template"=>"<input v-model=\"model.name\" class=\"g-input\" placeholder=\"Name\"><i class=\"fa fa-chevron-right\"></i> <input v-model=\"model.link\" class=\"g-input\" placeholder=\"URI\">"
+        "template"=>"<input v-model=\"model.name\" class=\"g-input\" placeholder=\"Name\"><i class=\"fa fa-chevron-right\"></i> <input v-model=\"model.url\" class=\"g-input\" placeholder=\"URI\">"
     ],
     "page"=>[
         "data"=>[
             "type"=>"page",
             "id"=>1
         ],
-        "template"=>"<select class=\"g-input\" value=\"id\">$pageOptions</select>"
+        "template"=>"<select class=\"g-input\" v-model=\"model.id\">$pageOptions</select>"
     ],
     "postcategory"=>[
         "data"=>[
             "type"=>"postcategory",
             "id"=>1
         ],
-        "template"=>"<select class=\"g-input\" value=\"id\">$postcategoryOptions</select>"
+        "template"=>"<select class=\"g-input\" v-model=\"model.id\">$postcategoryOptions</select>"
     ],
     "dir"=>[
         "data"=>[
@@ -109,9 +109,9 @@ $itemTypes = [
 
 <!-- item template -->
 <script type="text/x-template" id="item-template">
-  <li @dragstart="dragStart()" draggable="true" :id="uid">
-      <div>
-          <span v-show="model.type!='menu'" data-drop="before">::: </span>
+  <li :id="uid" data-index="index">
+      <div @dragstart="dragStart()" @dragend="$emit('remove')" draggable="true">
+          <span v-show="model.type!='menu'" >::: </span>
           <i v-if="isFolder&&open" class="fa fa-folder-open-o" @click="toggle"></i>
           <i v-if="isFolder&&open==false"  class="fa fa-folder-o" @click="toggle"></i>
           <?php
@@ -121,11 +121,10 @@ $itemTypes = [
               echo "</span>";
           }
           ?>
-          <!--i v-if="!isFolder&&open" class="fa fa-chevron-up" @click="toggle"></i-->
-          <!--i v-if="!isFolder&&open==false"  class="fa fa-chevron-down" @click="toggle"></i-->
-          <a v-show="model.type=='menu'" @click="saveMenu" class="g-btn success" style="float:right"><?=__("Save")?></a>
-          <i v-show="model.type!='menu'" @click="$emit('remove')" class="fa fa-trash i-btn" style="float:right"></i>
-          <span v-show="open||model.type=='menu'">
+
+          <a v-if="model.type=='menu'" @click="saveMenu" class="g-btn success" style="float:right"><?=__("Save")?></a>
+          <i v-if="model.type!='menu'" @click="$emit('remove')" class="fa fa-trash i-btn" style="float:right"></i>
+          <span v-show="(isFolder&&open)||model.type=='menu'">
               <?php
               foreach($itemTypes as $type=>$item) {
                   if(isset($item['parent'])) $vif = "v-if=\"model.type=='{$item['parent']}'\""; else $vif="";
@@ -134,7 +133,7 @@ $itemTypes = [
               ?>
           </span>
       </div>
-    <ul v-show="open||model.type=='menu'" @drop="drop()" @dragover="allowDrop()" data-drop="insert">
+    <ul v-show="(isFolder&&open)||model.type=='menu'" @drop="drop()" @dragover="allowDrop()" data-drop="insert">
       <item
         class="item" v-for="(model, index) in model.children"
         :key="index" :model="model"
@@ -170,6 +169,8 @@ foreach($itemTypes as $type=>$item) {
 }
 echo "var itemTypes = ".json_encode($itemTypesJSON)."\n";
 ?>
+
+item_drag = false
 
 // define the item component
 Vue.component('item', {
@@ -220,7 +221,7 @@ Vue.component('item', {
       this.open = !this.open
     },
     removeItem: function (index) {
-        this.model.children.splice(index,1)
+        if(item_drag == false) this.model.children.splice(index,1)
     },
     alertdata: function() {
         alert(JSON.stringify(this.model))
@@ -230,41 +231,64 @@ Vue.component('item', {
       this.model.children.push({type:type})
     },
     addCondition: function (_c) {
-      //if(typeof this.model.children==='undefined') Vue.set(this.model, 'children', [])
-      this.model.children.push({type:_c,children:[]})
+     this.model.children.push({type:_c,children:[]})
     },
-    dragStart: function () {
-        event.dataTransfer.setData("Text", event.target.id);
-        event.target.style.display='block'
+    dragStart: function (index) {
+        item_drag = true;
+        if(this.model.type=='menu') return false;
+        event.dataTransfer.setData("Text", event.target.parentNode.id);
+        event.dataTransfer.setData("Item", JSON.stringify(this.model));
     },
     allowDrop: function () {
         event.preventDefault();
     },
+    nodrop: function () {
+        event.preventDefault();
+    },
     drop: function () {
-        if(event.target.tagName=='LI'){
-            ul=event.target.getElementsByTagName('UL')[0]
-        }else if(event.target.tagName=='UL'){
+        if(item_drag == false) return;
+
+        if(event.target.tagName=='UL'){
             ul=event.target
-        }//else return;
+        } else return;
 
         var dd = event.target.getAttribute('data-drop');
         var data = event.dataTransfer.getData("Text");
+        let item = JSON.parse(event.dataTransfer.getData("Item"));
         var el = document.getElementById(data);
         event.preventDefault();
 
         if(dd=='insert') {
-            ul.appendChild(el);
-            document.getElementById(data).style.display='block';
+
+            y = event.pageY - ul.offsetTop
+            pageY = event.pageY
+            _model = this.model
+
+            if(item!='') setTimeout(function(){
+                chn = ul.childElementCount
+                chh = ul.offsetHeight/chn
+                ind = Math.floor(y/chh)
+                if(ind>chn) ind=chn-1
+                if(ind<0) ind=1
+                console.log(pageY+' '+chh+' '+ind)
+                if(chh>0) {
+                    _model.children.splice(ind,0,item);
+                    _model.children[ind].open=false
+                } else {
+                    _model.children.push(item);
+                }
+            }, 30)
+
+            event.dataTransfer.setData("Item",'')
+            item_drag = false
         }
-        if(dd=='before') {
-            var node2 = event.target.parentNode.parentNode
-            node2.parentNode.insertBefore(el,node2)
-        }
+
+        event.dataTransfer.clearData();
     }
   }
 })
 
-// boot up the demo
+
 var demo = new Vue({
   el: '#menu',
   data: {
@@ -272,9 +296,6 @@ var demo = new Vue({
   }
 })
 
-//function removeItem(x) {
-//    x.parentNode.parentNode.parentNode.removeChild(x.parentNode.parentNode)
-//}
 
 function uuidv4() {
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
