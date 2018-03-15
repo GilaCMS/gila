@@ -55,6 +55,7 @@ class admin extends controller
         global $db;
         if ($id = router::get('id',1)) {
             view::set('id',$id);
+            view::script('src/core/assets/admin/media.js');
             view::renderAdmin('admin/edit_page.phtml');
             return;
         }

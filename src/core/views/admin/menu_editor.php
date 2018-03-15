@@ -268,12 +268,11 @@ Vue.component('item', {
 
             if(item!='') setTimeout(function(){
                 chn = ul.childElementCount
-                chh = ul.offsetHeight/chn
-                ind = Math.floor(y/chh)
-                if(ind>chn) ind=chn-1
-                if(ind<0) ind=1
-                console.log(pageY+' '+chh+' '+ind)
-                if(chh>0) {
+                if(chn>0) {
+                    chh = ul.offsetHeight/chn
+                    ind = Math.floor(y/chh)
+                    if(ind>chn) ind=chn-1
+                    if(ind<0) ind=0
                     _model.children.splice(ind,0,item);
                     _model.children[ind].open=false
                 } else {

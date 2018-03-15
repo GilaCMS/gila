@@ -84,8 +84,9 @@ function open_gallery() {
 }
 function open_gallery_post() {
     g.post("admin/media","g_response=content&path=assets",function(gal){ //
-        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path_post',id:'media_dialog'})
+        g.dialog({title:"Assets",body:gal,buttons:'select_path_post',id:'media_dialog'})
     })
 }
+
 
 </script>
