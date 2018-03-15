@@ -107,8 +107,7 @@ class blog extends controller
     {
         global $db;
 
-        $res = $db->query("SELECT id,title,description,post,updated,user_id,slug FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
-        if ($res && $r = mysqli_fetch_array($res)) {
+        if ($r = post::getByIdSlug($id)) {
             $id = $r['id'];
             $user_id = $r['user_id'];
             view::set('author_id',$user_id);

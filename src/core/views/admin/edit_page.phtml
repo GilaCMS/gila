@@ -28,7 +28,8 @@ if ($id == 'new') {
     $p = (object)['slug'=>'','title'=>'','page'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
-    if (! $p = page::getObjById($id)) die("The page '$id' could not be found in db!");
+    if (! $p = page::getById($id)) die("The page '$id' could not be found in db!");
+    $p = (object)$p;
 }
 
 ?>

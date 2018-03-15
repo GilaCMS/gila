@@ -1,6 +1,7 @@
-
 <?php
+use core\models\post as post;
 global $db;
+
 $p_list = ['title', 'post', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $title = $_POST['p_title'];
@@ -42,12 +43,8 @@ if ($id == 'new') {
     $p = (object)['tags'=>'','img'=>'','slug'=>'','title'=>'','description'=>'','post'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
-    $ql="SELECT id,description,title,post,publish,slug,
-        (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
-        (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
-        FROM post WHERE id=$id";
-    $res = $db->query($ql);
-    if ($res) $p=mysqli_fetch_object($res); else die("The post '$id' could not be found in db!");
+    if (! $p = post::getById($id)) die("The post '$id' could not be found in db!");
+    $p = (object)$p;
 
     $ql="SELECT id,title FROM postcategory";
     $categories = $db->get($ql);

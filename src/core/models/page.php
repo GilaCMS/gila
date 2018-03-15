@@ -12,30 +12,17 @@ class page
     static function getById($id)
     {
         global $db;
-        $res = $db->query("SELECT id,title,page,updated,publish,slug FROM page WHERE publish=1 AND id=?;",[$id]);
-        if($res && $r = mysqli_fetch_array($res)) {
-            return $r;
-        }
+        $res = $db->query("SELECT id,title,page,updated,publish,slug FROM page WHERE id=?;",[$id]);
+        if($res) return $r = mysqli_fetch_array($res);
         return false;
     }
 
-    static function getObjById($id)
-    {
-        global $db;
-        $res = $db->query("SELECT id,title,page,updated,publish,slug FROM page WHERE publish=1 AND id=?;",[$id]);
-        if($res && $r = mysqli_fetch_object($res)) {
-            return $r;
-        }
-        return false;
-    }
 
     static function getByIdSlug($id)
     {
         global $db;
         $res = $db->query("SELECT id,title,page,updated,publish,slug FROM page WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
-        if($res && $r = mysqli_fetch_array($res)) {
-            return $r;
-        }
+        if($res) return mysqli_fetch_array($res);
         return false;
     }
 

@@ -9,6 +9,27 @@ class post
         //\blog::$page = (router::get('page',1))?:1;
     }
 
+    static function getById($id)
+    {
+        global $db;
+        $ql="SELECT id,description,title,post,publish,slug,
+            (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
+            (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
+            FROM post WHERE id=?";
+        $res = $db->query($ql,[$id]);
+        if($res) return $r = mysqli_fetch_array($res);
+        return false;
+    }
+
+
+    static function getByIdSlug($id)
+    {
+        global $db;
+        $res = $db->query("SELECT id,title,description,post,updated,user_id,slug FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
+        if($res) return mysqli_fetch_array($res);
+        return false;
+    }
+
     static function meta($id, $meta, $value = null)
     {
         global $db;
