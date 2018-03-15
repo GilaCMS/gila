@@ -53,13 +53,15 @@
 </style>
 
 <?php
+use core\models\page as page;
 
 global $db;
-$ql = "SELECT id,title,slug FROM page WHERE publish=1;";
-$pages = $db->get($ql);
+
+
+$pages = page::genPublished();
 $pageOptions = "";
 foreach ($pages as $p) {
-    $pageOptions .= "<option value=\"{$p[0]}\">{$p[1]}</option>";
+    $pageOptions .= "<option value=\"{$p['id']}\">{$p['title']}</option>";
 }
 
 $ql = "SELECT id,title FROM postcategory;";

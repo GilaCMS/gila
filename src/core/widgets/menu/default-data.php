@@ -1,4 +1,6 @@
 <?php
+use core\models\page as page;
+
 global $db;
 $widget_data=(object) array('menu' => []);
 
@@ -10,8 +12,6 @@ foreach ($pages as $p) {
     $widget_data->menu[] = ['url'=>"category/{$p[0]}/{$p[1]}",'title'=>$p[1]];
 }
 
-$ql = "SELECT id,title,slug FROM page WHERE publish=1;";
-$pages = $db->get($ql);
-foreach ($pages as $p) {
-    $widget_data->menu[] = ['url'=>$p[2],'title'=>$p[1]];
+foreach (page::genPublished() as $p) {
+    $widget_data->menu[] = ['url'=>$p['slug'],'title'=>$p['title']];
 }

@@ -2,6 +2,7 @@
 
 use core\models\widget;
 use core\models\user;
+use core\models\page;
 
 class admin extends controller
 {

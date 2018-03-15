@@ -1,6 +1,7 @@
 <?php
 
 use core\models\post as post;
+use core\models\page as page;
 use core\models\user as user;
 
 /**
@@ -145,8 +146,7 @@ class blog extends controller
             view::render('single-post.php');
         }
         else {
-            $res = $db->query("SELECT id,title,page,updated FROM page WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
-            if ($res && $r = mysqli_fetch_array($res)) {
+            if ($r = page::getByIdSlug($id)) {
                 view::set('title',$r['title']);
                 view::set('text',$r['page']);
                 view::render('page.php');

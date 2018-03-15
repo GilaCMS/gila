@@ -1,6 +1,6 @@
 <ul class="g-nav">
 <?php
-
+use core\models\page as page;
 
 $menu_items = $menu_data['children'];
 
@@ -27,11 +27,9 @@ function menu_item($mi){
     $name = isset($mi['name'])?$mi['name']:'';
 
     if($mi['type']=='page') {
-        $ql = "SELECT id,title,slug FROM page WHERE id=?;";
-        $res = $db->query($ql,$mi['id']);
-        while($r=mysqli_fetch_array($res)){
-            $url = $r[2];
-            $name = $r[1];
+        if($r=page::getById($mi['id'])){
+            $url = $r['slug'];
+            $name = $r['title'];
         }
     }
     if($mi['type']=='postcategory') {

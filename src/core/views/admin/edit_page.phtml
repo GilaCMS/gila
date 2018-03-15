@@ -1,6 +1,7 @@
-
 <?php
+use core\models\page as page;
 global $db;
+
 $p_list = ['title', 'page', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $title = $_POST['p_title'];
@@ -27,10 +28,7 @@ if ($id == 'new') {
     $p = (object)['slug'=>'','title'=>'','page'=>'','publish'=>1,'id'=>(isset($_POST['p_id'])?$_POST['p_id']:0)];
 }
 else {
-    $ql="SELECT id,title,page,publish,slug
-        FROM page WHERE id=$id";
-    $res = $db->query($ql);
-    if ($res) $p=mysqli_fetch_object($res); else die("The page '$id' could not be found in db!");
+    if (! $p = page::getObjById($id)) die("The page '$id' could not be found in db!");
 }
 
 ?>
