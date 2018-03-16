@@ -48,6 +48,19 @@ class view
         foreach (self::$alert as $a) echo '<div class="alert '.$a[0].'"><span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>'.$a[1].'</div>';
     }
 
+    /**
+    * Adds a css file inline
+    * @param $css Path to css file
+    */
+    static function cssInline($css)
+    {
+        echo '<style>'.file_get_contents($css).'</style>';
+    }
+
+    /**
+    * Adds a link tag of css file
+    * @param $css Path to css file
+    */
     static function css($css)
     {
         if(in_array($css,self::$css)) return;
@@ -55,14 +68,23 @@ class view
         echo '<link rel="stylesheet" href="'.$css.'">';
     }
 
+    /**
+    * Loads a css file asynchronously using a simple javascript function
+    * @param $css Path to css file
+    */
     static function cssAsync($css)
     {
         if(in_array($css,self::$css)) return;
         self::$css[]=$css;
-        self::script('lib/gila.min.js');
-        echo '<script>g.loadCSS("'.$css.'");</script>';
+        ?><script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script><?php
+        //self::script('lib/gila.min.js');
+        echo '<script>loadCSS("'.$css.'");</script>';
     }
 
+    /**
+    * Adds a script tag of javascript file
+    * @param $script Path to js file
+    */
     static function script($script)
     {
         if(in_array($script,self::$script)) return;
@@ -70,6 +92,10 @@ class view
         echo '<script src="'.$script.'"></script>';
     }
 
+    /**
+    * Adds a script tag of javascript file lo load asynchronously
+    * @param $script Path to js file
+    */
     static function scriptAsync($script)
     {
         if(in_array($script,self::$scriptAsync)) return;
@@ -78,6 +104,10 @@ class view
         echo "<script src='$script' async></script>";
     }
 
+    /**
+    * Returns the relative path of the selected theme's folder
+    * @return string
+    */
     static function getThemePath()
     {
         if(isset($_GET['g_preview_theme'])) return 'themes/'.$_GET['g_preview_theme'];
