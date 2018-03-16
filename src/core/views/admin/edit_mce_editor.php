@@ -17,12 +17,14 @@ if(file_exists($pages_path)) {
 <textarea name="<?=$textarea?>"><?=isset($p->page)?$p->page:$p->post?></textarea>
 
 <script src="lib/tinymce/tinymce.min.js"></script>
+<!--?=view::script("lib/gila.min.js")?-->
 
 <script>
 
 function get_text_to_save() {
     return g('[name=p_post]').all[0].innerHTML;
 }
+
 
 tinymce.init({
   selector: '[name=<?=$textarea?>]',

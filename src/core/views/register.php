@@ -11,11 +11,7 @@
 
     <title>Gila CMS - Login</title>
 
-    <!-- Bootstrap Core CSS -->
-    <!--link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet"-->
     <link href="lib/gila.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <?php event::fire('register.head')?>
 </head>

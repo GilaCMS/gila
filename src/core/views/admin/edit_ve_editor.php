@@ -1,9 +1,8 @@
-
-<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="lib/vue/vue-editor.css">
-<script src="lib/vue/vue.min.js"></script>
+<?=view::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
+<?=view::cssAsync('lib/vue/vue-editor.css')?>
+<?=view::script('lib/vue/vue.min.js')?>
 <!--script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.16/vue.js"></script-->
-<script src="lib/vue/vue-editor.js"></script>
+<?=view::script('lib/vue/vue-editor.js')?>
 
 <div id="editor"  class="gs-12" style="height:350px">
     <vue-editor text='<?=isset($p->page)?$p->page:$p->post?>'></vue-editor>

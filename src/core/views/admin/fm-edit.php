@@ -1,4 +1,4 @@
-<link href="lib/CodeMirror/codemirror.css" rel="stylesheet">
+<?=view::cssAsync('lib/CodeMirror/codemirror.css')?>
 
 <h3><?=$c->filepath?></h3>
 <div>

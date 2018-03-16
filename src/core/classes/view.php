@@ -6,6 +6,8 @@ class view
     private static $stylesheet = array();
     private static $script = array();
     private static $scriptAsync = array();
+    private static $css = array();
+    private static $cssAsync = array();
     private static $meta = array();
     private static $alert = array();
 
@@ -46,17 +48,34 @@ class view
         foreach (self::$alert as $a) echo '<div class="alert '.$a[0].'"><span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>'.$a[1].'</div>';
     }
 
+    static function css($css)
+    {
+        if(in_array($css,self::$css)) return;
+        self::$css[]=$css;
+        echo '<link rel="stylesheet" href="'.$css.'">';
+    }
+
+    static function cssAsync($css)
+    {
+        if(in_array($css,self::$css)) return;
+        self::$css[]=$css;
+        self::script('lib/gila.min.js');
+        echo '<script>g.loadCSS("'.$css.'");</script>';
+    }
+
     static function script($script)
     {
         if(in_array($script,self::$script)) return;
         self::$script[]=$script;
-        echo "<script src='$script'></script>";
+        echo '<script src="'.$script.'"></script>';
     }
 
     static function scriptAsync($script)
     {
         if(in_array($script,self::$scriptAsync)) return;
+        if(in_array($script,self::$script)) return;
         self::$scriptAsync[]=$script;
+        echo "<script src='$script' async></script>";
     }
 
     static function getThemePath()

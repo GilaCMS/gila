@@ -1,4 +1,4 @@
-<link href="lib/CodeMirror/codemirror.css" rel="stylesheet">
+<?=view::cssAsync('lib/CodeMirror/codemirror.css')?>
 <script src="lib/CodeMirror/codemirror.js"></script>
 <script src="lib/CodeMirror/javascript.js"></script>
 <script src="lib/CodeMirror/css.js"></script>
@@ -43,7 +43,7 @@ requiredRes = new Array()
 var myCodeMirror = new Array();
 var saveFilePath;
 
-g.require(['lib/jquery/jquery.min.js'], function(){
+g.require(['lib/jquery/jquery.3.3.1.js'], function(){
     refresh_fm_table('');
 
     $(document).on('click','#fm_tabs a', function(){

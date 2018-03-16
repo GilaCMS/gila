@@ -13,13 +13,9 @@
 
     <title>Gila CMS - Administration</title>
 
-    <!-- Bootstrap Core CSS -->
-    <!--link href="lib/bootstrap/bootstrap.min.css" rel="stylesheet"-->
-    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" async>
-
-    <!-- Custom CSS -->
-    <link href="src/core/assets/simple-sidebar.css" rel="stylesheet" async>
-    <link href="lib/gila.min.css" rel="stylesheet">
+    <?=view::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
+    <?=view::cssAsync('src/core/assets/simple-sidebar.css')?>
+    <?=view::cssAsync('lib/gila.min.css')?>
     <style>
     #sidebar-wrapper .g-nav li{ color:#fff; }
     #sidebar-wrapper .g-nav li a{ color:#aaa; }
@@ -35,8 +31,8 @@
     .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: 6px}
     </style>
 
-    <script src="lib/jquery/jquery-3.3.1.min.js"></script>
-    <script src="lib/gila.min.js"></script>
+    <?=view::script("lib/jquery/jquery-3.3.1.min.js")?>
+    <?=view::script("lib/gila.min.js")?>
 
 
 </head>

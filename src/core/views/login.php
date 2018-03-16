@@ -10,10 +10,7 @@
     <title>Gila CMS - Login</title>
 
     <link href="lib/gila.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
 </head>
 
 <body>
