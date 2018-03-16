@@ -27,14 +27,14 @@ function menu_item($mi){
     $name = isset($mi['name'])?$mi['name']:'';
 
     if($mi['type']=='page') {
-        if($r=page::getById($mi['id'])){
+        if($r=page::getById(@$mi['id'])){
             $url = $r['slug'];
             $name = $r['title'];
         }
     }
     if($mi['type']=='postcategory') {
         $ql = "SELECT id,title FROM postcategory WHERE id=?;";
-        $res = $db->query($ql,$mi['id']);
+        $res = $db->query($ql,@$mi['id']);
         while($r=mysqli_fetch_array($res)){
             $url = "category/".$r[0];
             $name = $r[1];

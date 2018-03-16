@@ -71,7 +71,7 @@ view::alerts();
     </div>
 </div>
 
-
+<?=view::script('src/core/assets/admin/media.js')?>
 <script>
 function addon_activate(p){ g.ajax('admin/addons?g_response=content&activate='+p,function(x){
     if(x=='ok')

@@ -43,20 +43,12 @@ tinymce.init({
     input_filename = cb;
     open_gallery_post();
   },
-  /*setup: function(editor) {
-    editor.addMenuItem('myitem', {
-      text: 'My menu item',
-      context: 'table',
-      onclick: function() {
-        editor.insertContent('&nbsp;<table><tr><th>Ena<th>Dio</tr><tr><td><td>000</table>&nbsp;');
-      }
-    });
-  },*/
+
  });
 
 if(typeof requiredRes=='undefined') requiredRes = {}
 
-g.require('lib/jquery/jquery-2.2.4.min.js',function(){
+g.require('lib/jquery/jquery-3.3.1.min.js',function(){
     g.loadCSS('lib/select2/select2.min.css');
     g.require(['lib/select2/select2.min.js'],function(){
         $('.select2').select2();

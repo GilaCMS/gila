@@ -3,9 +3,9 @@
 
 <div class='pnk-table' pnk-src='src/<?=$table?>' id='tcontent'></div>
 
-<script src='lib\jquery\jquery-2.2.4.min.js'></script>
-<script src='lib\pnk\pnk-1.3.js?v=4'></script>
-<script src='lib\select2\select2.min.js'></script>
+<?=view::script('lib\jquery\jquery-3.3.1.min.js')?>
+<?=view::script('lib\pnk\pnk-1.3.js')?>
+<?=view::script('lib\select2\select2.min.js')?>
 
 <script src="lib/CodeMirror/codemirror.js"></script>
 <script src="lib/CodeMirror/javascript.js"></script>

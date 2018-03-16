@@ -40,7 +40,6 @@ class admin extends controller
         global $db;
         if ($id = router::get('id',1)) {
             view::set('id',$id);
-            view::script('src/core/assets/admin/media.js');
             view::renderAdmin('admin/edit_post.phtml');
             return;
         }
@@ -55,7 +54,6 @@ class admin extends controller
         global $db;
         if ($id = router::get('id',1)) {
             view::set('id',$id);
-            view::script('src/core/assets/admin/media.js');
             view::renderAdmin('admin/edit_page.phtml');
             return;
         }
@@ -108,7 +106,6 @@ class admin extends controller
     function addonsAction ()
     {
         new package();
-        view::script('src/core/assets/admin/media.js');
         $tab = router::get('tab',1);
         $packages = [];
 
@@ -157,13 +154,11 @@ class admin extends controller
 
     function themesAction ()
     {
-        view::script('src/core/assets/admin/media.js');
 		view::renderAdmin('admin/themes.php');
     }
 
     function settingsAction ()
     {
-        view::script('src/core/assets/admin/media.js');
         view::renderAdmin('admin/settings.php');
     }
 
@@ -196,7 +191,6 @@ class admin extends controller
 
     function mediaAction()
     {
-        view::script('src/core/assets/admin/media.js');
         view::renderAdmin('admin/media.php');
     }
 

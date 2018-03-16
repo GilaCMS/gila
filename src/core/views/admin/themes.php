@@ -2,6 +2,8 @@
 $dir = "themes/";
 $packages = scandir($dir);
 
+view::script('src/core/assets/admin/media.js');
+
 $table = '<br>';
 $pn = 0; $alert = '';
 

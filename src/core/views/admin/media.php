@@ -5,6 +5,7 @@ $disabled = ($path=='assets')?'disabled':'';
 $path_array = explode('/',$path);
 array_splice($path_array,count($path_array)-1);
 $uppath=implode('/',$path_array);
+view::script('src/core/assets/admin/media.js');
 
 ?>
 

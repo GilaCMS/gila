@@ -4,7 +4,6 @@
 <title><?=@$g->page_title?></title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <?php
     foreach(view::$meta as $key=>$value) echo '<meta name="'.$key.'" content="'.$value.'">';
     echo '<title>'.gila::config('base').'</title>';

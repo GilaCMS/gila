@@ -33,7 +33,7 @@ class view
 
     static function scripts()
     {
-        foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
+        //foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
     }
 
     static function alert($type,$msg)
@@ -50,6 +50,7 @@ class view
     {
         if(in_array($script,self::$script)) return;
         self::$script[]=$script;
+        echo "<script src='$script'></script>";
     }
 
     static function scriptAsync($script)

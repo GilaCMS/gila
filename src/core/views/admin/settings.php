@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::updateConfigFile();
     view::alert('success','Changes have been saved successfully!');
 }
+view::script('src/core/assets/admin/media.js');
 ?>
 
 <div class="gm-12">

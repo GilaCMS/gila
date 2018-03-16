@@ -35,7 +35,7 @@
     .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: 6px}
     </style>
 
-    <script src="lib/jquery/jquery-2.2.4.min.js"></script>
+    <script src="lib/jquery/jquery-3.3.1.min.js"></script>
     <script src="lib/gila.min.js"></script>
 
 

@@ -1,8 +1,9 @@
 <link rel="stylesheet" type="text/css" href="lib/pnk/pnk.css?">
 <div class='pnk-table' pnk-src='src/core/tables/post' id='tpost'></div>
 
-<script src='lib\jquery\jquery-2.2.4.min.js'></script>
-<script src='lib\pnk\pnk-1.3.js?v=4'></script>
+<?=view::script('lib\jquery\jquery-3.3.1.min.js')?>
+<?=view::script('lib\pnk\pnk-1.3.js')?>
+<?=view::script('lib\select2\select2.min.js')?>
 <script>
 PNK.tools.new_post = {title:'New',fn:function(){
     window.location.href='admin/posts/new'
