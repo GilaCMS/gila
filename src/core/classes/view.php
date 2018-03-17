@@ -17,6 +17,9 @@ class view
         @$g->$param = $value;
 	}
 
+    /**
+    * Set a meta value
+    */
     static function meta($meta,$value)
     {
         self::$meta[$meta]=$value;
@@ -38,6 +41,9 @@ class view
         //foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
     }
 
+    /**
+    * Set an alert message
+    */
     static function alert($type,$msg)
     {
         self::$alert[]=[$type,$msg];

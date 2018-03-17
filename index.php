@@ -1,7 +1,7 @@
 <?php
 /*!
  * Gila CMS
- * Copyright 2017 Vasileios Zoumpourlis
+ * Copyright 2017-18 Vasileios Zoumpourlis
  * Licensed under BSD 3-Clause License
  */
 
@@ -12,16 +12,6 @@ if(!isset($_GET['url'])) $_GET['url'] = substr($_SERVER['REQUEST_URI'],1);
 
 if (file_exists(__DIR__.'/config.php')) {
 	require_once 'config.php';
-	if ($GLOBALS['config']['env'] == 'dev') {
-			error_reporting(E_ALL);
-			ini_set('display_errors', '1');
-			ini_set('display_startup_errors', '1');
-	}
-	else {
-			error_reporting(E_ERROR);
-			ini_set('display_errors', 0);
-			ini_set('display_startup_errors', 0);
-	}
 }
 else {
 	echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=install\" />";
@@ -44,16 +34,29 @@ spl_autoload_register(function ($class) {
 	} else trigger_error("File $class could not be found with autoload.");
 });
 
-
-
 $db = new db(gila::config('db'));
 
-new gila();
-
-if(!file_exists('log/load.php')) {
-	package::updateLoadFile();
+if ($GLOBALS['config']['env'] == 'dev') {
+	error_reporting(E_ALL);
+	ini_set('display_errors', '1');
+	ini_set('display_startup_errors', '1');
+	include "src/core/load.php";
+	foreach ($GLOBALS['config']['packages'] as $package) {
+		if(file_exists("src/$package/load.php")) include "src/$package/load.php";
+	}
 }
-include 'log/load.php';
+else {
+	error_reporting(E_ERROR);
+	ini_set('display_errors', 0);
+	ini_set('display_startup_errors', 0);
+	if(!file_exists('log/load.php')) {
+		package::updateLoadFile();
+	}
+	include 'log/load.php';
+}
+
+
+new gila();
 
 
 $theme = $GLOBALS['config']['theme'];

@@ -1,8 +1,10 @@
 
-# 1 WEEK - possible to be changed, unlikely
-<FilesMatch "\.(css|js|jpg|jpeg|png|gif|swf)$">
-#Header set Cache-Control "max-age=604800, public"
-</FilesMatch>
+# 3 MONTHS - unlikely to be changed
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|swf)$">
+  Header set Cache-Control "max-age=2592000, public"
+  </FilesMatch>
+</IfModule>
 
 <IfModule mod_gzip.c>
   mod_gzip_on       Yes
