@@ -30,21 +30,30 @@ class image {
         }
 
         $tmp=imagecreatetruecolor($newwidth,$newheight);
+        $img_src = self::create($src,$image[2]);
 
-        switch($image[2]) {
-            case 1:
-            $img_src = imageCreateFromGIF($src);
-            break;
-            case 2:
-            $img_src = imageCreateFromJPEG($src);
-            break;
-            case 3:
-            $img_src = imageCreateFromPNG($src);
-            break;
-        }
         imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
-        //imagejpeg($tmp,$file,80);
-        switch($image[2]) {
+        self::save($tmp,$file,$image[2]);
+        imagedestroy($img_src);
+        imagedestroy($tmp);
+        return true;
+    }
+
+    static function create ($src, $type = 2)
+    {
+        if($type == 1)
+            return imageCreateFromGIF($src);
+        if($type == 2)
+            return imageCreateFromJPEG($src);
+        if($type == 3)
+            return imageCreateFromPNG($src);
+
+        return imageCreateFromJPEG($src);
+    }
+
+    static function save ($tmp,$file,$type = 2)
+    {
+        switch($type) {
         case 1:
             imagegif($tmp,$file);
             break;
@@ -56,8 +65,57 @@ class image {
             imagepng($tmp,$file);
             break;
         }
-        imagedestroy($img_src);
+
+    }
+
+    /**
+     * Creates a stacked image from many files
+     * @param $src_array (Array string) Paths to the original images
+     * @param $file (string) Path to the stacked thumbnail to create
+     * @param $max_width (int) Maximun width in pixels for the new images
+     * @param $max_height (int) Maximun height in pixels for the new images
+     * @return Array
+     */
+    static function make_stack ($src_array,$file,$max_width,$max_height)
+    {
+        $response = [];
+        $dst_y = 0; $total_y = 0;
+
+        foreach($src_array as $key=>$src) if($image = @getimagesize($src)) {
+            list($src_width,$src_height)=$image;
+            $newwidth=$max_width;
+            $newheight=$max_height;
+
+            if($src_width>$max_width) {
+                $newheight = ($src_height/$src_width)*$newwidth;
+            }else if($src_height>$max_height){
+                $newwidth = ($src_width/$src_height)*$newheight;
+            }
+
+            $total_y += $newheight;
+            $response[$key]=[
+                'src_width' => $src_width,
+                'src_height' => $src_height,
+                'width' => $newwidth,
+                'height' => $newheight,
+                'type' => $image[2]
+            ];
+        } else $response[$key] = false;
+
+        $tmp = imagecreatetruecolor($max_width,$total_y);
+
+        foreach($response as $key=>$img) if($img){
+            $src = $src_array[$key];
+            $img_src = self::create($src, $img['type']);
+            imagecopyresampled($tmp,$img_src,0,$dst_y,0,0,$img['width'],$img['height'],$img['src_width'],$img['src_height']);
+            $dst_y += $img['height'];
+            $response[$key]['top'] = $dst_y;
+            imagedestroy($img_src);
+        }
+
+        self::save($tmp,$file);
         imagedestroy($tmp);
-        return true;
+        file_put_contents($file.'.json', json_encode($response));
+        return $response;
     }
 }

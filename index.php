@@ -56,7 +56,7 @@ else {
 }
 
 
-new gila();
+$g = new gila();
 
 
 $theme = $GLOBALS['config']['theme'];

@@ -316,6 +316,23 @@ class view
         return $file;
     }
 
+    static function thumb_stack ($src_array, $file, $max=180)
+    {
+        if($src==null) return false;
+        $max_width = $max;
+        $max_height = $max;
+        if($src=='') return false;
+        if (!file_exists($file) || !file_exists($file.'json')) {
+            return image::make_stack($src,$file,$max_width,$max_height);
+        }
+        $stack = json_decode(file_get_contents($file.'json'));
+        foreach($src_array as $key=>$value) {
+            if($stack[$key]['src'] != $value)
+                return image::make_stack($src,$file,$max_width,$max_height);
+        }
+        return $stack;
+    }
+
     static function thumb_xs ($src,$id=null)
     {
         return view::thumb($src,'xs_',80);
