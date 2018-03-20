@@ -1,4 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?=gila::config('language')?>">
 <?php view::head()?>
 <div>

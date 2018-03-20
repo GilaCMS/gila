@@ -19,9 +19,9 @@
             </a>
             <?=$r['description']?>
         </div>
-    </div><!--hr-->
+    </div>
     <?php } ?>
-    <!-- Pagination -->
+
     <ul class="g-nav pagination">
         <?php
         $totalpages = blog::totalpages();

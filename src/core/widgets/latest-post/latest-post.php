@@ -5,13 +5,15 @@ if(!@class_exists('blog')) {
 	new blog();
 }
 
+$stacked_file = 'tmp/stacked-wdgt'.$widget_id.'.png';
 $posts = [];
+$img = [];
 
 foreach (blog::posts(['posts'=>$widget_data->n_post]) as $r ) {
 	$posts[] = $r;
-	$img[]=$r['img'];//view::thumb_xs($r['img']);
+	$img[]=$r['img'];
 }
-$stacked = view::thumb_stack($img,'tmp/stacked.png',80,80);
+$stacked = view::thumb_stack($img, $stacked_file,80,80);
 
 foreach ($posts as $key=>$r ) {
 	echo "<li>";
@@ -22,7 +24,7 @@ foreach ($posts as $key=>$r ) {
 		} else echo "<div style='width:80px;height:40px;float:left;margin-right:6px'></div> ";
 	} else {
 		$i = $stacked[$key];
-		echo "<div style='background:url(tmp/stacked.png) 0 -{$i['top']}px; width:{$i['width']}px;height:{$i['height']}px;float:left;margin-right:6px'></div> ";
+		echo "<div style='background:url($stacked_file) 0 -{$i['top']}px; width:{$i['width']}px;height:{$i['height']}px;float:left;margin-right:6px'></div> ";
 	}
 	echo "{$r['title']}</a></li>";
 }

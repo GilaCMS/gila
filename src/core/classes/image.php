@@ -94,6 +94,7 @@ class image {
 
             $total_y += $newheight;
             $response[$key]=[
+                'src' => $src,
                 'src_width' => $src_width,
                 'src_height' => $src_height,
                 'width' => $newwidth,

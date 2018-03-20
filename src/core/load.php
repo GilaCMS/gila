@@ -33,6 +33,7 @@ gila::widgets([
   'menu'=>'core/widgets/menu',
   'text'=>'core/widgets/text',
   'latest-post'=>'core/widgets/latest-post',
+  'category-post'=>'core/widgets/category-post',
   'social-icons'=>'core/widgets/social-icons',
   'tag'=>'core/widgets/tag'
 ]);

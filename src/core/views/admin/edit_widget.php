@@ -48,6 +48,14 @@ if(isset($options)) foreach($options as $key=>$op) {
                 echo '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
             }
             echo '</select>';
+        } else if($op['type']=='postcategory') {
+            echo '<select class="g-input gm-8" name="option['.$key.']">';
+            $res=$db->get('SELECT id,title FROM postcategory;');
+            echo '<option value=""'.(''==$ov?' selected':'').'>'.'[All]'.'</option>';
+            foreach($res as $r) {
+                echo '<option value="'.$r[0].'"'.($r[0]==$ov?' selected':'').'>'.$r[1].'</option>';
+            }
+            echo '</select>';
         } else if($op['type']=='textarea') {
             echo '<textarea class="gm-8 codemirror-js" name="option['.$key.']">'.$ov.'</textarea>';
         }

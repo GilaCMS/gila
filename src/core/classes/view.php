@@ -282,6 +282,7 @@ class view
         global $db,$widget_data;
         $widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
         if ($widgets) foreach ($widgets as $widget) {
+            $widget_id = json_decode($widget['id']);
             $widget_data = json_decode($widget['data']);
 
             if($div){
@@ -318,17 +319,16 @@ class view
 
     static function thumb_stack ($src_array, $file, $max=180)
     {
-        if($src==null) return false;
         $max_width = $max;
         $max_height = $max;
-        if($src=='') return false;
-        if (!file_exists($file) || !file_exists($file.'json')) {
-            return image::make_stack($src,$file,$max_width,$max_height);
+        if (!file_exists($file) || !file_exists($file.'.json')) {
+            return image::make_stack($src_array, $file, $max_width, $max_height);
         }
-        $stack = json_decode(file_get_contents($file.'json'));
+        $stack = json_decode(file_get_contents($file.'.json'),true);
         foreach($src_array as $key=>$value) {
-            if($stack[$key]['src'] != $value)
-                return image::make_stack($src,$file,$max_width,$max_height);
+            if($stack[$key]['src'] != $value) {
+                return image::make_stack($src_array, $file, $max_width, $max_height);
+            }
         }
         return $stack;
     }
