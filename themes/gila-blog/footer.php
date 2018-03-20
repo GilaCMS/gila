@@ -10,7 +10,7 @@
     </p>
   </div>
 </footer>
-
+<script src="src/core/assets/lazyImgLoad.js" async></script>
 
 </body>
 

@@ -8,7 +8,7 @@
             if($img=view::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
 		       $title_gl='gs-9';
 		       echo '<div class="gs-3">';
-               echo '<img src="'.$img.'" style="width:100%; height:auto">';
+               echo '<img class="lazy" data-src="'.$img.'" style="width:100%; height:auto">';
 		       echo '</div>';
             } else $title_gl='gm-12';
             ?>
@@ -37,7 +37,7 @@
     <div class="gm-3 sidebar">
       <form method="get" class="inline-flex" action="<?=gila::make_url('blog')?>">
         <input name='search' class="g-input fullwidth" value="<?=(isset($_GET['search'])?$_GET['search']:'')?>">
-        <button class="g-btn g-group-item" onclick='submit'>Search</button>
+        <button class="g-btn g-group-item" onclick='submit'><?=__("Search")?></button>
     </form>
       <?php view::widget_area('sidebar'); ?>
     </div>

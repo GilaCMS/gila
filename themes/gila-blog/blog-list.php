@@ -8,7 +8,7 @@
             if($img=view::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
 		       $title_gl='gs-9';
 		       echo '<div class="gs-3">';
-               echo '<img src="'.$img.'" style="width:100%; height:auto">';
+               echo '<img class="lazy" data-src="'.$img.'" style="width:100%; height:auto">';
 		       echo '</div>';
             } else $title_gl='gm-12';
             ?>
