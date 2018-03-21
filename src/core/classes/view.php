@@ -91,12 +91,13 @@ class view
     * Adds a script tag of javascript file
     * @param $script Path to js file
     */
-    static function script($script)
+    static function script($script, $prop = '')
     {
         if(in_array($script,self::$script)) return;
         self::$script[]=$script;
-        if(gila::config('use_cdn')=='1')  @$script = self::$cdn_paths[$script];
-        echo '<script src="'.$script.'"></script>';
+        if(gila::config('use_cdn')=='1' && isset(self::$cdn_paths[$script]))
+            $script = self::$cdn_paths[$script];
+        echo '<script src="'.$script.' '.$prop.'"></script>';
     }
 
     /**
@@ -106,10 +107,8 @@ class view
     static function scriptAsync($script)
     {
         if(in_array($script,self::$scriptAsync)) return;
-        if(in_array($script,self::$script)) return;
         self::$scriptAsync[]=$script;
-        if(gila::config('use_cdn')=='1') @$script = self::$cdn_paths[$script];
-        echo "<script src='$script' async></script>";
+        self::script($script, 'async');
     }
 
     /**
@@ -192,18 +191,12 @@ class view
             @$c->$key = $value;
         }
 
-        $tpath = self::getThemePath().'/'.$file;
-        if(file_exists($tpath)) {
-            include $tpath;
+        if($file = self::getViewFile($file, $package)) {
+            include $file;
             return;
         }
-        $spath = 'src/'.$package.'/views/'.$file;
-        if(file_exists($spath)) {
-            include $spath;
-            return;
-        }
-        self::includeFile('404.php');
 
+        self::includeFile('404.php');
 	}
 
     static function includeFile($file,$package='core')
@@ -213,26 +206,34 @@ class view
             $$key = $value;
         }
 
-        $tpath = self::getThemePath().'/'.$file;
-        if(file_exists($tpath)) {
-            include $tpath;
+        if($file = self::getViewFile($file, $package)) {
+            include $file;
             return;
         }
-        $spath = 'src/'.$package.'/views/'.$file;
-        if(file_exists($spath)) {
-            include $spath;
-            return;
-        }
-        self::includeFile('404.phtml');
+
+        return false;
+        //self::includeFile('404.phtml');
     }
 
-    static function menu ($menu='mainmenu')
+    static function getViewFile ($file, $package = 'core') {
+        $tpath = self::getThemePath().'/'.$file;
+        if(file_exists($tpath))
+            return $tpath;
+        $spath = 'src/'.$package.'/views/'.$file;
+        if(file_exists($spath))
+            return $spath;
+        return false;
+    }
+
+    static function menu ($menu='mainmenu', $tpl='tpl/menu.php')
     {
         $file = 'log/menus/'.$menu.'.json';
         if(file_exists($file)) {
             $menu_data = json_decode(file_get_contents($file),true);
-            include 'src/core/views/menu.tmp.php';
-        } else self::widget('menu');
+        } else {
+            $menu_data = core\models\menu::defaultData();
+        }
+        include self::getViewFile($tpl);
     }
 
     /**
