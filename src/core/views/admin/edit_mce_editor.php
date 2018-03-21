@@ -16,8 +16,7 @@ if(file_exists($pages_path)) {
 
 <textarea name="<?=$textarea?>"><?=isset($p->page)?$p->page:$p->post?></textarea>
 
-<script src="lib/tinymce/tinymce.min.js"></script>
-<!--?=view::script("lib/gila.min.js")?-->
+<?=view::script("lib/tinymce/tinymce.min.js")?>
 
 <script>
 
@@ -30,7 +29,7 @@ tinymce.init({
   selector: '[name=<?=$textarea?>]',
   //mode: 'none',
   height: 300,
-  //theme: 'modern',
+  theme: 'modern',
   plugins: [
     'lists link image charmap hr anchor pagebreak',
     'searchreplace wordcount visualchars code',
