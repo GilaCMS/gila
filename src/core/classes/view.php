@@ -10,6 +10,7 @@ class view
     private static $cssAsync = array();
     private static $meta = array();
     private static $alert = array();
+    public static $cdn_paths = array();
 
 	static function set($param,$value) {
         global $g;
@@ -83,7 +84,6 @@ class view
         if(in_array($css,self::$css)) return;
         self::$css[]=$css;
         ?><script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script><?php
-        //self::script('lib/gila.min.js');
         echo '<script>loadCSS("'.$css.'");</script>';
     }
 
@@ -95,6 +95,7 @@ class view
     {
         if(in_array($script,self::$script)) return;
         self::$script[]=$script;
+        if(gila::config('use_cdn')=='1')  @$script = self::$cdn_paths[$script];
         echo '<script src="'.$script.'"></script>';
     }
 
@@ -107,6 +108,7 @@ class view
         if(in_array($script,self::$scriptAsync)) return;
         if(in_array($script,self::$script)) return;
         self::$scriptAsync[]=$script;
+        if(gila::config('use_cdn')=='1') @$script = self::$cdn_paths[$script];
         echo "<script src='$script' async></script>";
     }
 

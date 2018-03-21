@@ -30,12 +30,12 @@ gila::$amenu = [
 ];
 
 gila::widgets([
-  'menu'=>'core/widgets/menu',
   'text'=>'core/widgets/text',
   'latest-post'=>'core/widgets/latest-post',
   'category-post'=>'core/widgets/category-post',
   'social-icons'=>'core/widgets/social-icons',
-  'tag'=>'core/widgets/tag'
+  'tag'=>'core/widgets/tag',
+  //'contact-form'=>'core/widgets/contact-form'
 ]);
 gila::$widget_area=[];
 
@@ -52,3 +52,6 @@ gila::content('user','core/tables/user.php');
 gila::content('page','core/tables/page.php');
 gila::content('widget','core/tables/widget.php');
 gila::addLang('core/lang/');
+
+if(gila::config('use_cdn')==1)
+    include_once 'src/core/assets/cdn_paths.php';
