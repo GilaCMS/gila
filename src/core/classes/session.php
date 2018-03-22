@@ -8,7 +8,7 @@ class session
     {
         global $db;
         //ini_set("session.save_handler", "files");
-        ini_set("session.save_path", __DIR__."/../../../log/sessions");
+        //ini_set("session.save_path", __DIR__."/../../../log/sessions");
         //ini_set('session.gc_maxlifetime', 24*3600);
         session_set_cookie_params(24*3600);
         try {

@@ -19,7 +19,11 @@ h1,h2,h3,.widget-title,.header{font-family:Arial,sans-serif;}
 .header{margin-bottom: 20px;   background-color: #262626;
 <?php
 $bgimg = gila::option('theme.header-image');
-if($bgimg) echo "background: url($bgimg);"
+if($bgimg) {
+    $srcset = view::thumb_srcset($bgimg);
+    echo "background: url({$srcset[0]});";
+    echo "background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);";
+}
 ?>
 background-size: cover;
 background-position-y: <?=gila::option('theme.header-position','center')?>;

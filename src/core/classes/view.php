@@ -210,7 +210,6 @@ class view
             include $file;
             return;
         }
-
         return false;
         //self::includeFile('404.phtml');
     }
@@ -355,6 +354,20 @@ class view
     static function thumb_xl ($src,$id=null)
     {
         return view::thumb($src,'xl_',1200);
+    }
+
+    /**
+    * $srcset = view::thumb_srcset($src);
+    * @example background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);
+    * @example <img srcset="{$srcset[0]}, {$srcset[0]} 2x" src="{$srcset[0]}"
+    */
+    static function thumb_srcset ($src, $sizes = [1200,320])
+    {
+        $r = [];
+        foreach($sizes as $w) {
+            $r[] = view::thumb($src, $w.'_', $w);
+        }
+        return $r;
     }
 
 }

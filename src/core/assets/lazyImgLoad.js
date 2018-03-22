@@ -1,5 +1,6 @@
 lazyImgLoad();
 window.addEventListener('scroll', lazyImgLoad);
+// window.addEventListener('touchmove', lazyImgLoad); //touch devices
 
 function lazyImgLoad() {
     imgs = document.getElementsByClassName('lazy');
