@@ -44,6 +44,7 @@ if ($GLOBALS['config']['env'] == 'dev') {
 	foreach ($GLOBALS['config']['packages'] as $package) {
 		if(file_exists("src/$package/load.php")) include "src/$package/load.php";
 	}
+	if(file_exists('log/load.php')) unlink('log/load.php');
 }
 else {
 	error_reporting(E_ERROR);

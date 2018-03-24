@@ -39,6 +39,11 @@ class image {
         return true;
     }
 
+    /**
+     * Creates an image depends the type.
+     * @param $src (string) Path to the original image
+     * @param $type (int) Original image type
+     */
     static function create ($src, $type = 2)
     {
         if($type == 1)
@@ -51,6 +56,12 @@ class image {
         return imageCreateFromJPEG($src);
     }
 
+    /**
+     * Saves an image.
+     * @param $src (string) Path to the original image
+     * @param $file (string) Path to the target image
+     * @param $type (int) Original image type
+     */
     static function save ($tmp,$file,$type = 2)
     {
         switch($type) {
@@ -58,8 +69,8 @@ class image {
             imagegif($tmp,$file);
             break;
         case 2:
-            imageinterlace($tmp, 1); //convert to progressive ?
-            imagejpeg($tmp,$file,80);
+            imageinterlace($tmp, 1);
+            imagejpeg($tmp,$file);
             break;
         case 3:
             imagepng($tmp,$file);

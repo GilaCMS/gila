@@ -42,6 +42,8 @@ footer{background:#464a49;margin-top:10px;color:white}
   background: #060608;
 }
 .widget-social-icons li a i:hover:before{background: <?=$theme_color?>;}
+.g-navbar li ul li a{color:inherit}
+.g-nav li ul{border-width:0; background: #181818; margin-top:-2px}
 </style>
 
 <body>
@@ -55,7 +57,7 @@ footer{background:#464a49;margin-top:10px;color:white}
         <!-- Navigation -->
         <div class="gl-9">
         <nav class="inline-flex g-navbar">
-            <span style=""><?php view::menu(); ?></span>
+            <span style=""><?php view::menu('mainmenu','tpl/menu.bootstrap.php'); ?></span>
         </nav>
         </div>
     </div>

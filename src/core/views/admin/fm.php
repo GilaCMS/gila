@@ -43,7 +43,7 @@ requiredRes = new Array()
 var myCodeMirror = new Array();
 var saveFilePath;
 
-g.require(['lib/jquery/jquery.3.3.1.js'], function(){
+g.require(['lib/jquery/jquery-3.3.1.min.js'], function(){
     refresh_fm_table('');
 
     $(document).on('click','#fm_tabs a', function(){

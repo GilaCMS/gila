@@ -78,7 +78,7 @@ class session
     * Unsets a session variable
     * @param $var (string) Variable name
     */
-    static function unset ($var)
+    static function unsetKey ($var)
     {
         unset($_SESSION[session::md5($var)]);
     }

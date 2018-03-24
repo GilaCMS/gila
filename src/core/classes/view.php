@@ -337,23 +337,23 @@ class view
 
     static function thumb_xs ($src,$id=null)
     {
-        return view::thumb($src,'xs_',80);
+        return view::thumb($src,'xs/',80);
     }
     static function thumb_sm ($src,$id=null)
     {
-        return view::thumb($src,'sm_',160);
+        return view::thumb($src,'sm/',160);
     }
     static function thumb_md ($src,$id=null)
     {
-        return view::thumb($src,'md_',320);
+        return view::thumb($src,'md/',320);
     }
     static function thumb_lg ($src,$id=null)
     {
-        return self::thumb($src,'lg_',640);
+        return self::thumb($src,'lg/',640);
     }
     static function thumb_xl ($src,$id=null)
     {
-        return view::thumb($src,'xl_',1200);
+        return view::thumb($src,'xl/',1200);
     }
 
     /**

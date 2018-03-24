@@ -15,7 +15,7 @@
 
     <?=view::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
     <?=view::cssAsync('src/core/assets/simple-sidebar.css')?>
-    <?=view::cssAsync('lib/gila.min.css')?>
+    <?=view::css('lib/gila.min.css')?>
     <style>
     #sidebar-wrapper .g-nav li{ color:#fff; }
     #sidebar-wrapper .g-nav li a{ color:#aaa; }
