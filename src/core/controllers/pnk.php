@@ -12,6 +12,9 @@ class pnk extends controller
 		define('PNK_URL','pnk/');
 		define('PDF_FOLDER',"/");
 
+		if(session::key('user_id')==0) {
+            exit;
+        }
 
 		if(isset($_GET['t'])) {
 			$tfile = $_GET['t'].".php";

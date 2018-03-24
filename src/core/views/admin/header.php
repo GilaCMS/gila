@@ -78,7 +78,8 @@
 
 
                 <ul class="g-nav">
-                <li ><i class="fa fa-user"></i> <?=session::key('user_name')?> <i class="fa fa-angle-down"></i>
+                <li>
+                    <i class="fa fa-user"></i> <?=session::key('user_name')?> <i class="fa fa-angle-down"></i>
                     <ul class="text-align-left" style="right:0">
                         <li><a href="<?=gila::config('base')?>admin/profile"><?=__("My Profile")?></a></li>
                         <li><a href="<?=gila::config('base')?>admin/logout"><?=__("Loggout")?></a></li>
