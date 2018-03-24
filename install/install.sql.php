@@ -4,10 +4,10 @@ $link->query('CREATE TABLE IF NOT EXISTS `post` (
   `user_id` int(11) DEFAULT NULL,
   `title` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
   `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
-  `description` text varchar(80),
+  `description` varchar(80),
   `post` text,
   `publish` int(1) DEFAULT NULL,
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `publish` (`publish`),
   KEY `user_id` (`user_id`)
@@ -82,5 +82,7 @@ $_pass=password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
 
 $link->query("INSERT INTO user VALUES(1,'$_user','$_email','$_pass','');");
 $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
-$link->query("INSERT INTO post VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
-$link->query("INSERT INTO page VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
+$link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
+VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
+$link->query("INSERT INTO page(id,title,slug,page,publish,updated)
+VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
