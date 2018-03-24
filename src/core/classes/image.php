@@ -13,7 +13,14 @@ class image {
      */
     static function make_thumb ($src,$file,$max_width,$max_height)
     {
-        //if(!file_exists($src)) return false;
+        if(parse_url($src, PHP_URL_HOST) != null) {
+            $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+            if(!file_exists($_src)) {
+                if(!copy($src, $_src)) return false;
+            }
+            $src = $_src;
+        }
+
         if(!$image = @getimagesize($src)) return false;
 
         list($src_width,$src_height)=$image;
