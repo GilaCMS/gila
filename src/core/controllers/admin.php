@@ -9,10 +9,7 @@ class admin extends controller
 
     public function __construct ()
     {
-        if(session::key('user_id')==0) {
-            view::renderFile('login.php');
-            exit;
-        }
+        self::admin();
     }
 
     /**
@@ -83,7 +80,7 @@ class admin extends controller
         view::renderAdmin('admin/list_widget.php');
     }
 
-    function update_widgetAjax ()
+    function update_widgetAction ()
     {
         global $db;
         $widget_data =json_encode($_POST['option']);

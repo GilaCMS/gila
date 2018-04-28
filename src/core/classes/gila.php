@@ -5,6 +5,7 @@ use core\models\user as user;
 
 class gila {
     static $controller;
+    static $on_controller;
     static $widget;
     static $package;
     static $amenu;
@@ -30,6 +31,11 @@ class gila {
       foreach ($list as $k=>$item) {
             gila::$controller[$k]=$item;
         }
+    }
+
+    static function onController($c,$fn)
+    {
+        self::$on_controller[$c][] = $fn;
     }
 
     /**

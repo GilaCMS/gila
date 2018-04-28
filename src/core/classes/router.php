@@ -28,11 +28,15 @@ class router
 
         require_once $controller_file;
     	$c = new $controller();
+
+        // find function to run after controller construction
+        foreach(gila::$on_controller[$controller] as $fn) $fn();
+
     	$action = self::request('action','');
         if($action=='') $action='index';
 
     	if (isset($args[1])) {
-            if (method_exists($controller,$args[1].'Action') || method_exists($controller,$args[1].'Admin') || method_exists($controller,$args[1].'Ajax')) {
+            if (method_exists($controller,$args[1].'Action')) {
                 $action = $args[1];
             } else array_splice($args, 1, 0, $action);
         }
@@ -43,22 +47,8 @@ class router
         if (method_exists($controller,$action.'Action')) {
             $action_fn = $action.'Action';
         }
-        else if (method_exists($controller,$action.'Admin')) {
-            if (session::user_id() == 0) {
-                include __DIR__."/../views/login.phtml";
-                exit;
-            }
-            $action_fn = $action.'Admin';
-            $administration = 1;
-        }
-        else if (method_exists($controller,$action.'Ajax')) {
-            router::$args = $args;
-            $action_fn = $action.'Ajax';
-            $c->$action_fn();
-            exit;
-        }
         else {
-            echo  $action." action not found!";
+            echo  $controller.' '.$action." action not found!";
             exit;
         }
 
