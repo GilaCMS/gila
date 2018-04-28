@@ -6,6 +6,7 @@ use core\models\user as user;
 class gila {
     static $controller;
     static $on_controller;
+    static $action;
     static $widget;
     static $package;
     static $amenu;
@@ -36,6 +37,11 @@ class gila {
     static function onController($c,$fn)
     {
         self::$on_controller[$c][] = $fn;
+    }
+
+    static function action($c,$action,$fn)
+    {
+        self::$action[$c][$action] = $fn;
     }
 
     /**

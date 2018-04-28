@@ -36,18 +36,27 @@ class router
         if($action=='') $action='index';
 
     	if (isset($args[1])) {
-            if (method_exists($controller,$args[1].'Action')) {
+            if(isset(gila::$action[$controller][$args[1]])){
                 $action = $args[1];
-            } else array_splice($args, 1, 0, $action);
+                router::$args = $args;
+                gila::$action[$controller][$action]();
+                return;
+            } else if (method_exists($controller,$args[1].'Action')) {
+                $action = $args[1];
+                $action_fn = $action.'Action';
+            }
+            else if (method_exists($controller,'indexAction')) {
+                $action = 'index';
+                $action_fn = $action.'Action';
+            } else {
+                array_splice($args, 1, 0, $action);
+            }
         }
-    	else {
+        else {
              array_splice($args, 1, 0, $action);
     	}
 
-        if (method_exists($controller,$action.'Action')) {
-            $action_fn = $action.'Action';
-        }
-        else {
+        if (!isset($action_fn)) {
             echo  $controller.' '.$action." action not found!";
             exit;
         }
