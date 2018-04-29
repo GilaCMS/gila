@@ -137,6 +137,7 @@ td[col] .pnk-input{ margin:0px; }
 .pnk-pagination li {
     list-style-type: none;
     border: 1px solid #ccc;
+    display: inline-block;
 }
 .pnk-pagination a {
     padding: 6px 8px;

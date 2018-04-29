@@ -26,6 +26,11 @@ class router
             exit;
         }
 
+        if(isset(gila::$route[$_GET['url']])) {
+            gila::$route[$_GET['url']]();
+            return;
+        }
+
         require_once $controller_file;
     	$c = new $controller();
 
@@ -39,6 +44,7 @@ class router
             if(isset(gila::$action[$controller][$args[1]])){
                 $action = $args[1];
                 router::$args = $args;
+                foreach(gila::$before[$controller][$action] as $fn) $fn();
                 gila::$action[$controller][$action]();
                 return;
             } else if (method_exists($controller,$args[1].'Action')) {
@@ -53,7 +59,12 @@ class router
             }
         }
         else {
-             array_splice($args, 1, 0, $action);
+            if (method_exists($controller,'indexAction')) {
+                $action = 'index';
+                $action_fn = $action.'Action';
+            } else {
+                array_splice($args, 1, 0, $action);
+            }
     	}
 
         if (!isset($action_fn)) {
@@ -62,6 +73,7 @@ class router
         }
 
         router::$args = $args;
+        foreach(gila::$before[$controller][$action] as $fn) $fn();
         $c->$action_fn();
     }
 

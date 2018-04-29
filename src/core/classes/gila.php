@@ -7,6 +7,8 @@ class gila {
     static $controller;
     static $on_controller;
     static $action;
+    static $before;
+    static $route;
     static $widget;
     static $package;
     static $amenu;
@@ -34,6 +36,16 @@ class gila {
         }
     }
 
+    static function controller($k,$item)
+    {
+        gila::$controller[$k] = $item;
+    }
+
+    static function route($r,$fn)
+    {
+        gila::$route[$r] = $fn;
+    }
+
     static function onController($c,$fn)
     {
         self::$on_controller[$c][] = $fn;
@@ -42,6 +54,11 @@ class gila {
     static function action($c,$action,$fn)
     {
         self::$action[$c][$action] = $fn;
+    }
+
+    static function before($c,$action,$fn)
+    {
+        self::$before[$c][$action][] = $fn;
     }
 
     /**
