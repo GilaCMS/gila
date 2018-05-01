@@ -24,6 +24,7 @@ npm-debug.log
 !src/ganalytics/
 !src/featured_grid/
 !src/reCAPTCHA/
+!src/pwa/
 !src/.htaccess
 
 !themes/gila-mag/

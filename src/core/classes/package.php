@@ -125,7 +125,7 @@ class package {
             } else die('Could not find src/'.$package.'/package.json');
 
             if(is_array($options)) foreach($options as $key=>$op) {
-                echo '<div class="gm-12">';
+                echo '<div class="gm-12 row">';
                 echo '<label class="gm-4">'.(isset($op['title'])?$op['title']:ucwords($key)).'</label>';
                 $ov = gila::option($pack.'.'.$key);
                 if(isset($op['type'])) {
@@ -146,6 +146,12 @@ class package {
                         }
                         echo '</select>';
                     }
+                    if($op['type']=='media') { ?>
+                        <div class="gm-8 g-group">
+                          <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery('#m_<?=$key?>')"><i class="fa fa-image"></i></span>
+                          <span class="g-group-item"><input class="fullwidth" value="<?=$ov?>" id="m_<?=$key?>" name="option[<?=$key?>]"><span>
+                        </span></span></div>
+                    <?php }
                 } else echo '<input class="g-input gm-8" name="option['.$key.']" value="'.$ov.'">';
                 echo '</div><br>';
             }

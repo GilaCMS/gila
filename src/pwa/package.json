@@ -1,0 +1,19 @@
+{
+	"name":"PWA",
+	"version":"1.0.0",
+	"description":"A package to make the website as progressive web application.",
+	"url":"gilacms.com",
+	"options":{
+		"short_name":{
+			"title":"Short Name"
+		},
+		"name":{
+			"title":"Name to display"
+		},
+		"icon":{
+			"title":"Icon",
+			"type":"media"
+		}
+	}
+
+}
