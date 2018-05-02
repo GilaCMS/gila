@@ -1,6 +1,6 @@
 {
-  "short_name": "<?=gila::option('gila_pwa.short_name','Gila')?>",
-  "name": "<?=gila::option('gila_pwa.name','Gila CMS')?>",
+  "short_name": "<?=gila::option('pwa.short_name','Gila')?>",
+  "name": "<?=gila::option('pwa.name','Gila CMS')?>",
   "display": "standalone",
   "icons": [
     {

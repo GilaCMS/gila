@@ -19,12 +19,12 @@ if ('serviceWorker' in navigator) {
 <?php });
 
 gila::route('manifest.json',function(){
-    $icon = gila::option('gila_pwa.icon','gila-logo.png');
-    include "src/gila_pwa/manifest.php";
+    $icon = gila::option('pwa.icon','gila-logo.png');
+    include "src/pwa/manifest.php";
     exit;
 });
 
 gila::route('service-worker.js',function(){
-    include "src/gila_pwa/service-worker.js";
+    include "src/pwa/service-worker.js";
     exit;
 });

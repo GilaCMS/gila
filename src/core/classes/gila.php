@@ -36,27 +36,67 @@ class gila {
         }
     }
 
-    static function controller($k,$item)
+    /**
+    * Registers new a controller
+    * @param $c (string) Controller name as given in url path
+    * @param $file (string) Controller's filepath without the php extension
+    * @param $name (string) Controller's class name
+    * @code
+    * gila::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
+    * @endcode
+    */
+    static function controller($c, $file, $name=null)
     {
-        gila::$controller[$k] = $item;
+        gila::$controller[$c] = $file;
     }
 
-    static function route($r,$fn)
+    /**
+    * Registers a function call on a specific path
+    * @param $r (string) The path
+    * @param $fn (function) Callback for the route
+    * @code
+    * gila::route('some.txt', function(){ return 'Some text.'; });
+    * @endcode
+    */
+    static function route($r, $fn)
     {
         gila::$route[$r] = $fn;
     }
 
-    static function onController($c,$fn)
+    /**
+    * Registers a function to run right after the controller class construction
+    * @param $c (string) The controller
+    * @param $fn (function) Callback
+    * @code
+    * gila::route('blog', function(){ blog::ppp = 24; });
+    * @endcode
+    */
+    static function onController($c, $fn)
     {
         self::$on_controller[$c][] = $fn;
     }
 
-    static function action($c,$action,$fn)
+    /**
+    * Registers a new action or replaces an existing for a controller
+    * @param $c (string) The controller
+    * @param $action (string) The action
+    * @param $fn (function) Callback
+    * @code
+    * gila::action('blog', 'topics', function(){ blog::tagsAction(); });
+    * @endcode
+    */
+    static function action($c, $action, $fn)
     {
         self::$action[$c][$action] = $fn;
     }
 
-    static function before($c,$action,$fn)
+    /**
+    * Registers a function to run before the function of a specific action
+    * @param $c (string) The controller
+    * @param $action (string) The action
+    * @param $fn (function) Callback
+    */
+    static function before($c, $action, $fn)
     {
         self::$before[$c][$action][] = $fn;
     }
