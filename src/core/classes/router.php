@@ -54,6 +54,7 @@ class router
             else if (method_exists($controller,'indexAction')) {
                 $action = 'index';
                 $action_fn = $action.'Action';
+                array_splice($args, 1, 0, $action);
             } else {
                 array_splice($args, 1, 0, $action);
             }
@@ -80,7 +81,6 @@ class router
 
     static function get_controller (&$args)
     {
-
         $controller = router::request('c',gila::config('default-controller'));
 
         if (isset($args[0])) {
@@ -103,6 +103,10 @@ class router
             gila::config('default-controller','admin');
             gila::updateConfigFile();
         }
+
+        if(isset(gila::$controllerClass[$controller])) {
+            $controller = gila::$controllerClass[$controller];
+        }
         return $controller;
     }
 
@@ -115,7 +119,6 @@ class router
     static function get ($key, $n = null)
     {
         if ((isset(router::$args[$n+1])) && ($n != null) && (router::$args[$n+1]!=null)){
-            //if ($n == null) return null;
             return router::$args[$n+1];
         }
         else if (isset($_GET[$key])) {

@@ -6,6 +6,7 @@ use core\models\user as user;
 class gila {
     static $controller;
     static $on_controller;
+    static $controllerClass;
     static $action;
     static $before;
     static $route;
@@ -40,7 +41,7 @@ class gila {
     * Registers new a controller
     * @param $c (string) Controller name as given in url path
     * @param $file (string) Controller's filepath without the php extension
-    * @param $name (string) Controller's class name
+    * @param $name (string) Controller's class name, $c is used by default
     * @code
     * gila::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
     * @endcode
@@ -48,6 +49,7 @@ class gila {
     static function controller($c, $file, $name=null)
     {
         gila::$controller[$c] = $file;
+        if($name!=null) gila::$controllerClass[$c] = $name;
     }
 
     /**
