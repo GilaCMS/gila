@@ -6,7 +6,7 @@ $menu_items = $menu_data['children'];
 
 foreach ($menu_items as $mi) {
     if (!isset($mi['children'])) {
-        echo "<li>".menu_item($mi)."</li>";
+        echo "<li>".menu_item($mi,'li')."</li>";
     }
     else {
         echo "<li>";
@@ -21,7 +21,7 @@ foreach ($menu_items as $mi) {
     }
 }
 
-function menu_item($mi){
+function menu_item($mi, $tag=''){
     global $db;
     $url = isset($mi['url'])?$mi['url']:'#';
     $name = isset($mi['name'])?$mi['name']:'';
@@ -44,6 +44,9 @@ function menu_item($mi){
 
     }
 
+    if(router::url()==$url) {
+        return "<a href=\"$url\" class=\"active\">$name</a>";
+    }
     return "<a href=\"$url\" >$name</a>";
 }
 ?>

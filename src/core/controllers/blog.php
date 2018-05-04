@@ -43,7 +43,7 @@ class blog extends controller
             return;
         }
 
-        if($_GET['url']!='' || view::findPath('landpage.php')==false) {
+        if($_GET['url']!='' || view::getViewFile('landpage.php')==false) {
             view::set('page',blog::$page);
             view::set('posts',post::getPosts(['posts'=>self::$ppp]));
             view::render('frontpage.php');

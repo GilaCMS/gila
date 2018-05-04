@@ -22,6 +22,7 @@ footer{background:#464a49;margin-top:10px;color:white}
 .widget-social-icons li a i:hover:before{background: <?=$theme_color?>;}
 .g-navbar li ul li a{color:inherit}
 .g-nav li ul{border-width:0; background: #181818; margin-top:-2px}
+.g-nav .active{background: <?=$theme_color?>}
 </style>
 
 <body>

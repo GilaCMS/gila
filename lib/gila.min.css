@@ -53,7 +53,7 @@ script{display:none!important}
 .bordered{
     border:1px solid var(--main-border-color);
 }
-.g-selected,.g-selected a,.active{
+.g-selected,.g-selected a {
     background-color:var(--main-primary-color);
     color:white;
 }

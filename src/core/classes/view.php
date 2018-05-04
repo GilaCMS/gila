@@ -11,6 +11,7 @@ class view
     private static $meta = array();
     private static $alert = array();
     public static $cdn_paths = array();
+    public static $parent_theme = false;
 
 	static function set($param,$value) {
         global $g;
@@ -161,20 +162,6 @@ class view
         self::includeFile('head.php');
     }
 
-    static function findPath($file, $package = 'core')
-    {
-        $tpath = self::getThemePath().'/'.$file;
-        if(file_exists($tpath)) {
-            return $tpath;
-        } else {
-          $spath = 'src/'.$package.'/views/'.$file;
-          if(file_exists($spath)) {
-              return $spath;
-          }
-        }
-        return false;
-    }
-
     static function updateC() {
         global $c;
         foreach (self::$part as $key => $value) {
@@ -216,11 +203,16 @@ class view
 
     static function getViewFile ($file, $package = 'core') {
         $tpath = self::getThemePath().'/'.$file;
-        if(file_exists($tpath))
-            return $tpath;
+        if(file_exists($tpath)) return $tpath;
+
+        if(self::$parent_theme) {
+            $tpath = 'themes/'.self::$parent_theme.'/'.$file;
+            if(file_exists($tpath)) return $tpath;
+        }
+
         $spath = 'src/'.$package.'/views/'.$file;
-        if(file_exists($spath))
-            return $spath;
+        if(file_exists($spath)) return $spath;
+
         return false;
     }
 

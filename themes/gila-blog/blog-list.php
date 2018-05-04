@@ -3,7 +3,7 @@
 <div class="row wrapper">
     <div class="gm-9">
     <?php foreach ($c->posts as $r) { ?>
-    <div class="gm-12 row gap-8px post-review">
+    <div class="row gap-8px post-review">
             <?php
             if($img=view::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
 		       $title_gl='gs-9';

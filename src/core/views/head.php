@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php
     foreach(view::$meta as $key=>$value) echo '<meta name="'.$key.'" content="'.$value.'">';
-    echo '<title>'.gila::config('base').'</title>';
     event::fire('head.meta');
     foreach(view::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
     event::fire('head');
