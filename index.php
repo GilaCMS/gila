@@ -14,7 +14,9 @@ if (file_exists(__DIR__.'/config.php')) {
 	require_once 'config.php';
 }
 else {
-	echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=install\" />";
+	if(isset($_GET['install'])) {
+		include 'src/core/install/index.php';
+	} else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=?install\" />";
 	exit;
 }
 
