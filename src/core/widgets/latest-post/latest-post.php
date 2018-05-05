@@ -1,5 +1,6 @@
 <ul class="g-nav vertical">
 <?php
+
 if(!@class_exists('blog')) {
 	include_once "src/core/controllers/blog.php";
 	new blog();
@@ -9,7 +10,7 @@ $stacked_file = 'tmp/stacked-wdgt'.$widget_id.'.png';
 $posts = [];
 $img = [];
 
-foreach (blog::posts(['posts'=>$widget_data->n_post]) as $r ) {
+foreach (core\models\post::getLatest($widget_data->n_post) as $r ) {
 	$posts[] = $r;
 	$img[]=$r['img'];
 }

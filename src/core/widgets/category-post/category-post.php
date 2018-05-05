@@ -28,7 +28,8 @@ $stacked_file = 'tmp/stacked-wdgt'.$widget_id.'.png';
 $posts = [];
 $img = [];
 
-foreach (blog::posts(['posts'=>$widget_data->n_post]) as $r ) {
+//foreach (blog::posts(['posts'=>$widget_data->n_post]) as $r ) {
+foreach (core\models\post::getLatest($widget_data->n_post) as $r ) {
 	$posts[] = $r;
 	$img[]=$r['img'];
 }

@@ -99,27 +99,36 @@ class image {
         $response = [];
         $dst_y = 0; $total_y = 0;
 
-        foreach($src_array as $key=>$src) if($image = @getimagesize($src)) {
-            list($src_width,$src_height)=$image;
-            $newwidth=$max_width;
-            $newheight=$max_height;
+        foreach($src_array as $key=>$src) {
+            if(parse_url($src, PHP_URL_HOST) != null) {
+                $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+                if(!file_exists($_src)) {
+                    if(!copy($src, $_src)) $_src = $src;
+                }
+            } else $_src = $src;
 
-            if($src_width>$max_width) {
-                $newheight = ($src_height/$src_width)*$newwidth;
-            }else if($src_height>$max_height){
-                $newwidth = ($src_width/$src_height)*$newheight;
-            }
+            if($image = @getimagesize($_src)) {
+                list($src_width,$src_height)=$image;
+                $newwidth=$max_width;
+                $newheight=$max_height;
 
-            $total_y += $newheight;
-            $response[$key]=[
-                'src' => $src,
-                'src_width' => $src_width,
-                'src_height' => $src_height,
-                'width' => $newwidth,
-                'height' => $newheight,
-                'type' => $image[2]
-            ];
-        } else $response[$key] = false;
+                if($src_width>$max_width) {
+                    $newheight = ($src_height/$src_width)*$newwidth;
+                }else if($src_height>$max_height){
+                    $newwidth = ($src_width/$src_height)*$newheight;
+                }
+
+                $total_y += $newheight;
+                $response[$key]=[
+                    'src' => $src,
+                    'src_width' => $src_width,
+                    'src_height' => $src_height,
+                    'width' => $newwidth,
+                    'height' => $newheight,
+                    'type' => $image[2]
+                ];
+            } else $response[$key] = false;
+        }
 
         $tmp = imagecreatetruecolor($max_width,$total_y);
 
@@ -127,8 +136,8 @@ class image {
             $src = $src_array[$key];
             $img_src = self::create($src, $img['type']);
             imagecopyresampled($tmp,$img_src,0,$dst_y,0,0,$img['width'],$img['height'],$img['src_width'],$img['src_height']);
-            $dst_y += $img['height'];
             $response[$key]['top'] = $dst_y;
+            $dst_y += $img['height'];
             imagedestroy($img_src);
         }
 
