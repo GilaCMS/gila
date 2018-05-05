@@ -47,6 +47,10 @@ class router
                 foreach(gila::$before[$controller][$action] as $fn) $fn();
                 gila::$action[$controller][$action]();
                 return;
+            } else if (isset($_GET['action']) && method_exists($controller,$_GET['action'].'Action')) {
+                $action = $_GET['action'];
+                $action_fn = $action.'Action';
+                array_splice($args, 1, 0, $action);
             } else if (method_exists($controller,$args[1].'Action')) {
                 $action = $args[1];
                 $action_fn = $action.'Action';
