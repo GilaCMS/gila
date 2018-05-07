@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Gila CMS - Login</title>
+    <title><?=gila::config('title')?> - <?=__('Log In')?></title>
 
     <link href="lib/gila.min.css" rel="stylesheet">
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -20,7 +20,7 @@
             <div style="width:16%;display:inline-block">
                 <img src="assets/gila-logo.svg">
             </div>
-            <h3>Login</h3>
+            <h3><?=__('Log In')?></h3>
         </div>
 
         <form role="form" method="post" action="" class="g-form wrapper g-card">
@@ -34,15 +34,10 @@
                 <?php event::fire('login.btn'); ?>
         </form>
         <p>
-            <a href="login/password_reset">Forgot password?</a>
-            <?php if(gila::config('user_register')==1) echo '| <a href="login/register">Register</a>';?>
+            <a href="login/password_reset"><?=__('forgot_pass')?></a>
+            <?php if(gila::config('user_register')==1) echo '| <a href="login/register">'.__('Register').'</a>';?>
         </p>
     </div>
-    <!--div class="checkbox">
-        <label>
-            <input name="remember" type="checkbox" value="Remember Me">Remember Me
-        </label>
-    </div-->
 
 </body>
 

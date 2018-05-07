@@ -8,7 +8,7 @@ class login extends controller
 
     function __construct ()
     {
-
+        gila::addLang('core/lang/login/');
     }
 
 	function indexAction()
@@ -33,7 +33,7 @@ class login extends controller
             $password = $_POST['password'];
             $name = $_POST['name'];
             if(user::getByEmail($email)) {
-                view::alert('error','This email is already taken from another user.');
+                view::alert('error', __('register_error1'));
             }
             else {
                 // register the user
@@ -42,7 +42,7 @@ class login extends controller
                     view::includeFile('login-register-success.php');
                     return;
                 } else {
-                    view::alert('error','User could not be registered.');
+                    view::alert('error', __('register_error2'));
                 }
             }
         }
@@ -54,7 +54,7 @@ class login extends controller
 		if(isset($_GET['rp'])) {
             $r = user::getByResetCode($_GET['rp']);
 			if (!$r) {
-                echo 'This reset password code has been expired or used.';
+                echo  __('reset_error1');
   				exit;
 			}
 			else if(isset($_POST['pass'])) {
@@ -79,19 +79,19 @@ class login extends controller
 		$r = user::getByEmail($email);
 
 		if ($r == false) {
-  			echo "No user found with this email.";
+  			echo __('reset_error1');
   			$out['success'] = false;
   			$out['msg'] = "No user found with this email.";
   			exit;
 		}
 
         $baseurl = gila::config('base');
-		$subject = "Change Password Code for ".$r['username'];
+		$subject = __('reset_msg_ln1').' '.$r['username'];
 		$reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,50);
-        $message = "Hello {$r['username']}\n\n";
-        $message .= "This is the link to change your password in $baseurl\n\n";
+        $message = __('reset_msg_ln2')." {$r['username']}\n\n";
+        $message .= __('reset_msg_ln3')." $baseurl\n\n";
         $message .= $baseurl."login/password_reset?rp=$reset_code\n\n";
-		$message .= "If you didn't ask to change the password please ignore this email";
+		$message .= __('reset_msg_ln4');
 
 		$headers = "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
 		user::meta($r['id'],'reset_code',$reset_code);

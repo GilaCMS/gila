@@ -14,6 +14,7 @@ class controller
     static function admin()
     {
         if(session::key('user_id')==0) {
+            gila::addLang('core/lang/login/');
             view::renderFile('login.php');
             exit;
         }

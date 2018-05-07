@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Gila CMS - Login</title>
+    <title><?=gila::config('title')?> - <?=__('Register')?></title>
 
     <link href="lib/gila.min.css" rel="stylesheet">
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -23,27 +23,27 @@
             <div style="width:16%;display:inline-block">
                 <img src="assets/gila-logo.svg">
             </div>
-            <h3>Register</h3>
+            <h3><?=__('Register')?></h3>
         </div>
 
         <form role="form" method="post" action="" class="g-form wrapper g-card">
-            <label>Name</label>
+            <label><?=__('Name')?></label>
             <div class="form-group">
-                <input class="form-control fullwidth" placeholder="name" name="name" autofocus required>
+                <input class="form-control fullwidth" name="name" autofocus required>
             </div>
-            <label>E-mail</label>
+            <label><?=__('Email')?></label>
             <div class="form-group">
-                <input class="form-control fullwidth" placeholder="E-mail" name="email" type="email" required>
+                <input class="form-control fullwidth" name="email" type="email" required>
             </div>
-            <label>Password</label>
+            <label><?=__('Password')?></label>
             <div class="form-group ">
-                <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="" required>
+                <input class="form-control fullwidth" name="password" type="password" value="" required>
             </div>
             <?php event::fire('recapcha.form')?>
-            <input type="submit" class="btn btn-primary btn-block" value="Register">
+            <input type="submit" class="btn btn-primary btn-block" value="<?=__('Register')?>">
         </form>
         <p>
-            <a href="login">Login</a>
+            <a href="login"><?=__('Log In')?></a>
         </p>
     </div>
 

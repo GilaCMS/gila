@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Gila CMS - Login</title>
+    <title><?=gila::config('title')?> - <?=__('reset_pass')?></title>
 
     <link href="lib/gila.min.css" rel="stylesheet">
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -23,8 +23,8 @@
             <div style="width:16%;display:inline-block">
                 <i class="fa fa-5x fa-envelope" style="color:green"></i>
             </div>
-            <h3>Reset Password Email Sent</h3>
-            <p>An email has been send to you in order to change your password. Check your email in a few minutes and follow the link. If you cannot find the email in your inbox look also in your spam folder.</p>
+            <h3><?=__('reset_html1')?></h3>
+            <p><?=__('reset_html2')?></p>
         </div>
     </div>
 

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Gila CMS - Login</title>
+    <title><?=gila::config('title')?> - <?=__('reset_pass')?></title>
 
     <link href="lib/gila.min.css" rel="stylesheet">
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -23,19 +23,19 @@
             <div style="width:16%;display:inline-block">
                 <img src="assets/gila-logo.svg">
             </div>
-            <h3>Reset Password</h3>
+            <h3><?=__('reset_pass')?></h3>
         </div>
 
         <form role="form" method="post" action="<?=gila::config('base')?>login/password_reset" class="g-card g-form wrapper">
-            <p>Enter your email address and we will send you a link to reset your password.<p>
-                <div class="form-group">
-                    <input class="form-control fullwidth" placeholder="E-mail" name="email" type="email" autofocus>
-                </div>
+            <p><?=__('reset_pass_msg')?><p>
+            <div class="form-group">
+                <input class="form-control fullwidth" name="email" type="email" autofocus required>
+            </div>
 
-                <input type="submit" class="btn btn-primary btn-block" value="Send Email">
+            <input type="submit" class="btn btn-primary btn-block" value="<?=__('Send Email')?>">
         </form>
         <p>
-            <a href="login">Login</a>
+            <a href="login"><?=__('Log In')?></a>
         </p>
     </div>
 

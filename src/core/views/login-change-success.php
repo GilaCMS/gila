@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Gila CMS - Login</title>
+    <title><?=gila::config('title')?> - <?=__('reset_pass')?></title>
 
     <link href="lib/gila.min.css" rel="stylesheet">
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -23,10 +23,10 @@
                 <div style="width:16%;display:inline-block">
                     <i class="fa fa-5x fa-check" style="color:green"></i>
                 </div>
-                <h3>You changed your password successfully</h3>
+                <h3><?=__('reset_pass_success')?></h3>
             </div>
 
-            <a class="btn btn-success btn-block" href="<?=gila::url('login')?>">Continue to Log In</a>
+            <a class="btn btn-success btn-block" href="<?=gila::url('login')?>"><?=__('Log In')?></a>
         </div>
     </div>
 
