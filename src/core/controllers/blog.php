@@ -51,6 +51,9 @@ class blog extends controller
         else view::render('landpage.php');
     }
 
+    /**
+    * Displays new posts in xml feed
+    */
     function feedAction()
     {
         $title = gila::config('title');
@@ -60,9 +63,9 @@ class blog extends controller
         include 'src/core/views/blog-feed.php';
     }
 
-    //! Displays posts with a specific tag
-    //! blog/tag/<tag> /
-    //! c=blog&action=tag&tag=<tag>
+    /**
+    * Displays posts with a specific tag
+    */
     function tagAction()
     {
         $tag = router::get('tag',1);
@@ -71,12 +74,18 @@ class blog extends controller
         view::render('blog-tag.php');
     }
 
+    /**
+    * Display a list with all post tags
+    */
     function tagsAction()
     {
           view::set('tags',post::getMeta('tag'));
           view::render('blog-tags.php');
     }
 
+    /**
+    * Display posts by a category
+    */
     function categoryAction()
     {
         global $db;
@@ -87,6 +96,9 @@ class blog extends controller
         view::render('blog-category.php');
     }
 
+    /**
+    * Display posts by author
+    */
     function authorAction()
     {
         global $db;
@@ -103,6 +115,9 @@ class blog extends controller
     }
 
 
+    /**
+    * Display a post
+    */
     function postShow($id=null)
     {
         global $db;
@@ -153,10 +168,11 @@ class blog extends controller
         }
     }
 
+    /**
+    * Display posts by a search query
+    */
     function searchAction()
     {
-        global $db;
-        $ppp = 8;
         if ($s=router::get('search',1)) {
 		      view::set('posts',post::search($s));
 		      view::render('blog-search.php');
