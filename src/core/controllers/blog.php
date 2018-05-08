@@ -45,7 +45,7 @@ class blog extends controller
 
         if($_GET['url']!='' || view::getViewFile('landpage.php')==false) {
             view::set('page',blog::$page);
-            view::set('posts',post::getPosts(['posts'=>self::$ppp]));
+            view::set('posts',post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
             view::render('frontpage.php');
         }
         else view::render('landpage.php');
@@ -184,6 +184,7 @@ class blog extends controller
     }
 
     static function post ($args = []) {
+        $args['page'] = self::$page;
         return post::getPosts($args);
     }
 
@@ -192,6 +193,7 @@ class blog extends controller
     }
 
     static function posts ($args = []) {
+        $args['page'] = self::$page;
         return post::getPosts($args);
     }
 
