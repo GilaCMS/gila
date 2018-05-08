@@ -30,12 +30,14 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
             }
         }
         $table .= (isset($p->contact)?' <b>Contact:</b> '.$p->contact:'');
-        unset($options);
+        //unset($options);
 
 
         if (file_exists('src/'.$p->package)) {
             if (in_array($p->package,$GLOBALS['config']['packages'])) {
-                $table .= "<td><a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a><td>";
+                if(isset($p->options)) {
+                    $table .= "<td><a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a><td>";
+                } else $table .= "<td><td>";
                 $table .= "<a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>Deactivate</a>";
             } else {
                 if($p->package=='core') {
