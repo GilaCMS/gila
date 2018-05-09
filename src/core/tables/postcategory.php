@@ -6,7 +6,8 @@ $table = [
     'tools'=>['add','csv'],
     'commands'=>['edit'],
     'id'=>'id',
-    'csv'=> ['id','name'],
+    'list'=> ['id','title'],
+    'csv'=> ['id','title'],
     'fields'=> [
         'id'=> ['edit'=>false],
         'title'=> ['title'=>'Name']

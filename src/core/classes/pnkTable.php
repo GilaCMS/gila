@@ -38,12 +38,19 @@ class pnkTable
         return false;
     }
 
+    function fields()
+    {
+        return isset($this->table['list'])? $this->table['list']: array_keys($this->table['fields']);
+    }
+
     function select()
     {
-        $select = array_keys($this->table['fields']);
+        $select = $this->fields();
+
         if(isset($_GET['$select'])) {
             $select = explode(',', $_GET['$select']);
         }
+
         foreach ($select as $key => $value) {
             if($qcolumn = $this->fieldAttr($value, 'qcolumn'))
                 $select[$key] = $qcolumn.' as '.$value;
@@ -51,7 +58,7 @@ class pnkTable
                 $vt = $this->fieldAttr($value, 'metatype');
                 $this_id = $this->name().".".$this->table['id'];
                 //$select[$key] = "(SELECT GROUP_CONCAT({$mt[2]}) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
-                $select[$key] = "(SELECT GROUP_CONCAT({$mt[2]}) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
+                $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[2]}`) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
             }
             if($qcolumn = $this->fieldAttr($value, 'jt'))
                 unset($select[$key]);
@@ -59,14 +66,25 @@ class pnkTable
         return implode(',', $select);
     }
 
-    function orderby() {
+    function startIndex() {
+        return isset($_GET['page'])? ($_GET['page']-1)*$this->table['pagination'] :0;
+    }
+
+    function orderby($id='id', $v='desc') {
         if(isset($_GET['$order'])) {
             $o = explode(' ',$_GET['$order']);
             if(array_key_exists($o[0], $this->table['fields']))
                 if(in_array($o[1],['desc','asc']))
                     return ' ORDER BY '.$_GET['$order'];
         }
-        return '';
+        return " ORDER BY $id $v";
+    }
+
+    function limit($start=null,$end=null) {
+        if($start==null) $start = $this->startIndex();
+        if($end==null) if(isset($this->table['pagination'])) $end=$this->table['pagination'];
+        if($end==null) return "";
+        return " LIMIT $start,$end";
     }
 
 
@@ -92,10 +110,11 @@ class pnkTable
     }
 
 
-    function where() {
+    function where(&$fields = null) {
         $filters = [];
+        if($fields==null) $fields=$_GET;
 
-        foreach($_GET as $key=>$value) if(!is_numeric($key)){
+        foreach($fields as $key=>$value) if(!is_numeric($key)){
             if(array_key_exists($key, $this->table['fields'])) {
                 if(is_array($value)) {
                     foreach($value as $subkey=>$subvalue) {
@@ -122,10 +141,13 @@ class pnkTable
 
     function can($action, $field = null) {
         $array = $this->table['permissions'][$action];
+
         if($field!=null && isset($this->table['fields'][$field]['permissions'])) {
             $array = $this->table['fields'][$field]['permissions'][$action];
         }
-        if(is_bool($array)) return;
+
+        if(is_bool($array)) return $array;
+        if(is_callable($array)) return $array();
 
         foreach($array as $value) {
             if(in_array($value, $this->permissions)) return true;

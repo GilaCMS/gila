@@ -17,7 +17,7 @@ class blog extends controller
     function __construct ()
     {
         self::$page = (router::get('page',1))?:1;
-        self::$ppp = 5;
+        self::$ppp = 12;
         self::$totalPosts = null;
     }
 

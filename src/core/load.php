@@ -13,12 +13,12 @@ gila::$amenu = [
     'content'=>['Content','admin','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
         ['Pages','admin/pages','icon'=>'file','access'=>'admin'],
         ['Posts','admin/posts','icon'=>'pencil','access'=>'admin writer'],
-        ['Categories','admin/postcategories','icon'=>'bars','access'=>'admin'],
+        'postcategory'=>['Categories','admin/postcategories','icon'=>'bars','access'=>'admin'],
         ['Media','admin/media','icon'=>'image','access'=>'admin'],
         ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
         ]],
     'admin'=>['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
-        ['Users','admin/users','icon'=>'users','access'=>'admin'],
+        'users'=>['Users','admin/users','icon'=>'users','access'=>'admin'],
         ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin'],
         ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
         ['Packages','admin/addons','icon'=>'dropbox','access'=>'admin'],
@@ -48,6 +48,7 @@ gila::$privilege['editor']="Can publish or edit posts from other users.";
 gila::$privilege['developer']="Special access in developer tools.";
 
 gila::content('post','core/tables/post.php');
+gila::content('postcategory','core/tables/postcategory.php');
 gila::content('user','core/tables/user.php');
 gila::content('page','core/tables/page.php');
 gila::content('widget','core/tables/widget.php');
