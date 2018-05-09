@@ -17,7 +17,8 @@ class blog extends controller
     function __construct ()
     {
         self::$page = (router::get('page',1))?:1;
-        self::$ppp = 12;
+        self::$ppp = 5;
+        self::$totalPosts = null;
     }
 
     /**
@@ -70,7 +71,7 @@ class blog extends controller
     {
         $tag = router::get('tag',1);
         view::set('tag',$tag);
-        view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>$tag]));
+        view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
         view::render('blog-tag.php');
     }
 
@@ -91,8 +92,9 @@ class blog extends controller
         global $db;
         $category = router::get('category',1);
         $res = $db->get("SELECT title from postcategory WHERE id=?",$category);
+        self::$totalPosts = post::total(['category'=>$category]);
         view::set('category',$res[0][0]);
-        view::set('posts',post::getPosts(['posts'=>self::$ppp,'category'=>$category]));
+        view::set('posts',post::getPosts(['posts'=>self::$ppp,'category'=>$category,'page'=>self::$page]));
         view::render('blog-category.php');
     }
 
@@ -198,12 +200,13 @@ class blog extends controller
     }
 
     static function totalposts ($args = []) {
-        return post::total($args);
+        if(self::$totalPosts == null) return post::total($args);
+        return self::$totalPosts;
     }
 
     static function totalpages ($args = []) {
-        self::$totalPosts = self::totalposts($args);
-        self::$totalPages = floor((self::$totalPosts+self::$ppp)/self::$ppp);
+        $totalPosts = self::totalposts($args);
+        self::$totalPages = floor(($totalPosts+self::$ppp)/self::$ppp);
         return self::$totalPages;
     }
 

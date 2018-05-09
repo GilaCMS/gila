@@ -54,10 +54,11 @@ class post
         return $db->get("SELECT * FROM post WHERE user_id=?",$id)[0];
     }
 
-    static function total ()
+    static function total ($args=[])
     {
         global $db;
-        return $db->value("SELECT COUNT(*) FROM post WHERE publish=1;");
+        $where = self::where($args);
+        return $db->value("SELECT COUNT(*) FROM post WHERE $where;");
     }
 
     static function getLatest($n=8)
@@ -69,23 +70,27 @@ class post
     {
         global $db;
         $ppp = isset($args['posts'])?$args['posts']:8;
-        $category = isset($args['category'])?"AND id IN(SELECT post_id from postmeta where vartype='category' and value='{$args['category']}')":"";
-        $tag = isset($args['tag'])?"AND id IN(SELECT post_id from postmeta where vartype='tag' and value='{$args['tag']}')":"";
-        $user_id = isset($args['user_id'])?"AND user_id='{$args['user_id']}'":"";
+        $where = self::where($args);
         $start_from = isset($args['from'])?$args['from']:0;
         if(isset($args['page'])) $start_from = ($args['page']-1)*$ppp;
-        $where = '';
 
         $ql = "SELECT id,title,description,slug,SUBSTRING(post,1,300) as post,updated,user_id,
             (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img,
             (SELECT username FROM user WHERE post.user_id=id) as author
             FROM post
-            WHERE publish=1 $category $tag $user_id
+            WHERE $where
             ORDER BY id DESC LIMIT $start_from,$ppp";
         $res = $db->query($ql);
         if ($res) while ($r = mysqli_fetch_assoc($res)) {
             yield $r;
         }
+    }
+
+    static function where ($args=[]) {
+        $category = isset($args['category'])?"AND id IN(SELECT post_id from postmeta where vartype='category' and value='{$args['category']}')":"";
+        $tag = isset($args['tag'])?"AND id IN(SELECT post_id from postmeta where vartype='tag' and value='{$args['tag']}')":"";
+        $user_id = isset($args['user_id'])?"AND user_id='{$args['user_id']}'":"";
+        return "publish=1 $category $tag $user_id";
     }
 
     static function search ($s) {

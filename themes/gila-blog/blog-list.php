@@ -28,7 +28,7 @@
             $totalpages = blog::totalpages();
             for($pl=0;$pl<$totalpages;$pl++) { ?>
             <li class="">
-                <a href="?page=<?=$pl+1?>"><?=($pl+1)?></a>
+                <a href="<?=router::url()?>?page=<?=$pl+1?>"><?=($pl+1)?></a>
             </li>
             <?php } ?>
         </ul>
