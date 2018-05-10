@@ -2,7 +2,7 @@
 <div class='pnk-table' pnk-src='src/core/tables/widget' id='twidget'></div>
 
 <?=view::script('lib\jquery\jquery-3.3.1.min.js')?>
-<?=view::script('lib\pnk\pnk-1.3.js')?>
+<?=view::script('lib\pnk\pnk-1.4.js')?>
 
 <script src="lib/CodeMirror/codemirror.js"></script>
 <link rel="stylesheet" href="lib/CodeMirror/codemirror.css">

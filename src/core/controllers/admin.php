@@ -80,6 +80,15 @@ class admin extends controller
         view::renderAdmin('admin/list_widget.php');
     }
 
+    function contentAction()
+    {
+        $type = router::get('type',1);
+        $src = explode('.',gila::$content[$type])[0];
+        view::set('table', $type);
+        view::set('tablesrc', $src);
+        view::renderAdmin('admin/content.php');
+    }
+
     function update_widgetAction ()
     {
         global $db;

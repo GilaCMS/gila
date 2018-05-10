@@ -5,19 +5,18 @@ class pnkTable
     private $table;
     private $permissions;
 
-    function __construct ($path, $permissions = [])
+    function __construct ($path, $permissions = ['admin'])
     {
         include $path;
         $this->table = $table;
         $this->permissions = $permissions;
-        if(!isset($this->table['permissions'])) {
-            $this->table['permissions'] = [
-                'create'=>false,
-                'read'=>true,
-                'update'=>false,
-                'delete'=>false
-            ];
-        }
+
+        if(!isset($this->table['permissions'])) $this->table['permissions'] = [];
+        $p = &$this->table['permissions'];
+        if(!isset($p['create'])) $p['create'] = ['admin'];
+        if(!isset($p['read'])) $p['read'] = ['admin'];
+        if(!isset($p['update'])) $p['update'] = ['admin'];
+        if(!isset($p['delete'])) $p['delete'] = ['admin'];
     }
 
     function name()
@@ -88,9 +87,11 @@ class pnkTable
     }
 
 
-    function set() {
+    function set(&$fields = null) {
         $set = [];
-        foreach($_POST as $key=>$value) {
+        if($fields==null) $fields=$_POST;
+
+        foreach($fields as $key=>$value) {
             if(array_key_exists($key, $this->table['fields'])) {
                 if(is_array($value)) {
                     foreach($value as $subkey=>$subvalue) {
@@ -101,7 +102,6 @@ class pnkTable
                     $set[] = "$key='$value'";
                 }
             }
-            echo $key."<br>";
         }
         if($set != []) {
             return ' SET '.implode(',',$set);
@@ -112,7 +112,7 @@ class pnkTable
 
     function where(&$fields = null) {
         $filters = [];
-        if($fields==null) $fields=$_GET;
+        if($fileds==null) $fields=$_GET;
 
         foreach($fields as $key=>$value) if(!is_numeric($key)){
             if(array_key_exists($key, $this->table['fields'])) {

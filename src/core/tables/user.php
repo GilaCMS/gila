@@ -9,6 +9,10 @@ $table = [
     'id'=>'id',
     'list'=> ['id','username','email','privileges'],
     'csv'=> ['id','username','email'],
+    'permissions'=>[
+        'create'=>['admin'],
+        'update'=>['admin']
+    ],
     'fields'=> [
         'id'=> [
           "title"=>"ID",

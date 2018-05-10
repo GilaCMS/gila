@@ -16,6 +16,11 @@ $table = [
     'tools'=>['add'],
     'commands'=>['edit_widget','delete'],
     'csv'=> ['id','title','slug','updated','publish','page'],
+    'permissions'=>[
+        'create'=>['admin'],
+        'update'=>['admin'],
+        'delete'=>['admin']
+    ],
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],
         'widget'=> ['title'=>'Widget', 'options'=>$widgets,  'create'=>true], //'edit'=>false,

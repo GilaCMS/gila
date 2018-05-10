@@ -32,8 +32,9 @@ class cm extends controller
     {
         global $table;
         $this->contenttype = router::get("t",1);
+        if(!$pnk->can('read')) return;
         include 'src/'.gila::$content[$this->contenttype];
-        echo '<pre>'.json_encode($table,JSON_PRETTY_PRINT).'</pre>';
+        echo json_encode($table,JSON_PRETTY_PRINT);
     }
 
     /**
@@ -44,6 +45,7 @@ class cm extends controller
         global $db;
         $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
         $result = [];
+        if(!$pnk->can('read')) return;
 
         $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()};");
         while($r = mysqli_fetch_assoc($res)) {
@@ -68,6 +70,8 @@ class cm extends controller
         global $db;
         $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
         $result = [];
+        if(!$pnk->can('read')) return;
+
         $result['fields'] = $pnk->fields();
         //echo "SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
         $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};");
@@ -82,26 +86,52 @@ class cm extends controller
     /**
     * Updates registries of content type
     */
-    function updateAction ()
+    function update_rowsAction ()
     {
         global $db;
         $result = [];
         $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+sleep(1);
+        if(isset($_GET['id'])&&$_GET['id']!='') {
+            $id = $_GET['id'];
+        } else if($pnk->can('create')){
+            $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
+            $id = $db->insert_id;
+        } else return;
 
-        $res = $db->query("UPDATE {$pnk->name()}{$pnk->set()}{$this->where()};");
+        $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
+        $result['fields'] = $pnk->fields();
+        $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
+        while($r = mysqli_fetch_row($res)) {
+            $result['rows'][] = $r;
+        }
+        echo json_encode($result,JSON_PRETTY_PRINT);
     }
 
     /**
-    * Updates registries of content type
+    * Insert new registry of content type
     */
-    function insertAction ()
+    function insert_rowAction ()
     {
         global $db;
         $result = [];
         $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
-        $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
-        $result['id'] = $db->insert_id;
-        echo '<pre>'.json_encode($result,JSON_PRETTY_PRINT).'</pre>';
+        if(isset($_GET['id'])) {
+            $fields=implode(',',$pnk->fields());
+            $res = $db->query("INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_GET['id']);
+            $id = $_GET['id'];
+        } else {
+            $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
+            $id = $db->insert_id;
+        }
+
+        $result['fields'] = $pnk->fields();
+        $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
+        while($r = mysqli_fetch_row($res)) {
+            foreach($r as &$el) if($el==null) $el='';
+            $result['rows'][] = $r;
+        }
+        echo json_encode($result,JSON_PRETTY_PRINT);
     }
 
     /**
@@ -114,6 +144,8 @@ class cm extends controller
         if($pnk->can('delete')) {
             $res = $db->query("DELETE FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_POST['id']);
             echo $_POST['id'];
+        } else {
+            echo "User cannot delete";
         }
     }
 

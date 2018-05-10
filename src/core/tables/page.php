@@ -8,6 +8,11 @@ $table = [
     'tools'=>['new_page','csv'],
     'csv'=> ['id','title','slug','updated','publish','page'],
     'commands'=> ['delete'],
+    'permissions'=>[
+        'create'=>['admin'],
+        'update'=>['admin'],
+        'delete'=>['admin']
+    ],
     'fields'=> [
         'id'=> [
             'title'=>'ID',
