@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href="lib/pnk/pnk.css?">
-<div class='pnk-table' pnk-src='src/core/tables/widget' id='twidget'></div>
+<div class='pnk-table' pnk-src='src/core/tables/widget' pnk-table="widget" id='twidget'></div>
 
 <?=view::script('lib\jquery\jquery-3.3.1.min.js')?>
 <?=view::script('lib\pnk\pnk-1.4.js')?>

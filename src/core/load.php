@@ -15,6 +15,7 @@ gila::$amenu = [
         ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin writer'],
         ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin'],
         ['Media','admin/media','icon'=>'image','access'=>'admin'],
+        ['File Manager','fm','icon'=>'folder','access'=>'admin'],
         ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
         ]],
     'admin'=>['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
@@ -24,7 +25,6 @@ gila::$amenu = [
         ['Packages','admin/addons','icon'=>'dropbox','access'=>'admin'],
         ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
         ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
-        ['File Manager','fm','icon'=>'folder','access'=>'admin'],
         ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin'],
         ]],
 ];

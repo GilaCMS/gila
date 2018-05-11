@@ -40,15 +40,14 @@ class pnkTable
     function fields()
     {
         return isset($this->table['list'])? $this->table['list']: array_keys($this->table['fields']);
+        //if(isset($_GET['$select'])) {
+        //    $select = explode(',', $_GET['$select']);
+        //}
     }
 
     function select()
     {
         $select = $this->fields();
-
-        if(isset($_GET['$select'])) {
-            $select = explode(',', $_GET['$select']);
-        }
 
         foreach ($select as $key => $value) {
             if($qcolumn = $this->fieldAttr($value, 'qcolumn'))
@@ -65,18 +64,46 @@ class pnkTable
         return implode(',', $select);
     }
 
+    function selectsum($groupby)
+    {
+        $select = $this->fields();
+
+        foreach ($select as $key => $value) {
+            if($this->table['fields'][$value]['type']=="number") {
+                $select[$key] = 'SUM('.$value.') as '.$value;
+            } else if($groupby == $value) {
+                if($qcolumn = $this->fieldAttr($value, 'qcolumn'))
+                    $select[$key] = $qcolumn.' as '.$value;
+                if($mt = $this->fieldAttr($value, 'mt')) {
+                    $vt = $this->fieldAttr($value, 'metatype');
+                    $this_id = $this->name().".".$this->table['id'];
+                    $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[2]}`) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
+                }
+            } else $select[$key] = "'' as ".$value;
+        }
+        return implode(',', $select);
+    }
+
     function startIndex() {
         return isset($_GET['page'])? ($_GET['page']-1)*$this->table['pagination'] :0;
     }
 
     function orderby($id='id', $v='desc') {
-        if(isset($_GET['$order'])) {
-            $o = explode(' ',$_GET['$order']);
-            if(array_key_exists($o[0], $this->table['fields']))
-                if(in_array($o[1],['desc','asc']))
-                    return ' ORDER BY '.$_GET['$order'];
+        if(isset($_GET['orderby'])) {
+            $o = explode('_',$_GET['orderby']);
+            if(array_key_exists($o[0], $this->table['fields'])) {
+                $id=$o[0];
+                if(isset($o[1])) {
+                    if($o[1]=='a') $v='asc';
+                    if($o[1]=='d') $v='desc';
+                }
+            }
         }
         return " ORDER BY $id $v";
+    }
+
+    function groupby($group) {
+        return " GROUP BY $group";
     }
 
     function limit($start=null,$end=null) {

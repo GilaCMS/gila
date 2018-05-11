@@ -68,18 +68,39 @@ class cm extends controller
     function list_rowsAction ()
     {
         global $db;
+        if(isset($_GET['groupby'])&&$_GET['groupby']!=null) {
+            $this->group_rowsAction();
+            return;
+        }
         $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
         $result = [];
         if(!$pnk->can('read')) return;
 
         $result['fields'] = $pnk->fields();
-        //echo "SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
         $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};");
         while($r = mysqli_fetch_row($res)) {
             $result['rows'][] = $r;
         }
         $result['startIndex'] = $pnk->startIndex();
         $result['totalRows'] = $db->value("SELECT COUNT(*) FROM {$pnk->name()}{$pnk->where($_GET)};");
+        echo json_encode($result,JSON_PRETTY_PRINT);
+    }
+
+    function group_rowsAction ()
+    {
+        global $db;
+        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $result = [];
+        $groupby = $_GET['groupby'];
+        if(!$pnk->can('read')) return;
+
+        $result['fields'] = $pnk->fields();
+        $res = $db->query("SELECT {$pnk->selectsum($groupby)} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby()};");
+        while($r = mysqli_fetch_row($res)) {
+            $result['rows'][] = $r;
+        }
+        $result['startIndex'] = $pnk->startIndex();
+        $result['totalRows'] = $db->value("SELECT COUNT(*) FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->groupby($groupby)};");
         echo json_encode($result,JSON_PRETTY_PRINT);
     }
 
@@ -91,7 +112,7 @@ class cm extends controller
         global $db;
         $result = [];
         $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
-sleep(1);
+
         if(isset($_GET['id'])&&$_GET['id']!='') {
             $id = $_GET['id'];
         } else if($pnk->can('create')){

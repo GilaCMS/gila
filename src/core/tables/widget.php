@@ -15,6 +15,7 @@ $table = [
     'id'=>'id',
     'tools'=>['add'],
     'commands'=>['edit_widget','delete'],
+    'list'=> ['id','widget','title','area','pos','active'],
     'csv'=> ['id','title','slug','updated','publish','page'],
     'permissions'=>[
         'create'=>['admin'],
