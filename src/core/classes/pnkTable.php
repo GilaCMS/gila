@@ -39,7 +39,13 @@ class pnkTable
 
     function fields()
     {
-        return isset($this->table['list'])? $this->table['list']: array_keys($this->table['fields']);
+        if(!isset($this->table['list'])) {
+            $this->table['list']=[];
+            foreach($this->table['fields'] as $k=>$f) {
+                if(!isset($f['list'])||$f['list']==true) $this->table['list'][] = $k;
+            }
+        }
+        return $this->table['list'];
         //if(isset($_GET['$select'])) {
         //    $select = explode(',', $_GET['$select']);
         //}
@@ -55,7 +61,6 @@ class pnkTable
             if($mt = $this->fieldAttr($value, 'mt')) {
                 $vt = $this->fieldAttr($value, 'metatype');
                 $this_id = $this->name().".".$this->table['id'];
-                //$select[$key] = "(SELECT GROUP_CONCAT({$mt[2]}) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
                 $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[2]}`) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
             }
             if($qcolumn = $this->fieldAttr($value, 'jt'))
@@ -164,6 +169,23 @@ class pnkTable
             return ' WHERE '.implode(' AND ',$filters);
         }
         return '';
+    }
+
+    function getEmpty() {
+        $row = [];
+        foreach($this->fields() as $key) {
+            $fv="";
+            $field = $this->table['fields'][$key];
+            if(isset($field['default'])) {
+                $fv=$field['default'];
+            } else if(isset($field['type'])) {
+                if(isset($field['options'])) $fv="0";
+                if($field['type']=="date") $fv=date("Y-m-d");
+                if($field['type']=="number") $fv="0";
+            }
+            $row[]=$fv;
+        }
+        return $row;
     }
 
     function can($action, $field = null) {

@@ -129,6 +129,14 @@ class cm extends controller
         echo json_encode($result,JSON_PRETTY_PRINT);
     }
 
+    function empty_rowAction ()
+    {
+        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $result['fields'] = $pnk->fields();
+        $result['rows'][0] = $pnk->getEmpty();
+        echo json_encode($result,JSON_PRETTY_PRINT);
+    }
+
     /**
     * Insert new registry of content type
     */

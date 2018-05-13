@@ -1,3 +1,4 @@
+lazyImgLoad();
 window.onload = function() {
     lazyImgLoad();
 }

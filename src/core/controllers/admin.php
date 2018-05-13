@@ -10,6 +10,7 @@ class admin extends controller
     public function __construct ()
     {
         self::admin();
+        gila::addLang('core/lang/admin/');
     }
 
     /**
@@ -26,7 +27,7 @@ class admin extends controller
       view::set('pages',$db->value('SELECT count(*) from page;'));
       view::set('users',$db->value('SELECT count(*) from user;'));
       view::set('packages',count($GLOBALS['config']['packages']));
-      view::renderAdmin('admin/dashboard.phtml');
+      view::renderAdmin('admin/dashboard.php');
     }
 
     /**

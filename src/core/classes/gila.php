@@ -204,6 +204,11 @@ class gila {
         }
     }
 
+    /**
+    * Sets the value of configuration attribute
+    * @param $key (string) Name of the attribute
+    * @param $value (optional) The value to set
+    */
     static function setConfig($key, $value)
     {
         $GLOBALS['config'][$key] = $value;

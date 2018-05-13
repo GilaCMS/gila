@@ -6,7 +6,7 @@ $table = [
     'tools'=>['add','csv'],
     'commands'=>['edit','clone'],
     'id'=>'id',
-    'list'=> ['id','title'],
+    'list'=> ['id','title','gal'],
     'csv'=> ['id','title'],
     'permissions'=>[
         'create'=>['admin'],
@@ -17,5 +17,3 @@ $table = [
         'title'=> ['title'=>'Name']
     ]
 ];
-
-//,'type'=>'text'
