@@ -35,7 +35,8 @@ class router
     	$c = new $controller();
 
         // find function to run after controller construction
-        foreach(gila::$on_controller[$controller] as $fn) $fn();
+        if(isset(gila::$on_controller[$controller]))
+            foreach(gila::$on_controller[$controller] as $fn) $fn();
 
     	$action = self::request('action','');
         if($action=='') $action='index';
@@ -44,7 +45,8 @@ class router
             if(isset(gila::$action[$controller][$args[1]])){
                 $action = $args[1];
                 router::$args = $args;
-                foreach(gila::$before[$controller][$action] as $fn) $fn();
+                if(isset(gila::$before[$controller][$action]))
+                    foreach(gila::$before[$controller][$action] as $fn) $fn();
                 gila::$action[$controller][$action]();
                 return;
             } else if (isset($_GET['action']) && method_exists($controller,$_GET['action'].'Action')) {
@@ -78,7 +80,8 @@ class router
         }
 
         router::$args = $args;
-        foreach(gila::$before[$controller][$action] as $fn) $fn();
+        if(isset(gila::$before[$controller][$action]))
+            foreach(gila::$before[$controller][$action] as $fn) $fn();
         $c->$action_fn();
     }
 
@@ -169,6 +172,6 @@ class router
     */
     static function action ()
     {
-        return router::$args[1];
+        return @router::$args[1];
     }
 }

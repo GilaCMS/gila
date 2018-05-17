@@ -166,7 +166,7 @@ class blog extends controller
                 view::set('title',$r['title']);
                 view::set('text',$r['page']);
                 view::render('page.php');
-            } else view::render('404.phtml');
+            } else view::render('404.php');
         }
     }
 

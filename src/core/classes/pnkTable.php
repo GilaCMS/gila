@@ -90,10 +90,11 @@ class pnkTable
     }
 
     function startIndex() {
-        return isset($_GET['page'])? ($_GET['page']-1)*$this->table['pagination'] :0;
+        $ppp = @$this->table['pagination']?:25;
+        return isset($_GET['page'])? ($_GET['page']-1)*$ppp :0;
     }
 
-    function orderby($id='id', $v='desc') {
+    function orderby($id=null, $v='desc') {
         if(isset($_GET['orderby'])) {
             $o = explode('_',$_GET['orderby']);
             if(array_key_exists($o[0], $this->table['fields'])) {
@@ -104,6 +105,7 @@ class pnkTable
                 }
             }
         }
+        if($id==null) $id = @$this->table['id']?:'id';
         return " ORDER BY $id $v";
     }
 
@@ -144,7 +146,7 @@ class pnkTable
 
     function where(&$fields = null) {
         $filters = [];
-        if($fileds==null) $fields=$_GET;
+        if($fields==null) $fields=$_GET;
 
         foreach($fields as $key=>$value) if(!is_numeric($key)){
             if(array_key_exists($key, $this->table['fields'])) {

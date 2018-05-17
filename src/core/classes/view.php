@@ -198,7 +198,6 @@ class view
             return;
         }
         return false;
-        //self::includeFile('404.phtml');
     }
 
     static function getViewFile ($file, $package = 'core') {

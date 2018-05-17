@@ -72,12 +72,13 @@ class cm extends controller
             $this->group_rowsAction();
             return;
         }
-        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new pnkTable('src/'.@gila::$content[router::get("t",1)]);
         $result = [];
         if(!$pnk->can('read')) return;
 
         $result['fields'] = $pnk->fields();
-        $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};");
+        $ql = "SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
+        $res = $db->query($ql);
         while($r = mysqli_fetch_row($res)) {
             $result['rows'][] = $r;
         }

@@ -3,22 +3,34 @@
 <div class='row'>
   <div class='gm-3 wrapper'>
     <a href="admin/posts">
-        <div class='alert success'><h3><?=$c->posts?> Posts</h3></div>
+        <div class='alert' style="background:olivedrab">
+            <span>Posts</span>
+            <div style="font-size:200%"><?=$c->posts?></div>
+        </div>
     </a>
   </div>
   <div class='gm-3 wrapper'>
     <a href="admin/users">
-        <div class='alert primary'><h3><?=$c->users?> Users</h3></div>
+        <div class='alert' style="background:cornflowerblue">
+            <span>Users</span>
+            <div style="font-size:200%"><?=$c->users?></div>
+        </div>
     </a>
   </div>
   <div class='gm-3 wrapper'>
     <a href="admin/pages">
-        <div class='alert warning'><h3><?=$c->pages?> Pages</h3></div>
+        <div class='alert' style="background:coral">
+            <span>Pages</span>
+            <div style="font-size:200%"><?=$c->pages?></div>
+        </div>
     </a>
   </div>
   <div class='gm-3 wrapper'>
     <a href="admin/addons">
-        <div class='alert'><h3><?=$c->packages?> Packages</h3></div>
+        <div class='alert' style="background:orchid">
+            <span>Packages</span>
+            <div style="font-size:200%"><?=$c->packages?></div>
+        </div>
     </a>
   </div>
 </div>
