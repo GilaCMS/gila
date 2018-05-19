@@ -110,7 +110,7 @@ class admin extends controller
     * List and manage installed packages
     * @photo
     */
-    function addonsAction ()
+    function packagesAction ()
     {
         new package();
         $tab = router::get('tab',1);
@@ -137,17 +137,6 @@ class admin extends controller
 		view::renderAdmin('admin/package-list.php');
     }
 
-    function packagesAction ()
-    {
-        if(!$contents=file_get_contents('http://gilacms.com/packages/')) {
-            echo "<br>Could not connect to packages list. Please try later.";
-            exit;
-        }
-        $packages = json_decode($contents);
-        view::set('packages',$packages);
-        view::renderFile('admin/packages.php');
-    }
-
     function newthemesAction ()
     {
         if(!$contents=file_get_contents('http://gilacms.com/packages/themes')) {
@@ -156,12 +145,15 @@ class admin extends controller
         }
         $packages = json_decode($contents);
         view::set('packages',$packages);
-        view::renderFile('admin/newthemes.php');
+        view::renderAdmin('admin/theme-list.php');
     }
 
     function themesAction ()
     {
-		view::renderAdmin('admin/themes.php');
+        new theme();
+        $packages = theme::scan();
+        view::set('packages',$packages);
+		view::renderAdmin('admin/theme-list.php');
     }
 
     function settingsAction ()

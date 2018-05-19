@@ -46,7 +46,7 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
             }
             $current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version;
             if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Upgrade</a>";
-            $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></a>";
+            $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></i></a>";
         } else {
             $table .= "<td><td><td><a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Download</a>";
         }
@@ -55,8 +55,8 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
 ?>
 <?php
 $links=[
-['Downloaded','admin/addons'],
-['Newest','admin/addons/new']
+['Downloaded','admin/packages'],
+['Newest','admin/packages/new']
 ];
 view::alerts();
 ?>
@@ -75,16 +75,16 @@ view::alerts();
 
 <?=view::script('src/core/assets/admin/media.js')?>
 <script>
-function addon_activate(p){ g.ajax('admin/addons?g_response=content&activate='+p,function(x){
+function addon_activate(p){ g.ajax('admin/packages?g_response=content&activate='+p,function(x){
     if(x=='ok')
         g.alert('Package successfully activated!','success','location.reload(true)');
     else
         g.alert(x,'warning');
 })};
-function addon_deactivate(p){ g.ajax('admin/addons?g_response=content&deactivate='+p,function(x){
+function addon_deactivate(p){ g.ajax('admin/packages?g_response=content&deactivate='+p,function(x){
     g.alert('Package deactivated!','notice','location.reload(true)');
 })};
-function addon_download(p){ g.ajax('admin/addons?g_response=content&download='+p,function(x){
+function addon_download(p){ g.ajax('admin/packages?g_response=content&download='+p,function(x){
     // something to show progress
     if(x=='ok')
         g.alert('Package downloaded!','success');
@@ -97,14 +97,14 @@ g.dialog.buttons.save_options = {
     title:'Save Options',fn:function(){
 		let p = g.el('addon_id').value;
 		let fm=new FormData(g.el('addon_options_form'))
-        g.ajax({url:'admin/addons?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
+        g.ajax({url:'admin/packages?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
 			g('.gila-darkscreen').remove();
 		}})
     }
 }
 
 function addon_options(p) {
- g.post("admin/addons",'g_response=content&options='+p,function(x){
+ g.post("admin/packages",'g_response=content&options='+p,function(x){
      g.modal({title:"Options",body:x,buttons:'save_options'})
  })
 }

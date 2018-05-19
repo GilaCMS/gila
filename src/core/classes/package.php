@@ -47,7 +47,7 @@ class package {
                 }
                 else {
                     echo "These packages must be activated:";
-                    foreach($require as $k=>$r) echo "<br><a href='admin/addons/search/$k'>$r</a>";
+                    foreach($require as $k=>$r) echo "<br><a href='admin/packages/search/$k'>$r</a>";
                 }
             } else echo "Package is already active";
         } else echo "Package is not downloaded";
