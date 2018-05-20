@@ -19,9 +19,9 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
             $table .= '<i class="fa fa-3x fa-dropbox"></i>';
 
         $table .= '<td style="width:100%"><b>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'');
-        $table .= '</b><p>'.(isset($p->description)?$p->description:'No description');
-        $table .= '</p><i class="fa fa-user addon-i"></i> '.(isset($p->author)?$p->author:'');
-        $table .= (isset($p->url)?' <i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
+        $table .= '</b><p>'.(isset($p->description)?$p->description:'No description').'</p>';
+        $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
+        $table .= (@$p->url?'<i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
         $table .= (isset($p->contact)?' <i class="fa fa-envelope addon-i"</i> '.$p->contact:'');
         if(isset($p->require)) {
             $table .= "<br>Requires: ";

@@ -1,15 +1,14 @@
 <?php
 
 /*
-<link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
 <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#ff9900">
 */
 
 
-
 event::listen('head', function(){ ?>
+<link rel="apple-touch-icon" sizes="144x144" href="<?=view::thumb($icon,'fav/144_',144)?>">
+<link rel="icon" type="image/png" sizes="32x32" href="<?=view::thumb($icon,'fav/32_',32)?>">
+<link rel="icon" type="image/png" sizes="16x16" href="<?=view::thumb($icon,'fav/16_',16)?>">
 <link rel="manifest" href="/favicon/manifest.json">
 <script>
 if ('serviceWorker' in navigator) {
