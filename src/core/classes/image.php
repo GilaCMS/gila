@@ -20,6 +20,7 @@ class image {
             }
             $src = $_src;
         }
+        gila::dir(substr($file, 0, strrpos($file,'/')));
 
         if(!$image = @getimagesize($src)) return false;
 
@@ -106,6 +107,7 @@ class image {
                     if(!copy($src, $_src)) $_src = $src;
                 }
             } else $_src = $src;
+            gila::dir(substr($file, 0, strrpos($file,'/')));
 
             if($image = @getimagesize($_src)) {
                 list($src_width,$src_height)=$image;

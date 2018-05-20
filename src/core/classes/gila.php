@@ -352,6 +352,21 @@ class gila {
         foreach($pri as $p) if(in_array($p,$GLOBALS['user_privileges'])) return true;
         return false;
     }
+
+    static function dir ($path)
+    {
+        if (file_exists($path)) return $path;
+        $p = explode('/', str_replace("\\", "/", $path));
+        $path = '';
+        foreach ($p as $folder) if($folder!=null){
+            $path .= $folder.'/';
+            if (!file_exists($path)) {
+                mkdir($path);
+            }
+
+        }
+        return $path;
+    }
 }
 
 $GLOBALS['lang'] = [];

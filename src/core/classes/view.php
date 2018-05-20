@@ -300,7 +300,7 @@ class view
     static function thumb ($src, $prefix, $max=180)
     {
         if($src==null) return false;
-        $file = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $prefix.$src);
+        $file = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "/", $prefix.$src);
         $max_width = $max;
         $max_height = $max;
         if($src=='') return false;
@@ -356,7 +356,7 @@ class view
     {
         $r = [];
         foreach($sizes as $w) {
-            $r[] = view::thumb($src, $w.'_', $w);
+            $r[] = view::thumb($src, $w.'/', $w);
         }
         return $r;
     }
