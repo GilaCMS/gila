@@ -35,7 +35,7 @@ class post
         global $db;
         if ($value==null) {
             $ql = "SELECT value FROM postmeta where post_id=? and vartype=?;";
-            return $db->value($ql,[$id, $meta]);
+            return $db->getList($ql,[$id, $meta]);
         }
         $ql = "INSERT INTO postmeta(post_id,vartype,value) VALUES('?','?','?');";
         return $db->query($ql,[$id, $meta, $value]);

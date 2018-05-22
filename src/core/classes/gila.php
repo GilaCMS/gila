@@ -361,7 +361,7 @@ class gila {
         foreach ($p as $folder) if($folder!=null){
             $path .= $folder.'/';
             if (!file_exists($path)) {
-                mkdir($path);
+                mkdir($path,0755,true);
             }
 
         }

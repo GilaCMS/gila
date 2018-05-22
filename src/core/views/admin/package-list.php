@@ -44,8 +44,9 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
                     $table .= "<td><td>";
                 } else $table .= "<td><td><a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>Activate</a>";
             }
-            $current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version;
-            if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Upgrade</a>";
+            if(@$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version) {
+                if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Upgrade</a>";
+            }
             $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></i></a>";
         } else {
             $table .= "<td><td><td><a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Download</a>";

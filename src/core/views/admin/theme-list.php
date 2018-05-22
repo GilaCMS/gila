@@ -27,8 +27,9 @@ foreach ($packages as $pkey=>$p) {
             $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>Select</a> ";
             $table .= "<a href='".gila::config('base')."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;Preview</a> ";
         }
-        $current_version = json_decode(file_get_contents('themes/'.$p->package.'/package.json'))->version;
-        if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='theme_download(\"{$p}\")' class='g-btn success'>Upgrade</a>";
+        if(@$current_version = json_decode(file_get_contents('themes/'.$p->package.'/package.json'))->version) {
+            if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='theme_download(\"{$p}\")' class='g-btn success'>Upgrade</a>";
+        }
         $table .= "<a href='fm/?path=themes/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></i></a>";
     } else {
         $table .= "<a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>Download</a>";
