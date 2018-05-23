@@ -19,7 +19,7 @@ if(file_exists($pages_path)) {
 <?=view::script("lib/tinymce/tinymce.min.js")?>
 
 <script>
-
+base_url = "<?=gila::config('base')?>"
 function get_text_to_save() {
     return g('[name=p_post]').all[0].innerHTML;
 }
@@ -27,6 +27,8 @@ function get_text_to_save() {
 
 tinymce.init({
   selector: '[name=<?=$textarea?>]',
+  relative_urls: false,
+  remove_script_host: false,
   //mode: 'none',
   height: 300,
   theme: 'modern',
@@ -35,7 +37,7 @@ tinymce.init({
     'searchreplace wordcount visualchars code',
     'insertdatetime media nonbreaking table contextmenu ',
     'template paste textcolor colorpicker textpattern codesample'
-],
+  ],
   toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
   templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,
   document_base_url : "<?=gila::config('base')?>",
@@ -59,14 +61,14 @@ g.require('lib/jquery/jquery-3.3.1.min.js',function(){
 g.dialog.buttons.select_path = {
     title:'Select',fn: function(){
         let v = g('#selected-path').attr('value')
-        if(v!=null) g('[name=p_img]').attr('value',v)
+        if(v!=null) g('[name=p_img]').attr('value', base_url+v)
         g('#media_dialog').remove();
     }
 }
 g.dialog.buttons.select_path_post = {
     title:'Select', fn: function() {
         let v = g('#selected-path').attr('value')
-        if(v!=null) input_filename(v);
+        if(v!=null) input_filename(base_url+v);
         g('#media_dialog').remove();
     }
 }

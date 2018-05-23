@@ -45,9 +45,7 @@ function open_media_gallery(mpi) {
 
 function filter_files(query,value) {
  var list = document.querySelectorAll(query)
-console.log(value+':')
  list.forEach(function(entry){
-     console.log(entry.getAttribute('data-path'))
   if(!entry.getAttribute('data-path').includes(value))
    entry.style.display='none';
   else
