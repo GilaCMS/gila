@@ -13,7 +13,7 @@ class image {
      */
     static function make_thumb ($src,$file,$max_width,$max_height)
     {
-        if(parse_url($src, PHP_URL_HOST) != null) {
+        if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
             $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
             if(!file_exists($_src)) {
                 if(!copy($src, $_src)) return false;
@@ -101,7 +101,7 @@ class image {
         $dst_y = 0; $total_y = 0;
 
         foreach($src_array as $key=>$src) {
-            if(parse_url($src, PHP_URL_HOST) != null) {
+            if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
                 $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
                 if(!file_exists($_src)) {
                     if(!copy($src, $_src)) $_src = $src;
