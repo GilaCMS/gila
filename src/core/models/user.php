@@ -38,16 +38,24 @@ class user
         //// todo
     }
 
-    static function getIdByMeta($vartype,$value)
+    static function getIdsByMeta($vartype,$value)
     {
         global $db;
-        return $db->get("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';",[$value]);
+        return $db->getList("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';",[$value]);
     }
 
     static function getByEmail($email)
     {
         global $db;
         $res = $db->get("SELECT * FROM user WHERE email=?",$email);
+        if($res) return $res[0];
+        return false;
+    }
+
+    static function getById($id)
+    {
+        global $db;
+        $res = $db->get("SELECT * FROM user WHERE id=?",$id);
         if($res) return $res[0];
         return false;
     }

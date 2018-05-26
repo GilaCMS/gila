@@ -25,16 +25,17 @@ class session
                 session::key('user_name',$r[2]);
                 session::key('user_email',$r[3]);
                 $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-                $gsession='';
-                for ($p = 0; $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
+                $gsession = (string)$r[0];
+                for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
                 user::meta($r[0],'GSESSIONID',$gsession);
                 setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
             }
         }
         if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
-            foreach (user::getIdByMeta('GSESSIONID',$_COOKIE['GSESSIONID']) as $r) {
-                $res = $db->query("SELECT id,username,email FROM user WHERE id=?;",[$r[0]]);
-                while ($r = mysqli_fetch_array($res)) {
+            foreach (user::getIdsByMeta('GSESSIONID',$_COOKIE['GSESSIONID']) as $user_id) {
+                $res = $db->query("SELECT id,username,email FROM user WHERE id=?;",[$user_id]);
+                echo "use GSESSIONID {$r[0]}<br>";
+                if ($r = mysqli_fetch_array($res)) {
                     session::key('user_id',$r[0]);
                     session::key('user_name',$r[1]);
                     session::key('user_email',$r[2]);
