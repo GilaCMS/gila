@@ -9,7 +9,7 @@ if(isset($_GET['step'])) {
 
 $configfile = 'config.php';
 $required_php = "7";
-$required_ext = ['mysqli','zip','mysqlnd','json'];
+$required_ext = ['mysqli','zip','mysqlnd','json','gd'];
 
 if (file_exists($configfile)) {
     echo "<div class='alert'>config.php is already installed. You have to remove it before reinstalling the software</div>";

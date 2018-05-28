@@ -6,7 +6,7 @@ $pn = 0;
 foreach ($packages as $pkey=>$p) {
     if ($p->package == gila::config('theme')) $border="border: 2px solid green;"; else $border="";
     $table .= '<div class="bordered wrapper" style="vertical-align: top;'.$border.'">';
-    $table .= '<h4>'.(isset($p->name)?$p->name:$p->package).' '.(isset($p->version)?$p->version:'').'</h4>';
+    $table .= '<h4>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'').'</h4>';
     $table .= '<div style="background:lightgrey;">';
     if (file_exists($dir.$p->package."/screenshot.jpg")) {
         $table .= '<img src="'."themes/{$p->package}/screenshot.jpg".'"  />';
@@ -48,7 +48,7 @@ view::alerts();
     <ul class="g-nav g-tabs gs-12" id="theme-tabs"><?php
     foreach($links as $link){
         $active = (router::url()==$link[1]?'active':'');
-        echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.$link[0].'</a></li>';
+        echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.__($link[0]).'</a></li>';
     }
     ?>
     </ul>

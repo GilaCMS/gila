@@ -65,7 +65,7 @@ view::alerts();
     <ul class="g-nav gs-2 vertical" id="addon-tabs"><?php
     foreach($links as $link){
         $active = (router::url()==$link[1]?'g-selected':'');
-        echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.$link[0].'</a></li>';
+        echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.__($link[0]).'</a></li>';
     }
     ?>
     </ul>
