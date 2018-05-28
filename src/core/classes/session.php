@@ -34,7 +34,6 @@ class session
         if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
             foreach (user::getIdsByMeta('GSESSIONID',$_COOKIE['GSESSIONID']) as $user_id) {
                 $res = $db->query("SELECT id,username,email FROM user WHERE id=?;",[$user_id]);
-                echo "use GSESSIONID {$r[0]}<br>";
                 if ($r = mysqli_fetch_array($res)) {
                     session::key('user_id',$r[0]);
                     session::key('user_name',$r[1]);

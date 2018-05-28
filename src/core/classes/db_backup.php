@@ -6,10 +6,11 @@ class db_backup {
 
 	function __construct()
 	{
-        $this->dir = 'log/db-backups/';
-        if (!file_exists($this->dir)) mkdir($this->dir, 0755,true);
+		$this->dir = gila::dir('log/db-backups/');
 
-        if (isset($_POST['backup'])) $this->backup_tables("post,postmeta");
+        if (isset($_POST['backup'])) {
+			$this->backup_tables();
+		}
 		if (isset($_GET['source'])) $this->source($_GET['source']);
 		if (isset($_GET['download'])) {
 			$this->download($_GET['download']);
@@ -28,11 +29,11 @@ class db_backup {
     function backup_tables($tables = '*')
     {
     	global $db;
-        $tables = array();
         $return='';
 
     	if ($tables == '*')
     	{
+			$tables = array();
     		$result = $db->query('SHOW TABLES');
     		while($row = mysqli_fetch_row($result)) $tables[] = $row[0];
     	} else {
