@@ -35,7 +35,15 @@ class user
             $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
             return $db->getList($ql,[$id, $meta]);
         }
-        //// todo
+
+        if(!is_array($values)) return false;
+
+        $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=?",[$id, $meta]);
+        foreach($values as $value) {
+            $ql = "INSERT INTO usermeta(user_id,vartype,value) VALUES(?,?,?);";
+            $db->query($ql,[$id, $meta, $value]);
+        }
+        return true;
     }
 
     static function getIdsByMeta($vartype,$value)
