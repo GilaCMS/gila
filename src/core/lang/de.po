@@ -1,0 +1,196 @@
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-21 07:22-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Nikolaos Papagiannopoulos <panigrc@x-park.gr>, 2018\n"
+"Language-Team: German (https://www.transifex.com/gila-cms/teams/83736/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 2.2.5\n"
+
+#: .Home
+msgid "Home"
+msgstr "Start"
+
+#: .Search
+msgid "Search"
+msgstr "Suchen"
+
+#: .Submit
+msgid "Submit"
+msgstr "Absenden"
+
+#: .Title
+msgid "Title"
+msgstr "Titel"
+
+#: .Description
+msgid "Description"
+msgstr "Beschreibung"
+
+#: .Website+URL
+msgid "Website URL"
+msgstr "Website URL"
+
+#: .Admin+Email
+msgid "Admin Email"
+msgstr "Administrator E-Mail"
+
+#: .Pretty+Urls
+msgid "Pretty Urls"
+msgstr "Pretty Url"
+
+#: .Main+Menu
+msgid "Main Menu"
+msgstr "Hauptmenü"
+
+#: .Theme
+msgid "Theme"
+msgstr "Theme"
+
+#: .Timezone
+msgid "Timezone"
+msgstr "Zeitzone"
+
+#: .Language
+msgid "Language"
+msgstr "Sprache"
+
+#: .Default+Controller
+msgid "Default Controller"
+msgstr "Vorgegebener Kontroller"
+
+#: .Environment
+msgid "Environment"
+msgstr "Umgebung"
+
+#: .New+users+can+register
+msgid "New users can register"
+msgstr "Neue Benutzer können sich registrieren"
+
+#: .Dashboard
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: .Content
+msgid "Content"
+msgstr "Inhalt"
+
+#: .Administration
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: .Pages
+msgid "Pages"
+msgstr "Seiten"
+
+#: .Posts
+msgid "Posts"
+msgstr "Beiträge"
+
+#: .Categories
+msgid "Categories"
+msgstr "Kategorien"
+
+#: .Media
+msgid "Media"
+msgstr "Medien"
+
+#: .Users
+msgid "Users"
+msgstr "Benutzer"
+
+#: .Backups
+msgid "Backups"
+msgstr "Back-up"
+
+#: .Widgets
+msgid "Widgets"
+msgstr "Widget"
+
+#: .Packages
+msgid "Packages"
+msgstr "Pakete"
+
+#: .Themes
+msgid "Themes"
+msgstr "Themes"
+
+#: .Settings
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: .File+Manager
+msgid "File Manager"
+msgstr "Dateimanager"
+
+#: .My+Profile
+msgid "My Profile"
+msgstr "Mein Profil"
+
+#: .Log+In
+msgid "Log In"
+msgstr "Anmelden"
+
+#: .Loggout
+msgid "Loggout"
+msgstr "Abmelden"
+
+#: .Register
+msgid "Register"
+msgstr "Registrieren"
+
+#: .Activate
+msgid "Activate"
+msgstr "Aktivieren"
+
+#: .Deactivate
+msgid "Deactivate"
+msgstr "Deaktivieren"
+
+#: .Options
+msgid "Options"
+msgstr "Optionen"
+
+#: .Download
+msgid "Download"
+msgstr "Herunterladen"
+
+#: .Downloaded
+msgid "Downloaded"
+msgstr "Heruntergeladen"
+
+#: .Install
+msgid "Install"
+msgstr "Installation"
+
+#: .Installed
+msgid "Installed"
+msgstr "Installiert"
+
+#: .Newest
+msgid "Newest"
+msgstr "Neuste"
+
+#: .New
+msgid "New"
+msgstr "Neu"
+
+#: .Edit
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: .Delete
+msgid "Delete"
+msgstr "Löschen"
+
+#: ._changes_updated
+msgid "Changes have been saved successfully!"
+msgstr "Änderungen wurden erfolgreich gespeichert!"

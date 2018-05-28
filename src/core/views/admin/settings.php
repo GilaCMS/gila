@@ -79,7 +79,7 @@ foreach ($sel_urs as $k=>$value) {
         <label class="gm-3"><?=__("Language")?></label>
         <select name="gila_language" value="<?=gila::config('language')?>" class="gm-4">
         <?php
-        $languages = ['en'=>'English','es'=>'Español','gr'=>'Ελληνικά','et'=>'Eesti'];
+        $languages = ['en'=>'English','es'=>'Español','de'=>'Deutsche','el'=>'Ελληνικά','et'=>'Eesti'];
         foreach ($languages as $k=>$value) {
             $sel = (gila::config('language')==$k?'selected':'');
             echo '<option value="'.$k."\" $sel>".ucwords($value).'</option>';
