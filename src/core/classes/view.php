@@ -270,21 +270,27 @@ class view
     * @param $area (string) Area name
     * @param $div (optional boolean) If true, widget body will be printed as child of <div class="widget"> item.
     */
-    static function widget_area ($area,$div=true)
+    static function widget_area ($area, $div=true, $type=null, $widget_file=null)
     {
         global $db,$widget_data;
         $widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
         if ($widgets) foreach ($widgets as $widget) {
+            if($type != null) if($widget['widget'] != $type) continue;
+
             $widget_id = json_decode($widget['id']);
             $widget_data = json_decode($widget['data']);
 
             if($div){
-                echo '<div class="widget">';
+                echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
                 if($widget['title']!='') echo '<div class="widget-title">'.$widget['title'].'</div>';
                 echo '<div class="widget-body">';
             }
 
-            $widget_file = self::getThemePath().'/widgets/'.$widget['widget'].'.php';
+            if($widget_file != null) {
+                $widget_file = self::getThemePath().'/widgets/'.$widget_file.'.php';
+            } else {
+                $widget_file = self::getThemePath().'/widgets/'.$widget['widget'].'.php';
+            }
             if(file_exists($widget_file) == false) {
                 @$widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
                 if(!isset(gila::$widget[$widget['widget']])) echo "Widget <b>".$widget['widget']."</b> is not found";

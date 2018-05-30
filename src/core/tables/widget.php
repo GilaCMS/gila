@@ -15,22 +15,23 @@ $table = [
     'id'=>'id',
     'tools'=>['add'],
     'commands'=>['edit_widget','delete'],
-    'list'=> ['id','widget','title','area','pos','active'],
-    'csv'=> ['id','title','slug','updated','publish','page'],
+    'list'=> ['id','title','widget','area','pos','active'],
+    'csv'=> ['id','title','widget','area','pos','active'],
     'permissions'=>[
         'create'=>['admin'],
         'update'=>['admin'],
         'delete'=>['admin']
     ],
+    'search-boxes'=> ['area','widget'],
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],
-        'widget'=> ['title'=>'Widget', 'options'=>$widgets,  'create'=>true], //'edit'=>false,
+        'widget'=> ['title'=>'Type', 'options'=>$widgets,  'create'=>true], //'edit'=>false,
         'title'=> ['title'=>'Title'],
         'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
         'pos'=> ['title'=>'Position'],
         'active'=> [
           'title'=>'Active',
-          'type'=>'checkbox','edit'=>true,'create'=>false
+          'type'=>'checkbox','edit'=>true
         ],
         'data'=> [
           'title'=>'Data', 'list'=>false, 'edit'=>false,
