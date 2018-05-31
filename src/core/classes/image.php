@@ -37,7 +37,7 @@ class image {
             return true;
         }
 
-        $tmp=imagecreatetruecolor($newwidth,$newheight);
+        $tmp = self::create_tmp($newwidth,$newheight,$image[2]);
         $img_src = self::create($src,$image[2]);
 
         imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
@@ -58,10 +58,21 @@ class image {
             return imageCreateFromGIF($src);
         if($type == 2)
             return imageCreateFromJPEG($src);
-        if($type == 3)
+        if($type == 3) {
             return imageCreateFromPNG($src);
+        }
 
         return imageCreateFromJPEG($src);
+    }
+
+    static function create_tmp ($width,$height,$type = 2) {
+        $tmp = imagecreatetruecolor($width,$height);
+        if($type == 3) {
+            $color = imagecolorallocatealpha($tmp, 0, 0, 0, 127);
+            imagecolortransparent($tmp, $color);
+            imagefill($tmp, 0, 0, $color);
+        }
+        return $tmp;
     }
 
     /**
@@ -81,7 +92,8 @@ class image {
             imagejpeg($tmp,$file);
             break;
         case 3:
-            imagepng($tmp,$file);
+            imagesavealpha($tmp,true);
+            imagepng($tmp,$file,9);
             break;
         }
 
@@ -132,7 +144,7 @@ class image {
             } else $response[$key] = false;
         }
 
-        $tmp = imagecreatetruecolor($max_width,$total_y);
+        $tmp = self::create_tmp($max_width,$total_y);//imagecreatetruecolor($max_width,$total_y);
 
         foreach($response as $key=>$img) if($img){
             $src = $src_array[$key];
