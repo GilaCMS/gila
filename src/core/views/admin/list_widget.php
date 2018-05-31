@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="lib/CodeMirror/codemirror.css">
 <script src="lib/CodeMirror/javascript.js"></script>
 <?=view::script('src/core/assets/admin/media.js')?>
+<?=view::script('lib/vue/vue.min.js');?>
+<style>.circle{border-radius: 50%}</style>
 
 <script>
 
@@ -34,7 +36,49 @@ PNK.commands.edit_widget = { fa: "pencil", title: "Edit", fn: function(e){
 		for(i=0;i<textareas.length;i++) {
 			cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
 		}
+		if(typeof pnk_populate_tables == 'function') pnk_populate_tables(document);
+		app = new Vue({
+		    el: '#widget_options_form'
+		})
     });
 }};
+
+
+Vue.component('input-links', {
+    template: '<div>\
+<div v-for="(value,key) in pos">\
+<input v-for="(field,fkey) in fields" v-model="pos[key][fkey]" @input="update" :placeholder="field.toUpperCase()">\
+&nbsp;<button @click="removeEl(key)" class="btn btn-error">-</button>\
+</div>\
+<a @click="add" class="btn btn-success">+</a>\
+<input v-model="value"  type="hidden" :name="name" >\
+</div>\
+',
+    props: ['name','value','fieldset'],
+    data: function(){ return {
+      pos: JSON.parse(this.value),
+	  fields: JSON.parse(this.fieldset),
+    }
+  },
+  methods:{
+    add: function(){
+		event.preventDefault()
+      this.pos.push(['',''])
+      this.update()
+    },
+    removeEl: function(index){
+		event.preventDefault()
+      this.pos.splice(index,1)
+      this.update()
+    },
+    update: function(){
+		this.value=JSON.stringify(this.pos)
+    },
+    beforeCreate: function(){
+		this.pos=JSON.parse(this.value)
+		this.fields=JSON.parse(this.fieldset)
+    }
+  }
+})
 
 </script>
