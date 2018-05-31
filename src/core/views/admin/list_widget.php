@@ -7,6 +7,7 @@
 <script src="lib/CodeMirror/codemirror.js"></script>
 <link rel="stylesheet" href="lib/CodeMirror/codemirror.css">
 <script src="lib/CodeMirror/javascript.js"></script>
+<?=view::script('src/core/assets/admin/media.js')?>
 
 <script>
 

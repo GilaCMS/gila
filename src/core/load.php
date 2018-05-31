@@ -35,6 +35,7 @@ gila::widgets([
   'category-post'=>'core/widgets/category-post',
   'social-icons'=>'core/widgets/social-icons',
   'tag'=>'core/widgets/tag',
+  'basic'=>'core/widgets/basic',
   //'contact-form'=>'core/widgets/contact-form'
 ]);
 gila::$widget_area=[];

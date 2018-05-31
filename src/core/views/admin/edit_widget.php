@@ -1,5 +1,5 @@
 
-<form id="widget_options_form">
+<form id="widget_options_form" class="g-form">
 <input type="hidden" value="<?=$widget->id?>" id='widget_id' name='widget_id'>
 <div class="gm-12" style="display:inline-flex;margin-bottom:8px">
 <div class="gm-6">
@@ -30,36 +30,12 @@
 global $db;
 $widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 1;", $widget->id));
 $widget_folder = 'src/'.gila::$widget[$widget->widget];
-/*if(file_exists($widget_folder.'/edit.php'))
-    include $widget_folder.'/edit.php';
-else*/
-    include $widget_folder.'/widget.php';
+
+include $widget_folder.'/widget.php';
 
 if(isset($options)) foreach($options as $key=>$op) {
-    echo '<div class="gm-12">';
-    echo '<label class="gm-4">'.(isset($op['title'])?$op['title']:ucwords($key)).'</label>';
-    $ov = isset($widget_data->$key)?$widget_data->$key:'';
-
-    if(isset($op['type'])) {
-        if($op['type']=='select') {
-            if(!isset($op['options'])) die("<b>Option $key require options</b>");
-            echo '<select class="g-input gm-8" name="option['.$key.']">';
-            foreach($op['options'] as $value=>$name) {
-                echo '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
-            }
-            echo '</select>';
-        } else if($op['type']=='postcategory') {
-            echo '<select class="g-input gm-8" name="option['.$key.']">';
-            $res=$db->get('SELECT id,title FROM postcategory;');
-            echo '<option value=""'.(''==$ov?' selected':'').'>'.'[All]'.'</option>';
-            foreach($res as $r) {
-                echo '<option value="'.$r[0].'"'.($r[0]==$ov?' selected':'').'>'.$r[1].'</option>';
-            }
-            echo '</select>';
-        } else if($op['type']=='textarea') {
-            echo '<textarea class="gm-8 codemirror-js" name="option['.$key.']">'.$ov.'</textarea>';
-        }
-    } else echo '<input class="g-input gm-8" name="option['.$key.']" value="'.$ov.'">';
-    echo '</div><br>';
+    $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
 }
+include view::getViewFile('admin/optionInputs.php');
+
 echo "</form>";
