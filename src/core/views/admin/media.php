@@ -20,7 +20,7 @@ view::script('src/core/assets/admin/media.js');
   </span>
 </div>
 <input id='selected-path' type='hidden'>
-<div class='g-gal wrapper gap-8px' style='max-height:250px;overflow-y:scroll;background:white'>
+<div class='g-gal wrapper gap-8px' style='/*max-height:250px;overflow-y:scroll;*/background:white'>
 <?php
 
 foreach($files as $file) if($file[0]!='.'){
@@ -33,7 +33,7 @@ if (count($exp)==1) {
 }
 $filepath=$path.'/'.$file;
 if ($type=='image') {
-    $img='<img src="'.$filepath.'">';
+    $img='<img src="'.view::thumb($filepath,'media_thumb/',100).'">';
 } else $img='<i class="fa fa-4x fa-'.$type.' " ></i>';
 echo '<div data-path="'.$filepath.'"class="gal-path gal-'.$type.'">'.$img.'<br>'.$file.'</div>';
 }

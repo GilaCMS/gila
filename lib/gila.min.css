@@ -734,16 +734,21 @@ input:focus + .helptext{
     border-top-left-radius:var(--main-radius);
 }
 
+.g-gal {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+    grid-gap: 8px;
+    column-count: 6;
+}
 .g-gal>*{
-    display:inline-block;
-    width:100px;
     text-align:center;
     vertical-align:top;
     word-wrap:break-word;
+    font-size: 90%;
 }
 .g-gal-sm>*{
-    width:50px;
+    grid-template-columns: repeat(auto-fill, minmax(60px,1fr));
 }
 .g-gal-lg>*{
-    width:200px;
+    grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
 }
