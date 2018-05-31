@@ -25,7 +25,7 @@ class blog extends controller
     * The default action.
     * First checks if there is parameter for a post and calls postShow()
     * Then check if there is search parameter and renders blog-search.php
-    * If none, will render landpage.php or frontpage.php
+    * If none, will render homepage.php or frontpage.php
     * @see postShow()
     */
     function indexAction()
@@ -44,12 +44,12 @@ class blog extends controller
             return;
         }
 
-        if($_GET['url']!='' || view::getViewFile('landpage.php')==false) {
+        if($_GET['url']!='' || view::getViewFile('homepage.php')==false) {
             view::set('page',blog::$page);
             view::set('posts',post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
             view::render('frontpage.php');
         }
-        else view::render('landpage.php');
+        else view::render('homepage.php');
     }
 
     /**

@@ -6,10 +6,9 @@ $menu_items = $menu_data['children'];
 
 foreach ($menu_items as $mi) {
     if (!isset($mi['children'])) {
-        echo "<li>".menu_item($mi,'li')."</li>";
+        echo menu_item($mi,'li')."</li>";
     }
     else {
-        echo "<li>";
         echo menu_item($mi);
         if (isset($mi['children'])) if (isset($mi['children'][0])) {
             echo "<ul class=\"dropdown-menu\" role=\"menu\">";
@@ -45,9 +44,9 @@ function menu_item($mi, $tag=''){
     }
 
     if(router::url()==$url) {
-        return "<a href=\"$url\" class=\"active\">$name</a>";
+        return "<li class=\"active\"><a href=\"$url\">$name</a>";
     }
-    return "<a href=\"$url\" >$name</a>";
+    return "<li><a href=\"$url\" >$name</a>";
 }
 ?>
 </ul>
