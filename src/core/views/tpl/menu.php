@@ -22,6 +22,7 @@ foreach ($menu_items as $mi) {
 
 function menu_item($mi, $tag=''){
     global $db;
+
     $url = isset($mi['url'])?$mi['url']:'#';
     $name = isset($mi['name'])?$mi['name']:'';
 
@@ -38,6 +39,12 @@ function menu_item($mi, $tag=''){
             $url = "category/".$r[0];
             $name = $r[1];
         }
+    }
+    if($mi['type']=='widget') {
+        echo '<li><a href=\"$url\" >'.$mi['name'].'</a><ul style="min-width:240px">';
+        view::widget_body(@$mi['widget']);
+        echo '</ul>';
+        return;
     }
     if($mi['type']=='link') {
 

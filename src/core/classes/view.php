@@ -260,6 +260,20 @@ class view
         }
     }
 
+    static function widget_body ($type, $widget_data=null, $widget_file=null) {
+        if($widget_file != null) {
+            $widget_file = self::getThemePath().'/widgets/'.$widget_file.'.php';
+        } else {
+            $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
+        }
+        if(file_exists($widget_file) == false) {
+            @$widget_file = "src/".gila::$widget[$type]."/$type.php";
+            if(!isset(gila::$widget[$type])) echo "Widget <b>".$type."</b> is not found";
+        }
+
+        @include $widget_file;
+    }
+
     static function block ($area)
     {
         view::widget_area($area);
@@ -286,17 +300,7 @@ class view
                 echo '<div class="widget-body">';
             }
 
-            if($widget_file != null) {
-                $widget_file = self::getThemePath().'/widgets/'.$widget_file.'.php';
-            } else {
-                $widget_file = self::getThemePath().'/widgets/'.$widget['widget'].'.php';
-            }
-            if(file_exists($widget_file) == false) {
-                @$widget_file = "src/".gila::$widget[$widget['widget']]."/{$widget['widget']}.php";
-                if(!isset(gila::$widget[$widget['widget']])) echo "Widget <b>".$widget['widget']."</b> is not found";
-            }
-
-            @include $widget_file;
+            self::widget_body($widget['widget'], $widget_data);
 
             if($div) echo '</div></div>';
         }

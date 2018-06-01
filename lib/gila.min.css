@@ -53,7 +53,7 @@ script{display:none!important}
 .bordered{
     border:1px solid var(--main-border-color);
 }
-.g-selected,.g-selected a, li.active {
+.g-selected,.g-selected a, g-navbar li.active {
     background-color:var(--main-primary-color);
     color:white;
 }
@@ -566,7 +566,7 @@ input:focus + .helptext{
 .g-nav li a:hover{
     cursor:pointer;
 }
-.g-nav li ul{
+.g-nav li>ul{
     list-style:none;
     border:1px solid var(--main-border-color);
     position:absolute;
@@ -576,30 +576,30 @@ input:focus + .helptext{
     min-width:120px;
     z-index:999999;
 }
-.g-nav li ul li{
+.g-nav li>ul li{
     width:100%;
     z-index:999999;
 }
 
 .g-nav.vertical li a,
-.g-nav li ul li a{
+.g-nav li>ul li a{
     padding:var(--main-padding);
 }
-.g-nav.vertical li ul,
-.g-nav li ul li ul{
+.g-nav.vertical li>ul,
+.g-nav li>ul li>ul{
     top:0;right:auto;
     left:100%
 }
 
 .g-nav li:hover>ul{display:block;}
-.g-nav li ul li:hover>ul{display:block;}
+.g-nav li>ul li:hover>ul{display:block;}
 
-.g-nav li ul{ background-color:#fff; }
+.g-nav li>ul{ background-color:#fff; }
 
 .g-navbar{ background:var(--main-dark-color); }
 .g-navbar li{ color:#fff; }
 .g-navbar li a{ color:#ddd; }
-.g-navbar li ul li a{ color:#444; }
+.g-navbar li>ul li a{ color:#444; }
 .g-navbar li a:hover{ background:#000;color:white }
 
 

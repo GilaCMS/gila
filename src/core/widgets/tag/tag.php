@@ -1,5 +1,6 @@
 <div class="pad">
 <?php
+$widget_data->n = @$widget_data->n?:12;
 
 global $db;
 $res=$db->query("SELECT value,COUNT(*) AS n FROM postmeta

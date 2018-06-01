@@ -14,14 +14,11 @@ class menu
     {
         global $db;
         $widget_data = (object) array('type'=>'menu','children' => []);
-
-        //$widget_data->menu[] = ['url'=>'','title'=>__('Home')];
         $widget_data->children[] = ['type'=>'link','url'=>'','name'=>__('Home')];
 
         $ql = "SELECT id,title FROM postcategory;";
         $pages = $db->get($ql);
         foreach ($pages as $p) {
-            //$widget_data->menu[] = ['url'=>"category/{$p[0]}/{$p[1]}",'title'=>$p[1]];
             $widget_data->children[] = ['type'=>"postcategory",'id'=>$p[0]];
         }
 

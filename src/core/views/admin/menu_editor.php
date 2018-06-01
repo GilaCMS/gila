@@ -7,11 +7,10 @@
 #menu .item {
   padding:0;
   margin:0.4em 0;
-  border:1px solid #b6b6b6;
+  border:1px solid #ccc;
 }
 #menu .item>div {
-  background: #e8e8e8;
-  /*border-bottom: 1px solid #999;*/
+  background: #d8d8d8;
   padding:3px;
   height:48px;
 }
@@ -33,7 +32,6 @@
 }
 #menu .i-btn {
   opacity:0.2;
-  /* cursor: pointer; */
 }
 #menu .i-btn:hover {
   opacity:1;
@@ -43,8 +41,9 @@
   border-radius: 8px;
   border: 1px solid green;
   color: green;
-  padding: 0 4px;
-  font-size:0.8em;
+  padding: 0 6px;
+  font-size: 0.8em;
+  margin: 6px 2px;
 }
 #menu .condition {
   border: 1px solid red;
@@ -57,54 +56,7 @@ use core\models\page as page;
 
 global $db;
 
-
-$pages = page::genPublished();
-$pageOptions = "";
-foreach ($pages as $p) {
-    $pageOptions .= "<option value=\"{$p['id']}\">{$p['title']}</option>";
-}
-
-$ql = "SELECT id,title FROM postcategory;";
-$cats = $db->get($ql);
-$postcategoryOptions = "";
-foreach ($cats as $p) {
-    $postcategoryOptions .= "<option value=\"{$p[0]}\">{$p[1]}</option>";
-}
-
-$itemTypes = [
-    "link"=>[
-        "data"=>[
-            "type"=>"link",
-            "name"=>"New Link",
-            "url"=>"#"
-        ],
-        "template"=>"<input v-model=\"model.name\" class=\"g-input\" placeholder=\"Name\"><i class=\"fa fa-chevron-right\"></i> <input v-model=\"model.url\" class=\"g-input\" placeholder=\"URI\">"
-    ],
-    "page"=>[
-        "data"=>[
-            "type"=>"page",
-            "id"=>1
-        ],
-        "template"=>"<select class=\"g-input\" v-model=\"model.id\">$pageOptions</select>"
-    ],
-    "postcategory"=>[
-        "data"=>[
-            "type"=>"postcategory",
-            "id"=>1
-        ],
-        "template"=>"<select class=\"g-input\" v-model=\"model.id\">$postcategoryOptions</select>"
-    ],
-    "dir"=>[
-        "data"=>[
-            "type"=>"dir",
-            "name"=>"New Directory",
-            "children"=>[]
-        ],
-        "template"=>"<input v-model=\"model.name\" class=\"g-input\" placeholder=\"Name\">",
-        //"parent"=>"menu"
-    ]
-];
-
+$itemTypes = menuItemTypes::getItemTypes();
 ?>
 
 <script src="lib/vue/vue.min.js"></script>
@@ -124,7 +76,7 @@ $itemTypes = [
           }
           ?>
 
-          <a v-if="model.type=='menu'" @click="saveMenu" class="g-btn success" style="float:right"><?=__("Save")?></a>
+          <a v-if="model.type=='menu'" @click="saveMenu" class="g-btn success" style="float:right"><i class="fa fa-save"></i> <?=__("Submit")?></a>
           <i v-if="model.type!='menu'" @click="$emit('remove')" class="fa fa-trash i-btn" style="float:right"></i>
           <span v-show="(isFolder&&open)||model.type=='menu'">
               <?php
@@ -147,7 +99,7 @@ $itemTypes = [
 
 
 
-<h1><?=__("Main Menu")?></h1><hr>
+<h1><?=__(($menu=='mainmenu'?"Main Menu":$menu))?></h1><hr>
 <div id="menu">
 <ul>
   <item
@@ -160,8 +112,9 @@ $itemTypes = [
 
 <?php
 $data="{type:\"menu\",children:[]}";
-if(file_exists('log/menus/mainmenu.json')) {
-    $data = file_get_contents('log/menus/mainmenu.json');
+$jsonfile = "log/menus/$menu.json";
+if(file_exists($jsonfile)) {
+    $data = file_get_contents($jsonfile);
 }
 echo "var data = ".$data."\n";
 
@@ -205,7 +158,7 @@ Vue.component('item', {
       saveMenu: function() {
           let fm=new FormData()
           fm.append('menu', JSON.stringify(this.model));
-          g.ajax({url:"admin/menu",method:'POST',data:fm, fn: function (response){
+          g.ajax({url:"admin/menu/<?=$menu?>",method:'POST',data:fm, fn: function (response){
               alert(JSON.parse(response).msg);
           }})
       },
