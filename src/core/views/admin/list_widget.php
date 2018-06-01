@@ -6,6 +6,7 @@
 
 <script src="lib/CodeMirror/codemirror.js"></script>
 <link rel="stylesheet" href="lib/CodeMirror/codemirror.css">
+<style>.CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}</style>
 <script src="lib/CodeMirror/javascript.js"></script>
 <?=view::script('src/core/assets/admin/media.js')?>
 <?=view::script('lib/vue/vue.min.js');?>
@@ -31,15 +32,15 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
 PNK.commands.edit_widget = { fa: "pencil", title: "Edit", fn: function(e){
     href='admin/widgets?id='+e.row_id;
     g.ajax(href,function(data){
-        g.dialog({class:'lightscreen',body:data,buttons:'update_widget'})
+        g.dialog({class:'lightscreen',body:data,type:'modal',buttons:'update_widget'})
+		app = new Vue({
+		    el: '#widget_options_form'
+		})
 		textareas=g('.codemirror-js').all
 		for(i=0;i<textareas.length;i++) {
 			cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
 		}
 		if(typeof pnk_populate_tables == 'function') pnk_populate_tables(document);
-		app = new Vue({
-		    el: '#widget_options_form'
-		})
     });
 }};
 

@@ -39,7 +39,7 @@ g.dialog.buttons.select_media_path = {
 function open_media_gallery(mpi) {
     media_path_input = mpi;
     g.post("admin/media","g_response=content&path=assets",function(gal){
-        g.dialog({title:"Gila gallery",body:gal,buttons:'select_media_path',id:'media_dialog'})
+        g.dialog({title:"Media gallery",body:gal,buttons:'select_media_path',id:'media_dialog',class:'large'})
     })
 }
 

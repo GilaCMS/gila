@@ -74,12 +74,12 @@ g.dialog.buttons.select_path_post = {
 }
 function open_gallery() {
     g.post("admin/media","g_response=content&path=assets",function(gal){
-        g.dialog({title:"Gila gallery",body:gal,buttons:'select_path',id:'media_dialog'})
+        g.dialog({title:"Media gallery",body:gal,buttons:'select_path',type:'modal',class:'large',id:'media_dialog'})
     })
 }
 function open_gallery_post() {
     g.post("admin/media","g_response=content&path=assets",function(gal){ //
-        g.dialog({title:"Assets",body:gal,buttons:'select_path_post',id:'media_dialog'})
+        g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog'})
     })
 }
 
