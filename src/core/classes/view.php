@@ -317,6 +317,7 @@ class view
         if (!file_exists($file)) {
             image::make_thumb($src,$file,$max_width,$max_height);
         }
+        event::fire('view::thumb',[$src,$file]);
         return $file;
     }
 
@@ -333,6 +334,7 @@ class view
                 return image::make_stack($src_array, $file, $max_width, $max_height);
             }
         }
+        event::fire('view::thumb_stack',[$src_array,$file]);
         return $stack;
     }
 

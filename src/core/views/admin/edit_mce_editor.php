@@ -1,16 +1,22 @@
 <?php
+$pages_path = [];
 $templates = [];
 
-$pages_path = view::getThemePath().'/pages/';
-if(file_exists($pages_path)) {
-  $pages = scandir($pages_path);
-  foreach ($pages as $page) if($page[0]!='.'){
-    $templates[] = [
-      'title'=>$page, 'url'=>$pages_path.$page
-      //description: 'Some desc 1',
-      //file_get_contents($pages_path.$page);
-      ];
-  }
+$pages_path[] = view::getThemePath().'/pages/';
+if(view::$parent_theme) $pages_path[] = 'themes/'.view::$parent_theme.'/pages/';
+$pages_path = array_merge($pages_path, gila::packages());
+$pages_path[] = 'src/core/templates/';
+foreach($pages_path as $path) {
+    if(file_exists($path)) {
+      $pages = scandir($path);
+      foreach ($pages as $page) if($page[0]!='.'){
+        $templates[] = [
+          'title'=>$page, 'url'=>$path.$page
+          //description: 'Some desc 1',
+          //file_get_contents($pages_path.$page);
+          ];
+      }
+    }
 }
 ?>
 
@@ -62,14 +68,14 @@ g.dialog.buttons.select_path = {
     title:'Select',fn: function(){
         let v = g('#selected-path').attr('value')
         if(v!=null) g('[name=p_img]').attr('value', base_url+v)
-        g('#media_dialog').remove();
+        g('#media_dialog').parent().remove();
     }
 }
 g.dialog.buttons.select_path_post = {
     title:'Select', fn: function() {
         let v = g('#selected-path').attr('value')
         if(v!=null) input_filename(base_url+v);
-        g('#media_dialog').remove();
+        g('#media_dialog').parent().remove();
     }
 }
 function open_gallery() {
