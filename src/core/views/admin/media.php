@@ -28,8 +28,8 @@ $exp = explode('.',$file);
 if (count($exp)==1) {
   $type='folder';
 } else {
-  $imgx = ['jpg','jpeg','png','gif'];
-  if(in_array($exp[count($exp)-1],$imgx)) $type='image'; else $type='file';
+  $imgx = ['jpg','jpeg','png','gif','svg'];
+  if(in_array(strtolower($exp[count($exp)-1]), $imgx)) $type='image'; else $type='file';
 }
 $filepath=$path.'/'.$file;
 if ($type=='image') {

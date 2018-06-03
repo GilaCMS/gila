@@ -310,6 +310,7 @@ class view
     static function thumb ($src, $prefix, $max=180)
     {
         if($src==null) return false;
+        if(strtolower(pathinfo($src)['extension'])=='svg') return $src;
         $file = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "/", $prefix.$src);
         $max_width = $max;
         $max_height = $max;
