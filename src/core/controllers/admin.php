@@ -191,6 +191,7 @@ class admin extends controller
     function mediaAction()
     {
         view::renderAdmin('admin/media.php');
+        event::fire('admin::media');
     }
 
     function db_backupAction()

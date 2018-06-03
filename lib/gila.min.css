@@ -741,15 +741,21 @@ input:focus + .helptext{
     grid-gap: 8px;
     column-count: 6;
 }
+.g-gal img{
+    min-width: 60%;
+}
 .g-gal>*{
     text-align:center;
     vertical-align:top;
     word-wrap:break-word;
     font-size: 90%;
+    max-width:160px;
 }
 .g-gal-sm>*{
     grid-template-columns: repeat(auto-fill, minmax(60px,1fr));
+    max-width:90px;
 }
 .g-gal-lg>*{
     grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+    max-width:240px;
 }

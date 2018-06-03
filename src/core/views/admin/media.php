@@ -6,6 +6,7 @@ $path_array = explode('/',$path);
 array_splice($path_array,count($path_array)-1);
 $uppath=implode('/',$path_array);
 view::script('src/core/assets/admin/media.js');
+event::fire('admin::media-view',[$path]);
 
 ?>
 
@@ -20,21 +21,32 @@ view::script('src/core/assets/admin/media.js');
   </span>
 </div>
 <input id='selected-path' type='hidden'>
-<div class='g-gal wrapper gap-8px' style='/*max-height:250px;overflow-y:scroll;*/background:white'>
+<div class='g-gal wrapper gap-8px' style='background:white'>
 <?php
 
-foreach($files as $file) if($file[0]!='.'){
-$exp = explode('.',$file);
-if (count($exp)==1) {
-  $type='folder';
-} else {
-  $imgx = ['jpg','jpeg','png','gif','svg'];
-  if(in_array(strtolower($exp[count($exp)-1]), $imgx)) $type='image'; else $type='file';
+foreach($files as $file) if($file[0]!='.') {
+    if (is_dir($path.'/'.$file)) {
+        $type='folder';
+    } else {
+        $type='file';
+        $imgx = ['jpg','jpeg','png','gif','svg'];
+        if($pinf = pathinfo($file)) if($ext = @$pinf['extension']) {
+            if(in_array(strtolower($ext), $imgx)) $type='image';
+        }
+    }
+    $filepath=$path.'/'.$file;
+    if ($type=='image') {
+        $img='<img src="'.view::thumb($filepath,'media_thumb/',100).'">';
+        echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$file.'</div>';
+    }
+    if ($type=='folder') {
+        $img='<i class="fa fa-5x fa-folder"></i>';
+        echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" >'.$img.'<br>'.$file.'</div>';
+    }
+    if ($type=='file') {
+        $img='<i class="fa fa-4x fa-file-text-o" ></i>';
+        echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$file.'</div>';
+    }
 }
-$filepath=$path.'/'.$file;
-if ($type=='image') {
-    $img='<img src="'.view::thumb($filepath,'media_thumb/',100).'">';
-} else $img='<i class="fa fa-4x fa-'.$type.' " ></i>';
-echo '<div data-path="'.$filepath.'"class="gal-path gal-'.$type.'">'.$img.'<br>'.$file.'</div>';
-}
-echo "</div></div><!--admin-media-div-->";
+echo "</div>";
+echo "</div><!--admin-media-div-->";
