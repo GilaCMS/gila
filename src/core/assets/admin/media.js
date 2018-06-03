@@ -32,7 +32,11 @@ var media_path_input;
 g.dialog.buttons.select_media_path = {
     title:'Select',fn:function(){
         let v = g('#selected-path').attr('value')
-        if(v!=null) g(media_path_input).attr('value',v)
+        if(v!=null) {
+            el = g(media_path_input).all[0]
+            el.value = v;
+            el.dispatchEvent(new Event('input'))
+        }
         g('#media_dialog').remove();
     }
 }

@@ -25,14 +25,14 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
 	}
 	let fm=new FormData(g.el('widget_options_form'))
     g.ajax({url:'admin/update_widget?g_response=content',method:'POST',data:fm,fn:function(x){
-		g('#gila-popup').remove();
+		g('#gila-popup').parent().remove();
 	}})
 }}
 
 PNK.commands.edit_widget = { fa: "pencil", title: "Edit", fn: function(e){
     href='admin/widgets?id='+e.row_id;
     g.ajax(href,function(data){
-        g.dialog({class:'lightscreen',body:data,type:'modal',buttons:'update_widget'})
+        g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'update_widget'})
 		app = new Vue({
 		    el: '#widget_options_form'
 		})
@@ -44,27 +44,36 @@ PNK.commands.edit_widget = { fa: "pencil", title: "Edit", fn: function(e){
     });
 }};
 
+//<span v-if="field==&quot;image&quot;" style="width:28px"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'"><i class="fa fa-image"></i></span>\
+//<span v-if="field==&quot;image&quot;" style="width:28px"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'"><i class="fa fa-image"></i></span>\
 
 Vue.component('input-links', {
     template: '<div>\
-<div v-for="(value,key) in pos">\
-<input v-for="(field,fkey) in fields" v-model="pos[key][fkey]" @input="update" :placeholder="field.toUpperCase()">\
+<div v-for="(row,key) in pos">\
+<span v-for="(field,fkey) in fields">\
+	<span v-if="field==&quot;image&quot;" style="width:80px" >\
+		<img :src="pos[key][fkey]"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:80px;max-height:50px;vertical-align:middle" />\
+		<input v-model="pos[key][fkey]" type="hidden" :id="\'il\'+field+key" @input="update">\
+	</span>\
+	<input v-if="field!=&quot;image&quot;" v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update" :placeholder="field.toUpperCase()">\
+</span>\
 &nbsp;<button @click="removeEl(key)" class="btn btn-error">-</button>\
 </div>\
 <a @click="add" class="btn btn-success">+</a>\
-<input v-model="value"  type="hidden" :name="name" >\
+<input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
     props: ['name','value','fieldset'],
     data: function(){ return {
       pos: JSON.parse(this.value),
 	  fields: JSON.parse(this.fieldset),
+	  ivalue: this.value
     }
   },
   methods:{
     add: function(){
 		event.preventDefault()
-      this.pos.push(['',''])
+      this.pos.push(['assets/vector/photo.png',''])
       this.update()
     },
     removeEl: function(index){
@@ -72,12 +81,14 @@ Vue.component('input-links', {
       this.pos.splice(index,1)
       this.update()
     },
-    update: function(){
-		this.value=JSON.stringify(this.pos)
+	update: function(){
+		this.ivalue = JSON.stringify(this.pos)
     },
     beforeCreate: function(){
+		console.log('dfewef')
 		this.pos=JSON.parse(this.value)
 		this.fields=JSON.parse(this.fieldset)
+		this.ivalue = this.value
     }
   }
 })

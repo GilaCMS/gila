@@ -6,6 +6,7 @@ $options=[
         'fields'=>[
             'text'=>[],
             'url'=>[],
-        ]
+        ],
+        'default'=>'[["",""]]'
     ]
 ];
