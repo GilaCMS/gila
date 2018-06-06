@@ -13,8 +13,8 @@
 
     <title>Gila CMS - Administration</title>
 
-    <?=view::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
-    <?=view::cssAsync('src/core/assets/simple-sidebar.css')?>
+    <?=view::css('lib/font-awesome/css/font-awesome.min.css')?>
+    <?=view::css('src/core/assets/simple-sidebar.css')?>
     <?=view::css('lib/gila.min.css')?>
     <style>
     #sidebar-wrapper .g-nav li{ color:#fff; }

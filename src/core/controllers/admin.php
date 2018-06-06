@@ -14,7 +14,7 @@ class admin extends controller
     }
 
     /**
-    * Renders admin/dashboard.phtml
+    * Renders admin/dashboard.php
     */
     function indexAction ()
     {
@@ -38,10 +38,10 @@ class admin extends controller
         global $db;
         if ($id = router::get('id',1)) {
             view::set('id',$id);
-            view::renderAdmin('admin/edit_post.phtml');
+            view::renderAdmin('admin/edit_post.php');
             return;
         }
-        view::renderAdmin('admin/post.phtml');
+        view::renderAdmin('admin/post.php');
     }
 
     /**
@@ -52,10 +52,10 @@ class admin extends controller
         global $db;
         if ($id = router::get('id',1)) {
             view::set('id',$id);
-            view::renderAdmin('admin/edit_page.phtml');
+            view::renderAdmin('admin/edit_page.php');
             return;
         }
-        view::renderAdmin('admin/page.phtml');
+        view::renderAdmin('admin/page.php');
     }
 
     /**
@@ -63,7 +63,7 @@ class admin extends controller
     */
     function postcategoriesAction ()
     {
-        view::renderAdmin('admin/postcategory.phtml');
+        view::renderAdmin('admin/postcategory.php');
     }
 
     /**
@@ -103,7 +103,7 @@ class admin extends controller
 
     function usersAction ()
     {
-        view::renderAdmin('admin/user.phtml');
+        view::renderAdmin('admin/user.php');
     }
 
     /**
@@ -163,7 +163,7 @@ class admin extends controller
 
     function loginAction ()
     {
-        view::renderAdmin('login.phtml');
+        view::renderAdmin('login.php');
     }
 
     function logoutAction ()

@@ -74,9 +74,9 @@ g.require(['lib/jquery/jquery-3.3.1.min.js'], function(){
                 if(ext=='js') mode='javascript'
                 if(ext=='css') mode='css'
                 if(ext=='php') mode='php'
-                if(['phtml','html','htm'].includes(ext)) mode='htmlmixed'
-				//if(ext=='html') mode='htmlmixed'
+                if(['html','htm'].includes(ext)) mode='htmlmixed'
                 saveFilePath=realpath
+                alert(mode)
 				myCodeMirror[realpath] = CodeMirror.fromTextArea(g('#'+newid+' textarea').all[0],{lineNumbers:true,mode:mode});
 			})
 		}

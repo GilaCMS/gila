@@ -67,5 +67,5 @@ view::script('src/core/assets/admin/media.js');
     </div>
 
 </form>
-<?php include __DIR__.'/list_widget.php'; ?>
+
 </div>
