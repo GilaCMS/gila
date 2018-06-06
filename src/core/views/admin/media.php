@@ -14,7 +14,7 @@ event::fire('admin::media-view',[$path]);
   <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
     <i class='fa fa-arrow-left'></i></a>
   <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
-  <input type='file' class='g-group-item g-input fullwidth' id='upload_files' onchange='gallery_upload_files()' multiple data-path="<?=$path?>">
+  <input type='file' class='g-group-item g-input fullwidth' id='upload_files' accept="image/*,video/*,audio/*" onchange='gallery_upload_files()' multiple data-path="<?=$path?>">
   <span class="g-group-item" style="position:relative;">
       <input class='g-input input-filter' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
       <i class="fa fa-filter" style="position:absolute;margin:12px;right:0;top:0"></i>
