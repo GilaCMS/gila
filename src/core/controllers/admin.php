@@ -117,21 +117,20 @@ class admin extends controller
         $packages = [];
 
         if($tab == 'new') {
-            if(!$contents=file_get_contents('http://gilacms.com/packages/')) {
+            if(!$contents = file_get_contents('http://gilacms.com/packages/')) {
                 view::alert('error',"Could not connect to packages list. Please try later.");
-                exit;
-            }
-            $packages = json_decode($contents);
+            } else $packages = json_decode($contents);
         } else if($tab == 'search'){
             $search = router::get('search',2);
-            if(!$contents=file_get_contents('http://gilacms.com/packages/?search='.$search)) {
+            if(!$contents = file_get_contents('http://gilacms.com/packages/?search='.$search)) {
                 view::alert('error',"Could not connect to packages list. Please try later.");
-                exit;
-            }
-            //$packages = package::scan();
-            $packages = json_decode($contents);
+            } else $packages = json_decode($contents);
         } else {
             $packages = package::scan();
+        }
+        if(!is_array($packages)) {
+            view::alert('error',"Something went wrong. Please try later.");
+            $packages = [];
         }
         view::set('packages',$packages);
 		view::renderAdmin('admin/package-list.php');
@@ -139,11 +138,16 @@ class admin extends controller
 
     function newthemesAction ()
     {
-        if(!$contents=file_get_contents('http://gilacms.com/packages/themes')) {
-            echo "<br>Could not connect to themes list. Please try later.";
-            exit;
+        $packages = [];
+        if(!$contents = file_get_contents('http://gilacms.com/packages/themes')) {
+            view::alert("Could not connect to themes list. Please try later.");
+        } else {
+            $packages = json_decode($contents);
         }
-        $packages = json_decode($contents);
+        if(!is_array($packages)) {
+            view::alert('error',"Something went wrong. Please try later.");
+            $packages = [];
+        }
         view::set('packages',$packages);
         view::renderAdmin('admin/theme-list.php');
     }
