@@ -24,6 +24,7 @@ gila::route('manifest.json',function(){
 });
 
 gila::route('service-worker.js',function(){
+    header('Content-type: text/javascript');
     include "src/pwa/service-worker.js";
     exit;
 });

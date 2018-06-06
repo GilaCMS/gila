@@ -11,11 +11,13 @@ self.addEventListener('fetch', function(event) {
   }));
 });
 
+
+
 function precache() {
   return caches.open(CACHE).then(function (cache) {
     return cache.addAll([
-        '/',
-        '/?homescreen=1',
+        '.',
+        'blog',
         'lib/gila.min.css',
         'lib/gila.min.js'
     ]);

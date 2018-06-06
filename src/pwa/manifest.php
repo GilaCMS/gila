@@ -19,5 +19,7 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": "?homescreen=1"
+  "start_url": "blog",
+  "background_color": "<?=gila::option('pwa.background_color','white')?>",
+  "theme_color": "<?=gila::option('pwa.theme_color','orangered')?>"
 }
