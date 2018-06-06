@@ -293,6 +293,7 @@ class view
 
             $widget_id = json_decode($widget['id']);
             $widget_data = json_decode($widget['data']);
+            $widget_data->widget_id = $widget_id;
 
             if($div){
                 echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
@@ -327,16 +328,19 @@ class view
         $max_width = $max;
         $max_height = $max;
         if (!file_exists($file) || !file_exists($file.'.json')) {
-            return image::make_stack($src_array, $file, $max_width, $max_height);
+            return image::make_stack(1,$src_array, $file, $max_width, $max_height);
         }
         $stack = json_decode(file_get_contents($file.'.json'),true);
+        if(!is_array($stack[1]))  $stack[1] = [];
+        if(is_nan($stack[0]))  $stack[0] = 0;
+
         foreach($src_array as $key=>$value) {
-            if($stack[$key]['src'] != $value) {
-                return image::make_stack($src_array, $file, $max_width, $max_height);
+            if($stack[1][$key]['src'] != $value) {
+                return image::make_stack($stack[0]+1,$src_array, $file, $max_width, $max_height);
             }
         }
         event::fire('view::thumb_stack',[$src_array,$file]);
-        return $stack;
+        return [$file.'?'.$stack[0],$stack[1]];
     }
 
     static function thumb_xs ($src,$id=null)

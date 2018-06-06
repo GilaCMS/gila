@@ -101,13 +101,14 @@ class image {
 
     /**
      * Creates a stacked image from many files
+     * @param $revision  The revision string to add after the file name
      * @param $src_array (Array string) Paths to the original images
      * @param $file (string) Path to the stacked thumbnail to create
      * @param $max_width (int) Maximun width in pixels for the new images
      * @param $max_height (int) Maximun height in pixels for the new images
      * @return Array
      */
-    static function make_stack ($src_array,$file,$max_width,$max_height)
+    static function make_stack ($revision,$src_array,$file,$max_width,$max_height)
     {
         $response = [];
         $dst_y = 0; $total_y = 0;
@@ -144,7 +145,7 @@ class image {
             } else $response[$key] = false;
         }
 
-        $tmp = self::create_tmp($max_width,$total_y);//imagecreatetruecolor($max_width,$total_y);
+        $tmp = self::create_tmp($max_width, $total_y, 3);
 
         foreach($response as $key=>$img) if($img){
             $src = $src_array[$key];
@@ -157,7 +158,7 @@ class image {
 
         self::save($tmp,$file);
         imagedestroy($tmp);
-        file_put_contents($file.'.json', json_encode($response));
-        return $response;
+        file_put_contents($file.'.json', json_encode([$revision,$response]));
+        return [$file.'?'.$revision, $response];
     }
 }

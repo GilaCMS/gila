@@ -24,7 +24,7 @@ if(!@class_exists('blog')) {
 	new blog();
 }
 
-$stacked_file = 'tmp/stacked-wdgt'.$widget_id.'.png';
+$stacked_file = 'tmp/stacked-wdgt'.$widget_data->widget_id.'.png';
 $posts = [];
 $img = [];
 $widget_data->n_post = @$widget_data->n_post?:5;
@@ -34,7 +34,7 @@ foreach (core\models\post::getLatest($widget_data->n_post) as $r ) {
 	$posts[] = $r;
 	$img[]=$r['img'];
 }
-$stacked = view::thumb_stack($img, $stacked_file,80,80);
+list($stacked_file,$stacked) = view::thumb_stack($img, $stacked_file,80,80);
 
 foreach ($posts as $key=>$r ) {
 	echo "<li>";
