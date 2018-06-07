@@ -29,7 +29,7 @@ foreach($files as $file) if($file[0]!='.') {
         $type='folder';
     } else {
         $type='file';
-        $imgx = ['jpg','jpeg','png','gif','svg'];
+        $imgx = ['jpg','jpeg','png','gif','svg','webp'];
         if($pinf = pathinfo($file)) if($ext = @$pinf['extension']) {
             if(in_array(strtolower($ext), $imgx)) $type='image';
         }

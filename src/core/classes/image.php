@@ -114,16 +114,21 @@ class image {
         $dst_y = 0; $total_y = 0;
 
         foreach($src_array as $key=>$src) {
+            $_src = $src;
             if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
                 $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
                 if(!file_exists($_src)) {
                     if(!copy($src, $_src)) $_src = $src;
                 }
-            } else $_src = $src;
+            }
             gila::dir(substr($file, 0, strrpos($file,'/')));
 
             if($image = @getimagesize($_src)) {
-                list($src_width,$src_height)=$image;
+                list($src_width,$src_height,$src_type) = $image;
+                if($src_type!=2) {
+                    $response[$key] = false;
+                    continue;
+                }
                 $newwidth=$max_width;
                 $newheight=$max_height;
 
@@ -138,14 +143,14 @@ class image {
                     'src' => $src,
                     'src_width' => $src_width,
                     'src_height' => $src_height,
-                    'width' => $newwidth,
-                    'height' => $newheight,
-                    'type' => $image[2]
+                    'width' => (int)$newwidth,
+                    'height' => (int)$newheight,
+                    'type' => $src_type
                 ];
             } else $response[$key] = false;
         }
 
-        $tmp = self::create_tmp($max_width, $total_y, 3);
+        $tmp = self::create_tmp($max_width, $total_y,3);
 
         foreach($response as $key=>$img) if($img){
             $src = $src_array[$key];

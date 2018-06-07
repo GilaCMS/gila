@@ -293,7 +293,7 @@ class view
 
             $widget_id = json_decode($widget['id']);
             $widget_data = json_decode($widget['data']);
-            $widget_data->widget_id = $widget_id;
+            @$widget_data->widget_id = $widget_id;
 
             if($div){
                 echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
