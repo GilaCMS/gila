@@ -75,7 +75,7 @@ Vue.component('input-links', {
 		event.preventDefault()
 		array = new Array()
 		for(i in this.fields) if(this.fields[i]=='image') {
-			array[i] = 'assets/vector/photo.png'
+			array[i] = 'src/core/assets/photo.png'
 		} else array[i] = ''
       	this.pos.push(array)
       	this.update()
