@@ -73,13 +73,17 @@ Vue.component('input-links', {
   methods:{
     add: function(){
 		event.preventDefault()
-      this.pos.push(['assets/vector/photo.png',''])
-      this.update()
+		array = new Array()
+		for(i in this.fields) if(this.fields[i]=='image') {
+			array[i] = 'assets/vector/photo.png'
+		} else array[i] = ''
+      	this.pos.push(array)
+      	this.update()
     },
     removeEl: function(index){
 		event.preventDefault()
-      this.pos.splice(index,1)
-      this.update()
+      	this.pos.splice(index,1)
+      	this.update()
     },
 	update: function(){
 		this.ivalue = JSON.stringify(this.pos)
