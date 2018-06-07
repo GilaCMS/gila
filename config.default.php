@@ -18,7 +18,9 @@ $GLOBALS['config'] = array (
   'default-controller' => 'blog',
   'timezone' => 'America/Mexico_City',
   'env' => 'dev',
+  'language' => 'en',
   'rewrite' => '1',
   'default.menu' => '0',
-  'user_register' => '0'
+  'user_register' => '0',
+  'use_cdn' => '0',
 );
