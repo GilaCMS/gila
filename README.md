@@ -1,5 +1,17 @@
 
 <p align="center">
+  <img src="https://img.shields.io/github/release/gilacms/gila/all.svg">
+  <img src="https://img.shields.io/github/last-commit/gilacms/gila.svg">
+  <img src="https://img.shields.io/github/languages/code-size/gilacms/gila.svg">
+  <a href="https://gila-cms.readthedocs.io">
+    <img src="https://readthedocs.org/projects/gila-cms/badge/?version=latest">
+  </a>
+  <a href="https://gitter.im/GilaCMS/Lobby">
+    <img src="https://img.shields.io/gitter/room/nwjs/nw.js.svg">
+  </a>
+</p>
+
+<p align="center">
   <img src="http://gilacms.com/assets/gila-logo.svg" width="200px" />
 </p>
 
