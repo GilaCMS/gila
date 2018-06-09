@@ -1,4 +1,4 @@
-<ul class="g-nav">
+<ul class="nav navbar-nav navbar-right">
 <?php
 use core\models\page as page;
 
