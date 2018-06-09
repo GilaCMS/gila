@@ -13,10 +13,13 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
         } else $border = "";
         $table .= '<tr><td style="color:grey;text-align:center;width: 3em;'.$border.'">';
 
-        if (file_exists($dir."{$p->package}/logo.png"))
+        if (file_exists($dir."{$p->package}/logo.png")) {
             $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'" />';
-        else
+        } else if (isset($p->logo)) {
+                $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
+        } else {
             $table .= '<i class="fa fa-3x fa-dropbox"></i>';
+        }
 
         $table .= '<td style="width:100%"><b>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'');
         $table .= '</b><p>'.(isset($p->description)?$p->description:'No description').'</p>';
