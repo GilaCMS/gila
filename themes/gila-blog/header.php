@@ -57,7 +57,7 @@ footer{background:#464a49;margin-top:10px;color:white}
         <!-- Navigation -->
         <div class="gl-9">
         <nav class="inline-flex g-navbar">
-            <span style=""><?php view::menu('mainmenu','tpl/menu.bootstrap.php'); ?></span>
+            <span style=""><?php view::menu('mainmenu'); ?></span>
         </nav>
         </div>
     </div>

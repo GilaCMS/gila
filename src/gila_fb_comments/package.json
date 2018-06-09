@@ -1,6 +1,6 @@
 {
 	"name":"Facebook Comments Plugin",
-	"version":"0.1",
+	"version":"0.1.0",
 	"description":"Adds a facebook comment plugin below every post. <br><b>Note: </b>This plugin will not work if gila is installed on local server.",
 	"url":"gilacms.com",
 	"options":{
