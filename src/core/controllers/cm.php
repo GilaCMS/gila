@@ -43,7 +43,7 @@ class cm extends controller
     function listAction ()
     {
         global $db;
-        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
         $result = [];
         if(!$pnk->can('read')) return;
 
@@ -72,7 +72,7 @@ class cm extends controller
             $this->group_rowsAction();
             return;
         }
-        $pnk = new pnkTable('src/'.@gila::$content[router::get("t",1)]);
+        $pnk = new gTable('src/'.@gila::$content[router::get("t",1)]);
         $result = [];
         if(!$pnk->can('read')) return;
 
@@ -90,7 +90,7 @@ class cm extends controller
     function group_rowsAction ()
     {
         global $db;
-        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
         $result = [];
         $groupby = $_GET['groupby'];
         if(!$pnk->can('read')) return;
@@ -112,7 +112,7 @@ class cm extends controller
     {
         global $db;
         $result = [];
-        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
 
         if(isset($_GET['id'])&&$_GET['id']!='') {
             $id = $_GET['id'];
@@ -132,7 +132,7 @@ class cm extends controller
 
     function empty_rowAction ()
     {
-        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
         $result['fields'] = $pnk->fields();
         $result['rows'][0] = $pnk->getEmpty();
         echo json_encode($result,JSON_PRETTY_PRINT);
@@ -145,7 +145,7 @@ class cm extends controller
     {
         global $db;
         $result = [];
-        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
         if(isset($_GET['id'])) {
             $fields=implode(',',$pnk->fields());
             $res = $db->query("INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_GET['id']);
@@ -170,7 +170,7 @@ class cm extends controller
     function deleteAction ()
     {
         global $db;
-        $pnk = new pnkTable('src/'.gila::$content[router::get("t",1)], $this->permissions);
+        $pnk = new gTable('src/'.gila::$content[router::get("t",1)], $this->permissions);
         if($pnk->can('delete')) {
             $res = $db->query("DELETE FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_POST['id']);
             echo $_POST['id'];

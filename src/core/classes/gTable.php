@@ -1,6 +1,6 @@
 <?php
 
-class pnkTable
+class gTable
 {
     private $table;
     private $permissions;

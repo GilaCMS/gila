@@ -61,6 +61,21 @@ class fm extends controller
 
     }
 
+    function moveAction () {
+        if(!rename($this->path,$_POST['newpath'])){
+            ob_clean();
+            echo "Permission denied.";
+        }
+
+    }
+
+    function deleteAction () {
+        if(!unlink($this->path)){
+            ob_clean();
+            echo "Permission denied.";
+        }
+    }
+
     function editAction () {
         $file=realpath($_GET['f']);
 

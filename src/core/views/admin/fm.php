@@ -17,6 +17,7 @@
 .closetab:hover {
     opacity: 1;
 }
+.CodeMirror {height:auto}
 </style>
 
 <div id='fm_filecontents'></div>
@@ -67,8 +68,11 @@ g.require(['lib/jquery/jquery-3.3.1.min.js'], function(){
 				newid = 'tab_'+filepath.split('.').join('_');
 				g('#fm_tabs').append('<li><a href="#'+newid+'" id="a_tab_'+newid+'">'+filepath+' <i class="fa fa-times-circle closetab"></i></a></li>');
 				g('#fm_tab_contents').append('<div id="'+newid+'" style="display: block;"></div>');
-				g.el(newid).innerHTML = '<textarea id="textarea" class="fullwidth" style="height:450px">'+data+'</textarea>'
-                g.el(newid).innerHTML += '<hr><a class="btn btn-success" onclick="savefile(\''+realpath+'\')">Save</a>'
+                g.el(newid).innerHTML = '<hr>'+filepath
+                g.el(newid).innerHTML += ' <a class="btn btn-sm btn-success" onclick="savefile(\''+realpath+'\')"><?=__('Save')?></a>'
+                g.el(newid).innerHTML += ' <a class="btn btn-sm btn-white" onclick="movefile(\''+realpath+'\')"><?=__('Rename')?></a>'
+                g.el(newid).innerHTML += ' <a class="btn btn-sm btn-error" onclick="deletefile(\''+realpath+'\')"><?=__('Delete')?></a>'
+				g.el(newid).innerHTML += '</div><hr><textarea  id="textarea" class="fullwidth">'+data+'</textarea>'
 				g.el('a_tab_'+newid).click();
 				mode=ext
                 if(ext=='js') mode='javascript'
@@ -76,7 +80,7 @@ g.require(['lib/jquery/jquery-3.3.1.min.js'], function(){
                 if(ext=='php') mode='php'
                 if(['html','htm'].includes(ext)) mode='htmlmixed'
                 saveFilePath=realpath
-                alert(mode)
+
 				myCodeMirror[realpath] = CodeMirror.fromTextArea(g('#'+newid+' textarea').all[0],{lineNumbers:true,mode:mode});
 			})
 		}
@@ -144,5 +148,31 @@ function savefile(path) {
         if(msg=='') msg="File saved successfully"
         alert(msg);
     })
+}
+function movefile(path) {
+    if(saveFilePath=='') {
+        alert("Select a file from the tabs");
+        return
+    }
+    new_path = prompt("Please enter new file path", saveFilePath);
+    if(new_path != null) {
+        $.post('fm/move', {newpath:new_path, path:path},function(msg){
+            if(msg=='') msg="File saved successfully"
+            alert(msg);
+        })
+    }
+}
+function deletefile(path) {
+    if(saveFilePath=='') {
+        alert("Select a file from the tabs");
+        return
+    }
+
+    if(confirm("Are you sure you want to remove this file?")) {
+        $.post('fm/delete', {path:path},function(msg){
+            if(msg=='') msg="File deleted successfully"
+            alert(msg);
+        })
+    }
 }
 </script>
