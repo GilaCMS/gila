@@ -19,6 +19,10 @@ event::fire('admin::media-view',[$path]);
       <input class='g-input input-filter' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
       <i class="fa fa-filter" style="position:absolute;margin:12px;right:0;top:0"></i>
   </span>
+  <button class="btn btn-white" onclick="gallery_create('<?=$path?>')"><i class="fa fa-folder-o"></i></button>
+  <button class="btn btn-white" onclick="gallery_move_selected()"><strong>N</strong></button>
+  <button class="btn btn-white" onclick="gallery_refresh_thumb()"><i class="fa fa-refresh"></i></button>
+  <button class="btn btn-white" onclick="gallery_delete_selected()"><i class="fa fa-trash"></i></button>
 </div>
 <input id='selected-path' type='hidden'>
 <div class='g-gal wrapper gap-8px' style='background:white'>
@@ -29,7 +33,7 @@ foreach($files as $file) if($file[0]!='.') {
         $type='folder';
     } else {
         $type='file';
-        $imgx = ['jpg','jpeg','png','gif','svg','webp'];
+        $imgx = ['jpg','jpeg','png','gif','svg'];
         if($pinf = pathinfo($file)) if($ext = @$pinf['extension']) {
             if(in_array(strtolower($ext), $imgx)) $type='image';
         }

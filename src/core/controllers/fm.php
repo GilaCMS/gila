@@ -7,6 +7,7 @@ class fm extends controller
 
     function __construct ()
     {
+        if(!gila::hasPrivilege('admin')) exit;
         $dpath = realpath(__DIR__.'/../../../');
         $this->path = $dpath;
         if (isset($_GET['path']))  if(!$_GET['path']=='') $this->path = str_replace('\\','/',$_GET['path']);
@@ -58,7 +59,10 @@ class fm extends controller
             ob_clean();
             echo "Permission denied.";
         }
+    }
 
+    function newfolderAction () {
+        mkdir($_POST['path'],0755,true);
     }
 
     function moveAction () {

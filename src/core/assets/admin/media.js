@@ -27,6 +27,72 @@ function gallery_upload_files() {
         g('#admin-media-div').parent().html(gal)
     }})
 }
+function gallery_move_selected() {
+    selected = g('.g-selected').all[0]
+    if(selected) {
+        path = selected.getAttribute('data-path')
+        new_path = prompt("Please enter new file path", path);
+        if(new_path != null) {
+            $.post('fm/move', {newpath:new_path, path:path},function(msg){
+                if(msg=='') msg="File saved successfully"
+                alert(msg);
+                g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
+                    g('#admin-media-div').parent().html(gal)
+                }})
+            })
+        }
+    } else {
+        alert('Please select a media file')
+    }
+}
+function gallery_create(path) {
+    path += '/'
+
+    new_path = prompt("Create new folder", '');
+    if(new_path != null) {
+        $.post('fm/newfolder', {path:path+new_path},function(msg){
+            if(msg=='') msg="File created successfully"
+            alert(msg);
+            g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
+                g('#admin-media-div').parent().html(gal)
+            }})
+        })
+    }
+}
+function gallery_delete_selected() {
+    selected = g('.g-selected').all[0]
+    if(selected) {
+        path = selected.getAttribute('data-path')
+        if(path != null) if(confirm("Are you sure you want to remove this file?")) {
+            $.post('fm/delete', {path:path},function(msg){
+                if(msg=='') msg="File deleted successfully"
+                alert(msg);
+                g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
+                    g('#admin-media-div').parent().html(gal)
+                }})
+            })
+        }
+    } else {
+        alert('Please select a media file')
+    }
+}
+function gallery_refresh_thumb() {
+    selected = g('.g-selected>img').all[0]
+    if(selected) {
+        path = selected.getAttribute('src')
+        if(path != null) {
+            $.post('fm/delete', {path:path},function(msg){
+                if(msg=='') msg="File thumb updated"
+                alert(msg);
+                g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
+                    g('#admin-media-div').parent().html(gal)
+                }})
+            })
+        }
+    } else {
+        alert('Please select a media file')
+    }
+}
 
 var media_path_input;
 g.dialog.buttons.select_media_path = {
