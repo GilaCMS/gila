@@ -127,6 +127,9 @@ class gTable
 
         foreach($fields as $key=>$value) {
             if(array_key_exists($key, $this->table['fields'])) {
+                if ($this->fieldAttr($key, 'qcolumn')) break;
+                if (in_array($this->fieldAttr($key, 'type'),['joins','meta'])) break;
+
                 if(is_array($value)) {
                     foreach($value as $subkey=>$subvalue) {
                         if($subkey == 'fn') $set[] = "$key=$subvalue";
@@ -143,6 +146,49 @@ class gTable
         return '';
     }
 
+    function updateJoins (&$fields = null) {
+        global $db;
+        if($fields==null) $fields=$_POST;
+        if(isset($_GET['id'])&&$_GET['id']!='') {
+            $id = $_GET['id'];
+        } else return;
+
+        foreach($fields as $key=>$value) {
+            if(@$this->table['fields'][$key]['type'] == 'joins') {
+                $jt = $this->table['fields'][$key]["jt"];
+                $arrv = explode(",",$value);
+                echo $arrv;
+                $db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
+                foreach($arrv as $arrv_k=>$arrv_v){
+                    $db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$id','$arrv_v');");
+                }
+                continue;
+            }
+        }
+    }
+
+    function updateMeta (&$fields = null) {
+        global $db;
+        if($fields==null) $fields=$_POST;
+        if(isset($_GET['id'])&&$_GET['id']!='') {
+            $id = $_GET['id'];
+        } else return;
+
+        foreach($fields as $key=>$value) {
+            if(@$this->table['fields'][$key]['type'] == 'meta') {
+
+                $mt = $this->table['fields'][$key]["mt"];
+                $vt = $this->table['fields'][$key]["metatype"];
+                $arrv = explode(",",$value);
+                $db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
+                foreach($arrv as $arrv_k=>$arrv_v) {
+                    $db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");
+                }
+                continue;
+            }
+        }
+
+    }
 
     function where(&$fields = null) {
         $filters = [];
@@ -204,5 +250,19 @@ class gTable
             if(in_array($value, $this->permissions)) return true;
         }
         return false;
+    }
+
+    function update() {
+        global $db;
+        $tname = $this->table['name'];
+        $db->query("CREATE TABLE IF NOT EXISTS $tname ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        foreach($this->table['fields'] as $fkey=>$field) {
+            if(isset($field['qtype'])) {
+                $column = $field['qcolumn']?:$fkey;
+                $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
+            }
+        }
+        return true;
     }
 }

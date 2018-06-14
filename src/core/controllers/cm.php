@@ -121,9 +121,13 @@ class cm extends controller
             $id = $db->insert_id;
         } else return;
 
+        $pnk->updateMeta();
+        $pnk->updateJoins();
+echo "UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;";
         $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
         $result['fields'] = $pnk->fields();
         $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
+
         while($r = mysqli_fetch_row($res)) {
             $result['rows'][] = $r;
         }
