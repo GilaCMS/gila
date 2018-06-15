@@ -30,11 +30,9 @@ class cm extends controller
     */
     function describeAction ()
     {
-        global $table;
-        $this->contenttype = router::get("t",1);
+        $pnk = new gTable(router::get("t",1));
         if(!$pnk->can('read')) return;
-        include 'src/'.gila::$content[$this->contenttype];
-        echo json_encode($table,JSON_PRETTY_PRINT);
+        echo json_encode($pnk->getTable(),JSON_PRETTY_PRINT);
     }
 
     /**
@@ -43,7 +41,7 @@ class cm extends controller
     function listAction ()
     {
         global $db;
-        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable(router::get("t",1));
         $result = [];
         if(!$pnk->can('read')) return;
 
@@ -72,7 +70,7 @@ class cm extends controller
             $this->group_rowsAction();
             return;
         }
-        $pnk = new gTable('src/'.@gila::$content[router::get("t",1)]);
+        $pnk = new gTable(router::get("t",1));
         $result = [];
         if(!$pnk->can('read')) return;
 
@@ -90,7 +88,7 @@ class cm extends controller
     function group_rowsAction ()
     {
         global $db;
-        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable(router::get("t",1));
         $result = [];
         $groupby = $_GET['groupby'];
         if(!$pnk->can('read')) return;
@@ -112,7 +110,7 @@ class cm extends controller
     {
         global $db;
         $result = [];
-        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable(router::get("t",1));
 
         if(isset($_GET['id'])&&$_GET['id']!='') {
             $id = $_GET['id'];
@@ -123,7 +121,7 @@ class cm extends controller
 
         $pnk->updateMeta();
         $pnk->updateJoins();
-echo "UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;";
+
         $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
         $result['fields'] = $pnk->fields();
         $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
@@ -136,7 +134,7 @@ echo "UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;";
 
     function empty_rowAction ()
     {
-        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable(router::get("t",1));
         $result['fields'] = $pnk->fields();
         $result['rows'][0] = $pnk->getEmpty();
         echo json_encode($result,JSON_PRETTY_PRINT);
@@ -149,7 +147,7 @@ echo "UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;";
     {
         global $db;
         $result = [];
-        $pnk = new gTable('src/'.gila::$content[router::get("t",1)]);
+        $pnk = new gTable(router::get("t",1));
         if(isset($_GET['id'])) {
             $fields=implode(',',$pnk->fields());
             $res = $db->query("INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_GET['id']);
@@ -174,7 +172,7 @@ echo "UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;";
     function deleteAction ()
     {
         global $db;
-        $pnk = new gTable('src/'.gila::$content[router::get("t",1)], $this->permissions);
+        $pnk = new gTable(router::get("t",1), $this->permissions);
         if($pnk->can('delete')) {
             $res = $db->query("DELETE FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_POST['id']);
             echo $_POST['id'];

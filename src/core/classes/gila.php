@@ -17,6 +17,7 @@ class gila {
     static $option;
     static $privilege;
     static $content;
+    static $contentField;
 
     function __construct()
     {
@@ -138,6 +139,12 @@ class gila {
     static function content($key, $path)
     {
         self::$content[$key] = $path;
+    }
+
+    static function contentField($key, $field, $table)
+    {
+        if(!isset(self::$contentField[$key])) self::$contentField[$key] = [];
+        self::$contentField[$key][$field] = $table;
     }
 
     /**

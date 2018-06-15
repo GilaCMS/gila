@@ -150,4 +150,5 @@ td[col] .pnk-input{ margin:0px; }
 }
 .pnk-pagination .active a {
     color: white;
+    background: steelblue;
 }

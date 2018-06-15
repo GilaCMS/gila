@@ -5,11 +5,23 @@ class gTable
     private $table;
     private $permissions;
 
-    function __construct ($path, $permissions = ['admin'])
+    function __construct ($content, $permissions = ['admin'])
     {
+        $path = 'src/'.gila::$content[$content];
         include $path;
         $this->table = $table;
         $this->permissions = $permissions;
+        if($patch = @gila::$contentField[$this->table['name']]) {
+            $this->table['fields'] = array_merge($this->table['fields'],$patch);
+        }
+        foreach ($this->table['fields'] as $key => &$field) {
+            if(isset($field['qoptions'])) {
+                global $db;
+                if(!isset($field['options'])) $field['options'] = [];
+                $res = $db->get($field['qoptions']);
+                foreach($res as $r) $field['options'][$r[0]] = $r[1];
+            }
+        }
 
         if(!isset($this->table['permissions'])) $this->table['permissions'] = [];
         $p = &$this->table['permissions'];
@@ -157,7 +169,6 @@ class gTable
             if(@$this->table['fields'][$key]['type'] == 'joins') {
                 $jt = $this->table['fields'][$key]["jt"];
                 $arrv = explode(",",$value);
-                echo $arrv;
                 $db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
                 foreach($arrv as $arrv_k=>$arrv_v){
                     $db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$id','$arrv_v');");
@@ -255,14 +266,26 @@ class gTable
     function update() {
         global $db;
         $tname = $this->table['name'];
-        $db->query("CREATE TABLE IF NOT EXISTS $tname ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+        $table_created=false;
+        $id = $this->table['id'];
 
         foreach($this->table['fields'] as $fkey=>$field) {
             if(isset($field['qtype'])) {
-                $column = $field['qcolumn']?:$fkey;
-                $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
+                $column = @$field['qcolumn']?:$fkey;
+                if($table_created==false) {
+                    $ql = "CREATE TABLE IF NOT EXISTS $tname($column {$field['qtype']},KEY `$id` (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+                    $db->query($ql);
+                    $table_created=true;
+                } else {
+                    $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
+                }
             }
         }
         return true;
+    }
+
+    function getTable()
+    {
+        return $this->table;
     }
 }
