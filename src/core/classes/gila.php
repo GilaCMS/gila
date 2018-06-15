@@ -290,6 +290,8 @@ class gila {
 
     static function url($url)
     {
+        if($url=='#') return router::url().'#';
+        
         if(gila::config('rewrite')) {
             $var = explode('/',$url);
             if(gila::config('default-controller') == $var[0]) {

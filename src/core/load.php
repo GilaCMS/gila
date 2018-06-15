@@ -10,7 +10,7 @@ gila::controllers([
 ]);
 gila::$amenu = [
     ['Dashboard','admin','icon'=>'dashboard'],
-    'content'=>['Content','admin','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
+    'content'=>['Content','#','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
         ['Pages','admin/content/page','icon'=>'file','access'=>'admin'],
         ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin writer'],
         ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin'],
@@ -18,7 +18,7 @@ gila::$amenu = [
         ['File Manager','fm','icon'=>'folder','access'=>'admin'],
         ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
         ]],
-    'admin'=>['Administration','admin','icon'=>'wrench','access'=>'admin','children'=>[
+    'admin'=>['Administration','#','icon'=>'wrench','access'=>'admin','children'=>[
         ['Users','admin/content/user','icon'=>'users','access'=>'admin'],
         ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin'],
         ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
