@@ -11,7 +11,7 @@ class gTable
             $path = 'src/'.gila::$content[$content];
         else
             $path = $content;
-        
+
         include $path;
         $this->table = $table;
         $this->permissions = $permissions;
@@ -259,7 +259,10 @@ class gTable
         }
 
         if(is_bool($array)) return $array;
-        if(is_callable($array)) return $array();
+        if(!is_array($array)) {
+            if(is_callable($array)) return $array();    
+            $array = explode(' ', $array);
+        }
 
         foreach($array as $value) {
             if(in_array($value, $this->permissions)) return true;

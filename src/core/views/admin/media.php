@@ -14,15 +14,19 @@ event::fire('admin::media-view',[$path]);
   <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
     <i class='fa fa-arrow-left'></i></a>
   <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
-  <input type='file' class='g-group-item g-input fullwidth' id='upload_files' accept="image/*,video/*,audio/*" onchange='gallery_upload_files()' multiple data-path="<?=$path?>">
-  <span class="g-group-item" style="position:relative;">
-      <input class='g-input input-filter' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
-      <i class="fa fa-filter" style="position:absolute;margin:12px;right:0;top:0"></i>
+<?php if(gila::hasPrivilege('admin upload_assets')){ ?>
+    <input type='file' class='g-group-item g-input fullwidth' id='upload_files' accept="image/*,video/*,audio/*" onchange='gallery_upload_files()' multiple data-path="<?=$path?>">
+<?php } ?>
+  <span class="g-group-item fullwidth" style="position:relative;">
+    <input class='g-input input-filter fullwidth' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
+    <i class="fa fa-filter" style="position:absolute;margin:12px;right:0;top:0"></i>
   </span>
-  <button class="btn btn-white" onclick="gallery_create('<?=$path?>')"><i class="fa fa-folder-o"></i></button>
-  <button class="btn btn-white" onclick="gallery_move_selected()"><strong>N</strong></button>
-  <button class="btn btn-white" onclick="gallery_refresh_thumb()"><i class="fa fa-refresh"></i></button>
-  <button class="btn btn-white" onclick="gallery_delete_selected()"><i class="fa fa-trash"></i></button>
+  <?php if(gila::hasPrivilege('admin edit_assets')){ ?>
+      <button class="btn btn-white" onclick="gallery_create('<?=$path?>')"><i class="fa fa-folder-o"></i></button>
+      <button class="btn btn-white" onclick="gallery_move_selected()"><strong>N</strong></button>
+      <button class="btn btn-white" onclick="gallery_refresh_thumb()"><i class="fa fa-refresh"></i></button>
+      <button class="btn btn-white" onclick="gallery_delete_selected()"><i class="fa fa-trash"></i></button>
+  <?php } ?>
 </div>
 <input id='selected-path' type='hidden'>
 <div class='g-gal wrapper gap-8px' style='background:white'>

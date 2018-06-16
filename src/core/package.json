@@ -2,5 +2,13 @@
 	"name":"Gila CMS",
 	"version":"1.7.2",
 	"description":"This is the core package of Gila CMS.",
-	"url":"gilacms.com"
+	"url":"gilacms.com",
+	"permissions": {
+		"admin":"All administration privileges",
+		"admin_user":"Administrate users",
+		"admin_userrole":"Administrate user roles",
+		"admin_permissions":"Add and remove permissions to user roles",
+		"upload_assets":"Can upload files on assets folder",
+		"edit_assets":"Can edit files on assets folder"
+	}
 }

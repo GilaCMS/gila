@@ -7,12 +7,17 @@ $table = [
     'tools'=>['add','csv'],
     'commands'=>['edit'],
     'id'=>'id',
-    //'list'=> ['id','username','email','privileges'],
-    'csv'=> ['id','username','email'],
     'permissions'=>[
+        'create'=>['admin','admin_user'],
+        'read'=>['admin','admin_user'],
+        'update'=>['admin','admin_user'],
+        'delete'=>false
+    ],
+    'csv'=> ['id','username','email'],
+/*    'permissions'=>[
         'create'=>['admin'],
         'update'=>['admin']
-    ],
+    ],*/
     'fields'=> [
         'id'=> [
           "title"=>"ID",
@@ -25,6 +30,14 @@ $table = [
           "title"=>"Email"
         ],
         'pass'=> ['list'=>false,'type'=>'password','title'=>'Password'],
+        'userrole'=>[
+            'title'=>"Roles",
+            'type'=>'meta',
+            'edit'=>true,
+            "mt"=>['usermeta', 'user_id', 'value'],
+            'metatype'=>['vartype', 'role'],
+            'qoptions'=>'SELECT `id`,`userrole` FROM `userrole`;'
+        ],
         "privileges"=>[
             //'list'=>false,
             'edit'=>true,

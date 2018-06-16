@@ -103,7 +103,7 @@ class admin extends controller
 
     function usersAction ()
     {
-        view::renderAdmin('admin/user.php');
+        view::renderAdmin('admin/users.php');
     }
 
     /**

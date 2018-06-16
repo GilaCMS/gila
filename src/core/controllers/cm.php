@@ -12,7 +12,7 @@ class cm extends controller
 
     function __construct ()
     {
-        $this->permissions = user::metaList( session::user_id(), 'privilege');
+        $this->permissions = user::permissions(session::user_id());
     }
 
     /**
@@ -47,7 +47,7 @@ class cm extends controller
     function listAction ()
     {
         global $db;
-        $pnk = new gTable(router::get("t",1));
+        $pnk = new gTable(router::get("t",1),$this->permissions);
         $result = [];
         if(!$pnk->can('read')) return;
 
@@ -77,7 +77,7 @@ class cm extends controller
             $this->group_rowsAction();
             return;
         }
-        $pnk = new gTable(router::get("t",1));
+        $pnk = new gTable(router::get("t",1),$this->permissions);
         $result = [];
         if(!$pnk->can('read')) return;
 

@@ -86,3 +86,9 @@ $link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,up
 VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
 $link->query("INSERT INTO page(id,title,slug,page,publish,updated)
 VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
+
+$link->query('CREATE TABLE IF NOT EXISTS `userrole` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userrole` varchar(80) DEFAULT NULL,
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
