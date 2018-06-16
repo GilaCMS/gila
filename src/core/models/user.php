@@ -89,4 +89,16 @@ class user
         if(\session::key('user_id')==$id) \session::key('user_name',$name);
         return $db->query("UPDATE user SET username=? where id=?;",[$name,$id]);
     }
+
+    static function permissions($id) {
+        $response = user::metaList( $id, 'privilege');
+        $file = 'log/permissions.json';
+        if(file_exists($file)) {
+            $roles = user::metaList( $id, 'group');
+            $rp = json_decode(file_get_contents($file),true);
+            foreach($roles as $role) if(isset($rp[$role]))
+                $response = array_merge($response, $rp[$role]);
+        }
+        return $response;
+    }
 }

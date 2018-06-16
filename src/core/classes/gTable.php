@@ -7,7 +7,11 @@ class gTable
 
     function __construct ($content, $permissions = ['admin'])
     {
-        $path = 'src/'.gila::$content[$content];
+        if(isset(gila::$content[$content]))
+            $path = 'src/'.gila::$content[$content];
+        else
+            $path = $content;
+        
         include $path;
         $this->table = $table;
         $this->permissions = $permissions;

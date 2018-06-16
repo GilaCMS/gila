@@ -32,7 +32,13 @@ class cm extends controller
     {
         $pnk = new gTable(router::get("t",1));
         if(!$pnk->can('read')) return;
-        echo json_encode($pnk->getTable(),JSON_PRETTY_PRINT);
+        $table = $pnk->getTable();
+        foreach($table['fields'] as &$field) {
+            unset($field['qtype']);
+            unset($field['qoptions']);
+            unset($field['qcolumn']);
+        }
+        echo json_encode($table,JSON_PRETTY_PRINT);
     }
 
     /**
@@ -60,6 +66,7 @@ class cm extends controller
             }*/
             $result[] = $r;
         }
+
         echo json_encode($result,JSON_PRETTY_PRINT);
     }
 

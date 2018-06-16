@@ -619,6 +619,9 @@ input:focus + .helptext{
     transition:all 0s;
     margin-bottom:-1px;
 }
+.g-tabs>li>a{
+    color: var(--main-color)
+}
 .tab-content>*{
     display:none;
 }

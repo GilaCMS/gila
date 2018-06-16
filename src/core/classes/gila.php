@@ -141,6 +141,13 @@ class gila {
         self::$content[$key] = $path;
     }
 
+    /**
+    * Make changes of a field of content type
+    * @param $key (string) Name of content type
+    * @param $field (string) Index of the field
+    * @param $table (Assoc array) Value of the field
+    * @code gila::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
+    */
     static function contentField($key, $field, $table)
     {
         if(!isset(self::$contentField[$key])) self::$contentField[$key] = [];
@@ -291,7 +298,7 @@ class gila {
     static function url($url)
     {
         if($url=='#') return router::url().'#';
-        
+
         if(gila::config('rewrite')) {
             $var = explode('/',$url);
             if(gila::config('default-controller') == $var[0]) {
@@ -355,7 +362,7 @@ class gila {
     {
         if(!is_array($pri)) $pri=explode(' ',$pri);
         if(!isset($GLOBALS['user_privileges'])) {
-            $GLOBALS['user_privileges'] = user::metaList( session::user_id(), 'privilege');
+            $GLOBALS['user_privileges'] = user::permissions(session::user_id());
         }
 
         foreach($pri as $p) if(in_array($p,$GLOBALS['user_privileges'])) return true;

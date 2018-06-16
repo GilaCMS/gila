@@ -26,7 +26,7 @@ $table = [
         /*'slug'=> [],*/
         'user_id'=> [
             'title'=>'User',
-            'qoptions'=>"id AS `Index`, username AS `Text` FROM user"
+            'qoptions'=>"SELECT id, username FROM user"
         ],
         'updated'=> [
             'title'=>'Last updated',
@@ -39,7 +39,7 @@ $table = [
             "mt"=>['postmeta', 'post_id', 'value'],
             'metatype'=>['vartype', 'category'],
             "title"=>"Categories",
-            "qoptions"=>"id,title FROM postcategory"
+            "qoptions"=>"SELECT id,title FROM postcategory;"
         ],
         "tags"=>[
             'list'=>false,
@@ -48,7 +48,6 @@ $table = [
             "mt"=>['postmeta', 'post_id', 'value'],
             'metatype'=>['vartype', 'tag'],
             "title"=>"Tags",
-            //"qoptions"=>"id,title FROM postcategory"
         ],
         'publish'=> [
             'title'=>'Public',

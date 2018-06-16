@@ -82,7 +82,6 @@ class pnk extends controller
 		$pnkfile = $_GET["file"];
 		fill_field_options();
 		read_data_rows();
-		echo __DIR__."/pnk-$pnkfile.php";
 		include __DIR__."/pnk-$pnkfile.php";
 	}
 
