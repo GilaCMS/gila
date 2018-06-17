@@ -92,7 +92,7 @@ class gTable
         $select = $this->fields();
 
         foreach ($select as $key => $value) {
-            if($this->table['fields'][$value]['type']=="number") {
+            if($this->fieldAttr($key, 'type') == "number") {
                 $select[$key] = 'SUM('.$value.') as '.$value;
             } else if($groupby == $value) {
                 if($qcolumn = $this->fieldAttr($value, 'qcolumn'))
@@ -104,6 +104,7 @@ class gTable
                 }
             } else $select[$key] = "'' as ".$value;
         }
+        
         return implode(',', $select);
     }
 
@@ -228,6 +229,15 @@ class gTable
                     $filters[] = "$key='$value'";
                 }
             }
+        }
+
+        if(isset($fields["search"])) {
+            $search_filter = [];
+            foreach($this->table['fields'] as $key=>$field) {
+                if(!isset($field['qcolumn']) && !isset($field['metatype']))
+                    $search_filter[] = "$key LIKE '%{$fields["search"]}%'";
+            }
+            $filters[] = '('.implode(' OR ',$search_filter).')';
         }
 
         if($filters != []) {

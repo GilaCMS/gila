@@ -14,10 +14,6 @@ $table = [
         'delete'=>false
     ],
     'csv'=> ['id','username','email'],
-/*    'permissions'=>[
-        'create'=>['admin'],
-        'update'=>['admin']
-    ],*/
     'fields'=> [
         'id'=> [
           "title"=>"ID",
