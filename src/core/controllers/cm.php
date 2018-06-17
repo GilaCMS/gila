@@ -92,6 +92,31 @@ class cm extends controller
         echo json_encode($result,JSON_PRETTY_PRINT);
     }
 
+    function csvAction ()
+    {
+        global $db;
+        $pnk = new gTable(router::get("t",1),$this->permissions);
+        $result = [];
+        if(!$pnk->can('read')) return;
+
+        // filename to be downloaded
+        $filename = router::get("t",1). date('Y-m-d') . ".csv";
+        header("Content-Disposition: attachment; filename=\"$filename\"");
+        $fields = $pnk->getTable()['csv'];
+        echo implode(',',$fields)."\n";
+        $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
+        $res = $db->query($ql);
+        while($r = mysqli_fetch_row($res)) {
+            foreach($r as &$str) {
+                $str = preg_replace("/\t/", "", $str);//\\t
+                $str = preg_replace("/\r?\n/", "", $str);//\\n
+                if($str=="null") $str="";
+                if(strstr($str, '"') || strstr($str, ',')) $str = '"' . str_replace('"', '""', $str) . '"';
+            }
+            echo implode(',',$r)."\n";
+        }
+    }
+
     function group_rowsAction ()
     {
         global $db;

@@ -67,11 +67,13 @@ class gTable
         //}
     }
 
-    function select()
+    function select($fields = null)
     {
-        $select = $this->fields();
+        $select = [];
+        if($fields == null) $fields = $this->fields();
 
-        foreach ($select as $key => $value) {
+        foreach ($fields as $key => $value) {
+            $select[$key] = '`'.$value.'`';
             if($qcolumn = $this->fieldAttr($value, 'qcolumn'))
                 $select[$key] = $qcolumn.' as '.$value;
             if($mt = $this->fieldAttr($value, 'mt')) {
@@ -260,7 +262,7 @@ class gTable
 
         if(is_bool($array)) return $array;
         if(!is_array($array)) {
-            if(is_callable($array)) return $array();    
+            if(is_callable($array)) return $array();
             $array = explode(' ', $array);
         }
 
