@@ -53,21 +53,18 @@ class gTable
         return false;
     }
 
-    function fields()
+    function fields($output = 'list')
     {
-        if(!isset($this->table['list'])) {
-            $this->table['list']=[];
+        if(!isset($this->table[$output])) {
+            $this->table[$output]=[];
             foreach($this->table['fields'] as $k=>$f) {
-                if(!isset($f['list'])||$f['list']==true) $this->table['list'][] = $k;
+                if(!isset($f[$output])||$f[$output]==true) $this->table[$output][] = $k;
             }
         }
-        return $this->table['list'];
-        //if(isset($_GET['$select'])) {
-        //    $select = explode(',', $_GET['$select']);
-        //}
+        return $this->table[$output];
     }
 
-    function select($fields = null)
+    function select(&$fields = null)
     {
         $select = [];
         if($fields == null) $fields = $this->fields();
@@ -104,7 +101,7 @@ class gTable
                 }
             } else $select[$key] = "'' as ".$value;
         }
-        
+
         return implode(',', $select);
     }
 
@@ -143,6 +140,10 @@ class gTable
     function set(&$fields = null) {
         $set = [];
         if($fields==null) $fields=$_POST;
+
+        if(isset($this->table['events'])) foreach($this->table['events'] as $ev) {
+            if($ev[0]="change") $ev[1]($fields);
+        }
 
         foreach($fields as $key=>$value) {
             if(array_key_exists($key, $this->table['fields'])) {

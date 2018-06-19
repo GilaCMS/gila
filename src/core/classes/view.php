@@ -229,17 +229,15 @@ class view
     /**
     * Widget
     * @param widget (string) Name of the widget type
-    *
     */
-
     static function widget ($widget,$widget_exp=null)
     {
         global $db,$widget_data;
         if($widget_exp==null) $widget_exp=$widget;
         $mm = gila::config('default.'.$widget);
         if($mm > 0) {
-            $res = $db->get("SELECT data FROM widget WHERE id=?;",[$mm])[0];
-            $widget_data = json_decode($res['data']);
+            $res = core\models\widget::getById($mm);//("SELECT data FROM widget WHERE id=?;",[$mm])[0];
+            $widget_data = json_decode($res[0]->data);
         } else {
             $widget_data = null;
         }
@@ -286,8 +284,9 @@ class view
     */
     static function widget_area ($area, $div=true, $type=null, $widget_file=null)
     {
-        global $db,$widget_data;
-        $widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
+        global $widget_data;
+        //$widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
+        $widgets = core\models\widget::getActiveByArea($area);
         if ($widgets) foreach ($widgets as $widget) {
             if($type != null) if($widget['widget'] != $type) continue;
 

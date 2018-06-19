@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('env',$_POST['gila_env']);
     gila::config('rewrite',$_POST['gila_rewrite']);
     gila::config('user_register',$_POST['gila_user_register']);
-    gila::config('default.menu',$_POST['gila_defaultmenu']);
     gila::config('use_cdn',$_POST['gila_use_cdn']);
     gila::updateConfigFile();
     view::alert('success',__('_changes_updated'));
@@ -126,21 +125,6 @@ foreach ($sel_urs as $k=>$value) {
     foreach ($purls as $k=>$value) {
         $sel = (gila::config('rewrite')==$k?'selected':'');
         echo '<option value="'.$k."\" $sel>".$value.'</option>';
-    }
-    ?>
-    </select>
-    </div>
-
-    <br><div class="gm-12">
-    <label class="gm-3"><?=__("Main Menu")?></label>
-    <select name="gila_defaultmenu" class="gm-4">
-    <?php
-    $res = core\models\widget::getByWidget("menu");
-    $sel_wm = gila::config('default.menu');
-    echo '<option value="0">(default)';
-    foreach ($res as $k=>$wm) {
-        $sel = ($sel_wm==$wm['id']?'selected':'');
-        echo '<option value="'.$wm['id']."\" $sel>".@$wm['title'];
     }
     ?>
     </select>

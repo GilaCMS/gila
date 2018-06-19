@@ -1,8 +1,8 @@
 <?php
 
-use core\models\widget;
+//use core\models\widget;
 use core\models\user;
-use core\models\page;
+//use core\models\page;
 
 class admin extends controller
 {
@@ -28,42 +28,6 @@ class admin extends controller
       view::set('users',$db->value('SELECT count(*) from user;'));
       view::set('packages',count($GLOBALS['config']['packages']));
       view::renderAdmin('admin/dashboard.php');
-    }
-
-    /**
-    * List and edit posts
-    */
-    function postsAction ()
-    {
-        global $db;
-        if ($id = router::get('id',1)) {
-            view::set('id',$id);
-            view::renderAdmin('admin/edit_post.php');
-            return;
-        }
-        view::renderAdmin('admin/post.php');
-    }
-
-    /**
-    * List and edit pages
-    */
-    function pagesAction ()
-    {
-        global $db;
-        if ($id = router::get('id',1)) {
-            view::set('id',$id);
-            view::renderAdmin('admin/edit_page.php');
-            return;
-        }
-        view::renderAdmin('admin/page.php');
-    }
-
-    /**
-    * List and edit post categories
-    */
-    function postcategoriesAction ()
-    {
-        view::renderAdmin('admin/postcategory.php');
     }
 
     /**
@@ -106,6 +70,14 @@ class admin extends controller
         view::renderAdmin('admin/users.php');
     }
 
+    function package_optionsAction()
+    {
+        $package = router::get('package',1);
+        view::renderFile('admin/header.php');
+        package::options($package);
+        view::renderFile('admin/footer.php');
+        //include view::getViewFile('admin/optionInputs.php');
+    }
     /**
     * List and manage installed packages
     * @photo
@@ -229,7 +201,7 @@ class admin extends controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
             user::updateName($user_id, $_POST['gila_username']);
             user::meta($user_id, 'twitter_account', $_POST['twitter_account']);
-            //echo "<span class='alert success'>Name changed successfully<span>";
+            view::alert('success',__('_changes_updated'));
         }
         view::set('twitter_account',user::meta($user_id,'twitter_account'));
         view::renderAdmin('admin/myprofile.php');

@@ -22,4 +22,10 @@ class widget
         return $db->query("SELECT * FROM widget WHERE widget=?",$w);
     }
 
+    static function getActiveByArea($area)
+    {
+        global $db;
+        return $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos;",$area);
+    }
+
 }

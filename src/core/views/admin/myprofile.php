@@ -1,8 +1,7 @@
 
 <div class="gm-12">
+    <?php view::alerts(); ?>
     <form method="post" action="admin/profile" class="g-form">
-
-
 
     <br><div class="gm-12">
     <label class="gm-3">Name</label>

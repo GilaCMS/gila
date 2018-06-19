@@ -81,8 +81,9 @@ class cm extends controller
         $result = [];
         if(!$pnk->can('read')) return;
 
-        $result['fields'] = $pnk->fields();
-        $ql = "SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
+        $fieldlist = isset($_GET['id'])?'edit':'list';
+        $result['fields'] = $pnk->fields($fieldlist);
+        $ql = "SELECT {$pnk->select($result['fields'])} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
         $res = $db->query($ql);
         while($r = mysqli_fetch_row($res)) {
             $result['rows'][] = $r;
