@@ -31,6 +31,34 @@ class admin extends controller
     }
 
     /**
+    * List and edit posts
+    */
+    function postsAction ()
+    {
+        global $db;
+        if ($id = router::get('id',1)) {
+            view::set('id',$id);
+            view::renderAdmin('admin/edit_post.php');
+            return;
+        }
+        view::renderAdmin('admin/post.php');
+    }
+    
+    /**
+    * List and edit pages
+    */
+    function pagesAction ()
+    {
+        global $db;
+        if ($id = router::get('id',1)) {
+            view::set('id',$id);
+            view::renderAdmin('admin/edit_page.php');
+            return;
+        }
+        view::renderAdmin('admin/page.php');
+    }
+
+    /**
     * List and edit widgets
     */
     function widgetsAction ()

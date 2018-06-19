@@ -365,7 +365,7 @@ class gila {
             $GLOBALS['user_privileges'] = user::permissions(session::user_id());
         }
 
-        foreach($pri as $p) if(in_array($p,$GLOBALS['user_privileges'])) return true;
+        foreach($pri as $p) if(@in_array($p,$GLOBALS['user_privileges'])) return true;
         return false;
     }
 

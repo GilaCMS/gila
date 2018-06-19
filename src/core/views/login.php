@@ -15,7 +15,7 @@
 
 <body>
 
-    <div class="gl-4 centered">
+    <div class="gl-4 centered wrapper">
         <div class="border-buttom-main_ text-align-center">
             <div style="width:16%;display:inline-block">
                 <img src="assets/gila-logo.svg">
@@ -23,7 +23,7 @@
             <h3><?=__('Log In')?></h3>
         </div>
 
-        <form role="form" method="post" action="" class="g-form wrapper g-card">
+        <form role="form" method="post" action="" class="g-form wrapper g-card bg-white">
                 <div class="form-group">
                     <input class="form-control fullwidth" placeholder="E-mail" name="username" type="email" autofocus>
                 </div>

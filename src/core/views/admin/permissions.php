@@ -14,7 +14,7 @@ foreach($packages as $package) {
 
 // load all user groups
 global $db;
-$roles = $db->get("SELECT id,userrole FROM userrole;");
+$roles = array_merge([['member','Member']],$db->get("SELECT id,userrole FROM userrole;")); //[0,'Anonymous<br>User'],
 
 // update permissions.json if form submited
 if(isset($_POST['submit']) && isset($_POST['role'])) {
@@ -43,6 +43,7 @@ view::alerts();
 </button>
 <br>
 
+<style>table th:nth-child(2),table th:nth-child(2){font-weight: lighter;}</style>
 <table id="tbl-permissions" class="g-table">
     <tr>
         <th><?php foreach($roles as $role) {
