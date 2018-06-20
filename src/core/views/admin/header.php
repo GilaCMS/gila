@@ -26,8 +26,9 @@
     .dark-orange li ul li{ color: var(--main-color); }
     .dark-orange li ul li a{ color: var(--main-color); }
     .dark-orange li ul li a:hover{ color:white; }
-    .widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); grid-gap: 10px;}
+    .widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); grid-gap: 20px;}
     .widget-area-dashboard > * {box-shadow: 0px 1px 6px #999; margin:0}
+    .widget-area-dashboard .widget{background:white}
     .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: var(--main-padding); background: var(--main-bg-color); color: var(--main-color); }
     </style>
 

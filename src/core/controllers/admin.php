@@ -1,8 +1,7 @@
 <?php
 
-//use core\models\widget;
+use core\models\widget;
 use core\models\user;
-//use core\models\page;
 
 class admin extends controller
 {
@@ -43,7 +42,7 @@ class admin extends controller
         }
         view::renderAdmin('admin/post.php');
     }
-    
+
     /**
     * List and edit pages
     */

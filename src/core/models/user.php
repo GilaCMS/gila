@@ -105,7 +105,7 @@ class user
 
             if(isset($rp['member'])) $response = array_merge($response, $rp['member']);
         } else {
-            if(isset($rp[0])) $response = $rp[0]; else $response = [];
+            if(isset($rp[0])) $response = $rp['0']; else $response = [];
             session::key('permissions',$response);
         }
         return $response;

@@ -59,7 +59,7 @@ Vue.component('input-links', {
 </span>\
 &nbsp;<button @click="removeEl(key)" class="btn btn-error">-</button>\
 </div>\
-<a @click="add" class="btn btn-success">+</a>\
+<a @click="add()" class="btn btn-success">+</a>\
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
@@ -72,7 +72,6 @@ Vue.component('input-links', {
   },
   methods:{
     add: function(){
-		event.preventDefault()
 		array = new Array()
 		for(i in this.fields) if(this.fields[i]=='image') {
 			array[i] = 'src/core/assets/photo.png'
@@ -81,7 +80,6 @@ Vue.component('input-links', {
       	this.update()
     },
     removeEl: function(index){
-		event.preventDefault()
       	this.pos.splice(index,1)
       	this.update()
     },

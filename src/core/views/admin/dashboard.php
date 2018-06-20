@@ -1,5 +1,6 @@
 
 <?php view::alerts()?>
+<style>#main-wrapper{background: inherit !important;border:none}</style>
 <div class='row'>
   <div class='gm-3 wrapper'>
     <a href="admin/content/post">
