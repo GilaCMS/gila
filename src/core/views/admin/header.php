@@ -92,8 +92,11 @@
         <div class="md-12">
 
             <div style="background:#d6d6d6; padding:12px" class="row caption">
-                <div style="font-size:16px; padding-left: 15px;">
-                    <?=ucwords(router::action())?>
+                <div style="padding-left: 15px;">
+                    <?php
+                    echo ucwords(router::controller());
+                    if($item = router::action()) echo ' \\ '.ucwords($item);
+                    if($item = router::get(null,1)) echo ' \\ '.(ucwords($item))?>
                 </div>
             </div>
             <div class="wrapper bordered" style="background:white;margin:10px" id='main-wrapper'>
