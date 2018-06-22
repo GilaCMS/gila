@@ -3,7 +3,7 @@ $pages_path = [];
 $templates = [];
 
 $pages_path[] = view::getThemePath().'/pages/';
-if(view::$parent_theme) $pages_path[] = 'themes/'.view::$parent_theme.'/pages/';
+if(view::$parent_theme) $pages_path[] = 'themes/'.view::$parent_theme.'/templates/';
 $pages_path = array_merge($pages_path, gila::packages());
 $pages_path[] = 'src/core/templates/';
 foreach($pages_path as $path) {
