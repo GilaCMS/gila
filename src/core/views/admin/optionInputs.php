@@ -41,7 +41,7 @@ foreach($options as $key=>$op) {
         if($op['type']=='list') {
             $fieldset = htmlspecialchars(json_encode(array_keys($op['fields'])));
             $value = htmlspecialchars($ov);
-            echo '<input-links style="width:100%;border:1px solid var(--main-border-color);" name="option['.$key.']" fieldset="'.$fieldset.'" value="'.$value.'"></input-links>';
+            echo '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="option['.$key.']" fieldset="'.$fieldset.'" value="'.$value.'"></input-list>';
         }
         /* CONTENT */
         if($op['type']=='content') {

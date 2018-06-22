@@ -33,7 +33,6 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
             }
         }
         $table .= (isset($p->contact)?' <b>Contact:</b> '.$p->contact:'');
-        //unset($options);
 
 
         if (file_exists('src/'.$p->package)) {
@@ -78,6 +77,8 @@ view::alerts();
 </div>
 
 <?=view::script('src/core/assets/admin/media.js')?>
+<?=view::script('lib/vue/vue.min.js');?>
+<?=view::script('src/core/assets/admin/listcomponent.js');?>
 <script>
 function addon_activate(p){ g.ajax('admin/packages?g_response=content&activate='+p,function(x){
     if(x=='ok')
@@ -110,6 +111,9 @@ g.dialog.buttons.save_options = {
 function addon_options(p) {
  g.post("admin/packages",'g_response=content&options='+p,function(x){
      g.modal({title:"Options",body:x,buttons:'save_options'})
+     app = new Vue({
+         el: '#addon_options_form'
+     })
  })
 }
 

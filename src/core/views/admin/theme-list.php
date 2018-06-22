@@ -59,6 +59,8 @@ view::alerts();
 
 
 <?=view::script('src/core/assets/admin/media.js')?>
+<?=view::script('lib/vue/vue.min.js');?>
+<?=view::script('src/core/assets/admin/listcomponent.js');?>
 <script>
 function theme_activate(p){ g.ajax('admin/themes?g_response=content&activate='+p,function(x){
     g.alert('Theme selected!','success','location.reload(true)');
@@ -83,6 +85,9 @@ g.dialog.buttons.save_options = {
 function theme_options(p) {
  g.post("admin/themes",'g_response=content&options='+p,function(x){
      g.modal({title:"Options",body:x,buttons:'save_options',type:'modal'})
+     app = new Vue({
+         el: '#theme_options_form'
+     })
  })
 }
 
