@@ -38,6 +38,7 @@ tinymce.init({
   //mode: 'none',
   height: 300,
   theme: 'modern',
+  extended_valid_elements: 'script,div[v-for|v-if|v-model|style|class|id|data-load]',
   plugins: [
     'lists link image charmap hr anchor pagebreak',
     'searchreplace wordcount visualchars code',
