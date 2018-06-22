@@ -27,6 +27,18 @@ function lazyImgLoad() {
 	            el.style.backgroundImage = imgs[i].getAttribute('data-image');
 	            el.removeAttribute('data-image');
 	        }
+            if (el.getAttribute('data-load')) {
+                let xhttp = new XMLHttpRequest();
+                let _el = el;
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        _el.innerHTML = this.responseText;
+                        _el.removeAttribute('data-load');
+                    }
+                };
+                xhttp.open("GET", el.getAttribute('data-load'), true);
+                xhttp.send();
+            }
 		}
 	}
 }
