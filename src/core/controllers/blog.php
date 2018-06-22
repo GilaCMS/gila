@@ -45,6 +45,12 @@ class blog extends controller
         }
 
         if($_GET['url']!='' || view::getViewFile('homepage.php')==false) {
+            if ($r = page::getByIdSlug('')) {
+                view::set('title',$r['title']);
+                view::set('text',$r['page']);
+                view::render('page.php');
+                return;
+            }
             view::set('page',blog::$page);
             view::set('posts',post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
             view::render('frontpage.php');

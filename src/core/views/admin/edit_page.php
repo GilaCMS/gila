@@ -8,10 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     $text = $_POST['p_page'];
     $publish = isset($_POST['p_publish'])?1:0;
     $slug = $_POST['p_slug'];
-    if($slug == '') {
-        $slugify = new Cocur\Slugify\Slugify();
-        $slug = $slugify->slugify($title);
-    }
+
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {
 		$db->query("INSERT INTO page(title,page,publish,slug) VALUES(?,?,?,?)",$args);
@@ -46,7 +43,7 @@ view::script('src/core/assets/admin/media.js');
 
     <div class="row ">
         <label class="gm-2">Slug</label>
-        <input class="gm-10" value="<?=$p->slug?>" name="p_slug" placeholder="Generate from title" />
+        <input class="gm-10" value="<?=$p->slug?>" name="p_slug"  />
     </div>
 
     <div class="row ">
