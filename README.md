@@ -6,9 +6,6 @@
   <a href="https://github.com/GilaCMS/gila/commits/">
     <img src="https://img.shields.io/github/last-commit/gilacms/gila.svg">
   </a>
-  <a href="#">
-    <img src="https://img.shields.io/github/languages/code-size/gilacms/gila.svg">
-  </a>
   <a href="https://gila-cms.readthedocs.io">
     <img src="https://readthedocs.org/projects/gila-cms/badge/?version=latest">
   </a>
@@ -18,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="http://gilacms.com/assets/gila-logo.svg" width="200px" />
+  <img src="http://gilacms.com/assets/gila-logo.png" width="200px" />
 </p>
 
 Gila CMS
