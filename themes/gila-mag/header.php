@@ -23,6 +23,7 @@ footer{background:#464a49;margin-top:10px;color:white}
 .g-navbar li ul li a{color:inherit}
 .g-nav li ul{border-width:0; background: #181818; margin-top:-2px}
 .g-nav .active{background: <?=$theme_color?>}
+li.active{background-color:var(--main-primary-color); color:white;}
 </style>
 
 <body>

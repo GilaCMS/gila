@@ -16,6 +16,7 @@ h1,h2,h3,.widget-title,.header{font-family:Arial,sans-serif;}
 .post-review a{color: #181818;}
 .post-review a:hover{color: <?=$theme_color?>;}
 .sidebar{padding-left:8px; min-height:200px}
+li.active{background-color:var(--main-primary-color); color:white;}
 .header{margin-bottom: 20px;   background-color: #262626;
 <?php
 $bgimg = gila::option('theme.header-image');
