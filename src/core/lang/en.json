@@ -43,5 +43,8 @@
     "New": "New",
     "Edit": "Edit",
     "Delete": "Delete",
+    "Update": "Update",
+    "Save": "Save",
+    "_not_found": "not found",
     "_changes_updated": "Changes have been saved successfully!"
 }

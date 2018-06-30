@@ -259,7 +259,7 @@ class admin extends controller
             if(isset($_POST['menu'])) {
                 $folder = gila::dir('log/menus/');
                 file_put_contents($folder.$menu.'.json',$_POST['menu']);
-                echo json_encode(["msg"=>"saved"]);
+                echo json_encode(["msg"=>__('_changes_updated')]);
             }
             exit;
         }

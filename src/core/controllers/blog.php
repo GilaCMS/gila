@@ -116,7 +116,7 @@ class blog extends controller
             view::set('author',$res[0][0]);
             view::set('posts',post::getPosts(['posts'=>self::$ppp,'user_id'=>$res[0][1]]));
         } else {
-            view::set('author','not found');
+            view::set('author',__('unknown'));
             view::set('posts',[]);
         }
         view::render('blog-author.php');
@@ -163,7 +163,7 @@ class blog extends controller
                 view::meta('author',$r['username']);
                 if($creator = user::meta($user_id,'twitter_account'))
                     view::meta('twitter:creator','@'.$creator);
-            } else view::set('author','unknown');
+            } else view::set('author',__('unknown'));
 
             view::render('single-post.php');
         }
