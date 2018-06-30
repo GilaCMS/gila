@@ -180,13 +180,24 @@ class admin extends controller
 
     function media_uploadAction(){
         if(isset($_FILES['uploadfiles'])) {
-            if (isset($_FILES['upload_files']["error"])) if ($_FILES['upload_files']["error"] > 0) {
-                echo "Error: " . $_FILES['upload_files']['error'] . "<br>";
+            if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
+                echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
             }
             $path = router::post('path','assets');
-            if(!move_uploaded_file($_FILES['uploadfiles']['tmp_name'],$path.'/'.$_FILES['uploadfiles']['name'])) {
-                echo "Error: could not upload file!<br>";
+            $tmp_file = $_FILES['uploadfiles']['tmp_name'];
+            $name = $_FILES['uploadfiles']['name'];
+            if(is_array($tmp_file)) {
+                for($i=0;i<count($tmp_file);$i++) {
+                    if(!move_uploaded_file($tmp_file[$i],$path.'/'.$name[$i])) {
+                        echo "Error: could not upload file!<br>";
+                    }
+                }
+            }else{
+                if(!move_uploaded_file($tmp_file,$path.'/'.$name)) {
+                    echo "Error: could not upload file!<br>";
+                }
             }
+
         }
         self::mediaAction();
     }

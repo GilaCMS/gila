@@ -15,10 +15,10 @@
 <script src="lib/CodeMirror/htmlmixed.js"></script>
 
 <script>
-PNK.tools.new_post = {title:'New',fn:function(){
+PNK.tools.new_post = {title:'<?=__('New')?>',fn:function(){
     window.location.href='admin/posts/new'
 }}
-PNK.tools.new_page = {title:'New',fn:function(){
+PNK.tools.new_page = {title:'<?=__('New')?>',fn:function(){
     window.location.href='admin/pages/new'
 }}
 pnk_populate_tables(document);

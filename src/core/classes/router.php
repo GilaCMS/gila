@@ -164,7 +164,7 @@ class router
     */
     static function controller ()
     {
-        return router::$args[0];
+        return @router::$args[0];
     }
 
     /**

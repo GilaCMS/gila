@@ -82,24 +82,24 @@ view::alerts();
 <script>
 function addon_activate(p){ g.ajax('admin/packages?g_response=content&activate='+p,function(x){
     if(x=='ok')
-        g.alert('Package successfully activated!','success','location.reload(true)');
+        g.alert('<?=__('_package_activated')?>','success','location.reload(true)');
     else
         g.alert(x,'warning');
 })};
 function addon_deactivate(p){ g.ajax('admin/packages?g_response=content&deactivate='+p,function(x){
-    g.alert('Package deactivated!','notice','location.reload(true)');
+    g.alert('<?=__('_package_deactivated')?>','notice','location.reload(true)');
 })};
 function addon_download(p){ g.ajax('admin/packages?g_response=content&download='+p,function(x){
-    // something to show progress
+    //TODO something to show progress
     if(x=='ok')
-        g.alert('Package downloaded!','success');
+        g.alert('<?=__('_package_downloaded')?>','success');
     else
-        g.alert('Package not downloaded!','warning');
+        g.alert('<?=__('_package_not_downloaded')?>','warning');
     this.style.color="#000";
 })};
 
 g.dialog.buttons.save_options = {
-    title:'Save Options',fn:function(){
+    title: '<?=__('Save')?>',fn:function(){
 		let p = g.el('addon_id').value;
 		let fm=new FormData(g.el('addon_options_form'))
         g.ajax({url:'admin/packages?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
@@ -110,7 +110,7 @@ g.dialog.buttons.save_options = {
 
 function addon_options(p) {
  g.post("admin/packages",'g_response=content&options='+p,function(x){
-     g.modal({title:"Options",body:x,buttons:'save_options'})
+     g.modal({title:'<?=__('Options')?>',body:x,buttons:'save_options'})
      app = new Vue({
          el: '#addon_options_form'
      })

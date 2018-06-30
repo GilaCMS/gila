@@ -63,17 +63,17 @@ view::alerts();
 <?=view::script('src/core/assets/admin/listcomponent.js');?>
 <script>
 function theme_activate(p){ g.ajax('admin/themes?g_response=content&activate='+p,function(x){
-    g.alert('Theme selected!','success','location.reload(true)');
+    g.alert('<?=__('_theme_selected')?>','success','location.reload(true)');
 })};
 function theme_download(p){ g.ajax('admin/themes?g_response=content&download='+p,function(x){
     // something to show progress
     if(x=='ok')
-      g.alert('Theme downloaded!','success');
-    else  g.alert('Theme not downloaded!','warning');
+      g.alert('<?=__('_theme_downloaded')?>','success');
+    else  g.alert('<?=__('_theme_not_downloaded')?>','warning');
 })};
 
 g.dialog.buttons.save_options = {
-    title:'Save Options',fn:function(){
+    title:'<?=__('Save')?>',fn:function(){
 		let p = g.el('theme_id').value;
 		let fm=new FormData(g.el('theme_options_form'))
         g.ajax({url:'admin/themes?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
@@ -84,7 +84,7 @@ g.dialog.buttons.save_options = {
 
 function theme_options(p) {
  g.post("admin/themes",'g_response=content&options='+p,function(x){
-     g.modal({title:"Options",body:x,buttons:'save_options',type:'modal'})
+     g.modal({title:"<?=__('Options')?>",body:x,buttons:'save_options',type:'modal'})
      app = new Vue({
          el: '#theme_options_form'
      })

@@ -12,7 +12,7 @@ class session
         //ini_set('session.gc_maxlifetime', 24*3600);
         session_set_cookie_params(24*3600);
         try {
-            session_start();
+            @session_start();
         } catch (Exception $e) {
 
         }
