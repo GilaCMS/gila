@@ -6,11 +6,15 @@
     "Development":"Development",
     "Yes":"Yes",
     "No":"No",
+    "Save":"Save",
+    "Rename":"Rename",
+    "Upgrade":"Upgrade",
     "_package_activated":"Package successfully activated!",
     "_package_deactivated":"Package deactivated!",
     "_package_downloaded":"Package downloaded!",
     "_package_not_downloaded":"Package not downloaded!",
     "_theme_selected":"Theme selected!",
     "_theme_downloaded":"Theme downloaded!",
-    "_theme_not_downloaded":"Theme not downloaded!"
+    "_theme_not_downloaded":"Theme not downloaded!",
+    "_packages_required":"These packages must be activated"
 }

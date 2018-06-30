@@ -46,7 +46,7 @@ class package {
                     echo 'ok';
                 }
                 else {
-                    echo "These packages must be activated:";
+                    echo __('_packages_required').':';
                     foreach($require as $k=>$r) echo "<br><a href='admin/packages/search/$k'>$r</a>";
                 }
             } else echo "Package is already active";
@@ -115,7 +115,7 @@ class package {
     */
     static function options($package)
     {
-        if (in_array($package,$GLOBALS['config']['packages'])) {
+        if (file_exists('src/'.$package)) {
             global $db;
             echo '<form id="addon_options_form" class="g-form"><input id="addon_id" value="'.$package.'" type="hidden">';
             $pack=$package;
@@ -142,7 +142,7 @@ class package {
     */
     static function save_options($package)
     {
-        if (in_array($package,$GLOBALS['config']['packages'])) {
+        if (file_exists('src/'.$package)) {
         	global $db;
         	foreach($_POST['option'] as $key=>$value) {
         		$ql="INSERT INTO `option`(`option`,`value`) VALUES('$package.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";

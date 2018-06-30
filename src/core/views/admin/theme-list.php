@@ -20,19 +20,19 @@ foreach ($packages as $pkey=>$p) {
     $table.="</div><br>";
 
     if (file_exists('themes/'.$p->package)) {
-        if ($p->package==gila::config('theme')) {
-            $table .= "<a onclick='theme_options(\"{$p->package}\")' class='g-btn btn-success' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a> ";
+        if ($p->package!=gila::config('theme')) {
+            $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>".__('Select')."</a> ";
         }
-        else {
-            $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>Select</a> ";
-            $table .= "<a href='".gila::config('base')."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;Preview</a> ";
+        if(isset($p->options)) {
+            $table .= "<a onclick='theme_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;</a> ";
         }
         if(@$current_version = json_decode(file_get_contents('themes/'.$p->package.'/package.json'))->version) {
-            if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='theme_download(\"{$p}\")' class='g-btn success'>Upgrade</a>";
+            if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='theme_download(\"{$p}\")' class='g-btn success'>".__('Upgrade')."</a>";
         }
-        $table .= "<a href='fm/?path=themes/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></i></a>";
+        $table .= "<a href='".gila::config('base')."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;</a> ";
+        $table .= "<a href='fm/?path=themes/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
     } else {
-        $table .= "<a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>Download</a>";
+        $table .= "<a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Download')."</a>";
     }
     $pn++;
     $table .= "</div>";
@@ -69,7 +69,7 @@ function theme_download(p){ g.ajax('admin/themes?g_response=content&download='+p
     // something to show progress
     if(x=='ok')
       g.alert('<?=__('_theme_downloaded')?>','success');
-    else  g.alert('<?=__('_theme_not_downloaded')?>','warning');
+    else  g.alert(x,'warning');
 })};
 
 g.dialog.buttons.save_options = {

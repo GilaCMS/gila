@@ -42,7 +42,7 @@ class theme {
                     echo 'ok';
                 }
                 else {
-                    echo "These packages must be activated:";
+                    echo __('_packages_required').':';
                     foreach($require as $k=>$r) echo "<br><a href='admin/addons/search/$k'>$r</a>";
                 }
             } else echo "Theme is already selected";
@@ -62,7 +62,7 @@ class theme {
             $file = 'http://gilacms.com/assets/themes/'.$download.'.zip';
             $localfile = 'themes/'.$download.'.zip';
             if (!copy($file, $localfile)) {
-              echo "Failed to download theme!";
+              echo __('_theme_not_downloaded');
             }
             if ($zip->open($localfile) === TRUE) {
               if(!file_exists($target)) mkdir($target);
@@ -70,7 +70,7 @@ class theme {
               $zip->close();
               echo 'ok';
             } else {
-              echo 'Failed to download theme!';
+              echo __('_theme_not_downloaded');
             }
             exit;
         }
@@ -82,7 +82,7 @@ class theme {
     */
     static function options($options)
     {
-        if ($options == gila::config('theme')) {
+        if (file_exists('themes/'.$options)) {
             echo '<form id="theme_options_form" class="g-form"><input id="theme_id" value="'.$options.'" type="hidden">';
             $pack = $options;
             if(file_exists('themes/'.$options.'/package.json')) {
@@ -108,7 +108,7 @@ class theme {
     */
     static function save_options($theme)
     {
-        if ($theme == gila::config('theme')) {
+        if (file_exists('themes/'.$options)) {
         	global $db;
             foreach($_POST['option'] as $key=>$value) {
         		$ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";

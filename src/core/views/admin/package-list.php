@@ -8,7 +8,7 @@ $pn = 0;
 foreach ($packages as $pkey=>$p) if($p->package!='core') {
         if (file_exists('src/'.$p->package)) {
             if (in_array($p->package,$GLOBALS['config']['packages'])) {
-                $border = "border-left:4px solid lightgreen";
+                $border = "border-left:4px solid lightgreen;";
             } else $border = "border-left:4px solid lightgrey";
         } else $border = "";
         $table .= '<tr><td style="color:grey;text-align:center;width: 3em;'.$border.'">';
@@ -21,7 +21,7 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
             $table .= '<i class="fa fa-3x fa-dropbox"></i>';
         }
 
-        $table .= '<td style="width:100%"><b>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'');
+        $table .= '<td style="min-width:50%;"><b>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'');
         $table .= '</b><p>'.(isset($p->description)?$p->description:'No description').'</p>';
         $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
         $table .= (@$p->url?'<i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
@@ -34,24 +34,26 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
         }
         $table .= (isset($p->contact)?' <b>Contact:</b> '.$p->contact:'');
 
+        $table .= '<td style="min-width:50%;">';
 
         if (file_exists('src/'.$p->package)) {
             if (in_array($p->package,$GLOBALS['config']['packages'])) {
-                if(isset($p->options)) {
-                    $table .= "<td><a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;Options</a><td>";
-                } else $table .= "<td><td>";
-                $table .= "<a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>Deactivate</a>";
+                $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
             } else {
                 if($p->package=='core') {
-                    $table .= "<td><td>";
-                } else $table .= "<td><td><a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>Activate</a>";
+                    $table .= "";
+                } else $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
+            }
+            if(isset($p->options)) {
+                $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>"; //&nbsp;".__('Options')."
             }
             if(@$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version) {
-                if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Upgrade</a>";
+                if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
             }
-            $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></i></a>";
+            $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
+            //$table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></i></a>";
         } else {
-            $table .= "<td><td><td><a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>Download</a>";
+            $table .= "<a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>".__('Download')."</a><td>";
         }
     $pn++;
 }
@@ -72,7 +74,7 @@ view::alerts();
     ?>
     </ul>
     <div class="tab-content gs-10">
-        <table class='g-table' style="margin-left:5px"><?=$table?></table>
+        <table class='g-table' id="tbl-packages" style="margin-left:5px;display:table"><?=$table?></table>
     </div>
 </div>
 
