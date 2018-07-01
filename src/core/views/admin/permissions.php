@@ -5,10 +5,14 @@ $permissions = [];
 $packages = array_merge(gila::config('packages'),["core"]);
 foreach($packages as $package) {
     $pjson = 'src/'.$package.'/package.json';
+    $perjson = 'src/'.$package.'/package/en.json';
     if(file_exists($pjson)) {
         $parray = json_decode(file_get_contents($pjson),true);
-        if(isset($parray['permissions']))
+        if(isset($parray['permissions'])) {
             $permissions = array_merge($permissions, $parray['permissions']);
+            if(isset($parray['lang'])) gila::addLang($parray['lang']);
+            gila::addLang($package.'/lang/permissions/');
+        }
     }
 }
 
@@ -53,7 +57,7 @@ view::alerts();
     <?php foreach($permissions as $index=>$permission) { ?>
     <tr>
         <td>
-            <strong><?=$index?></strong><br><?=$permission?>
+            <?=__($index,$permission)?>
         <?php foreach($roles as $role) {
             echo '<td style="text-align:center">';
             echo '<input type="checkbox" name="role['.$role[0].']['.$index.']"';

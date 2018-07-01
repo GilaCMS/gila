@@ -10,5 +10,6 @@
 		"admin_permissions":"Add and remove permissions to user roles",
 		"upload_assets":"Can upload files on assets folder",
 		"edit_assets":"Can edit files on assets folder"
-	}
+	},
+	"lang":"core/lang/admin/"
 }

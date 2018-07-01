@@ -387,10 +387,11 @@ class gila {
 
 $GLOBALS['lang'] = [];
 
-function __($slug) {
-    if(@isset($GLOBALS['lang'][$slug])) {
-        if($GLOBALS['lang'][$slug] != '')
-            return $GLOBALS['lang'][$slug];
+function __($key, $alt = null) {
+    if(@isset($GLOBALS['lang'][$key])) {
+        if($GLOBALS['lang'][$key] != '')
+            return $GLOBALS['lang'][$key];
     }
-    return $slug;
+    if($alt!=null) return $alt;
+    return $key;
 }
