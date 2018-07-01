@@ -18,6 +18,7 @@ class gTable
         if($patch = @gila::$contentField[$this->table['name']]) {
             $this->table['fields'] = array_merge($this->table['fields'],$patch);
         }
+        if(isset($this->table['lang'])) gila::addLang($this->table['lang']);
         foreach ($this->table['fields'] as $key => &$field) {
             if(isset($field['qoptions'])) {
                 global $db;
@@ -25,6 +26,9 @@ class gTable
                 $res = $db->get($field['qoptions']);
                 foreach($res as $r) $field['options'][$r[0]] = $r[1];
             }
+            if(isset($field['title'])) {
+                $field['title'] = __($field['title']);
+            } else $field['title'] = __($key);
         }
 
         if(!isset($this->table['permissions'])) $this->table['permissions'] = [];

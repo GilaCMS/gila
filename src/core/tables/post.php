@@ -9,6 +9,7 @@ $table = [
     'list'=>['id','title','user_id','updated','categories','publish','commands'],
     'csv'=> ['id','title','slug','user_id','updated','publish','post'],
     'commands'=> ['delete'],
+    'lang'=>'core/lang/admin/',
     'permissions'=>[
         'create'=>['admin'],
         'update'=>['admin'],

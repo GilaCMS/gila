@@ -9,6 +9,7 @@
     "Save":"Save",
     "Rename":"Rename",
     "Upgrade":"Upgrade",
+    "Public":"Public",
     "_package_activated":"Package successfully activated!",
     "_package_deactivated":"Package deactivated!",
     "_package_downloaded":"Package downloaded!",

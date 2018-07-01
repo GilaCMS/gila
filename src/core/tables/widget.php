@@ -17,6 +17,7 @@ $table = [
     'commands'=>['edit_widget','delete'],
     'list'=> ['id','title','widget','area','pos','active'],
     'csv'=> ['id','title','widget','area','pos','active'],
+    'lang'=>'core/lang/admin/',
     'permissions'=>[
         'create'=>['admin'],
         'update'=>['admin'],

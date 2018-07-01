@@ -7,6 +7,7 @@ $table = [
     'tools'=>['add','csv'],
     'commands'=>['edit'],
     'id'=>'id',
+    'lang'=>'core/lang/admin/',
     'permissions'=>[
         'create'=>['admin','admin_user'],
         'read'=>['admin','admin_user'],

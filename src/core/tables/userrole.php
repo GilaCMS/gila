@@ -7,6 +7,7 @@ $table = [
 	'order-by'=>"updated DESC",
 	'tools'=>["add","csv"],
 	'csv'=>["id","userrole"],
+	'lang'=>'core/lang/admin/',
 	'permissions'=>[
         'create'=>['admin','admin_userrole'],
         'read'=>['admin','admin_userrole'],

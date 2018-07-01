@@ -92,21 +92,22 @@ class user
 
     static function permissions($id) {
         if($id == 0) {
-            if(session::key('permissions')) return session::key('permissions');
+            if(\session::key('permissions')) return \session::key('permissions');
         }
 
         $response = user::metaList( $id, 'privilege');
         $file = 'log/permissions.json';
-        if(file_exists($file)) if($id != 0){
+        if(file_exists($file)) {
             $roles = user::metaList( $id, 'group');
             $rp = json_decode(file_get_contents($file),true);
-            foreach($roles as $role) if(isset($rp[$role]))
-                $response = array_merge($response, $rp[$role]);
-
-            if(isset($rp['member'])) $response = array_merge($response, $rp['member']);
-        } else {
-            if(isset($rp[0])) $response = $rp['0']; else $response = [];
-            session::key('permissions',$response);
+            if($id != 0) {
+                foreach($roles as $role) if(isset($rp[$role]))
+                    $response = array_merge($response, $rp[$role]);
+                if(isset($rp['member'])) $response = array_merge($response, $rp['member']);
+            } else {
+                if(isset($rp[0])) $response = $rp['0']; else $response = [];
+                \session::key('permissions',$response);
+            }
         }
         return $response;
     }
