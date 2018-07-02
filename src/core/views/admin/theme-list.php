@@ -6,8 +6,9 @@ $pn = 0;
 foreach ($packages as $pkey=>$p) {
     if ($p->package == gila::config('theme')) $border="border: 2px solid green;"; else $border="";
     $table .= '<div class="bordered wrapper" style="vertical-align: top;'.$border.'">';
-    $table .= '<h4>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'').'</h4>';
-    $table .= '<div style="background:lightgrey;">';
+    $table .= '<p><strong>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'').'</strong>';
+    if(isset($p->author)) $table .= ' '.__('by').' '.$p->author;
+    $table .= '</p><div style="box-shadow:0 0 6px black;">';
     if (file_exists($dir.$p->package."/screenshot.jpg")) {
         $table .= '<img src="'."themes/{$p->package}/screenshot.jpg".'"  />';
     }
@@ -34,6 +35,7 @@ foreach ($packages as $pkey=>$p) {
     } else {
         $table .= "<a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Download')."</a>";
     }
+    if(isset($p->parent)) $table .= "<br>Parent: ".$p->parent;
     $pn++;
     $table .= "</div>";
 }

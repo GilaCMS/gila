@@ -9,8 +9,8 @@ $link->query('CREATE TABLE IF NOT EXISTS `post` (
   `publish` int(1) DEFAULT NULL,
   `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `publish` (`publish`),
-  KEY `user_id` (`user_id`)
+  FOREIGN KEY `user_id` REFERENCES user(`id`),
+  KEY `publish` (`publish`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('ALTER TABLE post ADD  FULLTEXT KEY `title` (`title`,`post`);');
@@ -22,7 +22,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
   `vartype` varchar(25) DEFAULT NULL,
   `value` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `post_id` (`post_id`)
+  FOREIGN KEY `post_id` REFERENCES post(`id`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('CREATE TABLE IF NOT EXISTS `postcategory` (
@@ -56,7 +56,8 @@ $link->query('CREATE TABLE IF NOT EXISTS `usermeta` (
   `vartype` varchar(80) DEFAULT NULL,
   `value` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  FOREIGN KEY `user_id` REFERENCES user(`id`),
+  KEY `vartype` (`vartype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('CREATE TABLE IF NOT EXISTS `widget` (
@@ -67,7 +68,8 @@ $link->query('CREATE TABLE IF NOT EXISTS `widget` (
   `active` int(1) DEFAULT 1,
   `pos` int(2) DEFAULT NULL,
   `data` text,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `area` (`area`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('CREATE TABLE IF NOT EXISTS `option` (
