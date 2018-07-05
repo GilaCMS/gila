@@ -15,7 +15,8 @@ $table = [
         'update'=>['admin'],
         'delete'=>['admin']
     ],
-    'search-boxes'=> ['title','user_id'],
+    'search-box'=>true,
+    'search-boxes'=> ['user_id'],
     'fields'=> [
         'id'=> [
             'title'=>'ID',

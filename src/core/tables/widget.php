@@ -23,6 +23,7 @@ $table = [
         'update'=>['admin'],
         'delete'=>['admin']
     ],
+    'search-box'=> true,
     'search-boxes'=> ['area','widget'],
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],
