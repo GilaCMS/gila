@@ -1,8 +1,4 @@
 <?php
-/* db.php
-Created: 04/10/2016 by Vasilis Zoumpourlis
-Updated: 18/10/2016 by Vasilis Zoumpourlis
-*/
 /**
 * A simple class for a mysqli connection
 */
@@ -129,36 +125,20 @@ class db {
 	  	return $arr;
 	}
 
-	function getCSV($q)
+	function error()
 	{
-		$arr = $this->get($q);
-		return $arr;
-	}
-
-	function param($p) {
-		return addslashes($_REQUEST[$p]);
-	}
-	function request($p) {
-		//mysqli_real_escape_string($con, $_POST['age']);
-		return addslashes($_REQUEST[$p]);
+		return mysqli_error($this->link);
 	}
 
 
 	function value($q,$p=null)
 	{
-		//if (!$this->connected) $this->connect();
 		$res = $this->query($q,$p);
-	  	//$this->close();
 		if($res) {
 			$r=mysqli_fetch_row($res);
 			return $r[0];
 		}
 		return null;
-	}
-
-	function credentials()
-	{
-		return [$this->dbhost,$this->user,$this->pass,$this->dsch];
 	}
 
 }
