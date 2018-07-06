@@ -21,7 +21,7 @@
     <div class="gl-4 centered">
         <div class="border-buttom-main_ text-align-center">
             <div style="width:16%;display:inline-block">
-                <img src="assets/gila-logo.svg">
+                <img src="<?=gila::config('admin.logo')?:'assets/gila-logo.png'?>">
             </div>
             <h3><?=__('Register')?></h3>
         </div>

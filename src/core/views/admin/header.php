@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" href="assets/gila-logo.png">
+    <link rel="icon" type="image/png" href="<?=gila::config('admin.logo')?:'assets/gila-logo.png'?>">
 
     <title>Gila CMS - Administration</title>
 
@@ -46,7 +46,7 @@
         <div id="sidebar-wrapper">
             <div style="position: relative;height: 100px;">
                 <a href="admin">
-                    <img style="width:60px" src="assets/gila-logo.svg" class="centered">
+                    <img style="width:60px" src="assets/gila-logo.png" class="centered">
                 </a>
             </div>
             <ul class="g-nav vertical">

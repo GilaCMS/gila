@@ -216,26 +216,6 @@ class admin extends controller
         new db_backup();
     }
 
-    function updateAction()
-    {
-        $zip = new ZipArchive;
-        $target = 'src/core';
-        $file = 'http://gilacms.com/assets/packages/core'.$download.'.zip';
-        $localfile = 'src/core.zip';
-        if (!copy($file, $localfile)) {
-          echo "Failed to download new version!";
-        }
-        if ($zip->open($localfile) === TRUE) {
-          if(!file_exists($target)) mkdir($target);
-          $zip->extractTo($target);
-          $zip->close();
-          include 'src/core/update.php';
-          echo 'Gila CMS successfully updated to '.$version;
-        } else {
-          echo 'Failed to download new version!';
-        }
-    }
-
     function profileAction()
     {
         $user_id = session::key('user_id');
