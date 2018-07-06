@@ -22,6 +22,9 @@ class admin extends controller
       foreach($wfolders as $wf) if(is_writable($wf)==false) {
           view::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
       }
+      if(package::check4updates()) {
+          view::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
+      }
       view::set('posts',$db->value('SELECT count(*) from post;'));
       view::set('pages',$db->value('SELECT count(*) from page;'));
       view::set('users',$db->value('SELECT count(*) from user;'));

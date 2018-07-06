@@ -289,10 +289,18 @@ class gila {
     * @param $default (optional) The value to return if this option has not saved value
     * @return The option value
     */
-	static function option($option,$default='')
+    static function option($option,$default='')
     {
         if(isset(gila::$option[$option]) && gila::$option[$option]!='') return gila::$option[$option];
         return $default;
+    }
+
+    static function setOption($option,$value='')
+    {
+        global $db;
+        @gila::$option[$option] = $value;
+        $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
+        $db->query($ql);        
     }
 
     static function url($url)

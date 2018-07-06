@@ -10,6 +10,8 @@
     "Rename":"Rename",
     "Upgrade":"Upgrade",
     "Public":"Public",
+    "is_available_on_version":"is available on version",
+    "_updates_available":"There are new updates for your packages available",
     "_package_activated":"Package successfully activated!",
     "_package_deactivated":"Package deactivated!",
     "_package_downloaded":"Package downloaded!",

@@ -200,4 +200,34 @@ class package {
         file_put_contents($file, $contents);
     }
 
+    static function check4updates()
+    {
+        if(gila::option('checked4updates')==null) {
+            $now = new DateTime("now");
+            gila::setOption('checked4updates', $now->format('Y-m-d'));
+        } else {
+            $now = new DateTime("now");
+            $diff = date_diff(new DateTime(gila::option('checked4updates')), new DateTime("now"));
+            // check after 2 days
+            if($diff->format('%a')>2) {
+                $installed_packages = self::scan();
+                $packages2update = [];
+                $versions = [];
+                $uri = "https://gilacms.com/addons/package_versions?p[]=".implode('&p[]=',array_keys($installed_packages));
+                if($res = file_get_contents($uri)){
+                    gila::setOption('checked4updates', $now->format('Y-m-d H:i:s'));
+                    $versions = json_decode($res,true);
+                }
+                foreach($installed_packages as $ipac=>$pac) {
+                    if(isset($versions[$ipac]) && version_compare($versions[$ipac], $pac->version) == 1)
+                        $packages2update[$ipac] = $versions[$ipac];
+                }
+                if($packages2update != [])
+                    file_put_contents('log/packages2update.json',json_encode($packages2update,JSON_PRETTY_PRINT));
+            }
+        }
+        if(file_exists('log/packages2update.json')) return true;
+        return false;
+    }
+
 }

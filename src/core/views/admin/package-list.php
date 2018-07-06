@@ -4,6 +4,15 @@ $dir = "src/";
 $table = '';
 $pn = 0;
 
+if(package::check4updates()) {
+    $toupdate = json_decode(file_get_contents('log/packages2update.json'),true);
+    foreach($toupdate as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
+        $logo = $dir."$newp/logo.png";
+        $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;".$packages[$newp]->title.' '.__("is_available_on_version")." $newv &nbsp;&nbsp; <a onclick='addon_download(\"{$packages[$newp]->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
+        view::alert('success',$alert);
+    }
+}
+
 
 foreach ($packages as $pkey=>$p) if($p->package!='core') {
         if (file_exists('src/'.$p->package)) {
@@ -66,15 +75,15 @@ $links=[
 view::alerts();
 ?>
 <div class="row">
-    <ul class="g-nav gs-2 vertical" id="addon-tabs"><?php
+    <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
     foreach($links as $link){
-        $active = (router::url()==$link[1]?'g-selected':'');
+        $active = (router::url()==$link[1]?'active':'');
         echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.__($link[0]).'</a></li>';
     }
     ?>
     </ul>
-    <div class="tab-content gs-10">
-        <table class='g-table' id="tbl-packages" style="margin-left:5px;display:table"><?=$table?></table>
+    <div class="tab-content gs-12 wrapper">
+        <div><br><table class='g-table' id="tbl-packages" style="margin-left:5px;display:table"><?=$table?></table></div>
     </div>
 </div>
 
