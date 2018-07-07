@@ -300,7 +300,7 @@ class gila {
         global $db;
         @gila::$option[$option] = $value;
         $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
-        $db->query($ql);        
+        $db->query($ql);
     }
 
     static function url($url)

@@ -32,7 +32,11 @@ class router
         }
 
         require_once $controller_file;
-    	$c = new $controller();
+
+        if(isset(gila::$controllerClass[$controller])) {
+            $controller = gila::$controllerClass[$controller];
+        }
+        $c = new $controller();
 
         // find function to run after controller construction
         if(isset(gila::$on_controller[$controller]))
@@ -111,9 +115,9 @@ class router
             gila::updateConfigFile();
         }
 
-        if(isset(gila::$controllerClass[$controller])) {
+        /*if(isset(gila::$controllerClass[$controller])) {
             $controller = gila::$controllerClass[$controller];
-        }
+        }*/
         return $controller;
     }
 

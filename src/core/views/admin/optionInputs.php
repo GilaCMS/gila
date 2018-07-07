@@ -3,7 +3,7 @@
 foreach($options as $key=>$op) {
     echo '<div class="gm-12 row">';
     echo '<label class="gm-4">'.(isset($op['title'])?$op['title']:ucwords($key)).'</label>';
-    $ov = $values[$key];
+    $ov = @$values[$key];
     if(!$ov) if(isset($op['default'])) $ov = $op['default'];
 
     if(isset($op['type'])) {
