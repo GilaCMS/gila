@@ -1,6 +1,13 @@
-
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));grid-gap:20px">
 <?php
-foreach ($c->contenttype as $ct) { ?>
-    <div class="box"><div class="box bordered"><?=$ct?></div></div>
+foreach (gila::$content as $key=>$ct) { ?>
+    <div class="g-card wrapper" style="font-size:120%;text-align:center;">
+        <a href="admin/content/<?=$key?>">
+            <i class="fa fa-3x fa-table"></i><br>
+            <span><?=ucfirst($key)?></span>
+        </a>
+    </div>
 <?php
 }
+?>
+</div>

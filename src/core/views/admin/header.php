@@ -17,12 +17,14 @@
     <?=view::css('src/core/assets/simple-sidebar.css')?>
     <?=view::css('lib/gila.min.css')?>
     <style>
-    #sidebar-wrapper .g-nav li{ color:#fff; }
-    #sidebar-wrapper .g-nav li a{ color:#aaa; }
+    #sidebar-wrapper .g-nav li{ color:#fff;}
+    #sidebar-wrapper .g-nav li a{ color:#ccc; }
+    #sidebar-wrapper .g-nav li a i{ margin: 0 4px; }
     #sidebar-wrapper .g-nav li ul li a{ color:#444; }
+    #sidebar-wrapper .g-nav li ul{ box-shadow:1px 1px 4px black;border:0 }
     #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
     .g-nav li ul{min-width: 200px}
-    .dark-orange li ul{ background-color: #fff; }
+    .dark-orange li ul{ background-color: #fff;}
     .dark-orange li ul li{ color: var(--main-color); }
     .dark-orange li ul li a{ color: var(--main-color); }
     .dark-orange li ul li a:hover{ color:white; }
@@ -46,7 +48,7 @@
         <div id="sidebar-wrapper">
             <div style="position: relative;height: 100px;">
                 <a href="admin">
-                    <img style="width:60px" src="assets/gila-logo.png" class="centered">
+                    <img style="max-width:180px;max-height:80px" src="<?=gila::config('admin.logo')?:'assets/gila-logo.png'?>" class="centered">
                 </a>
             </div>
             <ul class="g-nav vertical">

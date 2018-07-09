@@ -6,6 +6,7 @@
 <?=view::script('lib\jquery\jquery-3.3.1.min.js')?>
 <?=view::script('lib\pnk\pnk-1.4.js')?>
 <?=view::script('lib\select2\select2.min.js')?>
+<?=view::script('src\core\assets\admin\media.js')?>
 
 <script src="lib/CodeMirror/codemirror.js"></script>
 <script src="lib/CodeMirror/javascript.js"></script>
@@ -21,5 +22,10 @@ PNK.tools.new_post = {title:'<?=__('New')?>',fn:function(){
 PNK.tools.new_page = {title:'<?=__('New')?>',fn:function(){
     window.location.href='admin/pages/new'
 }}
+PNK.field_types.media = {
+    displayInput: function(field, value) {
+        return '<input class="g-input" ondblclick="open_media_gallery(this)" value="'+value+'" name="image">';
+    }
+}
 pnk_populate_tables(document);
 </script>

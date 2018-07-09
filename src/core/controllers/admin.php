@@ -78,10 +78,12 @@ class admin extends controller
     function contentAction()
     {
         $type = router::get('type',1);
-        $src = explode('.',gila::$content[$type])[0];
-        view::set('table', $type);
-        view::set('tablesrc', $src);
-        view::renderAdmin('admin/content.php');
+        if($type != null) {
+            $src = explode('.',gila::$content[$type])[0];
+            view::set('table', $type);
+            view::set('tablesrc', $src);
+            view::renderAdmin('admin/content.php');
+        } else if(gila::hasPrivilege('admin')) view::renderAdmin('admin/contenttype.php');
     }
 
     function update_widgetAction ()
@@ -106,8 +108,8 @@ class admin extends controller
         view::renderFile('admin/header.php');
         package::options($package);
         view::renderFile('admin/footer.php');
-        //include view::getViewFile('admin/optionInputs.php');
     }
+
     /**
     * List and manage installed packages
     * @photo
@@ -175,8 +177,7 @@ class admin extends controller
     function logoutAction ()
     {
         global $db;
-        //if(isset($_COOKIE['GSESSIONID']))
-            $res = $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype='GSESSIONID';",[session::key('user_id')]);
+        $res = $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype='GSESSIONID';",[session::key('user_id')]);
         session::destroy();
         echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
     }

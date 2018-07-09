@@ -110,18 +110,18 @@ var media_path_input;
 g.dialog.buttons.select_media_path = {
     title:'Select',fn:function(){
         let v = g('#selected-path').attr('value')
+        g('#media_dialog').parent().remove();
         if(v!=null) {
-            el = g(media_path_input).all[0]
-            el.value = v;
-            el.dispatchEvent(new Event('input'))
+            elem = g(media_path_input).all[0]
+            elem.value = v;
+            elem.dispatchEvent(new Event('input'))
         }
-        g('#media_dialog').remove();
     }
 }
 function open_media_gallery(mpi) {
     media_path_input = mpi;
     g.post("admin/media","g_response=content&path=assets",function(gal){
-        g.dialog({title:__m('_gallery'),body:gal,buttons:'select_media_path',id:'media_dialog',class:'large'})
+        g.dialog({title:__m('_gallery'),body:gal,buttons:'select_media_path',type:'modal',id:'media_dialog',class:'large'})
     })
 }
 
