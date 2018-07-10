@@ -15,55 +15,66 @@ if(package::check4updates()) {
 
 
 foreach ($packages as $pkey=>$p) if($p->package!='core') {
-        if (file_exists('src/'.$p->package)) {
-            if (in_array($p->package,$GLOBALS['config']['packages'])) {
-                $border = "border-left:4px solid lightgreen;";
-            } else $border = "border-left:4px solid lightgrey";
-        } else $border = "";
-        $table .= '<tr><td style="color:grey;text-align:center;width: 3em;'.$border.'">';
+    if(isset($p->lang)) gila::addLang($p->lang);
 
-        if (file_exists($dir."{$p->package}/logo.png")) {
-            $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'" />';
-        } else if (isset($p->logo)) {
-                $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
+    // Border color
+    if (file_exists('src/'.$p->package)) {
+        if (in_array($p->package,$GLOBALS['config']['packages'])) {
+            $border = "border-left:4px solid lightgreen;";
+        } else $border = "border-left:4px solid lightgrey";
+    } else $border = "";
+    $table .= '<tr><td style="color:grey;text-align:center;width: 3em;'.$border.'">';
+
+    // Logo
+    if (file_exists($dir."{$p->package}/logo.png")) {
+        $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'" />';
+    } else if (isset($p->logo)) {
+            $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
+    } else {
+        $table .= '<i class="fa fa-3x fa-dropbox"></i>';
+    }
+
+    // Title & version
+    $title = $p->title?:$p->package;
+    $table .= '<td style="min-width:50%;"><b>'.$title.' '.(isset($p->version)?$p->version:'').'</b>';
+
+    // Description
+    $desc = __($p->package.':desc');
+    if($desc==$p->package.':desc') $desc = $p->description?:'No description';
+    $table .= '<p>'.$desc.'</p>';
+
+    // Additional info
+    $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
+    $table .= (@$p->url?'<i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
+    $table .= (isset($p->contact)?' <i class="fa fa-envelope addon-i"</i> '.$p->contact:'');
+    if(isset($p->require)) {
+        $table .= "<br>Requires: ";
+        foreach($p->require as $req=>$ver) {
+            $table .= $req."($ver) ";
+        }
+    }
+    $table .= (isset($p->contact)?' <b>Contact:</b> '.$p->contact:'');
+    $table .= '<td style="min-width:50%;">';
+
+    // Buttons
+    if (file_exists('src/'.$p->package)) {
+        if (in_array($p->package,$GLOBALS['config']['packages'])) {
+            $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
         } else {
-            $table .= '<i class="fa fa-3x fa-dropbox"></i>';
+            if($p->package=='core') {
+                $table .= "";
+            } else $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
         }
-
-        $table .= '<td style="min-width:50%;"><b>'.(isset($p->title)?$p->title:$p->package).' '.(isset($p->version)?$p->version:'');
-        $table .= '</b><p>'.(isset($p->description)?$p->description:'No description').'</p>';
-        $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
-        $table .= (@$p->url?'<i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
-        $table .= (isset($p->contact)?' <i class="fa fa-envelope addon-i"</i> '.$p->contact:'');
-        if(isset($p->require)) {
-            $table .= "<br>Requires: ";
-            foreach($p->require as $req=>$ver) {
-                $table .= $req."($ver) ";
-            }
+        if(isset($p->options)) {
+            $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>"; //&nbsp;".__('Options')."
         }
-        $table .= (isset($p->contact)?' <b>Contact:</b> '.$p->contact:'');
-
-        $table .= '<td style="min-width:50%;">';
-
-        if (file_exists('src/'.$p->package)) {
-            if (in_array($p->package,$GLOBALS['config']['packages'])) {
-                $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
-            } else {
-                if($p->package=='core') {
-                    $table .= "";
-                } else $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
-            }
-            if(isset($p->options)) {
-                $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>"; //&nbsp;".__('Options')."
-            }
-            if(@$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version) {
-                if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
-            }
-            $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
-            //$table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn g-white'><i class=\"fa fa-folder\"></i></a>";
-        } else {
-            $table .= "<a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>".__('Download')."</a><td>";
+        if(@$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version) {
+            if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
         }
+        $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
+    } else {
+        $table .= "<a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>".__('Download')."</a><td>";
+    }
     $pn++;
 }
 ?>
