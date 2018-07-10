@@ -27,6 +27,7 @@ class package {
             if(!in_array($activate, $GLOBALS['config']['packages'])) {
                 $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'),true);
                 $require = [];
+                $require_op = [];
                 if(isset($pac['require'])) foreach ($pac['require'] as $key => $value) {
                     if(!in_array($key, gila::packages())&&($key!='core'))
                         $require[$key]=$key.' v'.$value;
@@ -35,19 +36,29 @@ class package {
                         if(version_compare($pacx['version'], $value) < 0) $require[$key]=$key.' v'.$value;
                     }
                 }
-                if($require==[]) {
+                if(isset($pac['options'])) foreach($pac['options'] as $key=>$option) if(@$option['required']==true){
+                    if(gila::option($activate.'.'.$key)==null) $require_op[] = @$option['title']?:$key;
+                }
+
+                if($require==[] && $require_op==[]) {
                     $GLOBALS['config']['packages'][]=$activate;
                     $updatefile = 'src/'.$activate.'/update.php';
                     if(file_exists($updatefile)) include $updatefile;
                     gila::updateConfigFile();
                     self::updateLoadFile();
                     usleep(300);
-                    view::alert('success','Package activated');
+                    view::alert('success',__('_package_activated'));
                     echo 'ok';
                 }
                 else {
-                    echo __('_packages_required').':';
-                    foreach($require as $k=>$r) echo "<br><a href='admin/packages/search/$k'>$r</a>";
+                    if($require!=[]) {
+                        echo __('_packages_required').':';
+                        foreach($require as $k=>$r) echo "<br><a href='admin/packages/search/$k'>$r</a>";
+                    }
+                    if($require_op!=[]) {
+                        echo __('_options_required').':';
+                        foreach($require_op as $k=>$r) echo "<br>$r</a>";
+                    }
                 }
             } else echo "Package is already active";
         } else echo "Package is not downloaded";

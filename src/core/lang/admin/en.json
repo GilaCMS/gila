@@ -19,5 +19,6 @@
     "_theme_selected":"Theme selected!",
     "_theme_downloaded":"Theme downloaded!",
     "_theme_not_downloaded":"Theme not downloaded!",
-    "_packages_required":"These packages must be activated"
+    "_packages_required":"These packages must be activated",
+    "_options_required":"These options need to be set"
 }
