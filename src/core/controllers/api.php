@@ -25,6 +25,10 @@ class api extends controller
         array_shift(router::$args);
 
         require_once $controller_file;
+
+        if(isset(gila::$controllerClass[$controller])) {
+            $controller = gila::$controllerClass[$controller];
+        }
         $ctrl = new $controller();
 
         $action = router::get('action',1);

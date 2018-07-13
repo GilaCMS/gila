@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('default-controller',$_POST['gila_dc']);
     gila::config('timezone',$_POST['gila_timezone']);
     gila::config('language',$_POST['gila_language']);
+    gila::config('admin_logo',$_POST['gila_admin_logo']);
     gila::config('env',$_POST['gila_env']);
     gila::config('rewrite',$_POST['gila_rewrite']);
     gila::config('user_register',$_POST['gila_user_register']);
@@ -87,8 +88,18 @@ foreach ($sel_urs as $k=>$value) {
         </select>
     </div>
 
+    <br><div class="gm-12">
+        <label class="gm-3"><?=__("Admin Logo")?></label>
+        <div class="gm-4" style="display:inline-flex"><span class="g-group" style="display:inline-block">
+            <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
+            <span class="g-group-item"><input class="fullwidth" value="<?=gila::config('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
+        </span></div>
+    </div>
+
+
     <br>
     <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>
+
 
     <h2><?=__("Advanced Settings")?></h2><hr>
 

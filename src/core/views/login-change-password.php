@@ -21,7 +21,7 @@
 
         <div class="border-buttom-main_ text-align-center">
             <div style="width:16%;display:inline-block">
-                <img src="<?=gila::config('admin.logo')?:'assets/gila-logo.png'?>">
+                <img src="<?=gila::config('admin_logo')?:'assets/gila-logo.png'?>">
             </div>
             <h3><?=__('reset_pass')?></h3>
         </div>
