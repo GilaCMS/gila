@@ -9,7 +9,6 @@ $link->query('CREATE TABLE IF NOT EXISTS `post` (
   `publish` int(1) DEFAULT NULL,
   `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  FOREIGN KEY `user_id` REFERENCES user(`id`),
   KEY `publish` (`publish`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
@@ -21,8 +20,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
   `post_id` int(11) DEFAULT NULL,
   `vartype` varchar(25) DEFAULT NULL,
   `value` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY `post_id` REFERENCES post(`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('CREATE TABLE IF NOT EXISTS `postcategory` (
@@ -56,7 +54,6 @@ $link->query('CREATE TABLE IF NOT EXISTS `usermeta` (
   `vartype` varchar(80) DEFAULT NULL,
   `value` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY `user_id` REFERENCES user(`id`),
   KEY `vartype` (`vartype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 

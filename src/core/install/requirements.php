@@ -18,7 +18,11 @@ if(version_compare(phpversion(), $required_php) < 0) {
 foreach($required_ext as $k=>$v) if(!extension_loaded($v)) {
     echo "<span class='alert fullwidth'>Extension $v is not loaded.</span>";
 } else {
-    echo "<span class='alert success fullwidth'>Extension $v is loaded.</span>";
+    // echo "<span class='alert success fullwidth'>Extension $v is loaded.</span>";
+}
+
+if(function_exists("apache_get_modules"))  if(!in_array('mod_rewrite', apache_get_modules())) {
+	echo "<span class='warning fullwidth'>mod_rewrite is not enabled.</span>";
 }
 ?>
         <p>
