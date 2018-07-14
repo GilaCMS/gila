@@ -42,9 +42,6 @@ gila::widgets([
 ]);
 gila::$widget_area=[];
 
-gila::$option=[];
-$res = $db->get('SELECT `option`,`value` FROM `option`;');
-foreach($res as $r) gila::$option[$r[0]] = $r[1];
 
 gila::$privilege['admin']="Administrator access.";
 gila::$privilege['editor']="Can publish or edit posts from other users.";

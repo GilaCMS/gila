@@ -33,7 +33,8 @@ class db {
 
 	public function close ()
 	{
-		if ($this->connected) mysqli_close($this->link);
+		//if ($this->connected)
+		mysqli_close($this->link);
 		$this->connected = false;
 	}
 
@@ -98,8 +99,8 @@ class db {
 	{
 		$arr = [];
 		$res = $this->query($q, $args);
-	  	$this->close();
 		if($res) while($r=mysqli_fetch_array($res)) $arr[]=$r;
+		$this->close();
 	  	return $arr;
 	}
 

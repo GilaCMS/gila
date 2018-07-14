@@ -1,7 +1,7 @@
 <?php
 
 /** Common methods for Gila CMS */
-use core\models\user as user;
+//use core\models\user as user;
 
 class gila {
     static $controller;
@@ -301,6 +301,7 @@ class gila {
         @gila::$option[$option] = $value;
         $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
         $db->query($ql);
+        if(gila::config('env')=='pro') unlink('log/load.php');
     }
 
     static function url($url)
@@ -361,6 +362,20 @@ class gila {
 
     }
 
+    static function load ()
+    {
+        global $db;
+        include "src/core/load.php";
+    	foreach ($GLOBALS['config']['packages'] as $package) {
+    		if(file_exists("src/$package/load.php")) include "src/$package/load.php";
+    	}
+    	gila::$option=[];
+        $db->connect();
+    	$res = $db->get('SELECT `option`,`value` FROM `option`;');
+    	foreach($res as $r) gila::$option[$r[0]] = $r[1];
+        //$db->close();
+    }
+
     /**
     * Checks if logged in user has at least one of the required privileges
     * @param $pri (string/array) The privilege(s) to check
@@ -370,7 +385,7 @@ class gila {
     {
         if(!is_array($pri)) $pri=explode(' ',$pri);
         if(!isset($GLOBALS['user_privileges'])) {
-            $GLOBALS['user_privileges'] = user::permissions(session::user_id());
+            $GLOBALS['user_privileges'] = core\models\user::permissions(session::user_id());
         }
 
         foreach($pri as $p) if(@in_array($p,$GLOBALS['user_privileges'])) return true;

@@ -32,24 +32,21 @@ spl_autoload_register(function ($class) {
 
 $db = new db(gila::config('db'));
 
+
 if ($GLOBALS['config']['env'] == 'dev') {
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
 	ini_set('display_startup_errors', '1');
-	include "src/core/load.php";
-	foreach ($GLOBALS['config']['packages'] as $package) {
-		if(file_exists("src/$package/load.php")) include "src/$package/load.php";
-	}
-	if(file_exists('log/load.php')) unlink('log/load.php');
+	gila::load();
 }
 else {
 	error_reporting(E_ERROR);
 	ini_set('display_errors', 0);
 	ini_set('display_startup_errors', 0);
-	if(!file_exists('log/load.php')) {
+	if(!include 'log/load.php') {
+		gila::load();
 		package::updateLoadFile();
 	}
-	include 'log/load.php';
 }
 
 

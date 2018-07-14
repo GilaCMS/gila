@@ -159,6 +159,7 @@ class package {
         		$ql="INSERT INTO `option`(`option`,`value`) VALUES('$package.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
         		$db->query($ql);
         	}
+            if(gila::config('env')=='pro') unlink('log/load.php');
             exit;
         }
     }
@@ -207,6 +208,8 @@ class package {
                 // error op
             }
         }
+
+        $contents .= "\n\ngila::\$option = ".var_export(gila::$option, true).";\n";
 
         file_put_contents($file, $contents);
     }

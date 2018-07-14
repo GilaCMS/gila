@@ -25,6 +25,7 @@ class widget
     static function getActiveByArea($area)
     {
         global $db;
+        $db->connect();
         return $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos;",$area);
     }
 
