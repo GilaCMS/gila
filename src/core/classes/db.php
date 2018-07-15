@@ -26,6 +26,7 @@ class db {
 
 	public function connect ()
 	{
+		if ($this->connected) return;
 		$this->link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
 		$this->link->set_charset("utf8");
 		$this->connected = true;
@@ -33,7 +34,7 @@ class db {
 
 	public function close ()
 	{
-		//if ($this->connected)
+		if (!$this->connected) return;
 		mysqli_close($this->link);
 		$this->connected = false;
 	}
@@ -47,7 +48,14 @@ class db {
 			$this->insert_id = $this->link->insert_id;
 			return $res;
         }
-        else if (!is_array($args)) {
+
+		$this->execute($q,$args);
+		return $this->result;
+	}
+
+	public function execute($q, $args = null)
+	{
+		if (!is_array($args)) {
             $argsBkp = $args;
             $args = array($argsBkp);
         }
@@ -73,9 +81,8 @@ class db {
 		if($stmt) if(call_user_func_array([$stmt,'bind_param'], $refarg)) {
             $stmt->execute();
 			$this->insert_id = $this->link->insert_id;
-			return $stmt->get_result();
-		}
-		return false;
+			$this->result = $stmt->get_result();
+		} else $this->result = false;
 	}
 
 
@@ -102,6 +109,13 @@ class db {
 		if($res) while($r=mysqli_fetch_array($res)) $arr[]=$r;
 		$this->close();
 	  	return $arr;
+	}
+
+	public function gen($q, $args = null)
+	{
+		$res = $this->query($q, $args);
+		if($res) while($r=mysqli_fetch_array($res)) yield $r;
+		$this->close();
 	}
 
 	function getRows($q, $args = null)
@@ -134,10 +148,8 @@ class db {
 
 	function value($q,$p=null)
 	{
-		$res = $this->query($q,$p);
-		if($res) {
-			$r=mysqli_fetch_row($res);
-			return $r[0];
+		if($res = $this->query($q,$p)) {
+			return mysqli_fetch_row($res)[0];
 		}
 		return null;
 	}

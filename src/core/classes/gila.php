@@ -344,11 +344,8 @@ class gila {
                 $params.=$value;
             }
 
-            if(gila::config('default-controller') == $c) $c='';
-            if($action!='') {
-                if($c!='') $c.='/';
-                $action.='/';
-            }
+            if(gila::config('default-controller') == $c) $c=''; else $c.='/';
+            if($action!='') $action.='/';
             if(isset($_GET['g_preview_theme'])) $params.='?g_preview_theme='.$_GET['g_preview_theme'];
             return gila::config('base').$c.$action.$params;
         }

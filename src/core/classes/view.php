@@ -14,9 +14,10 @@ class view
     public static $parent_theme = false;
 
 	static function set($param,$value) {
-        global $g;
+        global $g,$c;
         self::$part[$param]=$value;
         @$g->$param = $value;
+        @$c->$param = $value;
 	}
 
     /**
@@ -162,20 +163,11 @@ class view
         self::includeFile('head.php');
     }
 
-    static function updateC() {
-        global $c;
-        foreach (self::$part as $key => $value) {
-            $$key = $value;
-            @$c->$key = $value;
-        }
-    }
-
     static function renderFile($file, $package = 'core')
     {
         global $c;
         foreach (self::$part as $key => $value) {
             $$key = $value;
-            @$c->$key = $value;
         }
 
         if($file = self::getViewFile($file, $package)) {
@@ -285,7 +277,7 @@ class view
     static function widget_area ($area, $div=true, $type=null, $widget_file=null)
     {
         global $widget_data;
-        //$widgets = $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos ;",[$area]);
+
         $widgets = core\models\widget::getActiveByArea($area);
         if ($widgets) foreach ($widgets as $widget) {
             if($type != null) if($widget['widget'] != $type) continue;
