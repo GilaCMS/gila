@@ -20,11 +20,9 @@ npm-debug.log
 # excluded
 !src/core/
 !src/gila_fb_comments/
-!src/gila_disqus/
 !src/ganalytics/
 !src/featured_grid/
 !src/reCAPTCHA/
-!src/pwa/
 !src/.htaccess
 
 !themes/gila-mag/
