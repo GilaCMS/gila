@@ -21,7 +21,6 @@ class router
         $controller_file = 'src/'.gila::$controller[$controller].'.php';
 
         if(!file_exists($controller_file)) {
-            echo $controller_file;
             trigger_error("Controller could not be found: $controller=>$controller_file", E_NOTICE);
             exit;
         }
@@ -42,44 +41,11 @@ class router
         if(isset(gila::$on_controller[$controller]))
             foreach(gila::$on_controller[$controller] as $fn) $fn();
 
-    	$action = self::request('action','');
-        if($action=='') $action='index';
+        $action = router::get_action($controller,$args);
+        $action_fn = $action.'Action';
 
-    	if (isset($args[1])) {
-            if(isset(gila::$action[$controller][$args[1]])){
-                $action = $args[1];
-                router::$args = $args;
-                if(isset(gila::$before[$controller][$action]))
-                    foreach(gila::$before[$controller][$action] as $fn) $fn();
-                gila::$action[$controller][$action]();
-                return;
-            } else if (isset($_GET['action']) && method_exists($controller,$_GET['action'].'Action')) {
-                $action = $_GET['action'];
-                $action_fn = $action.'Action';
-                array_splice($args, 1, 0, $action);
-            } else if (method_exists($controller,$args[1].'Action')) {
-                $action = $args[1];
-                $action_fn = $action.'Action';
-            }
-            else if (method_exists($controller,'indexAction')) {
-                $action = 'index';
-                $action_fn = $action.'Action';
-                array_splice($args, 1, 0, $action);
-            } else {
-                array_splice($args, 1, 0, $action);
-            }
-        }
-        else {
-            if (method_exists($controller,'indexAction')) {
-                $action = 'index';
-                $action_fn = $action.'Action';
-            } else {
-                array_splice($args, 1, 0, $action);
-            }
-    	}
-
-        if (!isset($action_fn)) {
-            echo  $controller.' '.$action." action not found!";
+        if($action=='index') if (!method_exists($controller,'indexAction')) {
+            echo  $controller.' '.$action." action not found! wtf";
             exit;
         }
 
@@ -90,9 +56,10 @@ class router
     }
 
 
-    static function get_controller (&$args)
+    static function get_controller (&$args):string
     {
-        $controller = router::request('c',gila::config('default-controller'));
+        $default = gila::config('default-controller');
+        $controller = router::request('c',$default);
 
         if (isset($args[0])) {
             if(isset(gila::$controller[$args[0]])) {
@@ -108,17 +75,36 @@ class router
             array_splice($args, 0, 0, $controller);
         }
 
-        if (!isset(gila::$controller[$controller])) {
+        if ($controller==$default && !isset(gila::$controller[$default])) {
             // default-controller not found so have to reset on config.php file
             $controller = 'admin';
             gila::config('default-controller','admin');
             gila::updateConfigFile();
         }
 
-        /*if(isset(gila::$controllerClass[$controller])) {
-            $controller = gila::$controllerClass[$controller];
-        }*/
         return $controller;
+    }
+
+    static function get_action(&$controller,&$args):string
+    {
+        $action = self::request('action',@$args[1]?:'index');
+
+        if(isset(gila::$action[$controller][$action])){
+            //$action = $args[1];
+            $aa = $action.'Action';
+            @$c->$aa = gila::$action[$controller][$action];
+        } else if (!method_exists($controller,$action.'Action')) {
+            if (method_exists($controller,'indexAction')) {
+                $action = 'index';
+            } else {
+                trigger_error("Controller $controller should have a indexAction() method", E_NOTICE);
+                exit;
+            }
+        }
+
+        if(!isset($args[1]) || $args[1]!=$action)
+            array_splice($args, 1, 0, $action);
+        return $action;
     }
 
     /**
