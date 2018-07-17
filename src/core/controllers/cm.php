@@ -168,7 +168,7 @@ class cm extends controller
     function empty_rowAction ()
     {
         $pnk = new gTable(router::get("t",1));
-        $result['fields'] = $pnk->fields();
+        $result['fields'] = $pnk->fields('create');
         $result['rows'][0] = $pnk->getEmpty();
         echo json_encode($result,JSON_PRETTY_PRINT);
     }

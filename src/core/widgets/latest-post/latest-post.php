@@ -10,7 +10,7 @@ $stacked_file = 'tmp/stacked-wdgt'.$widget_data->widget_id.'.png';
 $posts = [];
 $img = [];
 $widget_data->n_post = @$widget_data->n_post?:5;
-$widget_data->show_thumbnails = @$widget_data->show_thumbnails?:1;
+$widget_data->show_thumbnails = @$widget_data->show_thumbnails?:0;
 
 foreach (core\models\post::getLatest($widget_data->n_post) as $r ) {
 	$posts[] = $r;
