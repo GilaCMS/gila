@@ -41,8 +41,9 @@ $table = [
         ],
     ],
     'events'=>[
-        ['create',
+        ['change',
         function(&$row){
+            if(!isset($row['data']) || $row['data']!==null) return;
             include 'src/'.gila::$widget[$row['widget']].'/widget.php';
             $default_data=[];
             foreach($options as $key=>$op) {

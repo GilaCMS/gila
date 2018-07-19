@@ -30,11 +30,14 @@ class image {
 
         if($src_width>$max_width) {
             $newheight=($src_height/$src_width)*$newwidth;
-        }else if($src_height>$max_height){
+        }else if($src_height>$max_height) {
             $newwidth=($src_width/$src_height)*$newheight;
-        }else{
+        } else if($image[2]!=2) {
             copy($src,$file);
             return true;
+        } else {
+            $newwidth=$src_width;
+            $newheight=$src_height;
         }
 
         $tmp = self::create_tmp($newwidth,$newheight,$image[2]);
