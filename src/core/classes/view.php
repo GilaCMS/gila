@@ -207,6 +207,11 @@ class view
         return false;
     }
 
+    /**
+    * Displays a menu
+    * @param menu (string) Name of the menu. Default=mainmenu
+    * @param tpl  (string) Optional. The view template to generate html
+    */
     static function menu ($menu='mainmenu', $tpl='tpl/menu.php')
     {
         $file = 'log/menus/'.$menu.'.json';
@@ -218,38 +223,48 @@ class view
         include self::getViewFile($tpl);
     }
 
-    /**
-    * Widget
-    * @param widget (string) Name of the widget type
-    */
-    static function widget ($widget,$widget_exp=null)
+    static function widget ($id,$widget_exp=null)
     {
         global $db,$widget_data;
-        if($widget_exp==null) $widget_exp=$widget;
-        $mm = gila::config('default.'.$widget);
-        if($mm > 0) {
-            $res = core\models\widget::getById($mm);//("SELECT data FROM widget WHERE id=?;",[$mm])[0];
+        if($res = core\models\widget::getById($id)){
             $widget_data = json_decode($res[0]->data);
+            $widget_type = $res[0]->widget;
         } else {
-            $widget_data = null;
+            "Widget <b>#".$id."</b> is not found";
+            return;
         }
 
-        $filePath = self::getThemePath().'/widgets/'.$widget.'.php';
+        $widget_file = self::getThemePath().'/widgets/'.$widget_type.'.php';
 
-        if (file_exists($filePath)) {
-            include $filePath;
+        if(file_exists($widget_file) == false) {
+            @$widget_file = "src/".gila::$widget[$type]."/$type.php";
+            if(!isset(gila::$widget[$type])) echo "Widget <b>".$type."</b> is not found";
         }
-        else {
-            $filePath = 'src/core/widgets/'.$widget.'/'.$widget_exp.'.php';
-            if (file_exists($filePath)) {
-                include $filePath;
-            }
-            else {
-                echo $filePath." file not found!";
+
+        $dir = gila::dir('log/cache0/widgets/');
+        $_file = $dir.$widget_data->widget_id;
+        if(file_exists($_file) ) {
+            include $_file;
+        } else {
+            ob_start();
+            @include $widget_file;
+            $out2 = ob_get_contents();
+            //ob_end_clean();
+            $clog = new logger('log/cache.log');
+            if(file_put_contents($_file,$out2)){
+                $clog->debug($_file);
+            }else{
+                $clog->error($_file);
             }
         }
     }
 
+    /**
+    * Display the body of a widget type
+    * @param type (string) Name of the widget type
+    * @param widget_data  (array) Optional. The data to be used
+    * @param widget_file (string) Optional. Alternative wiget view file
+    */
     static function widget_body ($type, $widget_data=null, $widget_file=null) {
         if($widget_file != null) {
             $widget_file = self::getThemePath().'/widgets/'.$widget_file.'.php';
@@ -262,11 +277,6 @@ class view
         }
 
         @include $widget_file;
-    }
-
-    static function block ($area)
-    {
-        view::widget_area($area);
     }
 
     /**

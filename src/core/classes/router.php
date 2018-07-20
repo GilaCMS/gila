@@ -4,6 +4,8 @@ class router
 {
     static $args = [];
     static $url;
+    static $caching = false;
+    static $caching_file;
 
     function __construct ()
     {
@@ -53,6 +55,18 @@ class router
         if(isset(gila::$before[$controller][$action]))
             foreach(gila::$before[$controller][$action] as $fn) $fn();
         $c->$action_fn();
+
+        // end of response
+        if(self::$caching) {
+            $out2 = ob_get_contents();
+            //ob_end_clean();
+            $clog = new logger('log/cache.log');
+            if(file_put_contents(self::$caching_file,$out2)){
+                $clog->debug(self::$caching_file);
+            }else{
+                $clog->error(self::$caching_file);
+            }
+        }
     }
 
 
@@ -164,4 +178,19 @@ class router
     {
         return @router::$args[1];
     }
+
+    static function cache ($args = []) {
+        //if(session::user_id()!=0) return;
+        $dir = gila::dir('log/cache0/');
+        self::$caching_file = $dir.str_replace(['/','\\'],'__',router::url()).http_build_query($args);
+        if(file_exists(self::$caching_file) ) {
+            if(sizeof($_REQUEST)>1) return;
+            include self::$caching_file;
+            exit;
+        } else {
+            ob_start();
+            self::$caching = true;
+        }
+    }
+
 }

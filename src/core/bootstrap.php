@@ -58,9 +58,5 @@ if(isset($_GET['g_preview_theme'])) $theme=$_GET['g_preview_theme'];
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
 
 
-foreach (glob("log/cache0/".$_GET['url']."?*") as $filename) {
-    //echo "ok";
-}
-
 new session();
 new router();

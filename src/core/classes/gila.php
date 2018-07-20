@@ -194,11 +194,6 @@ class gila {
         gila::$amenu[$h]['children'][]=$item;
     }
 
-    static function post($id)
-    {
-
-    }
-
     /**
     * Sets or gets the value of configuration attribute
     * @param $key (string) Name of the attribute
@@ -295,6 +290,11 @@ class gila {
         return $default;
     }
 
+    /**
+    * Sets an option value
+    * @param $option (string) Option name
+    * @param $value (optional) The value to set
+    */
     static function setOption($option,$value='')
     {
         global $db;
@@ -359,18 +359,21 @@ class gila {
 
     }
 
+    /**
+    * Loads all load files from packages
+    */
     static function load ()
     {
         global $db;
-        include "src/core/load.php";
+        include_once "src/core/load.php";
     	foreach ($GLOBALS['config']['packages'] as $package) {
-    		if(file_exists("src/$package/load.php")) include "src/$package/load.php";
+    		if(file_exists("src/$package/load.php")) include_once "src/$package/load.php";
     	}
     	gila::$option=[];
         $db->connect();
     	$res = $db->get('SELECT `option`,`value` FROM `option`;');
     	foreach($res as $r) gila::$option[$r[0]] = $r[1];
-        //$db->close();
+        $db->close();
     }
 
     /**
@@ -389,6 +392,10 @@ class gila {
         return false;
     }
 
+    /**
+    * Creates the folder if does not exist and return the path
+    * @param $path (string) Folder path
+    */
     static function dir ($path)
     {
         if (file_exists($path)) return $path;
