@@ -5,11 +5,19 @@ $table = '';
 $pn = 0;
 
 if(package::check4updates()) {
+    $upgrated = 0;
     $toupdate = json_decode(file_get_contents('log/packages2update.json'),true);
     foreach($toupdate as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
-        $logo = $dir."$newp/logo.png";
-        $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;".$packages[$newp]->title.' '.__("is_available_on_version")." $newv &nbsp;&nbsp; <a onclick='addon_download(\"{$packages[$newp]->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
-        view::alert('success',$alert);
+        if(version_compare($newv, $packages[$newp]->version) == 1) {
+            $logo = $dir."$newp/logo.png";
+            $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;".$packages[$newp]->title.' '.__("is_available_on_version")." $newv &nbsp;&nbsp; <a onclick='addon_download(\"{$packages[$newp]->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
+            view::alert('success',$alert);
+        } else {
+            $upgrated++;
+        }
+    }
+    if(count($toupdate) == $upgrated) {
+        unlink('log/packages2update.json');
     }
 }
 
