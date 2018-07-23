@@ -62,7 +62,7 @@ class gTable
         if(!isset($this->table[$output])) {
             $this->table[$output]=[];
             foreach($this->table['fields'] as $k=>$f) {
-                if(!isset($f[$output])||$f[$output]==true) $this->table[$output][] = $k;
+                if(!isset($f[$output])||$f[$output]===true) $this->table[$output][] = $k;
             }
         }
         return $this->table[$output];
@@ -253,7 +253,7 @@ class gTable
 
     function getEmpty() {
         $row = [];
-        foreach($this->fields() as $key) {
+        foreach($this->fields('create') as $key) {
             $fv="";
             $field = $this->table['fields'][$key];
             if(isset($field['default'])) {

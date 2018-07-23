@@ -58,7 +58,7 @@ class gila {
     * @param $r (string) The path
     * @param $fn (function) Callback for the route
     * @code
-    * gila::route('some.txt', function(){ return 'Some text.'; });
+    * gila::route('some.txt', function(){ echo 'Some text.'; });
     * @endcode
     */
     static function route($r, $fn)
@@ -68,7 +68,7 @@ class gila {
 
     /**
     * Registers a function to run right after the controller class construction
-    * @param $c (string) The controller
+    * @param $c (string) The controller's class name
     * @param $fn (function) Callback
     * @code
     * gila::route('blog', function(){ blog::ppp = 24; });
@@ -165,19 +165,19 @@ class gila {
 
     /**
     * Add new elements on administration menu
-    * @param $list (string) Index name
-    * @param $list (assoc array) Array with data<br>
+    * @param $key (string) Index name
+    * @param $item (assoc array) Array with data
     * Indices 0 for Display name, 1 for action link
     * @code gila::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
     */
-    static function amenu($list,$arg2=[])
+    static function amenu($key,$item=[])
     {
-        if(!is_array($list)) $list[$list]=$arg2;
-        foreach ($list as $k=>$item) {
+        if(!is_array($key)) $key[$key]=$item;
+        foreach ($key as $k=>$i) {
             if(is_numeric($k)) {
-                gila::$amenu[]=$item; // depreciated
+                gila::$amenu[]=$i; // depreciated
             } else {
-                gila::$amenu[$k]=$item;
+                gila::$amenu[$k]=$i;
             }
         }
     }
@@ -185,13 +185,13 @@ class gila {
     /**
     * Add a child element on administration menu item
     * @param $key (string) Index of parent item
-    * @param $value (assoc array) Array with data<br>
+    * @param $item (assoc array) Array with data
     * @code gila::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
     */
-    static function amenu_child($h,$item)
+    static function amenu_child($key,$item)
     {
-        if(!isset(gila::$amenu[$h]['children'])) gila::$amenu[$h]['children']=[];
-        gila::$amenu[$h]['children'][]=$item;
+        if(!isset(gila::$amenu[$key]['children'])) gila::$amenu[$key]['children']=[];
+        gila::$amenu[$key]['children'][]=$item;
     }
 
     /**
@@ -240,22 +240,6 @@ class gila {
     {
         if ($type == 'alert') $type = '';
         return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
-    }
-
-    static function menu($id = null)
-    {
-        global $db;
-
-        $data = json_decode( $db->value("SELECT data FROM widget WHERE widget='menu' LIMIT 1"),true);
-
-        foreach ($data as $k=>$d) {
-            if (isset($d['children'])) {
-                if (is_array($d['children'])) $data[$k]['children'] = $d['children'][0];
-                if (count($data[$k]['children'])==0) unset($data[$k]['children']);
-            }
-        }
-
-        if ($id == null) return $data;
     }
 
     /**
