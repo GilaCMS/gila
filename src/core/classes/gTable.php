@@ -170,12 +170,9 @@ class gTable
         return '';
     }
 
-    function updateJoins (&$fields = null) {
+    function updateJoins ($id, &$fields = null) {
         global $db;
         if($fields==null) $fields=$_POST;
-        if(isset($_GET['id'])&&$_GET['id']!='') {
-            $id = $_GET['id'];
-        } else return;
 
         foreach($fields as $key=>$value) {
             if(@$this->table['fields'][$key]['type'] == 'joins') {
@@ -190,12 +187,9 @@ class gTable
         }
     }
 
-    function updateMeta (&$fields = null) {
+    function updateMeta ($id, &$fields = null) {
         global $db;
         if($fields==null) $fields=$_POST;
-        if(isset($_GET['id'])&&$_GET['id']!='') {
-            $id = $_GET['id'];
-        } else return;
 
         foreach($fields as $key=>$value) {
             if(@$this->table['fields'][$key]['type'] == 'meta') {

@@ -152,8 +152,8 @@ class cm extends controller
             $id = $db->insert_id;
         } else return;
 
-        $pnk->updateMeta();
-        $pnk->updateJoins();
+        $pnk->updateMeta($id);
+        $pnk->updateJoins($id);
 
         $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
         $result['fields'] = $pnk->fields();
