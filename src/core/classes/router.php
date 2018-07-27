@@ -2,14 +2,22 @@
 
 class router
 {
-    static $args = [];
+    static private $args = [];
     static $url;
     static $caching = false;
     static $caching_file;
+    static private $controller;
+    static private $action;
 
     function __construct ()
     {
         global $c;
+
+        if(isset(gila::$route[$_GET['url']])) {
+            gila::$route[$_GET['url']]();
+            return;
+        }
+
         if(isset($_GET['url'])) {
             router::$url = strip_tags($_GET['url']);
             $args = explode("/", router::$url);
@@ -27,10 +35,6 @@ class router
             exit;
         }
 
-        if(isset(gila::$route[$_GET['url']])) {
-            gila::$route[$_GET['url']]();
-            return;
-        }
 
         require_once $controller_file;
 
@@ -46,15 +50,12 @@ class router
         $action = router::get_action($controller,$args);
         $action_fn = $action.'Action';
 
-        if($action=='index') if (!method_exists($controller,'indexAction')) {
-            echo  $controller.' '.$action." action not found! wtf";
-            exit;
-        }
-
         router::$args = $args;
         if(isset(gila::$before[$controller][$action]))
             foreach(gila::$before[$controller][$action] as $fn) $fn();
-        $c->$action_fn();
+
+        @call_user_func_array(array($c, $action_fn), $args);
+        //$c->$action_fn();
 
         // end of response
         if(self::$caching) {
@@ -72,21 +73,15 @@ class router
 
     static function get_controller (&$args):string
     {
+        if(isset(self::$controller)) return self::$controller;
         $default = gila::config('default-controller');
         $controller = router::request('c',$default);
 
         if (isset($args[0])) {
             if(isset(gila::$controller[$args[0]])) {
                 $controller = $args[0];
-            } else if (file_exists('src/core/controllers/'.$args[0].'.php')) {
-                $controller = $args[0];
-                gila::$controller[$controller] = 'core/controllers/'.$controller;
-            } else {
-                array_splice($args, 0, 0, $controller);
+                array_shift($args);
             }
-        }
-        else {
-            array_splice($args, 0, 0, $controller);
         }
 
         if ($controller==$default && !isset(gila::$controller[$default])) {
@@ -96,15 +91,17 @@ class router
             gila::updateConfigFile();
         }
 
+        self::$controller = $controller;
         return $controller;
     }
 
     static function get_action(&$controller,&$args):string
     {
-        $action = self::request('action',@$args[1]?:'index');
+        global $c;
+        if(isset(self::$action)) return self::$action;
+        $action = self::request('action',@$args[0]?:'index');
 
         if(isset(gila::$action[$controller][$action])){
-            //$action = $args[1];
             $aa = $action.'Action';
             @$c->$aa = gila::$action[$controller][$action];
         } else if (!method_exists($controller,$action.'Action')) {
@@ -116,8 +113,10 @@ class router
             }
         }
 
-        if(!isset($args[1]) || $args[1]!=$action)
-            array_splice($args, 1, 0, $action);
+        if(isset($args[0]) && $args[0]==$action)
+            array_shift($args);
+
+        self::$action = $action;
         return $action;
     }
 
@@ -129,8 +128,8 @@ class router
     */
     static function get ($key, $n = null)
     {
-        if ((isset(router::$args[$n+1])) && ($n != null) && (router::$args[$n+1]!=null)){
-            return router::$args[$n+1];
+        if ((isset(router::$args[$n-1])) && ($n != null) && (router::$args[$n-1]!=null)){
+            return router::$args[$n-1];
         }
         else if (isset($_GET[$key])) {
             return $_GET[$key];
@@ -168,7 +167,7 @@ class router
     */
     static function controller ()
     {
-        return @router::$args[0];
+        return @router::get_controller();
     }
 
     /**
@@ -176,7 +175,12 @@ class router
     */
     static function action ()
     {
-        return @router::$args[1];
+        return @router::get_action();
+    }
+
+    static function args_shift()
+    {
+        array_shift(self::$args);
     }
 
     static function cache ($args = []) {

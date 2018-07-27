@@ -4,8 +4,11 @@ global $db;
 $GLOBALS['version']='1.7.3';
 gila::controllers([
     'admin'=> 'core/controllers/admin',
-    //'api'=> 'core/controllers/api',
+    'api'=> 'core/controllers/api',
     'blog'=> 'core/controllers/blog',
+    'cm'=> 'core/controllers/cm',
+    'login'=> 'core/controllers/login',
+    'webhook'=> 'core/controllers/webhook',
     'fm'=> 'core/controllers/fm'
 ]);
 gila::$amenu = [
@@ -62,3 +65,5 @@ gila::addLang('core/lang/');
 
 if(gila::config('use_cdn')==1)
     include_once 'src/core/assets/cdn_paths.php';
+
+gila::action('blog','tage',function($a,$b){echo "tage $a $b";});

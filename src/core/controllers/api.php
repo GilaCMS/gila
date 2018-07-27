@@ -22,7 +22,7 @@ class api extends controller
             trigger_error("Controller could not be found: $controller=>$controller_file");
             exit;
         }
-        array_shift(router::$args);
+        router::args_shift();
 
         require_once $controller_file;
 
@@ -41,37 +41,4 @@ class api extends controller
         $ctrl->$action_fn();
     }
 
-    function contentAction()
-    {
-        global $db,$table;
-        $_key = router::get('t',1);
-
-        if(isset(gila::$content[$_key])) {
-            $_path = 'src/'.gila::$content[$_key];
-            if(file_exists($_path)) {
-                include $_path;
-                switch ($_SERVER['REQUEST_METHOD']) {
-                    case 'GET':
-                        echo '<pre>'.json_encode($table,JSON_PRETTY_PRINT).'</pre>';
-                        break;
-                    case 'POST':
-                        break;
-                    case 'PUT':
-                        break;
-                    case 'DELETE':
-                        break;
-                }
-            }
-            else {
-                echo $table." path is not found.";
-            }
-        }
-    }
-
-    function delete()
-    {
-        global $db,$table;
-        echo $_POST['id'];
-        $db->query("DELETE FROM ".$table['name']." WHERE ".$table['id']."=".$_POST['id'].";");
-    }
 }
