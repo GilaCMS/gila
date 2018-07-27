@@ -17,15 +17,19 @@ class user
         return $db->insert_id;
     }
 
-    static function meta($id, $meta, $value = null)
+    static function meta($id, $meta, $value = null, $multi = false)
     {
         global $db;
         if ($value==null) {
             $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=? LIMIT 1;";
             return $db->value($ql,[$id, $meta]);
         }
-        $ql = "INSERT INTO usermeta(user_id,vartype,value) VALUES(?,?,?);";
-        return $db->query($ql,[$id, $meta, $value]);
+        if($multi==false) if($db->value("SELECT COUNT(*) FROM usermeta WHERE user_id=? AND vartype=?;",[$id, $meta])) {
+              $ql = "UPDATE usermeta SET `value`=? WHERE user_id=? AND vartype=?;";
+              return $db->query($ql,[$value, $id, $meta]);
+        }
+        $ql = "INSERT INTO usermeta(user_id,vartype,`value`) VALUES(?,?,?);";
+        return $db->query($ql,[$id, $meta, $value, $value]);
     }
 
     static function metaList($id, $meta, $values = null)

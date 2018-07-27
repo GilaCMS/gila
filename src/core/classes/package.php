@@ -105,16 +105,17 @@ class package {
           $file = 'http://gilacms.com/assets/packages/'.$package.'.zip';
           $localfile = 'src/'.$package.'.zip';
           if (!copy($file, $localfile)) {
-            echo "Failed to download package!";
+            echo __('_package_not_downloaded');
           }
           if ($zip->open($localfile) === TRUE) {
             if(!file_exists($target)) mkdir($target);
             $zip->extractTo($target);
             $zip->close();
             if(file_exists('src/core/update.php')) include 'src/core/update.php';
+            unlink('log/load.php');
             echo 'ok';
           } else {
-            echo 'Failed to download package!';
+            echo __('_package_not_downloaded');
           }
           exit;
         }
