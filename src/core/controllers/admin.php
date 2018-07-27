@@ -40,7 +40,7 @@ class admin extends controller
     function postsAction ()
     {
         global $db;
-        if ($id = router::get('id',1)) {
+        if ($id = router::get('id',1)) if(is_numeric($id)) {
             view::set('id',$id);
             view::renderAdmin('admin/edit_post.php');
             return;
@@ -54,7 +54,7 @@ class admin extends controller
     function pagesAction ()
     {
         global $db;
-        if ($id = router::get('id',1)) {
+        if ($id = router::get('id',1)) if(is_numeric($id)) {
             view::set('id',$id);
             view::renderAdmin('admin/edit_page.php');
             return;
@@ -190,14 +190,15 @@ class admin extends controller
                 echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
             }
             $path = router::post('path','assets');
+            if($path[0]=='.') $path='assets';
             $tmp_file = $_FILES['uploadfiles']['tmp_name'];
             $name = $_FILES['uploadfiles']['name'];
             if(is_array($tmp_file)) {
-                for($i=0;i<count($tmp_file);$i++) {
+                for($i=0;i<count($tmp_file);$i++) if(in_array(pathinfo($tmp_file, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
                     if(!move_uploaded_file($tmp_file[$i],$path.'/'.$name[$i])) {
                         echo "Error: could not upload file!<br>";
                     }
-                }
+                } else echo "Error: not a media file!<br>";
             }else{
                 if(!move_uploaded_file($tmp_file,$path.'/'.$name)) {
                     echo "Error: could not upload file!<br>";
@@ -223,8 +224,8 @@ class admin extends controller
     {
         $user_id = session::key('user_id');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
-            user::updateName($user_id, $_POST['gila_username']);
-            user::meta($user_id, 'twitter_account', $_POST['twitter_account']);
+            user::updateName($user_id, strip_tags($_POST['gila_username']));
+            user::meta($user_id, 'twitter_account', strip_tags($_POST['twitter_account']));
             view::alert('success',__('_changes_updated'));
         }
         view::set('twitter_account',user::meta($user_id,'twitter_account'));

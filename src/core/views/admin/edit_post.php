@@ -4,14 +4,14 @@ global $db;
 
 $p_list = ['title', 'post', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
-    $title = $_POST['p_title'];
-    $description = $_POST['p_description'];
-    $text = $_POST['p_post'];
-    $img = trim($_POST['p_img']);
-    $tags = $_POST['p_tags'];
-    $categories = isset($_POST['p_categories'])?$_POST['p_categories']:[];
+    $title = strip_tags($_POST['p_title']);
+    $description = strip_tags($_POST['p_description']);
+    $text = strip_tags($_POST['p_post']);
+    $img = strip_tags(trim($_POST['p_img']));
+    $tags = strip_tags($_POST['p_tags']);
+    $categories = isset($_POST['p_categories'])?strip_tags($_POST['p_categories']):[];
     $publish = isset($_POST['p_publish'])?1:0;
-    $slug = $_POST['p_slug'];
+    $slug = strip_tags($_POST['p_slug']);
     if($slug == '') {
         $slugify = new Cocur\Slugify\Slugify();
         $slug = $slugify->slugify($title);

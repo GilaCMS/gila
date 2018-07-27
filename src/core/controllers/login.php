@@ -27,6 +27,10 @@ class login extends controller
 
 	function registerAction()
     {
+        if(session::key('user_id')>0 || gila::config('user_register')!=1) {
+           echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
+           exit;
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true)) {
             $email = $_POST['email'];

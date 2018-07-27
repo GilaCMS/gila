@@ -1,5 +1,6 @@
 <?php
 $path = router::request('path','assets');
+if($path[0]=='.') $path='assets';
 $files = scandir($path);
 $disabled = ($path=='assets')?'disabled':'';
 $path_array = explode('/',$path);

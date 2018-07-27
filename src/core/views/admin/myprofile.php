@@ -19,6 +19,6 @@
     </div>
 
     <br><input type="submit" name="submit-btn" onclick="this.value='submited'"
-    class="btn btn-primary col-md-1 col-md-offset-1 gm-1"  />
+    class="btn btn-primary"  />
     </form>
 </div>

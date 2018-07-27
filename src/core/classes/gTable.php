@@ -152,6 +152,12 @@ class gTable
         foreach($fields as $key=>$value) {
             if(array_key_exists($key, $this->table['fields'])) {
                 if ($this->fieldAttr($key, 'qcolumn')) break;
+                if ($allowed = $this->fieldAttr($key, 'allow-tags')) {
+                    if($allowed===true)
+                        $value=strip_tags($value);
+                    else
+                    $value=strip_tags($value,$allowed);
+                }
                 if (in_array($this->fieldAttr($key, 'type'),['joins','meta'])) break;
 
                 if(is_array($value)) {

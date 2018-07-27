@@ -37,7 +37,7 @@ $table = [
         ],
         'data'=> [
           'title'=>'Data', 'list'=>false, 'edit'=>false,
-          'type'=>'text'
+          'type'=>'text','allow-tags'=>true
         ],
     ],
     'events'=>[

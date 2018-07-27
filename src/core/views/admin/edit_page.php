@@ -4,10 +4,10 @@ global $db;
 
 $p_list = ['title', 'page', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
-    $title = $_POST['p_title'];
-    $text = $_POST['p_page'];
+    $title = strip_tags($_POST['p_title']);
+    $text = strip_tags($_POST['p_page']);
     $publish = isset($_POST['p_publish'])?1:0;
-    $slug = $_POST['p_slug'];
+    $slug = strip_tags($_POST['p_slug']);
 
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {

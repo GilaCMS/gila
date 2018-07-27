@@ -60,7 +60,7 @@ $table = [
             'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/posts/'+rv.id+'\">Edit</a>';"
         ],
         'post'=>[
-            'list'=>false, 'type'=>'text'
+            'list'=>false, 'type'=>'text', 'allow-tags'=>true
         ]
     ]
 ];
