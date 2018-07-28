@@ -49,7 +49,7 @@ class db_backup {
         	if (!$result) continue;
 
         	$num_rows = mysqli_fetch_row($result)[0];
-    		fwrite($handle, 'DROP TABLE '.$table.' IF EXISTS;');
+    		fwrite($handle, 'DROP TABLE IF EXISTS '.$table.';');
     		$row2 = mysqli_fetch_row($db->query('SHOW CREATE TABLE '.$table));
     		fwrite($handle, "\n\n".$row2[1].";\n\n");
 
@@ -60,16 +60,16 @@ class db_backup {
             	$result = $db->query('SELECT * FROM '.$table.' LIMIT '.$row_n.',100;');
 
 				if($result) {
+					$fline = '';
                 	$n_fields = mysqli_num_fields($result);
                 	while($row = mysqli_fetch_row($result))
                 	{
                     	$row_n++;
                     	$row_inx++;
-						$fline = "";
 
                     	if ($row_inx == 100) {
                         	$row_inx = 1;
-                        	$fline = ");\n";
+                        	$fline .= ");\n";
                     	}
 
                     	if ($row_inx == 1)
