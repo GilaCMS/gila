@@ -29,7 +29,7 @@ class user
               return $db->query($ql,[$value, $id, $meta]);
         }
         $ql = "INSERT INTO usermeta(user_id,vartype,`value`) VALUES(?,?,?);";
-        return $db->query($ql,[$id, $meta, $value, $value]);
+        return $db->query($ql,[$id, $meta, $value]);
     }
 
     static function metaList($id, $meta, $values = null)
