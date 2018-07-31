@@ -4,18 +4,27 @@ use core\models\user;
 
 class session
 {
+    private static $started = false;
+
     function __construct ()
     {
+    }
+
+    static function start ()
+    {
         global $db;
+        if(self::$started==true) return;
         //ini_set("session.save_handler", "files");
         //ini_set("session.save_path", __DIR__."/../../../log/sessions");
         //ini_set('session.gc_maxlifetime', 24*3600);
         session_set_cookie_params(24*3600);
+
         try {
             @session_start();
         } catch (Exception $e) {
 
         }
+        self::$started = true;
         session::define(['user_id'=>0]);
 
         if (isset($_POST['username']) && isset($_POST['password'])) {
@@ -48,6 +57,7 @@ class session
     * @param $vars Associative Array
     */
     static function define ($vars) {
+        self::start();
         foreach ($vars as $k=>$v) {
             if(!isset($_SESSION[session::md5($k)])) $_SESSION[session::md5($k)]=$v;
         }
@@ -61,6 +71,7 @@ class session
     * @return Variable value
     */
     static function key ($var,$val = null, $t = 0) {
+        self::start();
         if ($val == null) {
             if(isset($_SESSION[session::md5($var)])) return $_SESSION[session::md5($var)]; else return null;
         }
@@ -80,6 +91,7 @@ class session
     */
     static function unsetKey ($var)
     {
+        self::start();
         unset($_SESSION[session::md5($var)]);
     }
 
@@ -94,6 +106,7 @@ class session
     */
     static function user_id ()
     {
+        self::start();
         return $_SESSION[session::md5('user_id')];
     }
 
@@ -102,6 +115,6 @@ class session
     */
     static function destroy ()
     {
-        session_destroy();
+        @session_destroy();
     }
 }
