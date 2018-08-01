@@ -1,0 +1,8 @@
+{
+    "admin": "Todos los privilegios de administración",
+    "admin_user": "Administrar usuarios",
+    "admin_userrole": "Administrar roles de usuario",
+    "admin_permissions": "Editar permisos en roles de usuario",
+    "upload_assets": "Puede subir archivos en carpeta de assets",
+    "edit_assets": "Puede editar archivos en carpeta de assets"
+}

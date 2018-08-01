@@ -12,7 +12,6 @@
     "Timezone": "Ajavöönd",
     "Language": "Keel",
     "Default Controller": "Vaikimisi kontroller",
-    "Environment": "Keskkond",
     "New users can register": "Uued kasutajad saavad registreeruda",
     "Dashboard": "Töölaud",
     "Content": "Sisu",
@@ -21,6 +20,7 @@
     "Posts": "Postitused",
     "Categories": "Kategooriad",
     "Media": "Meedia",
+    "User": "",
     "Users": "Kasutajad",
     "Backups": "Varukoopiad",
     "Widgets": "Vidinad",
@@ -43,5 +43,8 @@
     "New": "Uus",
     "Edit": "Muuda",
     "Delete": "Kustuta",
+    "Update": "",
+    "Save": "",
+    "_not_found": "",
     "_changes_updated": "Muudatused on salvestatud!"
 }
