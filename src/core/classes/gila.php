@@ -13,7 +13,7 @@ class gila {
     static $widget;
     static $package;
     static $amenu;
-    static $widget_area;
+    static $widget_area = [];
     static $option;
     static $privilege;
     static $content;

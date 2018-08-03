@@ -9,7 +9,8 @@ gila::controllers([
     'cm'=> 'core/controllers/cm',
     'login'=> 'core/controllers/login',
     'webhook'=> 'core/controllers/webhook',
-    'fm'=> 'core/controllers/fm'
+    'fm'=> 'core/controllers/fm',
+    'lzld'=> 'core/controllers/lzld'
 ]);
 gila::$amenu = [
     ['Dashboard','admin','icon'=>'dashboard'],

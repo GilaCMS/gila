@@ -54,7 +54,7 @@ class router
         if(isset(gila::$before[$controller][$action]))
             foreach(gila::$before[$controller][$action] as $fn) $fn();
 
-        @call_user_func_array(array($c, $action_fn), $args);
+        @call_user_func_array (array($c, $action_fn), $args);
         //$c->$action_fn();
 
         // end of response
