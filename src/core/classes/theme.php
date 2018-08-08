@@ -94,7 +94,8 @@ class theme {
                 foreach($options as $key=>$op) {
                     $values[$key] = gila::option('theme.'.$key);
                 }
-                include view::getViewFile('admin/optionInputs.php');
+                echo gForm::html($options,$values,'option[',']');
+                //include view::getViewFile('admin/optionInputs.php');
             }// else error alert
             echo "</form>";
             exit;

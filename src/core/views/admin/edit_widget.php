@@ -36,6 +36,7 @@ include $widget_folder.'/widget.php';
 if(isset($options)) foreach($options as $key=>$op) {
     $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
 }
-include view::getViewFile('admin/optionInputs.php');
+echo gForm::html($options,$values,'option[',']');
+//include view::getViewFile('admin/optionInputs.php');
 
 echo "</form>";

@@ -293,18 +293,23 @@ class gTable
         $table_created=false;
         $id = $this->table['id'];
 
+        // CREATE TABLE
+        $qtype = @$this->table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
+        $ql = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $db->query($ql);
+
+        // ADD COLUMNS
         foreach($this->table['fields'] as $fkey=>$field) {
-            if(isset($field['qtype'])) {
+            if(isset($field['qtype']) && $fkey!=$id) {
                 $column = @$field['qcolumn']?:$fkey;
-                if($table_created==false) {
-                    $ql = "CREATE TABLE IF NOT EXISTS $tname($column {$field['qtype']},KEY `$id` (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-                    $db->query($ql);
-                    $table_created=true;
-                } else {
-                    $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
-                }
+                $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
             }
         }
+
+        // ADD KEYS
+        if(isset($this->table['qkeys'])) foreach($this->table['qkeys'] as $key)
+            $db->query("ALTER TABLE $tname ADD KEY `$key` (`$key`);");
+
         return true;
     }
 

@@ -25,8 +25,13 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
 		textareas[i].value=cmirror[i].getValue()
 	}
 	let fm=new FormData(g.el('widget_options_form'))
-    g.ajax({url:'admin/update_widget?g_response=content',method:'POST',data:fm,fn:function(x){
+
+    g.ajax({url:'admin/update_widget?g_response=content',method:'POST',data:fm,fn:function(data){
 		g('#gila-popup').parent().remove();
+		data = JSON.parse(data)
+		tr = $('tr[row-id='+data.rows[0][0]+']');
+		tr.replaceWith( PNK.load_rows( 'src/core/tables/widget', data ) );
+		tr.attr("class","main-row");
 	}})
 }}
 

@@ -91,12 +91,11 @@ class admin extends controller
     function update_widgetAction ()
     {
         global $db;
-        $widget_data =json_encode($_POST['option']);
-        echo $widget_data;
-        if (isset($_POST['option'])) {
-            $db->query("UPDATE widget SET data=?,area=?,pos=?,title=? WHERE id=?",[$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_title'],$_POST['widget_id']]);
-            echo $_POST['widget_id'];
-        }
+        $widget_data = isset($_POST['option'])?json_encode($_POST['option']):'[]';
+
+        $db->query("UPDATE widget SET data=?,area=?,pos=?,title=? WHERE id=?",[$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_title'],$_POST['widget_id']]);
+        $r = $db->get("SELECT * FROM widget WHERE id=?",[$_POST['widget_id']])[0];
+        echo json_encode(['fields'=>['id','title','widget','area','pos','active'],'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],'totalRows'=>1]);
     }
 
     function usersAction ()
