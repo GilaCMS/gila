@@ -21,6 +21,7 @@ class gForm
 
     static function input($name,$op,$ov = '', $label = '')
     {
+        self::initInputTypes();
         $html .= '<div class="gm-12 row">';
         $label = isset($op['title'])?$op['title']:ucwords($label);
         $label = isset($op['label'])?$op['label']:$label;
@@ -35,7 +36,7 @@ class gForm
                 $html .= self::$input_type[$op['type']]($name,$op,$ov);
 
             /* OTHER TYPES */
-            if(in_array($op['type'],['date','time','datetime','color','password','email'])) {
+            if(in_array($op['type'],['hidden','date','time','datetime','color','password','email'])) {
                 $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'" type="'.$op['type'].'">';
             }
         } else {
@@ -51,12 +52,21 @@ class gForm
 
         self::$input_type = [
             "select"=> function($name,$field,$ov) {
-                if(!isset($field['options'])) die("<b>Option $key require options</b>");
+                //if(!isset($field['options'])) die("<b>Option $key require options</b>");
                 $html = '<select class="g-input g-m-8" name="'.$name.'">';
                 foreach($field['options'] as $value=>$name) {
                     $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
                 }
                 return $html . '</select>';
+            },
+            "radio"=> function($name,$field,$ov) {
+                $html = '<div class="g-m-8 g-radio">';
+                foreach($field['options'] as $value=>$display) {
+                    $id = 'radio_'.$name.'_'.$value;
+                    $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"'.($value==$ov?' checked':'').' id="'.$id.'" '.$checked[0].'>';
+                    $html .= '<label for="'.$id.'">'.$display.'</label>';
+                }
+                return $html . '</div>';
             },
             "postcategory"=> function($name,$field,$ov) {
                 global $db;
@@ -76,6 +86,15 @@ class gForm
             },
             "textarea"=> function($name,$field,$ov) {
                 return '<textarea class="g-m-8 codemirror-js" name="'.$name.'">'.$ov.'</textarea>';
+            },
+            "switcher"=> function($name,$field,$ov) {
+                if($ov==1) $checked=["","checked"]; else $checked=["checked",""];
+                return '<div class="g-switcher g-m-8">
+                <input name="'.$name.'" type="radio" value="0" id="chsw_'.$name.'" '.$checked[0].'>
+                <input name="'.$name.'" type="radio" value="1" id="chsw_'.$name.'" '.$checked[1].'>
+                <div class="g-slider"></div>
+                </div>
+                ';
             },
             "list"=> function($name,$field,$ov) {
                 $fieldset = htmlspecialchars(json_encode(array_keys($field['fields'])));

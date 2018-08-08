@@ -32,26 +32,16 @@ view::script('src/core/assets/admin/media.js');
 <?php
 foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     <br><div class="gm-12">
-    <label class="gm-3"><?=__($value)?></label>
+    <label class="gm-4"><?=__($value)?></label>
     <input name="gila_<?=$key?>" value="<?=gila::config($key)?>" class="gm-4" />
     </div>
 <?php } ?>
 
-<br><div class="gm-12">
-<label class="gm-3"><?=__("New users can register")?></label>
-<select name="gila_user_register" class="gm-4">
-<?php
-$sel_urs = [true=>'Yes',false=>'No'];
-foreach ($sel_urs as $k=>$value) {
-    $sel = (gila::config('user_register')==$k?'selected':'');
-    echo '<option value="'.$k."\" $sel>".$value.'</option>';
-}
-?>
-</select>
-</div>
+<br>
+<?php echo gForm::input('gila_user_register',["type"=>"switcher"],gila::config('user_register'),__("New users can register")) ?>
 
     <br><div class="gm-12">
-    <label class="gm-3"><?=__("Theme")?></label>
+    <label class="gm-4"><?=__("Theme")?></label>
     <select name="gila_theme" value="<?=gila::config('theme')?>" class="gm-4">
     <?php
     $theme_list=scandir('themes/');
@@ -64,7 +54,7 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-        <label class="gm-3"><?=__("Timezone")?></label>
+        <label class="gm-4"><?=__("Timezone")?></label>
         <select name="gila_timezone" value="<?=gila::config('timezone')?>" class="gm-4">
         <?php
         foreach (DateTimeZone::listIdentifiers() as $value) {
@@ -76,7 +66,7 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-        <label class="gm-3"><?=__("Language")?></label>
+        <label class="gm-4"><?=__("Language")?></label>
         <select name="gila_language" value="<?=gila::config('language')?>" class="gm-4">
         <?php
         $languages = ['en'=>'English','es'=>'Español','de'=>'Deutsche','el'=>'Ελληνικά','et'=>'Eesti'];
@@ -89,7 +79,7 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-        <label class="gm-3"><?=__("Admin Logo")?></label>
+        <label class="gm-4"><?=__("Admin Logo")?></label>
         <div class="gm-4" style="display:inline-flex"><span class="g-group" style="display:inline-block">
             <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
             <span class="g-group-item"><input class="fullwidth" value="<?=gila::config('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
@@ -103,21 +93,14 @@ foreach ($sel_urs as $k=>$value) {
 
     <h2><?=__("Advanced Settings")?></h2><hr>
 
-    <br><div class="gm-12">
-    <label class="gm-3"><?=__("Use CDN")?></label>
-    <select name="gila_use_cdn" class="gm-4">
-    <?php
-    $purls = [true=>__('Yes'),false=>__('No')];
-    foreach ($purls as $k=>$value) {
-        $sel = (gila::config('use_cdn')==$k?'selected':'');
-        echo '<option value="'.$k."\" $sel>".$value.'</option>';
-    }
-    ?>
-    </select>
-    </div>
+    <br>
+    <?php echo gForm::input('gila_use_cdn',["type"=>"switcher"],gila::config('use_cdn'),__("Use CDN")) ?>
+
+    <br>
+    <?php echo gForm::input('gila_rewrite',["type"=>"switcher"],gila::config('rewrite'),__("Pretty Urls")) ?>
 
     <br><div class="gm-12">
-    <label class="gm-3"><?=__("Default Controller")?></label>
+    <label class="gm-4"><?=__("Default Controller")?></label>
     <select name="gila_dc" value="<?=gila::config('default-controller')?>" class="gm-4">
     <?php
     foreach (gila::$controller as $k=>$value) if($value[0] != '.') {
@@ -129,20 +112,7 @@ foreach ($sel_urs as $k=>$value) {
     </div>
 
     <br><div class="gm-12">
-    <label class="gm-3"><?=__("Pretty Urls")?></label>
-    <select name="gila_rewrite" class="gm-4">
-    <?php
-    $purls = [true=>__('Yes'),false=>__('No')];
-    foreach ($purls as $k=>$value) {
-        $sel = (gila::config('rewrite')==$k?'selected':'');
-        echo '<option value="'.$k."\" $sel>".$value.'</option>';
-    }
-    ?>
-    </select>
-    </div>
-
-    <br><div class="gm-12">
-    <label class="gm-3"><?=__("Environment")?></label>
+    <label class="gm-4"><?=__("Environment")?></label>
     <select name="gila_env" class="gm-4">
     <?php
     $environments = ['pro'=>__('Production'),'dev'=>__('Development')];
@@ -152,7 +122,8 @@ foreach ($sel_urs as $k=>$value) {
     }
     ?>
     </select>
-    </div>
+</div>
+    <?php //echo gForm::input('gila_env',["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]],gila::config('env'),__("Environment")) ?>
 
     <br>
     <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>

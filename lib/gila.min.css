@@ -321,7 +321,24 @@ input:focus + .helptext{
     margin-bottom:8px;
 }
 
+/* Radios */
+.g-radio input{display: none; }
+.g-radio label{background:var(--main-input-color)}
+.g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
+/* Radio Switcher */
+.g-switcher{position:relative;z-index:1}
+.g-switcher input{position:absolute;opacity:0;width: 51px;height: 26px;}
+.g-switcher .g-slider{position:absolute;z-index: -100}
+.g-switcher input[value="1"]:checked + .g-slider{
+  background-color:var(--main-success-color);
+}
+.g-switcher input:checked{ display:none}
+.g-switcher input:checked + .g-slider:before{
+  -webkit-transform:translateX(25px);
+  -ms-transform:translateX(25px);
+  transform:translateX(25px);
+}
 
 .g-switch input{display:none;}
 .g-slider{
@@ -329,18 +346,18 @@ input:focus + .helptext{
   background-color:grey;
   position:relative;
   display:inline-block;
-  width:41px;
-  height:21px;
+  width:51px;
+  height:26px;
   -webkit-transition:.4s;
   transition:.4s;
 }
 .g-slider:before{
   position:absolute;
   content:"";
-  height:17px;
-  width:17px;
-  left:2px;
-  bottom:2px;
+  height:19px;
+  width:19px;
+  left:3px;
+  bottom:3px;
   background-color:white;
   -webkit-transition:.2s;
   transition:.2s;
