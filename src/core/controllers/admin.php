@@ -40,12 +40,13 @@ class admin extends controller
     function postsAction ()
     {
         global $db;
-        if ($id = router::get('id',1)) if(is_numeric($id)) {
-            view::set('id',$id);
+        $id = router::get('id',1);
+        view::set('id',$id);
+        if(is_numeric($id)) {
             view::renderAdmin('admin/edit_post.php');
-            return;
-        }
-        view::renderAdmin('admin/post.php');
+        } else if($id=="new") {
+            view::renderAdmin('admin/edit_post.php');
+        } else view::render("404.html");
     }
 
     /**
@@ -54,12 +55,13 @@ class admin extends controller
     function pagesAction ()
     {
         global $db;
-        if ($id = router::get('id',1)) if(is_numeric($id)) {
-            view::set('id',$id);
+        $id = router::get('id',1);
+        view::set('id',$id);
+        if(is_numeric($id)) {
             view::renderAdmin('admin/edit_page.php');
-            return;
-        }
-        view::renderAdmin('admin/page.php');
+        } else if($id=="new") {
+            view::renderAdmin('admin/edit_page.php');
+        } else view::render("404.html");
     }
 
     /**

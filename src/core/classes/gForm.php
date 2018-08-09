@@ -19,12 +19,14 @@ class gForm
         return self::$html;
     }
 
-    static function input($name,$op,$ov = '', $label = '')
+    static function input($name,$op,$ov = '', $key = '')
     {
         self::initInputTypes();
-        $html .= '<div class="gm-12 row">';
-        $label = isset($op['title'])?$op['title']:ucwords($label);
-        $label = isset($op['label'])?$op['label']:$label;
+        $html = '<div class="gm-12 row">';
+        $label = isset($op['label'])?$op['label']:ucwords($key);
+        $label = isset($op['title'])?$op['title']:$label;
+        $label = __($label);
+        if($label=='') $label='&nbsp;';
         if(@$op['required'] == true) $label .= ' *';
 
         $html .= '<label class="gm-4">'.$label;
@@ -32,12 +34,13 @@ class gForm
         $html .= '</label>';
 
         if(isset($op['type'])) {
-            if(isset(self::$input_type[$op['type']]))
+            if(isset(self::$input_type[$op['type']])) {
                 $html .= self::$input_type[$op['type']]($name,$op,$ov);
-
+            } else if(in_array($op['type'],['hidden','date','time','color','password','email'])) {
             /* OTHER TYPES */
-            if(in_array($op['type'],['hidden','date','time','datetime','color','password','email'])) {
                 $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'" type="'.$op['type'].'">';
+            } else {
+                $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'">';
             }
         } else {
             $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'">';
@@ -54,6 +57,16 @@ class gForm
             "select"=> function($name,$field,$ov) {
                 //if(!isset($field['options'])) die("<b>Option $key require options</b>");
                 $html = '<select class="g-input g-m-8" name="'.$name.'">';
+                foreach($field['options'] as $value=>$name) {
+                    $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
+                }
+                return $html . '</select>';
+            },
+            "meta"=> function($name,$field,$ov) {
+                if(@$field['meta-csv']==true) {
+                    return '<input class="g-input g-m-8" placeholder="values seperated by comma" name="'.$name.'" value="'.$ov.'"/>';
+                }
+                $html = '<select class="g-input g-m-8 select2" multiple name="'.$name.'">';
                 foreach($field['options'] as $value=>$name) {
                     $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
                 }
@@ -86,6 +99,9 @@ class gForm
             },
             "textarea"=> function($name,$field,$ov) {
                 return '<textarea class="g-m-8 codemirror-js" name="'.$name.'">'.$ov.'</textarea>';
+            },
+            "checkbox"=> function($name,$field,$ov) {
+                return self::$input_type['switcher']($name,$field,$ov);
             },
             "switcher"=> function($name,$field,$ov) {
                 if($ov==1) $checked=["","checked"]; else $checked=["checked",""];

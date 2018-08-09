@@ -99,7 +99,7 @@ class view
         self::$script[]=$script;
         if(gila::config('use_cdn')=='1' && isset(self::$cdn_paths[$script]))
             $script = self::$cdn_paths[$script];
-        echo '<script src="'.$script.' '.$prop.'"></script>';
+        echo '<script src="'.$script.'" '.$prop.'></script>';
     }
 
     /**

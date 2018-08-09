@@ -53,9 +53,13 @@ class router
         router::$args = $args;
         if(isset(gila::$before[$controller][$action]))
             foreach(gila::$before[$controller][$action] as $fn) $fn();
+        if(isset(gila::$action[$controller][$action])) {
+            @call_user_func_array (array($c, $action."__"), $args);
+        } else {
+            @call_user_func_array (array($c, $action_fn), $args);
+            //$c->$action_fn();
+        }
 
-        @call_user_func_array (array($c, $action_fn), $args);
-        //$c->$action_fn();
 
         // end of response
         if(self::$caching) {
@@ -102,7 +106,7 @@ class router
         $action = self::request('action',@$args[0]?:'index');
 
         if(isset(gila::$action[$controller][$action])){
-            $aa = $action.'Action';
+            $aa = $action.'__';
             @$c->$aa = gila::$action[$controller][$action];
         } else if (!method_exists($controller,$action.'Action')) {
             if (method_exists($controller,'indexAction')) {

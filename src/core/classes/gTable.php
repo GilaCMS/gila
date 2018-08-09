@@ -264,6 +264,7 @@ class gTable
                 if($field['type']=="number") $fv="0";
             }
             $row[]=$fv;
+            $row[$key]=$fv;
         }
         return $row;
     }
@@ -316,5 +317,14 @@ class gTable
     function getTable()
     {
         return $this->table;
+    }
+
+    function getFields($output = '') {
+        if($output=='') return $this->table->fields;
+        $fields = [];
+        foreach($this->fields($output) as $fkey) {
+            $fields[$fkey] = $this->table['fields'][$fkey];
+        }
+        return $fields;
     }
 }

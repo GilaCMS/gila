@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     $text = strip_tags($_POST['p_post']);
     $img = strip_tags(trim($_POST['p_img']));
     $tags = strip_tags($_POST['p_tags']);
-    $categories = isset($_POST['p_categories'])?strip_tags($_POST['p_categories']):[];
+    $categories = isset($_POST['p_categories'])?$_POST['p_categories']:[];
     $publish = isset($_POST['p_publish'])?1:0;
     $slug = strip_tags($_POST['p_slug']);
     if($slug == '') {

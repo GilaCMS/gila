@@ -20,12 +20,13 @@ $table = [
     'fields'=> [
         'id'=> [
             'title'=>'ID',
-            'style'=>'width:5%'
+            'style'=>'width:5%',
+            'create'=>false
         ],
         'title'=> [
             'title'=>'Title',
         ],
-        /*'slug'=> [],*/
+        'slug'=> ['list'=>false],
         'user_id'=> [
             'title'=>'User',
             'qoptions'=>"SELECT id, username FROM user"
@@ -33,7 +34,8 @@ $table = [
         'updated'=> [
             'title'=>'Last updated',
             'type'=>'date',
-            'searchbox'=>'period'
+            'searchbox'=>'period',
+            'edit'=>false,'create'=>false
         ],
         "categories"=>[
             'edit'=>true,
@@ -47,6 +49,7 @@ $table = [
             'list'=>false,
             'edit'=>true,
             'type'=>'meta',
+            'meta-csv'=>true,
             "mt"=>['postmeta', 'post_id', 'value'],
             'metatype'=>['vartype', 'tag'],
             "title"=>"Tags",
@@ -60,7 +63,15 @@ $table = [
             'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/posts/'+rv.id+'\">Edit</a>';"
         ],
         'post'=>[
-            'list'=>false, 'type'=>'text', 'allow-tags'=>true
+            'list'=>false, 'type'=>'textarea', 'allow-tags'=>true
         ]
+    ],
+    'events'=>[
+        ['change',function(&$row) {
+            if($row['slug']=='') {
+                $slugify = new Cocur\Slugify\Slugify();
+                $row['slug'] = $slugify->slugify($row['title']);
+            }
+        }]
     ]
 ];

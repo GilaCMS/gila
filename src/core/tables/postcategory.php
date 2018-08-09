@@ -12,7 +12,7 @@ $table = [
         'update'=>['admin']
     ],
     'fields'=> [
-        'id'=> ['edit'=>false],
+        'id'=> ['edit'=>false,'create'=>false],
         'title'=> ['title'=>'Name']
     ]
 ];
