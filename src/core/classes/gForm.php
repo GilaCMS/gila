@@ -33,12 +33,12 @@ class gForm
         if(isset($op['helptext'])) $html .= '<br><span style="font-weight:400;font-size:90%">'.$op['helptext'].'</span>';
         $html .= '</label>';
 
-        if(isset($op['type'])) {
-            if(isset(self::$input_type[$op['type']])) {
-                $html .= self::$input_type[$op['type']]($name,$op,$ov);
-            } else if(in_array($op['type'],['hidden','date','time','color','password','email'])) {
+        if($type = @$op['input-type']?:@$op['type']) {
+            if(isset(self::$input_type[$type])) {
+                $html .= self::$input_type[$type]($name,$op,$ov);
+            } else if(in_array($type,['hidden','date','time','color','password','email'])) {
             /* OTHER TYPES */
-                $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'" type="'.$op['type'].'">';
+                $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'" type="'.$type.'">';
             } else {
                 $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'">';
             }
@@ -119,7 +119,7 @@ class gForm
             }
         ];
         /* CONTENT
-        if($op['type']=='content') {
+        if($type=='content') {
             $table = $op['table'];
             $tablesrc = explode('.',gila::$content[$table])[0];
             include __DIR__.'/content.php';

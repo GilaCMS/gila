@@ -21,10 +21,19 @@ $table = [
         'id'=> [
             'title'=>'ID',
             'style'=>'width:5%',
-            'create'=>false
+            'create'=>false,'edit'=>false
         ],
         'title'=> [
             'title'=>'Title',
+        ],
+        'thumbnail'=> [
+            'type'=>'media',
+            'list'=>false,
+            'type'=>'meta',
+            'input-type'=>'media',
+            'meta-csv'=>true,
+            "mt"=>['postmeta', 'post_id', 'value'],
+            'metatype'=>['vartype', 'thumbnail']
         ],
         'slug'=> ['list'=>false],
         'user_id'=> [

@@ -327,8 +327,8 @@ input:focus + .helptext{
 .g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
 /* Radio Switcher */
-.g-switcher{position:relative;z-index:1}
-.g-switcher input{position:absolute;opacity:0;width: 51px;height: 26px;}
+.g-switcher{position:relative;z-index:1;margin:4px}
+.g-switcher input{position:absolute;opacity:0;width: 51px;height: 26px;top:-2px;left:-2px;}
 .g-switcher .g-slider{position:absolute;z-index: -100}
 .g-switcher input[value="1"]:checked + .g-slider{
   background-color:var(--main-success-color);
