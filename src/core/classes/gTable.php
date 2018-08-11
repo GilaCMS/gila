@@ -12,8 +12,9 @@ class gTable
         else
             $path = $content;
 
-        include $path;
-        $this->table = $table;
+        $this->table = include $path;
+        if(isset($table)) $this->table = $table;
+
         $this->permissions = $permissions;
         if($patch = @gila::$contentField[$this->table['name']]) {
             $this->table['fields'] = array_merge($this->table['fields'],$patch);

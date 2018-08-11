@@ -1,6 +1,6 @@
 <?php
 
-$table = [
+return [
     'name'=> 'page',
     'title'=> 'Pages',
     'pagination'=> 15,

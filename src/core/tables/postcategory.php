@@ -1,6 +1,6 @@
 <?php
 
-$table = [
+return [
     'name'=> 'postcategory',
     'title'=> 'Categories',
     'tools'=>['add','csv'],

@@ -1,6 +1,11 @@
 <?php
 
-$table = [
+$privileges = [];
+foreach(gila::$privilege as $k=>$p) {
+    $privileges[$k] = ucfirst($k);
+}
+
+return [
     'name'=> 'user',
     'title'=> 'Users',
     'pagination'=> 15,
@@ -33,7 +38,8 @@ $table = [
             'edit'=>true,
             "mt"=>['usermeta', 'user_id', 'value'],
             'metatype'=>['vartype', 'role'],
-            'qoptions'=>'SELECT `id`,`userrole` FROM `userrole`;'
+            'options'=>[],
+            'qoptions'=>'SELECT `id`,`userrole` FROM userrole;'
         ],
         "privileges"=>[
             //'list'=>false,
@@ -42,7 +48,7 @@ $table = [
             "mt"=>['usermeta', 'user_id', 'value'],
             'metatype'=>['vartype', 'privilege'],
             "title"=>"Privileges",
-            "options"=>[]
+            "options"=>$privileges
         ]
     ],
     "oncreate"=>function(&$row){
@@ -55,8 +61,3 @@ $table = [
         }]
     ]
 ];
-
-foreach(gila::$privilege as $k=>$p) {
-    $table['fields']['privileges']['options'][$k] = ucfirst($k);
-}
-//

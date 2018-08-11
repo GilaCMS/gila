@@ -9,7 +9,7 @@ foreach (gila::$widget as $k=>$value) {
     $widgets[$k] = $k;
 }
 
-$table = [
+return [
     'name'=> 'widget',
     'title'=> 'Widgets',
     'id'=>'id',

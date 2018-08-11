@@ -1,6 +1,6 @@
 <?php
 
-$table = [
+return [
 	"name"=>"userrole",
 	"title"=>"User Roles",
 	"id"=>"id",

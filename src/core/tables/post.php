@@ -1,6 +1,6 @@
 <?php
 
-$table = [
+return [
     'name'=> 'post',
     'title'=> 'Posts',
     'pagination'=> 15,
