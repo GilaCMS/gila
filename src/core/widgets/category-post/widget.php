@@ -1,6 +1,6 @@
 <?php
 
-$options=[
+return [
     'n_post'=>[
         'title'=>'Number of posts',
         'default'=>'5',

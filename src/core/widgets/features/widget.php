@@ -1,6 +1,6 @@
 <?php
 
-$options=[
+return [
     'features'=>[
         'type'=>'list',
         'fields'=>[

@@ -31,12 +31,12 @@ global $db;
 $widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 1;", $widget->id));
 $widget_folder = 'src/'.gila::$widget[$widget->widget];
 
-include $widget_folder.'/widget.php';
+$fields = include $widget_folder.'/widget.php';
+if(isset($options)) $fields = $options;
 
-if(isset($options)) foreach($options as $key=>$op) {
+if(isset($fields)) foreach($fields as $key=>$op) {
     $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
 }
-echo gForm::html($options,$values,'option[',']');
-//include view::getViewFile('admin/optionInputs.php');
+echo gForm::html($fields, $values, 'option[', ']');
 
 echo "</form>";

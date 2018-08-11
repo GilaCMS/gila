@@ -44,9 +44,10 @@ return [
         ['change',
         function(&$row){
             if(!isset($row['data']) || $row['data']!==null) return;
-            include 'src/'.gila::$widget[$row['widget']].'/widget.php';
+            $wdgt_options = include 'src/'.gila::$widget[$row['widget']].'/widget.php';
+            if(isset($options)) $wdgt_options = $options;
             $default_data=[];
-            foreach($options as $key=>$op) {
+            foreach($wdgt_options as $key=>$op) {
                 if(isset($op['default'])) $def=$op['default']; else $def='';
                 $default_data[$key]=$def;
             }

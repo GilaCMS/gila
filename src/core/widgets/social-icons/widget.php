@@ -1,6 +1,6 @@
 <?php
 
-$options=[
+return [
 	'facebook'=>[],
 	'twitter'=>[],
 	'linkedin'=>[],

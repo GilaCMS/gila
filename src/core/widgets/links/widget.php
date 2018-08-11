@@ -1,6 +1,6 @@
 <?php
 
-$options=[
+return [
     'links'=>[
         'type'=>'list',
         'fields'=>[

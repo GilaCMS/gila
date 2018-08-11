@@ -141,7 +141,6 @@ class package {
                     $values[$key] = gila::option($pack.'.'.$key);
                 }
                 echo gForm::html($options,$values,'option[',']');
-                //include view::getViewFile('admin/optionInputs.php');
             } // else error alert
             echo "</form>";
             exit;
