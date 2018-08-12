@@ -111,8 +111,10 @@ class package {
             if(!file_exists($target)) mkdir($target);
             $zip->extractTo($target);
             $zip->close();
-            if(file_exists('src/core/update.php')) include 'src/core/update.php';
+            $update_file = 'src/'.$package.'/update.php';
+            if(file_exists($update_file)) include $update_file;
             unlink('log/load.php');
+            unlink($localfile);
             echo 'ok';
           } else {
             echo __('_package_not_downloaded');
