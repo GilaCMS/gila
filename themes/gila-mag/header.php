@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="<?=gila::config('language')?>">
-<?php view::head()?>
+<?php
+view::stylesheet('lib/gila.min.css');
+view::head()?>
 <style>
 <?php $theme_color=gila::option('theme.color','orangered'); ?>
 body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}

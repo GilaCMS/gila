@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="<?=gila::config('language')?>">
-<?php view::head()?>
+<?php
+view::stylesheet('lib/gila.min.css');
+view::stylesheet('lib/font-awesome/css/font-awesome.min.css');
+view::head()?>
 <style>
 body{background:#fcfcfc}
 <?php $theme_color=gila::option('theme.color','orangered');?>
