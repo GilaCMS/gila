@@ -1,5 +1,5 @@
 <?php
 
 if(version_compare($GLOBALS['version'],'1.7.5') < 0) {
-    copy("src/core/source.txt","target.txt");
+    file_put_contents("lib/gila.min1.css",file_get_contents("src/core/lib/gila.min.css"));
 }
