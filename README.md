@@ -35,10 +35,6 @@ INSTALLATION
 
 [Post: How to install gila cms](http://gilacms.com/blog/4/how-to-install-gila-cms)
 
-<p align="center">
-  <img src="http://gilacms.com/themes/gila-cms/assets/Screenshot-iMac.png"  />
-</p>
-
 
 GET INVOLVED
 =
@@ -46,9 +42,17 @@ You are welcome to be part of the development of Gila CMS.
 First please read
 [Code of Conduct](https://github.com/GilaCMS/gila/blob/master/CODE_OF_CONDUCT.md)
 
+[How to contribute](https://github.com/GilaCMS/gila/blob/master/CONTRIBUTING.md)
+
 For any question/feature proposal/help needed
 [Make a new issue](https://github.com/GilaCMS/gila/issues/new)
 
 
-
 Gila CMS is using [Semantic Versioning](http://semver.org/)
+
+Thanks for contributing
+==
+Guillermo Céspedes Tabárez for showing how to make the redirection in nginx server.
+Nikos Papagianopoulos for the translations in German.
+Rivo Zängov for the translations in Estonian.
+ommadawn46 to find and report vulnerabilities.
