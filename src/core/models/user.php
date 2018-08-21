@@ -20,7 +20,7 @@ class user
     static function meta($id, $meta, $value = null, $multi = false)
     {
         global $db;
-        if ($value==null) {
+        if ($value===null) {
             $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=? LIMIT 1;";
             return $db->value($ql,[$id, $meta]);
         }
@@ -35,7 +35,7 @@ class user
     static function metaList($id, $meta, $values = null)
     {
         global $db;
-        if ($values==null) {
+        if ($values===null) {
             $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
             return $db->getList($ql,[$id, $meta]);
         }

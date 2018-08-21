@@ -202,7 +202,7 @@ class gila {
     */
     static function config($key, $value = null)
     {
-        if ($value == null) {
+        if ($value === null) {
             if(isset($GLOBALS['config'][$key])) {
                 return $GLOBALS['config'][$key];
             }
