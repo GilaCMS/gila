@@ -203,7 +203,9 @@ class gTable
 
                 $mt = $this->table['fields'][$key]["mt"];
                 $vt = $this->table['fields'][$key]["metatype"];
-                $arrv = explode(",",$value);
+                if(is_string($value)) {
+                    $arrv = explode(",",$value);
+                } else $arrv = $value;
                 $db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
                 foreach($arrv as $arrv_k=>$arrv_v) {
                     $db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");

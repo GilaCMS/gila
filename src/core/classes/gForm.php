@@ -14,7 +14,7 @@ class gForm
         foreach($fields as $key=>$op) {
             $ov = @$values[$key];
             if(!$ov) if(isset($op['default'])) $ov = $op['default'];
-            self::$html .= self::input($prefix.$key.$suffix, $op, $ov, $key).'<br>';
+            self::$html .= self::input($prefix.$key.$suffix, $op, $ov, $key);
         }
         return self::$html;
     }
@@ -63,12 +63,13 @@ class gForm
                 return $html . '</select>';
             },
             "meta"=> function($name,$field,$ov) {
+                if(is_string($ov)) $ov = explode(',',$ov);
                 if(@$field['meta-csv']==true) {
                     return '<input class="g-input g-m-8" placeholder="values seperated by comma" name="'.$name.'" value="'.$ov.'"/>';
                 }
-                $html = '<select class="g-input g-m-8 select2" multiple name="'.$name.'">';
+                $html = '<select class="g-input g-m-8 select2" multiple name="'.$name.'[]">';
                 foreach($field['options'] as $value=>$name) {
-                    $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
+                    $html .= '<option value="'.$value.'"'.(in_array($value,$ov)?' selected':'').'>'.$name.'</option>';
                 }
                 return $html . '</select>';
             },
