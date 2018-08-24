@@ -16,5 +16,14 @@
 <script src="src/core/assets/lazyImgLoad.js" async></script>
 <?php event::fire('footer')?>
 </body>
-
+<div class="pad">
+<?php
+global $starttime;
+$end = microtime(true);
+$creationtime = ($end - $starttime);
+printf("<br>Page created in %.6f seconds.", $creationtime);
+echo "<br>Gila CMS version ".$GLOBALS['version'];
+echo " <a href='https://twitter.com/GilaCms' target='_blank' rel='noopener noreferrer'><i class='fa fa-twitter'></i></a>"
+?>
+</div>
 </html>

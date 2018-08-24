@@ -2,7 +2,7 @@
 $link->query('CREATE TABLE IF NOT EXISTS `post` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
-  `title` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
+  `title` varchar(80) DEFAULT NULL,
   `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
   `description` varchar(200),
   `post` text,
@@ -35,7 +35,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `postcategory` (
 $link->query('CREATE TABLE IF NOT EXISTS `page` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(80) DEFAULT NULL,
-  `slug` varchar(80) DEFAULT NULL,
+  `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
   `page` text,
   `publish` int(1) DEFAULT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
