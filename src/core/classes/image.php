@@ -13,13 +13,8 @@ class image {
      */
     static function make_thumb ($src,$file,$max_width,$max_height)
     {
-        if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
-            $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
-            if(!file_exists($_src)) {
-                if(!copy($src, $_src)) return false;
-            }
-            $src = $_src;
-        }
+        $src = self::local_path($src);
+        if($src == false) return false;
         gila::dir(substr($file, 0, strrpos($file,'/')));
 
         if(!$image = @getimagesize($src)) return false;
@@ -117,13 +112,16 @@ class image {
         $dst_y = 0; $total_y = 0;
 
         foreach($src_array as $key=>$src) {
+            $_src = self::local_path($src);
+            if($_src == false) $_src = $src;
+/*
             $_src = $src;
             if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
                 $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
                 if(!file_exists($_src)) {
                     if(!copy($src, $_src)) $_src = $src;
                 }
-            }
+            }*/
             gila::dir(substr($file, 0, strrpos($file,'/')));
 
             if($image = @getimagesize($_src)) {
@@ -168,5 +166,24 @@ class image {
         imagedestroy($tmp);
         file_put_contents($file.'.json', json_encode([$revision,$response]));
         return [$file.'?'.$revision, $response];
+    }
+
+    static function local_path($src)
+    {
+        if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
+            $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+            if(!file_exists($_src)) {
+                $_file = 'log/cannot_copy.json';
+                $cannot_copy = json_decode(file_get_contents($_file),true);
+                if(in_array($src,$cannot_copy)) return false;
+                if(!copy($src, $_src)) {
+                    $cannot_copy[] = $src;
+                    file_put_contents($_file,json_encode($cannot_copy,JSON_PRETTY_PRINT));
+                    return false;
+                }
+            }
+            return $_src;
+        }
+        return $src;
     }
 }
