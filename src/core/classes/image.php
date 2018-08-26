@@ -114,14 +114,6 @@ class image {
         foreach($src_array as $key=>$src) {
             $_src = self::local_path($src);
             if($_src == false) $_src = $src;
-/*
-            $_src = $src;
-            if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
-                $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
-                if(!file_exists($_src)) {
-                    if(!copy($src, $_src)) $_src = $src;
-                }
-            }*/
             gila::dir(substr($file, 0, strrpos($file,'/')));
 
             if($image = @getimagesize($_src)) {
