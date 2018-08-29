@@ -5,7 +5,7 @@ global $db;
 $p_list = ['title', 'page', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $title = strip_tags($_POST['p_title']);
-    $text = strip_tags($_POST['p_page']);
+    $text = $_POST['p_page'];
     $publish = isset($_POST['p_publish'])?1:0;
     $slug = strip_tags($_POST['p_slug']);
 

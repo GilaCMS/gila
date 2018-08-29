@@ -6,7 +6,7 @@ $p_list = ['title', 'post', 'publish' ];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $title = strip_tags($_POST['p_title']);
     $description = strip_tags($_POST['p_description']);
-    $text = strip_tags($_POST['p_post']);
+    $text = $_POST['p_post'];
     $img = strip_tags(trim($_POST['p_img']));
     $tags = strip_tags($_POST['p_tags']);
     $categories = isset($_POST['p_categories'])?$_POST['p_categories']:[];

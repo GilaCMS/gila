@@ -171,7 +171,7 @@ class router
     */
     static function controller ()
     {
-        return @router::get_controller();
+        return @router::get_controller(self::$args);
     }
 
     /**
@@ -179,7 +179,7 @@ class router
     */
     static function action ()
     {
-        return @router::get_action();
+        return @router::get_action(self::controller(),self::$args);
     }
 
     static function args_shift()
