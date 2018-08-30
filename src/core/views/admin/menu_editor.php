@@ -64,7 +64,7 @@ $itemTypes = menuItemTypes::getItemTypes();
 <!-- item template -->
 <script type="text/x-template" id="item-template">
   <li :id="uid" data-index="index">
-      <div @dragstart="dragStart()" @dragend="$emit('remove')" draggable="true">
+      <div @dragstart="dragStart($event)" @dragend="$emit('remove')" draggable="true">
           <span v-show="model.type!='menu'" >::: </span>
           <i v-if="isFolder&&open" class="fa fa-folder-open-o" @click="toggle"></i>
           <i v-if="isFolder&&open==false"  class="fa fa-folder-o" @click="toggle"></i>
@@ -87,7 +87,7 @@ $itemTypes = menuItemTypes::getItemTypes();
               ?>
           </span>
       </div>
-    <ul v-show="(isFolder&&open)||model.type=='menu'" @drop="drop()" @dragover="allowDrop()" data-drop="insert">
+    <ul v-show="(isFolder&&open)||model.type=='menu'" @drop="drop($event)" @dragover="allowDrop($event)" data-drop="insert">
       <item
         class="item" v-for="(model, index) in model.children"
         :key="index" :model="model"
@@ -143,8 +143,6 @@ Vue.component('item', {
     isFolder: function () {
         if(this.model.type=='dir') return true
         return false
-        if(this.model.type=='menu') return false
-        return this.model.children
     },
     isItem: function () {
         if(this.model.type=='menu') return false
@@ -162,12 +160,12 @@ Vue.component('item', {
               alert(JSON.parse(response).msg);
           }})
       },
-    moveUp: function() {
+    moveUp: function(event) {
       var node = event.target.parentNode.parentNode
       var node2 = node.previousSibling
       if(typeof node2.tagName!='undefined') node.parentNode.insertBefore(node,node2)
     },
-    moveDown: function() {
+    moveDown: function(event) {
         var node = event.target.parentNode.parentNode
         var node2 = node.nextSibling
         if(typeof node2.tagName!='undefined') node.parentNode.insertBefore(node2,node)
@@ -188,19 +186,19 @@ Vue.component('item', {
     addCondition: function (_c) {
      this.model.children.push({type:_c,children:[]})
     },
-    dragStart: function (index) {
+    dragStart: function (event) {
         item_drag = true;
         if(this.model.type=='menu') return false;
         event.dataTransfer.setData("Text", event.target.parentNode.id);
         event.dataTransfer.setData("Item", JSON.stringify(this.model));
     },
-    allowDrop: function () {
+    allowDrop: function (event) {
         event.preventDefault();
     },
-    nodrop: function () {
+    nodrop: function (event) {
         event.preventDefault();
     },
-    drop: function () {
+    drop: function (event) {
         if(item_drag == false) return;
 
         if(event.target.tagName=='UL'){
@@ -233,11 +231,11 @@ Vue.component('item', {
                 }
             }, 30)
 
-            event.dataTransfer.setData("Item",'')
+            //event.dataTransfer.setData("Item",'')
             item_drag = false
         }
 
-        event.dataTransfer.clearData();
+        //event.dataTransfer.clearData();
     }
   }
 })
