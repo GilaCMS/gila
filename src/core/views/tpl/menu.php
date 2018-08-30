@@ -13,7 +13,7 @@ foreach ($menu_items as $mi) {
         if (isset($mi['children'])) if (isset($mi['children'][0])) {
             echo "<ul class=\"dropdown-menu\" role=\"menu\">";
             foreach ($mi['children'] as $mii) {
-                echo "<li>".menu_item($mii)."</li>";
+                echo menu_item($mii)."</li>";
             }
             echo "</ul></li>";
         }
