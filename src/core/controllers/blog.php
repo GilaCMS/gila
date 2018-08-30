@@ -77,6 +77,7 @@ class blog extends controller
     {
         $tag = router::get('tag',1);
         view::set('tag',$tag);
+        view::set('page',self::$page);
         view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
         view::render('blog-tag.php');
     }
@@ -100,6 +101,7 @@ class blog extends controller
         $res = $db->get("SELECT title from postcategory WHERE id=?",$category);
         self::$totalPosts = post::total(['category'=>$category]);
         view::set('category',$res[0][0]);
+        view::set('page',self::$page);
         view::set('posts',post::getPosts(['posts'=>self::$ppp,'category'=>$category,'page'=>self::$page]));
         view::render('blog-category.php');
     }
