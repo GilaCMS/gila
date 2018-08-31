@@ -11,6 +11,7 @@ class view
     private static $meta = array();
     private static $alert = array();
     public static $cdn_paths = array();
+    public static $view_file = array();
     public static $parent_theme = false;
 
 	static function set($param,$value) {
@@ -193,6 +194,9 @@ class view
     }
 
     static function getViewFile ($file, $package = 'core') {
+        if(isset(self::$view_file[$file]))
+            return 'src/'.self::view_file[$file].'/views/'.$file;
+
         $tpath = self::getThemePath().'/'.$file;
         if(file_exists($tpath)) return $tpath;
 
@@ -205,6 +209,10 @@ class view
         if(file_exists($spath)) return $spath;
 
         return false;
+    }
+
+    static function setViewFile ($file, $package) {
+        self::$view_file[$file] = $package;
     }
 
     /**

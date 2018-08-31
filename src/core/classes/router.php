@@ -20,14 +20,14 @@ class router
 
         if(isset($_GET['url'])) {
             router::$url = strip_tags($_GET['url']);
-            $args = explode("/", router::$url);
+            router::$args = explode("/", router::$url);
         }
         else {
             router::$url = false;
-            $args = [];
+            router::$args = [];
         }
 
-        $controller = router::get_controller($args);
+        $controller = router::get_controller(router::$args);
         $controller_file = 'src/'.gila::$controller[$controller].'.php';
 
         if(!file_exists($controller_file)) {
@@ -47,16 +47,15 @@ class router
         if(isset(gila::$on_controller[$controller]))
             foreach(gila::$on_controller[$controller] as $fn) $fn();
 
-        $action = router::get_action($controller,$args);
+        $action = router::get_action($controller, router::$args);
         $action_fn = $action.'Action';
 
-        router::$args = $args;
         if(isset(gila::$before[$controller][$action]))
             foreach(gila::$before[$controller][$action] as $fn) $fn();
         if(isset(gila::$action[$controller][$action])) {
-            @call_user_func_array (array($c, $action."__"), $args);
+            @call_user_func_array (array($c, $action."__"), router::$args);
         } else {
-            @call_user_func_array (array($c, $action_fn), $args);
+            @call_user_func_array (array($c, $action_fn), router::$args);
             //$c->$action_fn();
         }
 
