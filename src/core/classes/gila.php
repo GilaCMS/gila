@@ -18,6 +18,8 @@ class gila {
     static $privilege;
     static $content;
     static $contentField;
+    static $contentInit = [];
+    static $mt;
 
     function __construct()
     {
@@ -146,12 +148,23 @@ class gila {
     * @param $key (string) Name of content type
     * @param $field (string) Index of the field
     * @param $table (Assoc array) Value of the field
-    * @code gila::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
+    * DEPRECIATED @see gila::contentInit()
     */
     static function contentField($key, $field, $table)
     {
         if(!isset(self::$contentField[$key])) self::$contentField[$key] = [];
         self::$contentField[$key][$field] = $table;
+    }
+
+    /**
+    * Make changes in a content type when it is initialized
+    * @param $key (string) Name of content type
+    * @param $init (function) Funtion to run
+    * @code gila::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
+    */
+    static function contentInit($key, $init)
+    {
+        @self::$contentInit[$key][] = $init;
     }
 
     /**
@@ -288,13 +301,47 @@ class gila {
         if(gila::config('env')=='pro') unlink('log/load.php');
     }
 
+    /**
+    * Returns modification times in seconds
+    * @param $arg (string or array) Indeces
+    */
+    static function mt($arg) {
+        if(!isset(self::$mt)) self::loadMt();
+        $args = func_get_args();
+        if(is_array($arg)) {
+            $array = [];
+            foreach($arg as $a) $array[] = self::$mt[$a];
+            return $array;
+        } else return self::$mt[$arg];
+    }
+
+    /**
+    * Loads modification times from the file
+    */
+    static function loadMt() {
+        if(!isset(self::$mt)) self::$mt = [];
+        self::$mt = @include 'log/mt.php';
+    }
+
+    /**
+    * Updates the modification times for an index/indeces
+    * @param $arg (string or array) Indeces
+    */
+    static function setMt($arg) {
+        if(!isset(self::$mt)) self::loadMt();
+        if(is_array($arg)) {
+            foreach($arg as $a) self::$mt[$a] = time();
+        } else self::$mt[$arg] = time();
+        file_put_contents('log/mt.php', '<?php return '.var_export(self::$mt,true).';');
+    }
+
     static function url($url)
     {
         if($url=='#') return router::url().'#';
 
         if(gila::config('rewrite')) {
             $var = explode('/',$url);
-            if(gila::config('default-controller') == $var[0]) {
+            if(gila::config('default-controller') == $var[0]) if($var[0]!='admin'){
                 return substr($url, strlen($var[0])+1);
             }
             return $url;
@@ -328,7 +375,7 @@ class gila {
                 $params.=$value;
             }
 
-            if(gila::config('default-controller') == $c) $c=''; else $c.='/';
+            if((gila::config('default-controller') == $c) && ($c != 'admin')) $c=''; else $c.='/';
             if($action!='') $action.='/';
             if(isset($_GET['g_preview_theme'])) $params.='?g_preview_theme='.$_GET['g_preview_theme'];
             return gila::config('base').$c.$action.$params;

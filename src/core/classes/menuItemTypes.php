@@ -41,6 +41,13 @@ class menuItemTypes
         self::$itemTypes[$index] = $value;
     }
 
+    static function get ($mi)
+    {
+        if(!isset(self::$itemTypes[$mi['type']])) return false;
+        if(!isset(self::$itemTypes[$mi['type']]['response'])) return false;
+        return self::$itemTypes[$mi['type']]['response']($mi);
+    }
+
     static function initItemTypes()
     {
         global $db;

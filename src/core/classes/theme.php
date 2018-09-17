@@ -59,7 +59,7 @@ class theme {
         if ($download) {
             $zip = new ZipArchive;
             $target = 'themes/'.$download;
-            $file = 'http://gilacms.com/assets/themes/'.$download.'.zip';
+            $file = 'https://gilacms.com/assets/themes/'.$download.'.zip';
             $localfile = 'themes/'.$download.'.zip';
             if (!copy($file, $localfile)) {
               echo __('_theme_not_downloaded');
@@ -113,7 +113,8 @@ class theme {
             foreach($_POST['option'] as $key=>$value) {
         		$ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
         		$db->query($ql);
-        	}
+            }
+            if(gila::config('env')=='pro') unlink('log/load.php');
             exit;
         }
     }

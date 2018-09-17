@@ -44,6 +44,9 @@ function menu_item($mi){
     if($mi['type']=='link') {
 
     }
+    if($res = menuItemTypes::get($mi)) {
+        list($url,$name) = $res;
+    }
 
     return "<a href=\"$url\" >$name</a>";
 }

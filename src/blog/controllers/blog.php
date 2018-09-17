@@ -7,7 +7,7 @@ use core\models\user as user;
 /**
 * The blog controller, get calls for display of posts
 */
-class blog extends controller
+class Blog extends controller
 {
     public static $page; /** The page number */
     public static $totalPosts;
@@ -16,7 +16,7 @@ class blog extends controller
 
     function __construct ()
     {
-        self::$page = (router::get('page',1))?:1;
+        self::$page = @$_GET['page']?:1;
         self::$ppp = 12;
         self::$totalPosts = null;
     }
@@ -184,8 +184,8 @@ class blog extends controller
     function searchAction()
     {
         if ($s=router::get('search',1)) {
-		      view::set('posts',post::search($s));
-		      view::render('blog-search.php');
+		    view::set('posts',post::search($s));
+		    view::render('blog-search.php');
             return;
         }
         view::set('page',self::$page);

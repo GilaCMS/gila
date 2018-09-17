@@ -1,0 +1,9 @@
+{
+	"name":"Blog",
+	"version":"1.0.0",
+	"description":"Adds the blog controller.",
+	"lang":"core/lang/admin/",
+	"require": {
+		"core": "1.8.0"
+	}
+}

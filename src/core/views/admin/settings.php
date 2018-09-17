@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('language',$_POST['gila_language']);
     gila::config('admin_logo',$_POST['gila_admin_logo']);
     gila::config('env',$_POST['gila_env']);
+    gila::config('check4updates',$_POST['gila_check4updates']);
     gila::config('rewrite',$_POST['gila_rewrite']);
     gila::config('user_register',$_POST['gila_user_register']);
     gila::config('use_cdn',$_POST['gila_use_cdn']);
@@ -103,7 +104,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     <label class="gm-4"><?=__("Default Controller")?></label>
     <select name="gila_dc" value="<?=gila::config('default-controller')?>" class="gm-4">
     <?php
-    foreach (gila::$controller as $k=>$value) if($value[0] != '.') {
+    foreach (gila::$controller as $k=>$value) if($value[0] != '.') if(!in_array($k,['cm','login','webhook','fm','lzld'])){
         $sel = (gila::config('default-controller')==$k?'selected':'');
         echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
     }
@@ -111,19 +112,11 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
     </select>
     </div>
 
-    <br><div class="gm-12">
-    <label class="gm-4"><?=__("Environment")?></label>
-    <select name="gila_env" class="gm-4">
-    <?php
-    $environments = ['pro'=>__('Production'),'dev'=>__('Development')];
-    foreach ($environments as $k=>$value) {
-        $sel = (gila::config('env')==$k?'selected':'');
-        echo '<option value="'.$k."\" $sel>".ucwords($value).'</option>';
-    }
-    ?>
-    </select>
-</div>
-    <?php //echo gForm::input('gila_env',["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]],gila::config('env'),__("Environment")) ?>
+    <br>
+    <?php echo gForm::input('gila_env',["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]],gila::config('env'),__("Environment")) ?>
+
+    <br>
+    <?php echo gForm::input('gila_check4updates',["type"=>"switcher"],gila::config('check4updates'),__("Check For Updates")) ?>
 
     <br>
     <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>

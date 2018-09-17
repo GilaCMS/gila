@@ -26,7 +26,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             'pass' => $db_pass,
             'name' => $db_name
         ];
-        $GLOBALS['config']['packages'] = [];
+        $GLOBALS['config']['packages'] = ['blog'];
         $GLOBALS['config']['base'] = $_base_url;
         $GLOBALS['config']['theme'] = 'gila-blog';
         $GLOBALS['config']['title'] = 'Gila CMS';
@@ -35,6 +35,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $GLOBALS['config']['timezone'] = 'America/Mexico_City';
         $GLOBALS['config']['ssl'] = '';
         $GLOBALS['config']['env'] = 'pro';
+        $GLOBALS['config']['check4updates'] = 1;
         $GLOBALS['config']['language'] = 'en';
         $GLOBALS['config']['admin_email'] = $_POST['adm_email'];
         $GLOBALS['config']['rewrite'] = false;

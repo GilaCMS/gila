@@ -83,6 +83,8 @@ class cm extends controller
 
         $fieldlist = isset($_GET['id'])?'edit':'list';
         $result['fields'] = $pnk->fields($fieldlist);
+        $result['rows'] = [];
+        
         $ql = "SELECT {$pnk->select($result['fields'])} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
         $res = $db->query($ql);
         while($r = mysqli_fetch_row($res)) {
@@ -156,12 +158,14 @@ class cm extends controller
         $pnk->updateJoins($id);
 
         $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
+        if($db->error()) echo $db->error();
         $result['fields'] = $pnk->fields();
         $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
 
         while($r = mysqli_fetch_row($res)) {
             $result['rows'][] = $r;
         }
+        gila::setMt($pnk->name());
         echo json_encode($result,JSON_PRETTY_PRINT);
     }
 
@@ -182,12 +186,14 @@ class cm extends controller
         $result = [];
         $pnk = new gTable(router::get("t",1));
         if(isset($_GET['id'])) {
-            $fields=implode(',',$pnk->fields());
+            $fields = $pnk->fields('clone');
+            $fields =  implode(',', $fields );
             $res = $db->query("INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_GET['id']);
-            $id = $_GET['id'];
+            $id = $db->insert_id;
         } else {
             $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
             $id = $db->insert_id;
+            $db->query("UPDATE {$pnk->name()} {$pnk->set($_GET)} WHERE {$pnk->id()}=?;",$id);
         }
 
         $result['fields'] = $pnk->fields();

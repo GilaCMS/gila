@@ -16,8 +16,11 @@ class gTable
         if(isset($table)) $this->table = $table;
 
         $this->permissions = $permissions;
-        if($patch = @gila::$contentField[$this->table['name']]) {
+        if($patch = @gila::$contentField[$this->table['name']]) { //depraciated from 1.8.0
             $this->table['fields'] = array_merge($this->table['fields'],$patch);
+        }
+        if(isset(gila::$contentInit[$this->table['name']])) foreach(@gila::$contentInit[$this->table['name']] as $init) {
+            $init($this->table);
         }
         if(isset($this->table['lang'])) gila::addLang($this->table['lang']);
         foreach ($this->table['fields'] as $key => &$field) {
@@ -31,6 +34,11 @@ class gTable
                 $field['title'] = __($field['title']);
             } else $field['title'] = __($key);
         }
+        if(isset($this->table['children'])) foreach ($this->table['children'] as $key => &$child) {
+            $child_table = new gTable($key,$permissions);
+            $child['table'] = $child_table->getTable();
+        }
+        $this->table['title'] = __($this->table['title']);
 
         if(!isset($this->table['permissions'])) $this->table['permissions'] = [];
         $p = &$this->table['permissions'];
@@ -152,14 +160,14 @@ class gTable
 
         foreach($fields as $key=>$value) {
             if(array_key_exists($key, $this->table['fields'])) {
-                if ($this->fieldAttr($key, 'qcolumn')) break;
+                if ($this->fieldAttr($key, 'qcolumn')) continue;
                 if ($allowed = $this->fieldAttr($key, 'allow-tags')) {
-                    if($allowed===true)
+                    if($allowed==false)
                         $value=strip_tags($value);
-                    else
-                    $value=strip_tags($value,$allowed);
+                    else if($allowed!=true)
+                        $value=strip_tags($value,$allowed);
                 }
-                if (in_array($this->fieldAttr($key, 'type'),['joins','meta'])) break;
+                if (in_array($this->fieldAttr($key, 'type'),['joins','meta'])) continue;
 
                 if(is_array($value)) {
                     foreach($value as $subkey=>$subvalue) {
@@ -204,10 +212,14 @@ class gTable
                 $mt = $this->table['fields'][$key]["mt"];
                 $vt = $this->table['fields'][$key]["metatype"];
                 if(is_string($value)) {
-                    $arrv = explode(",",$value);
+                    if(@$this->table['fields'][$key]['values'] == 1) {
+                        $arrv = [$value];
+                    } else {
+                        $arrv = explode(",",$value);
+                    }
                 } else $arrv = $value;
                 $db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
-                foreach($arrv as $arrv_k=>$arrv_v) {
+                foreach($arrv as $arrv_k=>$arrv_v) if($arrv_v!='') if($arrv_v!=null) {
                     $db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");
                 }
                 continue;
@@ -306,7 +318,9 @@ class gTable
         foreach($this->table['fields'] as $fkey=>$field) {
             if(isset($field['qtype']) && $fkey!=$id) {
                 $column = @$field['qcolumn']?:$fkey;
-                $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
+                if (strpos($column, '(') === false) {
+                    $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
+                }
             }
         }
 

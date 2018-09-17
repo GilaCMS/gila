@@ -20,8 +20,8 @@ $link->query('ALTER TABLE post ADD  FULLTEXT KEY `title` (`title`,`post`);');
 $link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` int(11) DEFAULT NULL,
-  `vartype` varchar(25) DEFAULT NULL,
-  `value` varchar(80) DEFAULT NULL,
+  `vartype` varchar(80) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
@@ -36,11 +36,12 @@ $link->query('CREATE TABLE IF NOT EXISTS `page` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(80) DEFAULT NULL,
   `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
-  `page` text,
+  `content` text,
   `publish` int(1) DEFAULT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `slug` (`slug`)
+  KEY `slug` (`slug`),
+  KEY `publish` (`publish`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('CREATE TABLE IF NOT EXISTS `user` (
@@ -58,7 +59,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `usermeta` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `vartype` varchar(80) DEFAULT NULL,
-  `value` varchar(80) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `vartype` (`vartype`)
@@ -91,7 +92,7 @@ $link->query("INSERT INTO user(id,username,email,pass,reset_code) VALUES(1,'$_us
 $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
 $link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
 VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
-$link->query("INSERT INTO page(id,title,slug,page,publish,updated)
+$link->query("INSERT INTO page(id,title,slug,content,publish,updated)
 VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
 
 $link->query('CREATE TABLE IF NOT EXISTS `userrole` (

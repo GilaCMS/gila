@@ -22,7 +22,8 @@ class gForm
     static function input($name,$op,$ov = '', $key = '')
     {
         self::initInputTypes();
-        $html = '<div class="gm-12 row">';
+        $type = @$op['input-type']?:@$op['type'];
+        $html = '<div class="gm-12 row type-'.$type.'">';
         $label = isset($op['label'])?$op['label']:ucwords($key);
         $label = isset($op['title'])?$op['title']:$label;
         $label = __($label);
@@ -33,20 +34,26 @@ class gForm
         if(isset($op['helptext'])) $html .= '<br><span style="font-weight:400;font-size:90%">'.$op['helptext'].'</span>';
         $html .= '</label>';
 
-        if($type = @$op['input-type']?:@$op['type']) {
+        if($type) {
             if(isset(self::$input_type[$type])) {
                 $html .= self::$input_type[$type]($name,$op,$ov);
             } else if(in_array($type,['hidden','date','time','color','password','email'])) {
             /* OTHER TYPES */
-                $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'" type="'.$type.'">';
+                $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'">';
             } else {
-                $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'">';
+                $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'">';
             }
         } else {
-            $html .= '<input class="g-input g-m-8" name="'.$name.'" value="'.$ov.'">';
+            $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'">';
         }
 
         return $html . '</div>';
+    }
+
+    static function addInputType ($index, $value)
+    {
+        if(!isset(self::$input_type)) self::initInputTypes();
+        self::$input_type[$index] = $value;
     }
 
     static function initInputTypes()
@@ -56,7 +63,7 @@ class gForm
         self::$input_type = [
             "select"=> function($name,$field,$ov) {
                 //if(!isset($field['options'])) die("<b>Option $key require options</b>");
-                $html = '<select class="g-input g-m-8" name="'.$name.'">';
+                $html = '<select class="g-input" name="'.$name.'">';
                 foreach($field['options'] as $value=>$name) {
                     $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
                 }
@@ -65,16 +72,16 @@ class gForm
             "meta"=> function($name,$field,$ov) {
                 if(is_string($ov)) $ov = explode(',',$ov);
                 if(@$field['meta-csv']==true) {
-                    return '<input class="g-input g-m-8" placeholder="values seperated by comma" name="'.$name.'" value="'.$ov.'"/>';
+                    return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.$ov.'"/>';
                 }
-                $html = '<select class="g-input g-m-8 select2" multiple name="'.$name.'[]">';
+                $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
                 foreach($field['options'] as $value=>$name) {
                     $html .= '<option value="'.$value.'"'.(in_array($value,$ov)?' selected':'').'>'.$name.'</option>';
                 }
                 return $html . '</select>';
             },
             "radio"=> function($name,$field,$ov) {
-                $html = '<div class="g-m-8 g-radio">';
+                $html = '<div class="g-radio g-input">';
                 foreach($field['options'] as $value=>$display) {
                     $id = 'radio_'.$name.'_'.$value;
                     $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"'.($value==$ov?' checked':'').' id="'.$id.'" '.$checked[0].'>';
@@ -84,7 +91,7 @@ class gForm
             },
             "postcategory"=> function($name,$field,$ov) {
                 global $db;
-                $html = '<select class="g-input g-m-8" name="'.$name.'">';
+                $html = '<select class="g-input" name="'.$name.'">';
                 $res=$db->get('SELECT id,title FROM postcategory;');
                 $html .= '<option value=""'.(''==$ov?' selected':'').'>'.'[All]'.'</option>';
                 foreach($res as $r) {
@@ -93,20 +100,23 @@ class gForm
                 return $html . '</select>';
             },
             "media"=> function($name,$field,$ov) {
-                return '<div class="g-m-8 g-group">
-                  <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery(\'#m_'.$key.'\')"><i class="fa fa-image"></i></span>
-                  <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="m_'.$key.'" name="'.$name.'"><span>
+                return '<div class="g-group">
+                  <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery(\'#m_'.$name.'\')"><i class="fa fa-image"></i></span>
+                  <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="m_'.$name.'" name="'.$name.'"><span>
                 </span></span></div>';
             },
             "textarea"=> function($name,$field,$ov) {
-                return '<textarea class="g-m-8 codemirror-js" name="'.$name.'">'.$ov.'</textarea>';
+                return '<textarea class="codemirror-js" name="'.$name.'">'.$ov.'</textarea>';
+            },
+            "tinymce"=> function($name,$field,$ov) {
+                return '<textarea class="tinymce" id="'.$name.'" name="'.$name.'">'.$ov.'</textarea>';
             },
             "checkbox"=> function($name,$field,$ov) {
                 return self::$input_type['switcher']($name,$field,$ov);
             },
             "switcher"=> function($name,$field,$ov) {
                 if($ov==1) $checked=["","checked"]; else $checked=["checked",""];
-                return '<div class="g-switcher g-m-8">
+                return '<div class="g-switcher ">
                 <input name="'.$name.'" type="radio" value="0" id="chsw_'.$name.'" '.$checked[0].'>
                 <input name="'.$name.'" type="radio" value="1" id="chsw_'.$name.'" '.$checked[1].'>
                 <div class="g-slider"></div>

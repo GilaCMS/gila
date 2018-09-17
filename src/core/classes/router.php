@@ -186,15 +186,22 @@ class router
         array_shift(self::$args);
     }
 
-    static function cache ($time = 3600,$args = null) {
+    static function cache ($time = 3600,$args = null,$uniques = null) {
         $dir = gila::dir('log/cache0/');
         self::$caching_file = $dir.str_replace(['/','\\'],'_',$_SERVER['REQUEST_URI']);
         if($args !== null) self::$caching_file .= '|'.implode('|',$args);
+        if($uniques !== null) {
+            $pre_unique = self::$caching_file;
+            self::$caching_file .= '|'.implode('|',$uniques);
+        }
         if(file_exists(self::$caching_file) && filemtime(self::$caching_file)+$time>time()) {
             if(sizeof($_REQUEST)>1) return;
             include self::$caching_file;
             exit;
         } else {
+            if($uniques !== null) {
+                array_map('unlink', glob($pre_unique.'*'));
+            }
             ob_start();
             self::$caching = true;
         }

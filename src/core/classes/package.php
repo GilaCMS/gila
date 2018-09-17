@@ -102,7 +102,8 @@ class package {
         if ($package) {
           $zip = new ZipArchive;
           $target = 'src/'.$package;
-          $file = 'http://gilacms.com/assets/packages/'.$package.'.zip';
+          $file = 'https://gilacms.com/assets/packages/'.$package.'.zip';
+          if(isset($_GET['src'])) $file = $_GET['src'];
           $localfile = 'src/'.$package.'.zip';
           if (!copy($file, $localfile)) {
             echo __('_package_not_downloaded');
@@ -195,6 +196,7 @@ class package {
     */
     static function updateLoadFile()
     {
+        global $db;
         $file = "log/load.php";
         $contents = file_get_contents('src/core/load.php');//"/*--- Load file ---*/";
         foreach(gila::packages() as $package) {
@@ -211,6 +213,11 @@ class package {
                 // error op
             }
         }
+        gila::$option=[];
+        $db->connect();
+    	$res = $db->get('SELECT `option`,`value` FROM `option`;');
+    	foreach($res as $r) gila::$option[$r[0]] = $r[1];
+        $db->close();
 
         $contents .= "\n\ngila::\$option = ".var_export(gila::$option, true).";\n";
 
@@ -219,6 +226,7 @@ class package {
 
     static function check4updates()
     {
+        if(gila::config('check4updates')==0) return;
         $now = new DateTime("now");
         if(gila::option('checked4updates')==null) {
             gila::setOption('checked4updates', $now->format('Y-m-d'));

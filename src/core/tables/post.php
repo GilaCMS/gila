@@ -6,9 +6,9 @@ return [
     'pagination'=> 15,
     'id'=>'id',
     'tools'=>['new_post','csv'],
-    'list'=>['id','title','user_id','updated','categories','publish','commands'],
+    //'list'=>['id','title','user_id','updated','categories','publish','commands'],
     'csv'=> ['id','title','slug','user_id','updated','publish','post'],
-    'commands'=> ['delete'],
+    'commands'=> ['edit','clone','delete'],
     'lang'=>'core/lang/admin/',
     'permissions'=>[
         'create'=>['admin'],
@@ -38,6 +38,7 @@ return [
         'slug'=> ['list'=>false],
         'user_id'=> [
             'title'=>'User',
+            'type'=>'select',
             'qoptions'=>"SELECT id, username FROM user"
         ],
         'updated'=> [
@@ -72,7 +73,7 @@ return [
             'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/posts/'+rv.id+'\">Edit</a>';"
         ],
         'post'=>[
-            'list'=>false, 'type'=>'textarea', 'allow-tags'=>true
+            'list'=>false, 'title'=>'Post', 'edit'=>true, 'type'=>'textarea', 'input-type'=>'tinymce', 'allow-tags'=>true
         ]
     ],
     'events'=>[

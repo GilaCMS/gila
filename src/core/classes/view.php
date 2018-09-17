@@ -317,11 +317,15 @@ class view
         event::fire($area);
     }
 
-    static function thumb ($src, $prefix, $max=180)
+    static function thumb ($src, $prefix='', $max=180)
     {
         if($src==null) return false;
-        if(strtolower(pathinfo($src)['extension'])=='svg') return $src;
-        $file = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "/", $prefix.$src);
+        $pathinfo = pathinfo($src);
+        if(strtolower($pathinfo['extension'])=='svg') return $src;
+        $slugify = new Cocur\Slugify\Slugify();
+
+        //$file = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "/", $prefix.$src);
+        $file = 'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$pathinfo['extension'];
         $max_width = $max;
         $max_height = $max;
         if($src=='') return false;

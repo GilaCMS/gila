@@ -7,7 +7,7 @@ return [
     'id'=>'id',
     'tools'=>['new_page','csv'],
     'csv'=> ['id','title','slug','updated','publish','page'],
-    'commands'=> ['delete'],
+    'commands'=> ['edit','delete'],
     'lang'=>'core/lang/admin/',
     'permissions'=>[
         'create'=>['admin'],
@@ -33,7 +33,7 @@ return [
         ],
         'commands'=>[
             'title'=>'','qcolumn'=>"''",'eval'=>"dv='<a href=\"admin/pages/'+rv.id+'\">Edit</a>';"
-        ]
-        //'page'=> ['list'=>false]
+        ],
+        'content'=> ['title'=>'Content','list'=>false,'edit'=>true, 'type'=>'textarea', 'input-type'=>'tinymce', 'allow-tags'=>true]
     ]
 ];

@@ -19,6 +19,7 @@ npm-debug.log
 
 # excluded
 !src/core/
+!src/blog/
 !src/gila_fb_comments/
 !src/ganalytics/
 !src/featured_grid/

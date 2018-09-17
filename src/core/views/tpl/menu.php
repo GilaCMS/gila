@@ -50,6 +50,10 @@ function menu_item($mi, $tag=''){
 
     }
 
+    if($res = menuItemTypes::get($mi)) {
+        list($url,$name) = $res;
+    }
+
     if(router::url()==$url) {
         return "<li class=\"active\"><a href=\"$url\">$name</a>";
     }

@@ -1,17 +1,17 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.7.6';
+$GLOBALS['version']='1.8.0';
 gila::controllers([
     'admin'=> 'core/controllers/admin',
     'api'=> 'core/controllers/api',
-    'blog'=> 'core/controllers/blog',
     'cm'=> 'core/controllers/cm',
     'login'=> 'core/controllers/login',
     'webhook'=> 'core/controllers/webhook',
     'fm'=> 'core/controllers/fm',
     'lzld'=> 'core/controllers/lzld'
 ]);
+
 gila::$amenu = [
     ['Dashboard','admin','icon'=>'dashboard'],
     'content'=>['Content','#','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
@@ -35,13 +35,13 @@ gila::$amenu = [
 
 gila::widgets([
   'text'=>'core/widgets/text',
-  'latest-post'=>'core/widgets/latest-post',
-  'category-post'=>'core/widgets/category-post',
   'social-icons'=>'core/widgets/social-icons',
-  'tag'=>'core/widgets/tag',
   'basic'=>'core/widgets/basic',
   'links'=>'core/widgets/links',
   'features'=>'core/widgets/features',
+  'latest-post'=>'core/widgets/latest-post',
+  'category-post'=>'core/widgets/category-post',
+  'tag'=>'core/widgets/tag'
   //'contact-form'=>'core/widgets/contact-form'
 ]);
 gila::$widget_area=[];
@@ -66,5 +66,3 @@ gila::addLang('core/lang/');
 
 if(gila::config('use_cdn')==1)
     include_once 'src/core/assets/cdn_paths.php';
-
-gila::action('blog','tage',function($a,$b){echo "tage $a $b";});
