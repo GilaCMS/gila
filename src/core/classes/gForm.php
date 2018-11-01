@@ -100,9 +100,10 @@ class gForm
                 return $html . '</select>';
             },
             "media"=> function($name,$field,$ov) {
+                $id = 'm_'.str_replace(['[',']'], '_', $name);    
                 return '<div class="g-group">
-                  <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery(\'#m_'.$name.'\')"><i class="fa fa-image"></i></span>
-                  <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="m_'.$name.'" name="'.$name.'"><span>
+                  <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
+                  <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
                 </span></span></div>';
             },
             "textarea"=> function($name,$field,$ov) {

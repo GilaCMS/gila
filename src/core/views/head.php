@@ -9,6 +9,8 @@
     event::fire('head.meta');
     foreach(view::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
     event::fire('head');
+    if (isset(view::$canonical))
+        echo '<link rel="canonical" href="'.view::$canonical.'" />';
 ?>
 <link rel="icon" type="image/png" href="assets/favicon.ico">
 </head>

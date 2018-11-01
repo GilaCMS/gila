@@ -4,13 +4,13 @@ Vue.component('input-list', {
     template: '<div>\
 <div v-for="(row,key) in pos">\
 <span v-for="(field,fkey) in fields">\
-	<span v-if="field==&quot;image&quot;" style="width:80px" >\
-		<img :src="pos[key][fkey]"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:80px;max-height:50px;vertical-align:middle" />\
+	<span v-if="field==&quot;image&quot;" style="width:50px" >\
+		<img :src="pos[key][fkey]"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
 		<input v-model="pos[key][fkey]" type="hidden" :id="\'il\'+field+key" @input="update">\
 	</span>\
 	<input v-if="field!=&quot;image&quot;" v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update" :placeholder="field.toUpperCase()">\
 </span>\
-&nbsp;<button @click="removeEl(key)" class="btn btn-error">-</button>\
+&nbsp;<span @click="removeEl(key)" class="btn btn-error">-</span>\
 </div>\
 <a @click="add()" class="btn btn-success">+</a>\
 <input v-model="ivalue" type="hidden" :name="name" >\

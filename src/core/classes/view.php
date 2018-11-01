@@ -13,6 +13,7 @@ class view
     public static $cdn_paths = array();
     public static $view_file = array();
     public static $parent_theme = false;
+    public static $canonical;
 
 	static function set($param,$value) {
         global $g,$c;
@@ -193,6 +194,11 @@ class view
         return false;
     }
 
+    /**
+    * Returns the path of a file inside theme or package folder.
+    * @param file (string) The file path.
+    * @param package  (string) Optional. The package folder where the file is located if is not found in theme folder.
+    */
     static function getViewFile ($file, $package = 'core') {
         if(isset(self::$view_file[$file]))
             return 'src/'.self::view_file[$file].'/views/'.$file;
@@ -211,6 +217,11 @@ class view
         return false;
     }
 
+    /**
+    * Overrides a view file. Overrides fiel from any package or the theme.
+    * @param file (string) Relative path of the view file.
+    * @param package  (string) The package folder where the file is located.
+    */
     static function setViewFile ($file, $package) {
         self::$view_file[$file] = $package;
     }
