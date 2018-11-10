@@ -186,9 +186,15 @@ class router
         array_shift(self::$args);
     }
 
-    static function cache ($time = 3600,$args = null,$uniques = null) {
+    static function cache ($time = 3600, $args = null, $uniques = null) {
+        if(isset(view::$canonical)) {
+            $request_uri = view::$canonical;
+        } else {
+            $request_uri = $_SERVER['REQUEST_URI'];
+        }
+
         $dir = gila::dir('log/cache0/');
-        self::$caching_file = $dir.str_replace(['/','\\'],'_',$_SERVER['REQUEST_URI']);
+        self::$caching_file = $dir.str_replace(['/','\\'],'_',$request_uri);
         if($args !== null) self::$caching_file .= '|'.implode('|',$args);
         if($uniques !== null) {
             $pre_unique = self::$caching_file;
