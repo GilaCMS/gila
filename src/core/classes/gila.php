@@ -120,6 +120,16 @@ class gila {
         }
     }
 
+    static function addList($list, $el)
+    {
+        $GLOBALS['list'][$list][] = $el;
+    }
+
+    static function getList()
+    {
+        return $GLOBALS['list'][$list];
+    }
+
     /**
     * Registers new widgets
     * @param $list (Assoc Array) Widgets to register
