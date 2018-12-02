@@ -1,4 +1,5 @@
 <?php
+chdir(__DIR__.'/../../');
 include __DIR__.'/../../vendor/autoload.php';
 include __DIR__.'/../../src/core/classes/gila.php';
 use PHPUnit\Framework\TestCase;
@@ -32,16 +33,10 @@ class ClassGila extends TestCase
 		$this->assertEquals('Inicio', __('Home'));
 	}
 
-	public function test_setConfig()
-	{
-		$value = rand(1,100);
-		gila::setConfig('config_key', $value);
-		$this->assertEquals($value, gila::config('config_key'));
-	}
-
 	public function test_updateConfigFile()
 	{
 		$value = rand(1,100);
+		include_once(__DIR__.'/../../config.php');
 		gila::setConfig('test_config_key', $value);
 		gila::updateConfigFile();
 		include_once(__DIR__.'/../../config.php');
@@ -50,9 +45,9 @@ class ClassGila extends TestCase
 
 	public function test_mt()
 	{
-		$value = rand(1,100);
-		gila::setMt('test_mt', $value);
-		$this->assertEquals($value, gila::mt('test_mt'));
+		$value = time();
+		gila::setMt('test_mt');
+		$this->assertTrue(abs($value - gila::mt('test_mt')) < 100);
 	}
 
 	public function test_url()

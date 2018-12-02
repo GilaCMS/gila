@@ -7,9 +7,9 @@ class InstallGila extends TestCase
 	public function testInstall()
 	{
 		$host = "localhost";
-		$db = "gila";
-		$db_user = "user";
-		$db_pass = "pass";
+		$db = "g_db";
+		$db_user = "g_user";
+		$db_pass = "g_pass";
 		$email = "admin@mail.com";
 		$pass = "password";
 		$base = "//localhost/gilatest/";
