@@ -114,7 +114,7 @@ class gila {
     {
         $filepath = 'src/'.$path.gila::config('language').'.json';
         if(file_exists($filepath)) {
-            $GLOBALS['lang'] = @array_merge($GLOBALS['lang'],
+            $GLOBALS['lang'] = @array_merge(@$GLOBALS['lang'],
                 json_decode(file_get_contents($filepath),true)
             );
         }

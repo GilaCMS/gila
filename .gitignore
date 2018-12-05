@@ -14,7 +14,7 @@ composer.json
 composer.lock
 config.php
 npm-debug.log
-
+TODO.md
 
 # excluded
 !src/core/
@@ -33,5 +33,6 @@ npm-debug.log
 !tmp/.gitkeep
 
 !tmp/index.html
+!tmp/.htaccess
 !assets/gila-logo.png
 !assets/gila-logo.svg

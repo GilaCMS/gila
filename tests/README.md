@@ -13,7 +13,7 @@ jmeter
 
 Run test directly from the terminal
 ```
-jmeter -n -t tests/jmeter/test.jmx results.csv
+jmeter -n -t tests/jmeter/test.jmx -l results.csv
 ```
 
 Tutorials for jmeter

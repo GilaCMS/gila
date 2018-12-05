@@ -30,25 +30,32 @@ class session
         if (isset($_POST['username']) && isset($_POST['password'])) {
             $res = $db->query("SELECT id,pass,username,email FROM user WHERE email=?;",[$_POST['username']]);
             while ($r = mysqli_fetch_array($res)) if(password_verify($_POST['password'],$r[1])){
-                session::key('user_id',$r[0]);
-                session::key('user_name',$r[2]);
-                session::key('user_email',$r[3]);
+                session::log($r[0], $r[2], $r[3], 'Start');
                 $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
                 $gsession = (string)$r[0];
                 for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
                 user::meta($r[0],'GSESSIONID',$gsession);
                 setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
             }
-        }
-        if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
-            foreach (user::getIdsByMeta('GSESSIONID',$_COOKIE['GSESSIONID']) as $user_id) {
-                $res = $db->query("SELECT id,username,email FROM user WHERE id=?;",[$user_id]);
-                if ($r = mysqli_fetch_array($res)) {
-                    session::key('user_id',$r[0]);
-                    session::key('user_name',$r[1]);
-                    session::key('user_email',$r[2]);
+        } else {
+            if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
+                foreach (user::getIdsByMeta('GSESSIONID',$_COOKIE['GSESSIONID']) as $user_id) {
+                    $res = $db->query("SELECT id,username,email FROM user WHERE id=?;",[$user_id]);
+                    if ($r = mysqli_fetch_array($res)) {
+                        session::user($r[0], $r[1], $r[2], 'By cookie');
+                    }
                 }
             }
+        }
+    }
+
+    static function user ($id, $name, $email, $msg=null) {
+        session::key('user_id',$id);
+        session::key('user_name',$name);
+        session::key('user_email',$email);
+        if($msg!==null) {
+            $session_log = new logger('log/sessions.log');
+            $session_log->info($msg,['user_id'=>$id, 'email'=>$email]);
         }
     }
 
@@ -115,6 +122,10 @@ class session
     */
     static function destroy ()
     {
+        if(self::user_id()>0) {
+            $session_log = new logger('log/sessions.log');
+            $session_log->info('End',['user_id'=>self::user_id(), 'email'=>self::key('user_email')]);
+        }
         @session_destroy();
     }
 }

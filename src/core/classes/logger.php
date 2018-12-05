@@ -83,7 +83,7 @@ class logger
      */
     public function log($level, $message, array $context = array()) {
         if ($this->file != null) {
-          $line = date("Y-m-d H:i:s").','.$level.','.$message."\n";
+          $line = date("Y-m-d H:i:s").','.$level.','.$message.','.json_encode($context,true)."\n";
           file_put_contents($this->file,$line,FILE_APPEND);
         }
 
