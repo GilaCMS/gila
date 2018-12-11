@@ -23,5 +23,6 @@
     "New Password": "Neues Kennwort",
     "Confirm Password": "Bestätige das Kennwort",
     "Change Password": "Kennwort Ändern",
-    "Send Email": "E-mail Abschicken"
+    "Send Email": "E-mail Abschicken",
+    "login_error_msg": "Wrong email or password"
 }

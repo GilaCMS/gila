@@ -17,16 +17,15 @@ if(version_compare(phpversion(), $required_php) < 0) {
 
 foreach($required_ext as $k=>$v) if(!extension_loaded($v)) {
     echo "<span class='alert fullwidth'>Extension $v is not loaded.</span>";
-} else {
-    // echo "<span class='alert success fullwidth'>Extension $v is loaded.</span>";
 }
 
 if(function_exists("apache_get_modules"))  if(!in_array('mod_rewrite', apache_get_modules())) {
-	echo "<span class='warning fullwidth'>mod_rewrite is not enabled.</span>";
+	echo "<span class='alert fullwidth'>mod_rewrite is not enabled.</span>";
 }
 ?>
         <p>
-            Before you continue to the installation make sure you know the Database name and the user credencials. If you dont know them, ask them from your hosting provider.
+            Before you continue to the installation make sure you know the Database name and the user credencials. If you dont know them, ask them from your hosting provider.<br>
+            If you have difficulties to finish the installation you can ask for help on <a href="https://gitter.im/GilaCMS/Lobby" target="_blank">Gitter</a> or <a href="https://join.slack.com/t/gilacms/shared_invite/enQtMzU5OTg5OTUzMDQ3LWFiZThjMTliOGQ0NWQyOGRiZTM2ZDlmYTkxODAzZWRlOWJmNmVjNDZkYThjODRjZjdkMmNmOTU3MWUxMDlhZTc" target="_blank">Slack</a>
         </p>
         <div class="gl-12"><a class="g-btn gl-12" href="?install&step=1">Continue</a></div>
     </div>

@@ -16,7 +16,7 @@
 </head>
 
 <body>
-
+    <?=view::alerts()?>
     <div class="gl-4 centered">
 
         <div class="border-buttom-main_ text-align-center">

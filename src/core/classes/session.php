@@ -30,7 +30,7 @@ class session
         if (isset($_POST['username']) && isset($_POST['password'])) {
             $res = $db->query("SELECT id,pass,username,email FROM user WHERE email=?;",[$_POST['username']]);
             while ($r = mysqli_fetch_array($res)) if(password_verify($_POST['password'],$r[1])){
-                session::log($r[0], $r[2], $r[3], 'Start');
+                session::user($r[0], $r[2], $r[3], 'Start');
                 $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
                 $gsession = (string)$r[0];
                 for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];

@@ -30,7 +30,7 @@ return [
         'widget'=> ['title'=>'Type', 'options'=>$widgets, 'create'=>true],
         'title'=> ['title'=>'Title'],
         'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
-        'pos'=> ['title'=>'Position'],
+        'pos'=> ['title'=>'Position','default'=>1],
         'active'=> [
           'title'=>'Active',
           'type'=>'checkbox','edit'=>true,'create'=>false

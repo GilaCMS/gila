@@ -23,5 +23,6 @@
     "New Password": "New Password",
     "Confirm Password": "Confirm Password",
     "Change Password": "Change Password",
-    "Send Email": "Send Email"
+    "Send Email": "Send Email",
+    "login_error_msg": "Wrong email or password"
 }

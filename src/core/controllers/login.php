@@ -17,6 +17,9 @@ class login extends controller
            echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
            exit;
         }
+        if (isset($_POST['username']) && isset($_POST['password'])) {
+            view::alert('error', __('login_error_msg'));
+        }
 		view::includeFile('login.php');
     }
 
@@ -83,10 +86,11 @@ class login extends controller
 		$r = user::getByEmail($email);
 
 		if ($r == false) {
-  			echo __('reset_error1');
-  			$out['success'] = false;
-  			$out['msg'] = "No user found with this email.";
-  			exit;
+//  			$out['success'] = false;
+//              $out['msg'] = "No user found with this email.";
+              view::alert('error', __('reset_error2'));
+  			view::includeFile('login-change-password.php');
+			return;
 		}
 
         $baseurl = gila::config('base');

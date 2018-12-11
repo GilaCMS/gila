@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+    <?=view::alerts()?>
     <div class="gl-4 centered wrapper">
         <div class="border-buttom-main_ text-align-center">
             <div style="width:16%;display:inline-block">

@@ -23,5 +23,6 @@
     "New Password": "Uus parool",
     "Confirm Password": "Kinnita parooli",
     "Change Password": "Muuda parooli",
-    "Send Email": "Saada kiri"
+    "Send Email": "Saada kiri",
+    "login_error_msg": "Wrong email or password"
 }

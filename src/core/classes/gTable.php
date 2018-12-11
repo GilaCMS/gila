@@ -175,6 +175,7 @@ class gTable
                         if($subkey == 'add') $set[] = "$key=$key+$subvalue";
                     }
                 } else {
+                    if($value=='') if($def = $this->fieldAttr($key, 'default')) $value = $def;
                     $set[] = "$key='$value'";
                 }
             }
