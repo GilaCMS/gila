@@ -147,7 +147,7 @@ class admin extends controller
     {
         $packages = [];
         if(!$contents = file_get_contents('https://gilacms.com/packages/themes')) {
-            view::alert("Could not connect to themes list. Please try later.");
+            view::alert('error',"Could not connect to themes list. Please try later.");
         } else {
             $packages = json_decode($contents);
         }
