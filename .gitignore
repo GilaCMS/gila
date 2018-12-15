@@ -1,4 +1,3 @@
-
 # Gila ignores
 src/*
 themes/*
@@ -10,11 +9,11 @@ log/sessions/*
 vendor/
 node_modules/
 composer.phar
-composer.json
 composer.lock
 config.php
 npm-debug.log
 TODO.md
+tests/basic.results.csv
 
 # excluded
 !src/core/
@@ -31,8 +30,8 @@ TODO.md
 !log/sessions/
 !log/sessions/.gitkeep
 !tmp/.gitkeep
-
 !tmp/index.html
 !tmp/.htaccess
+
 !assets/gila-logo.png
 !assets/gila-logo.svg

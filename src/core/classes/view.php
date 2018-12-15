@@ -359,7 +359,8 @@ class view
         if(is_nan($stack[0]))  $stack[0] = 0;
 
         foreach($src_array as $key=>$value) {
-            if($stack[1][$key]['src'] != $value) {
+            $key_src = $stack[1][$key]['src'];
+            if($key_src != $value && pathinfo($key_src)['extension']=='jpg') {
                 return image::make_stack($stack[0]+1,$src_array, $file, $max_width, $max_height);
             }
         }
