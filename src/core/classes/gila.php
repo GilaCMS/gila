@@ -354,7 +354,7 @@ class gila {
             if(gila::config('default-controller') == $var[0]) if($var[0]!='admin'){
                 return substr($url, strlen($var[0])+1);
             }
-            return $url;
+            return gila::config('base').$url;
         }
         $burl = explode('?',$url);
         $burl1 = explode('/',$burl[0]);
