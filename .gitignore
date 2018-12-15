@@ -14,6 +14,7 @@ config.php
 npm-debug.log
 TODO.md
 tests/basic.results.csv
+tests/jmeter.log
 
 # excluded
 !src/core/
