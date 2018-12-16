@@ -122,7 +122,7 @@ class gila {
 
     static function addList($list, $el)
     {
-        $GLOBALS['list'][$list][] = $el;
+        @$GLOBALS['list'][$list][] = $el;
     }
 
     static function getList()
@@ -345,6 +345,10 @@ class gila {
         file_put_contents('log/mt.php', '<?php return '.var_export(self::$mt,true).';');
     }
 
+    static function base_url() {
+        return gila::config('base');
+    }
+
     static function url($url)
     {
         if($url=='#') return router::url().'#';
@@ -354,7 +358,7 @@ class gila {
             if(gila::config('default-controller') == $var[0]) if($var[0]!='admin'){
                 return substr($url, strlen($var[0])+1);
             }
-            return gila::config('base').$url;
+            return gila::base_url().$url;
         }
         $burl = explode('?',$url);
         $burl1 = explode('/',$burl[0]);
@@ -365,7 +369,7 @@ class gila {
             if($burl1[$i]!='') $burl[1]='&var'.($i-1).'='.$burl1[$i].$burl[1];
         }
 
-        return gila::config('base').'?c='.$burl1[0].$burl1[1].$burl[1];
+        return gila::base_url().'?c='.$burl1[0].$burl1[1].$burl[1];
 
     }
 
@@ -388,14 +392,14 @@ class gila {
             if((gila::config('default-controller') == $c) && ($c != 'admin')) $c=''; else $c.='/';
             if($action!='') $action.='/';
             if(isset($_GET['g_preview_theme'])) $params.='?g_preview_theme='.$_GET['g_preview_theme'];
-            return gila::config('base').$c.$action.$params;
+            return gila::base_url().$c.$action.$params;
         }
         else {
             foreach($args as $key=>$value) {
                 $params.='&'.$key.'='.$value;
             }
             if(isset($_GET['g_preview_theme'])) $params.='&g_preview_theme='.$_GET['g_preview_theme'];
-            return gila::config('base')."?c=$c&action=$action$params";
+            return gila::base_url()."?c=$c&action=$action$params";
         }
 
     }

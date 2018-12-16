@@ -1,6 +1,6 @@
 <?php global $g?>
 <head>
-<base href="<?=gila::config('base')?>">
+<base href="<?=gila::base_url()?>">
 <title><?=@$g->page_title?></title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

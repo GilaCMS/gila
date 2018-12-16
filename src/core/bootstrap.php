@@ -49,7 +49,7 @@ else {
 	}
 }
 
-
+event::fire('load');
 $g = new gila();
 
 
