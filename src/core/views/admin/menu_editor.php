@@ -27,6 +27,10 @@
   list-style-type: none;
   padding-right: 0.4em;
 }
+#menu > ul {
+  padding: 0;
+  margin: 0;
+}
 #menu input {
   width:auto;
 }
@@ -76,7 +80,10 @@ $itemTypes = menuItemTypes::getItemTypes();
           }
           ?>
 
-          <a v-if="model.type=='menu'" @click="saveMenu" class="g-btn success" style="float:right"><i class="fa fa-save"></i> <?=__("Submit")?></a>
+          <span v-if="model.type=='menu'" style="float:right">
+            <a @click="saveMenu" class="g-btn success"><i class="fa fa-save"></i> <?=__("Save")?></a>
+            &nbsp;<a @click="deleteMenu" class="g-btn error"><i class="fa fa-trash"></i></a>
+          </span>
           <i v-if="model.type!='menu'" @click="$emit('remove')" class="fa fa-trash i-btn" style="float:right"></i>
           <span v-show="(isFolder&&open)||model.type=='menu'">
               <?php
@@ -100,13 +107,32 @@ $itemTypes = menuItemTypes::getItemTypes();
 
 
 <h1><?=__(($menu=='mainmenu'?"Main Menu":$menu))?></h1><hr>
-<div id="menu">
-<ul>
-  <item
-    class="item" :model="treeData">
-  </item>
-</ul>
+<div class="row">
+  <div id="menu" class="gm-9 wrapper">
+    <ul>
+      <item
+        class="item" :model="treeData">
+      </item>
+    </ul>
+  </div>
+  <div id="menu-list" class="gm-3 wrapper">
+    <ul class="g-nav vertical g-card">
+    <?php
+    $menus = scandir('log/menus');
+    foreach($menus as $name) if($name[0]!='.'){
+     $lname = substr($name,0,strpos($name,'.'));
+     echo '<li><a href="'.gila::make_url('admin','menu').$lname.'">'.$lname.'</a>';
+    }
+    ?>
+    </ul>
+    <br>
+    <div>
+      <input id="new-menu" class="g-input fullwidth"><br>
+      <button class="g-btn fullwidth" onclick="window.location.href='<?=gila::make_url('admin','menu')?>'+g('#new-menu').all[0].value"><?=__("New")?></button>
+    </div>
+  </div>
 </div>
+
 
 <script>
 
@@ -153,13 +179,21 @@ Vue.component('item', {
     },
   },
   methods: {
-      saveMenu: function() {
-          let fm=new FormData()
-          fm.append('menu', JSON.stringify(this.model));
-          g.ajax({url:"admin/menu/<?=$menu?>",method:'POST',data:fm, fn: function (response){
-              alert(JSON.parse(response).msg);
-          }})
-      },
+    saveMenu: function() {
+      let fm=new FormData()
+      fm.append('menu', JSON.stringify(this.model));
+      g.ajax({url:"admin/menu/<?=$menu?>",method:'POST',data:fm, fn: function (response){
+        alert(JSON.parse(response).msg);
+        location.reload();
+      }})
+    },
+    deleteMenu: function() {
+      if(!confirm('Are you sure tou want to delete this menu?')) return;
+      g.ajax({url:"admin/menu/<?=$menu?>",method:'DELETE', fn: function (response){
+        alert(JSON.parse(response).msg);
+        location.reload();
+      }})
+    },
     moveUp: function(event) {
       var node = event.target.parentNode.parentNode
       var node2 = node.previousSibling
@@ -174,7 +208,7 @@ Vue.component('item', {
       this.open = !this.open
     },
     removeItem: function (index) {
-        if(item_drag == false) this.model.children.splice(index,1)
+      if(item_drag == false) this.model.children.splice(index,1)
     },
     alertdata: function() {
         alert(JSON.stringify(this.model))
@@ -230,12 +264,8 @@ Vue.component('item', {
                     _model.children.push(item);
                 }
             }, 30)
-
-            //event.dataTransfer.setData("Item",'')
             item_drag = false
         }
-
-        //event.dataTransfer.clearData();
     }
   }
 })

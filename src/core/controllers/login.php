@@ -14,7 +14,7 @@ class login extends controller
 	function indexAction()
     {
         if(session::key('user_id')>0) {
-           echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
+           echo "<meta http-equiv='refresh' content='0;url=".gila::base_url()."' />";
            exit;
         }
         if (isset($_POST['username']) && isset($_POST['password'])) {
@@ -93,7 +93,7 @@ class login extends controller
 			return;
 		}
 
-        $baseurl = gila::config('base');
+        $baseurl = gila::base_url();
 		$subject = __('reset_msg_ln1').' '.$r['username'];
 		$reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,50);
         $message = __('reset_msg_ln2')." {$r['username']}\n\n";

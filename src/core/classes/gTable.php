@@ -9,9 +9,11 @@ class gTable
     {
         if(isset(gila::$content[$content]))
             $path = 'src/'.gila::$content[$content];
-        else
+        else if(file_exists($content))
             $path = $content;
-
+        else
+            $path = 'src'.$content;
+ 
         $this->table = include $path;
         if(isset($table)) $this->table = $table;
 
@@ -55,7 +57,7 @@ class gTable
 
     function id()
     {
-        return $this->table['id'];
+        return $this->table['id'] ?? ‘id’; 
     }
 
     function fieldAttr($field, $attr)
@@ -88,7 +90,7 @@ class gTable
                 $select[$key] = $qcolumn.' as '.$value;
             if($mt = $this->fieldAttr($value, 'mt')) {
                 $vt = $this->fieldAttr($value, 'metatype');
-                $this_id = $this->name().".".$this->table['id'];
+                $this_id = $this->name().".".$this->id();
                 $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[2]}`) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
             }
             if($qcolumn = $this->fieldAttr($value, 'jt'))
@@ -109,7 +111,7 @@ class gTable
                     $select[$key] = $qcolumn.' as '.$value;
                 if($mt = $this->fieldAttr($value, 'mt')) {
                     $vt = $this->fieldAttr($value, 'metatype');
-                    $this_id = $this->name().".".$this->table['id'];
+                    $this_id = $this->name().".".$this->id();
                     $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[2]}`) FROM {$mt[0]} WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
                 }
             } else $select[$key] = "'' as ".$value;
@@ -134,7 +136,7 @@ class gTable
                 }
             }
         }
-        if($id==null) $id = @$this->table['id']?:'id';
+        if($id==null) $id = $this->id();
         return " ORDER BY $id $v";
     }
 
@@ -308,7 +310,7 @@ class gTable
         global $db;
         $tname = $this->table['name'];
         $table_created=false;
-        $id = $this->table['id'];
+        $id = $this->id();
 
         // CREATE TABLE
         $qtype = @$this->table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';

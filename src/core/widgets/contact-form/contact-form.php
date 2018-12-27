@@ -1,4 +1,4 @@
-<form role="form" method="post" action="" class="g-form wrapper g-card">
+<form role="form" method="post" action="<?=$widget_data->url?>" class="g-form wrapper g-card">
     <label>Name</label>
     <div class="form-group">
         <input class="form-control fullwidth" placeholder="name" name="name" autofocus required>

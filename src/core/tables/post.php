@@ -8,7 +8,7 @@ return [
     'tools'=>['new_post','csv'],
     //'list'=>['id','title','user_id','updated','categories','publish','commands'],
     'csv'=> ['id','title','slug','user_id','updated','publish','post'],
-    'commands'=> ['edit','clone','delete'],
+    'commands'=> ['edit','delete'],
     'lang'=>'core/lang/admin/',
     'permissions'=>[
         'create'=>['admin'],

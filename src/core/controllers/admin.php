@@ -243,13 +243,20 @@ class admin extends controller
     function menuAction()
     {
         $menu = router::get('menu',1);
-        if($menu != null) if($_SERVER['REQUEST_METHOD'] == 'POST') if(gila::hasPrivilege('admin')) {
-            if(isset($_POST['menu'])) {
-                $folder = gila::dir('log/menus/');
-                file_put_contents($folder.$menu.'.json',$_POST['menu']);
+        if($menu != null) if(gila::hasPrivilege('admin')) {
+            $folder = gila::dir('log/menus/');
+            $file = $folder.$menu.'.json';
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+              if(isset($_POST['menu'])) {
+                file_put_contents($file,$_POST['menu']);
                 echo json_encode(["msg"=>__('_changes_updated')]);
+                exit;
             }
-            exit;
+            } else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+                unlink($file);
+                echo json_encode(["msg"=>__('_changes_updated')]);
+                exit;
+            }
         }
         view::set('menu',($menu?:'mainmenu'));
         view::renderAdmin('admin/menu_editor.php');

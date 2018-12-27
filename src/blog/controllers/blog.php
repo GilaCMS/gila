@@ -151,7 +151,7 @@ class Blog extends controller
             view::meta('og:url',self::get_url($r['id'],$r['slug']));
             view::meta('og:description',$r['description']);
 
-            view::$canonical = gila::url('blog/'.$r['id'].'/'.$r['slug'].'/');
+            gila::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
 
             $res = $db->query("SELECT `value` as img FROM post,postmeta WHERE vartype='thumbnail' AND post_id=$id;");
             if ($res) {

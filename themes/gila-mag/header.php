@@ -34,7 +34,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
     <div class="header">
         <?php view::widget_area('body'); ?>
         <div class="inline-block">
-          <a href="<?=gila::config('base')?>" style="color:#333;">
+          <a href="<?=gila::base_url()?>" style="color:#333;">
           <?php
           $lgimg = gila::option('theme.header-logo');
           $_title = gila::config('title');

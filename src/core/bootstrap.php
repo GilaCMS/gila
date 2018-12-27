@@ -4,16 +4,6 @@ $starttime = microtime(true);
 
 if(!isset($_GET['url'])) $_GET['url'] = substr($_SERVER['REQUEST_URI'],1);
 
-if (file_exists('config.php')) {
-	require_once 'config.php';
-}
-else {
-	if(isset($_GET['install'])) {
-		include 'src/core/install/index.php';
-	} else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=?install\" />";
-	exit;
-}
-
 ini_set("error_log", "log/error.log");
 
 spl_autoload_register(function ($class) {
@@ -29,6 +19,16 @@ spl_autoload_register(function ($class) {
 		require_once 'lib/'.$class.'.php';
 	} else trigger_error("File $class could not be found with autoload.");
 });
+
+if (file_exists('config.php')) {
+	require_once 'config.php';
+}
+else {
+	if(isset($_GET['install'])) {
+		include 'src/core/install/index.php';
+	} else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".gila::base_url()."?install\" />";
+	exit;
+}
 
 $db = new db(gila::config('db'));
 

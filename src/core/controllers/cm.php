@@ -105,7 +105,7 @@ class cm extends controller
         // filename to be downloaded
         $filename = router::get("t",1). date('Y-m-d') . ".csv";
         header("Content-Disposition: attachment; filename=\"$filename\"");
-        $fields = $pnk->getTable()['csv'];
+        $fields = $pnk->fields('csv');
         echo implode(',',$fields)."\n";
         $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
         $res = $db->query($ql);
@@ -119,6 +119,37 @@ class cm extends controller
             echo implode(',',$r)."\n";
         }
     }
+
+    function upload_csvAction ()
+    {
+        global $db;
+        $inserted = 0;
+        $updated = 0;
+        $pnk = new gTable(router::get("t",1),$this->permissions);
+        $filename = $_FILES["file"]["tmp_name"];        
+        $fields = $pnk->fields('edit');
+        $quest = "";
+        $nfields = count($fields);
+        $fields = implode(',',$fields);
+        for($i=0; $i<$nfields; $i++) {
+            if($i>0) $quest .= ',';
+            $quest .= '?';
+        }
+        if(@$_FILES["file"]["size"] > 0) {
+              $file = fopen($filename, "r");
+            while (($row = fgetcsv($file, 10000, ",")) !== FALSE) {
+               $ql = "INSERT INTO {$pnk->name()} ($fields) VALUES($quest);";
+                if($db->query($ql, $row)) {
+                    $inserted++;
+                }
+                else {
+                    //try something else
+                }
+             }
+             fclose($file);
+         }
+    }
+
 
     function group_rowsAction ()
     {
@@ -188,12 +219,20 @@ class cm extends controller
         if(isset($_GET['id'])) {
             $fields = $pnk->fields('clone');
             $fields =  implode(',', $fields );
-            $res = $db->query("INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_GET['id']);
+            $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
+            $res = $db->query($q,$_GET['id']);
             $id = $db->insert_id;
         } else {
             $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
+            echo "INSERT INTO {$pnk->name()}() VALUES();";
             $id = $db->insert_id;
-            $db->query("UPDATE {$pnk->name()} {$pnk->set($_GET)} WHERE {$pnk->id()}=?;",$id);
+            if($id==0) {
+                echo "Row was not created. Does this table exist?";
+                exit;
+            } else {
+                $q = "UPDATE {$pnk->name()} {$pnk->set($_GET)} WHERE {$pnk->id()}=?;";
+                $db->query($q,$id);
+            }
         }
 
         $result['fields'] = $pnk->fields();

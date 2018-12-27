@@ -2,7 +2,7 @@
 <html lang="<?=gila::config('language')?>">
 
 <head>
-    <base href="<?=gila::config('base')?>">
+    <base href="<?=gila::base_url()?>">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,7 +76,7 @@
         <!-- Page Content -->
         <div class="g-group fullwidth bordered" style="vertical-align:baseline; background:white;">
                 <a href="#menu-toggle" class="btn btn-white g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
-                <a href="<?=gila::config('base')?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
+                <a href="<?=gila::base_url()?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
             <span class="g-group-item fullwidth text-align-right pad">
 
 
@@ -84,8 +84,8 @@
                 <li>
                     <i class="fa fa-user"></i> <?=session::key('user_name')?> <i class="fa fa-angle-down"></i>
                     <ul class="text-align-left" style="right:0">
-                        <li><a href="<?=gila::config('base')?>admin/profile"><?=__("My Profile")?></a></li>
-                        <li><a href="<?=gila::config('base')?>admin/logout"><?=__("Loggout")?></a></li>
+                        <li><a href="admin/profile"><?=__("My Profile")?></a></li>
+                        <li><a href="admin/logout"><?=__("Loggout")?></a></li>
                     </ul>
                 </li>
                 </ul>
@@ -96,9 +96,12 @@
             <div style="background:#d6d6d6; padding:12px" class="row caption">
                 <div style="padding-left: 15px;">
                     <?php
-                    echo ucwords(router::controller());
-                    if($item = router::action()) echo ' \\ '.ucwords($item);
-                    if($item = router::get(null,1)) echo ' \\ '.(ucwords($item))?>
+                    if($item = router::controller()) {
+                    //    echo ucwords($item);
+                    //    if($item = router::action()) echo ' \\ '.ucwords($item);
+                    //    if($item = router::get(null,1)) echo ' \\ '.(ucwords($item));
+                    }
+                    ?>
                 </div>
             </div>
             <div class="wrapper bordered" style="background:white;margin:10px" id='main-wrapper'>

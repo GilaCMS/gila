@@ -1,7 +1,7 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.8.2';
+$GLOBALS['version']='1.8.4';
 gila::controllers([
     'admin'=> 'core/controllers/admin',
     'api'=> 'core/controllers/api',
@@ -41,8 +41,8 @@ gila::widgets([
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
   'category-post'=>'core/widgets/category-post',
-  'tag'=>'core/widgets/tag'
-  //'contact-form'=>'core/widgets/contact-form'
+  'tag'=>'core/widgets/tag',
+  'contact-form'=>'core/widgets/contact-form'
 ]);
 gila::$widget_area=[];
 

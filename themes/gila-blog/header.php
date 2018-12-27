@@ -57,7 +57,7 @@ footer{background:#464a49;margin-top:10px;color:white}
     <div style="max-width:1100px; margin:auto;">
         <?php view::widget_area('body'); ?>
         <div class="gl-9" style="height:200px;text-shadow:0 0 6px black">
-          <h1><a href="<?=gila::config('base')?>" style="color:#f5f5f5;"><?=gila::config('title')?></a></h1>
+          <h1><a href="<?=gila::base_url()?>" style="color:#f5f5f5;"><?=gila::config('title')?></a></h1>
           <div style="color:#f5f5f5;margin-bottom:6px"><?=gila::config('slogan')?></div>
         </div>
         <!-- Navigation -->

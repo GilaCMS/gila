@@ -25,9 +25,12 @@ class event {
     */
     static function fire($event, $params = null)
     {
+        $response = false;
         if (isset(event::$handlers[$event])) foreach (event::$handlers[$event] as $handler) {
             if ($params == null) $handler(); else $handler($params);
+            $response = true;
         }
+        return $response;
     }
 
     /**

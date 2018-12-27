@@ -102,21 +102,43 @@ class package {
         if ($package) {
           $zip = new ZipArchive;
           $target = 'src/'.$package;
+          $request = 'https://gilacms.com/packages/?package='.$package;
+          $pinfo = json_decode(file_get_contents($request), true)[0];
+          
+          if(!$pinfo) {
+            echo __('_package_not_downloaded');
+            exit;
+          }
           $file = 'https://gilacms.com/assets/packages/'.$package.'.zip';
+
+          if(substr($pinfo['download_url'],0,8)=='https://'){
+            $file = $pinfo['download_url'];
+          }
+
           if(isset($_GET['src'])) $file = $_GET['src'];
+          $tmp_name = $target.'__tmp__';
           $localfile = 'src/'.$package.'.zip';
+
           if (!copy($file, $localfile)) {
             echo __('_package_not_downloaded');
+            exit;
           }
-          if ($zip->open($localfile) === TRUE) {
-            if(!file_exists($target)) mkdir($target);
-            $zip->extractTo($target);
+          if ($zip->open($localfile) === true) {
+            $zip->extractTo($tmp_name);
             $zip->close();
+            if(file_exists($target)) {
+                rename($target, gila::dir('log/previous-packages/'.date("Y-m-d H:i:s").' '.$package));
+            }
+            $unzipped = scandir($tmp_name);
+            if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
+            rename($tmp_name, $target);
+
             $update_file = 'src/'.$package.'/update.php';
             if(file_exists($update_file)) include $update_file;
             unlink('log/load.php');
             unlink($localfile);
             echo 'ok';
+            if(!$_REQUEST['g_response']) echo '<meta http-equiv="refresh" content="2;url='.gila::base_url().'/admin/packages" />';
           } else {
             echo __('_package_not_downloaded');
           }

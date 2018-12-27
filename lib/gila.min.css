@@ -53,9 +53,9 @@ script{display:none!important}
 .bordered{
     border:1px solid var(--main-border-color);
 }
-.g-selected,.g-selected a, g-navbar li.active {
-    background-color:var(--main-primary-color);
-    color:white;
+.g-selected,.g-selected td,.g-selected a, g-navbar li.active {
+    background-color:var(--main-primary-color)!important;
+    color:white!important;
 }
 .caption{background-color:var(--main-bg-color);}
 .curved{

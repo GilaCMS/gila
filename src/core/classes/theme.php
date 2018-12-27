@@ -59,16 +59,40 @@ class theme {
         if ($download) {
             $zip = new ZipArchive;
             $target = 'themes/'.$download;
+            $request = 'https://gilacms.com/packages/themes?theme='.$download;
+            $pinfo = json_decode(file_get_contents($request), true)[0];
+
+            if(!$pinfo) {
+                echo __('_theme_not_downloaded');
+                exit;
+            }
             $file = 'https://gilacms.com/assets/themes/'.$download.'.zip';
+            if(substr($pinfo['download_url'],0,8)=='https://'){
+                $file = $pinfo['download_url'];
+            }
+            if(isset($_GET['src'])) $file = $_GET['src'];
+            $tmp_name = $target.'__tmp__';
             $localfile = 'themes/'.$download.'.zip';
+
             if (!copy($file, $localfile)) {
               echo __('_theme_not_downloaded');
+              exit;
             }
-            if ($zip->open($localfile) === TRUE) {
+            if ($zip->open($localfile) === true) {
               if(!file_exists($target)) mkdir($target);
-              $zip->extractTo($target);
+              $zip->extractTo($tmp_name);
               $zip->close();
+              if(file_exists($target)) {
+                rename($target, gila::dir('log/previous-themes/'.date("Y-m-d H:i:s").' '.$download));
+              }
+              $unzipped = scandir($tmp_name);
+              if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
+              rename($tmp_name, $target);
+
+              unlink('log/load.php');
+              unlink($localfile);
               echo 'ok';
+              if(!$_REQUEST['g_response']) echo '<meta http-equiv="refresh" content="2;url='.gila::base_url().'/admin/themes" />';
             } else {
               echo __('_theme_not_downloaded');
             }

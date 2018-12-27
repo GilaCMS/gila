@@ -127,6 +127,15 @@ class db {
 	  	return $arr;
 	}
 
+	function getAssoc($q, $args = null)
+    {
+        $arr = [];
+        $res = $this->query($q, $args);
+        $this->close();
+        if($res) while($r=mysqli_fetch_assoc($res)) $arr[]=$r;
+        return $arr;
+    }
+
 	function getArray($q)
 	{
 	  	return $this->getList;

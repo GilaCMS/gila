@@ -20,6 +20,7 @@ class gila {
     static $contentField;
     static $contentInit = [];
     static $mt;
+    static $base_url;
 
     function __construct()
     {
@@ -345,8 +346,19 @@ class gila {
         file_put_contents('log/mt.php', '<?php return '.var_export(self::$mt,true).';');
     }
 
+    static function canonical($str) {
+        view::$canonical = gila::config('base').gila::url($str);
+    }
+
     static function base_url() {
-        return gila::config('base');
+        if(!isset(self::$base_url)) {
+            if(isset($_SERVER['REQUEST_URI'])) {
+                self::$base_url = ($_SERVER['REQUEST_SCHEME']??'http').'://'.$_SERVER['HTTP_HOST'].substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'],'/')).'/';
+            } else {
+                self::$base_url = gila::config('base');
+            }
+        }
+        return self::$base_url;
     }
 
     static function url($url)
@@ -358,7 +370,7 @@ class gila {
             if(gila::config('default-controller') == $var[0]) if($var[0]!='admin'){
                 return substr($url, strlen($var[0])+1);
             }
-            return gila::base_url().$url;
+            return $url;
         }
         $burl = explode('?',$url);
         $burl1 = explode('/',$burl[0]);
@@ -369,7 +381,7 @@ class gila {
             if($burl1[$i]!='') $burl[1]='&var'.($i-1).'='.$burl1[$i].$burl[1];
         }
 
-        return gila::base_url().'?c='.$burl1[0].$burl1[1].$burl[1];
+        return '?c='.$burl1[0].$burl1[1].$burl[1];
 
     }
 
@@ -392,14 +404,14 @@ class gila {
             if((gila::config('default-controller') == $c) && ($c != 'admin')) $c=''; else $c.='/';
             if($action!='') $action.='/';
             if(isset($_GET['g_preview_theme'])) $params.='?g_preview_theme='.$_GET['g_preview_theme'];
-            return gila::base_url().$c.$action.$params;
+            return $c.$action.$params;
         }
         else {
             foreach($args as $key=>$value) {
                 $params.='&'.$key.'='.$value;
             }
             if(isset($_GET['g_preview_theme'])) $params.='&g_preview_theme='.$_GET['g_preview_theme'];
-            return gila::base_url()."?c=$c&action=$action$params";
+            return "?c=$c&action=$action$params";
         }
 
     }

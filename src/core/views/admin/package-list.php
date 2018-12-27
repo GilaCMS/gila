@@ -4,13 +4,19 @@ $dir = "src/";
 $table = '';
 $pn = 0;
 
+function dl_btn($param, $class, $text) {
+    return "<a onclick='addon_download(\"$param\")' class='g-btn $class'>$text</a>";
+}
+
 if(package::check4updates()) {
     $upgrated = 0;
     $toupdate = json_decode(file_get_contents('log/packages2update.json'),true);
     foreach($toupdate as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
         if(version_compare($newv, $packages[$newp]->version) == 1) {
             $logo = $dir."$newp/logo.png";
-            $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;".$packages[$newp]->title.' '.__("is_available_on_version")." $newv &nbsp;&nbsp; <a onclick='addon_download(\"{$packages[$newp]->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
+            $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;";
+            $alert .= $packages[$newp]->title.' '.__("is_available_on_version");
+            $alert .= " $newv &nbsp;&nbsp; ".dl_btn($packages[$newp]->package, 'warning', __('Upgrade'));
             view::alert('success',$alert);
         } else {
             $upgrated++;
@@ -77,11 +83,11 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
             $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>"; //&nbsp;".__('Options')."
         }
         if(@$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version) {
-            if(version_compare($p->version,$current_version)>0) $table .= " <a onclick='addon_download(\"{$p->package}\")' class='g-btn warning'>".__('Upgrade')."</a>";
+            if(version_compare($p->version,$current_version)>0) $table .= dl_btn($p->package, 'warning', __('Upgrade'));
         }
         $table .= "<td><a href='fm/?path=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
     } else {
-        $table .= "<a onclick='addon_download(\"{$p->package}\")' class='g-btn success'>".__('Download')."</a><td>";
+        $table .= dl_btn($p->package, 'success', __('Download'));
     }
     $pn++;
 }

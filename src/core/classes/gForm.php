@@ -106,6 +106,13 @@ class gForm
                   <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
                 </span></span></div>';
             },
+            "key"=> function($name,$field,$ov) {
+                $id = 'm_'.str_replace(['[',']'], '_', $name);    
+                return '<div class="g-group">
+                  <span class="btn g-group-item" style="width:28px" onclick="open_select_row(\'#'.$id.'\',\''.$field['table'].'\')"><i class="fa fa-key"></i></span>
+                  <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
+                </span></span></div>';
+            },
             "textarea"=> function($name,$field,$ov) {
                 return '<textarea class="codemirror-js" name="'.$name.'">'.$ov.'</textarea>';
             },

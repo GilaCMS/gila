@@ -11,11 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
 
     $args = [$title,$text,$publish,$slug];
     if ($id == "new") {
-		$db->query("INSERT INTO page(title,page,publish,slug) VALUES(?,?,?,?)",$args);
+		$db->query("INSERT INTO page(title,`content`,publish,slug) VALUES(?,?,?,?)",$args);
         $id = $db->insert_id;
     }
     else {
-        $db->query("UPDATE page SET title=?,page=?,publish=?,slug=? WHERE id=$id",$args);
+        $db->query("UPDATE page SET title=?,`content`=?,publish=?,slug=? WHERE id=$id",$args);
     }
 
     echo "<div class='alert success'>Changes have been saved successfully!</div>";
