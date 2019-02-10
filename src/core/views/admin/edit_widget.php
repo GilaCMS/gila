@@ -4,7 +4,7 @@
 <div class="gm-12" style="display:inline-flex;margin-bottom:8px">
 <div class="gm-6">
     <label class="gm-4">Widget Area</label>
-    <select  id="widget_area" name="widget_area" value="<?=gila::config('default-controller')?>" class="gm-6 g-input">
+    <select  id="widget_area" name="widget_area" class="gm-6 g-input">
         <?php
         foreach (gila::$widget_area as $value) {
             $sel = ($widget->area==$value?'selected':'');
@@ -20,9 +20,19 @@
 </div>
 </div>
 
+<div class="gm-12" style="display:inline-flex;margin-bottom:8px">
 <div class="gm-6">
     <label class="gm-4">Title</label>
     <input id="widget_title" name="widget_title" value="<?=$widget->title?>" class="gm-6 g-input">
+</div>
+
+<div class="gm-6">
+    <label class="gm-4">Active</label>
+    <select id="widget_active" name="widget_active" value="" class="gm-6 g-input">
+        <option value="0" <?=($widget->active?'':'selected')?>><?=__('No')?></option>
+        <option value="1" <?=($widget->active?'selected':'')?>><?=__('Yes')?></option>
+    </select>
+</div>
 </div>
 <hr>
 

@@ -2,7 +2,11 @@
 
 return [
     'text'=>[
-        'title'=>'Number of posts',
-        'default'=>'5'
+        'default'=>'Widget Example'
+    ],
+    'color'=>[
+        'title'=>'Border Color',
+        'type'=>'color',
+        'default'=>'#ff0000'
     ]
 ];

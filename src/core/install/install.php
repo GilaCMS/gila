@@ -26,6 +26,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             'pass' => $db_pass,
             'name' => $db_name
         ];
+        $GLOBALS['config']['permissions'] = [
+          1 => [
+            0 => 'admin',
+            1 => 'admin_user',
+            2 => 'admin_userrole'
+          ]
+        ];
         $GLOBALS['config']['packages'] = ['blog'];
         $GLOBALS['config']['base'] = $_base_url;
         $GLOBALS['config']['theme'] = 'gila-blog';

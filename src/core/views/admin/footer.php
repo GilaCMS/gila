@@ -16,8 +16,10 @@ echo " <a href='https://twitter.com/GilaCms' target='_blank' rel='noopener noref
 
 <script>
 document.getElementById("menu-toggle").addEventListener("click", function(e) {
-    e.preventDefault();
-    document.getElementById("wrapper").classList.toggle('toggled');
+  e.preventDefault();
+  document.getElementById("wrapper").classList.toggle('toggled');
+  value = document.getElementById("wrapper").classList[0]=='toggled'?true:false
+  document.cookie = 'sidebar_toggled='+value+';'
 });
 </script>
 <?php view::scripts()?>

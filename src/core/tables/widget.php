@@ -27,9 +27,9 @@ return [
     'search-boxes'=> ['area','widget'],
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],
-        'widget'=> ['title'=>'Type', 'options'=>$widgets, 'create'=>true],
+        'widget'=> ['title'=>'Type', 'type'=>'select', 'options'=>$widgets, 'create'=>true],
         'title'=> ['title'=>'Title'],
-        'area'=> ['title'=>'Widget Area', 'options'=>$widget_areas],
+        'area'=> ['title'=>'Widget Area', 'type'=>'select', 'options'=>$widget_areas],
         'pos'=> ['title'=>'Position','default'=>1],
         'active'=> [
           'title'=>'Active',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "url"=> [
-        "helptext"=> "Where to send the posted data."
+    "success_msg"=> [
+        "default"=> "The email was send succesfully."
     ]
 ];

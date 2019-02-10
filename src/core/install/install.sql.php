@@ -49,6 +49,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(80) DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
   `pass` varchar(120) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 0,
   `reset_code` varchar(60) DEFAULT NULL,
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -84,22 +85,23 @@ $link->query('CREATE TABLE IF NOT EXISTS `option` (
   PRIMARY KEY (`option`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-$_user=$_POST['adm_user'];
-$_email=$_POST['adm_email'];
-$_pass=password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
-
-$link->query("INSERT INTO user(id,username,email,pass,reset_code) VALUES(1,'$_user','$_email','$_pass','');");
-$link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
-$link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
-VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
-$link->query("INSERT INTO page(id,title,slug,content,publish,updated)
-VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
-
 $link->query('CREATE TABLE IF NOT EXISTS `userrole` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userrole` varchar(80) DEFAULT NULL,
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+
+$_user=$_POST['adm_user'];
+$_email=$_POST['adm_email'];
+$_pass=password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
+
+$link->query("INSERT INTO userrole(id,userrole) VALUES(1,'Admin');");
+$link->query("INSERT INTO user(id,username,email,pass,active,reset_code) VALUES(1,'$_user','$_email','$_pass',1,'');");
+$link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
+$link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
+VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
+$link->query("INSERT INTO page(id,title,slug,content,publish,updated)
+VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP);");
 
 // preinstall widgets on dashboard
 $wtext1 = '{"text":"<ol><li><a href=\\\"admin\\\/content\\\/postcategory\\\">Create Categories<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/page\\\">Edit About Page<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/post\\\">Create Posts<\\\/a><\\\/li><li><a href=\\\"admin\\\/media\\\">Upload Images<\\\/a><\\\/li><li><a href=\\\"admin\\\/settings\\\">Set Basic Settings<\\\/a><\\\/li><\\\/ol>"}';

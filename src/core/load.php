@@ -1,7 +1,7 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.8.4';
+$GLOBALS['version']='1.9.0';
 gila::controllers([
     'admin'=> 'core/controllers/admin',
     'api'=> 'core/controllers/api',
@@ -19,13 +19,13 @@ gila::$amenu = [
         ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin writer'],
         ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin'],
         ['Media','admin/media','icon'=>'image','access'=>'admin'],
-        ['File Manager','fm','icon'=>'folder','access'=>'admin'],
+        ['File Manager','admin/fm','icon'=>'folder','access'=>'admin'],
         ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
         ]],
     'admin'=>['Administration','#','icon'=>'wrench','access'=>'admin','children'=>[
         ['Users','admin/users','icon'=>'users','access'=>'admin'],
         ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin'],
-        ['Widgets','admin/widgets','icon'=>'th-large','access'=>'admin'],
+        ['Widgets','admin/content/widget','icon'=>'th-large','access'=>'admin'],
         ['Packages','admin/packages','icon'=>'dropbox','access'=>'admin'],
         ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
         ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
@@ -41,11 +41,11 @@ gila::widgets([
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
   'category-post'=>'core/widgets/category-post',
+  'post-categories'=>'core/widgets/post-categories',
   'tag'=>'core/widgets/tag',
   'contact-form'=>'core/widgets/contact-form'
 ]);
-gila::$widget_area=[];
-
+gila::$widget_area=['dashboard'];
 
 gila::$privilege['admin']="Administrator access.";
 gila::$privilege['editor']="Can publish or edit posts from other users.";

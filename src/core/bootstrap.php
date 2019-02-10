@@ -31,7 +31,7 @@ else {
 }
 
 $db = new db(gila::config('db'));
-
+$db->log('log');
 
 if ($GLOBALS['config']['env'] == 'dev') {
 	error_reporting(E_ALL);

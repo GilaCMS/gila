@@ -1,9 +1,0 @@
-Options +FollowSymLinks
-RewriteEngine On    # Turn on the rewriting engine
-
-
-RewriteRule    tjs/([^/]+).js/?$    tjs.php?t=$1    [NC,L]
-RewriteRule    tjs/([^/]+)-([0-9]+).js/?$    tjs.php?t=$1    [NC,L]
-
-
-# Options +FollowSymLinks

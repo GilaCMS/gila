@@ -75,7 +75,8 @@ $itemTypes = menuItemTypes::getItemTypes();
           <?php
           foreach($itemTypes as $type=>$item) {
               echo "<span v-if=\"model.type=='$type'\" draggable=\"false\">";
-              echo $item['template'];
+              $template = is_callable($item['template'])? $item['template'](): $item['template'];
+              echo $template;
               echo "</span>";
           }
           ?>

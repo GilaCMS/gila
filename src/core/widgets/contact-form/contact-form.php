@@ -1,16 +1,24 @@
-<form role="form" method="post" action="<?=$widget_data->url?>" class="g-form wrapper g-card">
-    <label>Name</label>
-    <div class="form-group">
-        <input class="form-control fullwidth" placeholder="name" name="name" autofocus required>
-    </div>
-    <label>E-mail</label>
-    <div class="form-group">
-        <input class="form-control fullwidth" placeholder="E-mail" name="email" type="email" required>
-    </div>
-    <label>Subject</label>
-    <div class="form-group ">
-        <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="" required>
-    </div>
-    <?php event::fire('recapcha.form')?>
-    <input type="submit" class="btn btn-primary btn-block" value="Send">
+<form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form wrapper g-card">
+  <input type="hidden" name="wdgtid" value="<?=$widget_data->widget_id?>">
+  <?php
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true) && $_POST['wdgtid']==$widget_data->widget_id) {
+    new sendmail(["post"=>["name","email","subject"]]);
+    view::alert('success', $widget_data->success_msg);
+    view::alerts();
+  }
+  ?>
+  <label><?=_("Name")?></label>
+  <div class="form-group">
+    <input class="form-control fullwidth" name="name" autofocus required>
+  </div>
+  <label><?=_("E-mail")?></label>
+  <div class="form-group">
+    <input class="form-control fullwidth" name="email" type="email" required>
+  </div>
+  <label><?=_("Subject")?></label>
+  <div class="form-group ">
+    <input class="form-control fullwidth" name="subject" required>
+  </div>
+  <?php event::fire('recapcha.form')?>
+  <input type="submit" class="btn btn-primary btn-block">
 </form>

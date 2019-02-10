@@ -18,7 +18,7 @@ class fm extends controller
 
     function indexAction ()
     {
-        view::renderAdmin('admin/fm.php');
+        //view::renderAdmin('admin/fm.php');
     }
 
     function dirAction ()
@@ -65,6 +65,10 @@ class fm extends controller
         mkdir($_POST['path'],0755,true);
     }
 
+    function newfileAction () {
+        file_put_contents($_POST['path'],' ');
+    }
+
     function moveAction () {
         if(!rename($this->path,$_POST['newpath'])){
             ob_clean();
@@ -78,13 +82,6 @@ class fm extends controller
             ob_clean();
             echo "Permission denied.";
         }
-    }
-
-    function editAction () {
-        $file=realpath($_GET['f']);
-
-        view::set('filepath',$file);
-        view::renderAdmin('admin/fm-edit.php');
     }
 
     function efileAction () {
