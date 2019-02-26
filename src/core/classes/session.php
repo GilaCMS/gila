@@ -28,14 +28,14 @@ class session
       if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])){
       session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
       $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-      $gsession = (string)$r[0];
+      $gsession = (string)$usr['id'];
       for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
       user::meta($usr[0],'GSESSIONID',$gsession);
       setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
       }
     } else {
       if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
-      foreach (user::getIdsByMeta('GSESSIONID',$_COOKIE['GSESSIONID']) as $user_id) {
+      foreach (user::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
         $usr = user::getById($user_id);
         if ($usr && $usr['active']==1) {
         session::user($usr['id'], $usr['username'], $usr['email'], 'By cookie');

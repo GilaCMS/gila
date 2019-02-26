@@ -30,7 +30,7 @@ class cm extends controller
   */
   function describeAction ()
   {
-    $pnk = new gTable(router::get("t",1));
+    $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
     $table = $pnk->getTable();
     foreach($table['fields'] as &$field) {
@@ -47,9 +47,9 @@ class cm extends controller
   function listAction ()
   {
     global $db;
-    $pnk = new gTable(router::get("t",1),$this->permissions);
-    $result = [];
+    $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
+    $result = [];
 
     $res = $db->getAssoc("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()};");
 
@@ -63,9 +63,9 @@ class cm extends controller
       $this->group_rowsAction();
       return;
     }
-    $pnk = new gTable(router::get("t",1),$this->permissions);
-    $result = [];
+    $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
+    $result = [];
 
     $fieldlist = isset($_GET['id'])?'edit':'list';
     $result['fields'] = $pnk->fields($fieldlist);
@@ -84,9 +84,9 @@ class cm extends controller
   function csvAction ()
   {
     global $db;
-    $pnk = new gTable(router::get("t",1),$this->permissions);
-    $result = [];
+    $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
+    $result = [];
 
     // filename to be downloaded
     $filename = router::get("t",1). date('Y-m-d') . ".csv";
@@ -109,9 +109,10 @@ class cm extends controller
   function upload_csvAction ()
   {
     global $db;
+    $pnk = new gTable(router::get("t",1), $this->permissions);
+    if(!$pnk->can('create')) return;
     $inserted = 0;
     $updated = 0;
-    $pnk = new gTable(router::get("t",1),$this->permissions);
     $filename = $_FILES["file"]["tmp_name"];    
     $fields = $pnk->fields('edit');
     $quest = "";
@@ -139,10 +140,10 @@ class cm extends controller
   function group_rowsAction ()
   {
     global $db;
-    $pnk = new gTable(router::get("t",1));
+    $pnk = new gTable(router::get("t",1), $this->permissions);
+    if(!$pnk->can('read')) return;
     $result = [];
     $groupby = $_GET['groupby'];
-    if(!$pnk->can('read')) return;
 
     $result['fields'] = $pnk->fields();
     $res = $db->query("SELECT {$pnk->selectsum($groupby)} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby()};");
@@ -160,26 +161,29 @@ class cm extends controller
   function update_rowsAction ()
   {
     global $db;
-    $result = [];
-    $pnk = new gTable(router::get("t",1));
+    $pnk = new gTable(router::get("t",1), $this->permissions);
 
-    if(isset($_GET['id'])&&$_GET['id']!='') {
+    if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
       $id = $_GET['id'];
-    } else if($pnk->can('create')){
+    } else if($pnk->can('create')) {
       $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
       $id = $db->insert_id;
     } else return;
 
-    $pnk->updateMeta($id);
-    $pnk->updateJoins($id);
-
-    $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
-    if($db->error()) echo $db->error();
+    $result = [];
+    $ids = explode(',',$id);
     $result['fields'] = $pnk->fields();
-    $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
 
-    while($r = mysqli_fetch_row($res)) {
-      $result['rows'][] = $r;
+    foreach($ids as $id) {
+      $pnk->updateMeta($id);
+      $pnk->updateJoins($id);
+      $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
+      if($db->error()) @$result['error'][] = $db->error();
+      $gen = $db->gen("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
+
+      foreach($gen as $r) {
+        @$result['rows'][] = $r;
+      }
     }
     gila::setMt($pnk->name());
     echo json_encode($result,JSON_PRETTY_PRINT);
@@ -187,7 +191,7 @@ class cm extends controller
 
   function empty_rowAction ()
   {
-    $pnk = new gTable(router::get("t",1));
+    $pnk = new gTable(router::get("t",1), $this->permissions);
     $result['fields'] = $pnk->fields('create');
     $result['rows'][0] = $pnk->getEmpty();
     echo json_encode($result,JSON_PRETTY_PRINT);
@@ -199,8 +203,10 @@ class cm extends controller
   function insert_rowAction ()
   {
     global $db;
+    $pnk = new gTable(router::get("t",1), $this->permissions);
+    if(!$pnk->can('create')) return;
     $result = [];
-    $pnk = new gTable(router::get("t",1));
+
     if(isset($_GET['id'])) {
       $fields = $pnk->fields('clone');
       $fields =  implode(',', $fields );
@@ -246,7 +252,9 @@ class cm extends controller
   function edit_formAction ()
   {
     global $db;
-    $pnk = new gTable(router::get("t",1));
+    $pnk = new gTable(router::get("t",1), $this->permissions);
+    if(!$pnk->can('update')) return;
+
     $fields = $pnk->fields('edit');
     echo '<form id="edit_item_form">';
     if($id = router::get("id",2)) {

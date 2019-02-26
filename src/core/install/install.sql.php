@@ -81,7 +81,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `widget` (
 
 $link->query('CREATE TABLE IF NOT EXISTS `option` (
   `option` varchar(80) NOT NULL,
-  `value` varchar(80) DEFAULT NULL,
+  `value` text DEFAULT NULL,
   PRIMARY KEY (`option`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
