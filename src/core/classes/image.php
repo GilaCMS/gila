@@ -34,11 +34,7 @@ class image
       $newheight=$src_height;
     }
 
-    if($img_type==null) {
-      if(gila::config('use_webp') && strpos($_SERVER['HTTP_ACCEPT'], 'image/webp' )!==false) {
-        $img_type = 32;
-      } else $img_type = $image[2];
-    }
+    if($img_type==null) $img_type = $image[2];
 
     $tmp = self::create_tmp($newwidth, $newheight, $image[2]);
     $img_src = self::create($src, $image[2]);
@@ -96,12 +92,10 @@ class image
       imagejpeg($tmp, $file);
       break;
     case 3:
-    echo "here";
       imagesavealpha($tmp, true);
       imagepng($tmp, $file, 9);
       break;
     case 32:
-    echo "here";
       imagewebp($tmp, $file);
       break;
     }

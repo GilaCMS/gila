@@ -1,36 +1,36 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.9.0';
+$GLOBALS['version']='1.9.1';
 gila::controllers([
-    'admin'=> 'core/controllers/admin',
-    'api'=> 'core/controllers/api',
-    'cm'=> 'core/controllers/cm',
-    'login'=> 'core/controllers/login',
-    'webhook'=> 'core/controllers/webhook',
-    'fm'=> 'core/controllers/fm',
-    'lzld'=> 'core/controllers/lzld'
+  'admin'=> 'core/controllers/admin',
+  'api'=> 'core/controllers/api',
+  'cm'=> 'core/controllers/cm',
+  'login'=> 'core/controllers/login',
+  'webhook'=> 'core/controllers/webhook',
+  'fm'=> 'core/controllers/fm',
+  'lzld'=> 'core/controllers/lzld'
 ]);
 
 gila::$amenu = [
-    ['Dashboard','admin','icon'=>'dashboard'],
-    'content'=>['Content','#','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
-        ['Pages','admin/content/page','icon'=>'file','access'=>'admin'],
-        ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin writer'],
-        ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin'],
-        ['Media','admin/media','icon'=>'image','access'=>'admin'],
-        ['File Manager','admin/fm','icon'=>'folder','access'=>'admin'],
-        ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
-        ]],
-    'admin'=>['Administration','#','icon'=>'wrench','access'=>'admin','children'=>[
-        ['Users','admin/users','icon'=>'users','access'=>'admin'],
-        ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin'],
-        ['Widgets','admin/content/widget','icon'=>'th-large','access'=>'admin'],
-        ['Packages','admin/packages','icon'=>'dropbox','access'=>'admin'],
-        ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
-        ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
-        ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin'],
-        ]],
+  ['Dashboard','admin','icon'=>'dashboard'],
+  'content'=>['Content','#','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
+    ['Pages','admin/content/page','icon'=>'file','access'=>'admin'],
+    ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin writer'],
+    ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin'],
+    ['Media','admin/media','icon'=>'image','access'=>'admin'],
+    ['File Manager','admin/fm','icon'=>'folder','access'=>'admin'],
+    ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
+  ]],
+  'admin'=>['Administration','#','icon'=>'wrench','access'=>'admin','children'=>[
+    ['Users','admin/users','icon'=>'users','access'=>'admin'],
+    ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin'],
+    ['Widgets','admin/content/widget','icon'=>'th-large','access'=>'admin'],
+    ['Packages','admin/packages','icon'=>'dropbox','access'=>'admin'],
+    ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
+    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
+    ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin'],
+  ]],
 ];
 
 gila::widgets([
@@ -65,4 +65,4 @@ gila::content('widget','core/tables/widget.php');
 gila::addLang('core/lang/');
 
 if(gila::config('use_cdn')==1)
-    include_once 'src/core/assets/cdn_paths.php';
+  include_once 'src/core/assets/cdn_paths.php';
