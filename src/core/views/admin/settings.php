@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
     gila::config('rewrite',$_POST['gila_rewrite']);
     gila::config('user_register',$_POST['gila_user_register']);
     gila::config('use_cdn',$_POST['gila_use_cdn']);
+    gila::config('use_webp',$_POST['gila_webp']);
     gila::updateConfigFile();
     view::alert('success',__('_changes_updated'));
 }
@@ -117,6 +118,9 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 
     <br>
     <?php echo gForm::input('gila_check4updates',["type"=>"switcher"],gila::config('check4updates'),__("Check For Updates")) ?>
+
+    <br>
+    <?php echo gForm::input('gila_webp',["type"=>"switcher"],gila::config('use_webp'),__("Use WEBP")) ?>
 
     <br>
     <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>

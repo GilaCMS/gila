@@ -10,7 +10,7 @@ class image
    * @param $max_height (int) Maximun height in pixels for the new image
    * @return boolean True if the thumbnail is created successfully
    */
-  static function make_thumb ($src,$file,$max_width,$max_height)
+  static function make_thumb ($src,$file,$max_width,$max_height,$img_type=null)
   {
     $src = self::local_path($src);
     if($src == false) return false;
@@ -24,9 +24,9 @@ class image
 
     if($src_width>$max_width) {
       $newheight=($src_height/$src_width)*$newwidth;
-    }else if($src_height>$max_height) {
+    } else if($src_height>$max_height) {
       $newwidth=($src_width/$src_height)*$newheight;
-    } else if($image[2]!=2) {
+    } else if($image[2] != 2) {
       copy($src,$file);
       return true;
     } else {
@@ -34,11 +34,17 @@ class image
       $newheight=$src_height;
     }
 
-    $tmp = self::create_tmp($newwidth,$newheight,$image[2]);
-    $img_src = self::create($src,$image[2]);
+    if($img_type==null) {
+      if(gila::config('use_webp') && strpos($_SERVER['HTTP_ACCEPT'], 'image/webp' )!==false) {
+        $img_type = 32;
+      } else $img_type = $image[2];
+    }
+
+    $tmp = self::create_tmp($newwidth, $newheight, $image[2]);
+    $img_src = self::create($src, $image[2]);
 
     imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
-    self::save($tmp,$file,$image[2]);
+    self::save($tmp, $file, $img_type);
     imagedestroy($img_src);
     imagedestroy($tmp);
     return true;
@@ -55,16 +61,17 @@ class image
       return imageCreateFromGIF($src);
     if($type == 2)
       return imageCreateFromJPEG($src);
-    if($type == 3) {
+    if($type == 3)
       return imageCreateFromPNG($src);
-    }
+    if($type == 32)
+      return imageCreateFromWebp($src);
 
     return imageCreateFromJPEG($src);
   }
 
-  static function create_tmp ($width,$height,$type = 2) {
+  static function create_tmp ($width, $height, $type = 2) {
     $tmp = imagecreatetruecolor($width,$height);
-    if($type == 3) {
+    if($type == 3 || $type == 32) {
       $color = imagecolorallocatealpha($tmp, 0, 0, 0, 127);
       imagecolortransparent($tmp, $color);
       imagefill($tmp, 0, 0, $color);
@@ -78,19 +85,24 @@ class image
    * @param $file (string) Path to the target image
    * @param $type (int) Original image type
    */
-  static function save ($tmp,$file,$type = 2)
+  static function save ($tmp, $file, $type = 2)
   {
     switch($type) {
     case 1:
-      imagegif($tmp,$file);
+      imagegif($tmp, $file);
       break;
     case 2:
       imageinterlace($tmp, 1);
-      imagejpeg($tmp,$file);
+      imagejpeg($tmp, $file);
       break;
     case 3:
-      imagesavealpha($tmp,true);
-      imagepng($tmp,$file,9);
+    echo "here";
+      imagesavealpha($tmp, true);
+      imagepng($tmp, $file, 9);
+      break;
+    case 32:
+    echo "here";
+      imagewebp($tmp, $file);
       break;
     }
 

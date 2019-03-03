@@ -339,13 +339,19 @@ class view
     if(strtolower($pathinfo['extension'])=='svg') return $src;
     $slugify = new Cocur\Slugify\Slugify();
 
-    //$file = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "/", $prefix.$src);
-    $file = 'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$pathinfo['extension'];
+    $ext = $pathinfo['extension'];
+    if(gila::config('use_webp')) {
+      if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp' )!==false) {
+        $ext = 'webp';
+        $type = IMG_WEBP;
+      }
+    }
+    $file = 'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
     $max_width = $max;
     $max_height = $max;
     if($src=='') return false;
     if (!file_exists($file)) {
-      image::make_thumb($src,$file,$max_width,$max_height);
+      image::make_thumb($src, $file, $max_width, $max_height, $type??null);
     }
     event::fire('view::thumb',[$src,$file]);
     return $file;
