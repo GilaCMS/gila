@@ -9,6 +9,7 @@ class gila
   static $controllerClass;
   static $action;
   static $before;
+  static $onaction;
   static $route;
   static $widget;
   static $package;
@@ -100,6 +101,11 @@ class gila
   static function before($c, $action, $fn)
   {
     self::$before[$c][$action][] = $fn;
+  }
+
+  static function onAction($c, $action, $fn)
+  {
+    self::$onaction[$c][$action][] = $fn;
   }
 
   /**

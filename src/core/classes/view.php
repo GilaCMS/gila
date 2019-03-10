@@ -6,7 +6,7 @@ class view
   private static $script = array();
   private static $scriptAsync = array();
   private static $css = array();
-  private static $cssAsync = array();
+  private static $cssAsync = false;
   private static $meta = array();
   private static $alert = array();
   public static $stylesheet = array();
@@ -88,7 +88,11 @@ class view
   {
     if(in_array($css,self::$css)) return;
     self::$css[]=$css;
-    ?><script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script><?php
+    if(!self::$cssAsync) {
+    ?>
+    <script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script>
+    <?php
+    }
     echo '<script>loadCSS("'.$css.'");</script>';
   }
 
@@ -168,17 +172,14 @@ class view
 
   static function renderFile($file, $package = 'core')
   {
-    global $c;
-    foreach (self::$part as $key => $value) {
-      $$key = $value;
+    $controller = router::controller();
+    $action = router::action();
+    if(isset(gila::$onaction[$controller][$action])) {
+      foreach(gila::$onaction[$controller][$action] as $fn) $fn();
     }
-
-    if($file = self::getViewFile($file, $package)) {
-      include $file;
-      return;
+    if(self::includeFile($file, $package)==false) {
+      self::includeFile('404.php');
     }
-
-    self::includeFile('404.php');
   }
 
   static function includeFile($file,$package='core')
@@ -190,7 +191,7 @@ class view
 
     if($file = self::getViewFile($file, $package)) {
       include $file;
-      return;
+      return true;
     }
     return false;
   }

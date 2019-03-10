@@ -11,11 +11,13 @@
 <script src="lib/CodeMirror/javascript.js"></script>
 <?=view::script("lib/tinymce/tinymce.min.js")?>
 
-<?=view::script('src/core/assets/admin/media.js')?>
-<?=view::script('src/core/assets/admin/content.js');?>
-<?=view::script('src/'.$tablesrc.'.js');?>
-<?=view::script('src/core/lang/content/'.gila::config('language').'.js');?>
-<?=view::script('src/core/assets/admin/listcomponent.js');?>
+<?php
+view::script('src/core/assets/admin/media.js');
+view::script('src/core/assets/admin/content.js');
+if(file_exists('src/'.$tablesrc.'.js')) view::script('src/'.$tablesrc.'.js');
+view::script('src/core/lang/content/'.gila::config('language').'.js');
+view::script('src/core/assets/admin/listcomponent.js');
+?>
 
 <style>
 .type-tinymce,.type-textarea{grid-column:1/-1}
@@ -27,6 +29,9 @@ $pnk = new gTable($table);
 $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];
+
+foreach($t['js'] as $js) view::script($js);
+foreach($t['css'] as $css) view::css($css);
 
 $pages_path[] = view::getThemePath().'/pages/';
 if(view::$parent_theme) $pages_path[] = 'themes/'.view::$parent_theme.'/templates/';
