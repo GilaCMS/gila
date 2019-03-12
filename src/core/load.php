@@ -61,7 +61,7 @@ gila::content('widget','core/tables/widget.php');
 /*foreach(gila::$content as $key=>$path) {
     gila::$amenu['content']['children'][$key] = [ucfirst($key), 'admin/content/'.$key, 'access'=>'admin'];
 }*/
-d
+
 gila::addLang('core/lang/');
 
 if(gila::config('use_cdn')==1)
