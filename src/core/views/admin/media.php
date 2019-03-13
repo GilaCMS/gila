@@ -23,9 +23,9 @@ event::fire('admin::media-view', [$path]);
   </span>
   <?php if(gila::hasPrivilege('admin edit_assets')){ ?>
   <button class="btn btn-white" onclick="gallery_create('<?=$path?>')"><i class="fa fa-folder-o"></i></button>
-  <button class="btn btn-white" onclick="gallery_move_selected()"><strong>N</strong></button>
-  <button class="btn btn-white" onclick="gallery_refresh_thumb()"><i class="fa fa-refresh"></i></button>
-  <button class="btn btn-white" onclick="gallery_delete_selected()"><i class="fa fa-trash"></i></button>
+  <button class="btn btn-white" onclick="gallery_move_selected('<?=$path?>')"><strong>N</strong></button>
+  <button class="btn btn-white" onclick="gallery_refresh_thumb('<?=$path?>')"><i class="fa fa-refresh"></i></button>
+  <button class="btn btn-white" onclick="gallery_delete_selected('<?=$path?>')"><i class="fa fa-trash"></i></button>
   <?php } ?>
 </div>
 <input id='selected-path' type='hidden'>

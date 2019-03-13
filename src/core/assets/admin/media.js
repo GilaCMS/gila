@@ -19,40 +19,38 @@ g.click("#fm-goup",function(){
     })
 })
 var media_text = {
-    _gallery:'Media Gallery',
-    _new_filepath: 'Please enter new file path',
-    _file_saved: "File saved successfully",
-    _select_file: 'Please select a media file',
-    _new_folder: "Create new folder",
-    _file_deleted: "File deleted successfully"
+  _gallery:'Media Gallery',
+  _new_filepath: 'Please enter new file path',
+  _file_saved: "File saved successfully",
+  _select_file: 'Please select a media file',
+  _new_folder: "Create new folder",
+  _file_deleted: "File deleted successfully"
 }
 
 function __m(m) {
     if(typeof media_text[m] != 'undefined') return media_text[m]; else return m;
 }
 function gallery_upload_files() {
-    let fm=new FormData() //g.el('upload_files_form')
-    fm.append('uploadfiles', g.el('upload_files').files[0]);
-    fm.append('path', g.el('upload_files').getAttribute('data-path'));
-    fm.append('g_response', 'content');
-    g.loader()
-    g.ajax({url:"admin/media_upload",method:'POST',data:fm, fn: function (gal){
-      g.loader(false)
-      g('#admin-media-div').parent().html(gal)
-    }})
+  let fm=new FormData() //g.el('upload_files_form')
+  fm.append('uploadfiles', g.el('upload_files').files[0]);
+  fm.append('path', g.el('upload_files').getAttribute('data-path'));
+  fm.append('g_response', 'content');
+  g.loader()
+  g.ajax({url:"admin/media_upload",method:'POST',data:fm, fn: function (gal){
+    g.loader(false)
+    g('#admin-media-div').parent().html(gal)
+  }})
 }
-function gallery_move_selected() {
+function gallery_move_selected(path) {
     selected = g('.g-selected').all[0]
     if(selected) {
-        path = selected.getAttribute('data-path')
-        new_path = prompt(__m('_new_filepath'), path);
+        old_path = selected.getAttribute('data-path')
+        new_path = prompt(__m('_new_filepath'), old_path);
         if(new_path != null) {
-            $.post('fm/move', {newpath:new_path, path:path},function(msg){
+            $.post('fm/move', {newpath:new_path, path:old_path},function(msg){
                 if(msg=='') msg=__m('_file_saved')
                 alert(msg);
-                g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
-                    g('#admin-media-div').parent().html(gal)
-                }})
+                update_gallery_body(path);
             })
         }
     } else {
@@ -69,26 +67,25 @@ function gallery_create(path) {
       g.loader()
       if(msg=='') msg="File created successfully"
       alert(msg);
-      g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
-        g('#admin-media-div').parent().html(gal)
-      }})
+      update_gallery_body(path);
+//      g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
+//        g('#admin-media-div').parent().html(gal)
+//      }})
     })
   }
 }
 
-function gallery_delete_selected() {
+function gallery_delete_selected(path) {
   selected = g('.g-selected').all[0]
   if(selected) {
-      path = selected.getAttribute('data-path')
-      if(path != null) if(confirm("Are you sure you want to remove this file?")) {
+      filepath = selected.getAttribute('data-path')
+      if(filepath != null) if(confirm("Are you sure you want to remove this file?")) {
         g.loader()
-        $.post('fm/delete', {path:path},function(msg){
+        $.post('fm/delete', {path:filepath},function(msg){
           g.loader(false)
           if(msg=='') msg=__m('_file_deleted')
           alert(msg);
-          g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
-            g('#admin-media-div').parent().html(gal)
-          }})
+          update_gallery_body(path)
         })
       }
   } else {
@@ -96,19 +93,20 @@ function gallery_delete_selected() {
   }
 }
 
-function gallery_refresh_thumb() {
+function gallery_refresh_thumb(path) {
   selected = g('.g-selected>img').all[0]
   if(selected) {
-    path = selected.getAttribute('src')
-    if(path != null) {
+    filepath = selected.getAttribute('src')
+    if(filepath != null) {
       g.loader()
-      $.post('fm/delete', {path:path},function(msg){
+      $.post('fm/delete', {path:filepath},function(msg){
         g.loader(false)
         if(msg=='') msg="File thumb updated"
         alert(msg);
-        g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
-          g('#admin-media-div').parent().html(gal)
-        }})
+        update_gallery_body(path)
+        //g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
+        //  g('#admin-media-div').parent().html(gal)
+        //}})
       })
     }
   } else {
@@ -143,4 +141,10 @@ function filter_files(query,value) {
   else
    entry.style.display='inline-block';
  })
+}
+
+function update_gallery_body(path) {
+  g.ajax({url:"admin/media?g_response=content&path="+path,method:'GET', fn: function (gal){
+    g('#admin-media-div').parent().html(gal)
+  }})
 }
