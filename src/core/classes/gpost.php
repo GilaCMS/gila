@@ -6,11 +6,11 @@ class gpost
   private $body;
   public $header = '';
 
-  public function __construct($url, $args = [], $name=null) {
+  public function __construct($url, $data = [], $args = [], $name=null) {
 
     $content_type = $args['type'] ?? ($prefix[$name]['type']?? 'json');
     $ignore_error = $args['ignore_errors'] ?? ($prefix[$name]['ignore_errors']?? true);
-    if($_args = @self::$prefix[$name]['content']) $args = array_merge($_args, $args);
+    if($_args = @self::$prefix[$name]['data']) $data = array_merge($_args, $data);
     if($_get = @self::$prefix[$name]['query']) {
       $q = http_build_query($_get);
       $url .= strpos($url,"?")? '&'.$q: '?'.$q;
@@ -20,7 +20,7 @@ class gpost
       'http' => [
         'method'  => 'POST',
         'header'  => "Content-type: application/$content_type\r\n",
-        'content' => ($content_type=='json'? json_encode($args): http_build_query($args)),
+        'content' => ($content_type=='json'? json_encode($data): http_build_query($data)),
         'ignore_errors' => $ignore_error
       ]
     ];
