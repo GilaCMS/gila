@@ -413,7 +413,6 @@ gtableTool['addfrom'] = {
       g.dialog({title:_e("Select"),body:gal,buttons:'select_row_source',type:'modal',class:'large',id:'select_row_dialog'})
       app.table_to_insert = _table.name
     })
-  
   }
 }
 
@@ -431,21 +430,17 @@ g_tinymce_options = {
     'template paste textcolor colorpicker textpattern codesample'
   ],
   toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
-  //templates: <?php echo json_encode((isset($templates)?$templates:[])); ?>,
-  //document_base_url : "<?=gila::config('base')?>",
-  //content_css: <?php echo json_encode(view::$stylesheet); //isset($content_css)?$content_css:[] ?>,
   file_picker_callback: function(cb, value, meta) {
     input_filename = cb;
     open_gallery_post();
   },
-  
- }
+}
 
 // Translation
 function _e(phrase)
 {
-	if(typeof lang_array!='undefined') if(typeof lang_array[phrase]!='undefined') return lang_array[phrase];
-	return phrase;
+  if(typeof lang_array!='undefined') if(typeof lang_array[phrase]!='undefined') return lang_array[phrase];
+  return phrase;
 }
 
 
@@ -494,7 +489,7 @@ function open_select_row(row,table) {
 }
 
 g.click(".select-row",function(){
-   g('.select-row').removeClass('g-selected');
-   g(this).addClass('g-selected');
-   g('#selected-row').attr('value',this.getAttribute('data-id'))
+  g('.select-row').removeClass('g-selected');
+  g(this).addClass('g-selected');
+  g('#selected-row').attr('value',this.getAttribute('data-id'))
 })
