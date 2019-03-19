@@ -262,7 +262,7 @@ Vue.component('g-table', {
       return _e(word)
     },
     totalPages: function(){
-      return Math.ceil(this.data.totalRows/this.table.pagination)
+      return Math.ceil(this.data.totalRows/this.table.pagination)+1
     },
     pagination: function(){
       let a = []

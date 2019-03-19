@@ -42,7 +42,7 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
   // Logo
   if (file_exists($dir."{$p->package}/logo.png")) {
     $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'" />';
-  } else if (isset($p->logo)) {
+  } else if (isset($p->logo) && $p->logo!='') {
     $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
   } else {
     $table .= '<i class="fa fa-3x fa-dropbox"></i>';
@@ -87,7 +87,7 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
     }
     $table .= "<td><a href='admin/fm/?f=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
   } else {
-    $table .= dl_btn($p->package, 'success', __('Download'));
+    $table .= dl_btn($p->package, 'success', __('Download')).'<td>';
   }
   $pn++;
 }
@@ -106,6 +106,10 @@ view::alerts();
     echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
+    <form method="get" class="inline-flex" style="float:right" action="<?=gila::url('admin/packages/new')?>">
+      <input name='search' class="g-input fullwidth" value="<?=(isset($_GET['search'])?$_GET['search']:'')?>">
+      <button class="g-btn g-group-item" onclick='submit'>Search</button>
+    </form>
   </ul>
   <div class="tab-content gs-12 wrapper">
     <div><br><table class='g-table' id="tbl-packages" style="margin-left:5px;display:table"><?=$table?></table></div>

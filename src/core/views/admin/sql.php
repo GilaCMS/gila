@@ -21,7 +21,7 @@ if($res) {
     }
     echo '<tr>';
     if($q=="SHOW TABLES") {
-      foreach($row as $key=>$v) echo '<td><a href="admin/sql?query=SELECT * FROM '.$v.' LIMIT 30;">'.$v.'</a>';
+      foreach($row as $key=>$v) echo '<td><a href="admin/sql?query=SELECT * FROM `'.$v.'` LIMIT 30;">'.$v.'</a>';
     } else{
       foreach($row as $key=>$v) echo '<td>'.$v;
     }

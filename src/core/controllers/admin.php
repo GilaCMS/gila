@@ -96,13 +96,9 @@ class admin extends controller
     $packages = [];
 
     if($tab == 'new') {
-      if(!$contents = file_get_contents('https://gilacms.com/packages/')) {
-        view::alert('error',"Could not connect to packages list. Please try later.");
-      } else $packages = json_decode($contents);
-    } else if($tab == 'search'){
       $search = router::get('search',2);
       if(!$contents = file_get_contents('https://gilacms.com/packages/?search='.$search)) {
-        view::alert('error',"Could not connect to packages list. Please try later.");
+          view::alert('error',"Could not connect to packages list. Please try later.");
       } else $packages = json_decode($contents);
     } else {
       $packages = package::scan();
@@ -118,8 +114,10 @@ class admin extends controller
   function newthemesAction ()
   {
     $packages = [];
-    if(!$contents = file_get_contents('https://gilacms.com/packages/themes')) {
-      view::alert('error',"Could not connect to themes list. Please try later.");
+    $search = router::get('search',2);
+    //if(!$contents = file_get_contents('https://gilacms.com/cm/list/?t=theme&search='.$search)) {
+    if(!$contents = file_get_contents('https://gilacms.com/packages/themes/?search='.$search)) {
+        view::alert('error',"Could not connect to themes list. Please try later.");
     } else {
       $packages = json_decode($contents);
     }
@@ -202,6 +200,7 @@ class admin extends controller
 
   function sqlAction()
   {
+    if(gila::hasPrivilege('admin')==false) return;
     view::set('q', $_REQUEST['query']);
     view::renderAdmin('admin/sql.php');
   }

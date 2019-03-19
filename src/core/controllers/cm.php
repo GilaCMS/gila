@@ -51,8 +51,7 @@ class cm extends controller
     if(!$pnk->can('read')) return;
     $result = [];
 
-    $res = $db->getAssoc("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()};");
-
+    $res = $db->getAssoc("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};");
     echo json_encode($res, JSON_PRETTY_PRINT);
   }
 
