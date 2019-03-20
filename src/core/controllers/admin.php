@@ -116,7 +116,7 @@ class admin extends controller
     $packages = [];
     $search = router::get('search',2);
     //if(!$contents = file_get_contents('https://gilacms.com/cm/list/?t=theme&search='.$search)) {
-    if(!$contents = file_get_contents('https://gilacms.com/packages/themes/?search='.$search)) {
+    if(!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
         view::alert('error',"Could not connect to themes list. Please try later.");
     } else {
       $packages = json_decode($contents);
