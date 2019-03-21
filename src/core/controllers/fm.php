@@ -77,6 +77,29 @@ class fm extends controller
 
     }
 
+    function uploadAction() {
+      if(isset($_FILES['uploadfiles'])) {
+        if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
+          echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
+        }
+        $path = router::post('path','');
+        if($path[0]=='.') $path='assets';
+        $tmp_file = $_FILES['uploadfiles']['tmp_name'];
+        $name = $_FILES['uploadfiles']['name'];
+        if(is_array($tmp_file)) {
+          for($i=0;i<count($tmp_file);$i++) {
+            if(!move_uploaded_file($tmp_file[$i],$path.'/'.$name[$i])) {
+              echo "Error: could not upload file!<br>";
+            }
+          }
+        }else{
+          if(!move_uploaded_file($tmp_file,$path.'/'.$name)) {
+            echo "Error: could not upload file!<br>";
+          }
+        }
+      }
+    }
+
     function deleteAction () {
         if(!unlink($this->path)){
             ob_clean();

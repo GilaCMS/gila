@@ -7,11 +7,14 @@ class gpost
   public $header = '';
 
   public function __construct($url, $data = [], $args = [], $name=null) {
-
+    if(is_string($args)) {
+      $name = $args;
+      $args = [];
+    }
     $content_type = $args['type'] ?? ($prefix[$name]['type']?? 'json');
     $ignore_error = $args['ignore_errors'] ?? ($prefix[$name]['ignore_errors']?? true);
-    if($_args = @self::$prefix[$name]['data']) $data = array_merge($_args, $data);
-    if($_get = @self::$prefix[$name]['query']) {
+    if($_data = @self::$prefix[$name]['data']) $data = array_merge($_data, $data);
+    if($_get = @self::$prefix[$name]['params']) {
       $q = http_build_query($_get);
       $url .= strpos($url,"?")? '&'.$q: '?'.$q;
     }
@@ -25,7 +28,7 @@ class gpost
       ]
     ];
 
-    $context  = stream_context_create($options);
+    $context = stream_context_create($options);
     $this->body = file_get_contents($url, false, $context);
     $this->header = $http_response_header;
   }

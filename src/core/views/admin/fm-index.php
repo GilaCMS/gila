@@ -2,9 +2,9 @@
 <style>
 #main-wrapper{background:none!important;border:none;margin:0}
 .fm_dir{overflow: hidden;padding:10px;line-height:1.5;background:white;}
-.fm_dir a{color:#333}
+.fm_dir a{color:#333; display:inline-flex}
 .fm_dir a:hover{color:#000}
-.fm_dir i{color:grey}
+.f-icon{color:grey}
 .fm_file{overflow: hidden;}
 .g-btn{padding:6px}
 .CodeMirror{height:auto}
@@ -28,8 +28,12 @@ if($dirname=='') $dirname = '.';
 
   <div class="fm_file">
     <div class="wrapper"><strong><?=$filepath?></strong>
-    <?php
+<?php
     if(in_array($ext ,$img_ext)) {
+?>
+      <span class="g-btn" onclick="movefile('<?=$filepath?>')"><?=_('Rename')?></span>
+      <span class="g-btn" onclick="deletefile('<?=$filepath?>')"><?=_('Delete')?></span>
+<?php
       echo '</div><img src="'.$_GET['f'].'" style="max-width:400px">';
     } else if(is_dir($filepath) || $filepath=='') {
       // do nothing
@@ -73,11 +77,13 @@ function updateDir(path) {
       if(file[i].name=='dir') {
         html += '<span onclick="admin/fm?f='+path+'/'+file[i].name+'">'+get_file_icon(file[i].ext)+' '+file[i].name+'</span><br>';
       } else {
-        html += '<a href="admin/fm?f='+path+'/'+file[i].name+'">'+get_file_icon(file[i].ext)+' '+file[i].name+'</a><br>';
+        html += '<a href="admin/fm?f='+path+'/'+file[i].name+'">'+get_file_icon(file[i].ext)+'&nbsp;'+file[i].name+'</a><br>';
       }
     }
     html += ' <span class="g-btn" onclick="createDir()"><?=_("+ Dir")?></span>'
     html += ' <span class="g-btn" onclick="createFile()"><?=_("+ File")?></span>'
+    html += ' <span class="g-btn" onclick="document.getElementById(\'up_files\').click()"><i class="fa fa-upload"></i> <?=_("Upload")?></span>'
+    html += ' <input type="file" id="up_files" onchange="uploadFile()" style="opacity:0;position:absolute">';
     document.getElementsByClassName('fm_dir')[0].innerHTML=html;
   })
 }
@@ -87,7 +93,7 @@ function get_file_icon(ext){
   icon='file';
   if(typeof icons[ext]!='undefined') icon = icons[ext];
   if(ext=='') icon='folder-o';
-  return '<i class="fa fa-'+icon+'"></i>'
+  return '<i class="fa fa-'+icon+' f-icon"></i>'
 }
  
 function createDir() {
@@ -114,6 +120,20 @@ function createFile() {
     })
   }
 }
+function uploadFile() {
+  let fm=new FormData()
+  fm.append('uploadfiles', g.el('up_files').files[0]);
+  fm.append('path', dir_path);
+  fm.append('g_response', 'content');
+  g.loader()
+  g.ajax({url:"fm/upload",method:'POST',data:fm, fn: function (msg){
+    g.loader(false)
+    if(msg=='') msg="File uploaded successfully"
+    alert(msg);
+    location.href = 'admin/fm?f='+dir_path+'/'
+  }})
+}
+
 function savefile(path) {
   g.loader()
   $.post('fm/save', {contents:mirror.getValue(),path:path},function(msg){

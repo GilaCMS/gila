@@ -115,10 +115,10 @@ class gForm
         </span></span></div>';
       },
       "textarea"=> function($name,$field,$ov) {
-        return '<textarea class="codemirror-js" name="'.$name.'">'.$ov.'</textarea>';
+        return '<textarea class="codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "tinymce"=> function($name,$field,$ov) {
-        return '<textarea class="tinymce" id="'.$name.'" name="'.$name.'">'.$ov.'</textarea>';
+        return '<textarea class="tinymce" id="'.$name.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "checkbox"=> function($name,$field,$ov) {
         return self::$input_type['switcher']($name,$field,$ov);

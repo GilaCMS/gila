@@ -14,30 +14,11 @@
   <title>Gila CMS - Administration</title>
 
   <?=view::css('lib/font-awesome/css/font-awesome.min.css')?>
-  <?=view::css('src/core/assets/simple-sidebar.css')?>
   <?=view::css('lib/gila.min.css')?>
-  <style>
-  #sidebar-wrapper .g-nav li{ color:#fff;}
-  #sidebar-wrapper .g-nav li a{ color:#ccc; }
-  #sidebar-wrapper .g-nav li a i{ margin: 0 4px; }
-  #sidebar-wrapper .g-nav li ul li a{ color:#444; }
-  #sidebar-wrapper .g-nav li ul{ box-shadow:1px 1px 4px black;border:0 }
-  #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
-  .g-nav li ul{min-width: 200px}
-  .dark-orange li ul{ background-color: #fff;}
-  .dark-orange li ul li{ color: var(--main-color); }
-  .dark-orange li ul li a{ color: var(--main-color); }
-  .dark-orange li ul li a:hover{ color:white; }
-  .widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); grid-gap: 20px;}
-  .widget-area-dashboard > * {box-shadow: 0px 1px 6px #999; margin:0}
-  .widget-area-dashboard .widget{background:white}
-  .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: var(--main-padding); background: var(--main-bg-color); color: var(--main-color); }
-  </style>
+  <?=view::css('src/core/assets/admin/style.css')?>
 
   <?=view::script("lib/jquery/jquery-3.3.1.min.js")?>
   <?=view::script("lib/gila.min.js")?>
-
-
 </head>
 
 <body style="background:#f5f5f5">

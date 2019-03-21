@@ -53,9 +53,15 @@ view::alerts();
     echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
+    <form method="get" class="inline-flex" style="float:right" action="<?=gila::url('admin/newthemes')?>">
+      <input name='search' class="g-input fullwidth" value="<?=(isset($_GET['search'])?$_GET['search']:'')?>">
+      <button class="g-btn g-group-item" onclick='submit'>Search</button>
+    </form>
   </ul>
   <div class="tab-content gs-12">
-    <div class=''><?=$table?></div>
+    <div>
+      <?=$table?>
+    </div>
   </div>
 </div>
 

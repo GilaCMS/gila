@@ -165,9 +165,11 @@ class view
     self::includeFile('footer.php');
   }
 
-  static function head()
+  static function head($head = true)
   {
+    echo $head?'<head>':'';
     self::includeFile('head.php');
+    echo $head?'</head>':'';
   }
 
   static function renderFile($file, $package = 'core')

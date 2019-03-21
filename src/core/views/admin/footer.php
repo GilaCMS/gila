@@ -19,7 +19,7 @@ document.getElementById("menu-toggle").addEventListener("click", function(e) {
   e.preventDefault();
   document.getElementById("wrapper").classList.toggle('toggled');
   value = document.getElementById("wrapper").classList[0]=='toggled'?true:false
-  document.cookie = 'sidebar_toggled='+value+';'
+  document.cookie = 'sidebar_toggled='+value+';path=/'
 });
 </script>
 <?php view::scripts()?>
