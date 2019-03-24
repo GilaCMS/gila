@@ -13,7 +13,7 @@
 
 <div class="gm-3 sidebar">
   <form method="get" class="inline-flex" action="<?=gila::base_url('blog')?>">
-    <input name='search' class="g-input fullwidth" value="<?=(isset($_GET['search'])?$_GET['search']:'')?>">
+    <input name='search' class="g-input fullwidth" value="">
     <button class="g-btn g-group-item" onclick='submit'>Search</button>
   </form>
   <?php view::widget_area('sidebar'); ?>

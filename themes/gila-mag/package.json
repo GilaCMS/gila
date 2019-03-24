@@ -1,6 +1,6 @@
 {
 	"name":"Gila Mag",
-	"version":"0.3.6",
+	"version":"0.3.7",
 	"description":"A simple blog tempelate.",
 	"url":"gilacms.com",
 	"options":{
@@ -13,5 +13,8 @@
 		},
 		"footer-text":{
 		}
-	}
+  },
+  "require": {
+    "core":"1.9.4"
+  }
 }

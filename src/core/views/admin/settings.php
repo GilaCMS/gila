@@ -1,5 +1,8 @@
 <?php
 $config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email'];
+foreach ($_POST as &$value) {
+  $value = strip_tags($value);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
     $_lc=substr($_POST['gila_base'],-1);

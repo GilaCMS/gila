@@ -13,8 +13,8 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
   <title><?=$title?></title>
   <link><?=gila::config('base')?></link>
 </image>
-<?php foreach($items as $_item) {
-$item = (object)$_item;
+<?php foreach($items as $item) {
+$item = (object)$item;
 ?>
 <item>
 <title><?=$item->title?></title>
