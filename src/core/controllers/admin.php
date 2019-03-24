@@ -92,11 +92,11 @@ class admin extends controller
   function packagesAction ()
   {
     new package();
+    $search = htmlentities(router::get('search',2));
     $tab = router::get('tab',1);
     $packages = [];
 
     if($tab == 'new') {
-      $search = router::get('search',2);
       if(!$contents = file_get_contents('https://gilacms.com/packages/?search='.$search)) {
           view::alert('error',"Could not connect to packages list. Please try later.");
       } else $packages = json_decode($contents);
@@ -108,13 +108,14 @@ class admin extends controller
       $packages = [];
     }
     view::set('packages',$packages);
+    view::set('search',$search);
     view::renderAdmin('admin/package-list.php');
   }
 
   function newthemesAction ()
   {
     $packages = [];
-    $search = router::get('search',2);
+    $search = htmlentities(router::get('search',2));
     //if(!$contents = file_get_contents('https://gilacms.com/cm/list/?t=theme&search='.$search)) {
     if(!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
         view::alert('error',"Could not connect to themes list. Please try later.");
@@ -126,6 +127,7 @@ class admin extends controller
       $packages = [];
     }
     view::set('packages',$packages);
+    view::set('search',$search);
     view::renderAdmin('admin/theme-list.php');
   }
 
@@ -193,7 +195,7 @@ class admin extends controller
 
   function fmAction()
   {
-    $file=realpath($_GET['f']);
+    $file=realpath(htmlentities($_GET['f']));
     view::set('filepath',$file);
     view::renderAdmin('admin/fm-index.php');
   }
@@ -207,12 +209,10 @@ class admin extends controller
   
   function profileAction()
   {
+    gila::addLang('core/lang/myprofile/');
     $user_id = session::key('user_id');
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
-      user::updateName($user_id, strip_tags($_POST['gila_username']));
-      user::meta($user_id, 'twitter_account', strip_tags($_POST['twitter_account']));
-      view::alert('success',__('_changes_updated'));
-    }
+    core\models\profile::postUpdate($user_id);
+    view::set('page_title', __('My Profile'));
     view::set('twitter_account',user::meta($user_id,'twitter_account'));
     view::renderAdmin('admin/myprofile.php');
   }

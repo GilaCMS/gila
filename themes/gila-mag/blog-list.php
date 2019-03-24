@@ -22,15 +22,7 @@
     </div>
     <?php } ?>
 
-    <ul class="g-nav pagination">
-        <?php
-        $totalpages = blog::totalpages();
-        for($pl=0;$pl<$totalpages;$pl++) { ?>
-        <li>
-            <a href="<?=router::url()?>?page=<?=$pl+1?>"><?=($pl+1)?></a>
-        </li>
-        <?php } ?>
-    </ul>
+    <?php view::renderFile('pagination.php')?>
     </div>
     <div class="gm-3 sidebar">
       <form method="get" class="inline-flex" action="<?=gila::base_url('blog')?>">
