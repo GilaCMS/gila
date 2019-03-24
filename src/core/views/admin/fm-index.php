@@ -34,7 +34,7 @@ if($dirname=='') $dirname = '.';
       <span class="g-btn" onclick="movefile('<?=$filepath?>')"><?=_('Rename')?></span>
       <span class="g-btn" onclick="deletefile('<?=$filepath?>')"><?=_('Delete')?></span>
 <?php
-      echo '</div><img src="'.$_GET['f'].'" style="max-width:400px">';
+      echo '</div><img src="'.$filepath.'" style="max-width:400px">';
     } else if(is_dir($filepath) || $filepath=='') {
       // do nothing
     } else {

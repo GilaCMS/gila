@@ -8,10 +8,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
   <meta name="description" content="">
-  <meta name="author" content="">
   <link rel="icon" type="image/png" href="<?=gila::config('admin_logo')?:'assets/gila-logo.png'?>">
 
-  <title>Gila CMS - Administration</title>
+  <title><?=((gila::config('title')??'Gila CMS').' - '.($page_title??__('Administration')))?></title>
 
   <?=view::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=view::css('lib/gila.min.css')?>
@@ -23,7 +22,7 @@
 
 <body style="background:#f5f5f5">
 
-  <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
+  <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'||!isset($_COOKIE['sidebar_toggled'])? ' class="toggled"': '')?>>
 
     <!-- Sidebar g-nav vertical -->
     <div id="sidebar-wrapper">
