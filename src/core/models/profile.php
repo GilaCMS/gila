@@ -17,8 +17,9 @@ class profile
       if(password_verify($_POST['old_pass'], $usr['pass'])) {
         if(strlen($pass) > 4 ) {
           if($pass===$_POST['new_pass2']) {
-            user::updatePassword($user_id, $pass);
-            \view::alert('success',__('_changes_updated'));
+            if(user::updatePassword($user_id, $pass)) {
+              \view::alert('success',__('_changes_updated'));
+            }
           } else {
             \view::alert('alert',__('New passwords do not match'));
           }

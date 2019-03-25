@@ -7,9 +7,11 @@ class user
   static function create($email, $password, $name = '', $active = 1)
   {
     global $db;
-    $pass = \gila::hash($password);
-    $db->query("INSERT INTO user(email,pass,username,active) VALUES(?,?,?);",[$email, $pass, $name, $active]);
-    return $db->insert_id;
+    if( \event::get('validateUserPassword', true, $password)===true) {
+      $pass = \gila::hash($password);
+      $db->query("INSERT INTO user(email,pass,username,active) VALUES(?,?,?);",[$email, $pass, $name, $active]);
+      return $db->insert_id;
+    } else return false;
   }
 
   static function meta($id, $meta, $value = null, $multi = false)
@@ -79,7 +81,9 @@ class user
   static function updatePassword($id,$pass)
   {
     global $db;
-    return $db->query("UPDATE user SET pass=? where id=?;",[\gila::hash($pass),$id]);
+    if( \event::get('validateUserPassword', true, $pass)===true) {
+      return $db->query("UPDATE user SET pass=? where id=?;",[\gila::hash($pass),$id]);
+    } else return false;
   }
 
   static function updateName($id,$name)
