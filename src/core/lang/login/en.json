@@ -24,5 +24,6 @@
     "Confirm Password": "Confirm Password",
     "Change Password": "Change Password",
     "Send Email": "Send Email",
-    "login_error_msg": "Wrong email or password"
+    "login_error_msg": "Wrong email or password",
+    "login_error_msg2": "Too many failed tries made from this IP. For security reasons, please try again in few minutes. If you dont remember your password follow the instructions how to reset it."
 }

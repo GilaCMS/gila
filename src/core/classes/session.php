@@ -5,6 +5,7 @@ use core\models\user;
 class session
 {
   private static $started = false;
+  private static $waitForLogin = 0;
 
   static function start ()
   {
@@ -23,15 +24,20 @@ class session
     self::$started = true;
     session::define(['user_id'=>0]);
 
-    if (isset($_POST['username']) && isset($_POST['password'])) {
+    if (isset($_POST['username']) && isset($_POST['password']) && session::waitForLogin()==0) {
       $usr = user::getByEmail($_POST['username']);
-      if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])){
-      session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
-      $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-      $gsession = (string)$usr['id'];
-      for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
-      user::meta($usr[0],'GSESSIONID',$gsession);
-      setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
+      if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
+        session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
+        $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
+        $gsession = (string)$usr['id'];
+        for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
+        user::meta($usr[0],'GSESSIONID',$gsession);
+        setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
+        unset($_session['failed_attempts']);
+      } else {
+        @$_SESSION['failed_attempts'][] = time();
+        $session_log = new logger('log/login.failed.log');
+        $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
       if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
@@ -128,4 +134,18 @@ class session
     }
     @session_destroy();
   }
+
+  static function waitForLogin()
+  {
+    $wait = 0;
+    if($_SESSION['failed_attempts']) {
+      $attempts = count($_SESSION['failed_attempts']);
+      if($attempts<4) return 0;
+      $lastTime = $_SESSION['failed_attempts'][$attempts-1];
+      $wait = $lastTime-time()+60;
+      $wait = $wait<0? 0: $wait;
+    }
+    return $wait;
+  }
+
 }

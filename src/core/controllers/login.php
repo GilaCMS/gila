@@ -16,7 +16,9 @@ class login extends controller
        echo "<meta http-equiv='refresh' content='0;url=".gila::base_url()."' />";
        exit;
     }
-    if (isset($_POST['username']) && isset($_POST['password'])) {
+    if(session::waitForLogin()>0) {
+      view::alert('error', __('login_error_msg2'));
+    } else if (isset($_POST['username']) && isset($_POST['password'])) {
       view::alert('error', __('login_error_msg'));
     }
     view::includeFile('login.php');
