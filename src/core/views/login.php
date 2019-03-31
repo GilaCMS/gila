@@ -29,11 +29,12 @@ if(session::waitForLogin()==0) { ?>
                     <input class="form-control fullwidth" placeholder="E-mail" name="username" type="email" autofocus>
                 </div>
                 <div class="form-group ">
-                    <input class="form-control fullwidth" placeholder="Password" name="password" type="password" value="">
+                    <input class="form-control fullwidth" placeholder="Password" name="password" id="pass" type="password" value="">
                 </div>
                 <input type="submit" class="btn btn-primary btn-block" value="Login">
                 <?php event::fire('login.btn'); ?>
         </form>
+        <label class="helptext"><input type="checkbox" oninput="if(this.checked) pass.type='text'; else pass.type='password';"> Show password</label>
 <?php } ?>
         <p>
             <a href="login/password_reset"><?=__('forgot_pass')?></a>

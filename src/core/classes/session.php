@@ -33,7 +33,7 @@ class session
         for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
         user::meta($usr[0],'GSESSIONID',$gsession);
         setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
-        unset($_session['failed_attempts']);
+        unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();
         $session_log = new logger('log/login.failed.log');
@@ -132,15 +132,20 @@ class session
       $session_log = new logger('log/sessions.log');
       $session_log->info('End',['user_id'=>self::user_id(), 'email'=>self::key('user_email')]);
     }
+    @$_SESSION = [];
     @session_destroy();
   }
 
   static function waitForLogin()
   {
     $wait = 0;
-    if($_SESSION['failed_attempts']) {
+    session::define(['failed_attempts'=>[]]);
+    if(@$_SESSION['failed_attempts']) {
+      foreach($_SESSION['failed_attempts'] as $key=>$value) {
+        if($value+120<time()) array_splice($_SESSION['failed_attempts'], $key, 1);
+      }
       $attempts = count($_SESSION['failed_attempts']);
-      if($attempts<4) return 0;
+      if($attempts<5) return 0;
       $lastTime = $_SESSION['failed_attempts'][$attempts-1];
       $wait = $lastTime-time()+60;
       $wait = $wait<0? 0: $wait;

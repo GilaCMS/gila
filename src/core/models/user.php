@@ -102,8 +102,8 @@ class user
     $roles = user::metaList($id, 'role');
     $rp = \gila::config('permissions');
     if($id != 0) {
-      foreach($roles as $role) if(isset($rp[$role])) {
-        $response = $rp[$role];
+      foreach($roles as $role) foreach(@$rp[$role] as $perm) {
+        if(!in_array($perm, $response)) $response[] = $perm;
       }
       if(isset($rp['member'])) $response = array_merge($response, $rp['member']);
     } else {
