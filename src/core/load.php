@@ -14,8 +14,8 @@ gila::controllers([
 
 gila::$amenu = [
   ['Dashboard','admin','icon'=>'dashboard'],
-  'content'=>['Content','#','icon'=>'newspaper-o','access'=>'admin editor writer','children'=>[
-    ['Pages','admin/content/page','icon'=>'file','access'=>'admin editor'],
+  'content'=>['Content','#','icon'=>'newspaper-o','access'=>'admin editor','children'=>[
+    ['Pages','admin/content/page','icon'=>'file','access'=>'admin'],
     ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin editor'],
     ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin editor'],
     ['Media','admin/media','icon'=>'image','access'=>'admin editor'],

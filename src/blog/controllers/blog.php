@@ -178,7 +178,10 @@ class Blog extends controller
         view::set('title',$r['title']);
         view::set('text',$r['page']);
         view::render('page.php');
-      } else view::render('404.php');
+      } else {
+        http_response_code(404);
+        view::render('404.php');
+      }
     }
   }
 
