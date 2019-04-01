@@ -245,6 +245,7 @@ class gila
   */
   static function setConfig($key, $value)
   {
+    if(!is_string($key)) return;
     $GLOBALS['config'][$key] = $value;
   }
 

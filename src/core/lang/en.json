@@ -46,5 +46,6 @@
     "Update": "Update",
     "Save": "Save",
     "_not_found": "not found",
-    "_changes_updated": "Changes have been saved successfully!"
+    "_changes_updated": "Changes have been saved successfully!",
+    "Use WEBP":"Use WEBP"
 }

@@ -1,28 +1,28 @@
 <?php
 $config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email'];
-foreach ($_POST as &$value) {
-  $value = strip_tags($value);
+foreach ($_POST as $key=>$value) {
+  $_POST[$key] = strip_tags($value);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='submited'){
-    $_lc=substr($_POST['gila_base'],-1);
-    if($_lc!='/' && $_lc!='\\') $_POST['gila_base'].='/';
-    foreach ($config_list as $key => $value) {
-        gila::setConfig($key,$_POST['gila_'.$key]);
-    }
-    gila::config('theme',$_POST['gila_theme']);
-    gila::config('default-controller',$_POST['gila_dc']);
-    gila::config('timezone',$_POST['gila_timezone']);
-    gila::config('language',$_POST['gila_language']);
-    gila::config('admin_logo',$_POST['gila_admin_logo']);
-    gila::config('env',$_POST['gila_env']);
-    gila::config('check4updates',$_POST['gila_check4updates']);
-    gila::config('rewrite',$_POST['gila_rewrite']);
-    gila::config('user_register',$_POST['gila_user_register']);
-    gila::config('use_cdn',$_POST['gila_use_cdn']);
-    gila::config('use_webp',$_POST['gila_webp']);
-    gila::updateConfigFile();
-    view::alert('success',__('_changes_updated'));
+  $_lc=substr($_POST['gila_base'],-1);
+  if($_lc!='/' && $_lc!='\\') $_POST['gila_base'].='/';
+  foreach ($config_list as $key => $value) {
+    gila::setConfig($key,$_POST['gila_'.$key]);
+  }
+  gila::config('theme',$_POST['gila_theme']);
+  gila::config('default-controller',$_POST['gila_dc']);
+  gila::config('timezone',$_POST['gila_timezone']);
+  gila::config('language',$_POST['gila_language']);
+  gila::config('admin_logo',$_POST['gila_admin_logo']);
+  gila::config('env',$_POST['gila_env']);
+  gila::config('check4updates',$_POST['gila_check4updates']);
+  gila::config('rewrite',$_POST['gila_rewrite']);
+  gila::config('user_register',$_POST['gila_user_register']);
+  gila::config('use_cdn',$_POST['gila_use_cdn']);
+  gila::config('use_webp',$_POST['gila_webp']);
+  gila::updateConfigFile();
+  view::alert('success',__('_changes_updated'));
 }
 view::script('src/core/assets/admin/media.js');
 ?>
