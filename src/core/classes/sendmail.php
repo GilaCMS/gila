@@ -9,8 +9,8 @@ class sendmail
     $subject = $args['subject']?? "Message from ".gila::config('base');
     $headers = $args['headers']?? "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
     $message = $args['message']?? "";
-    if($message=="") foreach($_POST as $key=>$post) {
-      $message .= "$key:\n$post\n\n";
+    if($message=="") foreach(@$args['post'] as $key) {
+      $message .= "$key:\n".htmlentities($_POST[$key])."\n\n";
     }
     mail($email, $subject, $message, $headers);
   }
