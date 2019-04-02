@@ -28,6 +28,7 @@ if(gila::hasPrivilege('admin admin_permissions')) {
 }
 
 $fn = function(){
+  http_response_code(404);
   view::renderFile('404.php');
 };
 

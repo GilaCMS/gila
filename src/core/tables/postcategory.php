@@ -8,8 +8,9 @@ return [
     'id'=>'id',
     'csv'=> ['id','title'],
     'permissions'=>[
-        'create'=>['admin'],
-        'update'=>['admin']
+      'read'=>['admin','editor'],
+      'update'=>['admin','editor'],
+      'create'=>['admin','editor'],
     ],
     'fields'=> [
         'id'=> ['edit'=>false,'create'=>false],

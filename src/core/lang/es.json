@@ -43,5 +43,9 @@
     "New": "Nuevo",
     "Edit": "Editar",
     "Delete": "Borrar",
-    "_changes_updated": "¡Los cambios se han guardado con éxito!"
+    "Update": "Actualizar",
+    "Save": "Guardar",
+    "_not_found": "no encotrado",
+    "_changes_updated": "¡Los cambios se han guardado con éxito!",
+    "Use WEBP":"Usar WEBP"
 }

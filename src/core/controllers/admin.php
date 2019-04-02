@@ -50,6 +50,7 @@ class admin extends controller
   {
     $type = router::get('type',1);
     if(!isset(gila::$content[$type])) {
+      http_response_code(404);
       view::renderAdmin('404.php');
       return;
     }

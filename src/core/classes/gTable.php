@@ -164,6 +164,7 @@ class gTable
   function set(&$fields = null) {
     $set = [];
     if($fields==null) $fields=$_POST;
+    foreach(@$this->table['filters'] as $k=>$f) $fields[$k]=$f;
 
     if(isset($this->table['events'])) foreach($this->table['events'] as $ev) {
       if($ev[0]=="change") {
@@ -246,6 +247,7 @@ class gTable
   function where(&$fields = null) {
     $filters = [];
     if($fields==null) $fields=$_GET;
+    foreach(@$this->table['filters'] as $k=>$f) $fields[$k]=$f;
 
     foreach($fields as $key=>$value) if(!is_numeric($key)){
       if(array_key_exists($key, $this->table['fields'])) {

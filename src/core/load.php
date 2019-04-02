@@ -1,7 +1,7 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.9.4';
+$GLOBALS['version']='1.9.5';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
@@ -14,14 +14,15 @@ gila::controllers([
 
 gila::$amenu = [
   ['Dashboard','admin','icon'=>'dashboard'],
-  'content'=>['Content','#','icon'=>'newspaper-o','access'=>'editor admin','children'=>[
+  'content'=>['Content','#','icon'=>'newspaper-o','access'=>'admin editor','children'=>[
     ['Pages','admin/content/page','icon'=>'file','access'=>'admin'],
-    ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin writer'],
-    ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin'],
-    ['Media','admin/media','icon'=>'image','access'=>'admin'],
+    ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin editor'],
+    ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin editor'],
+    ['Media','admin/media','icon'=>'image','access'=>'admin editor'],
     ['File Manager','admin/fm','icon'=>'folder','access'=>'admin'],
     ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
   ]],
+  ['Posts','admin/content/user-post','icon'=>'pencil','access'=>'writer'],
   'admin'=>['Administration','#','icon'=>'wrench','access'=>'admin','children'=>[
     ['Users','admin/users','icon'=>'users','access'=>'admin'],
     ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin'],
@@ -52,6 +53,7 @@ gila::$privilege['editor']="Can publish or edit posts from other users.";
 gila::$privilege['developer']="Special access in developer tools.";
 
 gila::content('post','core/tables/post.php');
+gila::content('user-post','core/tables/user-post.php');
 gila::content('postcategory','core/tables/postcategory.php');
 gila::content('user','core/tables/user.php');
 gila::content('userrole','core/tables/userrole.php');

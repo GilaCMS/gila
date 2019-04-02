@@ -180,6 +180,7 @@ class view
       foreach(gila::$onaction[$controller][$action] as $fn) $fn();
     }
     if(self::includeFile($file, $package)==false) {
+      http_response_code(404);
       self::includeFile('404.php');
     }
   }
