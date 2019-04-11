@@ -22,8 +22,7 @@
 
 <body style="background:#f5f5f5">
 
-  <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
-
+  <div id="wrapper"<?=(@$_COOKIE['sidebar_toggled']==true? '': ' class="toggled"')?>>
     <!-- Sidebar g-nav vertical -->
     <div id="sidebar-wrapper">
       <div style="position: relative;height: 100px;">
