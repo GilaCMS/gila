@@ -82,7 +82,8 @@ class user
   {
     global $db;
     if( \event::get('validateUserPassword', true, $pass)===true) {
-      return $db->query("UPDATE user SET pass=? where id=?;",[\gila::hash($pass),$id]);
+      $db->query("UPDATE user SET pass=? where id=?;",[\gila::hash($pass),$id]);
+      return true;
     } else return false;
   }
 

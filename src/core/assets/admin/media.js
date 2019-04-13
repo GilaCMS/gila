@@ -64,13 +64,10 @@ function gallery_create(path) {
   if(new_path != null) {
     g.loader()
     $.post('fm/newfolder', {path:path+new_path},function(msg){
-      g.loader()
+      g.loader(false)
       if(msg=='') msg="File created successfully"
       alert(msg);
       update_gallery_body(path);
-//      g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
-//        g('#admin-media-div').parent().html(gal)
-//      }})
     })
   }
 }
@@ -85,7 +82,7 @@ function gallery_delete_selected(path) {
           g.loader(false)
           if(msg=='') msg=__m('_file_deleted')
           alert(msg);
-          update_gallery_body(path)
+          update_gallery_body(path);
         })
       }
   } else {
@@ -103,10 +100,7 @@ function gallery_refresh_thumb(path) {
         g.loader(false)
         if(msg=='') msg="File thumb updated"
         alert(msg);
-        update_gallery_body(path)
-        //g.ajax({url:"admin/media?g_response=content",method:'GET', fn: function (gal){
-        //  g('#admin-media-div').parent().html(gal)
-        //}})
+        update_gallery_body(path);
       })
     }
   } else {

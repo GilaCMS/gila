@@ -39,15 +39,15 @@ class theme
           gila::updateConfigFile();
           package::updateLoadFile();
           usleep(300);
-          view::alert('success','Theme selected');
+          view::alert('success', __('_theme_selected'));
           echo 'ok';
         }
         else {
           echo __('_packages_required').':';
           foreach($require as $k=>$r) echo "<br><a href='admin/addons/search/$k'>$r</a>";
         }
-      } else echo "Theme is already selected";
-    } else echo "Theme is not downloaded";
+      } else echo __("_theme_selected");
+    } else echo __("_theme_not_downloaded");
     exit;
   }
 

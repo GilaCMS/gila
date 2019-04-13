@@ -108,8 +108,7 @@ class router
       if (method_exists($controller,'indexAction')) {
         $action = 'index';
       } else {
-        trigger_error("Controller $controller should have a indexAction() method", E_NOTICE);
-        exit;
+        $action = '';
       }
     }
 

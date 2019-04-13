@@ -63,8 +63,8 @@ class package
             foreach($require_op as $k=>$r) echo "<br>$r</a>";
           }
         }
-      } else echo "Package is already active";
-    } else echo "Package is not downloaded";
+      } else echo __("_package_activated");
+    } else echo __("_package_not_downloaded");
     exit;
   }
 
@@ -90,7 +90,7 @@ class package
       gila::updateConfigFile();
       self::updateLoadFile();
       usleep(100);
-      $alert = gila::alert('success',"Package $key deactivated");
+      $alert = gila::alert('success',__("_package_deactivated"));
       exit;
     }
     exit;

@@ -126,7 +126,7 @@ function addon_activate(p){
   g.ajax('admin/packages?g_response=content&activate='+p,function(x) {
     g.loader(false)
     if(x=='ok')
-      g.alert('<?=__('_package_activated')?>','success','location.reload(true)');
+      g.alert("<?=__('_package_activated')?>",'success','location.reload(true)');
     else
       g.alert(x,'warning');
   }
@@ -135,7 +135,7 @@ function addon_activate(p){
 function addon_deactivate(p){
   g.loader()
   g.ajax('admin/packages?g_response=content&deactivate='+p,function(x){
-    g.alert('<?=__('_package_deactivated')?>','notice','location.reload(true)');
+    g.alert("<?=__('_package_deactivated')?>",'notice','location.reload(true)');
     g.loader(false)
   }
 )};
@@ -145,9 +145,9 @@ function addon_download(p) {
   g.ajax('admin/packages?g_response=content&download='+p,function(x){
     g.loader(false)
     if(x=='ok')
-      g.alert('<?=__('_package_downloaded')?>','success');
+      g.alert("<?=__('_package_downloaded')?>",'success');
     else
-      g.alert('<?=__('_package_not_downloaded')?>','warning');
+      g.alert("<?=__('_package_not_downloaded')?>",'warning');
     this.style.color="#000";
   }
 )};
