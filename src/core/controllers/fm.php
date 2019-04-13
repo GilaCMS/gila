@@ -111,6 +111,9 @@ class fm extends controller
         $fileOut=realpath($_GET['f']);
         $ext = explode('.',$fileOut);
         $ext = $ext[count($ext)-1];
+        if(isset($_GET['thumb'])) {
+          $fileOut = view::thumb($fileOut,'media_thumb/', (int)$_GET['media_thumb']);
+        }
 
         if (file_exists($fileOut)) {
             $imageInfo = getimagesize($fileOut);
@@ -132,6 +135,8 @@ class fm extends controller
 
             header('Content-Length: ' . filesize($fileOut));
             readfile($fileOut);
+        } else {
+          http_response_code(404);
         }
     }
 }
