@@ -66,7 +66,6 @@ class Slugify implements SlugifyInterface
             'polish',
             'german',
             'russian',
-            'romanian'
         ],
     ];
 
@@ -87,39 +86,23 @@ class Slugify implements SlugifyInterface
     /**
      * Returns the slug-version of the string.
      *
-     * @param string            $string  String to slugify
-     * @param string|array|null $options Options
+     * @param string      $string    String to slugify
+     * @param string|null $separator Separator
      *
      * @return string Slugified version of the string
      */
-    public function slugify($string, $options = null)
+    public function slugify($string, $separator = null)
     {
-        // BC: the second argument used to be the separator
-        if (is_string($options)) {
-            $separator            = $options;
-            $options              = [];
-            $options['separator'] = $separator;
-        }
-
-        $options = array_merge($this->options, (array) $options);
-
-        // Add a custom ruleset without touching the default rules
-        if (isset($options['ruleset'])) {
-            $rules = array_merge($this->rules, $this->provider->getRules($options['ruleset']));
-        } else {
-            $rules = $this->rules;
-        }
-
-        $string = strtr($string, $rules);
-        unset($rules);
-
-        if ($options['lowercase']) {
+        $string = strtr($string, $this->rules);
+        if ($this->options['lowercase']) {
             $string = mb_strtolower($string);
         }
+        if ($separator === null) {
+            $separator = $this->options['separator'];
+        }
+        $string = preg_replace($this->options['regexp'], $separator, $string);
 
-        $string = preg_replace($options['regexp'], $options['separator'], $string);
-
-        return trim($string, $options['separator']);
+        return trim($string, $separator);
     }
 
     /**

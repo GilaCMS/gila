@@ -25,12 +25,12 @@ interface SlugifyInterface
     /**
      * Return a URL safe version of a string.
      *
-     * @param string            $string
-     * @param string|array|null $options
+     * @param string      $string
+     * @param string|null $separator
      *
      * @return string
      *
      * @api
      */
-    public function slugify($string, $options = null);
+    public function slugify($string, $separator = null);
 }
