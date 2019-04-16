@@ -18,11 +18,11 @@ spl_autoload_register(function ($class) {
   }
   else if (file_exists('lib/'.$class.'.php')) {
     require_once 'lib/'.$class.'.php';
-  }
-  else if (file_exists('vendor/'.$class.'.php')) {
-    require_once 'vendor/'.$class.'.php';
   } else trigger_error("File $class could not be found with autoload.");
 });
+if(file_exists('vendor/autoload.php')) {
+  $loader = include 'vendor/autoload.php';
+}
 
 if (file_exists('config.php')) {
   require_once 'config.php';
