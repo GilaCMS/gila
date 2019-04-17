@@ -21,6 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true)
   <div class="form-group ">
     <textarea class="form-control fullwidth" name="subject" required></textarea>
   </div>
-  <?php event::fire('recapcha.form')?>
+  <?php event::fire('recaptcha.form')?>
   <input type="submit" class="btn btn-primary btn-block">
 </form>
