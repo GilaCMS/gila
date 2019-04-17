@@ -5,7 +5,28 @@ class gForm
   static private $html;
   static private $input_type;
 
-  function html ($fields, $values = [], $prefix = '', $suffix = '')
+  static function posted($name) {
+    if ($_SERVER['REQUEST_METHOD']=='POST') foreach(session::key('formToken') as $key=>$value){
+      if ($key==$name && $value===$_POST['formToken']) return true;
+    }
+    return false;
+  }
+
+  static function getToken($name) {
+    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
+    $gsession = (string)session::user_id();
+    for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 32)];
+    $tokens = session::key('formToken')??[];
+    $tokens[$name] = $gsession;
+    session::key('formToken', $tokens);
+    return $gsession;
+  }
+
+  static function hiddenInput($name) {
+    return '<input type="hidden" name="formToken" value="'.self::getToken($name).'">';
+  }
+
+  static function html ($fields, $values = [], $prefix = '', $suffix = '')
   {
     self::$html = '';
     self::initInputTypes();
