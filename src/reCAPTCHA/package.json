@@ -1,8 +1,8 @@
 {
 	"name":"reCAPTCHA",
 	"version":"1.0.0",
-	"description":"Adds recaptcha in register form. <br><b>More info to get the site/secret keys: </b>https://developers.google.com/recaptcha/",
-	"url":"gilacms.com",
+	"description":"Adds recaptcha in register form.",
+	"url":"https://gilacms.com/addons/package/recaptcha",
 	"options":{
 		"site_key": {
       "required": true
@@ -10,5 +10,8 @@
 		"secret_key": {
       "required": true
     }
-	}
+  },
+  "require": {
+    "core": "1.10.1"
+  }
 }
