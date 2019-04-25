@@ -1,7 +1,7 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.10.1';
+$GLOBALS['version']='1.10.2';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
@@ -35,9 +35,10 @@ gila::$amenu = [
 ];
 
 gila::widgets([
+  'paragraph'=>'core/widgets/paragraph',
+  'image'=>'core/widgets/image',
   'text'=>'core/widgets/text',
   'social-icons'=>'core/widgets/social-icons',
-  'basic'=>'core/widgets/basic',
   'links'=>'core/widgets/links',
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
@@ -68,3 +69,11 @@ gila::addLang('core/lang/');
 
 if(gila::config('use_cdn')==1)
   include_once 'src/core/assets/cdn_paths.php';
+
+  event::listen('head', function(){
+    ?>
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+      <?php
+    });
