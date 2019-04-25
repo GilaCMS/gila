@@ -1,6 +1,7 @@
 <?php
-$path = router::request('path','assets');
-if($path[0]=='.') $path='assets';
+$path = router::request('path', session::key('media_path')??'assets');
+if($path[0]=='.') $path = 'assets';
+session::key('media_path', $path);
 $files = scandir($path);
 $disabled = ($path=='assets')?'disabled':'';
 $path_array = explode('/',$path);
