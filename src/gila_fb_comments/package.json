@@ -1,17 +1,18 @@
 {
 	"name":"Facebook Comments Plugin",
-	"version":"1.0.0",
+	"version":"1.0.1",
 	"description":"Adds a facebook comment plugin below every post. <br><b>Note: </b>This plugin will not work if gila is installed on local server.",
 	"url":"gilacms.com",
 	"options":{
 		"language":{
 			"type":"select",
 			"options":{
-				"en_US":"English","es_ES":"Spanish","gr_GR":"Greek"
+				"en_US":"English","es_ES":"Spanish","fr_FR":"French","gr_GR":"Greek","et_EE":"Estonian"
 			}
 		},
 		"appID":{
-			"title":"App ID"
+			"title":"App ID",
+			"required":true
 		}
 	}
 }
