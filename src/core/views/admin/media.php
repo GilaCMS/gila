@@ -30,7 +30,7 @@ event::fire('admin::media-view', [$path]);
   <?php } ?>
 </div>
 <input id='selected-path' type='hidden'>
-<div class='g-gal wrapper gap-8px' style='background:white;overflow-y: scroll;max-height: 400px;'>
+<div class='g-gal wrapper gap-8px' style='background:white;'>
 
 <?php
 foreach($files as $file) if($file[0]!='.') {

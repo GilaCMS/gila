@@ -68,13 +68,7 @@ gila::content('widget','core/tables/widget.php');
 
 gila::addLang('core/lang/');
 
-if(gila::config('use_cdn')==1)
+if(gila::config('use_cdn')==1) {
+  
+}
   include_once 'src/core/assets/cdn_paths.php';
-
-  event::listen('head', function(){
-    ?>
-    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-      <?php
-    });

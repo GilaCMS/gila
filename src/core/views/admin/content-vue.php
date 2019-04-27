@@ -20,6 +20,7 @@ view::script('src/core/assets/admin/listcomponent.js');
 ?>
 
 <style>
+.type-textarea label{width:100%}
 .type-tinymce,.type-textarea{grid-column:1/-1}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
 </style>

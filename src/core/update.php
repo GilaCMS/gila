@@ -14,7 +14,6 @@ if(version_compare($GLOBALS['version'],'1.8.0') < 0) {
 
 if(version_compare($GLOBALS['version'],'1.9.0') < 0) {
   global $db;
-  file_put_contents("lib/gila.min.css",file_get_contents("src/core/lib/gila.min.css"));
   $db->query("ALTER TABLE `user` ADD COLUMN `active` tinyint(1) DEFAULT 1;");
   $db->query("ALTER TABLE `option` CHANGE COLUMN `value` `value` text;");
   $db->query("CREATE TABLE IF NOT EXISTS `userrole` (
@@ -24,6 +23,6 @@ if(version_compare($GLOBALS['version'],'1.9.0') < 0) {
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 }
 
-if(version_compare($GLOBALS['version'],'1.10.0') < 0) {
-  file_put_contents("lib/gila.min.js",file_get_contents("src/core/lib/gila.min.js"));
-}
+// always update them
+file_put_contents("lib/gila.min.css",file_get_contents("src/core/lib/gila.min.css"));
+file_put_contents("lib/gila.min.js",file_get_contents("src/core/lib/gila.min.js"));
