@@ -1,7 +1,7 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.10.0';
+$GLOBALS['version']='1.10.2';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
@@ -35,9 +35,11 @@ gila::$amenu = [
 ];
 
 gila::widgets([
+  'paragraph'=>'core/widgets/paragraph',
+  'image'=>'core/widgets/image',
+  'gallery'=>'core/widgets/gallery',
   'text'=>'core/widgets/text',
   'social-icons'=>'core/widgets/social-icons',
-  'basic'=>'core/widgets/basic',
   'links'=>'core/widgets/links',
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
@@ -66,5 +68,7 @@ gila::content('widget','core/tables/widget.php');
 
 gila::addLang('core/lang/');
 
-if(gila::config('use_cdn')==1)
+if(gila::config('use_cdn')==1) {
+  
+}
   include_once 'src/core/assets/cdn_paths.php';

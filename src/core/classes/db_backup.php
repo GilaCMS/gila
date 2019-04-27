@@ -117,7 +117,12 @@ class db_backup
   * @param $file (string) Relative path of the file
   */
   function download($file) {
-    header("Content-Disposition:attachment;filename='$file'");
-    readfile($file);
+    $file = basename($file);
+    if(file_exists($this->dir.$file)) {
+      header("Content-Disposition:attachment;filename='$file'");
+      readfile($this->dir.$file);
+    } else {
+      http_response_code(404);
+    }
   }
 }

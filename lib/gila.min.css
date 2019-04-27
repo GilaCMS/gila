@@ -397,14 +397,15 @@ input:focus + .helptext{
 
 .gila-popup{
     position:fixed;
-    padding:12px;
     top:10%;
     margin-left:20%;
     width:60%;
     max-height:90%;
     border:1px solid var(--main-border-color);
     z-index:99999;
-    overflow:auto;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 0;
 }
 .gila-darkscreen .gila-popup{
     position:absolute;
@@ -427,14 +428,16 @@ input:focus + .helptext{
 }
 .gila-popup>.closebtn{
     font-size:1.5em;
+    position: absolute;
+    right: 0;
 }
 
 .gila-popup>*{
     padding:12px;
-    margin:-12px;
+    margin:0;
 }
 .gila-popup>.body{
-    margin:12px -12px;
+    overflow:auto;
 }
 .gila-popup.curved>.title{
     border-top-left-radius:var(--main-radius);
@@ -445,7 +448,7 @@ input:focus + .helptext{
 }
 
 
-@-webkit-keyframes gila-popup-animation,{
+@-webkit-keyframes gila-popup-animation{
     from{top:0%;opacity:0}
     to{top:10%;opacity:1}
 }
@@ -461,6 +464,7 @@ input:focus + .helptext{
         margin-left:10%;
         width:80%;
         min-height:40px;
+        max-height:80%;
     }
 }
 
@@ -763,6 +767,7 @@ input:focus + .helptext{
 }
 .g-gal img{
     min-width: 60%;
+    max-height:160px;
 }
 .g-gal>*{
     text-align:center;

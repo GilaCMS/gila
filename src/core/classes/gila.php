@@ -352,7 +352,7 @@ class gila
     view::$canonical = gila::config('base').gila::url($str);
   }
 
-  static function base_url() {
+  static function base_url($str = null) {
     if(!isset(self::$base_url)) {
       if(isset($_SERVER['REQUEST_URI'])) {
         $scheme = $_SERVER['REQUEST_SCHEME']??(substr(gila::config('base'),0,5)=='https'?'https':'http');
@@ -361,6 +361,9 @@ class gila
       } else {
         self::$base_url = gila::config('base');
       }
+    }
+    if($str!==null) {
+      return self::$base_url.gila::url($str);
     }
     return self::$base_url;
   }

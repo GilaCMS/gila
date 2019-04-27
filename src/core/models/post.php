@@ -5,21 +5,31 @@ class post
 {
   static function getById($id)
   {
-    global $db;
-    $ql="SELECT id,description,title,post,publish,slug,
-      (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
-      (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
-      FROM post WHERE id=?";
-    $res = $db->query($ql,[$id]);
-    if($res) return $r = mysqli_fetch_array($res);
-    return false;
+    return self::getByIdSlug($id);
   }
 
   static function getByIdSlug($id)
   {
     global $db;
-    $res = $db->query("SELECT id,title,description,post,updated,user_id,slug FROM post WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
-    if($res) return mysqli_fetch_array($res);
+    $ql="SELECT id,description,title,post,publish,slug,
+      (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
+      (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
+      FROM post WHERE (id=? OR slug=?)";
+    $res = $db->query($ql,[$id,$id]);
+    if($res) {
+      $row = mysqli_fetch_array($res);
+      if($blocks = $db->value("SELECT blocks FROM post WHERE (id=? OR slug=?);", [$id,$id])) {
+        $blocks = json_decode($blocks);
+        ob_start();
+        foreach($blocks as $b) {
+          \view::widget_body($b->_type, $b);
+        }
+        $out = ob_get_contents();
+        ob_end_clean();
+        $row['post'] .= $out;
+      }
+      return $row;
+    }
     return false;
   }
 
@@ -92,7 +102,8 @@ class post
 
     $res = $db->query("SELECT id,description,title,slug,SUBSTRING(post,1,300) as post,
       (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
-      FROM post WHERE match(title,post) AGAINST('$s' IN NATURAL LANGUAGE MODE) ORDER BY id DESC");
+      FROM post WHERE publish=1
+      AND match(title,post) AGAINST(? IN NATURAL LANGUAGE MODE) ORDER BY id DESC", $s);
     if ($res) while ($r = mysqli_fetch_array($res)) {
       yield $r;
     }

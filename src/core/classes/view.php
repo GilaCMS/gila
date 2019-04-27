@@ -303,8 +303,13 @@ class view
       @$widget_file = "src/".gila::$widget[$type]."/$type.php";
       if(!isset(gila::$widget[$type])) echo "Widget <b>".$type."</b> is not found";
     }
-
+    if(is_object($widget_data)) $data = (array)$widget_data; else $data = &$widget_data;
     @include $widget_file;
+  }
+
+  static function block ($path, $widget_data) {
+    $block_file = "src/$path/text.php";
+    @include $block_file;
   }
 
   /**

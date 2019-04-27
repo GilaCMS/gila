@@ -29,11 +29,12 @@ $stacked_file = 'tmp/stacked-wdgt'.$widget_data->widget_id.'.jpg';
 $posts = [];
 $img = [];
 $widget_data->n_post = @$widget_data->n_post?:5;
-$widget_data->category = @$widget_data->category?:1;
+$widget_data->category = @$widget_data->category?:null;
 
-foreach (core\models\post::getLatest($widget_data->n_post) as $r ) {
-	$posts[] = $r;
-	$img[]=$r['img'];
+foreach (core\models\post::getPosts(
+    ['posts'=>$widget_data->n_post, 'category'=>$widget_data->category]) as $r ) {
+  $posts[] = $r;
+  $img[]=$r['img'];
 }
 list($stacked_file,$stacked) = view::thumb_stack($img, $stacked_file,80,80);
 
