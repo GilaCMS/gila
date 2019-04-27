@@ -26,3 +26,4 @@ if(version_compare($GLOBALS['version'],'1.9.0') < 0) {
 // always update them
 file_put_contents("lib/gila.min.css",file_get_contents("src/core/lib/gila.min.css"));
 file_put_contents("lib/gila.min.js",file_get_contents("src/core/lib/gila.min.js"));
+
