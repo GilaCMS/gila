@@ -9,16 +9,19 @@ class db_backup
   {
     $this->dir = gila::dir('log/db-backups/');
 
-    if (isset($_POST['backup'])) {
+    if (gForm::posted('db_backup')) {
       $this->backup_tables();
     }
-    if (isset($_GET['source'])) $this->source($_GET['source']);
-    if (isset($_GET['download'])) {
-      $this->download($_GET['download']);
-      return;
+    if (isset($_GET['csrf']) && gForm::verifyToken('db_backup2', $_GET['csrf'])) {
+      if (isset($_GET['source'])) $this->source($_GET['source']);
+      if (isset($_GET['download'])) {
+        $this->download($_GET['download']);
+        return;
+      }
     }
 
     view::set('dir',$this->dir);
+    view::set('csrf',gForm::getToken('db_backup2'));
     view::renderAdmin('admin/db_backup.php');
   }
 
@@ -109,7 +112,7 @@ class db_backup
   function source($file) {
     global $db;
     $db->multi_query(file_get_contents($file));
-    echo "Backup loaded successfully!";
+    view::alert('success',"Backup loaded successfully!");
   }
 
   /**

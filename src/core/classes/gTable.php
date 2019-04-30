@@ -131,12 +131,15 @@ class gTable
 
   function startIndex() {
     $ppp = @$this->table['pagination']?:25;
-    return isset($_GET['page'])? ($_GET['page']-1)*$ppp :0;
+    if($page=router::request('page')) {
+      return ($page-1)*$ppp;
+    }
+    return 0;
   }
 
   function orderby($id=null, $v='desc') {
-    if(isset($_GET['orderby'])) {
-      $o = explode('_',$_GET['orderby']);
+    if($orderby = router::request('orderby')) {
+      $o = explode('_',$orderby);
       if(array_key_exists($o[0], $this->table['fields'])) {
         $id=$o[0];
         if(isset($o[1])) {

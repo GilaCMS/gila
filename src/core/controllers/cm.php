@@ -241,7 +241,7 @@ class cm extends controller
     global $db;
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if($pnk->can('delete')) {
-      $res = $db->query("DELETE FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$_POST['id']);
+      $res = $db->query("DELETE FROM {$pnk->name()} WHERE {$pnk->id()}=?;", $_POST['id']);
       echo $_POST['id'];
     } else {
       echo "User cannot delete";

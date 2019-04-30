@@ -12,6 +12,13 @@ class gForm
     return false;
   }
 
+  static function verifyToken($name, $check) {
+    foreach(session::key('formToken') as $key=>$value) {
+      if ($key==$name && $value===$check) return true;
+    }
+    return false;
+  }
+
   static function getToken($name) {
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
     $gsession = (string)session::user_id();
@@ -91,10 +98,10 @@ class gForm
         return $html . '</select>';
       },
       "meta"=> function($name,$field,$ov) {
-        if(is_string($ov)) $ov = explode(',',$ov);
         if(@$field['meta-csv']==true) {
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.$ov.'"/>';
         }
+        if(is_string($ov)) $ov = explode(',',$ov);
         $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
         foreach($field['options'] as $value=>$name) {
           $html .= '<option value="'.$value.'"'.(in_array($value,$ov)?' selected':'').'>'.$name.'</option>';
