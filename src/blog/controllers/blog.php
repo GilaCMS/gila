@@ -134,7 +134,7 @@ class Blog extends controller
   {
     global $db;
 
-    if ($r = post::getByIdSlug($id)) {
+    if (($r = post::getByIdSlug($id)) && ($r['publish']==1)) {
       $id = $r['id'];
       $user_id = $r['user_id'];
       view::set('author_id',$user_id);
@@ -174,7 +174,7 @@ class Blog extends controller
       view::render('single-post.php');
     }
     else {
-      if ($r = page::getByIdSlug($id)) {
+      if (($r = page::getByIdSlug($id)) && ($r['publish']==1)) {
         view::set('title',$r['title']);
         view::set('text',$r['page']);
         view::render('page.php');

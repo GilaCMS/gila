@@ -56,6 +56,7 @@ if($dirname=='') $dirname = '.';
     requiredRes = new Array()
     var myCodeMirror = new Array();
     var saveFilePath;
+    var csrfToken = '<?=gForm::getToken("fm-save")?>';
 
     mirror = CodeMirror.fromTextArea(document.getElementById('textarea'),{
         lineNumbers:true
@@ -64,7 +65,7 @@ if($dirname=='') $dirname = '.';
     <?php
     }
     ?>
-    
+
 <script>
 updateDir("<?=$dirname?>");
 
@@ -136,7 +137,7 @@ function uploadFile() {
 
 function savefile(path) {
   g.loader()
-  $.post('fm/save', {contents:mirror.getValue(),path:path},function(msg){
+  $.post('fm/save', {contents:mirror.getValue(),path:path, formToken:csrfToken},function(msg){
     g.loader(false)
     if(msg=='') msg="File saved successfully"
     alert(msg);
@@ -146,7 +147,7 @@ function movefile(path) {
   new_path = prompt("Please enter new file path", path);
   if(new_path != null) {
     g.loader()
-    $.post('fm/move', {newpath:new_path, path:path},function(msg){
+    $.post('fm/move', {newpath:new_path, path:path, formToken:csrfToken},function(msg){
       g.loader(false)
       if(msg=='') msg="File saved successfully"
       alert(msg);
@@ -157,7 +158,7 @@ function movefile(path) {
 function deletefile(path) {
   if(confirm("Are you sure you want to remove this file?")) {
     g.loader()
-    $.post('fm/delete', {path:path},function(msg){
+    $.post('fm/delete', {path:path, formToken:csrfToken},function(msg){
       g.loader(false)
       location.href = 'admin/fm?f='+dir_path
     })

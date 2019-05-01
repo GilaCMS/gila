@@ -54,7 +54,7 @@ view::alerts();
   }
   ?>
     <form method="get" class="inline-flex" style="float:right" action="<?=gila::url('admin/newthemes')?>">
-      <input name='search' class="g-input fullwidth" value="<?=(isset($_GET['search'])?$_GET['search']:'')?>">
+      <input name='search' class="g-input fullwidth" value="<?=($search??'')?>">
       <button class="g-btn g-group-item" onclick='submit'>Search</button>
     </form>
   </ul>

@@ -56,7 +56,7 @@ event::fire('load');
 $g = new gila();
 
 $theme = $GLOBALS['config']['theme'];
-if(isset($_GET['g_preview_theme'])) $theme=$_GET['g_preview_theme'];
+if(isset($_GET['g_preview_theme'])) $theme=router::request('g_preview_theme');
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
 
 new router();

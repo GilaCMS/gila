@@ -30,11 +30,11 @@ class package
         $require = [];
         $require_op = [];
         if(isset($pac['require'])) foreach ($pac['require'] as $key => $value) {
-          if(!in_array($key, gila::packages())&&($key!='core'))
-            $require[$key]=$key.' v'.$value;
-          else {
+          if(!in_array($key, gila::packages())&&($key!='core')) {
+            if(!file_exists('vendor/'.$key)) $require[$key]=$value;
+          } else {
             $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'),true);
-            if(version_compare($pacx['version'], $value) < 0) $require[$key]=$key.' v'.$value;
+            if(version_compare($pacx['version'], $value) < 0) $require[$key]=$value;
           }
         }
         if(isset($pac['options'])) {
@@ -56,11 +56,14 @@ class package
         else {
           if($require!=[]) {
             echo __('_packages_required').':';
-            foreach($require as $k=>$r) echo "<br><a href='admin/packages/search/$k'>$r</a>";
+            foreach($require as $k=>$r) {
+              if(strpos($k, '/')) {
+                echo "<br><a href='https://gilacms.com/blog/36' target='_blank'>$k $r</a>";
+              } else echo "<br><a href='admin/packages/new?search=$k' target='_blank'>$k v$r</a>";
+            }
           }
           if($require_op!=[]) {
-            echo __('_options_required').':';
-            foreach($require_op as $k=>$r) echo "<br>$r</a>";
+            echo '<br>'.__('_options_required').': '.implode(', ', $require_op);
           }
         }
       } else echo __("_package_activated");

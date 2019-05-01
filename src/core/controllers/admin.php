@@ -65,7 +65,7 @@ class admin extends controller
   function update_widgetAction ()
   {
     global $db;
-    $widget_data = isset($_POST['option'])?json_encode($_POST['option']):'[]';
+    $widget_data = json_encode(router::request('option',[]));
 
     $db->query("UPDATE widget SET data=?,area=?,pos=?,title=?,active=? WHERE id=?",
       [$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_title'],$_POST['widget_active'],$_POST['widget_id']]);
@@ -204,7 +204,7 @@ class admin extends controller
   function sqlAction()
   {
     if(gila::hasPrivilege('admin')==false) return;
-    view::set('q', $_REQUEST['query']);
+    if($q=router::request('query')) view::set('q', $q);
     view::renderAdmin('admin/sql.php');
   }
   
@@ -233,10 +233,10 @@ class admin extends controller
       $file = $folder.$menu.'.json';
       if($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(isset($_POST['menu'])) {
-        file_put_contents($file,$_POST['menu']);
-        echo json_encode(["msg"=>__('_changes_updated')]);
-        exit;
-      }
+          file_put_contents($file,strip_tags($_POST['menu']));
+          echo json_encode(["msg"=>__('_changes_updated')]);
+          exit;
+        }
       } else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
         unlink($file);
         echo json_encode(["msg"=>__('_changes_updated')]);

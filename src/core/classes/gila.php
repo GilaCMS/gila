@@ -410,14 +410,14 @@ class gila
 
       if((gila::config('default-controller') == $c) && ($c != 'admin')) $c=''; else $c.='/';
       if($action!='') $action.='/';
-      if(isset($_GET['g_preview_theme'])) $params.='?g_preview_theme='.$_GET['g_preview_theme'];
+      if($gpt = router::request('g_preview_theme')) $params.='?g_preview_theme='.$gpt;
       return $c.$action.$params;
     }
     else {
       foreach($args as $key=>$value) {
         $params.='&'.$key.'='.$value;
       }
-      if(isset($_GET['g_preview_theme'])) $params.='&g_preview_theme='.$_GET['g_preview_theme'];
+      if($gpt = router::request('g_preview_theme')) $params.='&g_preview_theme='.$gpt;
       return "?c=$c&action=$action$params";
     }
 

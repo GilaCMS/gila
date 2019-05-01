@@ -153,7 +153,8 @@ class router
 
   static function request ($key,$default=null)
   {
-    return isset($_REQUEST[$key])?$_REQUEST[$key]:$default;
+    $r = $_REQUEST[$key]??$default;
+    return strip_tags($r);
   }
 
   static function url ()
