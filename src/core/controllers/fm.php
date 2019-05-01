@@ -71,7 +71,6 @@ class fm extends controller
   }
 
   function moveAction () {
-    if(!gForm::posted('fm-save')) return;
     if(!rename($this->path,$_POST['newpath'])){
       ob_clean();
       echo "Permission denied.";
@@ -103,7 +102,6 @@ class fm extends controller
   }
 
   function deleteAction () {
-    if(!gForm::posted('fm-save')) return;
     if(!unlink($this->path)){
       ob_clean();
       echo "Permission denied.";
