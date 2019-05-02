@@ -18,6 +18,7 @@ class gpost
       $q = http_build_query($_get);
       $url .= strpos($url,"?")? '&'.$q: '?'.$q;
     }
+    if($_url = @$data['url']) $url = $_url.$url;
 
     $options = [
       'http' => [

@@ -197,8 +197,11 @@ class gila
   */
   static function amenu($key,$item=[])
   {
-    if(!is_array($key)) $key[$key]=$item;
-    foreach ($key as $k=>$i) {
+    if(!is_array($key)) {
+      $list = [];
+      $list[$key] = $item;
+    } else $list = $key;
+    foreach ($list as $k=>$i) {
       if(is_numeric($k)) {
         gila::$amenu[]=$i; // depreciated
       } else {
