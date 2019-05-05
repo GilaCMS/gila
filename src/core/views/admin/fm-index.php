@@ -56,7 +56,7 @@ if($dirname=='') $dirname = '.';
     requiredRes = new Array()
     var myCodeMirror = new Array();
     var saveFilePath;
-    var csrfToken = '<?=gForm::getToken("fm-save")?>';
+    var csrfToken = '<?=gForm::getToken()?>';
 
     mirror = CodeMirror.fromTextArea(document.getElementById('textarea'),{
         lineNumbers:true

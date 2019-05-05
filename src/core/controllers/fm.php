@@ -55,7 +55,7 @@ class fm extends controller
   }
 
   function saveAction () {
-    if(!gForm::posted('fm-save')) return;
+    if(!gForm::posted()) return;
     if(!file_put_contents($this->path, $_POST['contents'])) {
       ob_clean();
       echo "Permission denied.";

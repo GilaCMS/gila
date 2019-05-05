@@ -1,13 +1,12 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && event::get('recaptcha',true)
-    && $_POST['wdgtid']==$widget_data->widget_id) {
+if (gForm::posted('contact-form'.$widget_data->widget_id) && event::get('recaptcha',true)) {
   new sendmail(["post"=>["name","email","subject"]]);
   view::alert('success', $widget_data->success_msg);
 }
 ?>
 
 <form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form wrapper g-card">
-  <input type="hidden" name="wdgtid" value="<?=$widget_data->widget_id?>">
+  <?=gForm::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php view::alerts() ?>
   <label><?=__("Name")?></label>
   <div class="form-group">
