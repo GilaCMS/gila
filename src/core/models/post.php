@@ -16,8 +16,7 @@ class post
       (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
       FROM post WHERE (id=? OR slug=?)";
     $res = $db->query($ql,[$id,$id]);
-    if($res) {
-      $row = mysqli_fetch_array($res);
+    if($row = mysqli_fetch_array($res)) {
       if($blocks = $db->value("SELECT blocks FROM post WHERE (id=? OR slug=?);", [$id,$id])) {
         $blocks = json_decode($blocks);
         ob_start();

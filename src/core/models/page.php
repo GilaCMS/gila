@@ -16,9 +16,8 @@ class page
   {
     global $db;
     $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug FROM `page` WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
-    if($res) {
-      $row = mysqli_fetch_array($res);
-      if($blocks = $db->value("SELECT blocks FROM `page` WHERE (id=? OR slug=?);", [$id,$id])) {
+    if($row = mysqli_fetch_array($res)) {
+      if($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
         ob_start();
         foreach($blocks as $b) {

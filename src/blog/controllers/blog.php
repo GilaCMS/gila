@@ -50,7 +50,7 @@ class Blog extends controller
       if ($r = page::getByIdSlug('')) {
         view::set('title',$r['title']);
         view::set('text',$r['page']);
-        view::render('page.php');
+        view::render('blog-homepage.php','blog');
         return;
       }
       view::set('page',blog::$page);

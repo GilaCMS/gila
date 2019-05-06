@@ -2,20 +2,12 @@
 <html lang="<?=gila::config('language')?>">
 
 <head>
-  <base href="<?=gila::base_url()?>">
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-  <meta name="description" content="">
+  <?php view::set('page_title',((gila::config('title')??'Gila CMS').' - '.($page_title??__('Administration')))) ?>
+  <?=view::head(false)?>
   <link rel="icon" type="image/png" href="<?=gila::config('admin_logo')?:'assets/gila-logo.png'?>">
-
-  <title><?=((gila::config('title')??'Gila CMS').' - '.($page_title??__('Administration')))?></title>
-
   <?=view::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=view::css('lib/gila.min.css')?>
   <?=view::css('src/core/assets/admin/style.css')?>
-
   <?=view::script("lib/jquery/jquery-3.3.1.min.js")?>
   <?=view::script("lib/gila.min.js")?>
 </head>
