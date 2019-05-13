@@ -574,9 +574,17 @@ input:focus + .helptext{
     font:15px Arial;
 }
 .g-nav li{
+  display:block;
+}
+@media (min-width:600px) {
+  .g-nav li{
     display:inline-block;
     padding:0;
     position:relative;
+  }
+  .g-nav-toggler{
+    display:none;
+  }
 }
 .g-nav li a{
     text-decoration:none;

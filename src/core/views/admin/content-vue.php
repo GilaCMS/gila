@@ -1,9 +1,9 @@
 <?=view::css('src/core/assets/admin/content.css')?>
 <?=view::cssAsync('lib/select2/select2.min.css')?>
 
-<?=view::script('lib\jquery\jquery-3.3.1.min.js')?>
-<?=view::script('lib\select2\select2.min.js','async')?>
-<?=view::script('lib\vue\vue.min.js')?>
+<?=view::script('lib/jquery/jquery-3.3.1.min.js')?>
+<?=view::script('lib/select2/select2.min.js','async')?>
+<?=view::script('lib/vue/vue.min.js')?>
 
 <script src="lib/CodeMirror/codemirror.js"></script>
 <link rel="stylesheet" href="lib/CodeMirror/codemirror.css">

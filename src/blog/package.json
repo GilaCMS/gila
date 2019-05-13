@@ -4,6 +4,6 @@
 	"description":"Adds the blog controller.",
 	"lang":"core/lang/admin/",
 	"require": {
-		"core": "1.9.4"
+		"core": "1.10.0"
 	}
 }
