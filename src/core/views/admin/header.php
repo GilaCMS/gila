@@ -53,6 +53,11 @@
 
       <span class="g-group-item fullwidth text-align-right pad">
         <ul class="g-nav">
+          <?php
+          foreach(gila::getList('badge') as $b) {
+            echo "<li>{$b['icon']}<span class='badge' data-count='{$b['count']()}'></li>";
+          }
+          ?>
         <li>
           <i class="fa fa-user"></i> <?=session::key('user_name')?> <i class="fa fa-angle-down"></i>
           <ul class="text-align-left" style="right:0">
