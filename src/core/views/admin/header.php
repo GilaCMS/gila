@@ -10,7 +10,6 @@
   <?=view::css('src/core/assets/admin/style.css')?>
   <?=view::script("lib/jquery/jquery-3.3.1.min.js")?>
   <?=view::script("lib/gila.min.js")?>
-  <style>.select2-container{z-index:100000}</style>
 </head>
 
 <body style="background:#f5f5f5">

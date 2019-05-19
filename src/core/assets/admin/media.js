@@ -3,6 +3,7 @@ g.click(".gal-image",function(){
     g('.gal-path').removeClass('g-selected');
     g(this).addClass('g-selected');
     g('#selected-path').attr('value',this.getAttribute('data-path'))
+    g('#selected-image-caption').attr('value',this.getAttribute('data-caption'))
 })
 g.click(".gal-folder",function(){
     let path=this.getAttribute('data-path')
@@ -14,10 +15,13 @@ g.click("#fm-goup",function(){
     if(this.getAttribute('data-path')=='') return;
 
     let path=this.getAttribute('data-path')
-    g.post("admin/media","g_response=content&path="+path,function(gal){ //
-        g('#admin-media-div').parent().html(gal)
-    })
+    refresh_media_body("path="+path);
 })
+function refresh_media_body(data) {
+  g.post("admin/media?g_response=content", data, function(gal){
+    g('#admin-media-div').parent().html(gal)
+  })
+}
 var media_text = {
   _gallery:'Media Gallery',
   _new_filepath: 'Please enter new file path',
@@ -142,3 +146,11 @@ function update_gallery_body(path) {
     g('#admin-media-div').parent().html(gal)
   }})
 }
+
+g.click('.media-tabs-side>div', function(e){
+  g(this).parent().children().style('opacity', 0.3)
+  this.style.opacity=1;
+  g.post("admin/media?media_tab="+g(this).attr('data-tab'), "g_response=content",function(gal){
+    g('#media_dialog .body').html(gal)
+  })
+});

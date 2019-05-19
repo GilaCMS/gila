@@ -25,7 +25,7 @@ class gpost
 
     $options = [
       'http' => [
-        'method'  => 'POST',
+        'method'  => $args['method']??'POST',
         'header'  => "Content-type: application/$content_type\r\n".$header_str,
         'content' => ($content_type=='json'? json_encode($data): http_build_query($data)),
         'ignore_errors' => $ignore_error

@@ -4,8 +4,11 @@ class cache
 {
   static function set ($name, $data, $uniques = null) {
     $dir = gila::dir('log/cacheItem/');
-    $caching_file = $dir.$name.'|'.implode('|',$uniques);
+    $caching_file = $name;
+    if($uniques) $caching_file .= '|'.implode('|',$uniques);
     // save asycronimously?
+    $caching_file = str_replace('/', '_', $caching_file);
+    $caching_file = $dir.$caching_file;
     return file_put_contents($caching_file, $data);
   }
 
@@ -14,7 +17,10 @@ class cache
     if(!is_array($uniques)) {
         $uniques[] = $uniques; 
     }
-    $caching_file = $dir.$name.'|'.implode('|', $uniques);
+    $caching_file = $name;
+    if($uniques) $caching_file .= '|'.implode('|',$uniques);
+    $caching_file = str_replace('/', '_', $caching_file);
+    $caching_file = $dir.$caching_file;
 
     if(file_exists($caching_file) && filemtime($caching_file)+$time>time()) {
         $data = file_get_contents($caching_file);
@@ -32,7 +38,11 @@ class cache
     if($data = self::get($name, $time, $uniques)) {
         return $data;
     }
-    $data = $fn();
+    if($uniques) {
+      $data = $fn($uniques);
+    } else {
+      $data = $fn();
+    }
     self::set($name, $data, $uniques);
     return $data;
   }
