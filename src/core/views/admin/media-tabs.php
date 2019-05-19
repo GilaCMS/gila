@@ -11,6 +11,7 @@ align-items: center;padding: 15px 0;}
 $media_tab = router::request('media_tab', session::key('media_tab')??'uploads');
 session::key('media_tab', $media_tab);
 
+$media_tab_list = gila::getList('media-tab')??[];
 $media_tab_list = array_merge([
   [
     'name'=>'uploads',
@@ -22,7 +23,7 @@ $media_tab_list = array_merge([
     'title'=>'Assets',
     'icon'=>'<i class="fa fa-2x fa-dropbox"></i>'
   ]
-], gila::getList('media-tab'));
+], $media_tab_list);
 
 foreach($media_tab_list as $mtab) {
   $class = ($mtab['name']==$media_tab)? ' style="opacity:1"': '';
