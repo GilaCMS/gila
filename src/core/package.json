@@ -14,5 +14,6 @@
 		"editor":"Can edit all posts and categories",
 		"writer":"Can write posts"
 	},
-	"lang":"core/lang/admin/"
+  "lang":"core/lang/admin/",
+  "assets":["assets"]
 }
