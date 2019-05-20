@@ -12,12 +12,12 @@ if (count($files1)>2) {
   echo '<table class="g-table table-hover"><tbody>';
   for($i=2;$i<count($files1);$i++) {
       echo '<tr><td>'.$files1[$i].'';
-      echo '<td><a class="g-btn" href="admin/db_backup?csrf='.$csrf.'&download='.$files1[$i].'"><i class="fa fa-download"></i> Download</a>';
-      echo '<td><a class="g-btn" href="admin/db_backup?csrf='.$csrf.'&source='.$files1[$i].'"><i class="fa fa-upload"></i> Load</a>';
+      echo '<td><a class="g-btn" href="admin/db_backup?csrf='.$csrf.'&download='.$files1[$i].'"><i class="fa fa-download"></i> '.__('Download').'</a>';
+      echo '<td><a class="g-btn" href="admin/db_backup?csrf='.$csrf.'&source='.$files1[$i].'"><i class="fa fa-upload"></i> '.__('Restore').'</a>';
       echo '</tr>';
   }
-
   echo '</tbody></table>';
-
-} else echo "No backups found";
+} else {
+  echo "No backups found";
+}
 echo '</div>';

@@ -379,7 +379,23 @@ input:focus + .helptext{
 .g-slider:before{
   border-radius:50%;
 }
-
+.badge {
+  position: relative;
+}
+.badge::after {
+  position: relative;
+  background: red;
+  background: attr(data-bg);
+  top: -8px;
+  left: -3px;
+  border-radius: 4px;
+  padding: 2px;
+  font-weight: bold;
+  font-size:66%;
+  font-family:Arial, Helvetica, sans-serif;
+  content: attr(data-count);
+  color: white;
+}
 
 
 .gila-darkscreen{
@@ -574,9 +590,17 @@ input:focus + .helptext{
     font:15px Arial;
 }
 .g-nav li{
+  display:block;
+}
+@media (min-width:600px) {
+  .g-nav li{
     display:inline-block;
     padding:0;
     position:relative;
+  }
+  .g-nav-toggler{
+    display:none;
+  }
 }
 .g-nav li a{
     text-decoration:none;

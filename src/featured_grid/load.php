@@ -1,12 +1,12 @@
 <?php
 
-if(gila::option('featured_grid.height')=='400px') {
-    view::stylesheet('src/featured_grid/assets/style400.css');
-} else view::stylesheet('src/featured_grid/assets/style.css');
+view::stylesheet('src/featured_grid/assets/style.css');
 
 
 event::listen('slide',function(){
     if(router::controller()=='blog'){
+        $align = gila::option('featured_grid.align','center');
+        echo '<style>.featured-posts .img { background-position: center '.$align.';}</style>';
         echo '<div class="featured-posts row">';
         $params=['posts'=>4];
         if(gila::option('featured_grid.category')!='') $params['category']=gila::option('featured_grid.category');

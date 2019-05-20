@@ -208,6 +208,9 @@ class cm extends controller
 
     if(isset($_GET['id'])) {
       $fields = $pnk->fields('clone');
+      if (($idkey = array_search($pnk->id(), $fields)) !== false) {
+        unset($fields[$idkey]);
+      }
       $fields =  implode(',', $fields );
       $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
       $res = $db->query($q,$_GET['id']);

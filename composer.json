@@ -1,6 +1,7 @@
 {
     "require": {
         "cocur/slugify": "^2.3",
-        "phpunit/phpunit": "^7"
+        "phpunit/phpunit": "^7",
+        "phpmailer/phpmailer": "^6.0"
     }
 }

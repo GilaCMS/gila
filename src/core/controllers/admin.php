@@ -65,7 +65,7 @@ class admin extends controller
   function update_widgetAction ()
   {
     global $db;
-    $widget_data = json_encode(router::request('option',[]));
+    $widget_data = isset($_POST['option'])?json_encode($_POST['option']):'[]';
 
     $db->query("UPDATE widget SET data=?,area=?,pos=?,title=?,active=? WHERE id=?",
       [$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_title'],$_POST['widget_active'],$_POST['widget_id']]);

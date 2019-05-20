@@ -111,7 +111,8 @@ class db_backup
   */
   function source($file) {
     global $db;
-    $db->multi_query(file_get_contents($file));
+    $file = basename($file);
+    $db->multi_query(file_get_contents($this->dir.$file));
     view::alert('success',"Backup loaded successfully!");
   }
 

@@ -23,6 +23,7 @@ document.getElementById("menu-toggle").addEventListener("click", function(e) {
 });
 </script>
 <?php view::scripts()?>
+<?php event::fire('foot') ?>
 
 </body>
 </html>

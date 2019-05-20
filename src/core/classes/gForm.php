@@ -5,31 +5,39 @@ class gForm
   static private $html;
   static private $input_type;
 
-  static function posted($name) {
-    if ($_SERVER['REQUEST_METHOD']=='POST') foreach(session::key('formToken') as $key=>$value){
-      if ($key==$name && $value===$_POST['formToken']) return true;
+  static function posted($name = '*') {
+    $tokens = session::key('formToken')??[];
+    if ($_SERVER['REQUEST_METHOD']=='POST') foreach($tokens as $key=>$value){
+      if ($key==$name && $value===$_POST['formToken']) {
+        if($name!=='*') {
+          $tokens[$key]='';
+          session::key('formToken', $tokens);
+        }
+        return true;
+      }
     }
     return false;
   }
 
-  static function verifyToken($name, $check) {
+  static function verifyToken($name = '*') {
     foreach(session::key('formToken') as $key=>$value) {
       if ($key==$name && $value===$check) return true;
     }
     return false;
   }
 
-  static function getToken($name) {
-    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = (string)session::user_id();
-    for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 32)];
+  static function getToken($name = '*') {
     $tokens = session::key('formToken')??[];
+    if($name === '*') if(isset($tokens[$name])) return $tokens[$name];
+    $chars = 'bcdfghjklmnprstvwxzaeiou123467890%^&/+=-?_#';
+    $gsession = (string)session::user_id();
+    for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 42)];
     $tokens[$name] = $gsession;
     session::key('formToken', $tokens);
     return $gsession;
   }
 
-  static function hiddenInput($name) {
+  static function hiddenInput($name = '*') {
     return '<input type="hidden" name="formToken" value="'.self::getToken($name).'">';
   }
 

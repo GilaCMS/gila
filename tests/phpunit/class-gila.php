@@ -2,6 +2,8 @@
 chdir(__DIR__.'/../../');
 include __DIR__.'/../../vendor/autoload.php';
 include __DIR__.'/../../src/core/classes/gila.php';
+include __DIR__.'/../../src/core/classes/router.php';
+
 use PHPUnit\Framework\TestCase;
 
 class ClassGila extends TestCase

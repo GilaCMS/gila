@@ -109,7 +109,7 @@ class login extends controller
       $msg .= __('reset_msg_ln4');
       $headers = "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
       user::meta($r['id'],'reset_code',$reset_code);
-      mail($email, $subject, $msg, $headers);
+      new sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
 
     view::includeFile('login-change-emailed.php');
