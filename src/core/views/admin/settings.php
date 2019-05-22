@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
   gila::config('timezone',$_POST['gila_timezone']);
   gila::config('language',$_POST['gila_language']);
   gila::config('admin_logo',$_POST['gila_admin_logo']);
+  gila::config('favicon',$_POST['gila_favicon']);
   gila::config('env',$_POST['gila_env']);
   gila::config('check4updates',$_POST['gila_check4updates']);
   gila::config('rewrite',$_POST['gila_rewrite']);
@@ -91,6 +92,13 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
         </span></div>
     </div>
 
+    <br><div class="gm-12">
+        <label class="gm-4"><?=__("Favicon")?></label>
+        <div class="gm-4" style="display:inline-flex"><span class="g-group" style="display:inline-block">
+            <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery('#m_favicon')"><i class="fa fa-image"></i></span>
+            <span class="g-group-item"><input class="fullwidth" value="<?=gila::config('favicon')?>" id="m_favicon" name="gila_favicon"></span>
+        </span></div>
+    </div>
 
     <br>
     <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>
