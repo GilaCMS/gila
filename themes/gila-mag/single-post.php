@@ -4,7 +4,6 @@
       <span class="meta">Posted by <a href="<?=gila::url('blog/author/'.$author_id)?>"><?=$author?></a> on <?=date('F j, Y',strtotime($updated))?></span>
   <hr>
 
-  <!-- Post Content nl2br($text) -->
   <article>
       <?=$text?>
   </article>

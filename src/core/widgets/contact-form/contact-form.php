@@ -5,21 +5,15 @@ if (gForm::posted('contact-form'.$widget_data->widget_id) && event::get('recaptc
 }
 ?>
 
-<form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form wrapper g-card">
+<form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form">
   <?=gForm::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php view::alerts() ?>
   <label><?=__("Name")?></label>
-  <div class="form-group">
-    <input class="form-control fullwidth" name="name" autofocus required>
-  </div>
+  <input name="name" class="form-control g-input" autofocus required/>
   <label><?=__("E-mail")?></label>
-  <div class="form-group">
-    <input class="form-control fullwidth" name="email" type="email" required>
-  </div>
+  <input name="email" class="form-control g-input" required/>
   <label><?=__("Subject")?></label>
-  <div class="form-group ">
-    <textarea class="form-control fullwidth" name="subject" required></textarea>
-  </div>
+  <textarea name="message" class="form-control g-input" required></textarea>
   <?php event::fire('recaptcha.form')?>
-  <input type="submit" class="btn btn-primary btn-block">
+  <input type="submit" class="btn btn-primary btn-block" value="<?=__('Send')?>">
 </form>
