@@ -140,6 +140,11 @@ class admin extends controller
     view::renderAdmin('admin/theme-list.php');
   }
 
+  function theme_optionsAction ()
+  {
+    view::renderAdmin('admin/theme-options.php');
+  }
+
   function settingsAction ()
   {
     view::renderAdmin('admin/settings.php');

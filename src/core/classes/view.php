@@ -341,6 +341,16 @@ class view
     event::fire($area);
   }
 
+  static function img ($src, $prefix='', $max=180)
+  {
+    $pathinfo = pathinfo($src);
+    if(strtolower($pathinfo['extension'])=='svg') {
+      include $src;
+    } else {
+      return '<img src="'.self::thumb($src, $prefix, $max).'">';
+    }
+  }
+
   static function thumb ($src, $prefix='', $max=180)
   {
     if($src==null) return false;
@@ -355,6 +365,11 @@ class view
         $type = IMG_WEBP;
       }
     }
+    if(is_numeric($prefix)) {
+      $prefix .= '/';
+      $max = (int)$prefix;
+    } 
+
     $file = 'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
     $max_width = $max;
     $max_height = $max;
