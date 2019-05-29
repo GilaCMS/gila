@@ -80,8 +80,8 @@ class db
   }
 
   $stmt = $this->link->prepare($q);
-    $dt = "";
-    foreach($args as $v) {
+  $dt = "";
+  foreach($args as $v) {
     $x = $this->link->real_escape_string($v);
     $dt .= is_int($v)? 'i': (is_string($v)? 's': (is_double($v)? 'd': 'b'));
   }
@@ -96,6 +96,11 @@ class db
     } else $this->result = false;
   }
 
+  public function res($v)
+  {
+    if (!$this->connected) $this->connect();
+    return mysqli_real_escape_string($this->link, $v);
+  }
 
   function multi_query($q)
   {
