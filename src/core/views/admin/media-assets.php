@@ -15,14 +15,6 @@ if($path=='src') {
       }
     }
   }
-/*  $files = array_merge($files, $scanned);
-  foreach(gila::packages() as $p) {
-    $scanned = scandir('src/'.$p.'/assets/');
-    foreach($scanned as $i=>$v) {    
-      $scanned[$i] = 'src/'.$p.'/assets/'.$scanned[$i];
-    }
-    if($scanned) $files = array_merge($files, $scanned);
-  }*/
 } else {
   $path_array = explode('/',$path);
   array_splice($path_array,count($path_array)-1);

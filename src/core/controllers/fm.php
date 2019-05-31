@@ -8,7 +8,7 @@ class fm extends controller
   function __construct ()
   {
     if(!gila::hasPrivilege('admin')) exit;
-    $dpath = realpath(__DIR__.'/../../../');
+    $dpath = realpath(__DIR__.'/../../../'.SITE_PATH);
     $this->path = $dpath;
     if (isset($_GET['path']))  if(!$_GET['path']=='') $this->path = str_replace('\\','/',$_GET['path']);
     if (isset($_POST['path']))  if(!$_POST['path']=='') $this->path = str_replace('\\','/',$_POST['path']);
@@ -63,11 +63,11 @@ class fm extends controller
   }
 
   function newfolderAction () {
-    mkdir($_POST['path'],0755,true);
+    mkdir(SITE_PATH.$_POST['path'],0755,true);
   }
 
   function newfileAction () {
-    file_put_contents($_POST['path'],' ');
+    file_put_contents(SITE_PATH.$_POST['path'],' ');
   }
 
   function moveAction () {
@@ -89,13 +89,13 @@ class fm extends controller
       $name = $_FILES['uploadfiles']['name'];
       if(is_array($tmp_file)) {
         for($i=0;i<count($tmp_file);$i++) {
-          if(!move_uploaded_file($tmp_file[$i],$path.'/'.$name[$i])) {
+          if(!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
             echo "Error: could not upload file!<br>";
           }
         }
       }else{
-        if(!move_uploaded_file($tmp_file,$path.'/'.$name)) {
-          echo "Error: could not upload file!<br>";
+        if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
+          echo "Error: could not upload file!<br>".$path.'/'.$name;
         }
       }
     }

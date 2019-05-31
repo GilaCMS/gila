@@ -1,5 +1,16 @@
 <?php
 
+$site_folder = 'sites/'.$_SERVER['HTTP_HOST'];
+if(file_exists($site_folder)) {
+  define('SITE_PATH', $site_folder.'/');
+  define('LOG_PATH', $site_folder.'/log');
+  define('CONFIG_PHP', $site_folder.'/config.php');
+} else {
+  define(SITE_PATH, '');
+  define(LOG_PATH, 'log');
+  define(CONFIG_PHP, 'config.php');
+}
+
 $starttime = microtime(true);
 
 if(!isset($_GET['url'])) $_GET['url'] = substr($_SERVER['REQUEST_URI'],1);
@@ -24,8 +35,8 @@ if(file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';
 }
 
-if (file_exists('config.php')) {
-  require_once 'config.php';
+if (file_exists(CONFIG_PHP)) {
+  require_once CONFIG_PHP;
 }
 else {
   if(isset($_GET['install'])) {

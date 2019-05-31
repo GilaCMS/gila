@@ -4,11 +4,11 @@ return [
     'features'=>[
         'type'=>'list',
         'fields'=>[
-            'image'=>['type'=>'media','default'=>'assets/vector/cogs.png'],
+            'image'=>['type'=>'media','default'=>'src/core/assets/cogs.png'],
             'name'=>[],
             'text'=>[],
             'url'=>[],
         ],
-        'default'=>'[]'
+        'default'=>'[["src/core/assets/cogs.png", "Feature"],["src/core/assets/cogs.png", "Feature"],["src/core/assets/cogs.png", "Feature"]]'
     ]
 ];

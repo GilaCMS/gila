@@ -36,7 +36,7 @@ class session
         unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();
-        $session_log = new logger('log/login.failed.log');
+        $session_log = new logger(LOG_PATH.'/login.failed.log');
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
@@ -57,7 +57,7 @@ class session
     session::key('user_name',$name);
     session::key('user_email',$email);
     if($msg!==null) {
-      $session_log = new logger('log/sessions.log');
+      $session_log = new logger(LOG_PATH.'/sessions.log');
       $session_log->info($msg,['user_id'=>$id, 'email'=>$email]);
     }
   }
@@ -129,7 +129,7 @@ class session
   static function destroy ()
   {
     if(self::user_id()>0) {
-      $session_log = new logger('log/sessions.log');
+      $session_log = new logger(LOG_PATH.'/sessions.log');
       $session_log->info('End',['user_id'=>self::user_id(), 'email'=>self::key('user_email')]);
     }
     @$_SESSION = [];

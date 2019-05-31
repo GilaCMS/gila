@@ -2,8 +2,10 @@
 $path = router::request('path', session::key('media_path')??'assets');
 if($path[0]=='.') $path = 'assets';
 session::key('media_path', $path);
-$files = scandir($path);
+if(strlen(realpath('assets'))>strlen(realpath($path))) $path = 'assets';
+$files = scandir(SITE_PATH.$path);
 $disabled = ($path=='assets')?'disabled':'';
+
 $path_array = explode('/',$path);
 array_splice($path_array,count($path_array)-1);
 $uppath=implode('/',$path_array);
@@ -34,19 +36,19 @@ view::script('src/core/assets/admin/media.js');
 
 <?php
 foreach($files as $file) if($file[0]!='.') {
-  if (is_dir($path.'/'.$file)) {
+  if (is_dir(SITE_PATH.$path.'/'.$file)) {
     $type='folder';
   } else {
     $type='file';
     $imgx = ['jpg','jpeg','png','gif','svg'];
-    if($pinf = pathinfo($file)) if($ext = @$pinf['extension']) {
+    if($pinf = pathinfo(SITE_PATH.$file)) if($ext = @$pinf['extension']) {
       if(in_array(strtolower($ext), $imgx)) $type='image';
     }
   }
   $filepath=$path.'/'.$file;
   if ($type=='image') {
-    $img='<img src="'.view::thumb($filepath,'media_thumb/',100).'">';
-    echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$file.'</div>';
+    $img='<img src="'.view::thumb(SITE_PATH.$filepath,'media_thumb/',100).'">';
+    echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$file.'</div>';
   }
   if ($type=='folder') {
     $img='<i class="fa fa-5x fa-folder"></i>';
@@ -54,7 +56,7 @@ foreach($files as $file) if($file[0]!='.') {
   }
   if ($type=='file') {
     $img='<i class="fa fa-4x fa-file-text-o" ></i>';
-    echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$file.'</div>';
+    echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$file.'</div>';
   }
 }
 echo "</div>";
