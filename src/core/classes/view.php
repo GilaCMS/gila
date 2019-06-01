@@ -378,7 +378,7 @@ class view
       $max = (int)$prefix;
     } 
 
-    $file = 'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
+    $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
     $max_width = $max;
     $max_height = $max;
     if($src=='') return false;

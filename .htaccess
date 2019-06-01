@@ -14,8 +14,7 @@
 
 RewriteEngine On
 
-#exclude these folders
-#RewriteCond %{REQUEST_URI} !\.json$
+# exclude these folders
 RewriteCond %{REQUEST_URI} !/vendor/
 RewriteCond %{REQUEST_URI} !/src/
 RewriteCond %{REQUEST_URI} !/themes/
@@ -24,12 +23,17 @@ RewriteCond %{REQUEST_URI} !/assets/
 RewriteCond %{REQUEST_URI} !/tmp/
 RewriteCond %{REQUEST_URI} !robots.txt
 
-#dont list folder contents
+# dont list folder contents
 IndexIgnore *
 
 RewriteRule (.*)$ index.php?url=$1 [QSA,L]
 
-#redirect all sites
-RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
-RewriteCond %{HTTP_HOST} !localhost$ [NC]
-RewriteRule ^assets/(.*)$ sites/%{HTTP_HOST}/assets/$1 [NC]
+# enforce https redirection
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# redirect all sites
+# RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
+# RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+# RewriteRule ^assets/(.*)$ sites/%{HTTP_HOST}/assets/$1 [NC]
+# RewriteRule ^tmp/(.*)$ sites/%{HTTP_HOST}/tmp/$1 [NC]

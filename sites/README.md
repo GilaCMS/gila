@@ -18,7 +18,7 @@ Note: You have to redirect the public folders(assets/tmp) of the new sites:
 ```
 # from the root .htaccess redirect all domains except the main (localhost in this case)
 RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
-RewriteCond %{HTTP_HOST} !localhost$ [NC]
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
 RewriteRule ^assets/(.*)$ sites/%{HTTP_HOST}/assets/$1 [NC]
 RewriteRule ^tmp/(.*)$ sites/%{HTTP_HOST}/tmp/$1 [NC]
 ```
