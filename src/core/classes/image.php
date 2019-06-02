@@ -168,7 +168,7 @@ class image
   static function local_path($src)
   {
     if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
-      $_src = 'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+      $_src = SITE_PATH.'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
       if(!file_exists($_src)) {
         $_file = 'log/cannot_copy.json';
         $cannot_copy = json_decode(file_get_contents($_file),true);
