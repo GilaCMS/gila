@@ -2,8 +2,10 @@
 <html lang="<?=gila::config('language')?>">
 
 <head>
+  <base href="<?=gila::base_url()?>">
   <?php view::set('page_title',((gila::config('title')??'Gila CMS').' - '.($page_title??__('Administration')))) ?>
-  <?=view::head(false)?>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1">
   <link rel="icon" type="image/png" href="<?=gila::config('admin_logo')?:'assets/gila-logo.png'?>">
   <?=view::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=view::css('lib/gila.min.css')?>
@@ -69,15 +71,4 @@
     </div>
     <div class="md-12">
 
-      <!--div style="background:#d6d6d6; padding:12px" class="row caption">
-        <div style="padding-left: 15px;">
-          <?php
-          if($item = router::controller()) {
-          //  echo ucwords($item);
-          //  if($item = router::action()) echo ' \\ '.ucwords($item);
-          //  if($item = router::get(null,1)) echo ' \\ '.(ucwords($item));
-          }
-          ?>
-        </div>
-      </div-->
       <div class="wrapper bordered" style="background:white;margin:10px" id='main-wrapper'>

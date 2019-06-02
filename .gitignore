@@ -5,6 +5,7 @@ assets/*
 tmp/*
 log/*
 log/sessions/*
+sites/*
 
 vendor/
 node_modules/
@@ -25,6 +26,7 @@ tests/jmeter.log
 !src/featured_grid/
 !src/reCAPTCHA/
 !src/.htaccess
+!sites/README.md
 
 !themes/gila-mag/
 !themes/gila-blog/

@@ -140,6 +140,11 @@ class admin extends controller
     view::renderAdmin('admin/theme-list.php');
   }
 
+  function theme_optionsAction ()
+  {
+    view::renderAdmin('admin/theme-options.php');
+  }
+
   function settingsAction ()
   {
     view::renderAdmin('admin/settings.php');
@@ -169,12 +174,12 @@ class admin extends controller
       $name = $_FILES['uploadfiles']['name'];
       if(is_array($tmp_file)) {
         for($i=0;i<count($tmp_file);$i++) if(in_array(pathinfo($tmp_file, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
-          if(!move_uploaded_file($tmp_file[$i],$path.'/'.$name[$i])) {
+          if(!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
             echo "Error: could not upload file!<br>";
           }
         } else echo "Error: not a media file!<br>";
       }else{
-        if(!move_uploaded_file($tmp_file,$path.'/'.$name)) {
+        if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
           echo "Error: could not upload file!<br>";
         }
       }
@@ -229,7 +234,7 @@ class admin extends controller
   {
     $menu = router::get('menu',1);
     if($menu != null) if(gila::hasPrivilege('admin')) {
-      $folder = gila::dir('log/menus/');
+      $folder = gila::dir(LOG_PATH.'/menus/');
       $file = $folder.$menu.'.json';
       if($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(isset($_POST['menu'])) {

@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
-$configfile = 'config.php';
+$configfile = CONFIG_PHP;
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $host=$_POST['db_host'];$db_user=$_POST['db_user'];

@@ -14,6 +14,7 @@ class view
   public static $view_file = array();
   public static $parent_theme = false;
   public static $canonical;
+  public static $renderer;
 
   static function set($param,$value)
   {
@@ -188,11 +189,18 @@ class view
   static function includeFile($file,$package='core')
   {
     global $c;
+    $file = self::getViewFile($file, $package);
+    
+    if(isset(self::$renderer)) {
+      self::$renderer($file, self::$part);
+      return true;
+    }
+
     foreach (self::$part as $key => $value) {
       $$key = $value;
     }
 
-    if($file = self::getViewFile($file, $package)) {
+    if($file) {
       include $file;
       return true;
     }
@@ -240,7 +248,7 @@ class view
   */
   static function menu ($menu='mainmenu', $tpl='tpl/menu.php')
   {
-    $file = 'log/menus/'.$menu.'.json';
+    $file = LOG_PATH.'/menus/'.$menu.'.json';
     if(file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file),true);
     } else {
@@ -268,7 +276,7 @@ class view
       if(!isset(gila::$widget[$type])) echo "Widget <b>".$type."</b> is not found";
     }
 
-    $dir = gila::dir('log/cache0/widgets/');
+    $dir = gila::dir(LOG_PATH.'/cache0/widgets/');
     $_file = $dir.$widget_data->widget_id;
     if(file_exists($_file) ) {
       include $_file;
@@ -277,7 +285,7 @@ class view
       @include $widget_file;
       $out2 = ob_get_contents();
       //ob_end_clean();
-      $clog = new logger('log/cache.log');
+      $clog = new logger(LOG_PATH.'/cache.log');
       if(file_put_contents($_file,$out2)){
         $clog->debug($_file);
       }else{
@@ -341,6 +349,16 @@ class view
     event::fire($area);
   }
 
+  static function img ($src, $prefix='', $max=180)
+  {
+    $pathinfo = pathinfo($src);
+    if(strtolower($pathinfo['extension'])=='svg') {
+      include $src;
+    } else {
+      return '<img src="'.self::thumb($src, $prefix, $max).'">';
+    }
+  }
+
   static function thumb ($src, $prefix='', $max=180)
   {
     if($src==null) return false;
@@ -355,7 +373,12 @@ class view
         $type = IMG_WEBP;
       }
     }
-    $file = 'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
+    if(is_numeric($prefix)) {
+      $prefix .= '/';
+      $max = (int)$prefix;
+    } 
+
+    $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
     $max_width = $max;
     $max_height = $max;
     if($src=='') return false;

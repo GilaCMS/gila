@@ -84,14 +84,14 @@ class theme
         $zip->extractTo($tmp_name);
         $zip->close();
         if(file_exists($target)) {
-        rename($target, gila::dir('log/previous-themes/'.date("Y-m-d H:i:s").' '.$download));
+        rename($target, gila::dir(LOG_PATH.'/previous-themes/'.date("Y-m-d H:i:s").' '.$download));
         }
         $unzipped = scandir($tmp_name);
         if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
         rename($tmp_name, $target);
         if(file_exists($target.'__tmp__')) rmdir($target.'__tmp__');
 
-        unlink('log/load.php');
+        unlink(LOG_PATH.'/load.php');
         unlink($localfile);
         echo 'ok';
         if(!$_REQUEST['g_response']) {
@@ -142,7 +142,7 @@ class theme
         $ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
         $db->query($ql);
       }
-      if(gila::config('env')=='pro') unlink('log/load.php');
+      if(gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
       exit;
     }
   }

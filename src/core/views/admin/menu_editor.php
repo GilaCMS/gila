@@ -119,7 +119,7 @@ $itemTypes = menuItemTypes::getItemTypes();
   <div id="menu-list" class="gm-3 wrapper">
     <ul class="g-nav vertical g-card">
     <?php
-    $menus = scandir('log/menus');
+    $menus = scandir(LOG_PATH.'/menus');
     foreach($menus as $name) if($name[0]!='.'){
      $lname = substr($name,0,strpos($name,'.'));
      echo '<li><a href="'.gila::make_url('admin','menu').$lname.'">'.$lname.'</a>';
@@ -139,7 +139,7 @@ $itemTypes = menuItemTypes::getItemTypes();
 
 <?php
 $data="{type:\"menu\",children:[]}";
-$jsonfile = "log/menus/$menu.json";
+$jsonfile = LOG_PATH."/menus/$menu.json";
 if(file_exists($jsonfile)) {
     $data = file_get_contents($jsonfile);
 }

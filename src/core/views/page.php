@@ -4,6 +4,6 @@
   <h1><?=$title?></h1>
 
   <div>
-      <?=nl2br($text)?>
+      <?=$text?>
   </div>
 </div>

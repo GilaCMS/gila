@@ -15,14 +15,6 @@ if($path=='src') {
       }
     }
   }
-/*  $files = array_merge($files, $scanned);
-  foreach(gila::packages() as $p) {
-    $scanned = scandir('src/'.$p.'/assets/');
-    foreach($scanned as $i=>$v) {    
-      $scanned[$i] = 'src/'.$p.'/assets/'.$scanned[$i];
-    }
-    if($scanned) $files = array_merge($files, $scanned);
-  }*/
 } else {
   $path_array = explode('/',$path);
   array_splice($path_array,count($path_array)-1);
@@ -39,6 +31,10 @@ if($path=='src') {
 <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
 <i class='fa fa-arrow-left'></i></a>
 <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
+<span class="g-group-item" style="position:relative;">
+  <input class='g-input input-filter fullwidth' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
+  <i class="fa fa-filter" style="position:absolute;margin:12px;right:0;top:0"></i>
+</span>
 
   <?php
 }

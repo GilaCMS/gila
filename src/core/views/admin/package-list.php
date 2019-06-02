@@ -10,7 +10,7 @@ function dl_btn($param, $class, $text) {
 
 if(package::check4updates()) {
   $upgrated = 0;
-  $toupdate = json_decode(file_get_contents('log/packages2update.json'),true);
+  $toupdate = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'),true);
   foreach($toupdate as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
     if(version_compare($newv, $packages[$newp]->version) == 1) {
       $logo = $dir."$newp/logo.png";
@@ -23,7 +23,7 @@ if(package::check4updates()) {
     }
   }
   if(count($toupdate) == $upgrated) {
-    unlink('log/packages2update.json');
+    unlink(LOG_PATH.'/packages2update.json');
   }
 }
 

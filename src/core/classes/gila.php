@@ -258,8 +258,7 @@ class gila
   static function updateConfigFile ()
   {
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'],true).";";
-    //rename('config.php', 'log/config.'.date("Y-m-d").'.php');
-    file_put_contents('config.php', $filedata);
+    file_put_contents(CONFIG_PHP, $filedata);
   }
 
   /**
