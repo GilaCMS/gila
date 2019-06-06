@@ -9,7 +9,8 @@ class user
     global $db;
     if( \event::get('validateUserPassword', true, $password)===true) {
       $pass = ($password===null)? '': \gila::hash($password);
-      $db->query("INSERT INTO user(email,pass,username,active) VALUES(?,?,?);",[$email, $pass, $name, $active]);
+      $db->query("INSERT INTO user(email,pass,username,active)
+        VALUES(?,?,?,?);",[$email, $pass, $name, $active]);
       return $db->insert_id;
     } else return false;
   }

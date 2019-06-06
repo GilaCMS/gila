@@ -29,7 +29,7 @@ spl_autoload_register(function ($class) {
   }
   else if (file_exists('lib/'.$class.'.php')) {
     require_once 'lib/'.$class.'.php';
-  } else trigger_error("File $class could not be found with autoload.");
+  }
 });
 if(file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';

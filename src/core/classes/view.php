@@ -2,13 +2,13 @@
 
 class view
 {
-  private static $part = array();
   private static $script = array();
   private static $scriptAsync = array();
   private static $css = array();
   private static $cssAsync = false;
   private static $meta = array();
   private static $alert = array();
+  public static $part = array();
   public static $stylesheet = array();
   public static $cdn_paths = array();
   public static $view_file = array();
