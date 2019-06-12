@@ -11,7 +11,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_lc=substr($_base_url,-1);
     if($_lc!='/' && $_lc!='\\') $_base_url.='/';
 
-    $link = mysqli_connect($host,$db_user,$db_pass,$db_name);
+    $link = @mysqli_connect($host,$db_user,$db_pass,$db_name);
     if (!$link) {
         echo "<div class='alert'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>Error: Unable to connect to MySQL.".PHP_EOL;
         echo "<br>#".mysqli_connect_errno().PHP_EOL." : ".mysqli_connect_error().PHP_EOL."</div>";

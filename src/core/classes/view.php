@@ -363,7 +363,7 @@ class view
   {
     if($src==null) return false;
     $pathinfo = pathinfo($src);
-    if(strtolower($pathinfo['extension'])=='svg') return $src;
+    if(in_array(strtolower($pathinfo['extension']),['svg','webm'])) return $src;
     $slugify = new Cocur\Slugify\Slugify();
 
     $ext = $pathinfo['extension'];
@@ -378,7 +378,7 @@ class view
       $max = (int)$prefix;
     } 
 
-    $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
+    $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     $max_width = $max;
     $max_height = $max;
     if($src=='') return false;
