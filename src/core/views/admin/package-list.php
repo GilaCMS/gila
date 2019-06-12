@@ -14,9 +14,11 @@ if(package::check4updates()) {
   foreach($toupdate as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
     if(version_compare($newv, $packages[$newp]->version) == 1) {
       $logo = $dir."$newp/logo.png";
-      $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;";
-      $alert .= $packages[$newp]->title.' '.__("is_available_on_version");
+      $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;<b>";
+      $alert .= $packages[$newp]->title.'</b> '.__("is_available_on_version");
       $alert .= " $newv &nbsp;&nbsp; ".dl_btn($packages[$newp]->package, 'warning', __('Upgrade'));
+      $alert .= '&nbsp;&nbsp;<a href="https://gilacms.com/addons/package/';
+      $alert .= $packages[$newp]->package.'" class="g-btn info" target="_blank">'.__('Info').'</a>';
       view::alert('success',$alert);
     } else {
       $upgrated++;

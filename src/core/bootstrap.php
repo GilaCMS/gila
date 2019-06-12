@@ -6,9 +6,9 @@ if(file_exists($site_folder)) {
   define('LOG_PATH', $site_folder.'/log');
   define('CONFIG_PHP', $site_folder.'/config.php');
 } else {
-  define(SITE_PATH, '');
-  define(LOG_PATH, 'log');
-  define(CONFIG_PHP, 'config.php');
+  define('SITE_PATH', '');
+  define('LOG_PATH', 'log');
+  define('CONFIG_PHP', 'config.php');
 }
 
 $starttime = microtime(true);
@@ -29,7 +29,7 @@ spl_autoload_register(function ($class) {
   }
   else if (file_exists('lib/'.$class.'.php')) {
     require_once 'lib/'.$class.'.php';
-  } else trigger_error("File $class could not be found with autoload.");
+  }
 });
 if(file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';

@@ -1,7 +1,8 @@
 <?php
 
 global $db;
-$GLOBALS['version']='1.10.6';
+
+$GLOBALS['version']='1.10.7';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',

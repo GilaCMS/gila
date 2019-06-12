@@ -2,13 +2,13 @@
 
 class view
 {
-  private static $part = array();
   private static $script = array();
   private static $scriptAsync = array();
   private static $css = array();
   private static $cssAsync = false;
   private static $meta = array();
   private static $alert = array();
+  public static $part = array();
   public static $stylesheet = array();
   public static $cdn_paths = array();
   public static $view_file = array();
@@ -363,7 +363,7 @@ class view
   {
     if($src==null) return false;
     $pathinfo = pathinfo($src);
-    if(strtolower($pathinfo['extension'])=='svg') return $src;
+    if(in_array(strtolower($pathinfo['extension']),['svg','webm'])) return $src;
     $slugify = new Cocur\Slugify\Slugify();
 
     $ext = $pathinfo['extension'];
@@ -378,7 +378,7 @@ class view
       $max = (int)$prefix;
     } 
 
-    $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['filename']).'.'.$ext;
+    $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     $max_width = $max;
     $max_height = $max;
     if($src=='') return false;
