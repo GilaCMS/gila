@@ -3,6 +3,7 @@ Folder sites helps to create multiple sites with the same gila cms installation.
 You only have to create a new config file and the writable folders.
 In order to work all subdomains and domains must point to the root folder.
 
+<<<<<<< HEAD
 ** Example **
 ```
 +--sites
@@ -12,6 +13,17 @@ In order to work all subdomains and domains must point to the root folder.
     +--assets/
     +--tmp/
     +--log/
+=======
+**Example**
+```
+\--sites
+  \--another-domain.com
+  \--docs.mydomain.com
+    \--config.php
+    \--assets/
+    \--tmp/
+    \--log/
+>>>>>>> origin/master
 ```
 
 Note: You have to redirect the public folders(assets/tmp) of the new sites:
@@ -26,7 +38,11 @@ RewriteRule ^tmp/(.*)$ sites/%{HTTP_HOST}/tmp/$1 [NC]
 The new sites will share the same source code, vendor packages and themes with the main site.
 Although only from the main site he administrators can access and edit the files of the main and the other sites. The main site should keep its config.php and the rest folders on the root path.
 
+<<<<<<< HEAD
 ** Add a new domain linking to a subdomain **
+=======
+**Add a new domain linking to a subdomain**
+>>>>>>> origin/master
 ```
 ln -s sites/sub.domain.com sites/newdomain.com
 ```
