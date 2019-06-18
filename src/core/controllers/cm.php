@@ -254,12 +254,14 @@ class cm extends controller
   function edit_formAction ()
   {
     global $db;
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $t = router::get("t",1);
+    $pnk = new gTable($t, $this->permissions);
     if(!$pnk->can('update')) return;
 
     $fields = $pnk->fields('edit');
-    echo '<form id="edit_item_form">';
-    if($id = router::get("id",2)) {
+    $id = router::get("id",2);
+    echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"><div>';
+    if($id) {
       $w = ['id'=>$id];
       $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where()};";
       $res = $db->get($ql)[0];
@@ -267,7 +269,7 @@ class cm extends controller
     } else {
       echo gForm::html($pnk->getFields('edit'));
     }
-    echo '</form>';
+    echo '</div></form>';
   }
 
 }
