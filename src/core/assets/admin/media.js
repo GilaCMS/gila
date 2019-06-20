@@ -35,7 +35,7 @@ function __m(m) {
     if(typeof media_text[m] != 'undefined') return media_text[m]; else return m;
 }
 function gallery_upload_files() {
-  let fm=new FormData() //g.el('upload_files_form')
+  let fm=new FormData()
   fm.append('uploadfiles', g.el('upload_files').files[0]);
   fm.append('path', g.el('upload_files').getAttribute('data-path'));
   fm.append('g_response', 'content');

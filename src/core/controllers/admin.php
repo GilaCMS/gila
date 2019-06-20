@@ -172,17 +172,11 @@ class admin extends controller
       if($path[0]=='.') $path='assets';
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = $_FILES['uploadfiles']['name'];
-      if(is_array($tmp_file)) {
-        for($i=0;i<count($tmp_file);$i++) if(in_array(pathinfo($tmp_file, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
-          if(!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
-            echo "Error: could not upload file!<br>";
-          }
-        } else echo "Error: not a media file!<br>";
-      }else{
+      if(in_array(pathinfo($name, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
         if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
           echo "Error: could not upload file!<br>";
         }
-      }
+      } else echo "Error: not a media file!<br>";
 
     }
     self::mediaAction();
