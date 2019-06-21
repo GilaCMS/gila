@@ -9,7 +9,6 @@ gila::controllers([
   'cm'=> 'core/controllers/cm',
   'login'=> 'core/controllers/login',
   'webhook'=> 'core/controllers/webhook',
-  'fm'=> 'core/controllers/fm',
   'lzld'=> 'core/controllers/lzld'
 ]);
 
@@ -20,7 +19,6 @@ gila::$amenu = [
     ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin editor'],
     ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin editor'],
     ['Media','admin/media','icon'=>'image','access'=>'admin editor'],
-    ['File Manager','admin/fm','icon'=>'folder','access'=>'admin'],
     ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
   ]],
   ['Posts','admin/content/user-post','icon'=>'pencil','access'=>'writer'],
@@ -34,6 +32,11 @@ gila::$amenu = [
     ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin'],
   ]],
 ];
+
+if(FS_ACCESS) {
+  gila::controller('fm', 'core/controllers/fm');
+  gila::amenu_child('content', ['File Manager','admin/fm','icon'=>'folder','access'=>'admin']);
+}
 
 gila::widgets([
   'paragraph'=>'core/widgets/paragraph',

@@ -7,6 +7,7 @@ class fm extends controller
 
   function __construct ()
   {
+    if(!FS_ACCESS) exit;
     if(!gila::hasPrivilege('admin')) exit;
     $dpath = realpath(__DIR__.'/../../../'.SITE_PATH);
     $this->path = $dpath;

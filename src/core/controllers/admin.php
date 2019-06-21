@@ -18,6 +18,11 @@ class admin extends controller
   function indexAction ()
   {
     global $db;
+    if(router::get('action', 1)) {
+      http_response_code(404);
+      view::renderAdmin('404.php');
+      return;
+    }
     $wfolders=['log','themes','src','tmp','assets'];
     foreach($wfolders as $wf) if(is_writable($wf)==false) {
       view::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
@@ -176,8 +181,7 @@ class admin extends controller
         if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
           echo "Error: could not upload file!<br>";
         }
-      } else echo "Error: not a media file!<br>";
-
+      } else echo "<div class='alert error'>Error: not a media file!</div>";
     }
     self::mediaAction();
   }
@@ -195,9 +199,14 @@ class admin extends controller
 
   function fmAction()
   {
-    $file=realpath(htmlentities($_GET['f']));
-    view::set('filepath',$file);
-    view::renderAdmin('admin/fm-index.php');
+    if(FS_ACCESS) {
+      $file=realpath(htmlentities($_GET['f']));
+      view::set('filepath',$file);
+      view::renderAdmin('admin/fm-index.php');
+    } else {
+      http_response_code(404);
+      view::renderAdmin('404.php');
+    }
   }
 
   function sqlAction()
