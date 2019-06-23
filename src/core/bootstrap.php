@@ -59,7 +59,7 @@ else {
   error_reporting(E_ERROR);
   ini_set('display_errors', 0);
   ini_set('display_startup_errors', 0);
-  if(!include 'log/load.php') {
+  if(!include LOG_PATH.'/load.php') {
     gila::load();
     package::updateLoadFile();
   }

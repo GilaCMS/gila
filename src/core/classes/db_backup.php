@@ -7,7 +7,7 @@ class db_backup
 
   function __construct()
   {
-    $this->dir = gila::dir('log/db-backups/');
+    $this->dir = gila::dir(LOG_PATH.'/db-backups/');
 
     if (gForm::posted('db_backup')) {
       $this->backup_tables();

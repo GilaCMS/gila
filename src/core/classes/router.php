@@ -62,7 +62,7 @@ class router
     if(self::$caching) {
       $out2 = ob_get_contents();
       //ob_end_clean();
-      $clog = new logger('log/cache.log');
+      $clog = new logger(LOG_PATH.'/cache.log');
       if(file_put_contents(self::$caching_file,$out2)){
         $clog->debug(self::$caching_file);
       }else{
@@ -190,7 +190,7 @@ class router
       $request_uri = $_SERVER['REQUEST_URI'];
     }
 
-    $dir = gila::dir('log/cache0/');
+    $dir = gila::dir(LOG_PATH.'/cache0/');
     self::$caching_file = $dir.str_replace(['/','\\'],'_',$request_uri);
     if($args !== null) self::$caching_file .= '|'.implode('|',$args);
     if($uniques !== null) {

@@ -3,7 +3,7 @@
 class cache
 {
   static function set ($name, $data, $uniques = null) {
-    $dir = gila::dir('log/cacheItem/');
+    $dir = gila::dir(LOG_PATH.'/cacheItem/');
     $caching_file = $name;
     if($uniques) $caching_file .= '|'.implode('|',$uniques);
     // save asycronimously?
@@ -13,7 +13,7 @@ class cache
   }
 
   static function get ($name, $time = 3600, $uniques = null) {
-    $dir = gila::dir('log/cacheItem/');
+    $dir = gila::dir(LOG_PATH.'/cacheItem/');
     if(!is_array($uniques)) {
         $uniques[] = $uniques; 
     }

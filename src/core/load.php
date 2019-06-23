@@ -42,7 +42,6 @@ gila::widgets([
   'paragraph'=>'core/widgets/paragraph',
   'image'=>'core/widgets/image',
   'gallery'=>'core/widgets/gallery',
-  //'text'=>'core/widgets/text',
   'social-icons'=>'core/widgets/social-icons',
   'links'=>'core/widgets/links',
   'features'=>'core/widgets/features',
