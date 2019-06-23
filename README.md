@@ -18,25 +18,31 @@
   <img src="http://gilacms.com/assets/gila-logo.png" width="200px" />
 </p>
 
+
 Gila CMS
 =
-Gila CMS is a content management system made in php using BSD 3-Clause License.
+Gila CMS is a content management system made in PHP and MySql.
 Built with MVC architecture, is very easy to develop on it any costumized solution.
 The website (http://gilacms.com)
 
 
-INSTALLATION
+Installation
 =
-1. Create a new database and a user that with all privileges in MySql
+1. Create a new database and a user with all privileges in MySql
 2. Run /install in your browser
-3. Fill all fields with the database credentials and the administrator of the website
+3. Fill all fields with the database credentials and the admin's data of the website
 4. If you get an error that config.php cannot be created make sure that the folder is writable
 5. The installation is complete
 
-[Post: How to install gila cms](http://gilacms.com/blog/4/how-to-install-gila-cms)
+
+Useful Links
+=
+[Post: How to install gila cms](https://gilacms.com/blog/4/how-to-install-gila-cms)
+
+[Documentation](https://gilacms.com/docs/)
 
 
-GET INVOLVED
+Get Involved
 =
 You are welcome to be part of the development of Gila CMS.
 First please read
@@ -47,12 +53,6 @@ First please read
 For any question/feature proposal/help needed
 [Make a new issue](https://github.com/GilaCMS/gila/issues/new)
 
+[List of Contributors](https://github.com/GilaCMS/gila/blob/master/CONTRIBUTORS.md)
 
 Gila CMS is using [Semantic Versioning](http://semver.org/)
-
-Thanks for contributing
-==
-Guillermo Céspedes Tabárez for showing how to make the redirection in nginx server.
-Nikos Papagianopoulos for the translations in German.
-Rivo Zängov for the translations in Estonian.
-ommadawn46 to find and report vulnerabilities.
