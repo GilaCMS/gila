@@ -3,6 +3,7 @@
 return [
     'text'=>[
         'type'=>'tinymce',
-        'default'=>'Paragraph'
+        'default'=>'Paragraph',
+        'allow-tags'=>true
     ]
 ];

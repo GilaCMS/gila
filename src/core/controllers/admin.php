@@ -70,12 +70,26 @@ class admin extends controller
   function update_widgetAction ()
   {
     global $db;
-    $widget_data = isset($_POST['option'])?json_encode($_POST['option']):'[]';
+    $widget_folder = 'src/'.gila::$widget[$widget->widget];
+    $fields = include $widget_folder.'/widget.php';
+    
+    foreach($_POST['option'] as $key=>$value) {
+      $allowed = $fields[$key]['allow-tags'] ?? false;
+      if($allowed==false) {
+        $_POST['option'][$key] = strip_tags($_POST['option'][$key]);
+      } else if($allowed!==true) {
+        $_POST['option'][$key] = strip_tags($_POST['option'][$key], $allowed);
+      }
+    }
+    $widget_data = isset($_POST['option']) ? json_encode($_POST['option']) : '[]';
 
     $db->query("UPDATE widget SET data=?,area=?,pos=?,title=?,active=? WHERE id=?",
-      [$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_title'],$_POST['widget_active'],$_POST['widget_id']]);
+      [$widget_data, $_POST['widget_area'], $_POST['widget_pos'],
+      strip_tags($_POST['widget_title']), $_POST['widget_active'], $_POST['widget_id']]);
     $r = $db->get("SELECT * FROM widget WHERE id=?",[$_POST['widget_id']])[0];
-    echo json_encode(['fields'=>['id','title','widget','area','pos','active'],'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],'totalRows'=>1]);
+    echo json_encode(['fields'=>['id','title','widget','area','pos','active'],
+      'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],
+      'totalRows'=>1]);
   }
 
   function usersAction ()
@@ -228,6 +242,7 @@ class admin extends controller
 
   function phpinfoAction()
   {
+    if(!FS_ACCESS) return;
     view::includeFile('admin/header.php');
     phpinfo();
     view::includeFile('admin/footer.php');

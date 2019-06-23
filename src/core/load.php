@@ -2,7 +2,7 @@
 
 global $db;
 
-$GLOBALS['version']='1.10.7';
+$GLOBALS['version']='1.10.8';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
@@ -28,14 +28,14 @@ gila::$amenu = [
     ['Widgets','admin/content/widget','icon'=>'th-large','access'=>'admin'],
     ['Packages','admin/packages','icon'=>'dropbox','access'=>'admin'],
     ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
-    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
-    ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin'],
+    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin']
   ]],
 ];
 
 if(FS_ACCESS) {
   gila::controller('fm', 'core/controllers/fm');
   gila::amenu_child('content', ['File Manager','admin/fm','icon'=>'folder','access'=>'admin']);
+  gila::amenu_child('admin', ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin']);
 }
 
 gila::widgets([

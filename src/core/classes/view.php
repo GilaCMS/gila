@@ -273,7 +273,11 @@ class view
     if(file_exists($widget_file) == false)
     {
       @$widget_file = "src/".gila::$widget[$type]."/$type.php";
-      if(!isset(gila::$widget[$type])) echo "Widget <b>".$type."</b> is not found";
+      if(!isset(gila::$widget[$type])) if($type==='text') {
+        $widget_file = "src/core/widgets/text/text.php";
+      } else {
+        echo "Widget <b>".$type."</b> is not found";
+      }
     }
 
     $dir = gila::dir(LOG_PATH.'/cache0/widgets/');
@@ -309,7 +313,11 @@ class view
     }
     if(file_exists($widget_file) == false) {
       @$widget_file = "src/".gila::$widget[$type]."/$type.php";
-      if(!isset(gila::$widget[$type])) echo "Widget <b>".$type."</b> is not found";
+      if(!isset(gila::$widget[$type])) if($type==='text') {
+        $widget_file = "src/core/widgets/text/text.php";
+      } else {
+        echo "Widget <b>".$type."</b> is not found";
+      }
     }
     if(is_object($widget_data)) $data = (array)$widget_data; else $data = &$widget_data;
     @include $widget_file;
