@@ -60,7 +60,16 @@ class db_backup
       while ($num_rows>$row_n) {
         $row_inx = 0;
         $result=false;
-        $result = $db->query('SELECT * FROM '.$table.' LIMIT '.$row_n.',100;');
+        if($table=='option') {
+          $result = $db->query('SELECT * FROM `option`
+            WHERE `option` NOT LIKE "%_key"
+            AND `option` NOT LIKE "%_token"
+            AND `option` NOT LIKE "%Key"
+            AND `option` NOT LIKE "%Token"
+            LIMIT '.$row_n.',100;');
+        } else {
+          $result = $db->query('SELECT * FROM '.$table.' LIMIT '.$row_n.',100;');
+        }
 
         if($result) {
           $fline = '';
