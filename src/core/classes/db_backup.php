@@ -12,7 +12,7 @@ class db_backup
     if (gForm::posted('db_backup')) {
       $this->backup_tables();
     }
-    if (isset($_GET['csrf']) && gForm::verifyToken('db_backup2', $_GET['csrf'])) {
+    if (isset($_GET['csrf']) && gForm::verifyToken($_GET['csrf'], 'db_backup2')) {
       if (isset($_GET['source'])) $this->source($_GET['source']);
       if (isset($_GET['download'])) {
         $this->download($_GET['download']);
@@ -132,7 +132,7 @@ class db_backup
   function download($file) {
     $file = basename($file);
     if(file_exists($this->dir.$file)) {
-      header("Content-Disposition:attachment;filename='$file'");
+      header("Content-Disposition:attachment;filename=$file");
       readfile($this->dir.$file);
     } else {
       http_response_code(404);

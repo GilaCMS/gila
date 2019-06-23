@@ -19,7 +19,7 @@ class gForm
     return false;
   }
 
-  static function verifyToken($name = '*') {
+  static function verifyToken($check, $name = '*') {
     foreach(session::key('formToken') as $key=>$value) {
       if ($key==$name && $value===$check) return true;
     }
