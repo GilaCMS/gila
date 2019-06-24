@@ -363,7 +363,7 @@ class view
     if(strtolower($pathinfo['extension'])=='svg') {
       include $src;
     } else {
-      return '<img src="'.self::thumb($src, $prefix, $max).'">';
+      return '<img src="'.urlencode(self::thumb($src, $prefix, $max)).'">';
     }
   }
 

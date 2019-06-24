@@ -170,7 +170,7 @@ class gForm
       },
       "list"=> function($name,$field,$ov) {
         $fieldset = htmlspecialchars(json_encode(array_keys($field['fields'])));
-        $value = htmlspecialchars($ov);
+        $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldset="'.$fieldset.'" value="'.$value.'"></input-list>';
       }
     ];

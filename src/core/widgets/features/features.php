@@ -7,7 +7,7 @@
         <h3><?=$feature[1]?></h3>
         <p><?=$feature[2]?></p>
         <?php if($feature[3] != '') {
-            echo '<a href="'.$feature[3].'">Learn More</a>';
+            echo '<a href="'.urlencode($feature[3]).'">Learn More</a>';
         } ?>
     </div>
 <?php } ?>

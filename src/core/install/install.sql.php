@@ -109,6 +109,6 @@ $wtext2 = '{"text":"<ul><li><a href=\\\\\"https:\\\/\\\/www.facebook.com\\\/gila
 $wtext3 = '{"text":"<ul><li><a href=\\\"https:\\\/\\\/gilacms.com\\\/docs\\\" target=\\\"_blank\\\">Documentation<\\\/a><\\\/li><li>Join <a href=\\\"https:\\\/\\\/gitter.im\\\/GilaCMS\\\/Lobby\\\" target=\\\\\"_blank\\\">Gitter<\\\/a><\\\/li><li>Join <a href=\\\"https:\\\/\\\/join.slack.com\\\/t\\\/gilacms\\\/shared_invite\\\/enQtMzU5OTg5OTUzMDQ3LWFiZThjMTliOGQ0NWQyOGRiZTM2ZDlmYTkxODAzZWRlOWJmNmVjNDZkYThjODRjZjdkMmNmOTU3MWUxMDlhZTc\\\" target=\\\"_blank\\\">Slack<\\\/a><\\\/li><li><a href=\\\"https:\\\/\\\/groups.google.com\\\/forum\\\/#!forum\\\/gilacms\\\" target=\\\"_blank\\\">Google Groups<\\\/a><\\\/li><\\\/ul>"}';
 
 $link->query("INSERT INTO widget(id,widget,title,area,active,pos,data)
-VALUES(1,'text','Start Blogging','dashboard',1,1,'".$wtext1."'),
-(2,'text','Support GilaCMS','dashboard',1,2,'".$wtext2."'),
-(3,'text','Get Help','dashboard',1,3,'".$wtext3."');");
+VALUES(1,'paragraph','Start Blogging','dashboard',1,1,'".$wtext1."'),
+(2,'paragraph','Support GilaCMS','dashboard',1,2,'".$wtext2."'),
+(3,'paragraph','Get Help','dashboard',1,3,'".$wtext3."');");
