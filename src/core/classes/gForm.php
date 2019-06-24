@@ -19,7 +19,7 @@ class gForm
     return false;
   }
 
-  static function verifyToken($name = '*') {
+  static function verifyToken($check, $name = '*') {
     foreach(session::key('formToken') as $key=>$value) {
       if ($key==$name && $value===$check) return true;
     }
@@ -170,7 +170,7 @@ class gForm
       },
       "list"=> function($name,$field,$ov) {
         $fieldset = htmlspecialchars(json_encode(array_keys($field['fields'])));
-        $value = htmlspecialchars($ov);
+        $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldset="'.$fieldset.'" value="'.$value.'"></input-list>';
       }
     ];

@@ -133,7 +133,7 @@ class package
         $zip->extractTo($tmp_name);
         $zip->close();
         if(file_exists($target)) {
-          rename($target, gila::dir('log/previous-packages/'.date("Y-m-d H:i:s").' '.$package));
+          rename($target, gila::dir(LOG_PATH.'/previous-packages/'.date("Y-m-d H:i:s").' '.$package));
         }
         $unzipped = scandir($tmp_name);
         if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
@@ -142,7 +142,7 @@ class package
 
         $update_file = 'src/'.$package.'/update.php';
         if(file_exists($update_file)) include $update_file;
-        unlink('log/load.php');
+        unlink(LOG_PATH.'/load.php');
         unlink($localfile);
         echo 'ok';
         if(!$_REQUEST['g_response']) {
@@ -196,7 +196,7 @@ class package
           ON DUPLICATE KEY UPDATE `value`='$value';";
         $db->query($ql);
       }
-      if(gila::config('env')=='pro') unlink('log/load.php');
+      if(gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
       exit;
     }
   }
@@ -230,7 +230,7 @@ class package
   static function updateLoadFile()
   {
     global $db;
-    $file = "log/load.php";
+    $file = LOG_PATH.'/load.php';
     $contents = file_get_contents('src/core/load.php');//"/*--- Load file ---*/";
     foreach(gila::packages() as $package) {
       $handle = @fopen("src/$package/load.php", "r");
@@ -283,10 +283,10 @@ class package
           $packages2update[$ipac] = $versions[$ipac];
       }
       if($packages2update != [])
-        file_put_contents('log/packages2update.json',json_encode($packages2update,JSON_PRETTY_PRINT));
+        file_put_contents(LOG_PATH.'/packages2update.json',json_encode($packages2update,JSON_PRETTY_PRINT));
     }
 
-    if(file_exists('log/packages2update.json')) return true;
+    if(file_exists(LOG_PATH.'/packages2update.json')) return true;
     return false;
   }
 

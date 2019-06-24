@@ -1,3 +1,5 @@
+rootVueGTables = []
+
 Vue.component('g-table', {
   template: '<div class="g-table">\
     <div v-if="edititem==0" class="g-table-head">\
@@ -31,14 +33,13 @@ Vue.component('g-table', {
     <div v-if="edititem" class="edititem">\
       <span v-if="edititem>0" class="btn" @click="edititem=0"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> \
       <label class="g-label" v-html="table.title"></label>\
-      <form :id="name+\'-edit-item-form\'" class="g-form">\
-        <div v-html="edit_html"></div>\
-        <div>\
-          <a v-if="edititem==\'new\'" class="btn btn-primary" @click="update()" v-html="word(\'Create\')"></a>\
-          <a v-else class="btn btn-primary" @click="update()" v-html="word(\'Update\')"></a>\
-          <a class="btn btn-white" @click="edititem=false" v-html="word(\'Cancel\')"></a>\
-        </div>\
+      <form :id="name+\'-edit-item-form\'" class="g-form" v-html="edit_html">\
       </form>\
+      <div>\
+        <a v-if="edititem==\'new\'" class="btn btn-primary" @click="update()" v-html="word(\'Create\')"></a>\
+        <a v-else class="btn btn-primary" @click="update()" v-html="word(\'Update\')"></a>\
+        <a class="btn btn-white" @click="edititem=false" v-html="word(\'Cancel\')"></a>\
+      </div>\
     </div>\
     <g-table v-if="edititem>0" v-for="(child,childkey) in table.children" :gtype="childkey" gchild=1 :gtable="JSON.stringify(child.table)" :gfields="JSON.stringify(child.list)" :gfilters="\'&amp;\'+child.parent_id+\'=\'+edititem"></g-table>\
 \
@@ -290,6 +291,7 @@ Vue.component('g-table', {
   },
   mounted: function() {
     this.load_page({page:1})
+    rootVueGTables.push(this)
   }
 })
 
@@ -305,19 +307,18 @@ gtableCommand['edit'] = {
     g.get('cm/edit_form/'+_this.name+'?id='+irow,function(data){
       _this.edit_html = data
       g.loader(false)
-      //edit_item_app.$forceUpdate()
     })
   }
 }
 
-gtableCommand['edit_popup'] = { //unfinished
+gtableCommand['edit_popup'] = {
   fa: "pencil",
   fn: function(table,irow) {
   href='cm/edit_form/'+table.name+'?id='+irow;
     g.ajax(href,function(data){
-      g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'edit_item'})
+      g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
-        el: '#edit_item_form'
+        el: '#'+table.name+'-edit-item-form'
       })
       textareas=g('.codemirror-js').all
       for(i=0;i<textareas.length;i++) {
@@ -326,6 +327,34 @@ gtableCommand['edit_popup'] = { //unfinished
     })
   }
 }
+
+g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
+  form = g('#gila-popup form').all[0]
+  data = new FormData(form);
+  t = form.getAttribute('data-table')
+  id = form.getAttribute('data-id')
+  for(i=0; i<rootVueGTables.length; i++) if(rootVueGTables[i].name == t) {
+    _this = rootVueGTables[i]
+  }
+
+  if(id=='new') {
+    url = 'cm/update_rows/'+t
+  } else {
+    url = 'cm/update_rows/'+t+'?id='+id
+  }
+  g.ajax({method:'post',url:url,data:data,fn:function(data) {
+    data = JSON.parse(data)
+    if(id=='new') {
+      _this.data.rows.unshift(data.rows[0])
+    } else {
+      _this.update_row(data.rows[0])
+    }
+    _this.$forceUpdate()
+  }})
+
+  g('#gila-popup').parent().remove();
+}};
+
 
 gtableCommand['clone'] = {
   fa: "copy",
@@ -424,10 +453,10 @@ g_tinymce_options = {
   theme: 'modern',
   extended_valid_elements: 'script,div[v-for|v-if|v-model|style|class|id|data-load]',
   plugins: [
-    'lists link image charmap hr anchor pagebreak',
+    'lists link image hr anchor pagebreak',
     'searchreplace wordcount visualchars code',
     'insertdatetime media nonbreaking table contextmenu ',
-    'template paste textcolor colorpicker textpattern codesample'
+    'template paste textcolor textpattern codesample'
   ],
   toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
   file_picker_callback: function(cb, value, meta) {

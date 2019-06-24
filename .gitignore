@@ -38,5 +38,6 @@ tests/jmeter.log
 !tmp/index.html
 !tmp/.htaccess
 
+!assets/.htaccess
 !assets/gila-logo.png
 !assets/gila-logo.svg

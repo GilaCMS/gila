@@ -4,10 +4,10 @@
 <?php foreach(json_decode(@$widget_data->features) as $feature) { ?>
     <div>
         <?=view::img($feature[0], 300)?>
-        <h3><?=$feature[1]?></h3>
-        <p><?=$feature[2]?></p>
+        <h3><?=htmlentities($feature[1])?></h3>
+        <p><?=htmlentities($feature[2])?></p>
         <?php if($feature[3] != '') {
-            echo '<a href="'.$feature[3].'">Learn More</a>';
+            echo '<a href="'._url($feature[3]).'">Learn More</a>';
         } ?>
     </div>
 <?php } ?>

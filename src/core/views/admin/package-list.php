@@ -82,12 +82,13 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
       } else $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
     }
     if(isset($p->options)) {
-      $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>"; //&nbsp;".__('Options')."
+      $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>";
     }
     if(@$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version) {
       if(version_compare($p->version,$current_version)>0) $table .= dl_btn($p->package, 'warning', __('Upgrade'));
     }
-    $table .= "<td><a href='admin/fm/?f=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
+    $table .= "<td>";
+    if(FS_ACCESS) $table .= "<a href='admin/fm/?f=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
   } else {
     $table .= dl_btn($p->package, 'success', __('Download')).'<td>';
   }

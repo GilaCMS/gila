@@ -23,7 +23,7 @@ if($res) {
     if($q=="SHOW TABLES") {
       foreach($row as $key=>$v) echo '<td><a href="admin/sql?query=SELECT * FROM `'.$v.'` LIMIT 30;">'.$v.'</a>';
     } else{
-      foreach($row as $key=>$v) echo '<td>'.$v;
+      foreach($row as $key=>$v) echo '<td>'.htmlentities($v);
     }
   }
   echo '</table>';

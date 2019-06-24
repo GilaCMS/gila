@@ -313,7 +313,7 @@ class gila
     @gila::$option[$option] = $value;
     $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
     $db->query($ql);
-    if(gila::config('env')=='pro') unlink('log/load.php');
+    if(gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
   }
 
   /**
@@ -335,7 +335,7 @@ class gila
   */
   static function loadMt() {
     if(!isset(self::$mt)) self::$mt = [];
-    self::$mt = @include 'log/mt.php';
+    self::$mt = @include LOG_PATH.'/mt.php';
   }
 
   /**
@@ -347,7 +347,7 @@ class gila
     if(is_array($arg)) {
       foreach($arg as $a) self::$mt[$a] = time();
     } else self::$mt[$arg] = time();
-    file_put_contents('log/mt.php', '<?php return '.var_export(self::$mt,true).';');
+    file_put_contents(LOG_PATH.'/mt.php', '<?php return '.var_export(self::$mt,true).';');
   }
 
   static function canonical($str) {
@@ -487,4 +487,8 @@ function __($key, $alt = null) {
   }
   if($alt!=null) return $alt;
   return $key;
+}
+
+function _url($url) {
+  return str_replace(['"'], ['\"'], $url);
 }

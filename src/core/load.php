@@ -2,14 +2,13 @@
 
 global $db;
 
-$GLOBALS['version']='1.10.7';
+$GLOBALS['version']='1.10.8';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
   'cm'=> 'core/controllers/cm',
   'login'=> 'core/controllers/login',
   'webhook'=> 'core/controllers/webhook',
-  'fm'=> 'core/controllers/fm',
   'lzld'=> 'core/controllers/lzld'
 ]);
 
@@ -20,7 +19,6 @@ gila::$amenu = [
     ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin editor'],
     ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin editor'],
     ['Media','admin/media','icon'=>'image','access'=>'admin editor'],
-    ['File Manager','admin/fm','icon'=>'folder','access'=>'admin'],
     ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
   ]],
   ['Posts','admin/content/user-post','icon'=>'pencil','access'=>'writer'],
@@ -30,16 +28,20 @@ gila::$amenu = [
     ['Widgets','admin/content/widget','icon'=>'th-large','access'=>'admin'],
     ['Packages','admin/packages','icon'=>'dropbox','access'=>'admin'],
     ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
-    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
-    ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin'],
+    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin']
   ]],
 ];
+
+if(FS_ACCESS) {
+  gila::controller('fm', 'core/controllers/fm');
+  gila::amenu_child('content', ['File Manager','admin/fm','icon'=>'folder','access'=>'admin']);
+  gila::amenu_child('admin', ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin']);
+}
 
 gila::widgets([
   'paragraph'=>'core/widgets/paragraph',
   'image'=>'core/widgets/image',
   'gallery'=>'core/widgets/gallery',
-  'text'=>'core/widgets/text',
   'social-icons'=>'core/widgets/social-icons',
   'links'=>'core/widgets/links',
   'features'=>'core/widgets/features',

@@ -18,6 +18,11 @@ class admin extends controller
   function indexAction ()
   {
     global $db;
+    if(router::get('action', 1)) {
+      http_response_code(404);
+      view::renderAdmin('404.php');
+      return;
+    }
     $wfolders=['log','themes','src','tmp','assets'];
     foreach($wfolders as $wf) if(is_writable($wf)==false) {
       view::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
@@ -65,12 +70,28 @@ class admin extends controller
   function update_widgetAction ()
   {
     global $db;
-    $widget_data = isset($_POST['option'])?json_encode($_POST['option']):'[]';
+    $widget_folder = 'src/'.gila::$widget[$widget->widget];
+    $fields = include $widget_folder.'/widget.php';
+    
+    foreach($_POST['option'] as $key=>$value) {
+      $allowed = $fields[$key]['allow-tags'] ?? false;
+      if($allowed==false) {
+        if(!json_decode($_POST['option'][$key])) {
+          $_POST['option'][$key] = strip_tags($_POST['option'][$key]);
+        }
+      } else if($allowed!==true) {
+        $_POST['option'][$key] = strip_tags($_POST['option'][$key], $allowed);
+      }
+    }
+    $widget_data = isset($_POST['option']) ? json_encode($_POST['option']) : '[]';
 
     $db->query("UPDATE widget SET data=?,area=?,pos=?,title=?,active=? WHERE id=?",
-      [$widget_data,$_POST['widget_area'],$_POST['widget_pos'],$_POST['widget_title'],$_POST['widget_active'],$_POST['widget_id']]);
+      [$widget_data, $_POST['widget_area'], $_POST['widget_pos'],
+      strip_tags($_POST['widget_title']), $_POST['widget_active'], $_POST['widget_id']]);
     $r = $db->get("SELECT * FROM widget WHERE id=?",[$_POST['widget_id']])[0];
-    echo json_encode(['fields'=>['id','title','widget','area','pos','active'],'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],'totalRows'=>1]);
+    echo json_encode(['fields'=>['id','title','widget','area','pos','active'],
+      'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],
+      'totalRows'=>1]);
   }
 
   function usersAction ()
@@ -172,18 +193,11 @@ class admin extends controller
       if($path[0]=='.') $path='assets';
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = $_FILES['uploadfiles']['name'];
-      if(is_array($tmp_file)) {
-        for($i=0;i<count($tmp_file);$i++) if(in_array(pathinfo($tmp_file, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
-          if(!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
-            echo "Error: could not upload file!<br>";
-          }
-        } else echo "Error: not a media file!<br>";
-      }else{
+      if(in_array(pathinfo($name, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
         if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
           echo "Error: could not upload file!<br>";
         }
-      }
-
+      } else echo "<div class='alert error'>Error: not a media file!</div>";
     }
     self::mediaAction();
   }
@@ -201,9 +215,14 @@ class admin extends controller
 
   function fmAction()
   {
-    $file=realpath(htmlentities($_GET['f']));
-    view::set('filepath',$file);
-    view::renderAdmin('admin/fm-index.php');
+    if(FS_ACCESS) {
+      $file=realpath(htmlentities($_GET['f']));
+      view::set('filepath',$file);
+      view::renderAdmin('admin/fm-index.php');
+    } else {
+      http_response_code(404);
+      view::renderAdmin('404.php');
+    }
   }
 
   function sqlAction()
@@ -225,6 +244,7 @@ class admin extends controller
 
   function phpinfoAction()
   {
+    if(!FS_ACCESS) return;
     view::includeFile('admin/header.php');
     phpinfo();
     view::includeFile('admin/footer.php');
