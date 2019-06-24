@@ -76,7 +76,9 @@ class admin extends controller
     foreach($_POST['option'] as $key=>$value) {
       $allowed = $fields[$key]['allow-tags'] ?? false;
       if($allowed==false) {
-        $_POST['option'][$key] = strip_tags($_POST['option'][$key]);
+        if(!json_decode($_POST['option'][$key])) {
+          $_POST['option'][$key] = strip_tags($_POST['option'][$key]);
+        }
       } else if($allowed!==true) {
         $_POST['option'][$key] = strip_tags($_POST['option'][$key], $allowed);
       }

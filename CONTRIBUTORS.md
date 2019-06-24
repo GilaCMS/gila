@@ -1,6 +1,8 @@
 # Gila CMS contributors (sorted alphabetically)
 
 
+Aaryan Saharan
+
 Alexandre Maiseret
 
 Bot Kotaku
@@ -12,8 +14,6 @@ Nikos Papagianopoulos
 Rivo Zängov
 
 Vasileios Zoumpourlis
-
-aaryansaharan
 
 hjxfire
 

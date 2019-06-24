@@ -488,3 +488,7 @@ function __($key, $alt = null) {
   if($alt!=null) return $alt;
   return $key;
 }
+
+function _url($url) {
+  return str_replace(['"'], ['\"'], $url);
+}
