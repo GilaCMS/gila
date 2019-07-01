@@ -32,6 +32,11 @@ return [
       'style'=>'width:8%',
       'type'=>'checkbox','edit'=>true
     ],
+    'template'=> [
+      'title'=>'Template',
+      'template'=>'page',
+      'type'=>'template','edit'=>true
+    ],
     'content'=> [
       'title'=>'Content','list'=>false,'edit'=>true,
       'type'=>'textarea', 'input-type'=>'tinymce', 'allow-tags'=>true

@@ -38,6 +38,7 @@ $link->query('CREATE TABLE IF NOT EXISTS `page` (
   `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
   `content` text,
   `publish` int(1) DEFAULT NULL,
+  `template` varchar(30) DEFAULT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `slug` (`slug`),

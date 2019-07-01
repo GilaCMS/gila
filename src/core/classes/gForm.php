@@ -172,6 +172,16 @@ class gForm
         $fieldset = htmlspecialchars(json_encode(array_keys($field['fields'])));
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldset="'.$fieldset.'" value="'.$value.'"></input-list>';
+      },
+      "template"=> function($name,$field,$ov) {
+        global $db;
+        $html = '<select class="g-input" name="'.$name.'">';
+        $templates = view::getTemplates($field['template']);
+        $html .= '<option value=""'.(''==$ov?' selected':'').'>'.'[Default]'.'</option>';
+        foreach($templates as $template) {
+          $html .= '<option value="'.$template.'"'.($template==$ov?' selected':'').'>'.ucwords($template).'</option>';
+        }
+        return $html . '</select>';
       }
     ];
     /* CONTENT

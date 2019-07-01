@@ -160,7 +160,13 @@ class Blog extends controller
         $r = mysqli_fetch_array($res);
         view::set('img',$r['img']);
         view::meta('og:image',$r['img']);
-      } else view::set('img','');
+        view::meta('twitter:image:src',gila::base_url($r['img']));
+      } else if(gila::config('og-image')){
+        view::meta('og:image',gila::config('og-image'));
+        view::meta('twitter:image:src',gila::base_url(gila::config('og-image')));
+      } else {
+        view::set('img','');
+      }
 
       $res = $db->query("SELECT username FROM user WHERE id='$user_id';");
       if ($res) {
@@ -177,7 +183,11 @@ class Blog extends controller
       if (($r = page::getByIdSlug($id)) && ($r['publish']==1)) {
         view::set('title',$r['title']);
         view::set('text',$r['page']);
-        view::render('page.php');
+        if($r['template']=='') {
+          view::render('page.php');
+        } else {
+          view::render('page--'.$r['template'].'.php');
+        }
       } else {
         http_response_code(404);
         view::render('404.php');

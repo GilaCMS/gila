@@ -439,6 +439,31 @@ class view
     return view::thumb($src,'xl/',1200);
   }
 
+  static function getTemplates($template) {
+    $options = [];
+
+    foreach(self::$view_file as $key => $value) {
+      $exploded = explode('--', $key);
+      if($exploded[0] == $template){
+        $options[] = $exploded[1];
+      }
+    }
+
+    $files = glob(self::getThemePath().'/'.$template.'--*');
+    foreach($files as $file) {
+      $base = explode('--', $file)[1];
+      $options[] = explode('.', $base)[0];
+    }
+
+    $files = glob('src/core/views/'.$template.'--*');
+    foreach($files as $file) {
+      $base = explode('--', $file)[1];
+      $options[] = explode('.', $base)[0];
+    }
+
+    return array_unique($options);//;
+  }
+
   /**
   * $srcset = view::thumb_srcset($src);
   * @example background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);

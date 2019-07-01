@@ -63,7 +63,7 @@
           <i class="fa fa-user"></i> <?=session::key('user_name')?> <i class="fa fa-angle-down"></i>
           <ul class="text-align-left" style="right:0">
             <li><a href="admin/profile"><?=__("My Profile")?></a></li>
-            <li><a href="admin/logout"><?=__("Loggout")?></a></li>
+            <li><a href="admin/logout"><?=__("Logout")?></a></li>
           </ul>
         </li>
         </ul>

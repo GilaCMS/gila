@@ -1,3 +1,3 @@
 
-<h3>Tag results</h3>
+<h3>Tag: <i><?=$c->tag?></i></h3>
 <?php include 'blog-list.php'; ?>
