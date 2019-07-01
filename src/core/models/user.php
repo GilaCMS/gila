@@ -54,6 +54,14 @@ class user
     return $db->getList("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';", [$value]);
   }
 
+  static function getByMeta($key, $value)
+  {
+    global $db;
+    $res = $db->get("SELECT * FROM user WHERE id=(SELECT user_id FROM usermeta WHERE vartype=? AND value=? LIMIT 1)", [$key, $value]);
+    if($res) return $res[0];
+    return false;
+  }
+
   static function getByEmail($email)
   {
     global $db;
