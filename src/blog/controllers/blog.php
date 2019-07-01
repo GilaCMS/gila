@@ -183,7 +183,7 @@ class Blog extends controller
       if (($r = page::getByIdSlug($id)) && ($r['publish']==1)) {
         view::set('title',$r['title']);
         view::set('text',$r['page']);
-        if($r['template']=='') {
+        if($r['template']==''||$r['template']===null) {
           view::render('page.php');
         } else {
           view::render('page--'.$r['template'].'.php');

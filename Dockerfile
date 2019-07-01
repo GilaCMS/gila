@@ -12,8 +12,8 @@ RUN wget https://github.com/GilaCMS/gila/archive/master.zip
 RUN unzip master.zip
 RUN mv gila-master/* /var/www/html
 RUN mv gila-master/.htaccess /var/www/html
-RUN rm /var/www/html/index.html
 RUN chmod 777 -R /var/www/html
+RUN rm /var/www/html/index.html
 RUN apt-get clean
 
 EXPOSE 80
