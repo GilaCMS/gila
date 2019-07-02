@@ -23,7 +23,7 @@ if(version_compare($GLOBALS['version'],'1.9.0') < 0) {
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 }
 
-if(version_compare($GLOBALS['version'],'1.10.8') < 0) {
+if(version_compare($GLOBALS['version'],'1.10.9') < 0) {
   global $db;
   $db->query("ALTER TABLE `page` ADD COLUMN `template` varchar(30) DEFAULT NULL;");
   file_put_contents("lib/vue/vue-draggable.min.js",file_get_contents("src/core/lib/vue-draggable.min.js"));
