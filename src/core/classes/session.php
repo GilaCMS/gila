@@ -9,7 +9,6 @@ class session
 
   static function start ()
   {
-    //global $db;
     if(self::$started==true) return;
     //ini_set("session.save_handler", "files");
     //ini_set("session.save_path", __DIR__."/../../../log/sessions");
@@ -19,7 +18,7 @@ class session
     try {
       @session_start();
     } catch (Exception $e) {
-
+      trigger_error($e->getMessage());
     }
     self::$started = true;
     session::define(['user_id'=>0]);
@@ -41,12 +40,19 @@ class session
       }
     } else {
       if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
-      foreach (user::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
-        $usr = user::getById($user_id);
-        if ($usr && $usr['active']==1) {
-        session::user($usr['id'], $usr['username'], $usr['email'], 'By cookie');
+        foreach (user::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
+          $usr = user::getById($user_id);
+          if ($usr && $usr['active']==1) {
+            session::user($usr['id'], $usr['username'], $usr['email'], 'By cookie');
+          }
         }
-      }
+      } else {
+        if($token=$_REQUEST['token'] || $token = $_SERVER['HTTP_TOKEN']) {
+          $usr = user::getByMeta(‘token’, $token);
+          if($usr) {
+            session::user($usr['id'], $usr['username'], $usr['email'], 'By token');
+          }
+        }
       }
     }
   }

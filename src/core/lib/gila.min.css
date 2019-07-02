@@ -118,7 +118,10 @@ script{display:none!important}
 
 .width-auto{width:auto}
 .fullwidth{width:100%}
-
+.screenwidth {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
 
 .closebtn{
   margin-left:15px;
@@ -467,7 +470,6 @@ input:focus + .helptext{
 }
 
 @media only screen{
-
   .gila-popup-s, .gila-popup, .gila-popup-m, .gila-popup-l{
     top:10%;
     margin-left:10%;
@@ -521,7 +523,6 @@ input:focus + .helptext{
 
 
 @media only screen and (min-width:300px){
-
   .gs-1{width:8.33%;}
   .gs-2{width:16.66%;}
   .gs-3{width:25%;}
@@ -537,7 +538,6 @@ input:focus + .helptext{
 }
 
 @media only screen and (min-width:600px){
-
   .gm-1{width:8.33%;}
   .gm-2{width:16.66%;}
   .gm-3{width:25%;}
@@ -551,8 +551,8 @@ input:focus + .helptext{
   .gm-11{width:91.66%;}
   .gm-12{width:100%;}
 }
-@media only screen and (min-width:768px){
 
+@media only screen and (min-width:768px){
   .gl-1{width:8.33%;}
   .gl-2{width:16.66%;}
   .gl-3{width:25%;}

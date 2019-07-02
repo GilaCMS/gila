@@ -1,13 +1,17 @@
 .five-post{
   display:grid;
+  gap: var(--main-padding);
+  padding:0;
 }
 .five-post li:not(:first-child){
   display: grid !important;
   grid-template-columns: 1fr 2fr;
   gap:5px;
-}.five-post {
-  display:grid;
-  gap: var(--main-padding)
+}
+.five-post li{
+  display:block;
+  list-style-type:none;
+  padding:5px
 }
 
 .five-post a {

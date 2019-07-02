@@ -6,7 +6,7 @@ class page
   static function getById($id)
   {
     global $db;
-    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug FROM `page` WHERE id=?;",[$id]);
+    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug,template FROM `page` WHERE id=?;",[$id]);
     if($res) return $r = mysqli_fetch_array($res);
     return false;
   }
@@ -15,7 +15,7 @@ class page
   static function getByIdSlug($id)
   {
     global $db;
-    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug FROM `page` WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
+    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug,template FROM `page` WHERE publish=1 AND (id=? OR slug=?);",[$id,$id]);
     if($row = mysqli_fetch_array($res)) {
       if($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
