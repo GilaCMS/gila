@@ -56,6 +56,7 @@ class session
     session::key('user_id',$id);
     session::key('user_name',$name);
     session::key('user_email',$email);
+    self::$user_id = $id;
     if($msg!==null) {
       $session_log = new logger(LOG_PATH.'/sessions.log');
       $session_log->info($msg,['user_id'=>$id, 'email'=>$email]);
