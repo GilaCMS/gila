@@ -23,7 +23,6 @@ Gila CMS
 ========
 Gila CMS is a content management system made in PHP and MySql.
 Built with MVC architecture, is very easy to develop on it any costumized solution.
-The website (http://gilacms.com)
 
 
 Installation
@@ -34,6 +33,20 @@ Installation
 4. If you get an error that config.php cannot be created make sure that the folder is writable
 5. The installation is complete
 
+Run with Docker
+===============
+Prepare the database
+```
+docker run --name mariadb1 -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=g_db -e MYSQL_USER=g_user -e MYSQL_PASSWORD=password -d mariadb
+```
+Get the mariadb1 ip (Database hostname)
+```
+sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb1
+```
+Run the container at http://localhost
+```
+docker run  -d -p 80:80 vzuburlis/gilacms
+```
 
 Useful Links
 ============
