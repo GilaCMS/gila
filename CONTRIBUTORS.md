@@ -9,7 +9,11 @@ Bot Kotaku
 
 Guillermo Céspedes Tabárez
 
+Mitchell Urgero
+
 Nikos Papagianopoulos
+
+Ricky
 
 Rivo Zängov
 

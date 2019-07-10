@@ -6,6 +6,7 @@ class session
 {
   private static $started = false;
   private static $waitForLogin = 0;
+  private static $user_id;
 
   static function start ()
   {
@@ -44,13 +45,6 @@ class session
           $usr = user::getById($user_id);
           if ($usr && $usr['active']==1) {
             session::user($usr['id'], $usr['username'], $usr['email'], 'By cookie');
-          }
-        }
-      } else {
-        if($token=$_REQUEST['token'] || $token = $_SERVER['HTTP_TOKEN']) {
-          $usr = user::getByMeta(‘token’, $token);
-          if($usr) {
-            session::user($usr['id'], $usr['username'], $usr['email'], 'By token');
           }
         }
       }
@@ -125,8 +119,19 @@ class session
   */
   static function user_id ()
   {
-    self::start();
-    return $_SESSION[session::md5('user_id')];
+    if(isset(self::$user_id)) return self::$user_id;
+    self::$user_id = 0;
+    $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
+    if($token) {
+      $usr = user::getByMeta(‘token’, $token);
+      if($usr) {
+        self::$user_id = $usr['id'];
+      }
+    } else {
+      self::start();
+      self::$user_id = $_SESSION[session::md5('user_id')];
+    }
+    return self::$user_id;
   }
 
   /**

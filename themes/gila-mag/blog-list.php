@@ -2,6 +2,7 @@
 <!-- Posts -->
 <div class="row">
     <div class="gm-9 wrapper" style="border-right: 1px dashed #ccc">
+    <?php view::widget_area('frontpage'); ?>
     <?php foreach ($c->posts as $r) { ?>
     <div class="gm-12 row gap-8px post-review">
             <?php
