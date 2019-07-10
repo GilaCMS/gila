@@ -364,4 +364,15 @@ class gTable
     }
     return $fields;
   }
+
+  function find($filters, $select = null, $limit = null)
+  {
+    return new gRow(this, $filters, $select, $limit);
+  }
+
+  function findOne($filters, $select = null)
+  {
+    return new gRow(this, $filters, $select, 1);
+  }
+
 }
