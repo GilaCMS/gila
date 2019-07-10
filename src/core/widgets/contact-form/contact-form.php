@@ -1,7 +1,7 @@
 <?php
 if (gForm::posted('contact-form'.$widget_data->widget_id) && event::get('recaptcha',true)) {
-  new sendmail(["post"=>["name","email","subject"]]);
-  view::alert('success', $widget_data->success_msg);
+  new sendmail(["post"=>["name","email","message"]]);
+  view::alert('success', htmlentities($widget_data->success_msg));
 }
 ?>
 
