@@ -11,9 +11,9 @@ class post
   static function getByIdSlug($id)
   {
     global $db;
-    $ql="SELECT id,description,title,post,publish,slug,updated,
+    $ql="SELECT id,description,title,post,publish,slug,updated,user_id,
       (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
-      (SELECT GROUP_CONCAT(b.value SEPARATOR ', ') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
+      (SELECT GROUP_CONCAT(b.value SEPARATOR ',') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
       FROM post WHERE (id=? OR slug=?)";
     $res = $db->query($ql,[$id,$id]);
     if($row = mysqli_fetch_array($res)) {

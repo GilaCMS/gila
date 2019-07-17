@@ -1,8 +1,17 @@
 {
   "name":"Blog",
-  "version":"1.3.0",
+  "version":"1.4.0",
   "description":"Adds the blog controller.",
   "lang":"core/lang/admin/",
+  "options": {
+    "twitter-card": {
+      "type": "select",
+      "options": {
+        "summary": "Summary", "summary_large_image": "Large Image"
+      }
+    },
+    "twitter-site": []
+  },
   "require": {
     "core": "1.10.9"
   }
