@@ -51,15 +51,15 @@ class admin extends controller
     }
   }
 
-  function contentAction()
+  function contentAction($type = null)
   {
-    $type = router::get('type',1);
-    if(!isset(gila::$content[$type])) {
-      http_response_code(404);
-      view::renderAdmin('404.php');
-      return;
-    }
+//    $type = router::get('type',1);
     if($type != null) {
+      if(!isset(gila::$content[$type])) {
+        http_response_code(404);
+        view::renderAdmin('404.php');
+        return;
+      }
       $src = explode('.',gila::$content[$type])[0];
       view::set('table', $type);
       view::set('tablesrc', $src);

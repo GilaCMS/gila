@@ -38,6 +38,12 @@ return [
     ],
     "active"=> ['type'=>'checkbox','title'=>'Active']
   ],
+  'children'=> [
+    'post'=> [
+      'parent_id'=>'user_id',
+      'list'=>['id','title']
+    ]
+  ],
   "oncreate"=>function(&$row){
       $row['pass'] = gila::hash($row['pass']);
   },

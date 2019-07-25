@@ -137,43 +137,53 @@ class gTable
     return 0;
   }
 
-  function orderby($id=null, $v='desc') {
-    if($orderby = router::request('orderby')) {
-      $o = explode('_',$orderby);
-      if(array_key_exists($o[0], $this->table['fields'])) {
-        $id=$o[0];
-        if(isset($o[1])) {
-          if($o[1]=='a') $v='asc';
-          if($o[1]=='d') $v='desc';
-        }
-      }
+  function orderby($orders = null) {
+    if(!$orders) {
+      $orders = router::request('orderby', []);
     }
-    if($id==null) $id = $this->id();
-    return " ORDER BY $id $v";
+    $orders = is_string($orders) ? explode(',', $orders) : $orders;
+    $_orders = [];
+    if(is_array($orders)) foreach($orders as $key=>$order) {
+      if(!array_key_exists($key, $this->table['fields'])) continue;
+      $o = is_numeric($key) ? explode('_', $orderby) : [$key, $order];
+      if($o[1]=='a') $o[1]='ASC';
+      if($o[1]=='d') $o[1]='DESC';
+      $_orders[] = $o[0].' '.$o[1];
+    }
+    $by = count($_orders)>0 ? implode(',', $_orders) : $this->id().' DESC';
+    return " ORDER BY $by";
   }
 
   function groupby($group) {
     return " GROUP BY $group";
   }
 
-  function limit($start=null,$end=null) {
-    if($start==null) $start = $this->startIndex();
-    if($end==null) if(isset($this->table['pagination'])) $end=$this->table['pagination'];
-    if($end==null) return "";
-    return " LIMIT $start,$end";
+  function limit($limit = null) {
+    global $db;
+    if($limit==null) {
+      $limit = $this->startIndex();
+      if(isset($this->table['pagination'])) {
+        $limit .= ','.$this->table['pagination'];
+      } else return "";
+    } else if(is_array($limit)) {
+      $limit = implode(',', $limit);
+    }
+    return $db->res(" LIMIT $limit");
   }
 
+  function event($event, $data) {
+    if(isset($this->table['events'])) foreach($this->table['events'] as $ev) {
+      if($ev[0]==$event) {
+        $ev[1]($data);
+      }
+    }
+  }
 
   function set(&$fields = null) {
     $set = [];
     if($fields==null) $fields=$_POST;
     foreach(@$this->table['filters'] as $k=>$f) $fields[$k]=$f;
-
-    if(isset($this->table['events'])) foreach($this->table['events'] as $ev) {
-      if($ev[0]=="change") {
-        $ev[1]($fields);
-      }
-    }
+    $this->event('change', $fields);
 
     foreach($fields as $key=>$value) {
       if(array_key_exists($key, $this->table['fields'])) {
@@ -373,6 +383,32 @@ class gTable
   function findOne($filters, $select = null)
   {
     return new gRow(this, $filters, $select, 1);
+  }
+
+  function getRow(&$filters, &$args = [])
+  {
+    $args['limit'] = 1;
+    return $this->getRows($filters, $args)[0] ?? null;
+  }
+
+  function getRows(&$filters, &$args = [])
+  {
+    global $db;
+    if(!$this->can('read')) return;
+    $where = $this->where($filters);
+    $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
+    $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : '';
+    $limit = isset($args['limit']) ? $this->limit($args['limit']) : '';
+    $res = $db->getAssoc("SELECT $select
+      FROM {$this->name()}$where$orderby$limit;");
+    return $res;
+  }
+
+  function deleteRow($id)
+  {
+    global $db;
+    $this->event('delete', $id);
+    $res = $db->query("DELETE FROM {$this->name()} WHERE {$this->id()}=?;", $id);
   }
 
 }

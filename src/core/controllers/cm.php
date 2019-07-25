@@ -49,10 +49,27 @@ class cm extends controller
     global $db;
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
-    $result = [];
 
     $res = $db->getAssoc("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};");
     echo json_encode($res, JSON_PRETTY_PRINT);
+  }
+
+  function getAction ()
+  {
+    $table = new gTable(router::get("t",1), $this->permissions);
+    if(!$table->can('read')) return;
+    if($id = router::get("id",2)) {
+      $filter = [$table->id()=>$id];
+      $row = $table->getRow($filter);
+    } else {
+      $row = $table->getRow($_GET, $_GET);
+    }
+    foreach ($table->getTable()['children'] as $key=>$child) {
+      $table = new gTable($key);
+      $filter = [$child['parent_id']=>$id];
+      $row[$key] = $table->getRows($filter);
+    }
+    echo json_encode($row, JSON_PRETTY_PRINT);
   }
 
   function list_rowsAction ()
@@ -241,10 +258,9 @@ class cm extends controller
   */
   function deleteAction ()
   {
-    global $db;
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if($pnk->can('delete')) {
-      $res = $db->query("DELETE FROM {$pnk->name()} WHERE {$pnk->id()}=?;", $_POST['id']);
+      $pnk->deleteRow($_POST['id']);
       echo $_POST['id'];
     } else {
       echo "User cannot delete";
