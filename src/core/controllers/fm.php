@@ -14,7 +14,8 @@ class fm extends controller
     if (isset($_GET['path']))  if(!$_GET['path']=='') $this->path = str_replace('\\','/',$_GET['path']);
     if (isset($_POST['path']))  if(!$_POST['path']=='') $this->path = str_replace('\\','/',$_POST['path']);
     $this->path = realpath($this->path);
-    if(strlen($dpath)>strlen($this->path)) $this->path = $dpath;
+    $base = substr($this->path, 0, strlen($dpath));
+    if($base != $dpath) $this->path = $dpath;
   }
 
   function indexAction ()

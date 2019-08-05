@@ -53,7 +53,6 @@ class admin extends controller
 
   function contentAction($type = null)
   {
-//    $type = router::get('type',1);
     if($type != null) {
       if(!isset(gila::$content[$type])) {
         http_response_code(404);

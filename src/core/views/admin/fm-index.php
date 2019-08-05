@@ -13,7 +13,8 @@
 <?php
 $mode_ext = ['php'=>'php','html'=>'htmlmixed','htm'=>'htmlmixed','js'=>'javascript','css'=>'css'];
 $img_ext = ['jpg','jpeg','gif','png','svg','ico','tiff'];
-$filepath = substr($c->filepath, strlen(realpath(''))+1); 
+$basepath = substr($c->filepath,0, strlen(realpath('')));
+if($basepath != realpath('')) $filepath = realpath('');
 $pathinfo = pathinfo($filepath);
 $ext = $pathinfo['extension'];
 
