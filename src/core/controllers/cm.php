@@ -27,7 +27,7 @@ class cm extends controller
     foreach($post as $k=>$query){
       $action = $query['action'];
       if($action == 'list') {
-        $return[$k] = self::list($query['filters'], $query);
+        $return[$k] = self::list($query['table'], $query['filters'], $query);
       }
     }
     echo json_encode($return,JSON_PRETTY_PRINT);
@@ -54,12 +54,12 @@ class cm extends controller
   */
   function listAction ()
   {
-    echo json_encode(self::list($_GET, $_GET), JSON_PRETTY_PRINT);
+    echo json_encode(self::list(router::get("t",1), $_GET, $_GET), JSON_PRETTY_PRINT);
   }
 
-  function list ($filters, $args)
+  function list ($table, $filters, $args)
   {
-    $gtable = new gTable(router::get("t",1), $this->permissions);
+    $gtable = new gTable($table, $this->permissions);
     if(!$gtable->can('read')) return;
     $res = $gtable->getRows($filters, $args);
     return $res;
@@ -85,22 +85,29 @@ class cm extends controller
 
   function list_rowsAction ()
   {
-    if(isset($_GET['groupby'])&&$_GET['groupby']!=null) {
+    $table = router::get("t",1);
+    $result = self::list_rows($table, $_GET, $_GET);
+    echo json_encode($result, JSON_PRETTY_PRINT);
+  }
+
+  function list_rows ($table, $filters, $args)
+  {
+    if(isset($args['groupby'])&&$args['groupby']!=null) {
       $this->group_rowsAction();
       return;
     }
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($table, $this->permissions);
     if(!$pnk->can('read')) return;
     $result = [];
 
-    $fieldlist = isset($_GET['id'])?'edit':'list';
+    $fieldlist = isset($args['id']) ? 'edit' : 'list';
     $result['fields'] = $pnk->fields($fieldlist);
     $result['rows'] = [];
-    $res = $pnk->getRows($_GET, array_merge($_GET, ['select'=>$result['fields']]));
+    $res = $pnk->getRows($filters, array_merge($args, ['select'=>$result['fields']]));
     foreach($res as $r) $result['rows'][] = array_values($r);
-    $result['startIndex'] = $pnk->startIndex();
-    $result['totalRows'] = $pnk->totalRows($_GET);
-    echo json_encode($result, JSON_PRETTY_PRINT);
+    $result['startIndex'] = $pnk->startIndex($args);
+    $result['totalRows'] = $pnk->totalRows($filters);
+    return $result;
   }
 
   function csvAction ()

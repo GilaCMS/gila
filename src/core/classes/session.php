@@ -124,7 +124,7 @@ class session
     self::$user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
     if($token) {
-      $usr = user::getByMeta(‘token’, $token);
+      $usr = user::getByMeta('token', $token);
       if($usr) {
         self::$user_id = $usr['id'];
       }

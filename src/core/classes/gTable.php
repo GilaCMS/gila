@@ -129,9 +129,9 @@ class gTable
     return implode(',', $select);
   }
 
-  function startIndex() {
-    $ppp = @$this->table['pagination']?:25;
-    if($page=router::request('page')) {
+  function startIndex($args) {
+    $ppp = $this->table['pagination'] ?? 25;
+    if($page = $args['page'] ?? router::request('page')) {
       return ($page-1)*$ppp;
     }
     return 0;
