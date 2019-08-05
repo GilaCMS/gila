@@ -13,6 +13,7 @@ class cm extends controller
   function __construct ()
   {
     $this->permissions = user::permissions(session::user_id());
+    header('Content-Type: application/json');
   }
 
   /**
@@ -21,8 +22,15 @@ class cm extends controller
   */
   function indexAction ()
   {
-    view::set('contenttype',self::contenttypeGen());
-    view::renderAdmin('admin/contenttype.php');
+    $post = $_POST;
+    $return = [];
+    foreach($post as $k=>$query){
+      $action = $query['action'];
+      if($action == 'list') {
+        $return[$k] = self::list($query['filters'], $query);
+      }
+    }
+    echo json_encode($return,JSON_PRETTY_PRINT);
   }
 
   /**
@@ -46,12 +54,15 @@ class cm extends controller
   */
   function listAction ()
   {
-    global $db;
-    $pnk = new gTable(router::get("t",1), $this->permissions);
-    if(!$pnk->can('read')) return;
+    echo json_encode(self::list($_GET, $_GET), JSON_PRETTY_PRINT);
+  }
 
-    $res = $db->getAssoc("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};");
-    echo json_encode($res, JSON_PRETTY_PRINT);
+  function list ($filters, $args)
+  {
+    $gtable = new gTable(router::get("t",1), $this->permissions);
+    if(!$gtable->can('read')) return;
+    $res = $gtable->getRows($filters, $args);
+    return $res;
   }
 
   function getAction ()
@@ -74,7 +85,6 @@ class cm extends controller
 
   function list_rowsAction ()
   {
-    global $db;
     if(isset($_GET['groupby'])&&$_GET['groupby']!=null) {
       $this->group_rowsAction();
       return;
@@ -86,14 +96,10 @@ class cm extends controller
     $fieldlist = isset($_GET['id'])?'edit':'list';
     $result['fields'] = $pnk->fields($fieldlist);
     $result['rows'] = [];
-    
-    $ql = "SELECT {$pnk->select($result['fields'])} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
-    $res = $db->query($ql);
-    while($r = mysqli_fetch_row($res)) {
-      $result['rows'][] = $r;
-    }
+    $res = $pnk->getRows($_GET, array_merge($_GET, ['select'=>$result['fields']]));
+    foreach($res as $r) $result['rows'][] = array_values($r);
     $result['startIndex'] = $pnk->startIndex();
-    $result['totalRows'] = $db->value("SELECT COUNT(*) FROM {$pnk->name()}{$pnk->where($_GET)};");
+    $result['totalRows'] = $pnk->totalRows($_GET);
     echo json_encode($result, JSON_PRETTY_PRINT);
   }
 
@@ -160,14 +166,14 @@ class cm extends controller
     if(!$pnk->can('read')) return;
     $result = [];
     $groupby = $_GET['groupby'];
+    $counter = isset($_GET['counter']) ? ',COUNT(*) AS '.$_GET['counter'] : '';
 
     $result['fields'] = $pnk->fields();
-    $res = $db->query("SELECT {$pnk->selectsum($groupby)} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby()};");
+    $res = $db->query("SELECT {$pnk->selectsum($groupby)}$counter FROM {$pnk->name()}
+      {$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby()};");
     while($r = mysqli_fetch_row($res)) {
       $result['rows'][] = $r;
     }
-    $result['startIndex'] = $pnk->startIndex();
-    $result['totalRows'] = $db->value("SELECT COUNT(*) FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->groupby($groupby)};");
     echo json_encode($result,JSON_PRETTY_PRINT);
   }
 
@@ -258,9 +264,9 @@ class cm extends controller
   */
   function deleteAction ()
   {
-    $pnk = new gTable(router::get("t",1), $this->permissions);
-    if($pnk->can('delete')) {
-      $pnk->deleteRow($_POST['id']);
+    $gtable = new gTable(router::get("t",1), $this->permissions);
+    if($gtable->can('delete')) {
+      $gtable->deleteRow($_POST['id']);
       echo $_POST['id'];
     } else {
       echo "User cannot delete";

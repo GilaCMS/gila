@@ -296,24 +296,6 @@ class gTable
     return '';
   }
 
-  function getEmpty() {
-    $row = [];
-    foreach($this->fields('create') as $key) {
-      $fv="";
-      $field = $this->table['fields'][$key];
-      if(isset($field['default'])) {
-        $fv=$field['default'];
-      } else if(isset($field['type'])) {
-        if(isset($field['options'])) $fv="0";
-        if($field['type']=="date") $fv=date("Y-m-d");
-        if($field['type']=="number") $fv="0";
-      }
-      $row[]=$fv;
-      $row[$key]=$fv;
-    }
-    return $row;
-  }
-
   function can($action, $field = null) {
     $array = $this->table['permissions'][$action];
 
@@ -385,6 +367,24 @@ class gTable
     return new gRow(this, $filters, $select, 1);
   }
 
+  function getEmpty() {
+    $row = [];
+    foreach($this->fields('create') as $key) {
+      $fv="";
+      $field = $this->table['fields'][$key];
+      if(isset($field['default'])) {
+        $fv=$field['default'];
+      } else if(isset($field['type'])) {
+        if(isset($field['options'])) $fv="0";
+        if($field['type']=="date") $fv=date("Y-m-d");
+        if($field['type']=="number") $fv="0";
+      }
+      $row[]=$fv;
+      $row[$key]=$fv;
+    }
+    return $row;
+  }
+
   function getRow(&$filters, &$args = [])
   {
     $args['limit'] = 1;
@@ -404,6 +404,15 @@ class gTable
     return $res;
   }
 
+  function totalRows(&$filters)
+  {
+    global $db;
+    if(!$this->can('read')) return;
+    $where = $this->where($filters);
+    $res = $db->value("SELECT COUNT(*) FROM {$this->name()}$where;");
+    return $res;
+  }
+
   function deleteRow($id)
   {
     global $db;
@@ -412,3 +421,16 @@ class gTable
   }
 
 }
+
+/*
+      if(isset($args['children'])) foreach($args['children'] as $key) {
+      $table = new gTable($key);
+      $_list = $this->table['children'][$child]['list'] ?? null;
+      if($_list) $params['select'] = $_list;
+      foreach($res as $k=>$v) {
+        $parent_key = $this->table['children'][$child]['parent_id'];
+        $filter = [$parent_key=>$id];
+        $row[$key] = $table->getRows($filter, $params);
+      }
+    }
+ */
