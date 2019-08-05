@@ -169,7 +169,7 @@ class admin extends controller
       $path = router::post('path','assets');
       if($path[0]=='.') $path='assets';
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
-      $name = $_FILES['uploadfiles']['name'];
+      $name = htmlentities($_FILES['uploadfiles']['name']);
       if(in_array(pathinfo($name, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
         if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
           echo "Error: could not upload file!<br>";
