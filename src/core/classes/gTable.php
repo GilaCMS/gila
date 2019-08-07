@@ -171,6 +171,15 @@ class gTable
     return $db->res(" LIMIT $limit");
   }
 
+  function limitPage($args) {
+    $ppp = $this->table['pagination'] ?? 25;
+    if($page = $args['page']) {
+      $offset = ($page-1)*$ppp;
+      return " LIMIT $offset, $ppp";
+    }
+    return "";
+  }
+
   function event($event, $data) {
     if(isset($this->table['events'])) foreach($this->table['events'] as $ev) {
       if($ev[0]==$event) {
@@ -397,8 +406,8 @@ class gTable
     if(!$this->can('read')) return;
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
-    $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : '';
-    $limit = isset($args['limit']) ? $this->limit($args['limit']) : '';
+    $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
+    $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
     $res = $db->getAssoc("SELECT $select
       FROM {$this->name()}$where$orderby$limit;");
     return $res;
@@ -421,16 +430,3 @@ class gTable
   }
 
 }
-
-/*
-      if(isset($args['children'])) foreach($args['children'] as $key) {
-      $table = new gTable($key);
-      $_list = $this->table['children'][$child]['list'] ?? null;
-      if($_list) $params['select'] = $_list;
-      foreach($res as $k=>$v) {
-        $parent_key = $this->table['children'][$child]['parent_id'];
-        $filter = [$parent_key=>$id];
-        $row[$key] = $table->getRows($filter, $params);
-      }
-    }
- */

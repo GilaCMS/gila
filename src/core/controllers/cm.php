@@ -29,6 +29,12 @@ class cm extends controller
       if($action == 'list') {
         $return[$k] = self::list($query['table'], $query['filters'], $query);
       }
+      if($action == 'list_rows') {
+        $return[$k] = self::list_rows($query['table'], $query['filters'], $query);
+      }
+      if($action == 'describe') {
+        $return[$k] = self::describe($query['table']);
+      }
     }
     echo json_encode($return,JSON_PRETTY_PRINT);
   }
@@ -38,7 +44,13 @@ class cm extends controller
   */
   function describeAction ()
   {
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    echo json_encode(self::describe(router::get("t",1)), JSON_PRETTY_PRINT);
+    
+  }
+
+  function describe ($table)
+  {
+    $pnk = new gTable($table, $this->permissions);
     if(!$pnk->can('read')) return;
     $table = $pnk->getTable();
     foreach($table['fields'] as &$field) {
@@ -46,8 +58,9 @@ class cm extends controller
       unset($field['qoptions']);
       unset($field['qcolumn']);
     }
-    echo json_encode($table,JSON_PRETTY_PRINT);
+    return $table;
   }
+
 
   /**
   * Lists registries of content type
