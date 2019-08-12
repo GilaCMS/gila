@@ -1,5 +1,4 @@
-<!-- Post Header -->
-<!-- Set your background image for this header on the line below. -->
+<?php view::includeFile('header.php')?>
 <div class="wrapper">
   <h1><?=$title?></h1>
 
@@ -7,3 +6,4 @@
       <?=$text?>
   </div>
 </div>
+<?php view::includeFile('footer.php')?>

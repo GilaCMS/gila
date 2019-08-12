@@ -173,23 +173,23 @@ class view
     echo $head?'</head>':'';
   }
 
-  static function renderFile($file, $package = 'core')
+  static function renderFile($filename, $package = 'core')
   {
     $controller = router::controller();
     $action = router::action();
     if(isset(gila::$onaction[$controller][$action])) {
       foreach(gila::$onaction[$controller][$action] as $fn) $fn();
     }
-    if(self::includeFile($file, $package)==false) {
+    if(self::includeFile($filename, $package)==false) {
       http_response_code(404);
       self::includeFile('404.php');
     }
   }
 
-  static function includeFile($file,$package='core')
+  static function includeFile($filename, $package='core')
   {
     global $c;
-    $file = self::getViewFile($file, $package);
+    $file = self::getViewFile($filename, $package);
     
     if(isset(self::$renderer)) {
       self::$renderer($file, self::$part);
@@ -201,7 +201,11 @@ class view
     }
 
     if($file) {
-      include $file;
+      if($filename == 'header.php' || $filename  == 'footer.php') {
+        include_once $file;
+      } else {
+        include $file;
+      }
       return true;
     }
     return false;

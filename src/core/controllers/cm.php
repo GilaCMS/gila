@@ -13,7 +13,6 @@ class cm extends controller
   function __construct ()
   {
     $this->permissions = user::permissions(session::user_id());
-    header('Content-Type: application/json');
   }
 
   /**
@@ -22,6 +21,7 @@ class cm extends controller
   */
   function indexAction ()
   {
+    header('Content-Type: application/json');
     $post = $_POST;
     $return = [];
     foreach($post as $k=>$query){
@@ -44,8 +44,8 @@ class cm extends controller
   */
   function describeAction ()
   {
+    header('Content-Type: application/json');
     echo json_encode(self::describe(router::get("t",1)), JSON_PRETTY_PRINT);
-    
   }
 
   function describe ($table)
@@ -67,6 +67,7 @@ class cm extends controller
   */
   function listAction ()
   {
+    header('Content-Type: application/json');
     echo json_encode(self::list(router::get("t",1), $_GET, $_GET), JSON_PRETTY_PRINT);
   }
 
@@ -80,6 +81,7 @@ class cm extends controller
 
   function getAction ()
   {
+    header('Content-Type: application/json');
     $table = new gTable(router::get("t",1), $this->permissions);
     if(!$table->can('read')) return;
     if($id = router::get("id",2)) {
@@ -98,6 +100,7 @@ class cm extends controller
 
   function list_rowsAction ()
   {
+    header('Content-Type: application/json');
     $table = router::get("t",1);
     $result = self::list_rows($table, $_GET, $_GET);
     echo json_encode($result, JSON_PRETTY_PRINT);
@@ -182,6 +185,7 @@ class cm extends controller
   function group_rowsAction ()
   {
     global $db;
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
     $result = [];
@@ -203,6 +207,7 @@ class cm extends controller
   function update_rowsAction ()
   {
     global $db;
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
 
     if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
@@ -233,6 +238,7 @@ class cm extends controller
 
   function empty_rowAction ()
   {
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
     $result['fields'] = $pnk->fields('create');
     $result['rows'][0] = $pnk->getEmpty();
@@ -245,6 +251,7 @@ class cm extends controller
   function insert_rowAction ()
   {
     global $db;
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('create')) return;
     $result = [];
@@ -284,13 +291,15 @@ class cm extends controller
   */
   function deleteAction ()
   {
+    header('Content-Type: application/json');
     $gtable = new gTable(router::get("t",1), $this->permissions);
     if($gtable->can('delete')) {
       $gtable->deleteRow($_POST['id']);
-      echo $_POST['id'];
+      $response = '{"id":"'.$_POST['id'].'"}';
     } else {
-      echo "User cannot delete";
+      $response = '"error":"User cannot delete"}';
     }
+    echo $response;
   }
 
   function edit_formAction ()
