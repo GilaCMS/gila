@@ -89,8 +89,8 @@ class Blog extends controller
   */
   function tagsAction()
   {
-      view::set('tags',post::getMeta('tag'));
-      view::render('blog-tags.php');
+    view::set('tags',post::getMeta('tag'));
+    view::render('blog-tags.php');
   }
 
   /**
@@ -136,44 +136,49 @@ class Blog extends controller
 
     if (($r = post::getByIdSlug($id)) && ($r['publish']==1)) {
       $id = $r['id'];
+      if(!$r['user_id']) {
+        $r['user_id'] = $db->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
+      }
       $user_id = $r['user_id'];
       view::set('author_id',$user_id);
-
       view::set('title',$r['title']);
       view::set('slug',$r['slug']);
       view::set('text',$r['post']);
       view::set('id',$r['id']);
       view::set('updated',$r['updated']);
 
-      view::meta('twitter:card','summary');
-      //if() view::meta('twitter:site','@site');
-
+      gila::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
       view::meta('og:title',$r['title']);
       view::meta('og:type','website');
       view::meta('og:url',self::get_url($r['id'],$r['slug']));
       view::meta('og:description',$r['description']);
 
-      gila::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
-
-      $res = $db->query("SELECT `value` as img FROM post,postmeta WHERE vartype='thumbnail' AND post_id=$id;");
-      if ($res) {
-        $r = mysqli_fetch_array($res);
-        view::set('img',$r['img']);
-        view::meta('og:image',$r['img']);
-        view::meta('twitter:image:src',gila::base_url($r['img']));
-      } else if(gila::config('og-image')){
-        view::meta('og:image',gila::config('og-image'));
-        view::meta('twitter:image:src',gila::base_url(gila::config('og-image')));
+      if ($r['img'] ) {
+        view::set('img', $r['img']);
+        view::meta('og:image', $r['img']);
+        view::meta('twitter:image:src', gila::base_url($r['img']));
+      } else if(gila::config('og-image')) {
+        view::meta('og:image', gila::config('og-image'));
+        view::meta('twitter:image:src', gila::base_url(gila::config('og-image')));
       } else {
-        view::set('img','');
+        view::set('img', '');
       }
 
-      $res = $db->query("SELECT username FROM user WHERE id='$user_id';");
-      if ($res) {
-        $r = mysqli_fetch_array($res);
+      if($r['tags']) {
+        view::meta('keywords', $r['tags']);
+      }
+
+      if($value = gila::option('blog.twitter-card')) {
+        view::meta('twitter:card', $value);
+      }
+      if($value = gila::option('blog.twitter-site')) {
+        view::meta('twitter:site', '@'.$value);
+      }
+
+      if ($r = user::getById($user_id)) {
         view::set('author',$r['username']);
         view::meta('author',$r['username']);
-        if($creator = user::meta($user_id,'twitter_account'))
+        if($creator = user::meta($user_id, 'twitter_account'))
           view::meta('twitter:creator','@'.$creator);
       } else view::set('author',__('unknown'));
 
@@ -201,10 +206,10 @@ class Blog extends controller
   function searchAction()
   {
     if ($s=router::get('search',1)) {
-      $s = striptags($s);
+      $s = strip_tags($s);
       view::set('search', $s);
-		  view::set('posts',post::search($s));
-		  view::render('blog-search.php');
+      view::set('posts',post::search($s));
+      view::render('blog-search.php');
       return;
     }
     view::set('page',self::$page);

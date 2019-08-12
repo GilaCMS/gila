@@ -11,7 +11,7 @@ class package
     $deactivate = router::get('deactivate');
     if($deactivate) self::deactivate($deactivate);
     $download = router::get('download');
-    if($download) {
+    if($download && FS_ACCESS) {
       if(self::download($download)==true) {
         if(!$_REQUEST['g_response']) {
           echo '<meta http-equiv="refresh" content="2;url='.gila::base_url().'/admin/packages" />';

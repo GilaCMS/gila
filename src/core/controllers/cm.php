@@ -21,8 +21,22 @@ class cm extends controller
   */
   function indexAction ()
   {
-    view::set('contenttype',self::contenttypeGen());
-    view::renderAdmin('admin/contenttype.php');
+    header('Content-Type: application/json');
+    $post = $_POST;
+    $return = [];
+    foreach($post as $k=>$query){
+      $action = $query['action'];
+      if($action == 'list') {
+        $return[$k] = self::list($query['table'], $query['filters'], $query);
+      }
+      if($action == 'list_rows') {
+        $return[$k] = self::list_rows($query['table'], $query['filters'], $query);
+      }
+      if($action == 'describe') {
+        $return[$k] = self::describe($query['table']);
+      }
+    }
+    echo json_encode($return,JSON_PRETTY_PRINT);
   }
 
   /**
@@ -30,7 +44,13 @@ class cm extends controller
   */
   function describeAction ()
   {
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    header('Content-Type: application/json');
+    echo json_encode(self::describe(router::get("t",1)), JSON_PRETTY_PRINT);
+  }
+
+  function describe ($table)
+  {
+    $pnk = new gTable($table, $this->permissions);
     if(!$pnk->can('read')) return;
     $table = $pnk->getTable();
     foreach($table['fields'] as &$field) {
@@ -38,46 +58,72 @@ class cm extends controller
       unset($field['qoptions']);
       unset($field['qcolumn']);
     }
-    echo json_encode($table,JSON_PRETTY_PRINT);
+    return $table;
   }
+
 
   /**
   * Lists registries of content type
   */
   function listAction ()
   {
-    global $db;
-    $pnk = new gTable(router::get("t",1), $this->permissions);
-    if(!$pnk->can('read')) return;
-    $result = [];
+    header('Content-Type: application/json');
+    echo json_encode(self::list(router::get("t",1), $_GET, $_GET), JSON_PRETTY_PRINT);
+  }
 
-    $res = $db->getAssoc("SELECT {$pnk->select()} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};");
-    echo json_encode($res, JSON_PRETTY_PRINT);
+  function list ($table, $filters, $args)
+  {
+    $gtable = new gTable($table, $this->permissions);
+    if(!$gtable->can('read')) return;
+    $res = $gtable->getRows($filters, $args);
+    return $res;
+  }
+
+  function getAction ()
+  {
+    header('Content-Type: application/json');
+    $table = new gTable(router::get("t",1), $this->permissions);
+    if(!$table->can('read')) return;
+    if($id = router::get("id",2)) {
+      $filter = [$table->id()=>$id];
+      $row = $table->getRow($filter);
+    } else {
+      $row = $table->getRow($_GET, $_GET);
+    }
+    foreach ($table->getTable()['children'] as $key=>$child) {
+      $table = new gTable($key);
+      $filter = [$child['parent_id']=>$id];
+      $row[$key] = $table->getRows($filter);
+    }
+    echo json_encode($row, JSON_PRETTY_PRINT);
   }
 
   function list_rowsAction ()
   {
-    global $db;
-    if(isset($_GET['groupby'])&&$_GET['groupby']!=null) {
+    header('Content-Type: application/json');
+    $table = router::get("t",1);
+    $result = self::list_rows($table, $_GET, $_GET);
+    echo json_encode($result, JSON_PRETTY_PRINT);
+  }
+
+  function list_rows ($table, $filters, $args)
+  {
+    if(isset($args['groupby'])&&$args['groupby']!=null) {
       $this->group_rowsAction();
       return;
     }
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($table, $this->permissions);
     if(!$pnk->can('read')) return;
     $result = [];
 
-    $fieldlist = isset($_GET['id'])?'edit':'list';
+    $fieldlist = isset($args['id']) ? 'edit' : 'list';
     $result['fields'] = $pnk->fields($fieldlist);
     $result['rows'] = [];
-    
-    $ql = "SELECT {$pnk->select($result['fields'])} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
-    $res = $db->query($ql);
-    while($r = mysqli_fetch_row($res)) {
-      $result['rows'][] = $r;
-    }
-    $result['startIndex'] = $pnk->startIndex();
-    $result['totalRows'] = $db->value("SELECT COUNT(*) FROM {$pnk->name()}{$pnk->where($_GET)};");
-    echo json_encode($result, JSON_PRETTY_PRINT);
+    $res = $pnk->getRows($filters, array_merge($args, ['select'=>$result['fields']]));
+    foreach($res as $r) $result['rows'][] = array_values($r);
+    $result['startIndex'] = $pnk->startIndex($args);
+    $result['totalRows'] = $pnk->totalRows($filters);
+    return $result;
   }
 
   function csvAction ()
@@ -139,18 +185,19 @@ class cm extends controller
   function group_rowsAction ()
   {
     global $db;
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
     $result = [];
     $groupby = $_GET['groupby'];
+    $counter = isset($_GET['counter']) ? ',COUNT(*) AS '.$_GET['counter'] : '';
 
     $result['fields'] = $pnk->fields();
-    $res = $db->query("SELECT {$pnk->selectsum($groupby)} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby()};");
+    $res = $db->query("SELECT {$pnk->selectsum($groupby)}$counter FROM {$pnk->name()}
+      {$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby()};");
     while($r = mysqli_fetch_row($res)) {
       $result['rows'][] = $r;
     }
-    $result['startIndex'] = $pnk->startIndex();
-    $result['totalRows'] = $db->value("SELECT COUNT(*) FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->groupby($groupby)};");
     echo json_encode($result,JSON_PRETTY_PRINT);
   }
 
@@ -160,6 +207,7 @@ class cm extends controller
   function update_rowsAction ()
   {
     global $db;
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
 
     if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
@@ -190,6 +238,7 @@ class cm extends controller
 
   function empty_rowAction ()
   {
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
     $result['fields'] = $pnk->fields('create');
     $result['rows'][0] = $pnk->getEmpty();
@@ -202,6 +251,7 @@ class cm extends controller
   function insert_rowAction ()
   {
     global $db;
+    header('Content-Type: application/json');
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('create')) return;
     $result = [];
@@ -241,14 +291,15 @@ class cm extends controller
   */
   function deleteAction ()
   {
-    global $db;
-    $pnk = new gTable(router::get("t",1), $this->permissions);
-    if($pnk->can('delete')) {
-      $res = $db->query("DELETE FROM {$pnk->name()} WHERE {$pnk->id()}=?;", $_POST['id']);
-      echo $_POST['id'];
+    header('Content-Type: application/json');
+    $gtable = new gTable(router::get("t",1), $this->permissions);
+    if($gtable->can('delete')) {
+      $gtable->deleteRow($_POST['id']);
+      $response = '{"id":"'.$_POST['id'].'"}';
     } else {
-      echo "User cannot delete";
+      $response = '"error":"User cannot delete"}';
     }
+    echo $response;
   }
 
   function edit_formAction ()

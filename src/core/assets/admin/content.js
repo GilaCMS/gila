@@ -41,7 +41,7 @@ Vue.component('g-table', {
         <a class="btn btn-white" @click="edititem=false" v-html="word(\'Cancel\')"></a>\
       </div>\
     </div>\
-    <g-table v-if="edititem>0" v-for="(child,childkey) in table.children" :gtype="childkey" gchild=1 :gtable="JSON.stringify(child.table)" :gfields="JSON.stringify(child.list)" :gfilters="\'&amp;\'+child.parent_id+\'=\'+edititem"></g-table>\
+    <g-table v-for="(child,childkey) in table.children" v-if="edititem>0 && child.list" :gtype="childkey" gchild=1 :gtable="JSON.stringify(child.table)" :gfields="JSON.stringify(child.list)" :gfilters="\'&amp;\'+child.parent_id+\'=\'+edititem"></g-table>\
 \
     <table v-if="edititem==0 || child==1" class="" cur-page="1"  group-by="">\
     <thead>\

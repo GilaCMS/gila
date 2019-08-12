@@ -51,15 +51,14 @@ class admin extends controller
     }
   }
 
-  function contentAction()
+  function contentAction($type = null)
   {
-    $type = router::get('type',1);
-    if(!isset(gila::$content[$type])) {
-      http_response_code(404);
-      view::renderAdmin('404.php');
-      return;
-    }
     if($type != null) {
+      if(!isset(gila::$content[$type])) {
+        http_response_code(404);
+        view::renderAdmin('404.php');
+        return;
+      }
       $src = explode('.',gila::$content[$type])[0];
       view::set('table', $type);
       view::set('tablesrc', $src);
@@ -170,7 +169,7 @@ class admin extends controller
       $path = router::post('path','assets');
       if($path[0]=='.') $path='assets';
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
-      $name = $_FILES['uploadfiles']['name'];
+      $name = htmlentities($_FILES['uploadfiles']['name']);
       if(in_array(pathinfo($name, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
         if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
           echo "Error: could not upload file!<br>";
