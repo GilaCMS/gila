@@ -266,10 +266,12 @@ class gTable
 
   }
 
-  function where(&$fields = null) {
+  function where($fields = null) {
     $filters = [];
-    if($fields==null) $fields=$_GET;
-    foreach(@$this->table['filters'] as $k=>$f) $fields[$k]=$f;
+    if($fields==null) return '';
+    if(isset($this->table['filters'])) {
+      foreach($this->table['filters'] as $k=>$f) $fields[$k]=$f;
+    }
 
     foreach($fields as $key=>$value) if(!is_numeric($key)){
       if(array_key_exists($key, $this->table['fields'])) {
@@ -394,13 +396,13 @@ class gTable
     return $row;
   }
 
-  function getRow(&$filters, &$args = [])
+  function getRow($filters, &$args = [])
   {
     $args['limit'] = 1;
     return $this->getRows($filters, $args)[0] ?? null;
   }
 
-  function getRows(&$filters, &$args = [])
+  function getRows($filters = [], &$args = [])
   {
     global $db;
     if(!$this->can('read')) return;
@@ -411,6 +413,10 @@ class gTable
     $res = $db->getAssoc("SELECT $select
       FROM {$this->name()}$where$orderby$limit;");
     return $res;
+  }
+
+  function getAllRows(&$args = []) {
+    return $this->getRows(null, $args);
   }
 
   function totalRows(&$filters)

@@ -314,7 +314,7 @@ class cm extends controller
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"><div>';
     if($id) {
       $w = ['id'=>$id];
-      $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where()};";
+      $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)};";
       $res = $db->get($ql)[0];
       echo gForm::html($pnk->getFields('edit'),$res);
     } else {
