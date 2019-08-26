@@ -2,7 +2,7 @@
 
 global $db;
 
-$GLOBALS['version']='1.11.0';
+$GLOBALS['version']='1.11.1';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
@@ -72,6 +72,5 @@ gila::content('widget','core/tables/widget.php');
 gila::addLang('core/lang/');
 
 if(gila::config('use_cdn')==1) {
-  
-}
   include_once 'src/core/assets/cdn_paths.php';
+}
