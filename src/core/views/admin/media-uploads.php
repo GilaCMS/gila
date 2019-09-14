@@ -18,7 +18,9 @@ view::script('src/core/assets/admin/media.js');
   <i class='fa fa-arrow-left'></i></a>
   <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
 <?php if(gila::hasPrivilege('admin upload_assets')){ ?>
-  <input type='file' class='g-group-item g-input fullwidth' id='upload_files' accept="image/*,video/*,audio/*" onchange='gallery_upload_files()' multiple data-path="<?=$path?>">
+  <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
+  accept="image/*,video/*,audio/*" onchange='gallery_upload_files()'
+  multiple data-path="<?=$path?>" data-csrf="<?=gForm::getToken('media_upload')?>">
 <?php } ?>
   <span class="g-group-item fullwidth" style="position:relative;">
     <input class='g-input input-filter fullwidth' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>

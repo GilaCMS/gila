@@ -49,7 +49,7 @@ Vue.component('g-table', {
         <th v-if="table.bulk_actions" style="width:28px;" @click="select_all()">\
           <i class="fa fa-square-o bulk_checkbox" aria-hidden="true"></i>\
         </th>\
-        <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)">\
+        <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)" v-if="showField(ifield)">\
           <i :class="sortiClass(ifield)" :col="ifield""></i>\
           <span v-html="field_label(ifield)"></span>\
         </th>\
@@ -62,7 +62,7 @@ Vue.component('g-table', {
         <td v-if="table.bulk_actions" @click="select_row(row[0])">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
-        <td v-for="(field,ifield) in data.fields" :col="ifield" :value="row[ifield]" class="">\
+        <td v-for="(field,ifield) in data.fields" :col="ifield" :value="row[ifield]" :class="field" v-if="showField(field)">\
           <span v-html="display_cell(irow,ifield)" @click="clicked_cell(irow,ifield)"></span>\
         </td>\
         <td v-if="table.commands" class="td-com">\
@@ -241,6 +241,15 @@ Vue.component('g-table', {
       if (typeof this.table.fields[fkey].eval != "undefined") {
         return eval(this.table.fields[fkey].eval)
       }
+
+      if(typeof gtableFieldDisplay[fkey]!='undefined') {
+        for(let i=0;i<this.data.fields.length ;i++) {
+          f = this.data.fields[i]
+          rv[f] = rv[i]
+        }
+        return gtableFieldDisplay[fkey](rv);
+      }
+
       if (typeof field.type != "undefined") if(field.type=='checkbox') if(cv==1){
         return '<i style="color:green" class="fa fa-check fa-2x"></i>'//-square-o
       } else {
@@ -258,6 +267,10 @@ Vue.component('g-table', {
       }
 
       return dv
+    },
+    showField: function(field) {
+      if(typeof this.table.fields[field].show=='undefined') return true
+      return this.table.fields[field].show
     },
     word: function(word){
       return _e(word)
@@ -297,6 +310,8 @@ Vue.component('g-table', {
 
 gtableCommand = Array()
 gtableTool = Array()
+gtableFieldDisplay = Array()
+
 gtableCommand['edit'] = {
   fa: "pencil",
   fn: function(table,irow){

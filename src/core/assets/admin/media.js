@@ -37,6 +37,7 @@ function __m(m) {
 function gallery_upload_files() {
   let fm=new FormData()
   fm.append('uploadfiles', g.el('upload_files').files[0]);
+  fm.append('formToken', g.el('upload_files').getAttribute('data-csrf'));
   fm.append('path', g.el('upload_files').getAttribute('data-path'));
   fm.append('g_response', 'content');
   g.loader()

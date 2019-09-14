@@ -11,6 +11,7 @@ $GLOBALS['config'] = array (
   'packages' =>
   array (
   ),
+  'use_webp' => '0', # deliver webp photos for browsers that support it
   'base' => 'http://localhost/gila/', # http://yourwebsite.com/
   'theme' => 'gila-blog',
   'title' => 'Gila CMS',
@@ -23,4 +24,7 @@ $GLOBALS['config'] = array (
   'default.menu' => '0',
   'user_register' => '0',
   'use_cdn' => '0',
+  'admin_email' => 'admin@mail.com',
+  'admin_logo' => '',
+  'check4updates' => '1'
 );

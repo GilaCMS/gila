@@ -18,32 +18,32 @@ Vue.component('input-list', {
 ',
     props: ['name','value','fieldset'],
     data: function(){ return {
-      pos: JSON.parse(this.value),
-	  fields: JSON.parse(this.fieldset),
-	  ivalue: this.value
+    pos: JSON.parse(this.value),
+    fields: JSON.parse(this.fieldset),
+    ivalue: this.value
     }
   },
   methods:{
     add: function(){
-		array = new Array()
-		for(i in this.fields) if(this.fields[i]=='image') {
-			array[i] = 'src/core/assets/photo.png'
-		} else array[i] = ''
-      	this.pos.push(array)
-      	this.update()
+    array = new Array()
+    for(i in this.fields) if(this.fields[i]=='image') {
+      array[i] = 'src/core/assets/photo.png'
+    } else array[i] = ''
+        this.pos.push(array)
+        this.update()
     },
     removeEl: function(index){
       	this.pos.splice(index,1)
       	this.update()
     },
-	update: function(){
-		this.ivalue = JSON.stringify(this.pos)
+  update: function(){
+    this.ivalue = JSON.stringify(this.pos)
     },
-    beforeCreate: function(){
-		console.log('dfewef')
-		this.pos=JSON.parse(this.value)
-		this.fields=JSON.parse(this.fieldset)
-		this.ivalue = this.value
+  beforeCreate: function(){
+    console.log('dfewef')
+    this.pos=JSON.parse(this.value)
+    this.fields=JSON.parse(this.fieldset)
+    this.ivalue = this.value
     }
   }
 })

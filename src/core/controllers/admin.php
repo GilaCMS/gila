@@ -162,7 +162,7 @@ class admin extends controller
   }
 
   function media_uploadAction(){
-    if(isset($_FILES['uploadfiles'])) {
+    if(isset($_FILES['uploadfiles']) && gForm::posted('media_upload')) {
       if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
         echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
       }
