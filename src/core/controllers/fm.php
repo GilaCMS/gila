@@ -73,7 +73,7 @@ class fm extends controller
   }
 
   function moveAction () {
-    if(!rename($this->path,$_POST['newpath'])){
+    if(!gForm::posted('fm_upload') || !rename($this->path,$_POST['newpath'])){
       ob_clean();
       echo "Permission denied.";
     }
@@ -81,7 +81,7 @@ class fm extends controller
   }
 
   function uploadAction() {
-    if(isset($_FILES['uploadfiles'])) {
+    if(isset($_FILES['uploadfiles']) && gForm::posted('fm_upload')) {
       if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
         echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
       }
@@ -104,7 +104,7 @@ class fm extends controller
   }
 
   function deleteAction () {
-    if(!unlink($this->path)){
+    if(!gForm::posted('fm_upload') || !unlink($this->path)){
       ob_clean();
       echo "Permission denied.";
     }
