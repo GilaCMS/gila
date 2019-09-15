@@ -9,7 +9,7 @@ class LoginUser extends TestCase
   {
     $email = "admin@mail.com";
     $pass = "password";
-    $loginPage = "http://localhost/gilacms/login";
+    $loginPage = "http://localhost/gilatest/login";
 
     $default_opts = [
       'http'=> [
