@@ -57,7 +57,6 @@ $show_path = substr($filepath, 1+strlen(realpath('')));
     requiredRes = new Array()
     var myCodeMirror = new Array();
     var saveFilePath;
-    var csrfToken = '<?=gForm::getToken()?>';
 
     mirror = CodeMirror.fromTextArea(document.getElementById('textarea'),{
         lineNumbers:true
@@ -68,6 +67,8 @@ $show_path = substr($filepath, 1+strlen(realpath('')));
     ?>
 
 <script>
+var csrfToken = '<?=gForm::getToken()?>';
+var dir_path='';
 updateDir("<?=$dirname?>");
 
 function updateDir(path) {
@@ -106,7 +107,7 @@ function createDir() {
       g.loader(false)
       if(msg=='') msg="Folder created successfully"
       alert(msg);
-      //location.href = 'admin/fm?f='+dir_path
+      location.href = 'admin/fm?f='+dir_path
     })
   }
 }

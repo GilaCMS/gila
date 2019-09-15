@@ -70,7 +70,7 @@ function gallery_create(path) {
   if(new_path != null) {
     g.loader()
     csrfToken=g.el('upload_files').getAttribute('data-csrf')
-    $.post('fm/newfolder', 'path='+filepath+'&formToken='+csrfToken,function(msg){
+    g.post('fm/newfolder', 'path='+path+new_path+'&formToken='+csrfToken,function(msg){
       g.loader(false)
       if(msg=='') msg="File created successfully"
       alert(msg);
@@ -86,7 +86,7 @@ function gallery_delete_selected(path) {
       if(filepath != null) if(confirm("Are you sure you want to remove this file?")) {
         g.loader()
         csrfToken=g.el('upload_files').getAttribute('data-csrf')
-        $.post('fm/delete', 'path='+filepath+'&formToken='+csrfToken,function(msg){
+        g.post('fm/delete', 'path='+filepath+'&formToken='+csrfToken,function(msg){
           g.loader(false)
           if(msg=='') msg=__m('_file_deleted')
           alert(msg);
@@ -105,7 +105,7 @@ function gallery_refresh_thumb(path) {
     if(filepath != null) {
       g.loader()
       csrfToken=g.el('upload_files').getAttribute('data-csrf')
-      $.post('fm/delete', 'path='+filepath+'&formToken='+csrfToken,function(msg){
+      g.post('fm/delete', 'path='+filepath+'&formToken='+csrfToken,function(msg){
         g.loader(false)
         if(msg=='') msg="File thumb updated"
         alert(msg);

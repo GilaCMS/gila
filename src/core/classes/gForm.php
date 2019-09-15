@@ -29,7 +29,7 @@ class gForm
   static function getToken($name = '*') {
     $tokens = session::key('formToken')??[];
     if($name === '*') if(isset($tokens[$name])) return $tokens[$name];
-    $chars = 'bcdfghjklmnprstvwxzaeiou123467890%^&/+=-?_#';
+    $chars = 'bcdfghjklmnprstvwxzaeiou123467890%^&/=-?_#';
     $gsession = (string)session::user_id();
     for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 42)];
     $tokens[$name] = $gsession;
