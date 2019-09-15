@@ -52,11 +52,12 @@ function gallery_move_selected(path) {
         old_path = selected.getAttribute('data-path')
         new_path = prompt(__m('_new_filepath'), old_path);
         if(new_path != null) {
-            $.post('fm/move', {newpath:new_path, path:old_path},function(msg){
-                if(msg=='') msg=__m('_file_saved')
-                alert(msg);
-                update_gallery_body(path);
-            })
+          csrfToken=g.el('upload_files').getAttribute('data-csrf')
+          $.post('fm/move', 'newpath='+new_path+'&path='+old_path+'&formToken='+csrfToken, function(msg){
+              if(msg=='') msg=__m('_file_saved')
+              alert(msg);
+              update_gallery_body(path);
+          })
         }
     } else {
         alert(__m('_select_file'))
@@ -68,7 +69,8 @@ function gallery_create(path) {
   new_path = prompt(__m('_new_folder'), '');
   if(new_path != null) {
     g.loader()
-    $.post('fm/newfolder', {path:path+new_path},function(msg){
+    csrfToken=g.el('upload_files').getAttribute('data-csrf')
+    $.post('fm/newfolder', 'path='+filepath+'&formToken='+csrfToken,function(msg){
       g.loader(false)
       if(msg=='') msg="File created successfully"
       alert(msg);
@@ -83,7 +85,8 @@ function gallery_delete_selected(path) {
       filepath = selected.getAttribute('data-path')
       if(filepath != null) if(confirm("Are you sure you want to remove this file?")) {
         g.loader()
-        $.post('fm/delete', {path:filepath},function(msg){
+        csrfToken=g.el('upload_files').getAttribute('data-csrf')
+        $.post('fm/delete', 'path='+filepath+'&formToken='+csrfToken,function(msg){
           g.loader(false)
           if(msg=='') msg=__m('_file_deleted')
           alert(msg);
@@ -101,7 +104,8 @@ function gallery_refresh_thumb(path) {
     filepath = selected.getAttribute('src')
     if(filepath != null) {
       g.loader()
-      $.post('fm/delete', {path:filepath},function(msg){
+      csrfToken=g.el('upload_files').getAttribute('data-csrf')
+      $.post('fm/delete', 'path='+filepath+'&formToken='+csrfToken,function(msg){
         g.loader(false)
         if(msg=='') msg="File thumb updated"
         alert(msg);

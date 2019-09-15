@@ -85,7 +85,7 @@ function updateDir(path) {
     html += ' <span class="g-btn" onclick="createDir()"><?=_("+ Dir")?></span>'
     html += ' <span class="g-btn" onclick="createFile()"><?=_("+ File")?></span>'
     html += ' <span class="g-btn" onclick="document.getElementById(\'up_files\').click()"><i class="fa fa-upload"></i> <?=_("Upload")?></span>'
-    html += ' <input type="file" id="up_files" data-csrf="<?=gForm::getToken('fm_upload')?>" onchange="uploadFile()" style="opacity:0;position:absolute">';
+    html += ' <input type="file" id="up_files" onchange="uploadFile()" style="opacity:0;position:absolute">';
     document.getElementsByClassName('fm_dir')[0].innerHTML=html;
   })
 }
@@ -102,11 +102,11 @@ function createDir() {
   path = prompt("Please enter the folder name", "New Folder");
   if(path != null) {
     g.loader()
-    g.post('fm/newfolder', 'path='+dir_path+'/'+path,function(msg){
+    $.post('fm/newfolder', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
       g.loader(false)
       if(msg=='') msg="Folder created successfully"
       alert(msg);
-      location.href = 'admin/fm?f='+dir_path
+      //location.href = 'admin/fm?f='+dir_path
     })
   }
 }
@@ -114,7 +114,7 @@ function createFile() {
   path = prompt("Please enter new file name", 'File.txt');
   if(path != null) {
     g.loader()
-    g.post('fm/newfile', 'path='+dir_path+'/'+path,function(msg){
+    $.post('fm/newfile', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
       g.loader(false)
       if(msg=='') msg="File created successfully"
       alert(msg);
@@ -125,7 +125,7 @@ function createFile() {
 function uploadFile() {
   let fm=new FormData()
   fm.append('uploadfiles', g.el('up_files').files[0]);
-  fm.append('formToken', g.el('up_files').getAttribute('data-csrf'));
+  fm.append('formToken', csrfToken);
   fm.append('path', dir_path);
   fm.append('g_response', 'content');
   g.loader()
@@ -139,7 +139,6 @@ function uploadFile() {
 
 function savefile(path) {
   g.loader()
-  csrfToken=g.el('up_files').getAttribute('data-csrf')
   $.post('fm/save', {contents:mirror.getValue(),path:path, formToken:csrfToken},function(msg){
     g.loader(false)
     if(msg=='') msg="File saved successfully"
@@ -150,7 +149,6 @@ function movefile(path) {
   new_path = prompt("Please enter new file path", path);
   if(new_path != null) {
     g.loader()
-    csrfToken=g.el('up_files').getAttribute('data-csrf')
     $.post('fm/move', {newpath:new_path, path:path, formToken:csrfToken},function(msg){
       g.loader(false)
       if(msg=='') msg="File saved successfully"
@@ -162,7 +160,6 @@ function movefile(path) {
 function deletefile(path) {
   if(confirm("Are you sure you want to remove this file?")) {
     g.loader()
-    csrfToken=g.el('up_files').getAttribute('data-csrf')
     $.post('fm/delete', {path:path, formToken:csrfToken},function(msg){
       g.loader(false)
       if(msg!='') {

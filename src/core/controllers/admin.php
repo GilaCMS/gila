@@ -162,7 +162,11 @@ class admin extends controller
   }
 
   function media_uploadAction(){
-    if(isset($_FILES['uploadfiles']) && gForm::posted('media_upload')) {
+    if(!gForm::posted()) {
+      echo "Permission denied.";
+      exit;
+    }
+    if(isset($_FILES['uploadfiles'])) {
       if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
         echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
       }
@@ -176,6 +180,7 @@ class admin extends controller
         }
       } else echo "<div class='alert error'>Error: not a media file!</div>";
     }
+
     self::mediaAction();
   }
 

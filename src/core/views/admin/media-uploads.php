@@ -20,7 +20,7 @@ view::script('src/core/assets/admin/media.js');
 <?php if(gila::hasPrivilege('admin upload_assets')){ ?>
   <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
   accept="image/*,video/*,audio/*" onchange='gallery_upload_files()'
-  multiple data-path="<?=$path?>" data-csrf="<?=gForm::getToken('media_upload')?>">
+  multiple data-path="<?=$path?>" data-csrf="<?=gForm::getToken()?>">
 <?php } ?>
   <span class="g-group-item fullwidth" style="position:relative;">
     <input class='g-input input-filter fullwidth' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
@@ -48,17 +48,18 @@ foreach($files as $file) if($file[0]!='.') {
     }
   }
   $filepath=$path.'/'.$file;
+  $filename=htmlentities($file);
   if ($type=='image') {
     $img='<img src="'.view::thumb(SITE_PATH.$filepath,'media_thumb/',100).'">';
-    echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$file.'</div>';
+    echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
   }
   if ($type=='folder') {
     $img='<i class="fa fa-5x fa-folder"></i>';
-    echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" >'.$img.'<br>'.$file.'</div>';
+    echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" >'.$img.'<br>'.$filename.'</div>';
   }
   if ($type=='file') {
     $img='<i class="fa fa-4x fa-file-text-o" ></i>';
-    echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$file.'</div>';
+    echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$filename.'</div>';
   }
 }
 echo "</div>";
