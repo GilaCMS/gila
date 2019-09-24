@@ -1,0 +1,12 @@
+ {
+  "Name":"Nom",
+  "Email":"Email",
+  "Update Profile":"Mettre à jour le profil",
+  "Twitter Account":"Compte twitter",
+  "New Password":"Nouveau mot de passe",
+  "Confirm Password":"Confirmer mot de passe",
+  "Change Password":"Changer mot de passe",
+  "New passwords do not match":"Le nouveau mot de passe ne correspond pas",
+  "New password too small":"Le nouveau mot de passe est trop court",
+  "Password incorrect":"Mot de passe inccorecte"
+}

@@ -1,0 +1,25 @@
+	:root{--ve-bg: #ddd}
+	.ve-editor{border:1px solid grey;}
+	.ve-edit-node button{ min-width: 40px; background:grey; border-width: 0; color:white; padding: 4px 8px }
+	.ve-edit-node td{ padding: 6px}
+	.ve-editor-bar{background: var(--ve-bg);}
+	.ve-editor-bar button{height: 40px; min-width: 40px; background:unset}
+	.ve-footbar button,.ve-editor-bar button{border-width: 0; vertical-align: top}
+	.ve-footbar button:hover,.ve-editor-bar button:hover{background: #bbb}
+	.ve-footbar{background: var(--ve-bg);}
+	.ve-editor-area{min-height: 200px; overflow: scroll; padding:10px; margin-right:250px}
+	.ve-editor-area table{width:100%}
+	.ve-editor-area th,.ve-editor-area td,.ve-editor-area figure,p{border:1px dashed #bbb}
+	.ve-editor-area figure{display: inline-block;}
+	.ve-editor-area pre{background-color: #e6e6e6; padding: 6px; border: 1px solid #ccc}
+	.ve-editor-area blockquote{border-left: 3px solid grey; padding:10px; font-size: 1.3em; font-style: italic}
+	.ve-edit-node{
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background: var(--ve-bg);
+		padding: 10px;
+		width: 250px;
+		overflow: scroll;
+	}

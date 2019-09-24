@@ -1,0 +1,12 @@
+{
+  "Name":"Όνομα",
+  "Email":"Email",
+  "Update Profile":"Ανανέωση Προφίλ",
+  "Twitter Account":"Λογαρισμός Twitter",
+  "New Password":"Νέος κωδικός",
+  "Confirm Password":"Επιβεβαίωση κωδικού",
+  "Change Password":"Αλλαγή κωδικού",
+  "New passwords do not match":"Οι νέοι κωδικοί δεν ταιριάζουν",
+  "New password too small":"Ο νέος κωδικός είναι πολύ μικρός",
+  "Password incorrect":"Λάθος κωδικός"
+}

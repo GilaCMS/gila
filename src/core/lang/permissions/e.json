@@ -1,0 +1,10 @@
+{
+  "admin":"Alle Administratorrechte  ",
+  "admin_user":"Administrieren Benutzer",
+  "admin_userrole":"Administrieren Benutzerregeln",
+  "admin_permissions":"Hinzufügen und Entfernen von Berechtigungen für Benutzerrollen",
+  "upload_assets":"Kann Dateien in den Assets-Ordner hochladen",
+  "edit_assets":"Kann Dateien im Assets-Ordner bearbeiten",
+  "editor": "Kann alle Beiträge und Kategorien bearbeiten",
+  "writer": "Kann Beiträge schreiben"
+}

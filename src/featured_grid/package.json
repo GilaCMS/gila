@@ -1,0 +1,16 @@
+{
+	"name":"Featured Posts Grid",
+	"version":"1.1.0",
+	"description":"Adds a featured post grid section in the fronpage. Template must have a <i>slide</i> widget area.",
+	"options":{
+		"category":{
+			"type":"postcategory"
+		},
+		"align":{
+			"type":"select",
+			"options":{
+				"top":"Top","center":"Center","bottom":"Bottom"
+			}
+		}
+	}
+}

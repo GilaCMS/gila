@@ -1,0 +1,12 @@
+{
+  "Name":"Nimi",
+  "Email":"Email",
+  "Update Profile":"Uuenda profiili",
+  "Twitter Account":"Konto Twitter",
+  "New Password":"Uus salasõna",
+  "Confirm Password":"Kinnita salasõna",
+  "Change Password":"Muuda salasõna",
+  "New passwords do not match":"Uued paroolid ei kattu",
+  "New password too small":"Uus parool on liiga väike",
+  "Password incorrect":"Parool pole õige"
+}

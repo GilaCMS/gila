@@ -1,0 +1,12 @@
+{
+  "Name":"Nombre",
+  "Email":"Email",
+  "Update Profile":"Actualizar Profil",
+  "Twitter Account":"Cuenta Twitter",
+  "New Password":"Nueva Costrasena",
+  "Confirm Password":"Confirm Password",
+  "Change Password":"Change Password",
+  "New passwords do not match":"New passwords do not match",
+  "New password too small":"New password too small",
+  "Password incorrect":"Password incorrect"
+}

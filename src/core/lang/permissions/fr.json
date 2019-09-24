@@ -1,0 +1,10 @@
+ {
+  "admin":"Tous les droits d'administration",
+  "admin_user":"Administrer les utilisateurs",
+  "admin_userrole":"Administrer les rôles utilisateur",
+  "admin_permissions":"Ajouter et supprimer les permissions des rôles utilisateurs",
+  "upload_assets":"Pouvoir importer des fichiers",
+  "edit_assets":"Pouvoir éditer des fichiers importés",
+  "editor": "Pouvoir éditer tous les articles et les catégories",
+  "writer": "Pouvoir écrire des articles"
+}

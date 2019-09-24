@@ -1,0 +1,34 @@
+body { overflow-x: hidden; }
+#wrapper { padding-left: 0; transition: all 0.5s ease; width:100%}
+#wrapper.toggled { padding-left: 200px; }
+#wrapper.toggled #sidebar-wrapper { width: 200px; overflow-y: visible; opacity:1 }
+#wrapper.toggled { position: absolute; margin-right: -200px; }
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 200px;
+    width: 0;
+    height: 100%;
+    margin-left: -200px;
+    overflow-y: auto;
+    overflow-y: hidden;
+    background: #000;
+    transition: all 0.5s ease;
+    top:0;
+    opacity:0;
+}
+#sidebar-wrapper a{ font-weight: 700; background: inherit; }
+
+#sidebar-wrapper .g-nav li{ color:#fff;}
+#sidebar-wrapper .g-nav li a{ color:#ccc; }
+#sidebar-wrapper .g-nav li a i{ margin: 0 4px; }
+#sidebar-wrapper .g-nav li ul li a{ color:#444; }
+#sidebar-wrapper .g-nav li ul{ box-shadow:1px 1px 4px black;border:0 }
+#sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
+.g-nav li ul{min-width: 200px}
+
+.widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); grid-gap: 20px;}
+.widget-area-dashboard > * {box-shadow: 0px 1px 6px #999; margin:0}
+.widget-area-dashboard .widget{background:white}
+.widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: var(--main-padding); background: var(--main-bg-color); color: var(--main-color); }

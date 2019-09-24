@@ -1,0 +1,10 @@
+{
+  "admin": "Kõik administreerimise õigused",
+  "admin_user": "Kasutajate haldamine",
+  "admin_userrole": "Rollide haldamine",
+  "admin_permissions": "Kasutaja rollide õiguste lisamine ja eemaldamine",
+  "upload_assets": "Saab faile ressursside kausta üles laadida",
+  "edit_assets": "Saab faile ressursside kaustas muuta",
+  "editor": "Saab redigeerida kõiki artikleid ja kategooriaid",
+  "writer": "Oskab kirjutada artikleid"
+}

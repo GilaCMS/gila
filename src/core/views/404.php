@@ -1,0 +1,2 @@
+<h1>404 Error</h1>
+<h2>The page you are looking for is not here</h2>

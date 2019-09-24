@@ -1,0 +1,12 @@
+{
+  "Name":"Name",
+  "Email":"Email",
+  "Update Profile":"Update Profile",
+  "Twitter Account":"Twitter Account",
+  "New Password":"New Password",
+  "Confirm Password":"Confirm Password",
+  "Change Password":"Change Password",
+  "New passwords do not match":"The passwords do not match",
+  "New password too small":"The new password is too small",
+  "Password incorrect":"Password incorrect"
+}

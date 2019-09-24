@@ -1,0 +1,19 @@
+{
+	"name":"Gila CMS",
+	"version":"1.11.3",
+	"description":"This is the core package of Gila CMS.",
+	"url":"gilacms.com",
+	"logo":"https://gilacms.com/assets/package-logos/core.png",
+	"permissions": {
+		"admin":"All administration privileges",
+		"admin_user":"Administrate users",
+		"admin_userrole":"Administrate user roles",
+		"admin_permissions":"Add and remove permissions to user roles",
+		"upload_assets":"Can upload files on assets folder",
+		"edit_assets":"Can edit files on assets folder",
+		"editor":"Can edit all posts and categories",
+		"writer":"Can write posts"
+	},
+  "lang":"core/lang/admin/",
+  "assets":["assets"]
+}
