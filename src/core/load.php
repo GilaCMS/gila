@@ -2,14 +2,15 @@
 
 global $db;
 
-$GLOBALS['version']='1.11.3';
+$GLOBALS['version']='1.11.4';
 gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
   'cm'=> 'core/controllers/cm',
   'login'=> 'core/controllers/login',
   'webhook'=> 'core/controllers/webhook',
-  'lzld'=> 'core/controllers/lzld'
+  'lzld'=> 'core/controllers/lzld',
+  'fm'=> 'core/controllers/fm'
 ]);
 
 gila::$amenu = [
@@ -33,7 +34,6 @@ gila::$amenu = [
 ];
 
 if(FS_ACCESS) {
-  gila::controller('fm', 'core/controllers/fm');
   gila::amenu_child('content', ['File Manager','admin/fm','icon'=>'folder','access'=>'admin']);
   gila::amenu_child('admin', ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin']);
 }
