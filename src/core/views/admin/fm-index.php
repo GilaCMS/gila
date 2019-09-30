@@ -104,8 +104,7 @@ function createDir() {
   if(path != null) {
     g.loader()
     $.post('fm/newfolder', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
-      g.loader(false)
-      if(msg=='') msg="Folder created successfully"
+      g.loader(false);
       alert(msg);
       location.href = 'admin/fm?f='+dir_path
     })
@@ -116,8 +115,7 @@ function createFile() {
   if(path != null) {
     g.loader()
     $.post('fm/newfile', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
-      g.loader(false)
-      if(msg=='') msg="File created successfully"
+      g.loader(false);
       alert(msg);
       location.href = 'admin/fm?f='+dir_path+'/'+path
     })
@@ -131,8 +129,7 @@ function uploadFile() {
   fm.append('g_response', 'content');
   g.loader()
   g.ajax({url:"fm/upload",method:'POST',data:fm, fn: function (msg){
-    g.loader(false)
-    if(msg=='') msg="File uploaded successfully"
+    g.loader(false);
     alert(msg);
     location.href = 'admin/fm?f='+dir_path+'/'
   }})
@@ -141,8 +138,7 @@ function uploadFile() {
 function savefile(path) {
   g.loader()
   $.post('fm/save', {contents:mirror.getValue(),path:path, formToken:csrfToken},function(msg){
-    g.loader(false)
-    if(msg=='') msg="File saved successfully"
+    g.loader(false);
     alert(msg);
   })
 }
@@ -151,8 +147,7 @@ function movefile(path) {
   if(new_path != null) {
     g.loader()
     $.post('fm/move', {newpath:new_path, path:path, formToken:csrfToken},function(msg){
-      g.loader(false)
-      if(msg=='') msg="File saved successfully"
+      g.loader(false);
       alert(msg);
       location.href = 'admin/fm?f='+dir_path
     })

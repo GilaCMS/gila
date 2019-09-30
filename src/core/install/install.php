@@ -5,9 +5,18 @@ ini_set('display_startup_errors', '1');
 $configfile = CONFIG_PHP;
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $keys = ['adm_email', 'base_url', 'db_name','db_user'];
+    foreach($keys as $key) if($_POST[$key]!=strip_tags($_POST[$key])) {
+      echo "<div class='alert'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>";
+      echo "Tags are not allowed in field: ".htmlentities($_POST[$key]);
+      include __DIR__."/install.form.php";
+      return;
+    }
+
     $host=$_POST['db_host'];$db_user=$_POST['db_user'];
     $db_pass=$_POST['db_pass'];$db_name=$_POST['db_name'];
     $_base_url=$_POST['base_url'];
+
     $_lc=substr($_base_url,-1);
     if($_lc!='/' && $_lc!='\\') $_base_url.='/';
 
@@ -40,7 +49,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $GLOBALS['config']['slogan'] = 'An awesome website!';
         $GLOBALS['config']['default-controller'] = 'blog';
         $GLOBALS['config']['timezone'] = 'America/Mexico_City';
-        $GLOBALS['config']['ssl'] = '';
         $GLOBALS['config']['env'] = 'pro';
         $GLOBALS['config']['check4updates'] = 1;
         $GLOBALS['config']['language'] = 'en';

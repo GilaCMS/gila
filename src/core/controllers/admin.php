@@ -197,14 +197,14 @@ class admin extends controller
 
   function fmAction()
   {
-    if(FS_ACCESS) {
+    //if(FS_ACCESS) {
       $file=realpath(htmlentities($_GET['f']));
       view::set('filepath',$file);
       view::renderAdmin('admin/fm-index.php');
-    } else {
-      http_response_code(404);
-      view::renderAdmin('404.php');
-    }
+    //} else {
+    //  http_response_code(404);
+    //  view::renderAdmin('404.php');
+    //}
   }
 
   function sqlAction()

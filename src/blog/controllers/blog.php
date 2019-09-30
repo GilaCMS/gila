@@ -102,8 +102,8 @@ class Blog extends controller
     if(!is_numeric($category)) {
       $category = $db->value('SELECT id FROM postcategory WHERE slug=?', $category);
     }
-    //$category = router::get('category',1);
     $name = $db->value("SELECT title from postcategory WHERE id=?",$category);
+    gila::canonical('blog/category/'.$category.'/'.$name.'/');
     self::$totalPosts = post::total(['category'=>$category]);
     view::set('category', $name);
     view::set('page',self::$page);

@@ -10,9 +10,9 @@ return [
   'commands'=> ['edit','delete'],
   'lang'=>'core/lang/admin/',
   'permissions'=>[
-    'create'=>['admin'],
-    'update'=>['admin'],
-    'delete'=>['admin']
+    'create'=>['admin','editor'],
+    'update'=>['admin','editor'],
+    'delete'=>['admin','editor']
   ],
   'search-box'=>true,
   'search-boxes'=> ['user_id'],

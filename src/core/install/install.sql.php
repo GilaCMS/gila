@@ -92,12 +92,13 @@ $link->query('CREATE TABLE IF NOT EXISTS `userrole` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-$_user=$_POST['adm_user'];
-$_email=$_POST['adm_email'];
-$_pass=password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
+$_user = $link->real_escape_string($_POST['adm_user']);
+$_email = $link->real_escape_string($_POST['adm_email']);
+$_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
 
 $link->query("INSERT INTO userrole(id,userrole) VALUES(1,'Admin');");
-$link->query("INSERT INTO user(id,username,email,pass,active,reset_code) VALUES(1,'$_user','$_email','$_pass',1,'');");
+$link->query("INSERT INTO user(id,username,email,pass,active,reset_code)
+  VALUES(1,'$_user','$_email','$_pass',1,'');");
 $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
 $link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
 VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
