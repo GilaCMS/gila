@@ -175,8 +175,14 @@ class admin extends controller
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
       if(in_array(pathinfo($name, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
-        if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
+        $path = SITE_PATH.$path.'/'.$name;
+        if(!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
+        }
+        $maxWidth = gila::config('maxImgWidth') ?? 0;
+        $maxHeight = gila::config('maxImgHeight') ?? 0;
+        if($maxWidth>0 && $maxHeight>0) {
+          image::make_thumb($path, $path, $maxWidth, $maxHeight);
         }
       } else echo "<div class='alert error'>Error: not a media file!</div>";
     }

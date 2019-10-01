@@ -1,5 +1,5 @@
 <?php
-$path = router::request('path', session::key('asset_path')??'src');
+$path = router::request('path', session::key('asset_path') ?? 'src');
 if($path[0]=='.') $path = 'src';
 session::key('asset_path', $path);
 $disabled = ($path=='')?'disabled':'';

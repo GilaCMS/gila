@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
   gila::config('user_register',$_POST['gila_user_register']);
   gila::config('use_cdn',$_POST['gila_use_cdn']);
   gila::config('use_webp',$_POST['gila_webp']);
+  gila::config('maxImgWidth',$_POST['gila_maxImgWidth']);
+  gila::config('maxImgHeight',$_POST['gila_maxImgHeight']);
   gila::updateConfigFile();
   view::alert('success',__('_changes_updated'));
 }
@@ -140,6 +142,13 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 
     <br>
     <?php echo gForm::input('gila_webp',["type"=>"switcher"],gila::config('use_webp'),__("Use WEBP")) ?>
+
+    <br>
+    <div class="gm-12">
+    <label class="gm-4"><?=__("Max Media Upload (px)")?></label>
+    <input name="gila_maxImgWidth" value="<?=gila::config('maxImgWidth')?>" type="number" class="gm-2" />
+    &times;<input name="gila_maxImgHeight" value="<?=gila::config('maxImgHeight')?>" type="number" class="gm-2" />
+    </div>
 
     <br>
     <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>

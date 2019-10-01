@@ -2,7 +2,11 @@
 $path = router::request('path', session::key('media_path')??'assets');
 if($path[0]=='.') $path = 'assets';
 session::key('media_path', $path);
-if(strlen(realpath('assets'))>strlen(realpath($path))) $path = 'assets';
+
+$dpath = realpath(SITE_PATH.'assets');
+$base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));
+if($base != $dpath) $path = 'assets';
+
 $files = scandir(SITE_PATH.$path);
 $disabled = ($path=='assets')?'disabled':'';
 
