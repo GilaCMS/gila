@@ -10,3 +10,5 @@
 .gitkeep export-ignore
 .gitignore export-ignore
 .gitattributes export-ignore
+.circleci export-ignore
+Dockerfile export-ignore

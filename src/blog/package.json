@@ -1,6 +1,6 @@
 {
   "name":"Blog",
-  "version":"1.4.1",
+  "version":"1.4.2",
   "description":"Adds the blog controller.",
   "lang":"core/lang/admin/",
   "options": {

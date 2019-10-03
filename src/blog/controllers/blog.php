@@ -154,7 +154,7 @@ class Blog extends controller
       gila::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
       view::meta('og:title',$r['title']);
       view::meta('og:type','website');
-      view::meta('og:url',self::get_url($r['id'],$r['slug']));
+      view::meta('og:url', view::$canonical);
       view::meta('og:description',$r['description']);
 
       if ($r['img'] ) {
