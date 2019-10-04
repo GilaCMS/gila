@@ -3,6 +3,8 @@ chdir(__DIR__.'/../../');
 include __DIR__.'/../../vendor/autoload.php';
 include __DIR__.'/../../src/core/classes/gila.php';
 include __DIR__.'/../../src/core/classes/router.php';
+define("LOG_PATH", "log");
+define("CONFIG_PHP", "config.php");
 
 use PHPUnit\Framework\TestCase;
 
@@ -38,9 +40,10 @@ class ClassGila extends TestCase
 	public function test_updateConfigFile()
 	{
 		$value = rand(1,100);
-		include_once(__DIR__.'/../../config.php');
+		include_once(__DIR__.'/../../config.default.php');
 		gila::setConfig('test_config_key', $value);
 		gila::updateConfigFile();
+    sleep(5);
 		include_once(__DIR__.'/../../config.php');
 		$this->assertEquals($value, $GLOBALS['config']['test_config_key']);
 	}
