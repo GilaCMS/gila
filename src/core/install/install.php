@@ -28,12 +28,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<br>#".mysqli_connect_errno().PHP_EOL." : ".mysqli_connect_error().PHP_EOL."</div>";
     } else {
         $link->multi_query(file_get_contents(__DIR__."/install.sql"));
-        
+
         $_user = $link->real_escape_string($_POST['adm_user']);
         $_email = $link->real_escape_string($_POST['adm_email']);
         $_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
 
-        $link->query("INSERT INTO user(id,username,email,pass,active,reset_code) VALUES(1,?,?,?,1,'');", [$_user, $_email, $_pass]);
+        $link->query("INSERT INTO user(id,username,email,pass,active,reset_code) VALUES(1,'$_user','$_email','$_pass',1,'');");
 
         // create config.php
         $filedata = file_get_contents('config.default.php');
