@@ -17,22 +17,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db_pass=$_POST['db_pass'];$db_name=$_POST['db_name'];
     $_base_url=$_POST['base_url'];
 
-    $_user = $link->real_escape_string($_POST['adm_user']);
-    $_email = $link->real_escape_string($_POST['adm_email']);
-    $_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
-
-    $link->multi_query(__DIR__."/install.sql.php");
-    $link->query("INSERT INTO user(id,username,email,pass,active,reset_code) VALUES(1,?,?,?,1,'');", [$_user, $_email, $_pass]);
-
+    
     $_lc=substr($_base_url,-1);
     if($_lc!='/' && $_lc!='\\') $_base_url.='/';
 
     $link = @mysqli_connect($host,$db_user,$db_pass,$db_name);
+    
     if (!$link) {
         echo "<div class='alert'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>Error: Unable to connect to MySQL.".PHP_EOL;
         echo "<br>#".mysqli_connect_errno().PHP_EOL." : ".mysqli_connect_error().PHP_EOL."</div>";
     } else {
-        include __DIR__."/install.sql.php";
+        $link->multi_query(file_get_contents(__DIR__."/install.sql"));
+        
+        $_user = $link->real_escape_string($_POST['adm_user']);
+        $_email = $link->real_escape_string($_POST['adm_email']);
+        $_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
+
+        $link->query("INSERT INTO user(id,username,email,pass,active,reset_code) VALUES(1,?,?,?,1,'');", [$_user, $_email, $_pass]);
 
         // create config.php
         $filedata = file_get_contents('config.default.php');
