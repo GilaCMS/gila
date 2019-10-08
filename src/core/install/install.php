@@ -17,6 +17,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db_pass=$_POST['db_pass'];$db_name=$_POST['db_name'];
     $_base_url=$_POST['base_url'];
 
+    $_user = $link->real_escape_string($_POST['adm_user']);
+    $_email = $link->real_escape_string($_POST['adm_email']);
+    $_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
+
+    $link->multi_query(__DIR__."/install.sql.php");
+    $link->query("INSERT INTO user(id,username,email,pass,active,reset_code) VALUES(1,?,?,?,1,'');", [$_user, $_email, $_pass]);
+
     $_lc=substr($_base_url,-1);
     if($_lc!='/' && $_lc!='\\') $_base_url.='/';
 
