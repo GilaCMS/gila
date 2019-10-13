@@ -5,9 +5,15 @@ Aaryan Saharan
 
 Alexandre Maiseret
 
+Ankush Sudhakar Patil
+
+ayacoo
+
 Bot Kotaku
 
 Guillermo Céspedes Tabárez
+
+Jose Luis Cervantes
 
 Mitchell Urgero
 
@@ -16,6 +22,8 @@ Nikos Papagianopoulos
 Ricky
 
 Rivo Zängov
+
+Rob rastating
 
 Vasileios Zoumpourlis
 
