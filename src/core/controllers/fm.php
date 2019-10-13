@@ -88,7 +88,8 @@ class fm extends controller
   }
 
   function moveAction () {
-    if(!gForm::posted() || !rename($this->path, $_POST['newpath'])) {
+    $ext = strtolower(pathinfo($_POST['newpath'], PATHINFO_EXTENSION));
+    if($ext == 'php' || $ext == 'htaccess' || !gForm::posted() || !rename($this->path, $_POST['newpath'])) {
       ob_clean();
       die("Permission denied.");
     }
