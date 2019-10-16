@@ -219,7 +219,7 @@ class admin extends controller
     if($q=router::request('query')) view::set('q', $q);
     view::renderAdmin('admin/sql.php');
   }
-  
+
   function profileAction()
   {
     gila::addLang('core/lang/myprofile/');
@@ -227,6 +227,7 @@ class admin extends controller
     core\models\profile::postUpdate($user_id);
     view::set('page_title', __('My Profile'));
     view::set('twitter_account',user::meta($user_id,'twitter_account'));
+    view::set('token',user::meta($user_id,'token'));
     view::renderAdmin('admin/myprofile.php');
   }
 
