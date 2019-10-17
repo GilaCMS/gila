@@ -30,6 +30,26 @@ class profile
         \view::alert('alert',__('Password incorrect'));
       }
     }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') if (\router::post('token')=='generate'){
+      $token = self::generateToken();
+      while(count(user::getIdsByMeta('token', $token)) > 0) {
+        $token = self::generateToken();
+      }
+      user::meta($user_id, 'token', $token);
+      \view::alert('success',__('_changes_updated'));
+    }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') if (\router::post('token')=='delete'){
+      user::meta($user_id, 'token', '');
+      \view::alert('success',__('_changes_updated'));
+    }
+  }
+
+  static function generateToken() {
+    $token = '';
+    while(strlen($token) < 160) {
+      $token .= hash('sha512', uniqid(true));
+    }
+    return substr($token, 0, 160);
   }
 
 }
