@@ -219,7 +219,7 @@ class view
   static function getViewFile ($file, $package = 'core')
   {
     if(isset(self::$view_file[$file]))
-      return 'src/'.self::view_file[$file].'/views/'.$file;
+      return 'src/'.self::$view_file[$file].'/views/'.$file;
 
     $tpath = self::getThemePath().'/'.$file;
     if(file_exists($tpath)) return $tpath;

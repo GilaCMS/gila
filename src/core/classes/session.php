@@ -32,7 +32,7 @@ class session
         $gsession = (string)$usr['id'];
         for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
         user::meta($usr[0], 'GSESSIONID', $gsession, true);
-        setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
+        setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/", null, null, true);
         unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();

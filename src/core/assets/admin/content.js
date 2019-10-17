@@ -389,7 +389,7 @@ gtableCommand['clone'] = {
     let _this
     _this = table
     _this.edit_html = "Loading..."
-    g.get('cm/insert_row/'+_this.name+'?id='+id,function(data){
+    g.post('cm/insert_row/'+_this.name, 'id='+id+'&formToken='+csrfToken, function(data){
       data = JSON.parse(data)
       _this.data.rows.unshift(data.rows[0])
     })
@@ -403,6 +403,7 @@ gtableCommand['delete'] = {
     let _id = id
     data = new FormData()
     data.append('id',id)
+    data.append('formToken',csrfToken)
     if(confirm(_e("Delete registry?"))) g.ajax({
       url: "cm/delete?t="+_this.name,
       data: data,
@@ -465,7 +466,8 @@ gtableTool['addfrom'] = {
   fn: function(table) {
     let _table
     _table = table.table
-    g.post('cm/select_row/'+_table.tool.addfrom[0],"list="+_table.tool.addfrom[1],function(gal){
+    g.post('cm/select_row/'+_table.tool.addfrom[0],
+      "list="+_table.tool.addfrom[1]+'&formToken='+csrfToken, function(gal){
       g.dialog({title:_e("Select"),body:gal,buttons:'select_row_source',type:'modal',class:'large',id:'select_row_dialog'})
       app.table_to_insert = _table.name
     })
@@ -523,17 +525,17 @@ g.dialog.buttons.select_row_source = {
   }
 }
 function open_gallery() {
-  g.post("admin/media","g_response=content",function(gal){
+  g.post("admin/media","g_response=content"+'&formToken='+csrfToken,function(gal){
     g.dialog({title:"Media gallery",body:gal,buttons:'select_path',type:'modal',class:'large',id:'media_dialog'})
   })
 }
 function open_gallery_post() {
-  g.post("admin/media","g_response=content",function(gal){ 
+  g.post("admin/media","g_response=content"+'&formToken='+csrfToken,function(gal){ 
     g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog'})
   })
 }
 function open_select_from_table(t) {
-  g.post("admin/content/"+t,"g_response=content",function(gal){ 
+  g.post("admin/content/"+t,"g_response=content"+'&formToken='+csrfToken,function(gal){ 
     g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog'})
   })
 }

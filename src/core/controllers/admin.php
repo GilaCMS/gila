@@ -174,7 +174,7 @@ class admin extends controller
       if($path[0]=='.') $path='assets';
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
-      if(in_array(pathinfo($name, PATHINFO_EXTENSION),["svg","jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
+      if(in_array(pathinfo($name, PATHINFO_EXTENSION),["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
         $path = SITE_PATH.$path.'/'.$name;
         if(!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";

@@ -77,10 +77,10 @@ class gForm
       /* OTHER TYPES */
         $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'">';
       } else {
-        $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'">';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'">';
       }
     } else {
-      $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'">';
+      $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'">';
     }
 
     return $html . '</div>';
@@ -107,7 +107,7 @@ class gForm
       },
       "meta"=> function($name,$field,$ov) {
         if(@$field['meta-csv']==true) {
-          return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.$ov.'"/>';
+          return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
         if(is_string($ov)) $ov = explode(',',$ov);
         $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
