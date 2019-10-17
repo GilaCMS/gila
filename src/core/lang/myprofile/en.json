@@ -8,5 +8,8 @@
   "Change Password":"Change Password",
   "New passwords do not match":"The passwords do not match",
   "New password too small":"The new password is too small",
-  "Password incorrect":"Password incorrect"
+  "Password incorrect":"Password incorrect",
+  "Unique Token Key": "Unique Token Key",
+  "Generate Token Key": "Generate Token Key",
+  "Delete Token Key": "Delete Token Key"
 }
