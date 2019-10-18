@@ -10,6 +10,7 @@ class profile
 
     if(!isset($_COOKIE['GSESSIONID']) ||
         $_COOKIE['GSESSIONID'] !== \session::key('GSESSIONID')) {
+          echo $_COOKIE['GSESSIONID']."  ".\session::key('GSESSIONID');
       http_response_code(403);
       die('Access denied');
     }

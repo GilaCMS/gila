@@ -11,6 +11,7 @@ class session
   static function start ()
   {
     if(self::$started==true) return;
+    self::$started = true;
     //ini_set("session.save_handler", "files");
     //ini_set("session.save_path", __DIR__."/../../../log/sessions");
     //ini_set('session.gc_maxlifetime', 24*3600);
@@ -21,7 +22,6 @@ class session
     } catch (Exception $e) {
       trigger_error($e->getMessage());
     }
-    self::$started = true;
     session::define(['user_id'=>0]);
 
     if (isset($_POST['username']) && isset($_POST['password']) && session::waitForLogin()==0) {
@@ -48,9 +48,9 @@ class session
 
   static function user ($id, $name, $email, $msg=null)
   {
-    session::key('user_id',$id);
-    session::key('user_name',$name);
-    session::key('user_email',$email);
+    session::key('user_id', $id);
+    session::key('user_name', $name);
+    session::key('user_email', $email);
     self::$user_id = $id;
     if($msg!==null) {
       $session_log = new logger(LOG_PATH.'/sessions.log');
@@ -125,7 +125,7 @@ class session
     if(isset(self::$user_id)) return self::$user_id;
     self::$user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
-    if($token) {
+    if($token && !isset($_COOKIE['GSESSIONID'])) {
       $usr = user::getByMeta('token', $token);
       if($usr) {
         self::$user_id = $usr['id'];
