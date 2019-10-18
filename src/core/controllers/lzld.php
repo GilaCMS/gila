@@ -6,7 +6,7 @@ class lzld extends controller
 
   function indexAction ($x)
   {
-    
+
   }
 
   function widgetAction ($id)
@@ -36,9 +36,13 @@ class lzld extends controller
 
     if (file_exists($file)) {
       $imageInfo = getimagesize($file);
+      ob_end_clean();
       switch ($imageInfo[2]) {
         case IMAGETYPE_JPEG:
           header("Content-Type: image/jpeg");
+          break;
+        case IMAGETYPE_WEBP:
+          header("Content-Type: image/webp");
           break;
         case IMAGETYPE_GIF:
           header("Content-Type: image/gif");

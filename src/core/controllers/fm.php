@@ -133,7 +133,7 @@ class fm extends controller
     $ext = explode('.',$fileOut);
     $ext = $ext[count($ext)-1];
     if(isset($_GET['thumb'])) {
-      $fileOut = view::thumb($fileOut,'media_thumb/', (int)$_GET['media_thumb']);
+      $fileOut = view::thumb($fileOut, 'media_thumb/', (int)$_GET['media_thumb']);
     }
 
     if (file_exists($fileOut)) {
