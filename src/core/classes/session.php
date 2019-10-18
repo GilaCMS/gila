@@ -28,11 +28,6 @@ class session
       $usr = user::getByEmail($_POST['username']);
       if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
         session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
-        $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-        $gsession = (string)$usr['id'];
-        for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
-        user::meta($usr[0], 'GSESSIONID', $gsession, true);
-        setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/", null, null, true);
         unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();
@@ -61,6 +56,13 @@ class session
       $session_log = new logger(LOG_PATH.'/sessions.log');
       $session_log->info($msg,['user_id'=>$id, 'email'=>$email]);
     }
+    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
+    $gsession = (string)$id;
+    for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
+    user::meta($id, 'GSESSIONID', $gsession, true);
+    session::key('GSESSIONID', $gsession);
+    setcookie('GSESSIONID', $gsession, time() + (86400 * 30),
+      '/; samesite=strict', null, null, true);
   }
 
   /**

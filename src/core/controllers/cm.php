@@ -212,6 +212,7 @@ class cm extends controller
   {
     global $db;
     header('Content-Type: application/json');
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
     $pnk = new gTable(router::get("t",1), $this->permissions);
 
     if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
