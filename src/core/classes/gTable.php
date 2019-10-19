@@ -83,11 +83,12 @@ class gTable
 
   function select(&$fields = null)
   {
+    global $db;
     $select = [];
     if($fields == null) $fields = $this->fields();
 
     foreach ($fields as $key => $value) {
-      $select[$key] = '`'.$value.'`';
+      $select[$key] = '`'.$db->res($value).'`';
       if($qcolumn = $this->fieldAttr($value, 'qcolumn')) {
         $select[$key] = $qcolumn.' as '.$value;
       }
@@ -138,6 +139,7 @@ class gTable
   }
 
   function orderby($orders = null) {
+    global $db;
     if(!$orders) {
       $orders = router::request('orderby', []);
     }
@@ -147,6 +149,7 @@ class gTable
     }
 
     if($orders) foreach($orders as $key=>$order) {
+      $order = $db->res($order);
       $o = is_numeric($key) ? explode('_', $order) : [$key, $order];
       if(!array_key_exists($o[0], $this->table['fields'])) continue;
       if($o[1]=='a') $o[1]='ASC';
@@ -250,7 +253,7 @@ class gTable
 
     foreach($fields as $key=>$value) {
       if(@$this->table['fields'][$key]['type'] == 'meta') {
-
+        $value = strip_tags($value);
         $mt = $this->table['fields'][$key]["mt"];
         $vt = $this->table['fields'][$key]["metatype"];
         if(is_string($value)) {
@@ -271,13 +274,15 @@ class gTable
   }
 
   function where($fields = null) {
+    global $db;
     $filters = [];
     if($fields==null) return '';
     if(isset($this->table['filters'])) {
       foreach($this->table['filters'] as $k=>$f) $fields[$k]=$f;
     }
 
-    foreach($fields as $key=>$value) if(!is_numeric($key)){
+    foreach($fields as $key=>$value) if(!is_numeric($key)) {
+      $value = $db->res($value);
       if(array_key_exists($key, $this->table['fields'])) {
         if(is_array($value)) {
           foreach($value as $subkey=>$subvalue) {
@@ -297,10 +302,11 @@ class gTable
     }
 
     if(isset($fields["search"])) {
+      $value = $db->res($fields["search"]);
       $search_filter = [];
       foreach($this->table['fields'] as $key=>$field) {
         if(!isset($field['qcolumn']) && !isset($field['metatype']))
-          $search_filter[] = "$key LIKE '%{$fields["search"]}%'";
+          $search_filter[] = "$key LIKE '%{$value}%'";
       }
       $filters[] = '('.implode(' OR ',$search_filter).')';
     }

@@ -130,7 +130,7 @@ class package
       $file = $pinfo['download_url'];
     }
 
-    if(isset($_GET['src'])) $file = $_GET['src'];
+    if(isset($_GET['src']) && substr($_GET['src'],0,20)=='https://gilacms.com/') $file = $_GET['src'];
     $tmp_name = $target.'__tmp__';
     $localfile = 'src/'.$package.'.zip';
 

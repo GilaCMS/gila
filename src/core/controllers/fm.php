@@ -88,8 +88,9 @@ class fm extends controller
   }
 
   function moveAction () {
-    $ext = strtolower(pathinfo($_POST['newpath'], PATHINFO_EXTENSION));
-    if($ext == 'php' || $ext == 'htaccess' || !gForm::posted() || !rename($this->path, $_POST['newpath'])) {
+    $ext = strtolower(pathinfo($this->path, PATHINFO_EXTENSION));
+    $newext = strtolower(pathinfo($_POST['newpath'], PATHINFO_EXTENSION));
+    if($ext != $newext || $newext == 'htaccess' || !gForm::posted() || !rename($this->path, $_POST['newpath'])) {
       ob_clean();
       die("Permission denied.");
     }
@@ -132,7 +133,7 @@ class fm extends controller
     $ext = explode('.',$fileOut);
     $ext = $ext[count($ext)-1];
     if(isset($_GET['thumb'])) {
-      $fileOut = view::thumb($fileOut,'media_thumb/', (int)$_GET['media_thumb']);
+      $fileOut = view::thumb($fileOut, 'media_thumb/', (int)$_GET['media_thumb']);
     }
 
     if (file_exists($fileOut)) {

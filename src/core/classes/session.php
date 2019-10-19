@@ -11,6 +11,7 @@ class session
   static function start ()
   {
     if(self::$started==true) return;
+    self::$started = true;
     //ini_set("session.save_handler", "files");
     //ini_set("session.save_path", __DIR__."/../../../log/sessions");
     //ini_set('session.gc_maxlifetime', 24*3600);
@@ -21,18 +22,12 @@ class session
     } catch (Exception $e) {
       trigger_error($e->getMessage());
     }
-    self::$started = true;
     session::define(['user_id'=>0]);
 
     if (isset($_POST['username']) && isset($_POST['password']) && session::waitForLogin()==0) {
       $usr = user::getByEmail($_POST['username']);
       if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
         session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
-        $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-        $gsession = (string)$usr['id'];
-        for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
-        user::meta($usr[0], 'GSESSIONID', $gsession, true);
-        setcookie('GSESSIONID', $gsession, time() + (86400 * 30), "/");
         unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();
@@ -53,14 +48,21 @@ class session
 
   static function user ($id, $name, $email, $msg=null)
   {
-    session::key('user_id',$id);
-    session::key('user_name',$name);
-    session::key('user_email',$email);
+    session::key('user_id', $id);
+    session::key('user_name', $name);
+    session::key('user_email', $email);
     self::$user_id = $id;
     if($msg!==null) {
       $session_log = new logger(LOG_PATH.'/sessions.log');
       $session_log->info($msg,['user_id'=>$id, 'email'=>$email]);
     }
+    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
+    $gsession = (string)$id;
+    for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
+    user::meta($id, 'GSESSIONID', $gsession, true);
+    session::key('GSESSIONID', $gsession);
+    setcookie('GSESSIONID', $gsession, time() + (86400 * 30),
+      '/; samesite=strict', null, null, true);
   }
 
   /**
@@ -123,7 +125,7 @@ class session
     if(isset(self::$user_id)) return self::$user_id;
     self::$user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
-    if($token) {
+    if($token && !isset($_COOKIE['GSESSIONID'])) {
       $usr = user::getByMeta('token', $token);
       if($usr) {
         self::$user_id = $usr['id'];

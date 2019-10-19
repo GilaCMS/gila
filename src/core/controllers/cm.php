@@ -12,6 +12,10 @@ class cm extends controller
 
   function __construct ()
   {
+    if($_SERVER['REQUEST_METHOD']!='GET') if(!gForm::posted()){
+      http_response_code(403);
+      die('Access denied');
+    }
     $this->permissions = user::permissions(session::user_id());
   }
 
@@ -208,6 +212,7 @@ class cm extends controller
   {
     global $db;
     header('Content-Type: application/json');
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
     $pnk = new gTable(router::get("t",1), $this->permissions);
 
     if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
@@ -256,14 +261,14 @@ class cm extends controller
     if(!$pnk->can('create')) return;
     $result = [];
 
-    if(isset($_GET['id'])) {
+    if(isset($_POST['id'])) {
       $fields = $pnk->fields('clone');
       if (($idkey = array_search($pnk->id(), $fields)) !== false) {
         unset($fields[$idkey]);
       }
       $fields =  implode(',', $fields );
       $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
-      $res = $db->query($q,$_GET['id']);
+      $res = $db->query($q, $_POST['id']);
       $id = $db->insert_id;
     } else {
       $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
@@ -272,8 +277,8 @@ class cm extends controller
         echo "Row was not created. Does this table exist?";
         exit;
       } else {
-        $q = "UPDATE {$pnk->name()} {$pnk->set($_GET)} WHERE {$pnk->id()}=?;";
-        $db->query($q,$id);
+        $q = "UPDATE {$pnk->name()} {$pnk->set($_POST)} WHERE {$pnk->id()}=?;";
+        $db->query($q, $id);
       }
     }
 
@@ -312,6 +317,7 @@ class cm extends controller
     $fields = $pnk->fields('edit');
     $id = router::get("id",2);
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"><div>';
+    echo gForm::hiddenInput();
     if($id) {
       $w = ['id'=>$id];
       $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)};";

@@ -219,7 +219,7 @@ class view
   static function getViewFile ($file, $package = 'core')
   {
     if(isset(self::$view_file[$file]))
-      return 'src/'.self::view_file[$file].'/views/'.$file;
+      return 'src/'.self::$view_file[$file].'/views/'.$file;
 
     $tpath = self::getThemePath().'/'.$file;
     if(file_exists($tpath)) return $tpath;
@@ -424,23 +424,23 @@ class view
 
   static function thumb_xs ($src,$id=null)
   {
-    return view::thumb($src,'xs/',80);
+    return view::thumb($src,'xs/', 80);
   }
   static function thumb_sm ($src,$id=null)
   {
-    return view::thumb($src,'sm/',160);
+    return view::thumb($src,'sm/', 200);
   }
   static function thumb_md ($src,$id=null)
   {
-    return view::thumb($src,'md/',320);
+    return view::thumb($src,'md/', 400);
   }
   static function thumb_lg ($src,$id=null)
   {
-    return self::thumb($src,'lg/',640);
+    return self::thumb($src,'lg/', 800);
   }
   static function thumb_xl ($src,$id=null)
   {
-    return view::thumb($src,'xl/',1200);
+    return view::thumb($src,'xl/', 1200);
   }
 
   static function getTemplates($template) {
