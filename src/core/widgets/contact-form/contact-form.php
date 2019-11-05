@@ -9,7 +9,7 @@ if (gForm::posted('contact-form'.$widget_data->widget_id) && event::get('recaptc
   <?=gForm::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php view::alerts() ?>
   <label><?=__("Name")?></label>
-  <input name="name" class="form-control g-input" autofocus required/>
+  <input name="name" class="form-control g-input" required/>
   <label><?=__("E-mail")?></label>
   <input name="email" class="form-control g-input" required/>
   <label><?=__("Subject")?></label>

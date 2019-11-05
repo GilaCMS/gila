@@ -44,6 +44,7 @@ class session
         }
       }
     }
+
   }
 
   static function user ($id, $name, $email, $msg=null)
@@ -131,6 +132,10 @@ class session
         self::$user_id = $usr['id'];
       }
     } else {
+      if($_SERVER['REQUEST_METHOD']!=='GET' && !isset($_COOKIE['GSESSIONID'])) {
+        // redirect to avoid csrf attacks
+        header("Location: ".$_SERVER["HTTP_REFERER"]);
+      }
       self::start();
       self::$user_id = $_SESSION[session::md5('user_id')];
     }

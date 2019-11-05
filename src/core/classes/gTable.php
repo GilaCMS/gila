@@ -282,10 +282,10 @@ class gTable
     }
 
     foreach($fields as $key=>$value) if(!is_numeric($key)) {
-      $value = $db->res($value);
       if(array_key_exists($key, $this->table['fields'])) {
         if(is_array($value)) {
           foreach($value as $subkey=>$subvalue) {
+            $subvalue = $db->res($subvalue);
             if($subkey == 'gt') $filters[] = "$key>$subvalue";
             if($subkey == 'ge') $filters[] = "$key>=$subvalue'";
             if($subkey == 'lt') $filters[] = "$key<$subvalue";
@@ -294,8 +294,8 @@ class gTable
             if($subkey == 'end') $filters[] = "$key like '%$subvalue'";
             if($subkey == 'has') $filters[] = "$key like '%$subvalue%'";
           }
-
         } else {
+          $value = $db->res($value);
           $filters[] = "$key='$value'";
         }
       }

@@ -311,11 +311,13 @@ class cm extends controller
   {
     global $db;
     $t = router::get("t",1);
+    $t = htmlentities($t);
     $pnk = new gTable($t, $this->permissions);
     if(!$pnk->can('update')) return;
 
     $fields = $pnk->fields('edit');
     $id = router::get("id",2);
+    $id = (int)$id;
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"><div>';
     echo gForm::hiddenInput();
     if($id) {
