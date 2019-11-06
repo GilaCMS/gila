@@ -29,7 +29,7 @@ if(version_compare($GLOBALS['version'],'1.10.9') < 0) {
   file_put_contents("lib/vue/vue-draggable.min.js",file_get_contents("src/core/lib/vue-draggable.min.js"));
 }
 
-if(version_compare($GLOBALS['version'],'1.11.3') < 0) {
+if(version_compare($GLOBALS['version'],'1.11.6') < 0) {
   global $db;
   $db->query("ALTER TABLE `postcategory` ADD COLUMN `slug` varchar(120) DEFAULT NULL;");
   $db->query("ALTER TABLE `postcategory` ADD COLUMN `description` varchar(200) DEFAULT NULL;");
