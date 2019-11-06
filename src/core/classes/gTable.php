@@ -253,7 +253,6 @@ class gTable
 
     foreach($fields as $key=>$value) {
       if(@$this->table['fields'][$key]['type'] == 'meta') {
-        $value = strip_tags($value);
         $mt = $this->table['fields'][$key]["mt"];
         $vt = $this->table['fields'][$key]["metatype"];
         if(is_string($value)) {
@@ -264,7 +263,8 @@ class gTable
           }
         } else $arrv = $value;
         $db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
-        foreach($arrv as $arrv_k=>$arrv_v) if($arrv_v!='') if($arrv_v!=null) {
+        foreach($arrv as $arrv_k=>$arrv_v) if($arrv_v!='' && $arrv_v!=null) {
+          $arrv_v = strip_tags($arrv_v);
           $db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");
         }
         continue;
@@ -282,10 +282,10 @@ class gTable
     }
 
     foreach($fields as $key=>$value) if(!is_numeric($key)) {
-      $value = $db->res($value);
       if(array_key_exists($key, $this->table['fields'])) {
         if(is_array($value)) {
           foreach($value as $subkey=>$subvalue) {
+            $subvalue = $db->res($subvalue);
             if($subkey == 'gt') $filters[] = "$key>$subvalue";
             if($subkey == 'ge') $filters[] = "$key>=$subvalue'";
             if($subkey == 'lt') $filters[] = "$key<$subvalue";
@@ -294,8 +294,8 @@ class gTable
             if($subkey == 'end') $filters[] = "$key like '%$subvalue'";
             if($subkey == 'has') $filters[] = "$key like '%$subvalue%'";
           }
-
         } else {
+          $value = $db->res($value);
           $filters[] = "$key='$value'";
         }
       }

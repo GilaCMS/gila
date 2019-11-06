@@ -29,6 +29,8 @@ $link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
 $link->query('CREATE TABLE IF NOT EXISTS `postcategory` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(80) DEFAULT NULL,
+  `slug` varchar(120) DEFAULT NULL,
+  `description` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
@@ -108,7 +110,7 @@ VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIM
 // preinstall widgets on dashboard
 $wtext1 = '{"text":"<ol><li><a href=\\\"admin\\\/content\\\/postcategory\\\">Create Categories<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/page\\\">Edit About Page<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/post\\\">Create Posts<\\\/a><\\\/li><li><a href=\\\"admin\\\/media\\\">Upload Images<\\\/a><\\\/li><li><a href=\\\"admin\\\/settings\\\">Set Basic Settings<\\\/a><\\\/li><\\\/ol>"}';
 $wtext2 = '{"text":"<ul><li><a href=\\\\\"https:\\\/\\\/www.facebook.com\\\/gilacms\\\/\\\\\" target=\\\\\"_blank\\\\\">Facebook Page<\\\/a><\\\/li><li><a href=\\\\\"https:\\\/\\\/twitter.com\\\/GilaCms\\\\\" target=\\\\\"_blank\\\\\">Retweet<\\\/a> us!<\\\/li><li>Give a star on <a href=\\\\\"https:\\\/\\\/github.com\\\/GilaCMS\\\/gila\\\\\" target=\\\\\"_blank\\\\\">Github<\\\/a><\\\/li><li>Review on <a href=\\\\\"https:\\\/\\\/sourceforge.net\\\/projects\\\/gila-cms\\\/reviews\\\/new\\\\\" target=\\\\\"_blank\\\\\">SourceForge<\\\/a><\\\/li><li>Like at <a href=\\\"https:\\/\\/alternativeto.net\\/software\\/gila-cms\\/\\\" target=\\\"_blank\\\">AlternativeTo<\\\/a><\\\/li><\\\/ul>"}';
-$wtext3 = '{"text":"<ul><li><a href=\\\"https:\\\/\\\/gilacms.com\\\/docs\\\" target=\\\"_blank\\\">Documentation<\\\/a><\\\/li><li>Join <a href=\\\"https:\\\/\\\/gitter.im\\\/GilaCMS\\\/Lobby\\\" target=\\\\\"_blank\\\">Gitter<\\\/a><\\\/li><li>Join <a href=\\\"https:\\\/\\\/join.slack.com\\\/t\\\/gilacms\\\/shared_invite\\\/enQtMzU5OTg5OTUzMDQ3LWFiZThjMTliOGQ0NWQyOGRiZTM2ZDlmYTkxODAzZWRlOWJmNmVjNDZkYThjODRjZjdkMmNmOTU3MWUxMDlhZTc\\\" target=\\\"_blank\\\">Slack<\\\/a><\\\/li><li><a href=\\\"https:\\\/\\\/groups.google.com\\\/forum\\\/#!forum\\\/gilacms\\\" target=\\\"_blank\\\">Google Groups<\\\/a><\\\/li><\\\/ul>"}';
+$wtext3 = '{"text":"<ul><li><a href=\\\"https:\\\/\\\/gilacms.com\\\/docs\\\" target=\\\"_blank\\\">Documentation<\\\/a><\\\/li><li>Join <a href=\\\"https:\\\/\\\/gitter.im\\\/GilaCMS\\\/Lobby\\\" target=\\\\\"_blank\\\">Gitter<\\\/a><\\\/li><li>Join <a href=\\\"https:\\\/\\\/join.slack.com\\\/t\\\/gilacms\\\/shared_invite\\\/enQtMzU5OTg5OTUzMDQ3LWI2Njc0NzU2MzllMWNhNzlmNmYxODFhODBiNjNhYWY0ZGMyZjE3MmQyNGY4NGI3NzMxNThmYzM4YzhhM2JjYzQ\\\" target=\\\"_blank\\\">Slack<\\\/a><\\\/li><li><a href=\\\"https:\\\/\\\/groups.google.com\\\/forum\\\/#!forum\\\/gilacms\\\" target=\\\"_blank\\\">Google Groups<\\\/a><\\\/li><\\\/ul>"}';
 
 $link->query("INSERT INTO widget(id,widget,title,area,active,pos,data)
 VALUES(1,'paragraph','Start Blogging','dashboard',1,1,'".$wtext1."'),
