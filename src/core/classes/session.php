@@ -134,7 +134,8 @@ class session
     } else {
       if($_SERVER['REQUEST_METHOD']!=='GET' && !isset($_COOKIE['GSESSIONID'])) {
         // redirect to avoid csrf attacks
-        header("Location: ".$_SERVER["HTTP_REFERER"]);
+        header("Location: ".$_SERVER["REQUEST_URI"]);
+        exit;
       }
       self::start();
       self::$user_id = $_SESSION[session::md5('user_id')];

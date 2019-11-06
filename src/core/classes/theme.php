@@ -136,11 +136,17 @@ class theme
   */
   static function save_options($theme)
   {
-    if (file_exists('themes/'.$options)) {
-      global $db;
-      foreach($_POST['option'] as $key=>$value) {
-        $ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
-        $db->query($ql);
+    global $db;
+    $jsonFile = 'themes/'.$theme.'/package.json';
+    if (file_exists($jsonFile)) {
+      $data = json_decode(file_get_contents($jsonFile),true);
+      foreach($_POST['option'] as $key=>$value) if(isset($data['options'][$key])){
+        if(!isset($data['options'][$key]['allow-tags'])
+            || $data['options'][$key]['allow-tags']===false) {
+          $value=strip_tags($value);
+        }
+        $ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key',?) ON DUPLICATE KEY UPDATE `value`=?;";
+        $db->query($ql, [$value,$value]);
       }
       if(gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
       exit;

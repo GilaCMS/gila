@@ -253,7 +253,6 @@ class gTable
 
     foreach($fields as $key=>$value) {
       if(@$this->table['fields'][$key]['type'] == 'meta') {
-        $value = strip_tags($value);
         $mt = $this->table['fields'][$key]["mt"];
         $vt = $this->table['fields'][$key]["metatype"];
         if(is_string($value)) {
@@ -264,7 +263,8 @@ class gTable
           }
         } else $arrv = $value;
         $db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
-        foreach($arrv as $arrv_k=>$arrv_v) if($arrv_v!='') if($arrv_v!=null) {
+        foreach($arrv as $arrv_k=>$arrv_v) if($arrv_v!='' && $arrv_v!=null) {
+          $arrv_v = strip_tags($arrv_v);
           $db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");
         }
         continue;
