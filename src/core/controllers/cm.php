@@ -12,10 +12,6 @@ class cm extends controller
 
   function __construct ()
   {
-    if($_SERVER['REQUEST_METHOD']!='GET') if(!gForm::posted()){
-      http_response_code(403);
-      die('Access denied');
-    }
     $this->permissions = user::permissions(session::user_id());
   }
 

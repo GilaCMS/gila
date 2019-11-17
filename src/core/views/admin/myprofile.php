@@ -47,7 +47,7 @@
 
     <br><div class="gm-12">
     <label class="gm-3"><?=__('Unique Token Key')?></label>
-    <input readonly disabled type="text" value="<?=$c->token?>" class="gm-3" />
+    <input readonly type="text" value="<?=$c->token?>" class="gm-3" />
     </div>
 
     <br><div class="gm-12">

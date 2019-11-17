@@ -35,6 +35,11 @@ class session
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
+      if($_SERVER['REQUEST_METHOD']!=='GET' && !isset($_COOKIE['GSESSIONID'])) {
+        // redirect to avoid csrf attacks
+        header("Location: ".$_SERVER["REQUEST_URI"]);
+        exit;
+      }
       if(session::user_id()==0) if(isset($_COOKIE['GSESSIONID'])) {
         foreach (user::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
           $usr = user::getById($user_id);
@@ -62,8 +67,10 @@ class session
     for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
     user::meta($id, 'GSESSIONID', $gsession, true);
     session::key('GSESSIONID', $gsession);
-    setcookie('GSESSIONID', $gsession, time() + (86400 * 30),
-      '/; samesite=strict', null, null, true);
+    // setcookie('GSESSIONID', $gsession, time() + (86400 * 30),
+    //  '/', null, null, true, ['samesite'=>'Strict']);
+    $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
+    header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
   }
 
   /**
@@ -132,11 +139,6 @@ class session
         self::$user_id = $usr['id'];
       }
     } else {
-      if($_SERVER['REQUEST_METHOD']!=='GET' && !isset($_COOKIE['GSESSIONID'])) {
-        // redirect to avoid csrf attacks
-        header("Location: ".$_SERVER["REQUEST_URI"]);
-        exit;
-      }
       self::start();
       self::$user_id = $_SESSION[session::md5('user_id')];
     }

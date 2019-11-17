@@ -16,6 +16,14 @@ class controller
     }
   }
 
+  static function access($pri)
+  {
+    if(gila::hasPrivilege($pri)===false) {
+      http_response_code(403);
+      exit;
+    }
+  }
+
   public function __call($method, $args)
   {
     if (isset($this->$method)) {

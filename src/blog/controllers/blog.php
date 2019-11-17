@@ -75,9 +75,10 @@ class Blog extends controller
   /**
   * Displays posts with a specific tag
   */
-  function tagAction()
+  function tagAction($tag)
   {
-    $tag = router::get('tag',1);
+    $tag = htmlentities($tag);
+    gila::canonical('tag/'.$tag);
     view::set('tag',$tag);
     view::set('page',self::$page);
     view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
@@ -89,6 +90,7 @@ class Blog extends controller
   */
   function tagsAction()
   {
+    gila::canonical('tags');
     view::set('tags',post::getMeta('tag'));
     view::render('blog-tags.php');
   }
@@ -118,6 +120,7 @@ class Blog extends controller
   {
     global $db;
     $user_id = router::get('author',1);
+    gila::canonical('author/'.$user_id);
     $res = $db->get("SELECT username,id from user WHERE id=? OR username=?",[$user_id,$user_id]);
     if($res) {
       view::set('author',$res[0][0]);

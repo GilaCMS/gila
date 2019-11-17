@@ -8,13 +8,6 @@ class profile
   {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
-    if(!isset($_COOKIE['GSESSIONID']) ||
-        $_COOKIE['GSESSIONID'] !== \session::key('GSESSIONID')) {
-          echo $_COOKIE['GSESSIONID']."  ".\session::key('GSESSIONID');
-      http_response_code(403);
-      die('Access denied');
-    }
-
     if (\router::post('submit-btn')=='submited'){
       user::updateName($user_id, strip_tags($_POST['gila_username']));
       user::meta($user_id, 'twitter_account', strip_tags($_POST['twitter_account']));

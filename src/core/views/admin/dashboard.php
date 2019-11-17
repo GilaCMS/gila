@@ -12,7 +12,7 @@
     </a>
   </div>
   <div class='gm-3 wrapper'>
-    <a href="admin/content/user">
+    <a href="admin/users">
         <div class='alert' style="background:cornflowerblue">
             <span>Users</span>
             <div style="font-size:200%"><?=$c->users?></div>

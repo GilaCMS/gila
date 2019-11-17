@@ -27,7 +27,7 @@ class admin extends controller
     foreach($wfolders as $wf) if(is_writable($wf)==false) {
       view::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
     }
-    if(package::check4updates()) {
+    if(gila::hasPrivilege('admin') && FS_ACCESS && package::check4updates()) {
       view::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
     $db->connect();
@@ -78,6 +78,7 @@ class admin extends controller
 
   function package_optionsAction()
   {
+    self::access('admin');
     $package = router::get('package',1);
     view::renderFile('admin/header.php');
     package::options($package);
@@ -90,6 +91,7 @@ class admin extends controller
   */
   function packagesAction ()
   {
+    self::access('admin');
     new package();
     $search = htmlentities(router::get('search',2));
     $tab = router::get('tab',1);
@@ -113,6 +115,7 @@ class admin extends controller
 
   function newthemesAction ()
   {
+    self::access('admin');
     $packages = [];
     $search = htmlentities(router::get('search',2));
     //if(!$contents = file_get_contents('https://gilacms.com/cm/list/?t=theme&search='.$search)) {
@@ -132,6 +135,7 @@ class admin extends controller
 
   function themesAction ()
   {
+    self::access('admin');
     new theme();
     $packages = theme::scan();
     view::set('packages',$packages);
@@ -145,6 +149,7 @@ class admin extends controller
 
   function settingsAction ()
   {
+    self::access('admin');
     view::renderAdmin('admin/settings.php');
   }
 
@@ -203,6 +208,7 @@ class admin extends controller
 
   function fmAction()
   {
+    self::access('admin');
     if(FS_ACCESS) {
       $file=realpath(htmlentities($_GET['f']));
       view::set('filepath',$file);
@@ -215,7 +221,7 @@ class admin extends controller
 
   function sqlAction()
   {
-    if(gila::hasPrivilege('admin')==false) return;
+    self::access('admin');
     if($q=router::request('query')) view::set('q', $q);
     view::renderAdmin('admin/sql.php');
   }
@@ -233,6 +239,7 @@ class admin extends controller
 
   function phpinfoAction()
   {
+    self::access('admin');
     if(!FS_ACCESS) return;
     view::includeFile('admin/header.php');
     phpinfo();

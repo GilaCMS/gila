@@ -378,16 +378,6 @@ class gTable
     return $fields;
   }
 
-  function find($filters, $select = null, $limit = null)
-  {
-    return new gRow(this, $filters, $select, $limit);
-  }
-
-  function findOne($filters, $select = null)
-  {
-    return new gRow(this, $filters, $select, 1);
-  }
-
   function getEmpty() {
     $row = [];
     foreach($this->fields('create') as $key) {

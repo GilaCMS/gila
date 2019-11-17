@@ -68,8 +68,8 @@ else {
 event::fire('load');
 $g = new gila();
 
-$theme = $GLOBALS['config']['theme'];
-if(isset($_GET['g_preview_theme'])) $theme=router::request('g_preview_theme');
+$theme = router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
+if(gila::config('cors')=='1') @header('Access-Control-Allow-Origin: *');
 
 new router();
