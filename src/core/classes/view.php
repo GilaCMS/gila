@@ -332,6 +332,15 @@ class view
     @include $block_file;
   }
 
+  static function blocks (&$blocks) {
+    foreach($blocks as $b) {
+      if(!is_object($b)) $b = (object)$b;
+      //echo '<div class="block '.$b->_type.'">';
+      view::widget_body($b->_type, $b);
+      //echo '</div>'; 
+    }
+  }
+
   /**
   * Dsiplays the widgets of an area
   * @param $area (string) Area name
@@ -449,7 +458,7 @@ class view
     foreach(self::$view_file as $key => $value) {
       $exploded = explode('--', $key);
       if($exploded[0] == $template){
-        $options[] = $exploded[1];
+        $options[] = explode('.', $exploded[1])[0];
       }
     }
 

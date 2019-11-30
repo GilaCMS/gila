@@ -104,7 +104,7 @@ class session
       if(is_object($val) || is_array($val)){
       $value = json_encode($val);
       }
-      setcookie(session::md5($var), $val, (time() + $t), "/", $_SERVER["HTTP_HOST"]);
+      setcookie(session::md5($var), $val, (time() + $t), "/");
     }
   }
 

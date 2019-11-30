@@ -19,6 +19,7 @@ class Blog extends controller
     self::$page = intval(@$_GET['page'])?:1;
     self::$ppp = 12;
     self::$totalPosts = null;
+    view::set('page_title', gila::config('title'));
   }
 
   /**
@@ -79,6 +80,7 @@ class Blog extends controller
   {
     $tag = htmlentities($tag);
     gila::canonical('tag/'.$tag);
+    view::set('page_title', '#'.$tag.' | '.gila::config('title'));
     view::set('tag',$tag);
     view::set('page',self::$page);
     view::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
@@ -91,6 +93,7 @@ class Blog extends controller
   function tagsAction()
   {
     gila::canonical('tags');
+    view::set('page_title', __('Tags').' | '.gila::config('title'));
     view::set('tags',post::getMeta('tag'));
     view::render('blog-tags.php');
   }
@@ -108,6 +111,7 @@ class Blog extends controller
     gila::canonical('blog/category/'.$category.'/'.$name.'/');
     self::$totalPosts = post::total(['category'=>$category]);
     view::set('category', $name);
+    view::set('page_title', $name);
     view::set('page',self::$page);
     view::set('posts',post::getPosts(['posts'=>self::$ppp,'category'=>$category,'page'=>self::$page]));
     view::render('blog-category.php');
@@ -124,6 +128,7 @@ class Blog extends controller
     $res = $db->get("SELECT username,id from user WHERE id=? OR username=?",[$user_id,$user_id]);
     if($res) {
       view::set('author',$res[0][0]);
+      view::set('page_title', $res[0][0].' | '.gila::config('title'));
       view::set('posts',post::getPosts(['posts'=>self::$ppp,'user_id'=>$res[0][1]]));
     } else {
       view::set('author',__('unknown'));
@@ -149,6 +154,7 @@ class Blog extends controller
       $user_id = $r['user_id'];
       view::set('author_id',$user_id);
       view::set('title',$r['title']);
+      view::set('page_title', $r['title']);
       view::set('slug',$r['slug']);
       view::set('text',$r['post']);
       view::set('id',$r['id']);
@@ -203,7 +209,7 @@ class Blog extends controller
         if($r['template']==''||$r['template']===null) {
           view::render('page.php');
         } else {
-          view::render('page--'.$r['template'].'.php');
+          view::renderFile('page--'.$r['template'].'.php');
         }
       } else {
         http_response_code(404);
@@ -220,6 +226,7 @@ class Blog extends controller
     if ($s=router::get('search',1)) {
       $s = strip_tags($s);
       view::set('search', $s);
+      view::set('page_title', $s.' | '.gila::config('title'));
       view::set('posts',post::search($s));
       view::render('blog-search.php');
       return;

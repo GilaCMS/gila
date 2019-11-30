@@ -130,6 +130,7 @@ class cm extends controller
   {
     global $db;
     $pnk = new gTable(router::get("t",1), $this->permissions);
+    $orderby = router::request('orderby', []);
     if(!$pnk->can('read')) return;
     $result = [];
 
@@ -138,7 +139,8 @@ class cm extends controller
     header("Content-Disposition: attachment; filename=\"$filename\"");
     $fields = $pnk->fields('csv');
     echo implode(',',$fields)."\n";
-    $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby()}{$pnk->limit()};";
+    $ql = "SELECT {$pnk->select($fields)}
+      FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby($orderby)};";
     $res = $db->query($ql);
     while($r = mysqli_fetch_row($res)) {
       foreach($r as &$str) {
@@ -189,12 +191,13 @@ class cm extends controller
     $pnk = new gTable(router::get("t",1), $this->permissions);
     if(!$pnk->can('read')) return;
     $result = [];
-    $groupby = $_GET['groupby'];
+    $groupby = router::request('groupby');
+    $orderby = router::request('orderby', []);
     $counter = isset($_GET['counter']) ? ',COUNT(*) AS '.$_GET['counter'] : '';
 
     $result['fields'] = $pnk->fields();
     $res = $db->query("SELECT {$pnk->selectsum($groupby)}$counter FROM {$pnk->name()}
-      {$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby()};");
+      {$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby($orderby)};");
     while($r = mysqli_fetch_row($res)) {
       $result['rows'][] = $r;
     }

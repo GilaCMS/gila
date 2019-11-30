@@ -1,9 +1,11 @@
 <?php
 
-if(version_compare($GLOBALS['version'],'1.7.6') < 0) {
-    global $db;
-    $db->query("ALTER TABLE `post` ADD KEY `user_id` (`user_id`);");
-}
+//if(version_compare($GLOBALS['version'],'1.7.6') < 0) {
+//    global $db;
+//    $db->query("ALTER TABLE `post` ADD KEY `user_id` (`user_id`);");
+//}
+$postTable = new gTable('core/tables/post.php');
+$postTable->update();
 
 if(version_compare($GLOBALS['version'],'1.8.0') < 0) {
     global $db;

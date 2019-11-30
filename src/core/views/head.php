@@ -7,7 +7,7 @@
 <?php
   foreach(view::$meta as $key=>$value) echo '<meta name="'.$key.'" content="'.$value.'">';
   event::fire('head.meta');
-  foreach(view::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
+  foreach(view::$stylesheet as $link) echo '<link href="'.gila::base_url($link).'" rel="stylesheet">';
   event::fire('head');
   if (isset(view::$canonical)) {
     echo '<link rel="canonical" href="'.view::$canonical.'" />';

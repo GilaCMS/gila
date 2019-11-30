@@ -8,8 +8,8 @@ align-items: center;padding: 15px 0;}
 </style>
 <div class="media-tabs-side">
 <?php
-$media_tab = router::request('media_tab', session::key('media_tab')??'uploads');
-session::key('media_tab', $media_tab);
+$media_tab = router::request('media_tab', $_COOKIE['media_tab']??'uploads');
+setcookie('media_tab', $media_tab, time()+86400,'/');
 
 $media_tab_list = gila::getList('media-tab')??[];
 $media_tab_list = array_merge([

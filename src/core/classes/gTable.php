@@ -132,7 +132,7 @@ class gTable
 
   function startIndex($args) {
     $ppp = $this->table['pagination'] ?? 25;
-    if($page = $args['page'] ?? router::request('page')) {
+    if($page = $args['page'] ?? 1) {
       return ($page-1)*$ppp;
     }
     return 0;
@@ -140,9 +140,6 @@ class gTable
 
   function orderby($orders = null) {
     global $db;
-    if(!$orders) {
-      $orders = router::request('orderby', []);
-    }
     $_orders = [];
     if(is_string($orders)) {
       $orders = explode(',', $orders);
@@ -180,7 +177,7 @@ class gTable
 
   function limitPage($args) {
     $ppp = $this->table['pagination'] ?? 25;
-    if($page = $args['page']) {
+    if($page = $args['page'] ?? 1) {
       $offset = ($page-1)*$ppp;
       return " LIMIT $offset, $ppp";
     }
@@ -396,7 +393,7 @@ class gTable
     return $row;
   }
 
-  function getRow($filters, &$args = [])
+  function getRow($filters, $args = [])
   {
     $args['limit'] = 1;
     return $this->getRows($filters, $args)[0] ?? null;

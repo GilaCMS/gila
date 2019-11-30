@@ -18,11 +18,30 @@ class admin extends controller
   function indexAction ()
   {
     global $db;
+
+    $id=router::get('page_id',1) ?? '';
+    if (($r = core\models\page::getByIdSlug($id)) && ($r['publish']==1)) {
+      view::set('title',$r['title']);
+      view::set('text',$r['page']);
+      if($r['template']==''||$r['template']===null) {
+        view::renderFile('page--admin.php');
+      } else {
+        view::renderFile('page--'.$r['template'].'.php');
+      }
+      return;
+    }
+
     if(router::get('action', 1)) {
       http_response_code(404);
       view::renderAdmin('404.php');
       return;
     }
+    $this->dashboardAction();
+  }
+
+  function dashboardAction ()
+  {
+    global $db;
     $wfolders=['log','themes','src','tmp','assets'];
     foreach($wfolders as $wf) if(is_writable($wf)==false) {
       view::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
@@ -30,6 +49,7 @@ class admin extends controller
     if(gila::hasPrivilege('admin') && FS_ACCESS && package::check4updates()) {
       view::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
+
     $db->connect();
     view::set('posts',$db->value('SELECT count(*) from post;'));
     view::set('pages',$db->value('SELECT count(*) from page;'));

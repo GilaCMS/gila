@@ -1,7 +1,7 @@
 <?php
-$path = router::request('path', session::key('asset_path') ?? 'src');
+$path = router::request('path', $_COOKIE['asset_path'] ?? 'src');
 if($path[0]=='.') $path = 'src';
-session::key('asset_path', $path);
+setcookie('asset_path', $path, time()+86400,'/');
 $disabled = ($path=='')?'disabled':'';
 
 $files=[];

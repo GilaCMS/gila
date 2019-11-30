@@ -1,7 +1,7 @@
 <?php
-$path = router::request('path', session::key('media_path')??'assets');
+$path = router::request('path', $_COOKIE['media_path']??'assets');
 if($path[0]=='.') $path = 'assets';
-session::key('media_path', $path);
+setcookie('media_path', $path, time()+86400,'/');
 
 $dpath = realpath(SITE_PATH.'assets');
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));
