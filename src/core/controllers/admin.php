@@ -187,10 +187,6 @@ class admin extends controller
   }
 
   function media_uploadAction(){
-    if(!gForm::posted()) {
-      echo "Permission denied.";
-      exit;
-    }
     if(isset($_FILES['uploadfiles'])) {
       if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
         echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";

@@ -21,6 +21,7 @@ tests/jmeter.log
 !src/core/
 !src/Cocur/
 !src/blog/
+!src/blocks/
 !src/gila_fb_comments/
 !src/ganalytics/
 !src/featured_grid/
