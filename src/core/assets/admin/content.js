@@ -107,25 +107,8 @@ Vue.component('g-table', {
     child: this.gchild,
   }},
   updated: function() {
-    let textareas
     if(this.edititem==0) return;
-    
-    textareas=g('.codemirror-js').all
-    cmirror=[]
-    for(i=0;i<textareas.length;i++) {
-      x=textareas[i].name
-      cmirror[x]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
-    }
-    
-    textareas=g('.tinymce').all
-    mce_editor=[]
-    tinymce.remove() //remove all tinymce editors
-    for(i=0;i<textareas.length;i++) {
-      mce_editor[i] = textareas[i].name;
-      g_tinymce_options.selector = '[name='+textareas[i].name+']'
-      tinymce.init(g_tinymce_options)
-    }
-    if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
+    transformClassComponents()
   },
   methods: {
     load_page: function(a={}) {
@@ -185,16 +168,9 @@ Vue.component('g-table', {
       
       form = document.getElementById(id_name)
       data = new FormData(form);
-
-      for (x in mce_editor)  {
-        console.log(mce_editor[x])
-        data.set(mce_editor[x], tinymce.get(mce_editor[x]).getContent())
-        console.log(tinymce.get(mce_editor[x]).getContent()) 
-      }
-      textareas=g('.codemirror-js').all
-      for (x in cmirror) {
-        data.set(x, cmirror[x].getValue())
-        console.log( cmirror[x].getValue())
+      values = readFromClassComponents()
+      for(x in values) {
+        data.set(x, values[x])
       }
 
       let _this = this
@@ -320,6 +296,40 @@ Vue.component('g-table', {
   }
 })
 
+function transformClassComponents() {
+  let textareas
+  textareas=g('.codemirror-js').all
+  cmirror=[]
+  for(i=0;i<textareas.length;i++) {
+    x=textareas[i].name
+    cmirror[x]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
+  }
+  
+  textareas=g('.tinymce').all
+  mce_editor=[]
+  tinymce.remove() //remove all tinymce editors
+  for(i=0;i<textareas.length;i++) {
+    mce_editor[i] = textareas[i].name;
+    g_tinymce_options.selector = '[name='+textareas[i].name+']'
+    tinymce.init(g_tinymce_options)
+  }
+
+  if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
+}
+
+function readFromClassComponents() {
+  let values = new Array()
+  for (x in mce_editor)  {
+    console.log(mce_editor[x])
+    values[mce_editor[x]] = tinymce.get(mce_editor[x]).getContent()
+  }
+  textareas=g('.codemirror-js').all
+  for (x in cmirror) {
+    values[x] = cmirror[x].getValue()
+  }
+  return values
+}
+
 gtableCommand = Array()
 gtableTool = Array()
 gtableFieldDisplay = Array()
@@ -335,6 +345,13 @@ gtableCommand['edit'] = {
       _this.edit_html = data
       g.loader(false)
     })
+  }
+}
+
+gtableCommand['edit_page'] = {
+  fa: "pencil",
+  fn: function(table,irow){
+    location.replace('admin/content/'+table.name+'/'+irow)
   }
 }
 

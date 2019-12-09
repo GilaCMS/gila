@@ -28,7 +28,6 @@ view::script('src/core/assets/admin/listcomponent.js');
 <?php
 global $db;
 $pnk = new gTable($table, core\models\user::permissions(session::user_id()));
-//$pnk = new gTable($table);
 $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];
@@ -94,6 +93,39 @@ g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templat
 base_url = "<?=gila::config('base')?>"
 g_tinymce_options.document_base_url = "<?=gila::config('base')?>"
 
+transformClassComponents()
+
+function updateRegistry(){
+  let irow = <?=$id?>;
+  let id_name = '<?=$table?>-edit-item-form';
+  
+  form = document.getElementById(id_name)
+  data = new FormData(form);
+  values = readFromClassComponents()
+  for(x in values) {
+    data.set(x, values[x])
+  }
+  
+  let _this = this
+  if(irow=='new') {
+    url = 'cm/update_rows/<?=$table?>'
+  } else {
+    url = 'cm/update_rows/<?=$table?>?id='+irow
+  }
+  g.ajax({method:'post',url:url,data:data,fn:function(data) {
+    data = JSON.parse(data)
+    if(irow=='new') {
+      alert("Registry created")
+    } else {
+      alert("Registry updated")
+    }
+    this.$forceUpdate()
+  }})
+}
 </script>
+
+<button class="btn btn-primary" onclick="updateRegistry()">
+Save
+</button>
 
 <?=view::script('src/core/assets/lazyImgLoad.js');?>

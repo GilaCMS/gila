@@ -20,7 +20,8 @@ class admin extends controller
     global $db;
 
     $id=router::get('page_id',1) ?? '';
-    if (($r = core\models\page::getByIdSlug($id)) && ($r['publish']==1)) {
+    if (($r = core\models\page::getByIdSlug($id)) && ($r['publish']==1)
+      && ($id!='' && router::controller()=='admin')) {
       view::set('title',$r['title']);
       view::set('text',$r['page']);
       if($r['template']==''||$r['template']===null) {
@@ -71,19 +72,27 @@ class admin extends controller
     }
   }
 
-  function contentAction($type = null)
+  function contentAction ($type = null, $id = null)
   {
-    if($type != null) {
-      if(!isset(gila::$content[$type])) {
+    if($type == null) {
+      if(gila::hasPrivilege('admin')) {
+        view::renderAdmin('admin/contenttype.php');
+      } else {
         http_response_code(404);
         view::renderAdmin('404.php');
-        return;
       }
-      $src = explode('.',gila::$content[$type])[0];
-      view::set('table', $type);
-      view::set('tablesrc', $src);
+      return;
+    }
+
+    $src = explode('.',gila::$content[$type])[0];
+    view::set('table', $type);
+    view::set('tablesrc', $src);
+    if($id == null) {
       view::renderAdmin('admin/content-vue.php');
-    } else if(gila::hasPrivilege('admin')) view::renderAdmin('admin/contenttype.php');
+    } else {
+      view::set('id', $id);
+      view::renderAdmin('admin/content-edit.php');
+    }
   }
 
   function update_widgetAction ()
@@ -181,7 +190,7 @@ class admin extends controller
   function logoutAction ()
   {
     global $db;
-    $res = $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype='GSESSIONID';",[session::key('user_id')]);
+    user::metaDelete(session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     session::destroy();
     echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
   }
@@ -251,6 +260,24 @@ class admin extends controller
     view::set('twitter_account',user::meta($user_id,'twitter_account'));
     view::set('token',user::meta($user_id,'token'));
     view::renderAdmin('admin/myprofile.php');
+  }
+
+  function deviceLogoutAction() {
+    $device = router::request('device');
+    if(user::logoutFromDevice($device)) {
+      $info = [];
+      $sessions = user::metaList(session::user_id(), 'GSESSIONID');
+      foreach($sessions as $key=>$session) {
+        $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
+        $info[$key] = UserAgent::info($user_agent);
+        if($_COOKIE['GSESSIONID']==$session) $info[$key]['current'] = true;
+      }
+      echo json_encode($info);
+    } else {
+      echo json_encode([
+        'error'=>'Could not log you out from this device'
+      ]);
+    }
   }
 
   function phpinfoAction()

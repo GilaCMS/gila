@@ -7,11 +7,14 @@ class gForm
 
   static function posted($name = '*') {
     $tokens = session::key('formToken')??[];
-    if ($_SERVER['REQUEST_METHOD']=='POST') foreach($tokens as $key=>$value){
-      if ($key==$name && $value===$_POST['formToken']) {
+    if ($_SERVER['REQUEST_METHOD']=='POST') {
+    //foreach($tokens as $key=>$value){
+      //if ($key==$name && $value===$_POST['formToken']) {
+      if(session::key('_t'.$name)==$check) {
         if($name!=='*') {
-          $tokens[$key]='';
-          session::key('formToken', $tokens);
+          session::unsetKey('_t'.$name);
+          //$tokens[$key]='';
+          //session::key('formToken', $tokens);
         }
         return true;
       }
@@ -20,20 +23,22 @@ class gForm
   }
 
   static function verifyToken($check, $name = '*') {
-    foreach(session::key('formToken') as $key=>$value) {
-      if ($key==$name && $value===$check) return true;
-    }
+    if(session::key('_t'.$name)==$check) return true;
+    //foreach(session::key('formToken') as $key=>$value) {
+    //  if ($key==$name && $value===$check) return true;
+    //}
     return false;
   }
 
   static function getToken($name = '*') {
-    $tokens = session::key('formToken')??[];
+    //$tokens = session::key('formToken')??[];
     if($name === '*') if(isset($tokens[$name])) return $tokens[$name];
-    $chars = 'bcdfghjklmnprstvwxzaeiou123467890%^&/=-?_#';
+    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
     $gsession = (string)session::user_id();
-    for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 42)];
-    $tokens[$name] = $gsession;
-    session::key('formToken', $tokens);
+    for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 32)];
+    //$tokens[$name] = $gsession;
+    session::key('_t'.$name, $gsession);
+    //echo var_export($tokens);
     return $gsession;
   }
 
