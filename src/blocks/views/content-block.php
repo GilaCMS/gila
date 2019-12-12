@@ -108,7 +108,8 @@ content_blocks_app = new Vue({
   },
   methods: {
     blockIcon: function(type) {
-      if(typeof content_blocks[type].logo!=='undefined') {
+      if(typeof content_blocks[type]!=='undefined'
+          && typeof content_blocks[type].logo!=='undefined') {
         return '<img src="src/'+content_blocks[type].logo+'">'
       } else {
         return '<h4>'+type[0].toUpperCase()+'</h4>' 

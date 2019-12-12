@@ -12,9 +12,6 @@ class session
   {
     if(self::$started==true) return;
     self::$started = true;
-    //ini_set("session.save_handler", "files");
-    //ini_set("session.save_path", __DIR__."/../../../log/sessions");
-    //ini_set('session.gc_maxlifetime', 24*3600);
     session_set_cookie_params(24*3600);
 
     try {
@@ -163,7 +160,7 @@ class session
       }
     } else {
       self::start();
-      $user_id = $_SESSION[session::md5('user_id')];
+      @$user_id = $_SESSION[session::md5('user_id')];
     }
     self::$user_id = $user_id;
     return self::$user_id;
