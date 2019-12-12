@@ -3,6 +3,7 @@
 
 class package
 {
+  private static $config = [];
 
   function __construct()
   {
@@ -26,6 +27,17 @@ class package
     if($options) self::options($options);
   }
 
+  static function config($package) {
+    if(!isset(self::$config[$package])) {
+      self::$config[$package] = json_decode(file_get_contents('src/'.$package.'/package.json'),true);
+    }
+    return self::$config[$package];
+  }
+
+  static function version($package) {
+    return self::config($package)['version'];
+  }
+
   /**
   * Activates a package
   * @param $activate (string) Package name to activate
@@ -41,7 +53,7 @@ class package
           if(!in_array($key, gila::packages())&&($key!='core')) {
             if(!file_exists('vendor/'.$key)) $require[$key]=$value;
           } else {
-            $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'),true);
+            $pacx = self::config($key);
             if(version_compare($pacx['version'], $value) < 0) $require[$key]=$value;
           }
         }

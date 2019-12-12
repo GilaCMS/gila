@@ -30,6 +30,15 @@ class user
     return $db->query($ql,[$id, $meta, $value]);
   }
 
+  static function metaDelete($id, $meta, $value=null) {
+    global $db;
+    if($value==null) {
+      $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=?", [$id, $meta]);
+    } else {
+      $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=? AND `value`=?", [$id, $meta, $value]);
+    }
+  }
+
   static function metaList($id, $meta, $values = null)
   {
     global $db;
@@ -40,7 +49,7 @@ class user
 
     if(!is_array($values)) return false;
 
-    $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=?", [$id, $meta]);
+    self::metaDelete($id, $meta);
     foreach($values as $value) {
       $ql = "INSERT INTO usermeta(user_id,vartype,value) VALUES(?,?,?);";
       $db->query($ql,[$id, $meta, $value]);
@@ -121,5 +130,15 @@ class user
       \session::key('permissions',$response);
     }
     return $response;
+  }
+
+  static function logoutFromDevice($n) {
+    global $db;
+    $sessions = user::metaList(\session::user_id(), 'GSESSIONID');
+    if(!isset($sessions[$n])) return false;
+    $db->query("DELETE FROM usermeta WHERE `vartype`='GSESSIONID' AND `value`=?;",
+      $sessions[$n]);
+    @unlink(LOG_PATH.'/sessions/'.$sessions[$n]);
+    return true;
   }
 }

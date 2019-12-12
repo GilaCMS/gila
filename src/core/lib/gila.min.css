@@ -226,7 +226,6 @@ script{display:none!important}
 }
 
 button{
-
   color:var(--main-color);
   background:var(--main-bg-color);
   padding:var(--main-padding);
@@ -282,7 +281,6 @@ button:hover{
 }
 input + .helptext{
   opacity:0;
-
   font-size:0.8em;
   padding:4px;
   transition:0s;
@@ -296,7 +294,6 @@ input:focus + .helptext{
 
 *:focus{
   outline:none;
-
 }
 .g-form label,.g-label{
   padding:var(--main-padding);
@@ -460,10 +457,6 @@ input:focus + .helptext{
 }
 
 
-@-webkit-keyframes gila-popup-animation{
-  from{top:0%;opacity:0}
-  to{top:10%;opacity:1}
-}
 @keyframes gilapopupanimation{
   from{top:0%;opacity:0}
   to{top:10%;opacity:1}
@@ -520,6 +513,15 @@ input:focus + .helptext{
 [class*="gm-"],
 [class*="gl-"]{display:inline-block;width:100%; }
 
+.gs-grid {
+  display:grid; grid-gap:1em; grid-template-columns:repeat(auto-fit, minmax(150px,1fr))
+}
+.gm-grid {
+  display:grid; grid-gap:1em; grid-template-columns:repeat(auto-fit, minmax(300px,1fr))
+}
+.gl-grid {
+  display:grid; grid-gap:1em; grid-template-columns:repeat(auto-fit, minmax(600px,1fr))
+}
 
 
 @media only screen and (min-width:300px){
@@ -650,10 +652,10 @@ input:focus + .helptext{
 
 .g-tabs>li.active,
 .g-tabs>li:hover{
-  background: var(--main-bg-color);;
-  border-bottom:3px solid var(--main-a-color);
-  transition:all 0s;
-  margin-bottom:-1px;
+    background: var(--main-bg-color);;
+    border-bottom:3px solid var(--main-a-color);
+    transition:all 0s;
+    margin-bottom:-1px;
 }
 .g-tabs>li>a{
   color: var(--main-color)
@@ -761,6 +763,9 @@ input:focus + .helptext{
   box-shadow:0px 1px 8px var(--main-border-color);
   overflow:auto;
 }
+.g-card-image>*{
+  width:100%;height:auto;margin:auto;max-width:300px
+}
 .g-panel{
   border:1px solid #ccc;
   border-top-right-radius:var(--main-radius);
@@ -774,7 +779,7 @@ input:focus + .helptext{
 
 .g-gal {
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px,1fr));
   grid-gap: 8px;
   column-count: 6;
 }

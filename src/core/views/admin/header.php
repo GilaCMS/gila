@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1">
   <link rel="icon" type="image/png" href="<?=gila::config('admin_logo')?:'assets/gila-logo.png'?>">
-  <?=view::css('lib/font-awesome/css/font-awesome.min.css')?>
+  <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
   <?=view::css('lib/gila.min.css')?>
   <?=view::css('src/core/assets/admin/style.css')?>
   <?=view::script("lib/jquery/jquery-3.3.1.min.js")?>
