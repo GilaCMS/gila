@@ -51,7 +51,7 @@ script{display:none!important}
   box-shadow:2px 2px 2px #888888
 }
 .bordered{
-    border:1px solid var(--main-border-color);
+  border:1px solid var(--main-border-color);
 }
 .g-selected,.g-selected td,.g-selected a, g-navbar li.active {
   background-color:var(--main-primary-color)!important;
@@ -190,9 +190,9 @@ script{display:none!important}
 
 
 .column-2, .column-3, .column-4, .column-5, .column-6{
-    -webkit-column-gap:20px;
-    -moz-column-gap:20px;
-    column-gap:20px;
+  -webkit-column-gap:20px;
+  -moz-column-gap:20px;
+  column-gap:20px;
 }
 .column-2{ -webkit-column-count:2; -moz-column-count:2; column-count:2; }
 .column-3{ -webkit-column-count:3; -moz-column-count:3; column-count:3; }
@@ -281,14 +281,12 @@ button:hover{
 }
 input + .helptext{
   opacity:0;
-
   font-size:0.8em;
   padding:4px;
   transition:0s;
 }
 input:focus + .helptext{
   opacity:0.8;
-
   transition:.5s;
   z-index:0;
 }
@@ -296,7 +294,6 @@ input:focus + .helptext{
 
 *:focus{
   outline:none;
-
 }
 .g-form label,.g-label{
   padding:var(--main-padding);
@@ -305,9 +302,9 @@ input:focus + .helptext{
 }
 
 .g-form input[type=color], .g-input[type=color]{
-   padding :0;
-   border:0;
-   margin:auto;
+  padding :0;
+  border:0;
+  margin:auto;
 }
 
 
@@ -502,13 +499,13 @@ input:focus + .helptext{
 }
 
 .row::after{
-    content:"";
-    clear:both;
-    display:table;
+  content:"";
+  clear:both;
+  display:table;
 }
 
 .row>*{
-    float:left;
+  float:left;
 }
 
 [class*="gxs-"],
@@ -645,12 +642,12 @@ input:focus + .helptext{
 
 
 .g-tabs{
-    background:inherit;
-    border-bottom:1px solid var(--main-border-color);;
+  background:inherit;
+  border-bottom:1px solid var(--main-border-color);;
 }
 .g-tabs>li{
-    background:inherit;
-    margin-bottom:2px;
+  background:inherit;
+  margin-bottom:2px;
 }
 
 .g-tabs>li.active,
