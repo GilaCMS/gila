@@ -1,7 +1,13 @@
 <?php
 $path = router::request('path', $_COOKIE['media_path']??'assets');
 if($path[0]=='.') $path = 'assets';
+$monthDir = SITE_PATH.'assets/'.date("Y-m", time());
+if(!file_exists($monthDir)) {
+  mkdir($monthDir);
+  $path = $monthDir;
+}
 setcookie('media_path', $path, time()+86400,'/');
+setcookie('media_tab', 'uploads', time()+86400,'/');
 
 $dpath = realpath(SITE_PATH.'assets');
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));
@@ -59,7 +65,7 @@ foreach($files as $file) if($file[0]!='.') {
     echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
   }
   if ($type=='folder') {
-    $img='<i class="fa fa-5x fa-folder"></i>';
+    $img='<i class="fa fa-5x fa-folder-o"></i>';
     echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" >'.$img.'<br>'.$filename.'</div>';
   }
   if ($type=='file') {

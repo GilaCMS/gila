@@ -1,22 +1,28 @@
-//#main-wrapper
+
 g.click(".gal-image",function(){
-    g('.gal-path').removeClass('g-selected');
-    g(this).addClass('g-selected');
-    g('#selected-path').attr('value',this.getAttribute('data-path'))
-    g('#selected-image-caption').attr('value',this.getAttribute('data-caption'))
+  select_media_item(this)
 })
 g.click(".gal-folder",function(){
+  if(g(this).hasClass('g-selected')==false) {
+    select_media_item(this)
+  } else {
     let path=this.getAttribute('data-path')
     g.ajax({url:"admin/media",method:"POST",header:"application/x-www-form-urlencoded",data:"g_response=content&path="+path,fn:function(gal){ //
         g('#admin-media-div').parent().html(gal)
     }})
+  }
 })
 g.click("#fm-goup",function(){
-    if(this.getAttribute('data-path')=='') return;
-
-    let path=this.getAttribute('data-path')
-    refresh_media_body("path="+path);
+  if(this.getAttribute('data-path')=='') return;
+  let path=this.getAttribute('data-path')
+  refresh_media_body("path="+path);
 })
+function select_media_item(item) {
+  g('.gal-path').removeClass('g-selected');
+  g(item).addClass('g-selected');
+  g('#selected-path').attr('value', item.getAttribute('data-path'))
+  g('#selected-image-caption').attr('value', item.getAttribute('data-caption'))
+}
 function refresh_media_body(data) {
   g.post("admin/media?g_response=content", data, function(gal){
     g('#admin-media-div').parent().html(gal)

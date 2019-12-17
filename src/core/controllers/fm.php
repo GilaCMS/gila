@@ -55,14 +55,13 @@ class fm extends controller
   }
 
   function readAction () {
-    if(!FS_ACCESS) exit;
-    if (!gForm::posted()) die("Permission denied.");
+    if(!FS_ACCESS && !gila::hasPrivilege('admin')) exit; 
     if (!is_file($this->path)) die("Path is not a file");
     echo htmlspecialchars(file_get_contents($this->path));
   }
 
   function saveAction () {
-    if(!gForm::posted() || !file_put_contents($this->path, $_POST['contents'])) {
+    if(!FS_ACCESS || !file_put_contents($this->path, $_POST['contents'])) {
       ob_clean();
       die("Permission denied.");
     }
@@ -70,27 +69,29 @@ class fm extends controller
   }
 
   function newfolderAction () {
-    if(!gForm::posted()) {
-      die("Permission denied.");
-      return;
-    }
+    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') exit;
     mkdir(SITE_PATH.str_replace('..','',$_POST['path']),0755,true);
     die("Folder created successfully");
   }
 
   function newfileAction () {
-    if(!gForm::posted()) {
+    if(!FS_ACCESS) {
       die("Permission denied.");
-      return;
     }
     file_put_contents(SITE_PATH.str_replace('..','',$_POST['path']),' ');
     die("File created successfully");
   }
 
   function moveAction () {
+    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') {
+      die("Permission denied.");
+    }
+    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {
+      die("Permission denied.");
+    }
     $ext = strtolower(pathinfo($this->path, PATHINFO_EXTENSION));
     $newext = strtolower(pathinfo($_POST['newpath'], PATHINFO_EXTENSION));
-    if($ext != $newext || $newext == 'htaccess' || !gForm::posted() || !rename($this->path, $_POST['newpath'])) {
+    if($ext != $newext || $newext == 'htaccess' || !rename($this->path, $_POST['newpath'])) {
       ob_clean();
       die("Permission denied.");
     }
@@ -98,33 +99,46 @@ class fm extends controller
   }
 
   function uploadAction() {
-    if(isset($_FILES['uploadfiles']) && gForm::posted()) {
-      if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
-        echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
-      }
-      $path = router::post('path','');
-      if($path[0]=='.') $path='assets';
-      $tmp_file = $_FILES['uploadfiles']['tmp_name'];
-      $name = $_FILES['uploadfiles']['name'];
-      if(is_array($tmp_file)) {
-        for($i=0;i<count($tmp_file);$i++) {
-          if(!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
-            die("Error: could not upload file!<br>");
-          }
-        }
-      }else{
-        if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
-          die("Error: could not upload file!<br>".$path.'/'.$name);
-        }
-      }
-      echo "File uploaded successfully";
+    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') {
+      die("Permission denied.");
     }
+    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('upload_assets')) {
+      die("Permission denied.");
+    }
+    if(!isset($_FILES['uploadfiles'])) {
+      die("Error: could not upload file!");
+    }
+    if (isset($_FILES['uploadfiles']["error"]) && $_FILES['uploadfiles']["error"] > 0) {
+      echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
+    }
+    $path = router::post('path','');
+    if($path[0]=='.') $path='assets';
+    $tmp_file = $_FILES['uploadfiles']['tmp_name'];
+    $name = $_FILES['uploadfiles']['name'];
+    if(is_array($tmp_file)) {
+      for($i=0;i<count($tmp_file);$i++) {
+        if(!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
+          die("Error: could not upload file!<br>");
+        }
+      }
+    }else{
+      if(!move_uploaded_file($tmp_file, SITE_PATH.$path.'/'.$name)) {
+        die("Error: could not upload file!<br>".$path.'/'.$name);
+      }
+    }
+    echo "File uploaded successfully";
   }
 
   function deleteAction () {
-    if(!unlink($this->path)){
+    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') {
+      die("Permission denied.");
+    }
+    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {
+      die("Permission denied.");
+    }
+    if(!unlink($this->path) && !rmdir($this->path)){
       ob_clean();
-      echo "Permission denied.";
+      echo "File could not be deleted.";
     }
   }
 
