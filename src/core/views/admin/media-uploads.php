@@ -57,12 +57,20 @@ foreach($files as $file) if($file[0]!='.') {
     if($pinf = pathinfo(SITE_PATH.$file)) if($ext = @$pinf['extension']) {
       if(in_array(strtolower($ext), $imgx)) $type='image';
     }
+    $vidx = ['avi','webm','mp4','mkv'];
+    if($pinf = pathinfo(SITE_PATH.$file)) if($ext = @$pinf['extension']) {
+      if(in_array(strtolower($ext), $vidx)) $type='video';
+    }
   }
   $filepath=$path.'/'.$file;
   $filename=htmlentities($file);
   if ($type=='image') {
     $img='<img src="'.view::thumb(SITE_PATH.$filepath,'media_thumb/',100).'">';
     echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
+  }
+  if ($type=='video') {
+    $img='<i class="fa fa-5x fa-film"></i>';
+    echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-image">'.$img.'<br>'.$filename.'</div>';
   }
   if ($type=='folder') {
     $img='<i class="fa fa-5x fa-folder-o"></i>';

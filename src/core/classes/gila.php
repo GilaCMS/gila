@@ -490,5 +490,5 @@ function __($key, $alt = null) {
 }
 
 function _url($url) {
-  return str_replace(['"'], ['\"'], $url);
+  return str_replace(['\'','"','<','>',':'], ['%27','%22','%3C','%3E','%3A'], $url);
 }

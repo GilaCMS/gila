@@ -1,8 +1,8 @@
 <ul class="g-nav">
-  <li><a href="admin/sql?query=SHOW TABLES">Show Tables</a></li>
+  <li><a href="admin/sql">Show Tables</a></li>
 </ul>
-<form action="<?=gila::url('admin/sql')?>" method="POST">
-  <textarea class="g-input" style="width:100%" name="query"><?=($q??'')?></textarea>
+<form action="<?=gila::url('admin/sql')?>" method="POST" id="qform">
+  <textarea class="g-input" style="width:100%" name="query" id="query"><?=($q??'')?></textarea>
   <p><button class="g-btn" type="submit"><?=__('Execute')?></button></p>
 </form><br>
 
@@ -21,7 +21,8 @@ if($res) {
     }
     echo '<tr>';
     if($q=="SHOW TABLES") {
-      foreach($row as $key=>$v) echo '<td><a href="admin/sql?query=SELECT * FROM `'.$v.'` LIMIT 30;">'.$v.'</a>';
+      $query = "SELECT * FROM `$v` LIMIT 30;";
+      foreach($row as $key=>$v) echo '<td><button class="gb-btn" onclick="query.value=\''.$query.'\';qform.submit()">'.$v.'</button>';
     } else{
       foreach($row as $key=>$v) echo '<td>'.htmlentities($v);
     }

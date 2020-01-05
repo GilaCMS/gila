@@ -133,7 +133,8 @@ class gForm
         return $html . '</select>';
       },
       "media"=> function($name,$field,$ov) {
-        $id = 'm_'.str_replace(['[',']'], '_', $name);  
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        $ov = htmlspecialchars($ov);
         return '<div class="g-group">
           <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
           <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>

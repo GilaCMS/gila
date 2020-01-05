@@ -183,4 +183,10 @@ class image
     }
     return $src;
   }
+
+  static function imageExtention($ext)
+  {
+    if(in_array($ext, ['gif','png','jpg','jpeg','webp','tiff','tif'])) return true;
+    return false;
+  }
 }

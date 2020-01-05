@@ -69,7 +69,7 @@ class fm extends controller
   }
 
   function newfolderAction () {
-    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') exit;
+    if(!FS_ACCESS && substr($this->relativePath,0,8)!='/assets/') exit;
     mkdir(SITE_PATH.str_replace('..','',$_POST['path']),0755,true);
     die("Folder created successfully");
   }
@@ -83,7 +83,7 @@ class fm extends controller
   }
 
   function moveAction () {
-    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') {
+    if(!FS_ACCESS && substr($this->relativePath,0,8)!='/assets/') {
       die("Permission denied.");
     }
     if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {
@@ -99,7 +99,7 @@ class fm extends controller
   }
 
   function uploadAction() {
-    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') {
+    if(!FS_ACCESS && substr($this->relativePath,0,8)!='/assets/') {
       die("Permission denied.");
     }
     if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('upload_assets')) {
@@ -130,7 +130,7 @@ class fm extends controller
   }
 
   function deleteAction () {
-    if(!FS_ACCESS && substr($this->relativePath,6)!='assets') {
+    if(!FS_ACCESS && substr($this->relativePath,0,8)!='/assets/') {
       die("Permission denied.");
     }
     if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {

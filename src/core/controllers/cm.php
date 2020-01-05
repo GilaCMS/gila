@@ -13,6 +13,11 @@ class cm extends controller
   function __construct ()
   {
     $this->permissions = user::permissions(session::user_id());
+    $this->table = router::get("t",2);
+    if(!isset(gila::$content[$this->table])) {
+      http_response_code(404);
+      exit;
+    }
   }
 
   /**
@@ -45,7 +50,7 @@ class cm extends controller
   function describeAction ()
   {
     header('Content-Type: application/json');
-    echo json_encode(self::describe(router::get("t",1)), JSON_PRETTY_PRINT);
+    echo json_encode(self::describe($this->table), JSON_PRETTY_PRINT);
   }
 
   function describe ($table)
@@ -68,7 +73,7 @@ class cm extends controller
   function listAction ()
   {
     header('Content-Type: application/json');
-    echo json_encode(self::list(router::get("t",1), $_GET, $_GET), JSON_PRETTY_PRINT);
+    echo json_encode(self::list($this->table, $_GET, $_GET), JSON_PRETTY_PRINT);
   }
 
   function list ($table, $filters, $args)
@@ -82,7 +87,7 @@ class cm extends controller
   function getAction ()
   {
     header('Content-Type: application/json');
-    $table = new gTable(router::get("t",1), $this->permissions);
+    $table = new gTable($this->table, $this->permissions);
     if(!$table->can('read')) return;
     if($id = router::get("id",2)) {
       $filter = [$table->id()=>$id];
@@ -101,8 +106,7 @@ class cm extends controller
   function list_rowsAction ()
   {
     header('Content-Type: application/json');
-    $table = router::get("t",1);
-    $result = self::list_rows($table, $_GET, $_GET);
+    $result = self::list_rows($this->table, $_GET, $_GET);
     echo json_encode($result, JSON_PRETTY_PRINT);
   }
 
@@ -129,13 +133,13 @@ class cm extends controller
   function csvAction ()
   {
     global $db;
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($this->table, $this->permissions);
     $orderby = router::request('orderby', []);
     if(!$pnk->can('read')) return;
     $result = [];
 
     // filename to be downloaded
-    $filename = router::get("t",1). date('Y-m-d') . ".csv";
+    $filename = $this->table. date('Y-m-d') . ".csv";
     header("Content-Disposition: attachment; filename=\"$filename\"");
     $fields = $pnk->fields('csv');
     echo implode(',',$fields)."\n";
@@ -156,7 +160,7 @@ class cm extends controller
   function upload_csvAction ()
   {
     global $db;
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($this->table, $this->permissions);
     if(!$pnk->can('create')) return;
     $inserted = 0;
     $updated = 0;
@@ -188,7 +192,7 @@ class cm extends controller
   {
     global $db;
     header('Content-Type: application/json');
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($this->table, $this->permissions);
     if(!$pnk->can('read')) return;
     $result = [];
     $groupby = router::request('groupby');
@@ -212,7 +216,7 @@ class cm extends controller
     global $db;
     header('Content-Type: application/json');
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($this->table, $this->permissions);
 
     if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
       $id = $_GET['id'];
@@ -243,7 +247,7 @@ class cm extends controller
   function empty_rowAction ()
   {
     header('Content-Type: application/json');
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($this->table, $this->permissions);
     $result['fields'] = $pnk->fields('create');
     $result['rows'][0] = $pnk->getEmpty();
     echo json_encode($result,JSON_PRETTY_PRINT);
@@ -256,7 +260,7 @@ class cm extends controller
   {
     global $db;
     header('Content-Type: application/json');
-    $pnk = new gTable(router::get("t",1), $this->permissions);
+    $pnk = new gTable($this->table, $this->permissions);
     if(!$pnk->can('create')) return;
     $result = [];
 
@@ -296,7 +300,7 @@ class cm extends controller
   function deleteAction ()
   {
     header('Content-Type: application/json');
-    $gtable = new gTable(router::get("t",1), $this->permissions);
+    $gtable = new gTable($this->table, $this->permissions);
     if($gtable->can('delete')) {
       $gtable->deleteRow($_POST['id']);
       $response = '{"id":"'.$_POST['id'].'"}';
@@ -309,8 +313,7 @@ class cm extends controller
   function edit_formAction ()
   {
     global $db;
-    $t = router::get("t",1);
-    $t = htmlentities($t);
+    $t = htmlentities($this->table);
     $pnk = new gTable($t, $this->permissions);
     if(!$pnk->can('update')) return;
 

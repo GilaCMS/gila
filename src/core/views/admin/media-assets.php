@@ -1,6 +1,22 @@
 <?php
 $path = router::request('path', $_COOKIE['asset_path'] ?? 'src');
 if($path[0]=='.') $path = 'src';
+
+$acceptedPath = false;
+$scanned = scandir('src/');
+if($path!='src') {
+  foreach($scanned as $i=>$v) if(is_dir('src/'.$v)) {
+    $package = json_decode(file_get_contents('src/'.$v.'/package.json'));
+    if(isset($package->assets)) {
+      foreach($package->assets as $asset) {
+        $dpath = realpath('src/'.$v.'/'.$asset);
+        $base = substr(realpath($path), 0, strlen($dpath));
+        if($base == $dpath) $acceptedPath = true;
+      }
+    }
+  }
+  if($acceptedPath == false) $path = 'src';
+}
 setcookie('asset_path', $path, time()+86400,'/');
 $disabled = ($path=='')?'disabled':'';
 

@@ -247,7 +247,7 @@ class admin extends controller
   function sqlAction()
   {
     self::access('admin');
-    if($q=router::request('query')) view::set('q', $q);
+    if($q=$_POST['query']) view::set('q', $q);
     view::renderAdmin('admin/sql.php');
   }
 

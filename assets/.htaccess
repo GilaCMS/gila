@@ -1,3 +1,5 @@
-<Files *.php>
+<FilesMatch ".*\.(php|phtml|phar)$">
 deny from all
-</Files>
+</FilesMatch>
+
+AddType text/vtt .vtt

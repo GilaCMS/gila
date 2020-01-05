@@ -384,10 +384,11 @@ class view
   {
     if($src==null) return false;
     $pathinfo = pathinfo($src);
-    if(in_array(strtolower($pathinfo['extension']),['svg','webm'])) return $src;
+    $ext = strtolower($pathinfo['extension']);
+    if(in_array($ext, ['svg','webm'])) return $src;
     $slugify = new Cocur\Slugify\Slugify();
 
-    $ext = $pathinfo['extension'];
+    if(image::imageExtention($ext)==false) return false;
     if(gila::config('use_webp')) {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp' )!==false) {
         $ext = 'webp';
@@ -397,7 +398,7 @@ class view
     if(is_numeric($prefix)) {
       $prefix .= '/';
       $max = (int)$prefix;
-    } 
+    }
 
     $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     $max_width = $max;
