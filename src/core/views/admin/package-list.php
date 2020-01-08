@@ -130,7 +130,7 @@ view::alerts();
 <script>
 function addon_activate(p){
   g.loader()
-  g.ajax('admin/packages?g_response=content&activate='+p,function(x) {
+  g.post('admin/packages?g_response=content','activate='+p,function(x) {
     g.loader(false)
     if(x=='ok')
       g.alert("<?=__('_package_activated')?>",'success','location.reload(true)');
@@ -141,7 +141,7 @@ function addon_activate(p){
 
 function addon_deactivate(p){
   g.loader()
-  g.ajax('admin/packages?g_response=content&deactivate='+p,function(x){
+  g.post('admin/packages?g_response=content','deactivate='+p,function(x){
     g.alert("<?=__('_package_deactivated')?>",'notice','location.reload(true)');
     g.loader(false)
   }
@@ -149,7 +149,7 @@ function addon_deactivate(p){
 
 function addon_download(p) {
   g.loader()
-  g.ajax('admin/packages?g_response=content&download='+p,function(x){
+  g.post('admin/packages?g_response=content','download='+p,function(x){
     g.loader(false)
     if(x=='ok')
       g.alert("<?=__('_package_downloaded')?>",'success');

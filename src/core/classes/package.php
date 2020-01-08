@@ -7,11 +7,12 @@ class package
 
   function __construct()
   {
-    $activate = router::get('activate');
+    $activate = router::post('activate');
     if($activate) self::activate($activate);
-    $deactivate = router::get('deactivate');
+    $deactivate = router::post('deactivate');
     if($deactivate) self::deactivate($deactivate);
-    $download = router::get('download');
+    $download = router::post('download');
+    if(gila::config('test')=='1') $download = router::request('download');
     if($download && FS_ACCESS) {
       if(self::download($download)==true) {
         if(!$_REQUEST['g_response']) {
@@ -131,20 +132,17 @@ class package
     $zip = new ZipArchive;
     $target = 'src/'.$package;
     $request = 'https://gilacms.com/packages/?package='.$package;
+    $request .= gila::config('test')=='1' ? '&test=1' : '';
     $pinfo = json_decode(file_get_contents($request), true)[0];
 
     if(!$pinfo) {
       return false;
     }
     $file = 'https://gilacms.com/assets/packages/'.$package.'.zip';
-
     if(substr($pinfo['download_url'],0,8)=='https://'){
       $file = $pinfo['download_url'];
     }
 
-    if(isset($_GET['src']) && substr($_GET['src'],0,20)=='https://gilacms.com/') {
-      $file = $_GET['src'].'&test';
-    }
     $tmp_name = $target.'__tmp__';
     $localfile = 'src/'.$package.'.zip';
 
@@ -304,8 +302,9 @@ class package
       $installed_packages = self::scan();
       $packages2update = [];
       $versions = [];
-      $uri = "https://gilacms.com/addons/package_versions?p[]=".implode('&p[]=',array_keys($installed_packages));
-      if($res = file_get_contents($uri)) {
+      $url = "https://gilacms.com/addons/package_versions?p[]=".implode('&p[]=',array_keys($installed_packages));
+      $url .= gila::config('test')=='1' ? '&test=1' : '';
+      if($res = file_get_contents($url)) {
         gila::setOption('checked4updates', $now->format('Y-m-d H:i:s'));
         $versions = json_decode($res,true);
       }

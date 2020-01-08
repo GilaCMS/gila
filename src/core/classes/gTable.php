@@ -287,6 +287,8 @@ class gTable
             if($subkey == 'ge') $filters[] = "$key>=$subvalue'";
             if($subkey == 'lt') $filters[] = "$key<$subvalue";
             if($subkey == 'le') $filters[] = "$key<=$subvalue";
+            if($subkey == 'gts') $filters[] = "$key>'$subvalue'";
+            if($subkey == 'lts') $filters[] = "$key<'$subvalue'";
             if($subkey == 'begin') $filters[] = "$key like '$subvalue%'";
             if($subkey == 'end') $filters[] = "$key like '%$subvalue'";
             if($subkey == 'has') $filters[] = "$key like '%$subvalue%'";

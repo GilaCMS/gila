@@ -129,7 +129,7 @@ class gila
 
   static function getList($list)
   {
-    return $GLOBALS['list'][$list];
+    return $GLOBALS['list'][$list] ?? [];
   }
 
   /**

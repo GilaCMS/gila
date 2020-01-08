@@ -73,13 +73,13 @@ view::alerts();
 <script>
 function theme_activate(p) {
   g.loader()
-  g.ajax('admin/themes?g_response=content&activate='+p,function(x){
+  g.post('admin/themes?g_response=content','activate='+p,function(x){
     g.loader(false)
     g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
 })};
 function theme_download(p){
   g.loader()
-  g.ajax('admin/themes?g_response=content&download='+p, function(x) {
+  g.post('admin/themes?g_response=content'&'download='+p, function(x) {
     g.loader(false)
     if(x=='ok')
       g.alert("<?=__('_theme_downloaded')?>",'success');

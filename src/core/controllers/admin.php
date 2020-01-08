@@ -127,7 +127,9 @@ class admin extends controller
     $packages = [];
 
     if($tab == 'new') {
-      if(!$contents = file_get_contents('https://gilacms.com/packages/?search='.$search)) {
+      $url = 'https://gilacms.com/packages/?search='.$search;
+      $url .= gila::config('test')=='1' ? '&test=1' : '';
+      if(!$contents = file_get_contents($url)) {
           view::alert('error',"Could not connect to packages list. Please try later.");
       } else $packages = json_decode($contents);
     } else {
@@ -147,7 +149,6 @@ class admin extends controller
     self::access('admin');
     $packages = [];
     $search = htmlentities(router::get('search',2));
-    //if(!$contents = file_get_contents('https://gilacms.com/cm/list/?t=theme&search='.$search)) {
     if(!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
         view::alert('error',"Could not connect to themes list. Please try later.");
     } else {
