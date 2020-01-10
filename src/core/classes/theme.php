@@ -5,9 +5,9 @@ class theme
 
   function __construct()
   {
-    $activate = router::get('activate');
+    $activate = router::post('activate');
     if($activate) self::activate($activate);
-    $download = router::get('download');
+    $download = router::post('download');
     if($download) self::download($download);
     $save_options = router::get('save_options');
     if($save_options) self::save_options($save_options);

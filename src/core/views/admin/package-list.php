@@ -173,7 +173,7 @@ g.dialog.buttons.save_options = {
 
 function addon_options(p) {
   g.loader()
-  g.post("admin/packages",'g_response=content&options='+p,function(x){
+  g.post("admin/packages?g_response=content",'options='+p,function(x){
     g.loader(false)
     g.modal({title:'<?=__('Options')?>',body:x,buttons:'save_options'})
     app = new Vue({
