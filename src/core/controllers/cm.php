@@ -230,9 +230,11 @@ class cm extends controller
     $result['fields'] = $pnk->fields();
 
     foreach($ids as $id) {
+      $data = $_POST;
+      $pnk->event('update', $data);
       $pnk->updateMeta($id);
       $pnk->updateJoins($id);
-      $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($_POST)} WHERE {$pnk->id()}=?;",$id);
+      $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($data)} WHERE {$pnk->id()}=?;",$id);
       if($db->error()) @$result['error'][] = $db->error();
       $gen = $db->gen("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;",$id);
 
@@ -263,15 +265,17 @@ class cm extends controller
     $pnk = new gTable($this->table, $this->permissions);
     if(!$pnk->can('create')) return;
     $result = [];
+    $data = $_POST;
 
-    if(isset($_POST['id'])) {
+    $pnk->event('create', $data);
+    if(isset($data['id'])) {
       $fields = $pnk->fields('clone');
       if (($idkey = array_search($pnk->id(), $fields)) !== false) {
         unset($fields[$idkey]);
       }
       $fields =  implode(',', $fields );
       $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
-      $res = $db->query($q, $_POST['id']);
+      $res = $db->query($q, $data['id']);
       $id = $db->insert_id;
     } else {
       $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
@@ -280,7 +284,7 @@ class cm extends controller
         echo "Row was not created. Does this table exist?";
         exit;
       } else {
-        $q = "UPDATE {$pnk->name()} {$pnk->set($_POST)} WHERE {$pnk->id()}=?;";
+        $q = "UPDATE {$pnk->name()} {$pnk->set($data)} WHERE {$pnk->id()}=?;";
         $db->query($q, $id);
       }
     }

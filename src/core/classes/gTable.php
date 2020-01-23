@@ -4,9 +4,13 @@ class gTable
 {
   private $table;
   private $permissions;
+  static public $tableList = [];
 
   function __construct ($content, $permissions = ['admin'])
   {
+    if(isset(self::$tableList[$content])) {
+      return self::$tableList[$content];
+    } 
     if(isset(gila::$content[$content]))
       $path = 'src/'.gila::$content[$content];
     else if(file_exists($content))
@@ -50,6 +54,8 @@ class gTable
     if(!isset($p['read'])) $p['read'] = ['admin'];
     if(!isset($p['update'])) $p['update'] = ['admin'];
     if(!isset($p['delete'])) $p['delete'] = ['admin'];
+
+    self::$tableList[$content] = &$this;
   }
 
   function name()

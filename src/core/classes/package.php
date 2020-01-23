@@ -159,8 +159,7 @@ class package
       if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
       rename($tmp_name, $target);
       if(file_exists($target.'__tmp__')) rmdir($target.'__tmp__');
-      $update_file = 'src/'.$package.'/update.php';
-      self::runUpdateFile($update_file);
+      self::runUpdatePackage($package);
       unlink(LOG_PATH.'/load.php');
       unlink($localfile);
       return true;
@@ -168,17 +167,21 @@ class package
     return false;
   }
 
-  static function runUpdateFile($update_file) {
+  static function runUpdatePackage($package) {
     global $db;
+    $update_file = 'src/'.$package.'/update.php';
     if(file_exists($update_file)) {
       include $update_file;
       $sites = scandir('sites');
-      foreach($sites as $site) if($site[0]!='.'){
+      foreach($sites as $site) if($site[0]!='.') {
         $config = 'sites/'.$site.'/config.php';
         if(file_exists($config)) {
           include $config;
           $db = new db($GLOBALS['config']['db']);
-          include $update_file;
+          if($package=='core' ||
+              in_array($package, $GLOBALS['config']['packages'])) {
+            include $update_file;
+          }
         }
       }
     }

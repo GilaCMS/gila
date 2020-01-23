@@ -32,11 +32,6 @@ class session
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
-      if($_SERVER['REQUEST_METHOD']!=='GET' && !isset($_COOKIE['GSESSIONID'])) {
-        // redirect to avoid csrf attacks
-        header("Location: ".$_SERVER["REQUEST_URI"]);
-        exit;
-      }
       if(session::user_id()===0) {
         if(isset($_COOKIE['GSESSIONID'])) {
           foreach (user::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
@@ -160,7 +155,9 @@ class session
       }
     } else {
       self::start();
-      @$user_id = $_SESSION[session::md5('user_id')];
+      if(isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']=='GET') {
+        @$user_id = $_SESSION[session::md5('user_id')];
+      }
     }
     self::$user_id = $user_id;
     return self::$user_id;
