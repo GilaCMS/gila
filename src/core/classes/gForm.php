@@ -153,6 +153,17 @@ class gForm
       "tinymce"=> function($name,$field,$ov) {
         return '<textarea class="tinymce" id="'.$name.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
+      "paragraph"=> function($name,$field,$ov) {
+        return '<vue-editor id="'.$name.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
+      },
+      "language"=> function($name,$field,$ov) {
+        $html = '<select class="g-input" name="'.$name.'">';
+        $res = include('src/core/lang/languages.php');
+        foreach($res as $key=>$r) {
+          $html .= '<option value="'.$key.'"'.($key==$ov?' selected':'').'>'.$r.'</option>';
+        }
+        return $html . '</select>';
+      },
       "checkbox"=> function($name,$field,$ov) {
         return self::$input_type['switcher']($name,$field,$ov);
       },

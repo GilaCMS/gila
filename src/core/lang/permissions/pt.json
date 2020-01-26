@@ -1,0 +1,10 @@
+{
+  "admin": "Semua keistimewaan pentadbiran",
+  "admin_user": "pengguna mentadbir",
+  "admin_userrole": "peranan pengguna mentadbir",
+  "admin_permissions": "Menambah dan mengalih keluar kebenaran kepada peranan pengguna",
+  "upload_assets": "Boleh memuat naik fail pada folder aset",
+  "edit_assets": "Boleh mengedit fail pada folder aset",
+  "editor": "Boleh mengedit semua jawatan dan kategori",
+  "writer": "Boleh menulis jawatan"
+}

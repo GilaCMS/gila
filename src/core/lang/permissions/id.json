@@ -1,0 +1,10 @@
+{
+  "admin": "Semua hak administrasi",
+  "admin_user": "Pengguna administrate",
+  "admin_userrole": "Peran pengguna administrate",
+  "admin_permissions": "Menambah dan menghapus izin untuk peran pengguna",
+  "upload_assets": "Dapat meng-upload file di folder aset",
+  "edit_assets": "Dapat mengedit file pada aset folder",
+  "editor": "Dapat mengedit semua posting dan kategori",
+  "writer": "Dapat menulis posting"
+}

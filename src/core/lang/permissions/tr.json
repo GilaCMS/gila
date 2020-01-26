@@ -1,0 +1,10 @@
+{
+"admin": "Tüm yönetim ayrıcalıkları",
+"admin_user": "Yönetmek kullanıcılar",
+"admin_userrole": "Yönetmek kullanıcı rolleri",
+"admin_permissions": "Ekleyin ve kullanıcı rollerine izinleri kaldırmak",
+"upload_assets": "Varlıklar klasörüne dosya yükleyebilir",
+"edit_assets": "Varlıklar klasörü üzerindeki dosyaları düzenleyebilir",
+"editor": "Bütün mesajları ve kategoriler düzenleyebilir",
+"writer": "Mesajları yazabilir"
+}

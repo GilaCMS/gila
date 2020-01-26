@@ -1,0 +1,15 @@
+{
+  "Name": "名称",
+  "Email": "电子邮件",
+  "Update Profile": "更新配置文件",
+  "Twitter Account": "Twitter帐户",
+  "New Password": "新密码",
+  "Confirm Password": "确认密码",
+  "Change Password": "更改密码",
+  "New passwords do not match": "密码不匹配",
+  "New password too small": "新密码太小",
+  "Password incorrect": "密码错误",
+  "Unique Token Key": "唯一的令牌密钥",
+  "Generate Token Key": "生成令牌密钥",
+  "Delete Token Key": "删除令牌密钥"
+}

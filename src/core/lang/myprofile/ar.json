@@ -1,0 +1,15 @@
+{
+  "Name": "اسم",
+  "Email": "البريد الإلكتروني",
+  "Update Profile": "تحديث الملف",
+  "Twitter Account": "حساب على موقع تويتر",
+  "New Password": "كلمة مرور جديدة",
+  "Confirm Password": "تأكيد كلمة المرور",
+  "Change Password": "تغيير كلمة السر",
+  "New passwords do not match": "كلمات السر لا تتطابق",
+  "New password too small": "كلمة المرور الجديدة صغيرة جدا",
+  "Password incorrect": "كلمة المرور غير صحيحة",
+  "Unique Token Key": "فريدة من نوعها رمز مفتاح",
+  "Generate Token Key": "توليد رمز مفتاح",
+  "Delete Token Key": "حذف رمز مفتاح"
+}

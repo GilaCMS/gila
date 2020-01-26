@@ -1,0 +1,15 @@
+{
+  "Name": "名前",
+  "Email": "Eメール",
+  "Update Profile": "更新プロフィール",
+  "Twitter Account": "Twitterのアカウント",
+  "New Password": "新しいパスワード",
+  "Confirm Password": "パスワードを認証する",
+  "Change Password": "パスワードを変更する",
+  "New passwords do not match": "パスワードが一致しません",
+  "New password too small": "新しいパスワードは、小さすぎます",
+  "Password incorrect": "正しくないパスワード",
+  "Unique Token Key": "ユニークなトークンキー",
+  "Generate Token Key": "トークン鍵を生成し",
+  "Delete Token Key": "トークンキーを削除します。"
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "Nama",
+  "Email": "E-mel",
+  "Update Profile": "Update Profile",
+  "Twitter Account": "Twitter Akaun",
+  "New Password": "Kata laluan baharu",
+  "Confirm Password": "Sahkan Kata Laluan",
+  "Change Password": "Tukar kata laluan",
+  "New passwords do not match": "Kata laluan tidak sepadan",
+  "New password too small": "Kata laluan yang baru adalah terlalu kecil",
+  "Password incorrect": "Kata laluan salah",
+  "Unique Token Key": "Unik Token Kunci",
+  "Generate Token Key": "Menjana Token Kunci",
+  "Delete Token Key": "Memadam Token Key"
+}

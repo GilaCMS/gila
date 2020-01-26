@@ -1,0 +1,10 @@
+{
+  "admin": "所有的管理权限",
+  "admin_user": "管理用户",
+  "admin_userrole": "管理用户角色",
+  "admin_permissions": "添加和删​​除权限的用户角色",
+  "upload_assets": "可以上传资产文件夹中的文件",
+  "edit_assets": "可编辑文件上的assets文件夹",
+  "editor": "可以编辑所有帖子和类别",
+  "writer": "可以写帖子"
+}
