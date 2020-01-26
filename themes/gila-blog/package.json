@@ -1,22 +1,22 @@
 {
-	"name":"Gila Blog",
-	"version":"1.0.2",
-	"description":"A simple blog tempelate.",
-	"url":"gilacms.com",
-	"options":{
-		"color":{
-			"default":"grey",
-			"type":"color"
-		},
-		"header-image":{
-			"type":"media"
-		},
-		"header-position":{
-			"type":"select",
-			"options":{"center":"Center","top":"Top","bottom":"Bottom"}
-		},
-		"footer-text":{
-		}
+  "name":"Gila Blog",
+  "version":"1.0.3",
+  "description":"A simple blog tempelate.",
+  "url":"gilacms.com",
+  "options":{
+    "color":{
+      "default":"grey",
+      "type":"color"
+    },
+    "header-image":{
+      "type":"media"
+    },
+    "header-position":{
+      "type":"select",
+      "options":{"center":"Center","top":"Top","bottom":"Bottom"}
+    },
+    "footer-text":{
+    }
   },
   "require":{
     "core":"1.9.5"
