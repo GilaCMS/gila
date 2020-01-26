@@ -160,7 +160,7 @@ class gForm
         $html = '<select class="g-input" name="'.$name.'">';
         $res = include('src/core/lang/languages.php');
         foreach($res as $key=>$r) {
-          $html .= '<option value="'.$key.'"'.($key==$ov?' selected':'').'>'.$r[1].'</option>';
+          $html .= '<option value="'.$key.'"'.($key==$ov?' selected':'').'>'.$r.'</option>';
         }
         return $html . '</select>';
       },
