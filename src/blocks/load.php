@@ -12,3 +12,8 @@ gila::contentInit('post', function(&$table) {
     $table['js'][]='src/blocks/assets/blocks_btn.js';
     $table['command']['blocks'] = ['link'=>'blocks/post/'];
 });
+
+gila::widgets([
+  'cards'=>'blocks/widgets/cards',
+  'side-image'=>'blocks/widgets/side-image'
+]);

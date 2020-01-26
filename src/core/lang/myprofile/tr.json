@@ -1,0 +1,15 @@
+{
+"Name": "Ad",
+"Email": "E-posta",
+"Update Profile": "Profili Güncelle",
+"Twitter Account": "Twitter hesabı",
+"New Password": "Yeni Şifre",
+"Confirm Password": "Şifreyi Onayla",
+"Change Password": "Şifre değiştir",
+"New passwords do not match": "Şifreler eşleşmiyor",
+"New password too small": "Yeni şifre, çok küçük",
+"Password incorrect": "Yanlış şifre",
+"Unique Token Key": "Benzersiz Jetonu Anahtar",
+"Generate Token Key": "Token Anahtarını üret",
+"Delete Token Key": "Jeton Anahtarını Sil"
+}

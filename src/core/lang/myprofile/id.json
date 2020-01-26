@@ -1,0 +1,15 @@
+{
+  "Name": "Nama",
+  "Email": "Surel",
+  "Update Profile": "Memperbaharui profil",
+  "Twitter Account": "Akun Twitter",
+  "New Password": "Kata sandi baru",
+  "Confirm Password": "Konfirmasi sandi",
+  "Change Password": "Ganti kata sandi",
+  "New passwords do not match": "Kata sandi tidak cocok",
+  "New password too small": "Password baru terlalu kecil",
+  "Password incorrect": "Sandi yang salah",
+  "Unique Token Key": "Unik Token Key",
+  "Generate Token Key": "Menghasilkan Token Key",
+  "Delete Token Key": "Hapus Token Key"
+}

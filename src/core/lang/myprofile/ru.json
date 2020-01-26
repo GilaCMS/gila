@@ -1,0 +1,15 @@
+{
+  "Name": "Имя",
+  "Email": "Эл. адрес",
+  "Update Profile": "Обновить профиль",
+  "Twitter Account": "Twitter счета",
+  "New Password": "Новый пароль",
+  "Confirm Password": "Подтвердите Пароль",
+  "Change Password": "Изменить пароль",
+  "New passwords do not match": "Пароли не совпадают",
+  "New password too small": "Новый пароль слишком мал",
+  "Password incorrect": "Неверный пароль",
+  "Unique Token Key": "Уникальный Токен ключ",
+  "Generate Token Key": "Создать токен ключ",
+  "Delete Token Key": "Удаление маркеров ключ"
+}
