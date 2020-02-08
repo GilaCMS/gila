@@ -8,6 +8,8 @@ return [
   'zh'=> 'Chinese (中文)',
   'ru'=> 'Russian (русский)',
   'ja'=> 'Japanese (日本語)',
+  'fa'=> 'Persian (فارسی)',
+  'it'=> 'Italian (Italiano)',
   'ms'=> 'Malay',
   'id'=> 'Indonesian',
   'ar'=> 'Arabic (عربى)',
@@ -16,3 +18,4 @@ return [
   'el'=> 'Greek (Ελληνικά)',
   'et'=> 'Estonian (Eesti)'
 ];
+

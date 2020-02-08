@@ -1,0 +1,10 @@
+{
+  "admin": "Tutti i privilegi di amministrazione",
+  "admin_user": "Utenti amministrare",
+  "admin_userrole": "Ruoli utente amministrare",
+  "admin_permissions": "Aggiungere e rimuovere le autorizzazioni a ruoli utente",
+  "upload_assets": "Può caricare i file sulla cartella Assets",
+  "edit_assets": "Può modificare i file sulla cartella Assets",
+  "editor": "Può modificare tutti i messaggi e le categorie",
+  "writer": "Può scrivere messaggi"
+}

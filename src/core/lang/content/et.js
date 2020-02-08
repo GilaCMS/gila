@@ -1,20 +1,28 @@
-var lang_array={
-	"Group by":"Gruppieren nach",
-	"Save":"Speichern",
-	"New":"Uus",
-	"Import":"Impordi",
-	"Export":"Ekspordi",
-	"Report":"Aruanne",
-	"Update":"Uuenda",
-	"Cancel":"Tühista",
-	"New Registry":"Uus registreerimine",
-	"Edit Registry":"Redigeeri registreerimine",
-	"Open":"Avatud",
-	"Search":"Otsing",
-	
-	"Yes":"Jah",
-	"No":"Ei",
-	
-	"Delete registry?":"Kas kustutada register?"
+var lang_array = {
+  "Group by": "Gruppieren nach",
+  "Save": "Speichern",
+  "New": "Uus",
+  "Import": "Impordi",
+  "Export": "Ekspordi",
+  "Upload": "Laadi üles",
+  "Download": "Lae alla",
+  "Report": "Aruanne",
+  "Update": "Uuenda",
+  "Cancel": "Tühista",
+  "New Registry": "Uus registreerimine",
+  "Edit Registry": "Redigeeri registreerimine",
+  "Open": "Avatud",
+  "Search": "Otsing",
+  "Yes": "Jah",
+  "No": "Ei",
+  "Delete registry?": "Kas kustutada register?",
+  _gallery: "Meedia Galerii ",
+  _new_filepath: "Sisestage uue faili tee",
+  _file_saved: "Faili salvestamine õnnestus",
+  _select_file: "Palun valige meediumifaili",
+  _new_folder: "Loo uus kaust,",
+  _file_deleted: "Faili kustutamine õnnestus",
+  _uploadcsv_step1: "Lae malli faili ja muuta see",
+  _uploadcsv_step2: "Valige csv faili üles laadida",
+  _uploadcsv_step3: "Laadige csv faili"
 };
-

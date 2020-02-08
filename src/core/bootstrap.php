@@ -22,7 +22,11 @@ ini_set("error_log", "log/error.log");
 spl_autoload_register(function ($class) {
   $class=str_replace('\\','/',$class);
   $class=str_replace('__','-',$class);
+  $Class=ucfirst($class);
 
+  if (file_exists('src/core/classes/'.$Class.'.php')) {
+    require_once 'src/core/classes/'.$Class.'.php';
+  }
   if (file_exists('src/core/classes/'.$class.'.php')) {
     require_once 'src/core/classes/'.$class.'.php';
   }

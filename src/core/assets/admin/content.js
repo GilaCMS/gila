@@ -473,13 +473,19 @@ gtableTool['log_selected'] = {
   }
 }
 gtableTool['uploadcsv'] = {
-  fa: "arrow-up", label: "Csv",
+  fa: "arrow-up", label: _e("Upload")+" CSV",
   fn: function(table) {
-    g.dialog({title:_e("Select"),body:document.getElementById('uploadcsv_msg'),buttons:'select_row_source',type:'modal',class:'large',id:'select_row_dialog'})
+    bodyMsg = "<h3>1. "+_e('_uploadcsv_step1')+'</h3>'
+    bodyMsg += " <a href='cm/get_empty_csv/"+table.name+"'>"+_e('Download')+"</a>"
+    bodyMsg += "<h3>2. "+_e('_uploadcsv_step2')+'</h3>'
+    bodyMsg += "<br><input type='file' id='g_file_to_upload' data-table='"+table.name+"'>"
+    bodyMsg += "<h3>3. "+_e('_uploadcsv_step3')+'</h3>'
+    bodyMsg += " <span class='g-btn' onclick='upload_csv_file()'>"+_e('Upload')+"</span>"
+    g.dialog({title:_e("Upload")+" CSV", body:bodyMsg, buttons:'',type:'modal', class:'large', id:'select_row_dialog'})
   }
 }
 gtableTool['addfrom'] = {
-  fa: "plus", label: _e("New"),
+  fa: "plus", label: _e("New from"),
   fn: function(table) {
     let _table
     _table = table.table
@@ -561,6 +567,17 @@ function open_select_row(row,table) {
   g.post("cm/select_row/"+table,"",function(gal){
     g.dialog({title:_e('_gallery'),body:gal,buttons:'select_row_source',type:'modal',id:'select_row_dialog',class:'large'})
   })
+}
+function upload_csv_file() {
+  let fm = new FormData()
+  fm.append('file', g.el('g_file_to_upload').files[0]);
+  table = g.el('g_file_to_upload').getAttribute('data-table');
+  g.loader()
+  g.ajax({url:"cm/upload_csv/"+table, method:'POST', data:fm, fn:function(data){
+    app.$refs.gtable.load_page()
+    g.loader(false)
+    g('.gila-darkscreen').remove();
+  }})
 }
 
 g.click(".select-row",function(){

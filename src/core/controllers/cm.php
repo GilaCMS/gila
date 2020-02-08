@@ -157,15 +157,24 @@ class cm extends controller
     }
   }
 
+  function get_empty_csvAction ()
+  {
+    $pnk = new gTable($this->table, $this->permissions);
+    if(!$pnk->can('create')) return;
+    $filename = $this->table . "-example.csv";
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    $fields = $pnk->fields('upload_csv');
+    echo implode(',',$fields); 
+  }
+
   function upload_csvAction ()
   {
     global $db;
     $pnk = new gTable($this->table, $this->permissions);
     if(!$pnk->can('create')) return;
-    $inserted = 0;
-    $updated = 0;
-    $filename = $_FILES["file"]["tmp_name"];    
-    $fields = $pnk->fields('edit');
+    $lines = 0;
+    $filename = $_FILES["file"]["tmp_name"];
+    $fields = $pnk->fields('upload_csv');
     $quest = "";
     $nfields = count($fields);
     $fields = implode(',',$fields);
@@ -174,18 +183,20 @@ class cm extends controller
       $quest .= '?';
     }
     if(@$_FILES["file"]["size"] > 0) {
-        $file = fopen($filename, "r");
+      $file = fopen($filename, "r");
       while (($row = fgetcsv($file, 10000, ",")) !== FALSE) {
-         $ql = "INSERT INTO {$pnk->name()} ($fields) VALUES($quest);";
+        $lines++;
+        if($lines==1) continue;
+        if(count($row)<$nfields) continue;
+        $ql = "REPLACE INTO {$pnk->name()} ($fields) VALUES($quest);";
+        echo $ql.'\n';
+        echo implode(',',$row);
         if($db->query($ql, $row)) {
           $inserted++;
         }
-        else {
-          //try something else
-        }
-       }
-       fclose($file);
-     }
+      }
+      fclose($file);
+    }
   }
 
   function group_rowsAction ()

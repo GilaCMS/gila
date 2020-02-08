@@ -1,6 +1,6 @@
 <?php
 
-class sendmail
+class Sendmail
 {
 
   function __construct($args)

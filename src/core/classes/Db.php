@@ -2,7 +2,7 @@
 /**
 * A simple class for a mysqli connection
 */
-class db
+class Db
 {
   private $dbhost, $user, $pass, $dsch;
   private $connected,$link;

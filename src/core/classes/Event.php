@@ -3,7 +3,7 @@
 /**
 * Registers and fires events (hooks)
 */
-class event
+class Event
 {
   static private $handlers = [];
 

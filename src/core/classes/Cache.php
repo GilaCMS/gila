@@ -1,6 +1,6 @@
 <?php
 
-class cache
+class Cache
 {
   static function set ($name, $data, $uniques = null) {
     $dir = gila::dir(LOG_PATH.'/cacheItem/');

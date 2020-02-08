@@ -1,0 +1,15 @@
+{
+  "Name": "نام",
+  "Email": "پست الکترونیک",
+  "Update Profile": "بروزرسانی پروفایل",
+  "Twitter Account": "حساب توییتر",
+  "New Password": "رمز عبور جدید",
+  "Confirm Password": "تایید رمز",
+  "Change Password": "تغییر رمز عبور",
+  "New passwords do not match": "رمز عبورها باهم نمیخوانند",
+  "New password too small": "رمز عبور جدید بیش از حد کوچک است",
+  "Password incorrect": "گذرواژه نادرست است",
+  "Unique Token Key": "منحصر به فرد رمز کلید",
+  "Generate Token Key": "ایجاد یک نشانه کلیدی",
+  "Delete Token Key": "حذف رمز کلید"
+}

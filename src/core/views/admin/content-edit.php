@@ -1,5 +1,6 @@
 <?=view::css('src/core/assets/admin/content.css')?>
 <?=view::cssAsync('lib/select2/select2.min.css')?>
+<?=view::cssAsync('src/core/assets/admin/vue-editor.css')?>
 
 <?=view::script('lib/jquery/jquery-3.3.1.min.js')?>
 <?=view::script('lib/select2/select2.min.js','async')?>
@@ -17,11 +18,12 @@ view::script('src/core/assets/admin/content.js');
 if(file_exists('src/'.$tablesrc.'.js')) view::script('src/'.$tablesrc.'.js');
 view::script('src/core/lang/content/'.gila::config('language').'.js');
 view::script('src/core/assets/admin/listcomponent.js');
+view::script('src/core/assets/admin/vue-editor.js');
 ?>
 
 <style>
-.type-textarea label{width:100%}
-.type-tinymce,.type-textarea{grid-column:1/-1}
+.type-textarea label,.type-paragraph label{width:100%}
+.type-tinymce,.type-textarea,.type-paragraph{grid-column:1/-1}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
 </style>
 
@@ -129,3 +131,8 @@ Save
 </button>
 
 <?=view::script('src/core/assets/lazyImgLoad.js');?>
+<script>
+var app = new Vue({
+  el: 'vue-editor'
+});
+</script>
