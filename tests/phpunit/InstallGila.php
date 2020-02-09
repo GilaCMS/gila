@@ -23,6 +23,7 @@ class InstallGila extends TestCase
 			)
 		);
 
+    echo __DIR__;
     echo @file_get_contents("http://localhost/config.defaults.php");
 
 		stream_context_set_default($default_opts);
