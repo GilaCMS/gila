@@ -23,8 +23,10 @@ class InstallGila extends TestCase
 			)
 		);
 
+    echo @file_get_contents("http://localhost/config.defaults.php");
+
 		stream_context_set_default($default_opts);
-		$response = file_get_contents($base.'install?install&step=1');
+		$response = file_get_contents($base.'?install&step=1');
 
 		$this->assertContains("Installation finished successfully!", $response);
     }
