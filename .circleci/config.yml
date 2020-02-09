@@ -8,7 +8,7 @@ jobs:
     working_directory: /var/www/html
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.1-node-browsers
+      - image: circleci/php:7.4
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -38,7 +38,13 @@ jobs:
           paths:
             - ./vendor
 
+      - run:
+          name: Update host file
+          command: |
+            echo 127.0.0.1 localhost | sudo tee -a /etc/hosts
+            cat /etc/hosts
+
       # run tests with phpunit or codecept
+      - run: ./vendor/bin/phpunit tests/phpunit/InstallGila.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-gila.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-router.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-gTable.php
