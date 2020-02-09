@@ -25,6 +25,7 @@ jobs:
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip mysqli
       - run: echo 127.0.0.1 localhost | sudo tee -a /etc/hosts
+      - run: sudo service apache2 restart
 
       # Download and cache dependencies
       - restore_cache:

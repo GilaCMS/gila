@@ -12,7 +12,7 @@ class InstallGila extends TestCase
 		$db_pass = "password";
 		$email = "admin@mail.com";
 		$pass = "password";
-		$base = "http://localhost/";
+		$base = "http://localhost/html/";
 
 		$default_opts = array(
 			'http'=>array(
@@ -22,9 +22,6 @@ class InstallGila extends TestCase
 				'content'=>"db_host=$host&db_name=$db&db_user=$db_user&db_pass=$db_pass&adm_user=Admin&adm_email=$email&adm_pass=$pass&base_url=$base"
 			)
 		);
-
-    $this->assertEquals('xx',__DIR__);
-    echo @file_get_contents("http://localhost/config.defaults.php");
 
 		stream_context_set_default($default_opts);
 		$response = file_get_contents($base.'?install&step=1');
