@@ -184,6 +184,6 @@ class Db
 * @example $db
 * @code
 * global $db;
-* $db = new dbClass('localhost', 'root', '', '');
+* $db = new Db('localhost', 'root', '', '');
 * @endcode
 */

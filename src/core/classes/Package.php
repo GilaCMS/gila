@@ -177,7 +177,7 @@ class package
         $config = 'sites/'.$site.'/config.php';
         if(file_exists($config)) {
           include $config;
-          $db = new db($GLOBALS['config']['db']);
+          $db = new Db($GLOBALS['config']['db']);
           if($package=='core' ||
               in_array($package, $GLOBALS['config']['packages'])) {
             include $update_file;
