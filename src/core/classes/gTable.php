@@ -410,7 +410,8 @@ class gTable
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
-    $res = $this->db->getAssoc("SELECT $select
+    $db = gila::slaveDB();
+    $res = $db->getAssoc("SELECT $select
       FROM {$this->name()}$where$orderby$limit;");
     return $res;
   }
@@ -431,7 +432,8 @@ class gTable
   {
     if(!$this->can('read')) return;
     $where = $this->where($filters);
-    $res = $this->db->value("SELECT COUNT(*) FROM {$this->name()}$where;");
+    $db = gila::slaveDB();
+    $res = $db->value("SELECT COUNT(*) FROM {$this->name()}$where;");
     return $res;
   }
 

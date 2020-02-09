@@ -24,7 +24,11 @@ jobs:
       - checkout
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip mysqli
-      - run: echo 127.0.0.1 localhost | sudo tee -a /etc/hosts | cat /etc/hosts
+      - run: |
+          echo 127.0.0.1 localhost | sudo tee -a /etc/hosts
+          cat /etc/hosts
+
+      - run: sudo service apache2 restart
 
       # Download and cache dependencies
       - restore_cache:
@@ -40,6 +44,5 @@ jobs:
             - ./vendor
 
       # run tests with phpunit or codecept
-      - run: ./vendor/bin/phpunit tests/phpunit/InstallGila.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-gila.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-gTable.php
