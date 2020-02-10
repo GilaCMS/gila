@@ -4,12 +4,12 @@ chdir(__DIR__.'/../../');
 include __DIR__.'/../../vendor/autoload.php';
 include __DIR__.'/../../src/core/classes/gTable.php';
 include __DIR__.'/../../src/core/classes/gila.php';
-include __DIR__.'/../../src/core/classes/db.php';
+include __DIR__.'/../../src/core/classes/Db.php';
 define("LOG_PATH", "log");
 define("CONFIG_PHP", "config.php");
 use PHPUnit\Framework\TestCase;
 
-$db = new db("127.0.0.1", "g_user", "password", "g_db");
+$db = new Db("127.0.0.1", "g_user", "password", "g_db");
 
 class ClassGTable extends TestCase
 {

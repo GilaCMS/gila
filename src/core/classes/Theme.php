@@ -1,6 +1,6 @@
 <?php
 
-class theme
+class Theme
 {
 
   function __construct()

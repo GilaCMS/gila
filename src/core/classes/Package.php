@@ -177,7 +177,7 @@ class package
         $config = 'sites/'.$site.'/config.php';
         if(file_exists($config)) {
           include $config;
-          $db = new db($GLOBALS['config']['db']);
+          $db = new Db($GLOBALS['config']['db']);
           if($package=='core' ||
               in_array($package, $GLOBALS['config']['packages'])) {
             include $update_file;
@@ -300,8 +300,8 @@ class package
       $diff = date_diff(new DateTime(gila::option('checked4updates')), new DateTime("now"))->format('%a');
     }
 
-    // check after 2 days
-    if($diff>2) {
+    // check once a day
+    if($diff>1) {
       $installed_packages = self::scan();
       $packages2update = [];
       $versions = [];

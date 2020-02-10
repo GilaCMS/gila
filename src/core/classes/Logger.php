@@ -5,7 +5,7 @@
  * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
  * for the full interface specification.
  */
-class logger
+class Logger
 {
   private $handlers = [];
   private $file = null;

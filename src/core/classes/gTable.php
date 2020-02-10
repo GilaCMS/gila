@@ -4,10 +4,14 @@ class gTable
 {
   private $table;
   private $permissions;
+  private $db;
   static public $tableList = [];
 
   function __construct ($content, $permissions = ['admin'])
   {
+    global $db;
+    $this->db = &$db;
+
     if(isset(self::$tableList[$content])) {
       return self::$tableList[$content];
     } 
@@ -17,7 +21,7 @@ class gTable
       $path = $content;
     else
       $path = 'src'.$content;
- 
+
     $this->table = include $path;
     if(isset($table)) $this->table = $table;
 
@@ -33,9 +37,8 @@ class gTable
     if(isset($this->table['lang'])) gila::addLang($this->table['lang']);
     foreach ($this->table['fields'] as $key => &$field) {
       if(isset($field['qoptions'])) {
-        global $db;
         if(!isset($field['options'])) $field['options'] = [];
-        $res = $db->get($field['qoptions']);
+        $res = $this->db->get($field['qoptions']);
         foreach($res as $r) $field['options'][$r[0]] = $r[1];
       }
       if(isset($field['title'])) {
@@ -89,12 +92,11 @@ class gTable
 
   function select(&$fields = null)
   {
-    global $db;
     $select = [];
     if($fields == null) $fields = $this->fields();
 
     foreach ($fields as $key => $value) {
-      $select[$key] = '`'.$db->res($value).'`';
+      $select[$key] = '`'.$this->db->res($value).'`';
       if($qcolumn = $this->fieldAttr($value, 'qcolumn')) {
         $select[$key] = $qcolumn.' as '.$value;
       }
@@ -145,14 +147,13 @@ class gTable
   }
 
   function orderby($orders = null) {
-    global $db;
     $_orders = [];
     if(is_string($orders)) {
       $orders = explode(',', $orders);
     }
 
     if($orders) foreach($orders as $key=>$order) {
-      $order = $db->res($order);
+      $order = $this->db->res($order);
       $o = is_numeric($key) ? explode('_', $order) : [$key, $order];
       if(!array_key_exists($o[0], $this->table['fields'])) continue;
       if($o[1]=='a') $o[1]='ASC';
@@ -169,7 +170,6 @@ class gTable
   }
 
   function limit($limit = null) {
-    global $db;
     if($limit==null) {
       $limit = $this->startIndex();
       if(isset($this->table['pagination'])) {
@@ -178,7 +178,7 @@ class gTable
     } else if(is_array($limit)) {
       $limit = implode(',', $limit);
     }
-    return $db->res(" LIMIT $limit");
+    return $this->db->res(" LIMIT $limit");
   }
 
   function limitPage($args) {
@@ -234,16 +234,15 @@ class gTable
   }
 
   function updateJoins ($id, &$fields = null) {
-    global $db;
     if($fields==null) $fields=$_POST;
 
     foreach($fields as $key=>$value) {
       if(@$this->table['fields'][$key]['type'] == 'joins') {
         $jt = $this->table['fields'][$key]["jt"];
         $arrv = explode(",",$value);
-        $db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
+        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
         foreach($arrv as $arrv_k=>$arrv_v){
-          $db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$id','$arrv_v');");
+          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$id','$arrv_v');");
         }
         continue;
       }
@@ -251,7 +250,6 @@ class gTable
   }
 
   function updateMeta ($id, &$fields = null) {
-    global $db;
     if($fields==null) $fields=$_POST;
 
     foreach($fields as $key=>$value) {
@@ -265,10 +263,10 @@ class gTable
             $arrv = explode(",",$value);
           }
         } else $arrv = $value;
-        $db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
+        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
         foreach($arrv as $arrv_k=>$arrv_v) if($arrv_v!='' && $arrv_v!=null) {
           $arrv_v = strip_tags($arrv_v);
-          $db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");
+          $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");
         }
         continue;
       }
@@ -277,7 +275,6 @@ class gTable
   }
 
   function where($fields = null) {
-    global $db;
     $filters = [];
     if($fields==null) return '';
     if(isset($this->table['filters'])) {
@@ -288,7 +285,7 @@ class gTable
       if(array_key_exists($key, $this->table['fields'])) {
         if(is_array($value)) {
           foreach($value as $subkey=>$subvalue) {
-            $subvalue = $db->res($subvalue);
+            $subvalue = $this->db->res($subvalue);
             if($subkey == 'gt') $filters[] = "$key>$subvalue";
             if($subkey == 'ge') $filters[] = "$key>=$subvalue'";
             if($subkey == 'lt') $filters[] = "$key<$subvalue";
@@ -300,14 +297,14 @@ class gTable
             if($subkey == 'has') $filters[] = "$key like '%$subvalue%'";
           }
         } else {
-          $value = $db->res($value);
+          $value = $this->db->res($value);
           $filters[] = "$key='$value'";
         }
       }
     }
 
     if(isset($fields["search"])) {
-      $value = $db->res($fields["search"]);
+      $value = $this->db->res($fields["search"]);
       $search_filter = [];
       foreach($this->table['fields'] as $key=>$field) {
         if(!isset($field['qcolumn']) && !isset($field['metatype']))
@@ -342,7 +339,6 @@ class gTable
   }
 
   function update() {
-    global $db;
     $tname = $this->table['name'];
     $table_created=false;
     $id = $this->id();
@@ -350,21 +346,21 @@ class gTable
     // CREATE TABLE
     $qtype = @$this->table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
     $ql = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-    $db->query($ql);
+    $this->db->query($ql);
 
     // ADD COLUMNS
     foreach($this->table['fields'] as $fkey=>$field) {
       if(isset($field['qtype']) && $fkey!=$id) {
         $column = @$field['qcolumn']?:$fkey;
         if (strpos($column, '(') === false) {
-          $db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
+          $this->db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
         }
       }
     }
 
     // ADD KEYS
     if(isset($this->table['qkeys'])) foreach($this->table['qkeys'] as $key)
-      $db->query("ALTER TABLE $tname ADD KEY `$key` (`$key`);");
+      $this->db->query("ALTER TABLE $tname ADD KEY `$key` (`$key`);");
 
     return true;
   }
@@ -409,12 +405,12 @@ class gTable
 
   function getRows($filters = [], $args = [])
   {
-    global $db;
     if(!$this->can('read')) return;
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
+    $db = gila::slaveDB();
     $res = $db->getAssoc("SELECT $select
       FROM {$this->name()}$where$orderby$limit;");
     return $res;
@@ -434,18 +430,17 @@ class gTable
 
   function totalRows(&$filters = [])
   {
-    global $db;
     if(!$this->can('read')) return;
     $where = $this->where($filters);
+    $db = gila::slaveDB();
     $res = $db->value("SELECT COUNT(*) FROM {$this->name()}$where;");
     return $res;
   }
 
   function deleteRow($id)
   {
-    global $db;
     $this->event('delete', $id);
-    $res = $db->query("DELETE FROM {$this->name()} WHERE {$this->id()}=?;", $id);
+    $res = $this->db->query("DELETE FROM {$this->name()} WHERE {$this->id()}=?;", $id);
   }
 
 }

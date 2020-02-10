@@ -22,6 +22,7 @@ class gila
   static $contentInit = [];
   static $mt;
   static $base_url;
+  static $slaveDB = [];
 
   /**
   * Registers new controllers
@@ -356,7 +357,7 @@ class gila
 
   static function base_url($str = null) {
     if(!isset(self::$base_url)) {
-      if(isset($_SERVER['REQUEST_URI'])) {
+      if(isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
         $scheme = $_SERVER['REQUEST_SCHEME']??(substr(gila::config('base'),0,5)=='https'?'https':'http');
         self::$base_url = $scheme.'://'.$_SERVER['HTTP_HOST'];
         self::$base_url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'],'/')).'/';
@@ -476,6 +477,21 @@ class gila
     }
     return $path;
   }
+
+  static function slaveDB ($add = null)
+  {
+    global $db;
+    if ($add) {
+      self::$slaveDB[] = $add;
+    } else {
+      $slaves = count(self::$slaveDB);
+      if($slaves>0) {
+        return self::$slaveDB[rand(0, $slaves-1)];
+      }
+      return $db;
+    }
+  }
+
 }
 
 $GLOBALS['lang'] = [];

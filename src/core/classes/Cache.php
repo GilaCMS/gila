@@ -1,14 +1,15 @@
 <?php
 
-class cache
+class Cache
 {
+  static $name;
+  static $uniques;
+
   static function set ($name, $data, $uniques = null) {
     $dir = gila::dir(LOG_PATH.'/cacheItem/');
     $caching_file = $name;
     if($uniques) $caching_file .= '|'.implode('|',$uniques);
-    // save asycronimously?
-    $caching_file = str_replace('/', '_', $caching_file);
-    $caching_file = $dir.$caching_file;
+    $caching_file = $dir.str_replace('/', '_', $caching_file);
     return file_put_contents($caching_file, $data);
   }
 
@@ -19,17 +20,14 @@ class cache
     }
     $caching_file = $name;
     if($uniques) $caching_file .= '|'.implode('|',$uniques);
-    $caching_file = str_replace('/', '_', $caching_file);
-    $caching_file = $dir.$caching_file;
+    $caching_file = $dir.str_replace('/', '_', $caching_file);
 
     if(file_exists($caching_file) && filemtime($caching_file)+$time>time()) {
-        $data = file_get_contents($caching_file);
-        if(substr($caching_file, -4)=='json') $data = json_decode($data, true);
-        return $data;
+      return file_get_contents($caching_file);
     } else {
-        if(count($uniques)>1) {
-            array_map('unlink', glob($uniques[0].'*'));
-        }
+      if($uniques !== null) {
+        array_map('unlink', glob($uniques[0].'*'));
+      }
     }
     return null;
   }
@@ -45,5 +43,22 @@ class cache
     }
     self::set($name, $data, $uniques);
     return $data;
+  }
+
+  static function page ($name, $time, $uniques = null) {
+    if($data = self::get($name, $time, $uniques)) {
+      echo $data;
+      exit;
+    }
+    ob_start();
+    self::$name = $name;
+    self::$uniques = $uniques;
+
+    register_shutdown_function(function(){
+      $out2 = ob_get_contents();
+      if(!self::set(self::$name, $out2, self::$uniques)) {
+        trigger_error("Could not save cache: ".self::$caching_file);
+      }
+    });
   }
 }

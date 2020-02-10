@@ -41,7 +41,7 @@ class user
 
   static function metaList($id, $meta, $values = null)
   {
-    global $db;
+    $db = \gila::slaveDB();
     if ($values===null) {
       $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
       return $db->getList($ql,[$id, $meta]);
@@ -65,7 +65,7 @@ class user
 
   static function getByMeta($key, $value)
   {
-    global $db;
+    $db = \gila::slaveDB();
     $res = $db->get("SELECT * FROM user WHERE id=(SELECT user_id FROM usermeta WHERE vartype=? AND value=? LIMIT 1)", [$key, $value]);
     if($res) return $res[0];
     return false;
@@ -73,7 +73,7 @@ class user
 
   static function getByEmail($email)
   {
-    global $db;
+    $db = \gila::slaveDB();
     $res = $db->get("SELECT * FROM user WHERE email=?", $email);
     if($res) return $res[0];
     return false;
@@ -81,7 +81,7 @@ class user
 
   static function getById($id)
   {
-    global $db;
+    $db = \gila::slaveDB();
     $res = $db->get("SELECT * FROM user WHERE id=?", $id);
     if($res) return $res[0];
     return false;
@@ -89,7 +89,7 @@ class user
 
   static function getByResetCode($rp)
   {
-    global $db;
+    $db = \gila::slaveDB();
     $user_id = $db->value("SELECT user_id FROM usermeta where vartype='reset_code' and value=?;",$rp);
     echo $user_id;
     if(!$user_id) return false;

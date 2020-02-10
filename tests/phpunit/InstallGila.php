@@ -9,10 +9,10 @@ class InstallGila extends TestCase
 		$host = "localhost";
 		$db = "g_db";
 		$db_user = "g_user";
-		$db_pass = "g_pass";
+		$db_pass = "password";
 		$email = "admin@mail.com";
 		$pass = "password";
-		$base = "//localhost/gilatest/";
+		$base = "http://127.0.0.1/";
 
 		$default_opts = array(
 			'http'=>array(
@@ -24,8 +24,8 @@ class InstallGila extends TestCase
 		);
 
 		stream_context_set_default($default_opts);
-		$response = file_get_contents('http://localhost/gilatest/install?install&step=1');
+		$response = file_get_contents($base.'?install&step=1');
 
 		$this->assertContains("Installation finished successfully!", $response);
-    }
+  }
 }

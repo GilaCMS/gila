@@ -2,7 +2,7 @@
 
 use core\models\user;
 
-class session
+class Session
 {
   private static $started = false;
   private static $waitForLogin = 0;

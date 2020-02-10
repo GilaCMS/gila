@@ -1,0 +1,15 @@
+{
+  "Name": "Nome",
+  "Email": "E-mail",
+  "Update Profile": "Aggiorna il profilo",
+  "Twitter Account": "Twitter account",
+  "New Password": "Nuova password",
+  "Confirm Password": "Conferma password",
+  "Change Password": "Cambia la password",
+  "New passwords do not match": "Le password non corrispondono",
+  "New password too small": "La nuova password è troppo piccolo",
+  "Password incorrect": "Password non corretta",
+  "Unique Token Key": "Unico token di chiave",
+  "Generate Token Key": "Genera token di chiave",
+  "Delete Token Key": "Elimina token di chiave"
+}

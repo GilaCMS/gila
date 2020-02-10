@@ -1,6 +1,6 @@
 <?php
 
-class image
+class Image
 {
   /**
    * Creates a thumbnail image from a file.

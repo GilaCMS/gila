@@ -2,7 +2,7 @@
 /**
 * A simple class for a mysqli connection
 */
-class db
+class Db
 {
   private $dbhost, $user, $pass, $dsch;
   private $connected,$link;
@@ -184,6 +184,6 @@ class db
 * @example $db
 * @code
 * global $db;
-* $db = new dbClass('localhost', 'root', '', '');
+* $db = new Db('localhost', 'root', '', '');
 * @endcode
 */
