@@ -14,6 +14,11 @@ gila::contentInit('post', function(&$table) {
 });
 
 gila::widgets([
+  'side-cto'=>'blocks/widgets/side-cto',
+  'side-image'=>'blocks/widgets/side-image',
   'cards'=>'blocks/widgets/cards',
-  'side-image'=>'blocks/widgets/side-image'
+  'items-list'=>'blocks/widgets/items-list',
+  'items-grid'=>'blocks/widgets/items-grid',
+  'faq'=>'blocks/widgets/faq'
 ]);
+
