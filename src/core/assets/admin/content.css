@@ -28,6 +28,11 @@
   opacity: 0.6;
 }
 
+.tr_checkbox, .bulk_checkbox {
+ margin: 0 6px;
+ max-width: 10px;
+}
+
 .g-table table .hightlight {
   background: yellow;
 }
@@ -290,12 +295,6 @@ td[col] .g-input {
   width: 60%;
 }
 
-.g-table-title {
-  display: inline-block;
-  margin-top: 12px;
-  font-weight: bold;
-}
-
 .g-table tfoot .pagination, .g-table tfoot ul {
   margin: 6px 0;
   float: right;
@@ -369,6 +368,9 @@ td[col] .g-input {
 }
 
 .g-table-title {
+  display: inline-block;
+  margin: 1em;
+  font-weight: bold;
   font-size: 1.2em;
 }
 

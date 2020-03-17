@@ -232,7 +232,19 @@ class cm extends controller
     if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
       $id = $_GET['id'];
     } else if($pnk->can('create')) {
-      $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
+      $insert_fields = [];
+      $insert_values = [];
+      // add the filter values
+      foreach($pnk->getTable()['fields'] as $field=>$value) {
+        if (isset($_GET[$field])) {
+          $insert_fields[]=$field;
+          $insert_values[]=(int)$_GET[$field];
+        }
+      }
+      $fnames = implode(',',$insert_fields);
+      $values = implode(',',$insert_values);
+      $q = "INSERT INTO {$pnk->name()}($fnames) VALUES($values);";
+      $res = $db->query($q);
       $id = $db->insert_id;
     } else return;
 
@@ -279,14 +291,14 @@ class cm extends controller
     $data = $_POST;
 
     $pnk->event('create', $data);
-    if(isset($data['id'])) {
+    if(isset($_REQUEST['id'])) {
       $fields = $pnk->fields('clone');
       if (($idkey = array_search($pnk->id(), $fields)) !== false) {
         unset($fields[$idkey]);
       }
       $fields =  implode(',', $fields );
       $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
-      $res = $db->query($q, $data['id']);
+      $res = $db->query($q, $_REQUEST['id']);
       $id = $db->insert_id;
     } else {
       $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");

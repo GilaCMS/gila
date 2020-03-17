@@ -31,7 +31,7 @@ Vue.component('g-table', {
       </span>\
     </div>\
     <div v-if="edititem" class="edititem">\
-      <span v-if="edititem>0" class="btn" @click="edititem=0"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> \
+      <span v-if="edititem>0 || edititem==\'new\'" class="btn" @click="edititem=0"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> \
       <label class="g-label" v-html="table.title"></label>\
       <form :id="name+\'-edit-item-form\'" class="g-form" v-html="edit_html">\
       </form>\
@@ -41,13 +41,17 @@ Vue.component('g-table', {
         <a class="btn btn-white" @click="edititem=false" v-html="word(\'Cancel\')"></a>\
       </div>\
     </div>\
-    <g-table v-for="(child,childkey) in table.children" v-if="edititem>0 && child.list" :gtype="childkey" gchild=1 :gtable="JSON.stringify(child.table)" :gfields="JSON.stringify(child.list)" :gfilters="\'&amp;\'+child.parent_id+\'=\'+edititem"></g-table>\
+    <g-table v-for="(child,childkey) in table.children"\
+     v-if="edititem>0 && edititem!=\'new\' && child.list" :gtype="childkey"\
+     gchild=1 :gtable="JSON.stringify(child.table)" :gfields="JSON.stringify(child.list)"\
+     :gfilters="\'&amp;\'+child.parent_id+\'=\'+edititem">\
+    </g-table>\
 \
     <table v-if="edititem==0 || child==1" class="" cur-page="1"  group-by="">\
     <thead>\
       <tr>\
-        <th v-if="table.bulk_actions" style="width:28px;" @click="select_all()">\
-          <i class="fa fa-square-o bulk_checkbox" aria-hidden="true"></i>\
+        <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\
+          <i :class="checkboxClassBulk()"aria-hidden="true"></i>\
         </th>\
         <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)" v-if="showField(ifield)">\
           <i :class="sortiClass(ifield)" :col="ifield""></i>\
@@ -105,6 +109,7 @@ Vue.component('g-table', {
     page:1,
     type: this.gtype,
     child: this.gchild,
+    bulk_selected: 0
   }},
   updated: function() {
     if(this.edititem==0) return;
@@ -138,6 +143,21 @@ Vue.component('g-table', {
         this.selected_rows.push(irow);
       } else {
         this.selected_rows.splice(index, 1);
+      }
+      this.bulk_selected = -1;
+      if(this.selected_rows.length==0) {
+        this.bulk_selected = 0;
+      }
+    },
+    toggleSelectAll: function() {
+      this.selected_rows = [];
+      if(this.bulk_selected == 0) {
+        this.bulk_selected = 1;
+        for(i in this.data.rows) {
+          this.selected_rows.push(this.data.rows[i][0]);
+        }
+      } else {
+        this.bulk_selected = 0;
       }
     },
     command: function(com, irow) {
@@ -176,6 +196,9 @@ Vue.component('g-table', {
       let _this = this
       if(irow=='new') {
         url = 'cm/update_rows/'+this.name
+        if(typeof _this.filters!='undefined') {
+          url = url+'?'+_this.filters
+        }
       } else {
         url = 'cm/update_rows/'+this.name+'?id='+irow
       }
@@ -183,11 +206,17 @@ Vue.component('g-table', {
         data = JSON.parse(data)
         if(irow=='new') {
           _this.data.rows.unshift(data.rows[0])
+          if(typeof _this.table.children!='undefined') {
+            _this.edititem = data.rows[0][0]
+          }
         } else {
           _this.update_row(data.rows[0])
         }
-        this.$forceUpdate()
       }})
+
+      if(irow=='new' && typeof this.table.children!='undefined') {
+        return
+      }
       this.edititem = false
     },
     toggle_value: function(irow,ifield,v1=0,v2=1) {
@@ -279,6 +308,12 @@ Vue.component('g-table', {
       cl = ''
       if(this.selected_rows.indexOf(irow)>-1) cl='fa-check-square-o'; else cl='fa-square-o';
       return 'fa tr_checkbox '+cl;
+    },
+    checkboxClassBulk: function(){
+      cl = 'fa-square-o'
+      if(this.bulk_selected>0) cl='fa-check-square-o';
+      if(this.bulk_selected<0) cl='fa-minus-square-o';
+      return 'fa bulk_checkbox '+cl;
     }
   },
   mounted: function() {
