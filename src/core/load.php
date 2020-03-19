@@ -41,6 +41,7 @@ gila::widgets([
   'paragraph'=>'core/widgets/paragraph',
   'image'=>'core/widgets/image',
   'gallery'=>'core/widgets/gallery',
+  'gallery-links'=>'core/widgets/gallery-links',
   'social-icons'=>'core/widgets/social-icons',
   'links'=>'core/widgets/links',
   'features'=>'core/widgets/features',

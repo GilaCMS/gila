@@ -592,15 +592,11 @@ function open_gallery_post() {
     g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog'})
   })
 }
-function open_select_from_table(t) {
-  g.post("admin/content/"+t,"g_response=content"+'&formToken='+csrfToken,function(gal){ 
-    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog'})
-  })
-}
-function open_select_row(row,table) {
+function open_select_row(row,table,name) {
   input_select_row = row;
+  return
   g.post("cm/select_row/"+table,"",function(gal){
-    g.dialog({title:_e('_gallery'),body:gal,buttons:'select_row_source',type:'modal',id:'select_row_dialog',class:'large'})
+    g.dialog({title:_e(name),body:gal,buttons:'select_row_source',type:'modal',id:'select_row_dialog',class:'large'})
   })
 }
 function upload_csv_file() {
