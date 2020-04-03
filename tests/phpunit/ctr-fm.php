@@ -9,6 +9,7 @@ define("LOG_PATH", "log");
 define("CONFIG_PHP", "config.php");
 
 use PHPUnit\Framework\TestCase;
+$GLOBALS['user_privileges'] = ['admin'];
 $c = new fm();
 
 class ControllerFm extends TestCase
