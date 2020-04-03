@@ -5,8 +5,10 @@ include __DIR__.'/../../src/core/classes/gila.php';
 include __DIR__.'/../../src/core/classes/router.php';
 include __DIR__.'/../../src/core/classes/controller.php';
 include __DIR__.'/../../src/core/controllers/fm.php';
-define("LOG_PATH", "log");
-define("CONFIG_PHP", "config.php");
+define('SITE_PATH', '');
+define('LOG_PATH', 'log');
+define('CONFIG_PHP', 'config.php');
+define('FS_ACCESS', true);
 
 use PHPUnit\Framework\TestCase;
 $GLOBALS['user_privileges'] = ['admin'];
@@ -30,7 +32,7 @@ class ControllerFm extends TestCase
     $list = [
       'src/core/load.php'=>true, 'tmp/file.jpg'=>true, 'config.php'=>false,
       'assets/20/p.png'=>true, 'log/error.log'=>true, 'themes/blog/'=>true,
-      '../'=>false, 'lib/'=>false, 'assets/..'=>false
+      '../'=>false, 'other_folder/'=>false, 'assets/..'=>false
     ];
     foreach ($list as $path=>$response) {
       echo "$path ";
