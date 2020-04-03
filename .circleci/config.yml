@@ -46,3 +46,4 @@ jobs:
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit tests/phpunit/class-gila.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-gTable.php
+      - run: ./vendor/bin/phpunit tests/phpunit/ctr-fm.php
