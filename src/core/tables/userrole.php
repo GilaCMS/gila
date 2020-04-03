@@ -18,7 +18,6 @@ return [
   "fields"=>[
     "id"=>[
       'title'=>"ID",
-      'qtype'=>'INT NOT NULL AUTO_INCREMENT',
       'edit'=>false
     ],
     "userrole"=>[

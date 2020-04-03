@@ -295,6 +295,7 @@ class gTable
             if($subkey == 'begin') $filters[] = "$key like '$subvalue%'";
             if($subkey == 'end') $filters[] = "$key like '%$subvalue'";
             if($subkey == 'has') $filters[] = "$key like '%$subvalue%'";
+            if($subkey == 'in') $filters[] = "$key IN($subvalue)";
           }
         } else {
           $value = $this->db->res($value);
@@ -345,22 +346,28 @@ class gTable
 
     // CREATE TABLE
     $qtype = @$this->table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
-    $ql = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-    $this->db->query($ql);
+    $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    echo 'Table: '.$tname.'\n\n'.$q;
+    $this->db->query($q);
 
     // ADD COLUMNS
     foreach($this->table['fields'] as $fkey=>$field) {
       if(isset($field['qtype']) && $fkey!=$id) {
         $column = @$field['qcolumn']?:$fkey;
         if (strpos($column, '(') === false) {
-          $this->db->query("ALTER TABLE $tname ADD $column {$field['qtype']};");
+          $q = "ALTER TABLE $tname ADD $column {$field['qtype']};";
+          echo '\n\n'.$q;
+          $this->db->query($q);
         }
       }
     }
 
     // ADD KEYS
-    if(isset($this->table['qkeys'])) foreach($this->table['qkeys'] as $key)
-      $this->db->query("ALTER TABLE $tname ADD KEY `$key` (`$key`);");
+    if(isset($this->table['qkeys'])) foreach($this->table['qkeys'] as $key) {
+      $q = "ALTER TABLE $tname ADD KEY `$key` (`$key`);";
+      echo '\n\n'.$q;
+      $this->db->query($q);
+    }
 
     return true;
   }

@@ -17,11 +17,28 @@ $basepath = substr($c->filepath,0, strlen(realpath('')));
 if($basepath != realpath('')) $filepath = realpath('');
 $pathinfo = pathinfo($filepath);
 $ext = $pathinfo['extension'];
+$allowedFiletypes = [
+  'txt','json','css','pdf','twig','csv','tsv','log',
+  'png','jpg','jpeg','gif','webp','ico',
+  'avi','webm','mp4','mkv'
+];
 
 $dirname = $pathinfo['dirname'];
 if(is_dir($filepath)) $dirname = $filepath;
 if($dirname=='') $dirname = '.';
 $show_path = substr($filepath, 1+strlen(realpath('')));
+$dirname = substr($dirname, 1+strlen(realpath('')));
+
+function allowedPath($path = null) {
+  $allowedPaths = ['assets','src','themes','tmp','log'];
+  foreach ($allowedPaths as $allowed) {
+    if (substr($path,0,strlen($allowed)+1) == $allowed.'/' ||
+        $path == $allowed) {
+      return true;
+    }
+  }
+  return false;
+}
 ?>
 
 <div style="display:grid; grid-template-columns: 250px 1fr;grid-gap:1em">
@@ -30,7 +47,8 @@ $show_path = substr($filepath, 1+strlen(realpath('')));
   <div class="fm_file">
     <div class="wrapper"><strong><?=htmlentities($show_path)?></strong>
 <?php
-    if(in_array($ext ,$img_ext)) {
+  if(allowedPath($dirname) && in_array($ext, $allowedFiletypes)) {
+    if(in_array($ext, $img_ext)) {
 ?>
       <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
       <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
@@ -64,6 +82,9 @@ $show_path = substr($filepath, 1+strlen(realpath('')));
     </script>
     <?php
     }
+  } else if(!is_dir($filepath)) {
+    echo "<div class='alert'>Permission denied. You cannot read from this folder or file type</div>";
+  }
     ?>
 
 <script>

@@ -192,8 +192,9 @@ class view
     $file = self::getViewFile($filename, $package);
     
     if(isset(self::$renderer)) {
-      self::$renderer($file, self::$part);
-      return true;
+      if(self::$renderer($file, self::$part)) {
+        return true;
+      }
     }
 
     foreach (self::$part as $key => $value) {

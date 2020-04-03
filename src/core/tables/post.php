@@ -88,7 +88,6 @@ return [
       'title'=>'Updated',
       'type'=>'date',
       'searchbox'=>'period',
-      'list'=>false,
       'edit'=>false,
       'create'=>false,
       'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
@@ -96,6 +95,7 @@ return [
     'created'=> [
       'title'=>'Created',
       'type'=>'date',
+      'list'=>false,
       'edit'=>false,
       'create'=>false,
       'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP'

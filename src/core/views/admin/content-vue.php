@@ -54,8 +54,8 @@ foreach($pages_path as $path) {
   <g-table gtype="<?=$table?>" ref="gtable"
   gtable="<?=htmlspecialchars(json_encode($t))?>"
   gfields="<?=htmlspecialchars(json_encode($pnk->fields('list')))?>"
-  grows="<?=htmlspecialchars(json_encode($pnk->getRowsIndexed(null,['page'=>1])))?>"
-  gtotalrows="<?=$pnk->totalRows()?>"></g-table>
+  grows="<?=htmlspecialchars(json_encode($pnk->getRowsIndexed($t['filters'], ['page'=>1])))?>"
+  gtotalrows="<?=$pnk->totalRows($t['filters'])?>"></g-table>
 </div>
 
 <script>

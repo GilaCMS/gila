@@ -33,7 +33,7 @@ gila::$amenu = [
 ];
 
 if(FS_ACCESS) {
-  gila::amenu_child('content', ['File Manager','admin/fm','icon'=>'folder','access'=>'admin']);
+  gila::amenu_child('content', ['Logs','admin/fm?f=log','icon'=>'folder','access'=>'admin']);
   gila::amenu_child('admin', ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin']);
 }
 
