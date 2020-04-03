@@ -30,9 +30,10 @@ class ControllerFm extends TestCase
     $list = [
       'src/core/load.php'=>true, 'tmp/file.jpg'=>true, 'config.php'=>false,
       'assets/20/p.png'=>true, 'log/error.log'=>true, 'themes/blog/'=>true,
-      '../'=>false, 'other_folder/'=>false, 'assets/..'=>false
+      '../'=>false, 'lib/'=>false, 'assets/..'=>false
     ];
     foreach ($list as $path=>$response) {
+      echo "$path ";
       $this->assertEquals($response, $c->allowedPath($path));
     }
   }
