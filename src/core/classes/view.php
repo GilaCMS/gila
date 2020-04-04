@@ -190,9 +190,10 @@ class view
   {
     global $c;
     $file = self::getViewFile($filename, $package);
-    
+
     if(isset(self::$renderer)) {
-      if(self::$renderer($file, self::$part)) {
+      $renderer = self::$renderer;
+      if ($renderer($file, view::$part)) {
         return true;
       }
     }

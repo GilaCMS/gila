@@ -30,9 +30,9 @@ class ControllerFm extends TestCase
   {
     global $c;
     $list = [
-      'src/core/load.php'=>true, 'tmp/file.jpg'=>true, 'config.php'=>false,
-      'assets/20/p.png'=>true, 'log/error.log'=>true, 'themes/blog/'=>true,
-      '../'=>false, 'other_folder/'=>false, 'assets/..'=>false
+      'src/core/load.php'=>true, 'config.php'=>false, 'themes/blog/'=>true,
+      'assets/20/p.png'=>true, 'log/error.log'=>true, 'assets/..'=>false,
+      '../'=>false, 'other_folder/'=>false
     ];
     foreach ($list as $path=>$response) {
       echo "$path ";
