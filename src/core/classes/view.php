@@ -189,11 +189,10 @@ class view
   static function includeFile($filename, $package='core')
   {
     global $c;
-    $file = self::getViewFile($filename, $package);
 
     if(isset(self::$renderer)) {
       $renderer = self::$renderer;
-      if ($renderer($file, view::$part)) {
+      if ($renderer($filename, $package, view::$part)) {
         return true;
       }
     }
@@ -202,6 +201,7 @@ class view
       $$key = $value;
     }
 
+    $file = self::getViewFile($filename, $package);
     if($file) {
       if($filename == 'header.php' || $filename  == 'footer.php') {
         include_once $file;
@@ -370,6 +370,15 @@ class view
       if($div) echo '</div></div>';
     }
     event::fire($area);
+  }
+
+  static function getWidgetArea ($path)
+  {
+    ob_start();
+    view::widget_area($area);
+    $html = ob_get_contents();
+    ob_end_clean();
+    return $html;
   }
 
   static function img ($src, $prefix='', $max=180)
