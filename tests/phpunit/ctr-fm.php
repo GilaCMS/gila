@@ -31,7 +31,7 @@ class ControllerFm extends TestCase
     global $c;
     $list = [
       'src/core/load.php'=>true, 'config.php'=>false, 'themes/blog/'=>true,
-      'assets/20/p.png'=>true, 'log/error.log'=>true, 'assets/..'=>false,
+      'assets/20'=>true, 'log/'=>true, 'assets/..'=>false,
       '../'=>false, 'other_folder/'=>false
     ];
     foreach ($list as $path=>$response) {
