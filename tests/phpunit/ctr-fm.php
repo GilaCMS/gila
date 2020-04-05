@@ -30,7 +30,7 @@ class ControllerFm extends TestCase
   {
     global $c;
     $list = [
-      'src/core/load.php'=>true, 'config.php'=>false, 'themes/blog/'=>true,
+      'src/core/load.php'=>true, 'config.php'=>false, 'themes/gila-blog/'=>true,
       'assets/20'=>true, 'log/'=>true, 'assets/..'=>false,
       '../'=>false, 'other_folder/'=>false
     ];
