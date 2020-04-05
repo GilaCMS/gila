@@ -78,10 +78,10 @@ class fm extends controller
   }
 
   function newfolderAction () {
-    if (!$this->allowedPath($this->relativePath)) {
+    if (!$this->allowedPath($_POST['path'])) {
       die("Permission denied.");
     }
-    if(!FS_ACCESS && substr($this->relativePath,0,8)!='assets/') exit;
+    if(!FS_ACCESS && substr($this->relativePath,0,7)!='assets/') exit;
     mkdir(SITE_PATH.str_replace('..','',$_POST['path']),0755,true);
     die("Folder created successfully");
   }
@@ -95,27 +95,26 @@ class fm extends controller
   }
 
   function moveAction () {
-    if(!$this->allowedFiletype($this->path)) {
+    if(!FS_ACCESS && substr($this->relativePath,0,7)!='assets/') {
       die("Permission denied.");
     }
-    if(!FS_ACCESS && substr($this->relativePath,0,8)!='assets/') {
-      die("Permission denied.");
+    if(!is_dir($this->path)) {
+      if(!$this->allowedFiletype($this->path) ||
+         !$this->allowedFiletype($_POST['newpath'])) {
+        die("File type is not permited");
+      }
     }
-    if (!$this->allowedPath($_POST['newpath'])) {
-      die("Permission denied.");
+    if (!$this->allowedPath($_POST['newpath']) ||
+        !$this->allowedPath($this->relativePath)) {
+      die("Permission denied1");
     }
-    if (!$this->allowedPath($this->relativePath)) {
-      die("Permission denied.");
+    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {
+      die("User dont have permision to edit files");
     }
 
-    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {
-      die("Permission denied.");
-    }
-    $ext = strtolower(pathinfo($this->path, PATHINFO_EXTENSION));
-    $newext = strtolower(pathinfo($_POST['newpath'], PATHINFO_EXTENSION));
-    if($ext != $newext || $newext == 'htaccess' || !rename($this->path, $_POST['newpath'])) {
+    if(!rename($this->path, $_POST['newpath'])) {
       ob_clean();
-      die("Permission denied.");
+      die("File could not be moved");
     }
     die("File saved successfully");
   }
@@ -143,7 +142,7 @@ class fm extends controller
     }
     for ($i=0; $i<count($tmp_file); $i++) {
       if (!$this->allowedFiletype($name[$i])) {
-        die("Error: File {$name[$i]} type is not accepted!");
+        die("Error: File type {$name[$i]} is not accepted!");
       }
       if (!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
         die("Error: could not upload file!");
@@ -207,6 +206,7 @@ class fm extends controller
     if ($path===null) {
       $path = $this->relativePath;
     } else {
+      $path = pathinfo($path)['dirname'];
       $path = substr(realpath($path), strlen($this->sitepath)+1);
     }
 
@@ -226,6 +226,7 @@ class fm extends controller
       'png','jpg','jpeg','gif','webp','ico',
       'avi','webm','mp4','mkv'
     ];
+    if(is_dir($path)) return true;
     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
     if(in_array($ext, $allowedFiletypes)) {
       return true;
