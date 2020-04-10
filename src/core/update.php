@@ -1,9 +1,11 @@
 <?php
 
-$postTable = new gTable('core/tables/post.php');
+gila::content('post','core/tables/post.php');
+$postTable = new gTable('post');
 $postTable->update();
 
-$userroleTable = new gTable('core/tables/userrole.php');
+gila::content('userrole','core/tables/userrole.php');
+$userroleTable = new gTable('userrole');
 $userroleTable->update();
 
 if(version_compare(package::version('core'), '1.8.0') < 0) {

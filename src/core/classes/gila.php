@@ -178,6 +178,9 @@ class gila
   static function contentInit($key, $init)
   {
     @self::$contentInit[$key][] = $init;
+    if(isset(gTable::$tableList[$key])) {
+      unset(gTable::$tableList[$key]);
+    }
   }
 
   /**

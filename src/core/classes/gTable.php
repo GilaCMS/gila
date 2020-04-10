@@ -12,18 +12,19 @@ class gTable
     global $db;
     $this->db = &$db;
 
-    if(isset(self::$tableList[$content])) {
-      return self::$tableList[$content];
-    } 
-    if(isset(gila::$content[$content]))
+    if(isset(gila::$content[$content])) {
       $path = 'src/'.gila::$content[$content];
-    else if(file_exists($content))
+    } else if(file_exists($content)) {
       $path = $content;
-    else
+    } else {
       $path = 'src'.$content;
-
-    $this->table = include $path;
-    if(isset($table)) $this->table = $table;
+    }
+    if(isset(self::$tableList[$content])) {
+      $this->table = self::$tableList[$content];
+    } else {
+      $this->table = include $path;
+      if(isset($table)) $this->table = $table;
+    }
 
     $this->permissions = $permissions;
     if($patch = @gila::$contentField[$this->table['name']]) { //depraciated from 1.8.0
@@ -58,7 +59,7 @@ class gTable
     if(!isset($p['update'])) $p['update'] = ['admin'];
     if(!isset($p['delete'])) $p['delete'] = ['admin'];
 
-    self::$tableList[$content] = &$this;
+    self::$tableList[$content] = $this->table;
   }
 
   function name()
@@ -68,7 +69,7 @@ class gTable
 
   function id()
   {
-    return $this->table['id'] ?? ‘id’; 
+    return $this->table['id'] ?? 'id'; 
   }
 
   function fieldAttr($field, $attr)
@@ -341,13 +342,11 @@ class gTable
 
   function update() {
     $tname = $this->table['name'];
-    $table_created=false;
     $id = $this->id();
 
     // CREATE TABLE
     $qtype = @$this->table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
     $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-    echo 'Table: '.$tname.'\n\n'.$q;
     $this->db->query($q);
 
     // ADD COLUMNS
@@ -356,7 +355,6 @@ class gTable
         $column = @$field['qcolumn']?:$fkey;
         if (strpos($column, '(') === false) {
           $q = "ALTER TABLE $tname ADD $column {$field['qtype']};";
-          echo '\n\n'.$q;
           $this->db->query($q);
         }
       }
@@ -365,7 +363,6 @@ class gTable
     // ADD KEYS
     if(isset($this->table['qkeys'])) foreach($this->table['qkeys'] as $key) {
       $q = "ALTER TABLE $tname ADD KEY `$key` (`$key`);";
-      echo '\n\n'.$q;
       $this->db->query($q);
     }
 
