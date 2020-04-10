@@ -206,7 +206,7 @@ class fm extends controller
     if ($path===null) {
       $path = $this->relativePath;
     } else {
-      $path = pathinfo($path)['dirname'];
+      if(!is_dir($path)) $path = pathinfo($path)['dirname'];
       $path = substr(realpath($path), strlen($this->sitepath)+1);
     }
 
