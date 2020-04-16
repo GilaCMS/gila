@@ -15,6 +15,5 @@
 <script src="src/core/assets/lazyImgLoad.js" async></script>
 <?php event::fire('footer')?>
 </body>
-<div class="pad">
-</div>
+
 </html>
