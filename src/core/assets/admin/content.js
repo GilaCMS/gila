@@ -298,13 +298,15 @@ Vue.component('g-table', {
       return a
     },
     orderBy: function(key){
-      if(this.order[key]='DESC') this.order=key+'_a'; else this.order=key+'_d';
+      if(this.order[key]=='DESC') order='ASC'; else order='DESC';
+      this.order = []
+      this.order[key] = order
       this.load_page({page:1})
     },
     sortiClass: function(key){
       cl=''
-      if(this.order[key]='ASC') cl='fa-chevron-up'
-      if(this.order[key]='DESC') cl='fa-chevron-down'
+      if(this.order[key]=='ASC') cl='fa-chevron-up'
+      if(this.order[key]=='DESC') cl='fa-chevron-down'
       return 'g-sorti fa '+cl;
     },
     checkboxClass: function(irow){
