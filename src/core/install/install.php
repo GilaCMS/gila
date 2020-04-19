@@ -42,6 +42,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             2 => 'admin_userrole'
           ]
         ];
+        $GLOBALS['config']['trusted_domains'] = [$_SERVER['HTTP_HOST']];
         $GLOBALS['config']['packages'] = ['blog'];
         $GLOBALS['config']['base'] = $_base_url;
         $GLOBALS['config']['theme'] = 'gila-blog';

@@ -238,7 +238,7 @@ class view
   }
 
   /**
-  * Overrides a view file. Overrides fiel from any package or the theme.
+  * Overrides a view file. Overrides file from any package or the theme.
   * @param file (string) Relative path of the view file.
   * @param package  (string) The package folder where the file is located.
   */
@@ -295,10 +295,8 @@ class view
       @include $widget_file;
       $out2 = ob_get_contents();
       //ob_end_clean();
-      $clog = new logger(LOG_PATH.'/cache.log');
-      if(file_put_contents($_file,$out2)){
-        $clog->debug($_file);
-      }else{
+      $clog = new logger(LOG_PATH.'/cache.error.log');
+      if(!file_put_contents($_file, $out2)){
         $clog->error($_file);
       }
     }
@@ -319,14 +317,21 @@ class view
     }
     if(file_exists($widget_file) == false) {
       @$widget_file = "src/".gila::$widget[$type]."/$type.php";
-      if(!isset(gila::$widget[$type])) if($type==='text') {
-        $widget_file = "src/core/widgets/text/text.php";
-      } else {
+      if(!isset(gila::$widget[$type])) {
         echo "Widget <b>".$type."</b> is not found";
       }
     }
     if(is_object($widget_data)) $data = (array)$widget_data; else $data = &$widget_data;
     @include $widget_file;
+  }
+
+  static function getWidgetBody ($type, $widget_data=null, $widget_file=null)
+  {
+    ob_start();
+    view::widget_body($type, $widget_data, $widget_file);
+    $html = ob_get_contents();
+    ob_end_clean();
+    return $html;
   }
 
   static function block ($path, $widget_data) {
@@ -344,7 +349,7 @@ class view
   }
 
   /**
-  * Dsiplays the widgets of an area
+  * Displays the widgets of an area
   * @param $area (string) Area name
   * @param $div (optional boolean) If true, widget body will be printed as child of <div class="widget"> item.
   */
@@ -372,7 +377,7 @@ class view
     event::fire($area);
   }
 
-  static function getWidgetArea ($path)
+  static function getWidgetArea ($area)
   {
     ob_start();
     view::widget_area($area);

@@ -21,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (router::post('submit-btn')=='subm
   gila::config('user_register',$_POST['gila_user_register']);
   gila::config('use_cdn',$_POST['gila_use_cdn']);
   gila::config('use_webp',$_POST['gila_webp']);
-  gila::config('cors',$_POST['gila_cors']);
   gila::config('maxImgWidth',$_POST['gila_maxImgWidth']);
   gila::config('maxImgHeight',$_POST['gila_maxImgHeight']);
   gila::updateConfigFile();
@@ -120,9 +119,6 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 
   <br>
   <?php echo gForm::input('gila_webp', ["type"=>"switcher"], gila::config('use_webp'), __("Use WEBP")) ?>
-
-  <br>
-  <?php echo gForm::input('gila_cors', ["type"=>"switcher"], gila::config('cors'), __("CORS")) ?>
 
   <br>
   <div class="gm-12">

@@ -26,5 +26,6 @@ $GLOBALS['config'] = array (
   'use_cdn' => '0',
   'admin_email' => 'admin@mail.com',
   'admin_logo' => '',
-  'check4updates' => '1'
+  'check4updates' => '1',
+  'cors' => '0'
 );

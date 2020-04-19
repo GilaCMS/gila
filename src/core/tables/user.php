@@ -47,6 +47,15 @@ return [
       'type'=>'checkbox',
       'title'=>'Active',
       'qtype'=>'INT(1) DEFAULT 1'
+    ],
+    'manager'=> [
+      'type'=>'meta',
+      'title'=>'Manager',
+      'list'=>false,
+      'mt'=>['usermeta', 'user_id', 'value'],
+      'metatype'=>['vartype', 'manager_id'],
+      'options'=>[''=>'-'],
+      'qoptions'=>'SELECT `id`,`username` FROM user;'
     ]
   ],
   'events'=>[
