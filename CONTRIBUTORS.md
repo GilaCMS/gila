@@ -11,6 +11,8 @@ ayacoo
 
 Bot Kotaku
 
+fr0stNuLL
+
 Guillermo Céspedes Tabárez
 
 Jose Luis Cervantes
@@ -20,6 +22,8 @@ Lokesh Kumar
 Mitchell Urgero
 
 mookman288
+
+Neikoxiuxian
 
 Nikos Papagianopoulos
 
@@ -36,5 +40,9 @@ hjxfire
 k0t
 
 ommadawn46
+
+Sainadh Jamalpur
+
+sie504
 
 yaoyao6688

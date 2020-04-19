@@ -27,7 +27,7 @@ spl_autoload_register(function ($class) {
   if (file_exists('src/core/classes/'.$Class.'.php')) {
     require_once 'src/core/classes/'.$Class.'.php';
   }
-  if (file_exists('src/core/classes/'.$class.'.php')) {
+  else if (file_exists('src/core/classes/'.$class.'.php')) {
     require_once 'src/core/classes/'.$class.'.php';
   }
   else if (file_exists('src/'.$class.'.php')) {
@@ -49,6 +49,12 @@ else {
     include 'src/core/install/index.php';
   } else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".gila::base_url()."?install\" />";
   exit;
+}
+
+if(is_array(gila::config('trusted_domains')) &&
+    isset($_SERVER['HTTP_HOST']) &&
+    !in_array($_SERVER['HTTP_HOST'], gila::config('trusted_domains'))) {
+  die($_SERVER['HTTP_HOST'].' is not a trusted domain. It can be added in configuration file.');
 }
 
 $db = new Db(gila::config('db'));
