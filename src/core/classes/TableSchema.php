@@ -16,12 +16,12 @@ class TableSchema
     $id = $table['id'] ?? 'id';
 
     // CREATE TABLE
-    $qtype = @$this->table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
+    $qtype = @$table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
     $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
     $db->query($q);
 
     // ADD COLUMNS
-    foreach($this->table['fields'] as $fkey=>$field) {
+    foreach($table['fields'] as $fkey=>$field) {
       if(isset($field['qtype']) && $fkey!=$id) {
         $column = @$field['qcolumn']?:$fkey;
         if (strpos($column, '(') === false) {
@@ -32,7 +32,7 @@ class TableSchema
     }
 
     // ADD KEYS
-    if(isset($this->table['qkeys'])) foreach($this->table['qkeys'] as $key) {
+    if(isset($table['qkeys'])) foreach($table['qkeys'] as $key) {
       $q = "ALTER TABLE $tname ADD KEY `$key` (`$key`);";
       $db->query($q);
     }
