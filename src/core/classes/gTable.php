@@ -1,4 +1,5 @@
 <?php
+use core\classes\TableSchema;
 
 class gTable
 {
