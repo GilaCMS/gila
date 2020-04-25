@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="<?=gila::config('language')?>">
+<html lang="<?=Gila::config('language')?>">
 <?php
-view::stylesheet('lib/gila.min.css');
-view::head()?>
+View::stylesheet('lib/gila.min.css');
+View::head()?>
 <style>
-<?php $theme_color=gila::option('theme.color','orangered'); ?>
+<?php $theme_color=Gila::option('theme.color','orangered'); ?>
 body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
 .widget{padding: 0; margin-top: 12px;}
 .sidebar .widget{border: 1px solid #ccc;}

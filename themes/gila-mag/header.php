@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="<?=gila::config('language')?>">
+<html lang="<?=Gila::config('language')?>">
 <?php
-view::stylesheet('lib/gila.min.css');
-view::head()?>
+View::stylesheet('lib/gila.min.css');
+View::head()?>
 <style>
-<?php $theme_color=gila::option('theme.color','orangered'); ?>
+<?php $theme_color=Gila::option('theme.color','orangered'); ?>
 body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
 .widget{padding: 0; margin-top: 12px;}
 .sidebar .widget{border: 1px solid #ccc;}
@@ -32,19 +32,19 @@ li.active{background-color:var(--main-primary-color); color:white;}
 <body>
   <div  style="max-width:1100px; margin:auto">
     <div class="header">
-        <?php view::widget_area('body'); ?>
+        <?php View::widget_area('body'); ?>
         <div class="inline-block">
-          <a href="<?=gila::base_url()?>" style="color:#333;">
+          <a href="<?=Gila::base_url()?>" style="color:#333;">
           <?php
-          $lgimg = gila::option('theme.header-logo');
-          $_title = gila::config('title');
+          $lgimg = Gila::option('theme.header-logo');
+          $_title = Gila::config('title');
           echo ($lgimg?'<img class="header-logo" src="'.$lgimg.'" alt="'.$_title.'">':'<h1>'.$_title.'</h1>');
           ?>
           </a>
         </div>
         <!-- Navigation -->
         <nav class="inline-flex fullwidth g-navbar">
-            <span class="fullwidth" style="border-top: 4px solid <?=$theme_color?>"><?php view::menu(); ?></span>
+            <span class="fullwidth" style="border-top: 4px solid <?=$theme_color?>"><?php View::menu(); ?></span>
       </nav>
     </div>
     <div class="wrapper">

@@ -1,3 +1,3 @@
 
 <h3>Author: <?=$c->author?></h3>
-<?php view::includeFile('blog-list.php'); ?>
+<?php View::includeFile('blog-list.php'); ?>

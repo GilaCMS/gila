@@ -1,7 +1,7 @@
 <style>#main-wrapper{background: inherit !important;border:none}</style>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));grid-gap:20px">
 <?php
-foreach (gila::$content as $key=>$ct) { ?>
+foreach (Gila::$content as $key=>$ct) { ?>
     <div class="g-card wrapper bg-white" style="font-size:120%;text-align:center;">
         <a href="admin/content/<?=$key?>">
             <i class="fa fa-3x fa-table"></i><br>

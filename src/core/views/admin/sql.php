@@ -1,7 +1,7 @@
 <ul class="g-nav">
   <li><a href="admin/sql">Show Tables</a></li>
 </ul>
-<form action="<?=gila::url('admin/sql')?>" method="POST" id="qform">
+<form action="<?=Gila::url('admin/sql')?>" method="POST" id="qform">
   <textarea class="g-input" style="width:100%" name="query" id="query"><?=($q??'')?></textarea>
   <p><button class="g-btn" type="submit"><?=__('Execute')?></button></p>
 </form><br>
@@ -17,7 +17,7 @@ if($q=="SHOW TABLES") {
   foreach($res as $row) {
     $v = $row[0];
     $orderby = "";
-    if(isset(gila::$content[$v])) {
+    if(isset(Gila::$content[$v])) {
       $table = new gTable($v);
       if($id = $table->getTable()['id']) {
         $orderby = "ORDER BY $id DESC";

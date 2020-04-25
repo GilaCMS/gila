@@ -9,16 +9,16 @@ class fm extends controller
 
   function __construct ()
   {
-    if(!gila::hasPrivilege('admin')
-     && !gila::hasPrivilege('upload_assets')
-     && !gila::hasPrivilege('edit_assets')) exit;
+    if(!Gila::hasPrivilege('admin')
+     && !Gila::hasPrivilege('upload_assets')
+     && !Gila::hasPrivilege('edit_assets')) exit;
    $this->sitepath = realpath(__DIR__.'/../../../'.SITE_PATH);
    $this->setPaths();
   }
 
   function indexAction ()
   {
-      //view::renderAdmin('admin/fm.php');
+      //View::renderAdmin('admin/fm.php');
   }
 
   function dirAction ()
@@ -58,7 +58,7 @@ class fm extends controller
     if (!$this->allowedPath() || !$this->allowedFiletype($this->path)) {
       die("Permission denied");
     }
-    if (!gila::hasPrivilege('admin')) exit; 
+    if (!Gila::hasPrivilege('admin')) exit; 
     if (!is_file($this->path)) die("Path is not a file");
     echo htmlspecialchars(file_get_contents($this->path));
   }
@@ -104,7 +104,7 @@ class fm extends controller
         !$this->allowedPath($this->relativePath)) {
       die("Permission denied1");
     }
-    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {
+    if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('edit_assets')) {
       die("User dont have permision to edit files");
     }
 
@@ -119,7 +119,7 @@ class fm extends controller
     if (!$this->allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
-    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('upload_assets')) {
+    if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('upload_assets')) {
       die("Permission denied.");
     }
     if(!isset($_FILES['uploadfiles'])) {
@@ -151,7 +151,7 @@ class fm extends controller
     if (!$this->allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
-    if(!gila::hasPrivilege('admin') && !gila::hasPrivilege('edit_assets')) {
+    if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('edit_assets')) {
       die("Permission denied.");
     }
     if(!unlink($this->path) && !rmdir($this->path)){
@@ -165,7 +165,7 @@ class fm extends controller
     $ext = explode('.',$fileOut);
     $ext = $ext[count($ext)-1];
     if(isset($_GET['thumb'])) {
-      $fileOut = view::thumb($fileOut, 'media_thumb/', (int)$_GET['media_thumb']);
+      $fileOut = View::thumb($fileOut, 'media_thumb/', (int)$_GET['media_thumb']);
     }
 
     if (file_exists($fileOut)) {

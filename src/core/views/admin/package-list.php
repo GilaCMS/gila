@@ -8,7 +8,7 @@ function dl_btn($param, $class, $text) {
   return "<a onclick='addon_download(\"$param\")' class='g-btn $class'>$text</a>";
 }
 
-if(package::check4updates()) {
+if(Package::check4updates()) {
   $upgrated = 0;
   $toupdate = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'),true);
   foreach($toupdate as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
@@ -19,7 +19,7 @@ if(package::check4updates()) {
       $alert .= " $newv &nbsp;&nbsp; ".dl_btn($packages[$newp]->package, 'warning', __('Upgrade'));
       $alert .= '&nbsp;&nbsp;<a href="https://gilacms.com/addons/package/';
       $alert .= $packages[$newp]->package.'" class="g-btn info" target="_blank">'.__('Info').'</a>';
-      view::alert('success',$alert);
+      View::alert('success',$alert);
     } else {
       $upgrated++;
     }
@@ -31,7 +31,7 @@ if(package::check4updates()) {
 
 
 foreach ($packages as $pkey=>$p) if($p->package!='core') {
-  if(isset($p->lang)) gila::addLang($p->lang);
+  if(isset($p->lang)) Gila::addLang($p->lang);
 
   // Border color
   if (file_exists('src/'.$p->package)) {
@@ -104,16 +104,16 @@ $links=[
 ['Downloaded','admin/packages'],
 ['Newest','admin/packages/new']
 ];
-view::alerts();
+View::alerts();
 ?>
 <div class="row">
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
   foreach($links as $link){
-    $active = (router::url()==$link[1]?'active':'');
-    echo '<li class="'.$active.'"><a href="'.gila::url($link[1]).'">'.__($link[0]).'</a></li>';
+    $active = (Router::url()==$link[1]?'active':'');
+    echo '<li class="'.$active.'"><a href="'.Gila::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
-    <form method="get" class="inline-flex" style="float:right" action="<?=gila::url('admin/packages/new')?>">
+    <form method="get" class="inline-flex" style="float:right" action="<?=Gila::url('admin/packages/new')?>">
       <input name='search' class="g-input fullwidth" value="<?=(isset($search)?$search:'')?>">
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
@@ -123,9 +123,9 @@ view::alerts();
   </div>
 </div>
 
-<?=view::script('src/core/assets/admin/media.js')?>
-<?=view::script('lib/vue/vue.min.js');?>
-<?=view::script('src/core/assets/admin/listcomponent.js');?>
+<?=View::script('src/core/assets/admin/media.js')?>
+<?=View::script('lib/vue/vue.min.js');?>
+<?=View::script('src/core/assets/admin/listcomponent.js');?>
 
 <script>
 function addon_activate(p){

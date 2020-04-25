@@ -7,7 +7,7 @@ class db_backup
 
   function __construct()
   {
-    $this->dir = gila::dir(LOG_PATH.'/db-backups/');
+    $this->dir = Gila::dir(LOG_PATH.'/db-backups/');
 
     if (gForm::posted('db_backup')) {
       $this->backup_tables();
@@ -20,9 +20,9 @@ class db_backup
       }
     }
 
-    view::set('dir',$this->dir);
-    view::set('csrf',gForm::getToken('db_backup2'));
-    view::renderAdmin('admin/db_backup.php');
+    View::set('dir',$this->dir);
+    View::set('csrf',gForm::getToken('db_backup2'));
+    View::renderAdmin('admin/db_backup.php');
   }
 
   /**
@@ -122,7 +122,7 @@ class db_backup
     global $db;
     $file = basename($file);
     $db->multi_query(file_get_contents($this->dir.$file));
-    view::alert('success',"Backup loaded successfully!");
+    View::alert('success',"Backup loaded successfully!");
   }
 
   /**

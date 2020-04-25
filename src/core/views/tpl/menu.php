@@ -23,7 +23,7 @@ foreach ($menu_items as $mi) {
 function menu_item($mi, $tag=''){
     global $db;
 
-    $url = isset($mi['url'])?$mi['url']:(router::url().'#');
+    $url = isset($mi['url'])?$mi['url']:(Router::url().'#');
     $name = isset($mi['name'])?$mi['name']:'';
 
     if($mi['type']=='page') {
@@ -42,7 +42,7 @@ function menu_item($mi, $tag=''){
     }
     if($mi['type']=='widget') {
         echo '<li><a href=\"'.$url.'\" >'.$mi['name'].'</a><ul style="min-width:240px">';
-        view::widget_body(@$mi['widget']);
+        View::widget_body(@$mi['widget']);
         echo '</ul>';
         return;
     }
@@ -54,7 +54,7 @@ function menu_item($mi, $tag=''){
         list($url,$name) = $res;
     }
 
-    if(router::url()==$url) {
+    if(Router::url()==$url) {
         return "<li class=\"active\"><a href=\"$url\">$name</a>";
     }
     return "<li><a href=\"$url\" >$name</a>";

@@ -4,21 +4,21 @@ class controller
 {
   static function admin()
   {
-    if(session::key('user_id')==0) {
-      gila::addLang('core/lang/login/');
-      if(session::waitForLogin()>0) {
-        view::alert('error', __('login_error_msg2'));
+    if(Session::key('user_id')==0) {
+      Gila::addLang('core/lang/login/');
+      if(Session::waitForLogin()>0) {
+        View::alert('error', __('login_error_msg2'));
       } else if (isset($_POST['username']) && isset($_POST['password'])) {
-        view::alert('error', __('login_error_msg'));
+        View::alert('error', __('login_error_msg'));
       }
-      view::renderFile('login.php');
+      View::renderFile('login.php');
       exit;
     }
   }
 
   static function access($pri)
   {
-    if(gila::hasPrivilege($pri)===false) {
+    if(Gila::hasPrivilege($pri)===false) {
       http_response_code(403);
       exit;
     }

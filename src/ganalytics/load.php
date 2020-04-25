@@ -1,7 +1,7 @@
 <?php
 
-event::listen('head',function(){
-    $trackingID = gila::option('ganalytics.trackingID');
+Event::listen('head',function(){
+    $trackingID = Gila::option('ganalytics.trackingID');
     if($trackingID=='') return;
     ?>
     <!-- Global site tag (gtag.js) - Google Analytics -->

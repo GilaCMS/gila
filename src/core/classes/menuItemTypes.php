@@ -32,7 +32,7 @@ class menuItemTypes
 
   static function addItemType ($index, $value)
   {
-    gila::addList('menuItemType', $value);
+    Gila::addList('menuItemType', $value);
   }
 
   static function get ($mi)
@@ -59,7 +59,7 @@ class menuItemTypes
     }
     // remove widgets untill they are supported
     //$widgetOptions = "";
-    //foreach (array_keys(gila::$widget) as $w) {
+    //foreach (array_keys(Gila::$widget) as $w) {
     //  $widgetOptions .= "<option value=\"$w\">$w</option>";
     //}
 
@@ -103,7 +103,7 @@ class menuItemTypes
         "template"=>"<input v-model=\"model.name\" class=\"g-input\" placeholder=\"Name\">",
       ]
     ];
-    $custom = gila::getList('menuItemType');
+    $custom = Gila::getList('menuItemType');
     foreach($custom as $n) {
       self::$itemTypes[$n[0]] = $n[1];
     }

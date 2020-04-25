@@ -3,21 +3,21 @@
 .device-pill .close {cursor:pointer}
 .device-pill.selected {opacity:1}
 </style>
-<?=view::script('lib/vue/vue.min.js')?>
+<?=View::script('lib/vue/vue.min.js')?>
 
 <div class="row">
 <div class="gm-6">
-    <?php view::alerts(); ?>
+    <?php View::alerts(); ?>
     <form method="post" action="admin/profile" class="g-form">
     <fieldset>
     <br><div class="gm-12 row">
     <label class="gm-6"><?=__('Name')?></label>
-    <input name="gila_username" value="<?=session::key('user_name')?>" class="gm-6" />
+    <input name="gila_username" value="<?=Session::key('user_name')?>" class="gm-6" />
     </div>
 
     <br><div class="gm-12 row">
     <label class="gm-6"><?=__('Email')?></label>
-    <input disabled value="<?=session::key('user_email')?>" class="gm-6" />
+    <input disabled value="<?=Session::key('user_email')?>" class="gm-6" />
     </div>
 
     <br><div class="gm-12 row">
@@ -71,7 +71,7 @@
 </div>
 
   <?php
-  $sessions = core\models\user::metaList(session::user_id(), 'GSESSIONID');
+  $sessions = core\models\user::metaList(Session::user_id(), 'GSESSIONID');
   $info = [];
   foreach($sessions as $key=>$session) if(file_exists(LOG_PATH.'/sessions/'.$session)) {
     $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;

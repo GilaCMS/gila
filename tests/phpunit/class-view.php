@@ -13,8 +13,8 @@ class ClassView extends TestCase
 {
 	public function test_getWidgetBody()
 	{
-		gila::widgets(['paragraph'=>'core/widgets/paragraph']);
-		$html = view::getWidgetBody('paragraph', ['text'=>'Hello world']);
+		Gila::widgets(['paragraph'=>'core/widgets/paragraph']);
+		$html = View::getWidgetBody('paragraph', ['text'=>'Hello world']);
 		$this->assertEquals('<p>Hello world</p>', $html);
 	}
 

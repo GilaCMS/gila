@@ -12,28 +12,28 @@ class ClassGila extends TestCase
 {
 	public function test_cotrollers()
 	{
-		gila::controllers(['ctrl1'=>'path1','ctrl2'=>'path2']);
-		$this->assertEquals('path2', gila::$controller['ctrl2']);
-		$this->assertEquals('path1', gila::$controller['ctrl1']);
+		Gila::controllers(['ctrl1'=>'path1','ctrl2'=>'path2']);
+		$this->assertEquals('path2', Gila::$controller['ctrl2']);
+		$this->assertEquals('path1', Gila::$controller['ctrl1']);
 	}
 
 	public function test_controller()
 	{
-		gila::controller('ctrlx','pathx','classx');
-		$this->assertEquals('pathx', gila::$controller['ctrlx']);
-		$this->assertEquals('classx', gila::$controllerClass['ctrlx']);
+		Gila::controller('ctrlx','pathx','classx');
+		$this->assertEquals('pathx', Gila::$controller['ctrlx']);
+		$this->assertEquals('classx', Gila::$controllerClass['ctrlx']);
 	}
 
 	public function test_route()
 	{
-		gila::route('test.txt', function(){ return 'test'; });
-		$this->assertEquals(function(){ return 'test'; }, gila::$route['test.txt']);
+		Gila::route('test.txt', function(){ return 'test'; });
+		$this->assertEquals(function(){ return 'test'; }, Gila::$route['test.txt']);
 	}
 
 	public function test_addLang()
 	{
-		gila::config('language','es');
-		gila::addLang('core/lang/');
+		Gila::config('language','es');
+		Gila::addLang('core/lang/');
 		$this->assertEquals('Inicio', __('Home'));
 	}
 
@@ -41,8 +41,8 @@ class ClassGila extends TestCase
 	{
 		$value = rand(1,100);
 		include_once(__DIR__.'/../../config.default.php');
-		gila::setConfig('test_config_key', $value);
-		gila::updateConfigFile();
+		Gila::setConfig('test_config_key', $value);
+		Gila::updateConfigFile();
     sleep(5);
 		include_once(__DIR__.'/../../config.php');
 		$this->assertEquals($value, $GLOBALS['config']['test_config_key']);
@@ -51,29 +51,29 @@ class ClassGila extends TestCase
 	public function test_mt()
 	{
 		$value = time();
-		gila::setMt('test_mt');
-		$this->assertTrue(abs($value - gila::mt('test_mt')) < 100);
+		Gila::setMt('test_mt');
+		$this->assertTrue(abs($value - Gila::mt('test_mt')) < 100);
 	}
 
 	public function test_url()
 	{
-		gila::setConfig('default-controller', 'blog');
-		gila::setConfig('rewrite',0);
-		$link = gila::url('blog/post/1/post1');
+		Gila::setConfig('default-controller', 'blog');
+		Gila::setConfig('rewrite',0);
+		$link = Gila::url('blog/post/1/post1');
 		$this->assertEquals('?c=blog&action=post&var2=post1&var1=1', $link);
-		gila::setConfig('rewrite',1);
-		$link = gila::url('blog/post/1/post1');
+		Gila::setConfig('rewrite',1);
+		$link = Gila::url('blog/post/1/post1');
 		$this->assertEquals('post/1/post1', $link);
 	}
 
 	public function test_make_url()
 	{
-		gila::setConfig('default-controller', 'blog');
-		gila::setConfig('rewrite',0);
-		$link = gila::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
+		Gila::setConfig('default-controller', 'blog');
+		Gila::setConfig('rewrite',0);
+		$link = Gila::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
 		$this->assertEquals('?c=blog&action=post&id=1&slug=post_1', $link);
-		gila::setConfig('rewrite',1);
-		$link = gila::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
+		Gila::setConfig('rewrite',1);
+		$link = Gila::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
 		$this->assertEquals('post/1/post_1', $link);
 	}
 

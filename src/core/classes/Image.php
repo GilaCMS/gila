@@ -14,7 +14,7 @@ class Image
   {
     $src = self::local_path($src);
     if($src == false) return false;
-    gila::dir(substr($file, 0, strrpos($file,'/')));
+    Gila::dir(substr($file, 0, strrpos($file,'/')));
 
     if(!$image = @getimagesize($src)) return false;
 
@@ -119,7 +119,7 @@ class Image
     foreach($src_array as $key=>$src) {
       $_src = self::local_path($src);
       if($_src == false) $_src = $src;
-      gila::dir(substr($file, 0, strrpos($file,'/')));
+      Gila::dir(substr($file, 0, strrpos($file,'/')));
 
       if($image = @getimagesize($_src)) {
         list($src_width,$src_height,$src_type) = $image;
@@ -167,7 +167,7 @@ class Image
 
   static function local_path($src)
   {
-    if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,gila::config('base')) !== 0) {
+    if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src,Gila::config('base')) !== 0) {
       $_src = SITE_PATH.'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
       if(!file_exists($_src)) {
         $_file = LOG_PATH.'/cannot_copy.json';

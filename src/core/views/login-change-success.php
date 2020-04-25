@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="<?=gila::config('language')?>">
+<html lang="<?=Gila::config('language')?>">
 
 <head>
-    <base href="<?=gila::base_url()?>">
+    <base href="<?=Gila::base_url()?>">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?=gila::config('title')?> - <?=__('reset_pass')?></title>
+    <title><?=Gila::config('title')?> - <?=__('reset_pass')?></title>
 
     <link href="lib/gila.min.css" rel="stylesheet">
     <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -24,7 +24,7 @@
                 <h3><?=__('reset_pass_success')?></h3>
             </div>
 
-            <a class="btn btn-success btn-block" href="<?=gila::url('login')?>"><?=__('Log In')?></a>
+            <a class="btn btn-success btn-block" href="<?=Gila::url('login')?>"><?=__('Log In')?></a>
         </div>
     </div>
 

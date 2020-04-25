@@ -1,3 +1,3 @@
 <?php
 
-gila::controller('blog', 'blog/controllers/blog', 'Blog');
+Gila::controller('blog', 'blog/controllers/blog', 'Blog');

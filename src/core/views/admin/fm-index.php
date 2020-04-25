@@ -1,4 +1,4 @@
-<?=view::css('lib/CodeMirror/codemirror.css')?>
+<?=View::css('lib/CodeMirror/codemirror.css')?>
 <style>
 #main-wrapper{background:none!important;border:none;margin:0}
 .fm_dir{overflow: hidden;padding:10px;line-height:1.5;background:white;}

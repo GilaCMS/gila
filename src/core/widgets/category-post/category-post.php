@@ -19,11 +19,11 @@ foreach (core\models\post::getPosts(
   echo "<li>";
   echo "<a href='$href'>";
   if($key==0) {
-    if($img=view::thumb_lg($r['img'])) {
+    if($img=View::thumb_lg($r['img'])) {
       echo "<img src='$img'>";
     }
   }
-  elseif($img=view::thumb_md($r['img'])) {
+  elseif($img=View::thumb_md($r['img'])) {
     echo "<img src='$img'>";
   }
   echo "</a><div><a href='$href' class='post-title'>{$r['title']}</a>";

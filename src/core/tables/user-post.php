@@ -15,7 +15,7 @@ return [
     'update'=>['writer'],
     'delete'=>['writer']
   ],
-  'filters'=> ["user_id"=>session::user_id()],
+  'filters'=> ["user_id"=>Session::user_id()],
   'search-box'=>true,
   'fields'=> [
     'id'=> [
@@ -41,7 +41,7 @@ return [
     'slug'=> ['list'=>false],
     'user_id'=> [
       'title'=>'User',
-      'type'=>'select', 'default'=>session::user_id(),
+      'type'=>'select', 'default'=>Session::user_id(),
       'qoptions'=>"SELECT id, username FROM user","edit"=>false
     ],
     'updated'=> [

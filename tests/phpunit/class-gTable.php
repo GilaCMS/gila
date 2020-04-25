@@ -16,7 +16,7 @@ class ClassGTable extends TestCase
   public function test_gTable()
   {
     global $db;
-    gila::content('post','core/tables/post.php');
+    Gila::content('post','core/tables/post.php');
     $gtable = new gTable('post');
     $this->assertEquals('post', $gtable->name());
     $this->assertEquals('id', $gtable->id());
@@ -33,5 +33,22 @@ class ClassGTable extends TestCase
     $this->assertEquals('Post Tile', $rows[0]['title']);
     $row = $gtable->getRow(['id'=>$rows[0]['id']], ['select'=>['id','title']]);
     $this->assertEquals('Post Tile', $row['title']);
+  }
+
+  public function test_where()
+  {
+    Gila::content('post','core/tables/post.php');
+    $gtable = new gTable('post');
+
+    $this->assertEquals(" WHERE id>10", $gtable->where(['id'=>['gt'=>10]]));
+    $this->assertEquals(" WHERE id>=10", $gtable->where(['id'=>['ge'=>10]]));
+    $this->assertEquals(" WHERE id<10", $gtable->where(['id'=>['lt'=>10]]));
+    $this->assertEquals(" WHERE id<=10", $gtable->where(['id'=>['le'=>10]]));
+    $this->assertEquals(" WHERE id>'10'", $gtable->where(['id'=>['gts'=>10]]));
+    $this->assertEquals(" WHERE id<'10'", $gtable->where(['id'=>['lts'=>10]]));
+    $this->assertEquals(" WHERE title like 'a%'", $gtable->where(['title'=>['begin'=>'a']]));
+    $this->assertEquals(" WHERE title like '%x'", $gtable->where(['title'=>['end'=>'x']]));
+    $this->assertEquals(" WHERE title like '%s%'", $gtable->where(['title'=>['has'=>'s']]));
+    $this->assertEquals(" WHERE id IN(10,11)", $gtable->where(['id'=>['lts'=>'10,11']]));
   }
 }

@@ -3,7 +3,7 @@ global $db;
 
 // load all permissions
 $permissions = [];
-$packages = array_merge(gila::config('packages'),["core"]);
+$packages = array_merge(Gila::config('packages'),["core"]);
 foreach($packages as $package) {
   $pjson = 'src/'.$package.'/package.json';
   $perjson = 'src/'.$package.'/package/en.json';
@@ -11,8 +11,8 @@ foreach($packages as $package) {
     $parray = json_decode(file_get_contents($pjson),true);
     if(isset($parray['permissions'])) {
       $permissions = array_merge($permissions, $parray['permissions']);
-      if(isset($parray['lang'])) gila::addLang($parray['lang']);
-      gila::addLang($package.'/lang/permissions/');
+      if(isset($parray['lang'])) Gila::addLang($parray['lang']);
+      Gila::addLang($package.'/lang/permissions/');
     }
   }
 }
@@ -28,18 +28,18 @@ if(isset($_POST['submit']) && isset($_POST['role'])) {
       $checked[$role] = array_keys($list);
     }
   }
-  gila::setConfig('permissions', $checked);
-  gila::updateConfigFile();
-  view::alert('success',__('_changes_updated'));
+  Gila::setConfig('permissions', $checked);
+  Gila::updateConfigFile();
+  View::alert('success',__('_changes_updated'));
 }
 
-$checked = gila::config('permissions');
+$checked = Gila::config('permissions');
 
 
-view::alerts();
+View::alerts();
 ?>
 <br>
-<form action="<?=gila::url('admin/users?tab=2')?>" method="POST">
+<form action="<?=Gila::url('admin/users?tab=2')?>" method="POST">
 <button class="g-btn" name="submit" value="true">
   <i class="fa fa-save"></i> <?=__('Submit')?>
 </button>

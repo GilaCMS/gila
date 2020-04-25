@@ -6,7 +6,7 @@
 <?php foreach(json_decode(@$widget_data->items) as $item) { ?>
   <div>
     <div>
-      <?=view::img($item[0], 300)?>
+      <?=View::img($item[0], 300)?>
     </div>
     <div>
       <h3><?=htmlentities($item[1])?></h3>
@@ -19,6 +19,6 @@
 <?php } ?>
 </div>
   <div>
-    <?=view::img($widget_data->image, 600)?>
+    <?=View::img($widget_data->image, 600)?>
   </div>
 </div>

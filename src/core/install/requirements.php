@@ -1,5 +1,5 @@
 <head>
-  <base href="<?=gila::base_url()?>">
+  <base href="<?=Gila::base_url()?>">
   <link type="text/css" rel="stylesheet" href="lib/gila.min.css"/>
   <title>Install Gila CMS</title>
 </head>

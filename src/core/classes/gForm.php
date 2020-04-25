@@ -7,9 +7,9 @@ class gForm
 
   static function posted($name = '*') {
     if ($_SERVER['REQUEST_METHOD']=='POST') {
-      if(session::key('_t'.$name)==$_POST['formToken']) {
+      if(Session::key('_t'.$name)==$_POST['formToken']) {
         if($name!=='*') {
-          session::unsetKey('_t'.$name);
+          Session::unsetKey('_t'.$name);
         }
         return true;
       }
@@ -18,18 +18,18 @@ class gForm
   }
 
   static function verifyToken($check, $name = '*') {
-    if(session::key('_t'.$name)==$check) return true;
+    if(Session::key('_t'.$name)==$check) return true;
     return false;
   }
 
   static function getToken($name = '*') {
-    if($v = session::key('_t'.$name)) {
+    if($v = Session::key('_t'.$name)) {
       return $v;
     }
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = (string)session::user_id();
+    $gsession = (string)Session::user_id();
     for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 32)];
-    session::key('_t'.$name, $gsession);
+    Session::key('_t'.$name, $gsession);
     return $gsession;
   }
 
@@ -184,7 +184,7 @@ class gForm
       "template"=> function($name,$field,$ov) {
         global $db;
         $html = '<select class="g-input" name="'.$name.'">';
-        $templates = view::getTemplates($field['template']);
+        $templates = View::getTemplates($field['template']);
         $html .= '<option value=""'.(''==$ov?' selected':'').'>'.'[Default]'.'</option>';
         foreach($templates as $template) {
           $html .= '<option value="'.$template.'"'.($template==$ov?' selected':'').'>'.ucwords($template).'</option>';
@@ -195,7 +195,7 @@ class gForm
     /* CONTENT
     if($type=='content') {
       $table = $op['table'];
-      $tablesrc = explode('.',gila::$content[$table])[0];
+      $tablesrc = explode('.',Gila::$content[$table])[0];
       include __DIR__.'/content.php';
     }*/
   }

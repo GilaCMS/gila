@@ -5,13 +5,13 @@ class Theme
 
   function __construct()
   {
-    $activate = router::post('activate');
+    $activate = Router::post('activate');
     if($activate) self::activate($activate);
-    $download = router::post('download');
+    $download = Router::post('download');
     if($download) self::download($download);
-    $save_options = router::get('save_options');
+    $save_options = Router::get('save_options');
     if($save_options) self::save_options($save_options);
-    $options = router::post('options');
+    $options = Router::post('options');
     if($options) self::options($options);
   }
 
@@ -26,7 +26,7 @@ class Theme
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'),true);
         $require = [];
         if(isset($pac['require'])) foreach ($pac['require'] as $key => $value) {
-          if(!in_array($key, gila::packages())&&($key!='core'))
+          if(!in_array($key, Gila::packages())&&($key!='core'))
             $require[$key]=$key.' v'.$value;
           else {
             $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'),true);
@@ -36,10 +36,10 @@ class Theme
 
         if($require==[]) {
           $GLOBALS['config']['theme']=$activate;
-          gila::updateConfigFile();
-          package::updateLoadFile();
+          Gila::updateConfigFile();
+          Package::updateLoadFile();
           usleep(300);
-          view::alert('success', __('_theme_selected'));
+          View::alert('success', __('_theme_selected'));
           echo 'ok';
         }
         else {
@@ -84,7 +84,7 @@ class Theme
         $zip->extractTo($tmp_name);
         $zip->close();
         if(file_exists($target)) {
-        rename($target, gila::dir(LOG_PATH.'/previous-themes/'.date("Y-m-d H:i:s").' '.$download));
+        rename($target, Gila::dir(LOG_PATH.'/previous-themes/'.date("Y-m-d H:i:s").' '.$download));
         }
         $unzipped = scandir($tmp_name);
         if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
@@ -95,7 +95,7 @@ class Theme
         unlink($localfile);
         echo 'ok';
         if(!$_REQUEST['g_response']) {
-          echo '<meta http-equiv="refresh" content="2;url='.gila::base_url().'/admin/themes" />';
+          echo '<meta http-equiv="refresh" content="2;url='.Gila::base_url().'/admin/themes" />';
         }
       } else {
         echo __('_theme_not_downloaded');
@@ -120,7 +120,7 @@ class Theme
 
       if(is_array($options)) {
         foreach($options as $key=>$op) {
-          $values[$key] = gila::option('theme.'.$key);
+          $values[$key] = Gila::option('theme.'.$key);
         }
         echo gForm::html($options,$values,'option[',']');
       }// else error alert
@@ -148,7 +148,7 @@ class Theme
         $ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key',?) ON DUPLICATE KEY UPDATE `value`=?;";
         $db->query($ql, [$value,$value]);
       }
-      if(gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
+      if(Gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
       exit;
     }
   }
