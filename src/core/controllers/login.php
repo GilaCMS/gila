@@ -117,6 +117,7 @@ class login extends controller
 
   function authAction()
   {
+    header('Content-Type: application/json');
     if(!isset($_GET['email']) || !isset($_GET['password'])) {
       http_response_code(400);
       echo '{"error":"Credencials missing"}';
