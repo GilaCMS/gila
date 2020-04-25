@@ -352,7 +352,7 @@ class gTable
   }
 
   function update() {
-    core\classes\TableSchema::update($this->table);
+    TableSchema::update($this->table);
     return true;
   }
 
