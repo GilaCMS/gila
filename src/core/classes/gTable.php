@@ -1,5 +1,4 @@
 <?php
-use core\classes\TableSchema;
 
 class gTable
 {
@@ -353,7 +352,7 @@ class gTable
   }
 
   function update() {
-    TableSchema::update($this->table);
+    core\classes\TableSchema::update($this->table);
     return true;
   }
 

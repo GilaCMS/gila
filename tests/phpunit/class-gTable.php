@@ -3,7 +3,6 @@
 chdir(__DIR__.'/../../');
 include __DIR__.'/../../vendor/autoload.php';
 include __DIR__.'/../../src/core/classes/gTable.php';
-include __DIR__.'/../../src/core/classes/TableSchema.php';
 include __DIR__.'/../../src/core/classes/Gila.php';
 include __DIR__.'/../../src/core/classes/Db.php';
 define("LOG_PATH", "log");
@@ -50,6 +49,6 @@ class ClassGTable extends TestCase
     $this->assertEquals(" WHERE title like 'a%'", $gtable->where(['title'=>['begin'=>'a']]));
     $this->assertEquals(" WHERE title like '%x'", $gtable->where(['title'=>['end'=>'x']]));
     $this->assertEquals(" WHERE title like '%s%'", $gtable->where(['title'=>['has'=>'s']]));
-    $this->assertEquals(" WHERE id IN(10,11)", $gtable->where(['id'=>['lts'=>'10,11']]));
+    $this->assertEquals(" WHERE id IN(10,11)", $gtable->where(['id'=>['in'=>'10,11']]));
   }
 }
