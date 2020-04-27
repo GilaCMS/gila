@@ -11,15 +11,20 @@ class router
 
   function __construct ()
   {
+    self::run($_GET['url'] ?? false);
+  }
+
+  static function run ($_url = false)
+  {
     global $c;
 
-    if(isset(Gila::$route[$_GET['url']])) {
-      Gila::$route[$_GET['url']]();
+    if(isset(Gila::$route[$_url])) {
+      Gila::$route[$_url]();
       return;
     }
 
-    if(isset($_GET['url'])) {
-      Router::$url = strip_tags($_GET['url']);
+    if($_url!==false) {
+      Router::$url = strip_tags($_url);
       Router::$args = explode("/", Router::$url);
     }
     else {
@@ -37,10 +42,11 @@ class router
 
     require_once $controller_file;
 
+    $controllerClass = $controller;
     if(isset(Gila::$controllerClass[$controller])) {
-      $controller = Gila::$controllerClass[$controller];
+      $controllerClass = Gila::$controllerClass[$controller];
     }
-    $c = new $controller();
+    $c = new $controllerClass();
 
     // find function to run after controller construction
     if(isset(Gila::$on_controller[$controller]))
@@ -52,17 +58,15 @@ class router
     if(isset(Gila::$before[$controller][$action]))
       foreach(Gila::$before[$controller][$action] as $fn) $fn();
     if(isset(Gila::$action[$controller][$action])) {
-      @call_user_func_array (array($c, $action."__"), Router::$args);
+      @call_user_func_array (Gila::$action[$controller][$action], Router::$args);
     } else {
-      @call_user_func_array (array($c, $action_fn), Router::$args);
-      //$c->$action_fn();
+      @call_user_func_array ([$c, $action_fn], Router::$args);
     }
 
     // end of response
     if(self::$caching) {
       $out2 = ob_get_contents();
-      //ob_end_clean();
-      $clog = new logger(LOG_PATH.'/cache.log');
+      $clog = new Logger(LOG_PATH.'/cache.log');
       if(file_put_contents(self::$caching_file,$out2)){
         $clog->debug(self::$caching_file);
       }else{
@@ -101,10 +105,7 @@ class router
     if(isset(self::$action)) return self::$action;
     $action = self::request('action',@$args[0]?:'index');
 
-    if(isset(Gila::$action[$controller][$action])){
-      $aa = $action.'__';
-      @$c->$aa = Gila::$action[$controller][$action];
-    } else if (!method_exists($controller,$action.'Action')) {
+    if (!method_exists($controller,$action.'Action')) {
       if (method_exists($controller,'indexAction')) {
         $action = 'index';
       } else {

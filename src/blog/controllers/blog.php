@@ -9,6 +9,7 @@ use core\models\user as user;
 */
 class Blog extends controller
 {
+  public $x;
   public static $page; /** The page number */
   public static $totalPosts;
   public static $totalPages;
@@ -16,6 +17,7 @@ class Blog extends controller
 
   function __construct ()
   {
+    $this->x = "pedo";
     self::$page = intval(@$_GET['page'])?:1;
     self::$ppp = 12;
     self::$totalPosts = null;

@@ -76,12 +76,10 @@ else {
 }
 
 Event::fire('load');
-$g = new gila();
+$g = new Gila();
 
 $theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
 if(Gila::config('cors')=='1') @header('Access-Control-Allow-Origin: *');
 
-Gila::controller('chat', 'ratchet-chat/ChatController', 'ChatController');
-
-new router();
+Router::run($_GET['url'] ?? '');

@@ -295,7 +295,7 @@ class View
       @include $widget_file;
       $out2 = ob_get_contents();
       //ob_end_clean();
-      $clog = new logger(LOG_PATH.'/cache.error.log');
+      $clog = new Logger(LOG_PATH.'/cache.error.log');
       if(!file_put_contents($_file, $out2)){
         $clog->error($_file);
       }
