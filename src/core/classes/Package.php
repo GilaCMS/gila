@@ -16,7 +16,7 @@ class Package
     $options = Router::post('options');
     if($options) self::options($options);
     $download = Router::post('download');
-    if(Gila::config('test')=='1') $download = Router::request('download');
+    if(Gila::config('test')=='1') $download = Router::request('test');
     if($download && FS_ACCESS) {
       if(self::download($download)==true) {
         if(!$_REQUEST['g_response']) {
@@ -137,7 +137,7 @@ class Package
     $zip = new ZipArchive;
     $target = 'src/'.$package;
     $request = 'https://gilacms.com/packages/?package='.$package;
-    $request .= Gila::config('test')=='1' ? '&test=1' : '';
+    $request .= Gila::config('test')=='1' && isset($_GET['test']) ? '&test=1' : '';
     $pinfo = json_decode(file_get_contents($request), true)[0];
 
     if(!$pinfo) {

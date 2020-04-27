@@ -122,7 +122,7 @@ class admin extends controller
   function packagesAction ()
   {
     self::access('admin');
-    if ($_SERVER['REQUEST_METHOD']=='POST') {
+    if ($_SERVER['REQUEST_METHOD']=='POST' || isset($_GET['test'])) {
       new Package();
       return;
     }
