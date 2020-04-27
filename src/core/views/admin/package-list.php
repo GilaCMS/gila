@@ -130,12 +130,14 @@ View::alerts();
 <script>
 function addon_activate(p){
   g.loader()
-  g.post('admin/packages?g_response=content','activate='+p,function(x) {
+  g.post('admin/packages?g_response=content', 'activate='+p, function(data) {
     g.loader(false)
-    if(x=='ok')
+    response = JSON.parse(data)
+    if(response.success==true) {
       g.alert("<?=__('_package_activated')?>",'success','location.reload(true)');
-    else
-      g.alert(x,'warning');
+    } else {
+      g.alert(response.error, 'warning');
+    }
   }
 )};
 
@@ -149,12 +151,14 @@ function addon_deactivate(p){
 
 function addon_download(p) {
   g.loader()
-  g.post('admin/packages?g_response=content','download='+p,function(x){
+  g.post('admin/packages?g_response=content', 'download='+p, function(data){
     g.loader(false)
-    if(x=='ok')
+    response = JSON.parse(data)
+    if(response.success==true) {
       g.alert("<?=__('_package_downloaded')?>",'success');
-    else
+    } else {
       g.alert("<?=__('_package_not_downloaded')?>",'warning');
+    }
     this.style.color="#000";
   }
 )};

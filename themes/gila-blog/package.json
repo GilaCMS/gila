@@ -1,6 +1,6 @@
 {
   "name":"Gila Blog",
-  "version":"1.0.3",
+  "version":"1.12.5",
   "description":"A simple blog tempelate.",
   "url":"gilacms.com",
   "options":{
@@ -19,6 +19,6 @@
     }
   },
   "require":{
-    "core":"1.9.5"
+    "core":"1.12.5"
   }
 }

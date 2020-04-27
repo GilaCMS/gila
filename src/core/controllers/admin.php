@@ -122,7 +122,10 @@ class admin extends controller
   function packagesAction ()
   {
     self::access('admin');
-    new package();
+    if ($_SERVER['REQUEST_METHOD']=='POST') {
+      new Package();
+      return;
+    }
     $search = htmlentities(Router::get('search',2));
     $tab = Router::get('tab',1);
     $packages = [];

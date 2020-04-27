@@ -36,6 +36,7 @@ class Theme
 
         if($require==[]) {
           $GLOBALS['config']['theme']=$activate;
+          self::copyAssets($activate);
           Gila::updateConfigFile();
           Package::updateLoadFile();
           usleep(300);
@@ -90,6 +91,7 @@ class Theme
         if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
         rename($tmp_name, $target);
         if(file_exists($target.'__tmp__')) rmdir($target.'__tmp__');
+        self::copyAssets($download);
 
         unlink(LOG_PATH.'/load.php');
         unlink($localfile);
@@ -102,6 +104,12 @@ class Theme
       }
       exit;
     }
+  }
+
+  function copyAssets($theme)
+  {
+    $assets = 'themes/'.$theme.'/assets';
+    if(file_exists($assets)) Filemanager::copy($assets, 'assets/theme/'.$theme);
   }
 
   /**

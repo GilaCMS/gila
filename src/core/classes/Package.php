@@ -11,6 +11,10 @@ class Package
     if($activate) self::activate($activate);
     $deactivate = Router::post('deactivate');
     if($deactivate) self::deactivate($deactivate);
+    $save_options = Router::get('save_options');
+    if($save_options) self::save_options($save_options);
+    $options = Router::post('options');
+    if($options) self::options($options);
     $download = Router::post('download');
     if(Gila::config('test')=='1') $download = Router::request('download');
     if($download && FS_ACCESS) {
@@ -18,14 +22,10 @@ class Package
         if(!$_REQUEST['g_response']) {
           echo '<meta http-equiv="refresh" content="2;url='.Gila::base_url().'/admin/packages" />';
           echo __('_package_downloaded').'. Redirecting...';
-        } else echo 'ok';
-      } else echo __('_package_not_downloaded');
-      exit;
+          exit;
+        } else echo '{"success":true}';
+      } else echo '{"success":true}';
     }
-    $save_options = Router::get('save_options');
-    if($save_options) self::save_options($save_options);
-    $options = Router::post('options');
-    if($options) self::options($options);
   }
 
   static function config($package) {
@@ -66,30 +66,35 @@ class Package
 
         if($require==[] && $require_op==[]) {
           $GLOBALS['config']['packages'][]=$activate;
-          $updatefile = 'src/'.$activate.'/update.php';
-          if(file_exists($updatefile)) include $updatefile;
+          self::copyAssets($activate);
+          self::update($activate);
           Gila::updateConfigFile();
           self::updateLoadFile();
           usleep(300);
-          View::alert('success',__('_package_activated'));
-          echo 'ok';
         }
         else {
           if($require!=[]) {
-            echo __('_packages_required').':';
+            $error = __('_packages_required').':';
             foreach($require as $k=>$r) {
               if(strpos($k, '/')) {
-                echo "<br><a href='https://gilacms.com/blog/36' target='_blank'>$k $r</a>";
-              } else echo "<br><a href='admin/packages/new?search=$k' target='_blank'>$k v$r</a>";
+                $error .= "<br><a href='https://gilacms.com/blog/36' target='_blank'>$k $r</a>";
+              } else {
+                $error .= "<br><a href='admin/packages/new?search=$k' target='_blank'>$k v$r</a>";
+              }
             }
           }
           if($require_op!=[]) {
-            echo '<br>'.__('_options_required').': '.implode(', ', $require_op);
+            $error = '<br>'.__('_options_required').': '.implode(', ', $require_op);
           }
         }
-      } else echo __("_package_activated");
-    } else echo __("_package_not_downloaded");
-    exit;
+      } else $error = __("_package_activated");
+    } else $error = __("_package_not_downloaded");
+
+    if(isset($error)) {
+      echo '{"success":false,"error":"'.$error.'"}';
+    } else {
+      echo '{"success":true}';
+    }
   }
 
   /**
@@ -159,7 +164,7 @@ class Package
       if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
       rename($tmp_name, $target);
       if(file_exists($target.'__tmp__')) rmdir($target.'__tmp__');
-      self::runUpdatePackage($package);
+      self::updateAfterDownload($package);
       unlink(LOG_PATH.'/load.php');
       unlink($localfile);
       return true;
@@ -167,10 +172,13 @@ class Package
     return false;
   }
 
-  static function runUpdatePackage($package) {
+  static function updateAfterDownload($package) {
     global $db;
+    self::copyAssets($package);
     $update_file = 'src/'.$package.'/update.php';
     if(file_exists($update_file)) {
+      self::update($package);
+
       include $update_file;
       $sites = scandir('sites');
       foreach($sites as $site) if($site[0]!='.') {
@@ -185,6 +193,16 @@ class Package
         }
       }
     }
+  }
+
+  static function update($package) {
+    $update_file = 'src/'.$package.'/update.php';
+    if(file_exists($update_file)) include $update_file;
+  }
+
+  static function copyAssets($package) {
+    $assets = 'src/'.$package.'/assets';
+    if(file_exists($assets)) Filemanager::copy($assets, 'assets/'.$package);
   }
 
   /**
