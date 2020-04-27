@@ -1,5 +1,6 @@
 <?php
 namespace core\models;
+use Gila;
 
 class post
 {
@@ -10,7 +11,7 @@ class post
 
   static function getByIdSlug($id)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $ql="SELECT id,description,title,post,publish,slug,updated,user_id,
       (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
       (SELECT GROUP_CONCAT(b.value SEPARATOR ',') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
@@ -43,20 +44,20 @@ class post
 
   static function getMeta($meta)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $ql = "SELECT value,COUNT(*) AS count FROM postmeta where vartype=? GROUP BY value;";
     return $db->get($ql,[$meta]);
   }
 
   static function getByUserID($id)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     return $db->get("SELECT * FROM post WHERE user_id=?",$id)[0];
   }
 
   static function total ($args=[])
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $where = self::where($args);
     return $db->value("SELECT COUNT(*) FROM post WHERE $where;");
   }
@@ -68,7 +69,7 @@ class post
 
   static function getPosts ($args=[])
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $ppp = isset($args['posts'])?$args['posts']:8;
     $where = self::where($args);
     $start_from = isset($args['from'])?$args['from']:0;
@@ -95,7 +96,7 @@ class post
   }
 
   static function search ($s) {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $res = $db->query("SELECT id,description,title,slug,SUBSTRING(post,1,300) as post,
       (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
       FROM post WHERE publish=1
@@ -106,7 +107,7 @@ class post
   }
 
   static function categories() {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     return $db->get("SELECT id,title FROM postcategory;");
   }
 

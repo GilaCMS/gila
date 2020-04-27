@@ -1,5 +1,6 @@
 <?php
 namespace core\models;
+use View;
 
 class profile
 {
@@ -11,7 +12,7 @@ class profile
     if (\Router::post('submit-btn')=='submited'){
       user::updateName($user_id, strip_tags($_POST['gila_username']));
       user::meta($user_id, 'twitter_account', strip_tags($_POST['twitter_account']));
-      \View::alert('success',__('_changes_updated'));
+      View::alert('success',__('_changes_updated'));
     }
 
     if (\Router::post('submit-btn')=='password'){
@@ -21,16 +22,16 @@ class profile
         if(strlen($pass) > 4 ) {
           if($pass===$_POST['new_pass2']) {
             if(user::updatePassword($user_id, $pass)) {
-              \View::alert('success',__('_changes_updated'));
+              View::alert('success',__('_changes_updated'));
             }
           } else {
-            \View::alert('alert',__('New passwords do not match'));
+            View::alert('alert',__('New passwords do not match'));
           }
         } else {
-          \View::alert('alert',__('New password too small'));
+          View::alert('alert',__('New password too small'));
         }
       } else {
-        \View::alert('alert',__('Password incorrect'));
+        View::alert('alert',__('Password incorrect'));
       }
     }
 
@@ -40,12 +41,12 @@ class profile
         $token = self::generateToken();
       }
       user::meta($user_id, 'token', $token);
-      \View::alert('success',__('_changes_updated'));
+      View::alert('success',__('_changes_updated'));
     }
 
     if (\Router::post('token')=='delete') {
       user::meta($user_id, 'token', '');
-      \View::alert('success',__('_changes_updated'));
+      View::alert('success',__('_changes_updated'));
     }
   }
 

@@ -60,7 +60,7 @@ use core\models\page as page;
 
 global $db;
 
-$itemTypes = menuItemTypes::getItemTypes();
+$itemTypes = MenuItemTypes::getItemTypes();
 ?>
 
 <script src="lib/vue/vue.min.js"></script>

@@ -1,5 +1,8 @@
 <?php
 namespace core\models;
+use Gila;
+use Session;
+use Event;
 
 class user
 {
@@ -7,8 +10,8 @@ class user
   static function create($email, $password, $name = '', $active = 1)
   {
     global $db;
-    if( \Event::get('validateUserPassword', true, $password)===true) {
-      $pass = ($password===null)? '': \Gila::hash($password);
+    if( Event::get('validateUserPassword', true, $password)===true) {
+      $pass = ($password===null)? '': Gila::hash($password);
       $db->query("INSERT INTO user(email,pass,username,active)
         VALUES(?,?,?,?);",[$email, $pass, $name, $active]);
       return $db->insert_id;
@@ -41,7 +44,7 @@ class user
 
   static function metaList($id, $meta, $values = null)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     if ($values===null) {
       $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
       return $db->getList($ql,[$id, $meta]);
@@ -65,7 +68,7 @@ class user
 
   static function getByMeta($key, $value)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $res = $db->get("SELECT * FROM user WHERE id=(SELECT user_id FROM usermeta WHERE vartype=? AND value=? LIMIT 1)", [$key, $value]);
     if($res) return $res[0];
     return false;
@@ -73,7 +76,7 @@ class user
 
   static function getByEmail($email)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $res = $db->get("SELECT * FROM user WHERE email=?", $email);
     if($res) return $res[0];
     return false;
@@ -81,7 +84,7 @@ class user
 
   static function getById($id)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $res = $db->get("SELECT * FROM user WHERE id=?", $id);
     if($res) return $res[0];
     return false;
@@ -89,7 +92,7 @@ class user
 
   static function getByResetCode($rp)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $user_id = $db->value("SELECT user_id FROM usermeta where vartype='reset_code' and value=?;",$rp);
     echo $user_id;
     if(!$user_id) return false;
@@ -99,8 +102,8 @@ class user
   static function updatePassword($id,$pass)
   {
     global $db;
-    if( \Event::get('validateUserPassword', true, $pass)===true) {
-      $db->query("UPDATE user SET pass=? where id=?;",[\Gila::hash($pass),$id]);
+    if( Event::get('validateUserPassword', true, $pass)===true) {
+      $db->query("UPDATE user SET pass=? where id=?;",[Gila::hash($pass),$id]);
       return true;
     } else return false;
   }
@@ -108,18 +111,18 @@ class user
   static function updateName($id,$name)
   {
     global $db;
-    if(\Session::key('user_id')==$id) \Session::key('user_name',$name);
+    if(Session::key('user_id')==$id) Session::key('user_name',$name);
     return $db->query("UPDATE user SET username=? where id=?;",[$name,$id]);
   }
 
   static function permissions($id) {
     if($id == 0) {
-      if(\Session::key('permissions')) return \Session::key('permissions');
+      if(Session::key('permissions')) return Session::key('permissions');
     }
 
     $response = user::metaList( $id, 'privilege'); // DEPRACIATED since 1.9.0
     $roles = user::metaList($id, 'role');
-    $rp = \Gila::config('permissions');
+    $rp = Gila::config('permissions');
     if($id != 0) {
       foreach($roles as $role) if(isset($rp[$role])) foreach($rp[$role] as $perm) {
         if(!in_array($perm, $response)) $response[] = $perm;
@@ -127,14 +130,14 @@ class user
       if(isset($rp['member'])) $response = array_merge($response, $rp['member']);
     } else {
       if(isset($rp[0])) $response = $rp['0']; else $response = [];
-      \Session::key('permissions',$response);
+      Session::key('permissions',$response);
     }
     return $response;
   }
 
   static function logoutFromDevice($n) {
     global $db;
-    $sessions = user::metaList(\Session::user_id(), 'GSESSIONID');
+    $sessions = user::metaList(Session::user_id(), 'GSESSIONID');
     if(!isset($sessions[$n])) return false;
     $db->query("DELETE FROM usermeta WHERE `vartype`='GSESSIONID' AND `value`=?;",
       $sessions[$n]);

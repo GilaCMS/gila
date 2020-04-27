@@ -1,24 +1,25 @@
 <?php
 namespace core\models;
+use Gila;
 
 class widget
 {
   static function getById($id)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
     return mysqli_fetch_object($res);
   }
 
   static function getByWidget($w)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     return $db->query("SELECT * FROM widget WHERE widget=?",$w);
   }
 
   static function getActiveByArea($area)
   {
-    $db = \Gila::slaveDB();
+    $db = Gila::slaveDB();
     $db->connect();
     return $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos;",$area);
   }
@@ -27,7 +28,7 @@ class widget
   {
     global $db;
     $widget = self::getById($data['widget_id']);
-    $widget_folder = 'src/'.\Gila::$widget[$widget->widget];
+    $widget_folder = 'src/'.Gila::$widget[$widget->widget];
     $fields = include $widget_folder.'/widget.php';
 
     foreach($data['option'] as $key=>$value) {

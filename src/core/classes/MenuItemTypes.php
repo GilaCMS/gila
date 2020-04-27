@@ -1,7 +1,7 @@
 <?php
 use core\models\page as page;
 
-class menuItemTypes
+class MenuItemTypes
 {
   static $itemTypes;
 

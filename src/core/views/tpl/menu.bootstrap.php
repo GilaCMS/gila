@@ -44,7 +44,7 @@ function menu_item($mi){
     if($mi['type']=='link') {
 
     }
-    if($res = menuItemTypes::get($mi)) {
+    if($res = MenuItemTypes::get($mi)) {
         list($url,$name) = $res;
     }
 

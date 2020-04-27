@@ -50,7 +50,7 @@ function menu_item($mi, $tag=''){
 
     }
 
-    if($res = menuItemTypes::get($mi)) {
+    if($res = MenuItemTypes::get($mi)) {
         list($url,$name) = $res;
     }
 
