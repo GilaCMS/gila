@@ -119,10 +119,8 @@ class Package
       Gila::updateConfigFile();
       self::updateLoadFile();
       usleep(100);
-      $alert = Gila::alert('success',__("_package_deactivated"));
-      exit;
+      echo '{"success":true}';
     }
-    exit;
   }
 
   /**
@@ -228,9 +226,7 @@ class Package
         echo gForm::html($options,$values,'option[',']');
       } // else error alert
       echo "</form>";
-      exit;
     }
-    exit;
   }
 
   /**
@@ -247,7 +243,6 @@ class Package
         $db->query($ql);
       }
       if(Gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
-      exit;
     }
   }
 
