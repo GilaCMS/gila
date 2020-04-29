@@ -11,6 +11,7 @@ define('FS_ACCESS', true);
 
 use PHPUnit\Framework\TestCase;
 $GLOBALS['user_privileges'] = ['admin'];
+FileManager::$sitepath = '';
 
 class ClassFileManager extends TestCase
 {
