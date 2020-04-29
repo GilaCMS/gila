@@ -2,7 +2,7 @@
 
 class FileManager
 {
-  public $sitepath = '';
+  static public $sitepath = '';
 
   static function copy($source, $target)
   {
