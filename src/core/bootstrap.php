@@ -27,7 +27,7 @@ spl_autoload_register(function ($class) {
   if (file_exists('src/core/classes/'.$Class.'.php')) {
     require_once 'src/core/classes/'.$Class.'.php';
   }
-  if (file_exists('src/core/classes/'.$class.'.php')) {
+  else if (file_exists('src/core/classes/'.$class.'.php')) {
     require_once 'src/core/classes/'.$class.'.php';
   }
   else if (file_exists('src/'.$class.'.php')) {

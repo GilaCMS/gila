@@ -1,6 +1,6 @@
 <?php
 
-class router
+class Router
 {
   static private $args = [];
   static $url;
@@ -52,7 +52,7 @@ class router
     if(isset(Gila::$on_controller[$controller]))
       foreach(Gila::$on_controller[$controller] as $fn) $fn();
 
-    $action = Router::get_action($controller, Router::$args);
+    $action = Router::get_action($controllerClass, Router::$args);
     $action_fn = $action.'Action';
 
     if(isset(Gila::$before[$controller][$action]))

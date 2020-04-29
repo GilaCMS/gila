@@ -6,6 +6,8 @@ tmp/*
 log/*
 log/sessions/*
 sites/*
+data/*
+data/public/*
 
 vendor/
 node_modules/
@@ -42,3 +44,5 @@ tests/jmeter.log
 !assets/.htaccess
 !assets/gila-logo.png
 !assets/gila-logo.svg
+
+!data/public/

@@ -23,12 +23,12 @@ class fm extends controller
 
   function dirAction ()
   {
-    if (!$this->allowedPath()) {
+    if (!FileManager::allowedPath()) {
       die("Permission denied");
     }
     $files = scandir($this->path);
 
-    if($this->allowedPath($this->path.'/..')) {
+    if(FileManager::allowedPath($this->path.'/..')) {
       $filelist[] = ['name'=>'..','size'=>0,'mtime'=>'','mode'=>'','ext'=>''];
     }
 
@@ -55,7 +55,7 @@ class fm extends controller
   }
 
   function readAction () {
-    if (!$this->allowedPath() || !$this->allowedFiletype($this->path)) {
+    if (!FileManager::allowedPath() || !FileManager::allowedFileType($this->path)) {
       die("Permission denied");
     }
     if (!Gila::hasPrivilege('admin')) exit; 
@@ -64,10 +64,10 @@ class fm extends controller
   }
 
   function saveAction () {
-    if(!$this->allowedFiletype($this->path)) {
+    if(!FileManager::allowedFileType($this->path)) {
       die("You cannot edit this file type.");
     }
-    if (!$this->allowedPath($this->relativePath)) {
+    if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
     if(!file_put_contents($this->path, $_POST['contents'])) {
@@ -78,7 +78,7 @@ class fm extends controller
   }
 
   function newfolderAction () {
-    if (!$this->allowedPath($_POST['path'])) {
+    if (!FileManager::allowedPath($_POST['path'])) {
       die("Permission denied.");
     }
     mkdir(SITE_PATH.str_replace('..','',$_POST['path']),0755,true);
@@ -86,7 +86,7 @@ class fm extends controller
   }
 
   function newfileAction () {
-    if(!$this->allowedPath($this->relativePath)) {
+    if(!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
     file_put_contents(SITE_PATH.str_replace('..','',$_POST['path']),' ');
@@ -95,13 +95,13 @@ class fm extends controller
 
   function moveAction () {
     if(!is_dir($this->path)) {
-      if(!$this->allowedFiletype($this->path) ||
-         !$this->allowedFiletype($_POST['newpath'])) {
+      if(!FileManager::allowedFileType($this->path) ||
+         !FileManager::allowedFileType($_POST['newpath'])) {
         die("File type is not permited");
       }
     }
-    if (!$this->allowedPath($_POST['newpath']) ||
-        !$this->allowedPath($this->relativePath)) {
+    if (!FileManager::allowedPath($_POST['newpath']) ||
+        !FileManager::allowedPath($this->relativePath)) {
       die("Permission denied1");
     }
     if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('edit_assets')) {
@@ -116,7 +116,7 @@ class fm extends controller
   }
 
   function uploadAction() {
-    if (!$this->allowedPath($this->relativePath)) {
+    if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
     if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('upload_assets')) {
@@ -136,7 +136,7 @@ class fm extends controller
       $name = [$name];
     }
     for ($i=0; $i<count($tmp_file); $i++) {
-      if (!$this->allowedFiletype($name[$i])) {
+      if (!FileManager::allowedFileType($name[$i])) {
         die("Error: File type {$name[$i]} is not accepted!");
       }
       if (!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
@@ -148,7 +148,7 @@ class fm extends controller
   }
 
   function deleteAction () {
-    if (!$this->allowedPath($this->relativePath)) {
+    if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
     if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('edit_assets')) {
@@ -191,40 +191,6 @@ class fm extends controller
     } else {
       http_response_code(404);
     }
-  }
-
-  function allowedPath($path = null) {
-    $allowedPaths = ['assets','tmp','log'];
-    if(FS_ACCESS) $allowedPaths = array_merge($allowedPaths, ['src','themes']);
-    if ($path===null) {
-      $path = $this->relativePath;
-    } else {
-      if(!is_dir($path)) $path = pathinfo($path)['dirname'];
-      $path = substr(realpath($path), strlen($this->sitepath)+1);
-    }
-
-    foreach ($allowedPaths as $allowed) {
-      if (substr($path,0,strlen($allowed)+1) == $allowed.'/' ||
-          $path == $allowed) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function allowedFiletype($path)
-  {
-    $allowedFiletypes = [
-      'txt','json','css','pdf','twig','csv','tsv','log','html',
-      'png','jpg','jpeg','gif','webp','ico',
-      'avi','webm','mp4','mkv','ogg'
-    ];
-    if(is_dir($path)) return true;
-    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-    if(in_array($ext, $allowedFiletypes)) {
-      return true;
-    }
-    return false;
   }
 
   function setPaths()

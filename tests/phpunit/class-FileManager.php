@@ -3,8 +3,7 @@ chdir(__DIR__.'/../../');
 include __DIR__.'/../../vendor/autoload.php';
 include __DIR__.'/../../src/core/classes/Gila.php';
 include __DIR__.'/../../src/core/classes/Router.php';
-include __DIR__.'/../../src/core/classes/controller.php';
-include __DIR__.'/../../src/core/controllers/fm.php';
+include __DIR__.'/../../src/core/classes/FileManager.php';
 define('SITE_PATH', '');
 define('LOG_PATH', 'log');
 define('CONFIG_PHP', 'config.php');
@@ -12,9 +11,8 @@ define('FS_ACCESS', true);
 
 use PHPUnit\Framework\TestCase;
 $GLOBALS['user_privileges'] = ['admin'];
-$c = new fm();
 
-class ControllerFm extends TestCase
+class ClassFileManager extends TestCase
 {
 
   public function test_allowedFiletype()
@@ -22,7 +20,8 @@ class ControllerFm extends TestCase
     global $c;
     $list = ['csv'=>true, 'php'=>false, 'svg'=>false, 'twig'=>true];
     foreach ($list as $type=>$response) {
-      $this->assertEquals($response, $c->allowedFiletype('path/to/file.of.'.$type));
+      $this->assertEquals($response,
+        FileManager::allowedFileType('path/to/file.of.'.$type));
     }
   }
 
@@ -35,8 +34,7 @@ class ControllerFm extends TestCase
       '../'=>false, 'other_folder/'=>false
     ];
     foreach ($list as $path=>$response) {
-      echo "$path ";
-      $this->assertEquals($response, $c->allowedPath($path));
+      $this->assertEquals($response,FileManager::allowedPath($path));
     }
   }
 

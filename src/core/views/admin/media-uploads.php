@@ -1,20 +1,23 @@
 <?php
-$path = Router::request('path', $_COOKIE['media_path']??'assets');
-if($path[0]=='.') $path = 'assets';
-$monthDir = SITE_PATH.'assets/'.date("Y-m", time());
-if(!file_exists($monthDir)) {
-  mkdir($monthDir);
-  $path = $monthDir;
+$upload_folder = Gila::config('media_uploads') ?? 'assets';
+$path = Router::request('path', $_COOKIE['media_path']??$upload_folder);
+if($path[0]=='.') {
+  $path = $upload_folder;
+  $monthDir = SITE_PATH.$path.'/'.date("Y-m", time());
+  if(!file_exists($monthDir)) {
+    mkdir($monthDir);
+    $path = $monthDir;
+  }
 }
 setcookie('media_path', $path, time()+86400,'/');
 setcookie('media_tab', 'uploads', time()+86400,'/');
 
-$dpath = realpath(SITE_PATH.'assets');
+$dpath = realpath(SITE_PATH.$upload_folder);
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));
-if($base != $dpath) $path = 'assets';
+if($base != $dpath) $path = $upload_folder;
 
 $files = scandir(SITE_PATH.$path);
-$disabled = ($path=='assets')?'disabled':'';
+$disabled = ($path==$upload_folder)?'disabled':'';
 
 $path_array = explode('/',$path);
 array_splice($path_array,count($path_array)-1);

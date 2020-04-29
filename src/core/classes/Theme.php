@@ -109,7 +109,7 @@ class Theme
   function copyAssets($theme)
   {
     $assets = 'themes/'.$theme.'/assets';
-    if(file_exists($assets)) Filemanager::copy($assets, 'assets/theme/'.$theme);
+    if(file_exists($assets)) FileManager::copy($assets, 'assets/theme/'.$theme);
   }
 
   /**

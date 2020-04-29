@@ -205,8 +205,9 @@ class admin extends controller
       if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
         echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
       }
-      $path = Router::post('path','assets');
-      if($path[0]=='.') $path='assets';
+      $upload_folder = Gila::config('media_uploads') ?? 'assets';
+      $path = Router::post('path', $upload_folder);
+      if($path[0]=='.') $path=$upload_folder;
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
       if(in_array(pathinfo($name, PATHINFO_EXTENSION),["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {

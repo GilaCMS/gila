@@ -1,0 +1,55 @@
+<?php
+
+class FileManager
+{
+  static function copy($source, $target)
+  {
+    if(is_dir($source)) {
+      $target = Gila::dir($target);
+      $files = scandir($source);
+      foreach ($files as $file) if ($file!='.' && $file!='..') {
+        self::copy($source.'/'.$file, $target.'/'.$file);
+      }
+    } else {
+      copy($source, $target);
+    }
+  }
+
+  static function allowedFileType($path)
+  {
+    $filetypes = [
+      'txt','json','css','pdf','twig','csv','tsv','log',
+      'png','jpg','jpeg','gif','webp','ico',
+      'avi','webm','mp4','mkv','ogg'
+    ];
+    if(is_dir($path)) return true;
+    if(Gila::config('allow_filetypes') && Gila::hasPrivilege('admin')) {
+      $filetypes = merge_array($filetypes, Gila::config('allow_filetypes'));
+    }
+    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+    if(in_array($ext, $filetypes)) {
+      return true;
+    }
+    return false;
+  }
+
+  static function allowedPath($path = null) {
+    $allowedPaths = ['tmp','log','data/public'];
+    $allowedPaths[] = Gila::config('media_uploads') ?? 'assets';
+    if(FS_ACCESS) $allowedPaths = array_merge($allowedPaths, ['src','themes']);
+    if ($path===null) {
+      $path = $this->relativePath;
+    } else {
+      if(!is_dir($path)) $path = pathinfo($path)['dirname'];
+      $path = substr(realpath($path), strlen($this->sitepath)+1);
+    }
+
+    foreach ($allowedPaths as $allowed) {
+      if (substr($path,0,strlen($allowed)+1) == $allowed.'/' ||
+          $path == $allowed) {
+        return true;
+      }
+    }
+    return false;
+  }
+}

@@ -103,10 +103,13 @@ class View
   */
   static function script($script, $prop = '')
   {
-    if(in_array($script,self::$script)) return;
+    if(in_array($script, self::$script)) return;
     self::$script[]=$script;
-    if(Gila::config('use_cdn')=='1' && isset(self::$cdn_paths[$script]))
+    if(Gila::config('use_cdn')=='1' && isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
+    } else if(file_exists('assets/'.$script)) {
+      $script = 'assets/'.$script;
+    }
     echo '<script src="'.$script.'" '.$prop.'></script>';
   }
 

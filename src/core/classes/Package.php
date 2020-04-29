@@ -200,7 +200,7 @@ class Package
 
   static function copyAssets($package) {
     $assets = 'src/'.$package.'/assets';
-    if(file_exists($assets)) Filemanager::copy($assets, 'assets/'.$package);
+    if(file_exists($assets)) FileManager::copy($assets, 'assets/'.$package);
   }
 
   /**
