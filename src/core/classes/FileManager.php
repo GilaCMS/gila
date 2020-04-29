@@ -2,6 +2,8 @@
 
 class FileManager
 {
+  public $sitepath = __DIR__;
+
   static function copy($source, $target)
   {
     if(is_dir($source)) {
@@ -38,7 +40,7 @@ class FileManager
     $allowedPaths[] = Gila::config('media_uploads') ?? 'assets';
     if(FS_ACCESS) $allowedPaths = array_merge($allowedPaths, ['src','themes']);
     if(!is_dir($path)) $path = pathinfo($path)['dirname'];
-    $path = substr(realpath($path), strlen($this->sitepath)+1);
+    $path = substr(realpath($path), strlen(self::$sitepath)+1);
 
     foreach ($allowedPaths as $allowed) {
       if (substr($path,0,strlen($allowed)+1) == $allowed.'/' ||

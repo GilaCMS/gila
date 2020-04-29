@@ -12,8 +12,9 @@ class fm extends controller
     if(!Gila::hasPrivilege('admin')
      && !Gila::hasPrivilege('upload_assets')
      && !Gila::hasPrivilege('edit_assets')) exit;
-   $this->sitepath = realpath(__DIR__.'/../../../'.SITE_PATH);
-   $this->setPaths();
+     $this->sitepath = realpath(__DIR__.'/../../../'.SITE_PATH);
+     FileManager::$sitepath = $this->sitepath;
+     $this->setPaths();
   }
 
   function indexAction ()
