@@ -23,7 +23,7 @@ class fm extends controller
 
   function dirAction ()
   {
-    if (!FileManager::allowedPath()) {
+    if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied");
     }
     $files = scandir($this->path);
@@ -55,7 +55,8 @@ class fm extends controller
   }
 
   function readAction () {
-    if (!FileManager::allowedPath() || !FileManager::allowedFileType($this->path)) {
+    if (!FileManager::allowedPath($this->relativePath) ||
+        !FileManager::allowedFileType($this->path)) {
       die("Permission denied");
     }
     if (!Gila::hasPrivilege('admin')) exit; 

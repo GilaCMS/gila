@@ -33,16 +33,12 @@ class FileManager
     return false;
   }
 
-  static function allowedPath($path = null) {
+  static function allowedPath($path) {
     $allowedPaths = ['tmp','log','data/public'];
     $allowedPaths[] = Gila::config('media_uploads') ?? 'assets';
     if(FS_ACCESS) $allowedPaths = array_merge($allowedPaths, ['src','themes']);
-    if ($path===null) {
-      $path = $this->relativePath;
-    } else {
-      if(!is_dir($path)) $path = pathinfo($path)['dirname'];
-      $path = substr(realpath($path), strlen($this->sitepath)+1);
-    }
+    if(!is_dir($path)) $path = pathinfo($path)['dirname'];
+    $path = substr(realpath($path), strlen($this->sitepath)+1);
 
     foreach ($allowedPaths as $allowed) {
       if (substr($path,0,strlen($allowed)+1) == $allowed.'/' ||

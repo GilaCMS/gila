@@ -17,7 +17,6 @@ class ClassFileManager extends TestCase
 
   public function test_allowedFiletype()
   {
-    global $c;
     $list = ['csv'=>true, 'php'=>false, 'svg'=>false, 'twig'=>true];
     foreach ($list as $type=>$response) {
       $this->assertEquals($response,
@@ -27,7 +26,6 @@ class ClassFileManager extends TestCase
 
   public function test_allowedPath()
   {
-    global $c;
     $list = [
       'src/core/load.php'=>true, 'config.php'=>false, 'themes/gila-blog/'=>true,
       'assets'=>true, 'log/'=>true, 'assets/..'=>false,
