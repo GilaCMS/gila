@@ -8,8 +8,7 @@ include __DIR__.'/../../src/core/classes/controller.php';
 include __DIR__.'/../../src/core/models/user.php';
 define('SITE_PATH', '');
 define('CONFIG_PHP', 'config.php');
-//$db = new Db("127.0.0.1", "g_user", "password", "g_db");
-$db = new Db("127.0.0.1", "guser", "12345", "gila150");
+$db = new Db("127.0.0.1", "g_user", "password", "g_db");
 
 use PHPUnit\Framework\TestCase;
 
