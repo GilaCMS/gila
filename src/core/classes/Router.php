@@ -160,7 +160,7 @@ class Router
 
   static function url ()
   {
-    return $_GET['url'];
+    return self::$url;
   }
 
   /**

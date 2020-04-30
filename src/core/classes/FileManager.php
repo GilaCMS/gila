@@ -2,7 +2,7 @@
 
 class FileManager
 {
-  static public $sitepath = '';
+  static public $sitepath = __DIR__;
 
   static function copy($source, $target)
   {
@@ -14,6 +14,19 @@ class FileManager
       }
     } else {
       copy($source, $target);
+    }
+  }
+
+  static function delete($target)
+  {
+    if(is_dir($target)) {
+      $files = scandir($target);
+      foreach ($files as $file) if ($file!='.' && $file!='..') {
+        self::delete($target.'/'.$file);
+      }
+      @rmdir($target);
+    } else {
+      @unlink($target);
     }
   }
 

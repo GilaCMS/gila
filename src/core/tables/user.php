@@ -26,7 +26,7 @@ return [
     ],
     'email'=> [
       'title'=>'Email',
-      'qtype'=>'varchar(80)'
+      'qtype'=>'varchar(80) UNIQUE'
     ],
     'pass'=> [
       'list'=>false,

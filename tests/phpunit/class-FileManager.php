@@ -11,7 +11,7 @@ define('FS_ACCESS', true);
 
 use PHPUnit\Framework\TestCase;
 $GLOBALS['user_privileges'] = ['admin'];
-FileManager::$sitepath = '';
+FileManager::$sitepath = realpath(__DIR__.'/../../');
 
 class ClassFileManager extends TestCase
 {
@@ -33,8 +33,26 @@ class ClassFileManager extends TestCase
       '../'=>false, 'other_folder/'=>false
     ];
     foreach ($list as $path=>$response) {
-      $this->assertEquals($response,FileManager::allowedPath($path));
+      $this->assertEquals($response, FileManager::allowedPath($path));
     }
+  }
+
+  public function test_copy_delete()
+  {
+    $p = 'assets/test-copy/';
+    $p1 = 'assets/test-copy1/';
+    Gila::dir($p);
+    file_put_contents($p.'file1', '1');
+    Gila::dir($p.'folder');
+    file_put_contents($p.'folder/file2', '2');
+    FileManager::copy($p, $p1);
+    $this->assertEquals('1', file_get_contents($p1.'file1'));
+    $this->assertEquals('2', file_get_contents($p1.'folder/file2'));
+    FileManager::delete($p1.'file1');
+    $this->assertFalse(file_exists($p1.'file1'));
+    FileManager::delete($p1);
+    $this->assertFalse(file_exists($p1.'folder/file2'));
+    FileManager::delete($p);
   }
 
 }

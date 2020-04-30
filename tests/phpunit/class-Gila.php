@@ -43,7 +43,6 @@ class ClassGila extends TestCase
 		include_once(__DIR__.'/../../config.default.php');
 		Gila::setConfig('test_config_key', $value);
 		Gila::updateConfigFile();
-    sleep(5);
 		include_once(__DIR__.'/../../config.php');
 		$this->assertEquals($value, $GLOBALS['config']['test_config_key']);
 	}

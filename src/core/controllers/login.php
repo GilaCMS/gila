@@ -118,17 +118,17 @@ class login extends controller
   function authAction()
   {
     header('Content-Type: application/json');
-    if(!isset($_GET['email']) || !isset($_GET['password'])) {
+    if(!isset($_POST['email']) || !isset($_POST['password'])) {
       http_response_code(400);
       echo '{"error":"Credencials missing"}';
       return;
     }
-    $usr = user::getByEmail($_GET['email']);
-    if ($usr && $usr['active']==1 && password_verify($_GET['password'], $usr['pass'])) {
+    $usr = user::getByEmail($_POST['email']);
+    if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
       $token = core\models\user::meta($usr['id'], 'token');
       if($token) {
         echo '{"token":"'.$token.'"}';
-        exit;
+        return;
       }
     }
     http_response_code(401);
