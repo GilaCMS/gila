@@ -70,6 +70,20 @@ class gTable
     $this->table = include $path;
     if(isset($table)) $this->table = $table;
 
+    if($ext = $this->table['extends']) {
+      $extTable = include 'src/'.$ext;
+      $this->table = array_merge_recursive($extTable, $this->table);
+    }
+
+    if($user_id = $this->table['filter_owner']) {
+      @$this->table['filters'][$user_id] = Session::user_id();
+      foreach(['search-boxes','csv','list','edit','create'] as $key) {
+        if(isset($this->table[$key])) {
+          $this->table[$key] = array_diff($this->table[$key], [$user_id]);
+        }
+        $this->table['fields'][$user_id][$key] = false;
+      }
+    }
   }
 
   function name()

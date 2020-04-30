@@ -162,39 +162,6 @@ class fm extends controller
     }
   }
 
-  function efileAction () {
-    $fileOut=realpath($_GET['f']);
-    $ext = explode('.',$fileOut);
-    $ext = $ext[count($ext)-1];
-    if(isset($_GET['thumb'])) {
-      $fileOut = View::thumb($fileOut, 'media_thumb/', (int)$_GET['media_thumb']);
-    }
-
-    if (file_exists($fileOut)) {
-      $imageInfo = getimagesize($fileOut);
-      switch ($imageInfo[2]) {
-        case IMAGETYPE_JPEG:
-          header("Content-Type: image/jpeg");
-          break;
-        case IMAGETYPE_GIF:
-          header("Content-Type: image/gif");
-          break;
-        case IMAGETYPE_PNG:
-          header("Content-Type: image/png");
-          break;
-        default:
-          if($ext=='svg') echo file_get_contents($fileOut);
-          exit;
-          break;
-      }
-
-      header('Content-Length: ' . filesize($fileOut));
-      readfile($fileOut);
-    } else {
-      http_response_code(404);
-    }
-  }
-
   function setPaths()
   {
     $this->path = $this->sitepath;
