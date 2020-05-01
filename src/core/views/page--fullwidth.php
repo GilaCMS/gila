@@ -1,3 +1,3 @@
-<?php view::includeFile('header.php')?>
+<?php View::includeFile('header.php')?>
 <?=$text?>
-<?php view::includeFile('footer.php')?>
+<?php View::includeFile('footer.php')?>

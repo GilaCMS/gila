@@ -44,7 +44,8 @@ jobs:
             - ./vendor
 
       # run tests with phpunit or codecept
-      - run: ./vendor/bin/phpunit tests/phpunit/class-gila.php
+      - run: ./vendor/bin/phpunit tests/phpunit/class-Gila.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-gTable.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-view.php
-      - run: ./vendor/bin/phpunit tests/phpunit/ctr-fm.php
+      - run: ./vendor/bin/phpunit tests/phpunit/class-View.php
+      - run: ./vendor/bin/phpunit tests/phpunit/class-FileManager.php
+      - run: ./vendor/bin/phpunit tests/phpunit/requests.php

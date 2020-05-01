@@ -1,3 +1,3 @@
 <!DOCTYPE html>
-<html lang="<?=gila::config('language')?>">
-<?=view::head()?>
+<html lang="<?=Gila::config('language')?>">
+<?=View::head()?>

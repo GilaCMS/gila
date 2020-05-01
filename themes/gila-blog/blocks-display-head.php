@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="<?=gila::config('language')?>">
+<html lang="<?=Gila::config('language')?>">
 <?php
-view::stylesheet('lib/gila.min.css');
-view::stylesheet('lib/font-awesome/css/font-awesome.min.css');
-view::head()?>
+View::stylesheet('lib/gila.min.css');
+View::stylesheet('lib/font-awesome/css/font-awesome.min.css');
+View::head()?>
 <style>
 body{background:#fcfcfc}
-<?php $theme_color=gila::option('theme.color','orangered');?>
+<?php $theme_color=Gila::option('theme.color','orangered');?>
 :root{--main-primary-color: <?=$theme_color?>;}
 body{font-family:'Arial', sans-serif;}
 h1,h2,h3,.widget-title,.header{font-family:Arial,sans-serif;}
@@ -24,15 +24,15 @@ h1,h2,h3,.widget-title,.header{font-family:Arial,sans-serif;}
 li.active{background-color:var(--main-primary-color); color:white;}
 .header{margin-bottom: 20px;   background-color: #262626;
 <?php
-$bgimg = gila::option('theme.header-image');
+$bgimg = Gila::option('theme.header-image');
 if($bgimg) {
-    $srcset = view::thumb_srcset($bgimg);
+    $srcset = View::thumb_srcset($bgimg);
     echo "background: url({$srcset[0]});";
     echo "background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);";
 }
 ?>
 background-size: cover;
-background-position-y: <?=gila::option('theme.header-position','center')?>;
+background-position-y: <?=Gila::option('theme.header-position','center')?>;
 background-position-x: center;}
 footer{background:#464a49;margin-top:10px;color:white}
 .footer-text,footer a,footer a:hover{color:#ccc; }

@@ -1,5 +1,5 @@
 <?php
-view::alerts();
+View::alerts();
 echo "<form action='admin/db_backup' method='post'>";
 echo gForm::hiddenInput('db_backup');
 echo "<button class='g-btn' onclick='submit();'>Make a new backup</button></form>";

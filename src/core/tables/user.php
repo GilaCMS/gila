@@ -26,7 +26,7 @@ return [
     ],
     'email'=> [
       'title'=>'Email',
-      'qtype'=>'varchar(80)'
+      'qtype'=>'varchar(80) UNIQUE'
     ],
     'pass'=> [
       'list'=>false,
@@ -61,7 +61,7 @@ return [
   'events'=>[
     ['change',function(&$row){
       if(isset($row['pass'])) if( substr( $row['pass'], 0, 7 ) != "$2y$10$" )
-        $row['pass'] = gila::hash($row['pass']);
+        $row['pass'] = Gila::hash($row['pass']);
     }]
   ]
 ];

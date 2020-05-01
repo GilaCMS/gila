@@ -8,7 +8,7 @@
     echo '<div class="g-card wrapper" style="text-align:center;max-width:300px">';
     if($card[0]) {
       echo '<div class="g-card-image" style="padding:0 25%">';
-      echo view::img($card[0], 'c_', 400);
+      echo View::img($card[0], 'c_', 400);
       echo '</div>';
     }
     echo '<h4 style="margin:2px"><b>'.$card[1].'</b></h4><p>'.$card[2].'</p>';

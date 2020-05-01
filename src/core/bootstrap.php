@@ -47,39 +47,39 @@ if (file_exists(CONFIG_PHP)) {
 else {
   if(isset($_GET['install'])) {
     include 'src/core/install/index.php';
-  } else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".gila::base_url()."?install\" />";
+  } else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".Gila::base_url()."?install\" />";
   exit;
 }
 
-if(is_array(gila::config('trusted_domains')) &&
+if(is_array(Gila::config('trusted_domains')) &&
     isset($_SERVER['HTTP_HOST']) &&
-    !in_array($_SERVER['HTTP_HOST'], gila::config('trusted_domains'))) {
+    !in_array($_SERVER['HTTP_HOST'], Gila::config('trusted_domains'))) {
   die($_SERVER['HTTP_HOST'].' is not a trusted domain. It can be added in configuration file.');
 }
 
-$db = new Db(gila::config('db'));
+$db = new Db(Gila::config('db'));
 
 if ($GLOBALS['config']['env'] == 'dev') {
   error_reporting(E_ALL);
   ini_set('display_errors', '1');
   ini_set('display_startup_errors', '1');
-  gila::load();
+  Gila::load();
 }
 else {
   error_reporting(E_ERROR);
   ini_set('display_errors', 0);
   ini_set('display_startup_errors', 0);
   if(!include LOG_PATH.'/load.php') {
-    gila::load();
-    package::updateLoadFile();
+    Gila::load();
+    Package::updateLoadFile();
   }
 }
 
-event::fire('load');
-$g = new gila();
+Event::fire('load');
+$g = new Gila();
 
-$theme = router::request('g_preview_theme', $GLOBALS['config']['theme']);
+$theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
-if(gila::config('cors')=='1') @header('Access-Control-Allow-Origin: *');
+if(Gila::config('cors')=='1') @header('Access-Control-Allow-Origin: *');
 
-new router();
+Router::run($_GET['url'] ?? '');

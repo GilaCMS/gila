@@ -10,47 +10,47 @@ class blocks extends controller
   public function __construct ()
   {
       self::admin();
-      gila::addLang('core/lang/admin/');
+      Gila::addLang('core/lang/admin/');
   }
 
   function indexAction ()
   {
-    $table = router::get('t',1);
-    $id = router::get('id',2);
+    $table = Router::get('t',1);
+    $id = Router::get('id',2);
     $widgets = self::readBlocks($table, $id);
-    view::set('contentType', $table);
-    view::set('id', $id);
-    view::set('isDraft', self::$draft);
-    view::set('widgets', $widgets);
-    view::renderAdmin("content-block.php","blocks");
+    View::set('contentType', $table);
+    View::set('id', $id);
+    View::set('isDraft', self::$draft);
+    View::set('widgets', $widgets);
+    View::renderAdmin("content-block.php","blocks");
   }
 
   function editAction ()
   {
     global $db;
-    if ($id = router::get('id',2)) {
+    if ($id = Router::get('id',2)) {
       $idArray = explode('_',$id);
-      view::set('widget_id',$id);
-      view::set('contentType',$idArray[0]);
-      view::set('id',$idArray[1]);
-      view::set('type',$_REQUEST['type']);
-      view::set('pos',$idArray[2]);
-      view::set('widgets', self::readBlocks($idArray[0], $idArray[1]));
-      view::renderFile('edit_block.php','blocks');
+      View::set('widget_id',$id);
+      View::set('contentType',$idArray[0]);
+      View::set('id',$idArray[1]);
+      View::set('type',$_REQUEST['type']);
+      View::set('pos',$idArray[2]);
+      View::set('widgets', self::readBlocks($idArray[0], $idArray[1]));
+      View::renderFile('edit_block.php','blocks');
     }
   }
 
   function updateAction ()
   {
     global $db;
-    $id = router::post('widget_id',2);
+    $id = Router::post('widget_id',2);
     $idArray = explode('_',$id);
     $content = $idArray[0];
     $id = (int)$idArray[1];
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id);
     if($type = $widgets[$pos]['_type']) {
-      $widget_folder = 'src/'.gila::$widget[$type];
+      $widget_folder = 'src/'.Gila::$widget[$type];
       $fields = include $widget_folder.'/widget.php';
       $widget_data = $_REQUEST['option'] ?? [];
 
@@ -118,12 +118,12 @@ class blocks extends controller
   function createAction ()
   {
     global $db;
-    $content = router::get('t',1);
-    $id = router::get('id',2);
+    $content = Router::get('t',1);
+    $id = Router::get('id',2);
     $pos = (int)$_REQUEST['pos'];
     $widgets = self::readBlocks($content, $id);
     $new = ['_type'=>$_REQUEST['type']];
-    $widget_folder = 'src/'.gila::$widget[$_REQUEST['type']];
+    $widget_folder = 'src/'.Gila::$widget[$_REQUEST['type']];
     $fields = include $widget_folder.'/widget.php';
     foreach($fields as $key=>$field) {
       if(isset($field['default'])) $new[$key] = $field['default'];
@@ -149,15 +149,15 @@ class blocks extends controller
 
   function displayAction ()
   {
-    $content = router::get('t',1);
-    $id = router::get('id',2);
+    $content = Router::get('t',1);
+    $id = Router::get('id',2);
     $blocks = self::readBlocks($content, $id);
-    view::renderFile('blocks-display-head.php', 'blocks');
+    View::renderFile('blocks-display-head.php', 'blocks');
     echo '<body><article style="transform: scale(0.8);transform-origin: 50% 0%;" id="'.$content.'">';
-    event::fire('body');
-    view::blocks($blocks);
+    Event::fire('body');
+    View::blocks($blocks);
     echo '</article></body>';
-    event::fire('foot');
+    Event::fire('foot');
   }
 
   function saveAction ()
@@ -199,7 +199,7 @@ class blocks extends controller
   static function updateBlocks ($content, $id, $blocks) {
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
     $json = json_encode($blocks);
-    gila::dir(LOG_PATH.'/blocks/');
+    Gila::dir(LOG_PATH.'/blocks/');
     file_put_contents($draftFile, $json);
   }
 

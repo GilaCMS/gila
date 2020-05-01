@@ -6,36 +6,31 @@ class gTable
   private $permissions;
   private $db;
   static public $tableList = [];
+  static $basicOps = [
+    'gt'=>'>', 'ge'=>'>=', 'lt'=>'<', 'le'=>'<='
+  ];
 
   function __construct ($content, $permissions = ['admin'])
   {
     global $db;
     $this->db = &$db;
-
-    if(isset(gila::$content[$content])) {
-      $path = 'src/'.gila::$content[$content];
-    } else if(file_exists($content)) {
-      $path = $content;
-    } else {
-      $path = 'src'.$content;
-    }
+    $this->permissions = $permissions;
+    
     if(isset(self::$tableList[$content])) {
       $this->table = self::$tableList[$content];
-    } else {
-      $this->table = include $path;
-      if(isset($table)) $this->table = $table;
+      return;
     }
+    $this->loadSchema($content);
 
-    $this->permissions = $permissions;
-    if($patch = @gila::$contentField[$this->table['name']]) { //depraciated from 1.8.0
+    if($patch = @Gila::$contentField[$this->table['name']]) { //depraciated from 1.8.0
       $this->table['fields'] = array_merge($this->table['fields'],$patch);
     }
-    if(isset(gila::$contentInit[$this->table['name']])) {
-      foreach(@gila::$contentInit[$this->table['name']] as $init) {
+    if(isset(Gila::$contentInit[$this->table['name']])) {
+      foreach(@Gila::$contentInit[$this->table['name']] as $init) {
         $init($this->table);
       }
     }
-    if(isset($this->table['lang'])) gila::addLang($this->table['lang']);
+    if(isset($this->table['lang'])) Gila::addLang($this->table['lang']);
     foreach ($this->table['fields'] as $key => &$field) {
       if(isset($field['qoptions'])) {
         if(!isset($field['options'])) $field['options'] = [];
@@ -62,6 +57,35 @@ class gTable
     self::$tableList[$content] = $this->table;
   }
 
+  function loadSchema($content)
+  {
+    if(isset(Gila::$content[$content])) {
+      $path = 'src/'.Gila::$content[$content];
+    } else if(file_exists($content)) {
+      $path = $content;
+    } else {
+      $path = 'src'.$content;
+    }
+    
+    $this->table = include $path;
+    if(isset($table)) $this->table = $table;
+
+    if($ext = $this->table['extends']) {
+      $extTable = include 'src/'.$ext;
+      $this->table = array_merge_recursive($extTable, $this->table);
+    }
+
+    if($user_id = $this->table['filter_owner']) {
+      @$this->table['filters'][$user_id] = Session::user_id();
+      foreach(['search-boxes','csv','list','edit','create'] as $key) {
+        if(isset($this->table[$key])) {
+          $this->table[$key] = array_diff($this->table[$key], [$user_id]);
+        }
+        $this->table['fields'][$user_id][$key] = false;
+      }
+    }
+  }
+
   function name()
   {
     return $this->table['name'];
@@ -69,7 +93,7 @@ class gTable
 
   function id()
   {
-    return $this->table['id'] ?? 'id'; 
+    return $this->table['id'] ?? 'id';
   }
 
   function fieldAttr($field, $attr)
@@ -287,10 +311,10 @@ class gTable
         if(is_array($value)) {
           foreach($value as $subkey=>$subvalue) {
             $subvalue = $this->db->res($subvalue);
-            if($subkey == 'gt') $filters[] = "$key>$subvalue";
-            if($subkey == 'ge') $filters[] = "$key>=$subvalue'";
-            if($subkey == 'lt') $filters[] = "$key<$subvalue";
-            if($subkey == 'le') $filters[] = "$key<=$subvalue";
+            if(isset(self::$basicOps[$subkey])) {
+              $filters[] = $key . self::$basicOps[$subkey] . $subvalue;
+              continue;
+            }
             if($subkey == 'gts') $filters[] = "$key>'$subvalue'";
             if($subkey == 'lts') $filters[] = "$key<'$subvalue'";
             if($subkey == 'begin') $filters[] = "$key like '$subvalue%'";
@@ -337,35 +361,12 @@ class gTable
     foreach($array as $value) {
       if(in_array($value, $this->permissions)) return true;
     }
+
     return false;
   }
 
   function update() {
-    $tname = $this->table['name'];
-    $id = $this->id();
-
-    // CREATE TABLE
-    $qtype = @$this->table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
-    $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-    $this->db->query($q);
-
-    // ADD COLUMNS
-    foreach($this->table['fields'] as $fkey=>$field) {
-      if(isset($field['qtype']) && $fkey!=$id) {
-        $column = @$field['qcolumn']?:$fkey;
-        if (strpos($column, '(') === false) {
-          $q = "ALTER TABLE $tname ADD $column {$field['qtype']};";
-          $this->db->query($q);
-        }
-      }
-    }
-
-    // ADD KEYS
-    if(isset($this->table['qkeys'])) foreach($this->table['qkeys'] as $key) {
-      $q = "ALTER TABLE $tname ADD KEY `$key` (`$key`);";
-      $this->db->query($q);
-    }
-
+    TableSchema::update($this->table);
     return true;
   }
 
@@ -409,12 +410,15 @@ class gTable
 
   function getRows($filters = [], $args = [])
   {
-    if(!$this->can('read')) return;
+    if(!$this->can('read')) {
+      return [];
+    }
+
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
-    $db = gila::slaveDB();
+    $db = Gila::slaveDB();
     $res = $db->getAssoc("SELECT $select
       FROM {$this->name()}$where$orderby$limit;");
     return $res;
@@ -436,7 +440,7 @@ class gTable
   {
     if(!$this->can('read')) return;
     $where = $this->where($filters);
-    $db = gila::slaveDB();
+    $db = Gila::slaveDB();
     $res = $db->value("SELECT COUNT(*) FROM {$this->name()}$where;");
     return $res;
   }

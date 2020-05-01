@@ -1,8 +1,8 @@
 
-<?php view::alerts()?>
+<?php View::alerts()?>
 <style>#main-wrapper{background: inherit !important;border:none}</style>
 <div class='row'>
-<?php if(gila::hasPrivilege('admin')) { ?>
+<?php if(Gila::hasPrivilege('admin')) { ?>
   <div class='gm-3 wrapper'>
     <a href="admin/content/post">
         <div class='alert' style="background:olivedrab">
@@ -35,7 +35,7 @@
         </div>
     </a>
   </div>
-<?php } else if(gila::hasPrivilege('editor')) { ?>
+<?php } else if(Gila::hasPrivilege('editor')) { ?>
   <div class='gm-6 wrapper'>
     <a href="admin/content/post">
         <div class='alert' style="background:olivedrab">
@@ -56,5 +56,5 @@
 </div>
 
 <div class="widget-area-dashboard wrapper">
-    <?php view::widget_area('dashboard'); ?>
+    <?php View::widget_area('dashboard'); ?>
 </div>

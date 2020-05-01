@@ -2,7 +2,7 @@
 
 global $db;
 
-gila::controllers([
+Gila::controllers([
   'admin'=> 'core/controllers/admin',
   'api'=> 'core/controllers/api',
   'cm'=> 'core/controllers/cm',
@@ -12,7 +12,7 @@ gila::controllers([
   'fm'=> 'core/controllers/fm'
 ]);
 
-gila::$amenu = [
+Gila::$amenu = [
   ['Dashboard','admin','icon'=>'dashboard'],
   'content'=>['Content','#','icon'=>'newspaper-o','access'=>'admin editor','children'=>[
     ['Pages','admin/content/page','icon'=>'file','access'=>'admin editor'],
@@ -33,11 +33,11 @@ gila::$amenu = [
 ];
 
 if(FS_ACCESS) {
-  gila::amenu_child('content', ['Logs','admin/fm?f=log','icon'=>'folder','access'=>'admin']);
-  gila::amenu_child('admin', ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin']);
+  Gila::amenu_child('content', ['Logs','admin/fm?f=log','icon'=>'folder','access'=>'admin']);
+  Gila::amenu_child('admin', ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin']);
 }
 
-gila::widgets([
+Gila::widgets([
   'paragraph'=>'core/widgets/paragraph',
   'image'=>'core/widgets/image',
   'gallery'=>'core/widgets/gallery',
@@ -51,22 +51,22 @@ gila::widgets([
   'tag'=>'core/widgets/tag',
   'contact-form'=>'core/widgets/contact-form'
 ]);
-gila::$widget_area=['dashboard'];
+Gila::$widget_area=['dashboard'];
 
-gila::$privilege['admin']="Administrator access.";
-gila::$privilege['editor']="Can publish or edit posts from other users.";
-gila::$privilege['developer']="Special access in developer tools.";
+Gila::$privilege['admin']="Administrator access.";
+Gila::$privilege['editor']="Can publish or edit posts from other users.";
+Gila::$privilege['developer']="Special access in developer tools.";
 
-gila::content('post','core/tables/post.php');
-gila::content('user-post','core/tables/user-post.php');
-gila::content('postcategory','core/tables/postcategory.php');
-gila::content('user','core/tables/user.php');
-gila::content('userrole','core/tables/userrole.php');
-gila::content('page','core/tables/page.php');
-gila::content('widget','core/tables/widget.php');
+Gila::content('post','core/tables/post.php');
+Gila::content('user-post','core/tables/user-post.php');
+Gila::content('postcategory','core/tables/postcategory.php');
+Gila::content('user','core/tables/user.php');
+Gila::content('userrole','core/tables/userrole.php');
+Gila::content('page','core/tables/page.php');
+Gila::content('widget','core/tables/widget.php');
 
-gila::addLang('core/lang/');
+Gila::addLang('core/lang/');
 
-if(gila::config('use_cdn')=='1') {
+if(Gila::config('use_cdn')=='1') {
   include_once 'src/core/assets/cdn_paths.php';
 }

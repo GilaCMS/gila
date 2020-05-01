@@ -6,6 +6,8 @@ tmp/*
 log/*
 log/sessions/*
 sites/*
+data/*
+data/public/*
 
 vendor/
 node_modules/
@@ -27,6 +29,7 @@ tests/jmeter.log
 !src/featured_grid/
 !src/reCAPTCHA/
 !src/.htaccess
+!sites/.htaccess
 !sites/README.md
 
 !themes/gila-mag/
@@ -35,6 +38,7 @@ tests/jmeter.log
 
 !log/sessions/
 !log/sessions/.gitkeep
+!log/.htaccess
 !tmp/.gitkeep
 !tmp/index.html
 !tmp/.htaccess
@@ -42,3 +46,6 @@ tests/jmeter.log
 !assets/.htaccess
 !assets/gila-logo.png
 !assets/gila-logo.svg
+
+!data/public/
+!data/.htaccess

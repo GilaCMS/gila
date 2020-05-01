@@ -1,6 +1,6 @@
 <h1>Theme options</h1>
 <?php
-$pack = gila::config('theme');
+$pack = Gila::config('theme');
 echo '<form id="theme_options_form" class="g-form">';
 echo '<input id="theme_id" value="'.$pack.'" type="hidden">';
 
@@ -11,7 +11,7 @@ if(file_exists('themes/'.$pack.'/package.json')) {
 
 if(is_array($options)) {
   foreach($options as $key=>$op) {
-    $values[$key] = gila::option('theme.'.$key);
+    $values[$key] = Gila::option('theme.'.$key);
   }
   echo gForm::html($options,$values,'option[',']');
 }// else error alert
@@ -19,10 +19,10 @@ echo "</form>";
 ?>
 <button class="g-btn" onclick="theme_save_options()">Update</button>
 
-<?=view::script('src/core/assets/admin/media.js')?>
-<?=view::script('lib/vue/vue.min.js');?>
-<?=view::script('src/core/lang/content/'.gila::config('language').'.js');?>
-<?=view::script('src/core/assets/admin/listcomponent.js');?>
+<?=View::script('src/core/assets/admin/media.js')?>
+<?=View::script('lib/vue/vue.min.js');?>
+<?=View::script('src/core/lang/content/'.Gila::config('language').'.js');?>
+<?=View::script('src/core/assets/admin/listcomponent.js');?>
 <script>
 
 app = new Vue({

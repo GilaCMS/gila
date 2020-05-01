@@ -261,11 +261,25 @@ Vue.component('g-table', {
         return gtableFieldDisplay[fkey](rv);
       }
 
-      if (typeof field.type != "undefined") if(field.type=='checkbox') if(cv==1){
+      // Display type
+      if (typeof field['input-type'] != "undefined") {
+        displayType = field['input-type'];
+      } else {
+        displayType = field.type;
+      }
+
+      if(displayType=='checkbox') if(cv==1){
         return '<i style="color:green" class="fa fa-check fa-2x"></i>'//-square-o
       } else {
         return '<i style="color:red" class="fa fa-remove fa-2x"></i>'
       }
+
+      if(displayType=='media') if(cv!=null){
+        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
+      } else {
+        return '';
+      }
+
 
       if (typeof field.options != "undefined") if(cv!==null) {
         if (typeof field.options[cv] != "undefined") return field.options[cv]

@@ -12,9 +12,9 @@ class cm extends controller
 
   function __construct ()
   {
-    $this->permissions = user::permissions(session::user_id());
-    $this->table = router::get("t",2);
-    if(!isset(gila::$content[$this->table])) {
+    $this->permissions = user::permissions(Session::user_id());
+    $this->table = Router::get("t",2);
+    if(!isset(Gila::$content[$this->table])) {
       http_response_code(404);
       exit;
     }
@@ -22,7 +22,7 @@ class cm extends controller
 
   /**
   * Lists all the registered content types
-  * @see gila::content()
+  * @see Gila::content()
   */
   function indexAction ()
   {
@@ -89,7 +89,7 @@ class cm extends controller
     header('Content-Type: application/json');
     $table = new gTable($this->table, $this->permissions);
     if(!$table->can('read')) return;
-    if($id = router::get("id",2)) {
+    if($id = Router::get("id",2)) {
       $filter = [$table->id()=>$id];
       $row = $table->getRow($filter);
     } else {
@@ -134,7 +134,7 @@ class cm extends controller
   {
     global $db;
     $pnk = new gTable($this->table, $this->permissions);
-    $orderby = router::request('orderby', []);
+    $orderby = Router::request('orderby', []);
     if(!$pnk->can('read')) return;
     $result = [];
 
@@ -206,8 +206,8 @@ class cm extends controller
     $pnk = new gTable($this->table, $this->permissions);
     if(!$pnk->can('read')) return;
     $result = [];
-    $groupby = router::request('groupby');
-    $orderby = router::request('orderby', []);
+    $groupby = Router::request('groupby');
+    $orderby = Router::request('orderby', []);
     $counter = isset($_GET['counter']) ? ',COUNT(*) AS '.$_GET['counter'] : '';
 
     $result['fields'] = $pnk->fields();
@@ -265,7 +265,7 @@ class cm extends controller
         @$result['rows'][] = $r;
       }
     }
-    gila::setMt($pnk->name());
+    Gila::setMt($pnk->name());
     echo json_encode($result,JSON_PRETTY_PRINT);
   }
 
@@ -332,7 +332,8 @@ class cm extends controller
       $gtable->deleteRow($_POST['id']);
       $response = '{"id":"'.$_POST['id'].'"}';
     } else {
-      $response = '"error":"User cannot delete"}';
+      http_response_code(403);
+      $response = '{"error":"User cannot delete"}';
     }
     echo $response;
   }
@@ -345,7 +346,7 @@ class cm extends controller
     if(!$pnk->can('update')) return;
 
     $fields = $pnk->fields('edit');
-    $id = router::get("id",2);
+    $id = Router::get("id",2);
     $id = (int)$id;
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"><div>';
     echo gForm::hiddenInput();

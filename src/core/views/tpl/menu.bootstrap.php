@@ -24,7 +24,7 @@ foreach ($menu_items as $mi) {
 
 function menu_item($mi){
     global $db;
-    $url = isset($mi['url'])?$mi['url']:(router::url().'#');
+    $url = isset($mi['url'])?$mi['url']:(Router::url().'#');
     $name = isset($mi['name'])?$mi['name']:'';
 
     if($mi['type']=='page') {
@@ -44,7 +44,7 @@ function menu_item($mi){
     if($mi['type']=='link') {
 
     }
-    if($res = menuItemTypes::get($mi)) {
+    if($res = MenuItemTypes::get($mi)) {
         list($url,$name) = $res;
     }
 

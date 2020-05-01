@@ -1,6 +1,6 @@
 <?php
 
-class router
+class Router
 {
   static private $args = [];
   static $url;
@@ -11,24 +11,29 @@ class router
 
   function __construct ()
   {
+    self::run($_GET['url'] ?? false);
+  }
+
+  static function run ($_url = false)
+  {
     global $c;
 
-    if(isset(gila::$route[$_GET['url']])) {
-      gila::$route[$_GET['url']]();
+    if(isset(Gila::$route[$_url])) {
+      Gila::$route[$_url]();
       return;
     }
 
-    if(isset($_GET['url'])) {
-      router::$url = strip_tags($_GET['url']);
-      router::$args = explode("/", router::$url);
+    if($_url!==false) {
+      Router::$url = strip_tags($_url);
+      Router::$args = explode("/", Router::$url);
     }
     else {
-      router::$url = false;
-      router::$args = [];
+      Router::$url = false;
+      Router::$args = [];
     }
 
-    $controller = router::get_controller(router::$args);
-    $controller_file = 'src/'.gila::$controller[$controller].'.php';
+    $controller = Router::get_controller(Router::$args);
+    $controller_file = 'src/'.Gila::$controller[$controller].'.php';
 
     if(!file_exists($controller_file)) {
       @trigger_error("Controller could not be found: $controller=>$controller_file", E_NOTICE);
@@ -37,32 +42,31 @@ class router
 
     require_once $controller_file;
 
-    if(isset(gila::$controllerClass[$controller])) {
-      $controller = gila::$controllerClass[$controller];
+    $controllerClass = $controller;
+    if(isset(Gila::$controllerClass[$controller])) {
+      $controllerClass = Gila::$controllerClass[$controller];
     }
-    $c = new $controller();
+    $c = new $controllerClass();
 
     // find function to run after controller construction
-    if(isset(gila::$on_controller[$controller]))
-      foreach(gila::$on_controller[$controller] as $fn) $fn();
+    if(isset(Gila::$on_controller[$controller]))
+      foreach(Gila::$on_controller[$controller] as $fn) $fn();
 
-    $action = router::get_action($controller, router::$args);
+    $action = Router::get_action($controllerClass, Router::$args);
     $action_fn = $action.'Action';
 
-    if(isset(gila::$before[$controller][$action]))
-      foreach(gila::$before[$controller][$action] as $fn) $fn();
-    if(isset(gila::$action[$controller][$action])) {
-      @call_user_func_array (array($c, $action."__"), router::$args);
+    if(isset(Gila::$before[$controller][$action]))
+      foreach(Gila::$before[$controller][$action] as $fn) $fn();
+    if(isset(Gila::$action[$controller][$action])) {
+      @call_user_func_array (Gila::$action[$controller][$action], Router::$args);
     } else {
-      @call_user_func_array (array($c, $action_fn), router::$args);
-      //$c->$action_fn();
+      @call_user_func_array ([$c, $action_fn], Router::$args);
     }
 
     // end of response
     if(self::$caching) {
       $out2 = ob_get_contents();
-      //ob_end_clean();
-      $clog = new logger(LOG_PATH.'/cache.log');
+      $clog = new Logger(LOG_PATH.'/cache.log');
       if(file_put_contents(self::$caching_file,$out2)){
         $clog->debug(self::$caching_file);
       }else{
@@ -74,21 +78,21 @@ class router
   static function get_controller (&$args):string
   {
     if(isset(self::$controller)) return self::$controller;
-    $default = gila::config('default-controller');
-    $controller = router::request('c',$default);
+    $default = Gila::config('default-controller');
+    $controller = Router::request('c',$default);
 
     if (isset($args[0])) {
-      if(isset(gila::$controller[$args[0]])) {
+      if(isset(Gila::$controller[$args[0]])) {
         $controller = $args[0];
         array_shift($args);
       }
     }
 
-    if ($controller==$default && !isset(gila::$controller[$default])) {
+    if ($controller==$default && !isset(Gila::$controller[$default])) {
       // default-controller not found so have to reset on config.php file
       $controller = 'admin';
-      gila::config('default-controller','admin');
-      gila::updateConfigFile();
+      Gila::config('default-controller','admin');
+      Gila::updateConfigFile();
     }
 
     self::$controller = $controller;
@@ -101,10 +105,7 @@ class router
     if(isset(self::$action)) return self::$action;
     $action = self::request('action',@$args[0]?:'index');
 
-    if(isset(gila::$action[$controller][$action])){
-      $aa = $action.'__';
-      @$c->$aa = gila::$action[$controller][$action];
-    } else if (!method_exists($controller,$action.'Action')) {
+    if (!method_exists($controller,$action.'Action')) {
       if (method_exists($controller,'indexAction')) {
         $action = 'index';
       } else {
@@ -127,8 +128,8 @@ class router
   */
   static function get ($key, $n = null)
   {
-    if ((isset(router::$args[$n-1])) && ($n != null) && (router::$args[$n-1]!=null)){
-      return router::$args[$n-1];
+    if ((isset(Router::$args[$n-1])) && ($n != null) && (Router::$args[$n-1]!=null)){
+      return Router::$args[$n-1];
     }
     else if (isset($_GET[$key])) {
       return $_GET[$key];
@@ -159,7 +160,7 @@ class router
 
   static function url ()
   {
-    return $_GET['url'];
+    return self::$url;
   }
 
   /**
@@ -167,7 +168,7 @@ class router
   */
   static function controller ()
   {
-    return @router::get_controller(self::$args);
+    return @Router::get_controller(self::$args);
   }
 
   /**
@@ -176,7 +177,7 @@ class router
   static function action ($set = null)
   {
     if($set) self::$action = $set;
-    return @router::get_action(self::controller(),self::$args);
+    return @Router::get_action(self::controller(),self::$args);
   }
 
   static function args_shift()
@@ -185,13 +186,13 @@ class router
   }
 
   static function cache ($time = 3600, $args = null, $uniques = null) {
-    if(isset(view::$canonical)) {
-      $request_uri = view::$canonical;
+    if(isset(View::$canonical)) {
+      $request_uri = View::$canonical;
     } else {
       $request_uri = $_SERVER['REQUEST_URI'];
     }
 
-    $dir = gila::dir(LOG_PATH.'/cache0/');
+    $dir = Gila::dir(LOG_PATH.'/cache0/');
     self::$caching_file = $dir.str_replace(['/','\\'],'_',$request_uri);
     if($args !== null) self::$caching_file .= '|'.implode('|',$args);
     if($uniques !== null) {

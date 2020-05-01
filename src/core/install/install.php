@@ -62,6 +62,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
 
         file_put_contents($configfile, $filedata); //, FILE_APPEND | LOCK_EX
+        Package::copyAssets('core');
+        Theme::copyAssets('gila-blog');
 
         include __DIR__."/installed.php";
         exit;

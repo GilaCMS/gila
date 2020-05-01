@@ -1,4 +1,4 @@
-<?=view::css('lib/CodeMirror/codemirror.css')?>
+<?=View::css('lib/CodeMirror/codemirror.css')?>
 <style>
 #main-wrapper{background:none!important;border:none;margin:0}
 .fm_dir{overflow: hidden;padding:10px;line-height:1.5;background:white;}
@@ -29,16 +29,6 @@ if($dirname=='') $dirname = '.';
 $show_path = substr($filepath, 1+strlen(realpath('')));
 $dirname = substr($dirname, 1+strlen(realpath('')));
 
-function allowedPath($path = null) {
-  $allowedPaths = ['assets','src','themes','tmp','log'];
-  foreach ($allowedPaths as $allowed) {
-    if (substr($path,0,strlen($allowed)+1) == $allowed.'/' ||
-        $path == $allowed) {
-      return true;
-    }
-  }
-  return false;
-}
 ?>
 
 <div style="display:grid; grid-template-columns: 250px 1fr;grid-gap:1em">
@@ -47,7 +37,7 @@ function allowedPath($path = null) {
   <div class="fm_file">
     <div class="wrapper"><strong><?=htmlentities($show_path)?></strong>
 <?php
-  if(allowedPath($dirname) && in_array($ext, $allowedFiletypes)) {
+  if(FileManager::allowedPath($dirname) && in_array($ext, $allowedFiletypes)) {
     if(in_array($ext, $img_ext)) {
 ?>
       <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>

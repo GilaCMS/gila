@@ -20,7 +20,7 @@ class page
       if($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
         ob_start();
-        \view::blocks($blocks);
+        \View::blocks($blocks);
         $out = ob_get_contents();
         ob_end_clean();
         $row['page'] .= $out;

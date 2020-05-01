@@ -9,7 +9,7 @@ class admin extends controller
   public function __construct ()
   {
     self::admin();
-    gila::addLang('core/lang/admin/');
+    Gila::addLang('core/lang/admin/');
   }
 
   /**
@@ -18,23 +18,24 @@ class admin extends controller
   function indexAction ()
   {
     global $db;
+    
+    $id = Router::get('page_id',1) ?? null;
 
-    $id=router::get('page_id',1) ?? '';
-    if (($r = core\models\page::getByIdSlug($id)) && ($r['publish']==1)
-      && ($id!='' && router::controller()=='admin')) {
-      view::set('title',$r['title']);
-      view::set('text',$r['page']);
+    if ($id && ($r = core\models\page::getByIdSlug($id)) && ($r['publish']==1)
+        && ($id!='' && Router::controller()=='admin')) {
+      View::set('title',$r['title']);
+      View::set('text',$r['page']);
       if($r['template']==''||$r['template']===null) {
-        view::renderFile('page--admin.php');
+        View::renderFile('page--admin.php');
       } else {
-        view::renderFile('page--'.$r['template'].'.php');
+        View::renderFile('page--'.$r['template'].'.php');
       }
       return;
     }
 
-    if(router::get('action', 1)) {
+    if(Router::get('action', 1)) {
       http_response_code(404);
-      view::renderAdmin('404.php');
+      View::renderAdmin('404.php');
       return;
     }
     $this->dashboardAction();
@@ -45,19 +46,19 @@ class admin extends controller
     global $db;
     $wfolders=['log','themes','src','tmp','assets'];
     foreach($wfolders as $wf) if(is_writable($wf)==false) {
-      view::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
+      View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
     }
-    if(gila::hasPrivilege('admin') && FS_ACCESS && package::check4updates()) {
-      view::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
+    if(Gila::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
+      View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
 
     $db->connect();
-    view::set('posts',$db->value('SELECT count(*) from post;'));
-    view::set('pages',$db->value('SELECT count(*) from page;'));
-    view::set('users',$db->value('SELECT count(*) from user;'));
+    View::set('posts',$db->value('SELECT count(*) from post;'));
+    View::set('pages',$db->value('SELECT count(*) from page;'));
+    View::set('users',$db->value('SELECT count(*) from user;'));
     $db->close();
-    view::set('packages',count($GLOBALS['config']['packages']));
-    view::renderAdmin('admin/dashboard.php');
+    View::set('packages',count($GLOBALS['config']['packages']));
+    View::renderAdmin('admin/dashboard.php');
   }
 
   /**
@@ -65,9 +66,9 @@ class admin extends controller
   */
   function widgetsAction ()
   {
-    if ($id = router::get('id',1)) {
-      view::set('widget',widget::getById($id));
-      view::renderFile('admin/edit_widget.php');
+    if ($id = Router::get('id',1)) {
+      View::set('widget',widget::getById($id));
+      View::renderFile('admin/edit_widget.php');
       return;
     }
   }
@@ -75,23 +76,23 @@ class admin extends controller
   function contentAction ($type = null, $id = null)
   {
     if($type == null) {
-      if(gila::hasPrivilege('admin')) {
-        view::renderAdmin('admin/contenttype.php');
+      if(Gila::hasPrivilege('admin')) {
+        View::renderAdmin('admin/contenttype.php');
       } else {
         http_response_code(404);
-        view::renderAdmin('404.php');
+        View::renderAdmin('404.php');
       }
       return;
     }
 
-    $src = explode('.',gila::$content[$type])[0];
-    view::set('table', $type);
-    view::set('tablesrc', $src);
+    $src = explode('.',Gila::$content[$type])[0];
+    View::set('table', $type);
+    View::set('tablesrc', $src);
     if($id == null) {
-      view::renderAdmin('admin/content-vue.php');
+      View::renderAdmin('admin/content-vue.php');
     } else {
-      view::set('id', $id);
-      view::renderAdmin('admin/content-edit.php');
+      View::set('id', $id);
+      View::renderAdmin('admin/content-edit.php');
     }
   }
 
@@ -102,16 +103,16 @@ class admin extends controller
 
   function usersAction ()
   {
-    view::renderAdmin('admin/users.php');
+    View::renderAdmin('admin/users.php');
   }
 
   function package_optionsAction()
   {
     self::access('admin');
-    $package = router::get('package',1);
-    view::renderFile('admin/header.php');
-    package::options($package);
-    view::renderFile('admin/footer.php');
+    $package = Router::get('package',1);
+    View::renderFile('admin/header.php');
+    Package::options($package);
+    View::renderFile('admin/footer.php');
   }
 
   /**
@@ -121,46 +122,49 @@ class admin extends controller
   function packagesAction ()
   {
     self::access('admin');
-    new package();
-    $search = htmlentities(router::get('search',2));
-    $tab = router::get('tab',1);
+    if ($_SERVER['REQUEST_METHOD']=='POST' || isset($_GET['test'])) {
+      new Package();
+      return;
+    }
+    $search = htmlentities(Router::get('search',2));
+    $tab = Router::get('tab',1);
     $packages = [];
 
     if($tab == 'new') {
       $url = 'https://gilacms.com/packages/?search='.$search;
-      $url .= gila::config('test')=='1' ? '&test=1' : '';
+      $url .= Gila::config('test')=='1' ? '&test=1' : '';
       if(!$contents = file_get_contents($url)) {
-          view::alert('error',"Could not connect to packages list. Please try later.");
+          View::alert('error',"Could not connect to packages list. Please try later.");
       } else $packages = json_decode($contents);
     } else {
-      $packages = package::scan();
+      $packages = Package::scan();
     }
     if(!is_array($packages)) {
-      view::alert('error',"Something went wrong. Please try later.");
+      View::alert('error',"Something went wrong. Please try later.");
       $packages = [];
     }
-    view::set('packages',$packages);
-    view::set('search',$search);
-    view::renderAdmin('admin/package-list.php');
+    View::set('packages',$packages);
+    View::set('search',$search);
+    View::renderAdmin('admin/package-list.php');
   }
 
   function newthemesAction ()
   {
     self::access('admin');
     $packages = [];
-    $search = htmlentities(router::get('search',2));
+    $search = htmlentities(Router::get('search',2));
     if(!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
-        view::alert('error',"Could not connect to themes list. Please try later.");
+        View::alert('error',"Could not connect to themes list. Please try later.");
     } else {
       $packages = json_decode($contents);
     }
     if(!is_array($packages)) {
-      view::alert('error',"Something went wrong. Please try later.");
+      View::alert('error',"Something went wrong. Please try later.");
       $packages = [];
     }
-    view::set('packages',$packages);
-    view::set('search',$search);
-    view::renderAdmin('admin/theme-list.php');
+    View::set('packages',$packages);
+    View::set('search',$search);
+    View::renderAdmin('admin/theme-list.php');
   }
 
   function themesAction ()
@@ -168,32 +172,32 @@ class admin extends controller
     self::access('admin');
     new theme();
     $packages = theme::scan();
-    view::set('packages',$packages);
-    view::renderAdmin('admin/theme-list.php');
+    View::set('packages',$packages);
+    View::renderAdmin('admin/theme-list.php');
   }
 
   function theme_optionsAction ()
   {
-    view::renderAdmin('admin/theme-options.php');
+    View::renderAdmin('admin/theme-options.php');
   }
 
   function settingsAction ()
   {
     self::access('admin');
-    view::renderAdmin('admin/settings.php');
+    View::renderAdmin('admin/settings.php');
   }
 
   function loginAction ()
   {
-    view::renderAdmin('login.php');
+    View::renderAdmin('login.php');
   }
 
   function logoutAction ()
   {
     global $db;
-    user::metaDelete(session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
-    session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".gila::config('base')."' />";
+    user::metaDelete(Session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+    Session::destroy();
+    echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
   }
 
   function media_uploadAction(){
@@ -201,8 +205,9 @@ class admin extends controller
       if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
         echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
       }
-      $path = router::post('path','assets');
-      if($path[0]=='.') $path='assets';
+      $upload_folder = Gila::config('media_uploads') ?? 'assets';
+      $path = Router::post('path', $upload_folder);
+      if($path[0]=='.') $path=$upload_folder;
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
       if(in_array(pathinfo($name, PATHINFO_EXTENSION),["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
@@ -210,8 +215,8 @@ class admin extends controller
         if(!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
         }
-        $maxWidth = gila::config('maxImgWidth') ?? 0;
-        $maxHeight = gila::config('maxImgHeight') ?? 0;
+        $maxWidth = Gila::config('maxImgWidth') ?? 0;
+        $maxHeight = Gila::config('maxImgHeight') ?? 0;
         if($maxWidth>0 && $maxHeight>0) {
           image::make_thumb($path, $path, $maxWidth, $maxHeight);
         }
@@ -223,8 +228,8 @@ class admin extends controller
 
   function mediaAction()
   {
-    view::renderAdmin('admin/media.php');
-    event::fire('admin::media');
+    View::renderAdmin('admin/media.php');
+    Event::fire('admin::media');
   }
 
   function db_backupAction()
@@ -237,37 +242,37 @@ class admin extends controller
     self::access('admin');
     if(FS_ACCESS) {
       $file=realpath(htmlentities($_GET['f']));
-      view::set('filepath',$file);
-      view::renderAdmin('admin/fm-index.php');
+      View::set('filepath',$file);
+      View::renderAdmin('admin/fm-index.php');
     } else {
       http_response_code(404);
-      view::renderAdmin('404.php');
+      View::renderAdmin('404.php');
     }
   }
 
   function sqlAction()
   {
     self::access('admin');
-    if($q=$_POST['query']) view::set('q', $q);
-    view::renderAdmin('admin/sql.php');
+    if($q=$_POST['query']) View::set('q', $q);
+    View::renderAdmin('admin/sql.php');
   }
 
   function profileAction()
   {
-    gila::addLang('core/lang/myprofile/');
-    $user_id = session::key('user_id');
+    Gila::addLang('core/lang/myprofile/');
+    $user_id = Session::key('user_id');
     core\models\profile::postUpdate($user_id);
-    view::set('page_title', __('My Profile'));
-    view::set('twitter_account',user::meta($user_id,'twitter_account'));
-    view::set('token',user::meta($user_id,'token'));
-    view::renderAdmin('admin/myprofile.php');
+    View::set('page_title', __('My Profile'));
+    View::set('twitter_account',user::meta($user_id,'twitter_account'));
+    View::set('token',user::meta($user_id,'token'));
+    View::renderAdmin('admin/myprofile.php');
   }
 
   function deviceLogoutAction() {
-    $device = router::request('device');
+    $device = Router::request('device');
     if(user::logoutFromDevice($device)) {
       $info = [];
-      $sessions = user::metaList(session::user_id(), 'GSESSIONID');
+      $sessions = user::metaList(Session::user_id(), 'GSESSIONID');
       foreach($sessions as $key=>$session) {
         $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
         $info[$key] = UserAgent::info($user_agent);
@@ -285,16 +290,16 @@ class admin extends controller
   {
     self::access('admin');
     if(!FS_ACCESS) return;
-    view::includeFile('admin/header.php');
+    View::includeFile('admin/header.php');
     phpinfo();
-    view::includeFile('admin/footer.php');
+    View::includeFile('admin/footer.php');
   }
 
   function menuAction()
   {
-    $menu = router::get('menu',1);
-    if($menu != null) if(gila::hasPrivilege('admin')) {
-      $folder = gila::dir(LOG_PATH.'/menus/');
+    $menu = Router::get('menu',1);
+    if($menu != null) if(Gila::hasPrivilege('admin')) {
+      $folder = Gila::dir(LOG_PATH.'/menus/');
       $file = $folder.$menu.'.json';
       if($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(isset($_POST['menu'])) {
@@ -308,8 +313,8 @@ class admin extends controller
         exit;
       }
     }
-    view::set('menu',($menu?:'mainmenu'));
-    view::renderAdmin('admin/menu_editor.php');
+    View::set('menu',($menu?:'mainmenu'));
+    View::renderAdmin('admin/menu_editor.php');
   }
 
 }

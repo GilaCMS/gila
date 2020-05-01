@@ -1,5 +1,5 @@
 <?php
-$path = router::request('path', $_COOKIE['asset_path'] ?? 'src');
+$path = Router::request('path', $_COOKIE['asset_path'] ?? 'src');
 if($path[0]=='.') $path = 'src';
 
 $acceptedPath = false;
@@ -55,8 +55,8 @@ if($path=='src') {
   <?php
 }
 
-view::script('src/core/assets/admin/media.js');
-view::script('src/core/lang/content/'.gila::config('language').'.js');
+View::script('src/core/assets/admin/media.js');
+View::script('src/core/lang/content/'.Gila::config('language').'.js');
 ?>
 <div id='admin-media-div'>
 <div class='g-gal wrapper gap-8px' style='background:white;'>
@@ -80,7 +80,7 @@ foreach($files as $filepath) if(substr($filepath, -1)!='.') {
   }
 
   if ($type=='image') {
-    $img='<img src="'.view::thumb($filepath,'media_thumb/',100).'">';
+    $img='<img src="'.View::thumb($filepath,'media_thumb/',100).'">';
     echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$basename.'</div>';
   }
   if ($type=='folder') {

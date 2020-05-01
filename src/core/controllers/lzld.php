@@ -17,26 +17,27 @@ class lzld extends controller
     if ($widget) if ($widget->active==1) {
       $widget_data = json_decode($widget->data);
       @$widget_data->widget_id = $id;
-      view::widget_body($widget->widget, $widget_data);
+      View::widget_body($widget->widget, $widget_data);
     }
   }
 
   function widget_areaAction ($area)
   {
-    view::widget_area($area);
+    View::widget_area($area);
   }
 
   function thumbAction ()
   {
     $file = $_GET['src'];
-    $ext = explode('.',$file);
+    $ext = explode('.', $file);
     $ext = $ext[count($ext)-1];
     $size = (int)$_GET['media_thumb'] ?? 80;
-    $file = view::thumb($file, 'media_thumb/', $size);
+    $file = View::thumb($file, 'media_thumb/', $size);
 
     if (file_exists($file)) {
-      $imageInfo = getimagesize($file);
       ob_end_clean();
+      header('Content-Length: '.filesize($file));
+      $imageInfo = getimagesize($file);
       switch ($imageInfo[2]) {
         case IMAGETYPE_JPEG:
           header("Content-Type: image/jpeg");
@@ -52,11 +53,9 @@ class lzld extends controller
           break;
         default:
           if($ext=='svg') echo file_get_contents($file);
-          exit;
+          return;
           break;
       }
-
-      header('Content-Length: ' . filesize($file));
       readfile($file);
     } else {
       http_response_code(404);

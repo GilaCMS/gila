@@ -1,9 +1,9 @@
 <?php
 chdir(__DIR__.'/../../');
 include __DIR__.'/../../vendor/autoload.php';
-include __DIR__.'/../../src/core/classes/view.php';
-include __DIR__.'/../../src/core/classes/gila.php';
-include __DIR__.'/../../src/core/classes/router.php';
+include __DIR__.'/../../src/core/classes/View.php';
+include __DIR__.'/../../src/core/classes/Gila.php';
+include __DIR__.'/../../src/core/classes/Router.php';
 define("LOG_PATH", "log");
 define("CONFIG_PHP", "config.php");
 
@@ -13,8 +13,8 @@ class ClassView extends TestCase
 {
 	public function test_getWidgetBody()
 	{
-		gila::widgets(['paragraph'=>'core/widgets/paragraph']);
-		$html = view::getWidgetBody('paragraph', ['text'=>'Hello world']);
+		Gila::widgets(['paragraph'=>'core/widgets/paragraph']);
+		$html = View::getWidgetBody('paragraph', ['text'=>'Hello world']);
 		$this->assertEquals('<p>Hello world</p>', $html);
 	}
 

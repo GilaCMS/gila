@@ -24,7 +24,6 @@ return [
       'create'=>false,'edit'=>false
     ],
     'thumbnail'=> [
-      'type'=>'media',
       'title'=>'Thumbnail',
       'type'=>'meta',
       'input-type'=>'media',
