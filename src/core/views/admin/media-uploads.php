@@ -9,8 +9,8 @@ if($path[0]=='.') {
     $path = $monthDir;
   }
 }
-setcookie('media_path', $path, time()+86400,'/');
-setcookie('media_tab', 'uploads', time()+86400,'/');
+setcookie('media_path', $path, time()+86400);
+setcookie('media_tab', 'uploads', time()+86400);
 
 $dpath = realpath(SITE_PATH.$upload_folder);
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));

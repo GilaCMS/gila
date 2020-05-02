@@ -80,6 +80,8 @@ $g = new Gila();
 
 $theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
-if(Gila::config('cors')=='1') @header('Access-Control-Allow-Origin: *');
+if(is_array(Gila::config('cors'))) foreach(Gila::config('cors') as $url) {
+  @header('Access-Control-Allow-Origin: '.$url);
+}
 
 Router::run($_GET['url'] ?? '');

@@ -17,7 +17,7 @@ if($path!='src') {
   }
   if($acceptedPath == false) $path = 'src';
 }
-setcookie('asset_path', $path, time()+86400,'/');
+setcookie('media_path', $path, time()+86400);
 $disabled = ($path=='')?'disabled':'';
 
 $files=[];

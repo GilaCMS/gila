@@ -7,12 +7,14 @@ log/*
 log/sessions/*
 sites/*
 data/*
-data/public/*
+data/uploads/*
 
 vendor/
 node_modules/
 composer.phar
 composer.lock
+package.json
+package-lock.json
 config.php
 npm-debug.log
 TODO.md
@@ -47,5 +49,5 @@ tests/jmeter.log
 !assets/gila-logo.png
 !assets/gila-logo.svg
 
-!data/public/
+!data/uploads/
 !data/.htaccess

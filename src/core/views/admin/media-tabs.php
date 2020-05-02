@@ -9,7 +9,7 @@ align-items: center;padding: 15px 0;}
 <div class="media-tabs-side">
 <?php
 $media_tab = Router::request('media_tab', $_COOKIE['media_tab']??'uploads');
-setcookie('media_tab', $media_tab, time()+86400,'/');
+setcookie('media_tab', $media_tab, time()+86400);
 
 $media_tab_list = Gila::getList('media-tab')??[];
 $media_tab_list = array_merge([

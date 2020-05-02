@@ -67,9 +67,7 @@ class Router
     if(self::$caching) {
       $out2 = ob_get_contents();
       $clog = new Logger(LOG_PATH.'/cache.log');
-      if(file_put_contents(self::$caching_file,$out2)){
-        $clog->debug(self::$caching_file);
-      }else{
+      if(!file_put_contents(self::$caching_file,$out2)){
         $clog->error(self::$caching_file);
       }
     }

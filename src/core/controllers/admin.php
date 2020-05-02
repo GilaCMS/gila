@@ -18,7 +18,7 @@ class admin extends controller
   function indexAction ()
   {
     global $db;
-    
+
     $id = Router::get('page_id',1) ?? null;
 
     if ($id && ($r = core\models\page::getByIdSlug($id)) && ($r['publish']==1)
@@ -44,12 +44,15 @@ class admin extends controller
   function dashboardAction ()
   {
     global $db;
-    $wfolders=['log','themes','src','tmp','assets'];
+    $wfolders=['log','themes','src','tmp','assets','data'];
     foreach($wfolders as $wf) if(is_writable($wf)==false) {
       View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
     }
     if(Gila::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
       View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
+    }
+    if(Gila::config('media_uploads')==null && FS_ACCESS) {
+      View::alert('warning','Since v1.12.5 you need to set a data folder <a class="g-btn">See more</a>');
     }
 
     $db->connect();

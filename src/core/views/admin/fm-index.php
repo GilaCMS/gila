@@ -17,11 +17,6 @@ $basepath = substr($c->filepath,0, strlen(realpath('')));
 if($basepath != realpath('')) $filepath = realpath('');
 $pathinfo = pathinfo($filepath);
 $ext = $pathinfo['extension'];
-$allowedFiletypes = [
-  'txt','json','css','pdf','twig','csv','tsv','log',
-  'png','jpg','jpeg','gif','webp','ico',
-  'avi','webm','mp4','mkv'
-];
 
 $dirname = $pathinfo['dirname'];
 if(is_dir($filepath)) $dirname = $filepath;
@@ -37,7 +32,8 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
   <div class="fm_file">
     <div class="wrapper"><strong><?=htmlentities($show_path)?></strong>
 <?php
-  if(FileManager::allowedPath($dirname) && in_array($ext, $allowedFiletypes)) {
+  FileManager::$sitepath = realpath(SITE_PATH);
+  if(FileManager::allowedPath($dirname) && FileManager::allowedFileType($filepath)) {
     if(in_array($ext, $img_ext)) {
 ?>
       <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
