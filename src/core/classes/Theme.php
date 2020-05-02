@@ -106,7 +106,7 @@ class Theme
     }
   }
 
-  function copyAssets($theme)
+  static function copyAssets($theme)
   {
     $assets = 'themes/'.$theme.'/assets';
     if(file_exists($assets)) FileManager::copy($assets, 'assets/theme/'.$theme);

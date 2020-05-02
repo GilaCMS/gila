@@ -12,7 +12,6 @@ return [
       "link_text"=>[],
       "link_url"=>[]
     ],
-    "default"=>'[["","Card","Text","",""],["","Card","Text","",""],["","Card","Text","",""]]'
+    "default"=>'[["src/core/assets/cogs.png","Card","Text","",""],["src/core/assets/cogs.png","Card","Text","",""],["src/core/assets/cogs.png","Card","Text","",""]]'
   ]
 ];
-

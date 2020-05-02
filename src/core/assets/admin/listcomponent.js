@@ -5,7 +5,7 @@ Vue.component('input-list', {
 <div v-for="(row,key) in pos">\
 <span v-for="(field,fkey) in fields">\
 	<span v-if="field==&quot;image&quot;" style="width:50px" >\
-		<img :src="pos[key][fkey]"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
+		<img :src="\'lzld/thumb?src=\'+pos[key][fkey]"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
 		<input v-model="pos[key][fkey]" type="hidden" :id="\'il\'+field+key" @input="update">\
 	</span>\
 	<input v-if="field!=&quot;image&quot;" v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update" :placeholder="field.toUpperCase()">\
