@@ -271,7 +271,7 @@ class View
     if(file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file),true);
     } else {
-      $menu_data = core\models\menu::defaultData();
+      $menu_data = core\models\Menu::defaultData();
     }
     include self::getViewFile($tpl);
   }
@@ -279,7 +279,7 @@ class View
   static function widget ($id,$widget_exp=null)
   {
     global $db,$widget_data;
-    if($res = core\models\widget::getById($id)){
+    if($res = core\models\Widget::getById($id)){
       $widget_data = json_decode($res[0]->data);
       $widget_type = $res[0]->widget;
     } else {
@@ -370,7 +370,7 @@ class View
   {
     global $widget_data;
 
-    $widgets = core\models\widget::getActiveByArea($area);
+    $widgets = core\models\Widget::getActiveByArea($area);
     if ($widgets) foreach ($widgets as $widget) {
       if($type != null) if($widget['widget'] != $type) continue;
 

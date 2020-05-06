@@ -1,7 +1,7 @@
 <?php
 
 
-class fm extends controller
+class fm extends Controller
 {
   public $path;
   private $relativePath;

@@ -120,8 +120,8 @@ class user
       if(Session::key('permissions')) return Session::key('permissions');
     }
 
-    $response = user::metaList( $id, 'privilege'); // DEPRACIATED since 1.9.0
-    $roles = user::metaList($id, 'role');
+    $response = User::metaList( $id, 'privilege'); // DEPRACIATED since 1.9.0
+    $roles = User::metaList($id, 'role');
     $rp = Gila::config('permissions');
     if($id != 0) {
       foreach($roles as $role) if(isset($rp[$role])) foreach($rp[$role] as $perm) {
@@ -137,7 +137,7 @@ class user
 
   static function logoutFromDevice($n) {
     global $db;
-    $sessions = user::metaList(Session::user_id(), 'GSESSIONID');
+    $sessions = User::metaList(Session::user_id(), 'GSESSIONID');
     if(!isset($sessions[$n])) return false;
     $db->query("DELETE FROM usermeta WHERE `vartype`='GSESSIONID' AND `value`=?;",
       $sessions[$n]);

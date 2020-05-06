@@ -1,7 +1,7 @@
 <?php
 
 
-class lzld extends controller
+class lzld extends Controller
 {
 
   function indexAction ($x)
@@ -12,7 +12,7 @@ class lzld extends controller
   function widgetAction ($id)
   {
     global $widget_data;
-    $widget = core\models\widget::getById($id);
+    $widget = core\models\Widget::getById($id);
 
     if ($widget) if ($widget->active==1) {
       $widget_data = json_decode($widget->data);

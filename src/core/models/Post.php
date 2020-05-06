@@ -2,7 +2,7 @@
 namespace core\models;
 use Gila;
 
-class post
+class Post
 {
   static function getById($id)
   {

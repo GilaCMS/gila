@@ -71,7 +71,7 @@
 </div>
 
   <?php
-  $sessions = core\models\user::metaList(Session::user_id(), 'GSESSIONID');
+  $sessions = core\models\User::metaList(Session::user_id(), 'GSESSIONID');
   $info = [];
   foreach($sessions as $key=>$session) if(file_exists(LOG_PATH.'/sessions/'.$session)) {
     $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;

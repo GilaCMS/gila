@@ -1,5 +1,5 @@
 <?php
-use core\models\page as page;
+use core\models\Page;
 
 class MenuItemTypes
 {
@@ -17,7 +17,7 @@ class MenuItemTypes
       $data->children[] = ['type'=>"postcategory",'id'=>$p[0]];
     }
 
-    foreach (page::genPublished() as $p) {
+    foreach (Page::genPublished() as $p) {
       $data->children[] = ['type'=>'page','id'=>$p[0]];
     }
 
@@ -45,7 +45,7 @@ class MenuItemTypes
   static function initItemTypes()
   {
     global $db;
-    $pages = page::genPublished();
+    $pages = Page::genPublished();
     $pageOptions = "";
     foreach ($pages as $p) {
       $pageOptions .= "<option value=\"{$p['id']}\">{$p['title']}</option>";

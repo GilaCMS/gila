@@ -4,7 +4,7 @@ use core\models\user as user;
 /**
 * Lists content types and shows grid content data
 */
-class cm extends controller
+class cm extends Controller
 {
   private $contenttype;
   private $table;
@@ -12,7 +12,7 @@ class cm extends controller
 
   function __construct ()
   {
-    $this->permissions = user::permissions(Session::user_id());
+    $this->permissions = User::permissions(Session::user_id());
     $this->table = Router::get("t",2);
     if(!isset(Gila::$content[$this->table])) {
       http_response_code(404);

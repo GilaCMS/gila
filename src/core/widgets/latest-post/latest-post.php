@@ -12,13 +12,13 @@ if($widget_data->show_thumbnails == 1) {
   $img = [];
   $widget_data->n_post = @$widget_data->n_post?:5;
   $widget_data->show_thumbnails = @$widget_data->show_thumbnails?:0;
-  foreach (core\models\post::getLatest($widget_data->n_post) as $r ) {
+  foreach (core\models\Post::getLatest($widget_data->n_post) as $r ) {
     $posts[] = $r;
     $img[]=$r['img'];
   }
   list($stacked_file, $stacked) = View::thumb_stack($img, $stacked_file,80,80);
 } else {
-  foreach (core\models\post::getLatest($widget_data->n_post) as $r ) {
+  foreach (core\models\Post::getLatest($widget_data->n_post) as $r ) {
     $posts[] = $r;
   }
 }

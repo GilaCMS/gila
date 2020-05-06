@@ -22,7 +22,7 @@ class Session
     Session::define(['user_id'=>0]);
 
     if (isset($_POST['username']) && isset($_POST['password']) && Session::waitForLogin()==0) {
-      $usr = user::getByEmail($_POST['username']);
+      $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
         Session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
         unset($_SESSION['failed_attempts']);
@@ -34,8 +34,8 @@ class Session
     } else {
       if(Session::user_id()===0) {
         if(isset($_COOKIE['GSESSIONID'])) {
-          foreach (user::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
-            $usr = user::getById($user_id);
+          foreach (User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
+            $usr = User::getById($user_id);
             if ($usr && $usr['active']==1) {
               Session::user($usr['id'], $usr['username'], $usr['email']);
             }
@@ -48,7 +48,7 @@ class Session
       }
 
       if(isset($_COOKIE['GSESSIONID'])) if(!file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-        user::metaDelete(Session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+        User::metaDelete(Session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
         Session::destroy();
       }
     }
@@ -72,11 +72,11 @@ class Session
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
     $gsession = (string)$id;
     for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
-    user::meta($id, 'GSESSIONID', $gsession, true);
+    User::meta($id, 'GSESSIONID', $gsession, true);
     setcookie('GSESSIONID', $gsession, time()+(86400 * 30), '/');
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if(isset($_COOKIE['GSESSIONID'])) {
-      user::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
+      User::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
     } else {
       // setcookie('GSESSIONID', $gsession, time() + (86400 * 30),
       //  '/', null, null, true, ['samesite'=>'Strict']);
@@ -149,7 +149,7 @@ class Session
     $user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
     if($token && !isset($_COOKIE['GSESSIONID'])) {
-      $usr = user::getByMeta('token', $token);
+      $usr = User::getByMeta('token', $token);
       if($usr) {
         $user_id = $usr['id'];
       }

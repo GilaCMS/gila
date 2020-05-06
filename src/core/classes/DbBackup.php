@@ -1,7 +1,7 @@
 <?php
 
 
-class db_backup
+class DbBackup
 {
   private $dir;
 

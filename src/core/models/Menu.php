@@ -1,8 +1,8 @@
 <?php
 namespace core\models;
-use core\models\page as page;
+use core\models\Page;
 
-class menu
+class Menu
 {
   static function defaultData()
   {
@@ -14,7 +14,7 @@ class menu
     foreach ($pages as $p) {
       $widget_data->children[] = ['type'=>"postcategory",'id'=>$p[0]];
     }
-    foreach (page::genPublished() as $p) {
+    foreach (Page::genPublished() as $p) {
       $widget_data->children[] = ['type'=>'page','id'=>$p[0]];
     }
     return (array) $widget_data;

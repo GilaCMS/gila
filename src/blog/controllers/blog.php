@@ -1,13 +1,13 @@
 <?php
 
-use core\models\post as post;
-use core\models\page as page;
-use core\models\user as user;
+use core\models\Post;
+use core\models\Page;
+use core\models\User;
 
 /**
 * The blog controller, get calls for display of posts
 */
-class Blog extends controller
+class Blog extends Controller
 {
   public $x;
   public static $page; /** The page number */
@@ -44,20 +44,20 @@ class Blog extends controller
     if ($s=Router::get('search')) {
       $s = strip_tags($s);
       View::set('search', $s);
-      View::set('posts',post::search($s));
+      View::set('posts', Post::search($s));
       View::render('blog-search.php');
       return;
     }
 
     if($_GET['url']!='' || View::getViewFile('homepage.php')==false) {
-      if ($r = page::getByIdSlug('')) {
+      if ($r = Page::getByIdSlug('')) {
         View::set('title',$r['title']);
         View::set('text',$r['page']);
         View::render('blog-homepage.php','blog');
         return;
       }
       View::set('page',blog::$page);
-      View::set('posts',post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
+      View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
       View::render('frontpage.php');
     }
     else View::render('homepage.php');
@@ -85,7 +85,7 @@ class Blog extends controller
     View::set('page_title', '#'.$tag.' | '.Gila::config('title'));
     View::set('tag',$tag);
     View::set('page',self::$page);
-    View::set('posts',post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
+    View::set('posts', Post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
     View::render('blog-tag.php');
   }
 
@@ -96,7 +96,7 @@ class Blog extends controller
   {
     Gila::canonical('tags');
     View::set('page_title', __('Tags').' | '.Gila::config('title'));
-    View::set('tags',post::getMeta('tag'));
+    View::set('tags', Post::getMeta('tag'));
     View::render('blog-tags.php');
   }
 
@@ -111,11 +111,11 @@ class Blog extends controller
     }
     $name = $db->value("SELECT title from postcategory WHERE id=?",$category);
     Gila::canonical('blog/category/'.$category.'/'.$name.'/');
-    self::$totalPosts = post::total(['category'=>$category]);
+    self::$totalPosts = Post::total(['category'=>$category]);
     View::set('category', $name);
     View::set('page_title', $name);
     View::set('page',self::$page);
-    View::set('posts',post::getPosts(['posts'=>self::$ppp,'category'=>$category,'page'=>self::$page]));
+    View::set('posts', Post::getPosts(['posts'=>self::$ppp,'category'=>$category,'page'=>self::$page]));
     View::render('blog-category.php');
   }
 
@@ -131,7 +131,7 @@ class Blog extends controller
     if($res) {
       View::set('author',$res[0][0]);
       View::set('page_title', $res[0][0].' | '.Gila::config('title'));
-      View::set('posts',post::getPosts(['posts'=>self::$ppp,'user_id'=>$res[0][1]]));
+      View::set('posts', Post::getPosts(['posts'=>self::$ppp,'user_id'=>$res[0][1]]));
     } else {
       View::set('author',__('unknown'));
       View::set('posts',[]);
@@ -147,7 +147,7 @@ class Blog extends controller
   {
     global $db;
 
-    if (($r = post::getByIdSlug($id)) && ($r['publish']==1)) {
+    if (($r = Post::getByIdSlug($id)) && ($r['publish']==1)) {
       Router::action('post');
       $id = $r['id'];
       if(!$r['user_id']) {
@@ -190,10 +190,10 @@ class Blog extends controller
         View::meta('twitter:site', '@'.$value);
       }
 
-      if ($r = user::getById($user_id)) {
+      if ($r = User::getById($user_id)) {
         View::set('author',$r['username']);
         View::meta('author',$r['username']);
-        if($creator = user::meta($user_id, 'twitter_account'))
+        if($creator = User::meta($user_id, 'twitter_account'))
           View::meta('twitter:creator','@'.$creator);
       } else View::set('author',__('unknown'));
 
@@ -205,7 +205,7 @@ class Blog extends controller
         return;
       }
   
-      if (($r = page::getByIdSlug($id)) && ($r['publish']==1)) {
+      if (($r = Page::getByIdSlug($id)) && ($r['publish']==1)) {
         View::set('title',$r['title']);
         View::set('text',$r['page']);
         if($r['template']==''||$r['template']===null) {
@@ -229,7 +229,7 @@ class Blog extends controller
       $s = strip_tags($s);
       View::set('search', $s);
       View::set('page_title', $s.' | '.Gila::config('title'));
-      View::set('posts',post::search($s));
+      View::set('posts', Post::search($s));
       View::render('blog-search.php');
       return;
     }
@@ -240,20 +240,20 @@ class Blog extends controller
 
   static function post ($args = []) {
     $args['page'] = self::$page;
-    return post::getPosts($args);
+    return Post::getPosts($args);
   }
 
   static function latestposts ($n = 10) {
-    return post::getLatest($n);
+    return Post::getLatest($n);
   }
 
   static function posts ($args = []) {
     $args['page'] = self::$page;
-    return post::getPosts($args);
+    return Post::getPosts($args);
   }
 
   static function totalposts ($args = []) {
-    if(self::$totalPosts == null) return post::total($args);
+    if(self::$totalPosts == null) return Post::total($args);
     return self::$totalPosts;
   }
 

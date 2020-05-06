@@ -13,7 +13,7 @@ if(!@class_exists('blog')) if(file_exists("src/blog/controllers/blog.php")){
 $widget_data->n_post = @$widget_data->n_post?:4;
 $widget_data->category = @$widget_data->category?:null;
 
-foreach (core\models\post::getPosts(
+foreach (core\models\Post::getPosts(
     ['posts'=>$widget_data->n_post, 'category'=>$widget_data->category]) as $key=>$r ) {
   $href = blog::get_url($r['id'],$r['slug']);
   echo "<li>";

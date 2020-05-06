@@ -195,7 +195,7 @@ class gForm
     /* CONTENT
     if($type=='content') {
       $table = $op['table'];
-      $tablesrc = explode('.',Gila::$content[$table])[0];
+      $tablesrc = explode('.', Gila::$content[$table])[0];
       include __DIR__.'/content.php';
     }*/
   }

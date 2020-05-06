@@ -46,7 +46,7 @@ foreach($options as $key=>$op) {
         /* CONTENT */
         if($op['type']=='content') {
             $table = $op['table'];
-            $tablesrc = explode('.',Gila::$content[$table])[0];
+            $tablesrc = explode('.', Gila::$content[$table])[0];
             include __DIR__.'/content.php';
         }
     } else echo '<input class="g-input g-m-8" name="option['.$key.']" value="'.$ov.'">';
