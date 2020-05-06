@@ -8,10 +8,10 @@
   <meta name="viewport" content="width=device-width initial-scale=1">
   <link rel="icon" type="image/png" href="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>">
   <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
-  <?=View::css('lib/gila.min.css')?>
+  <?=View::css('core/gila.min.css')?>
   <?=View::css('src/core/assets/admin/style.css')?>
   <?=View::script("lib/jquery/jquery-3.3.1.min.js")?>
-  <?=View::script("lib/gila.min.js")?>
+  <?=View::script("core/gila.min.js")?>
 </head>
 
 <body style="background:#f5f5f5">

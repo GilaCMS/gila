@@ -16,6 +16,7 @@
 .ve-editor-edit input,.ve-editor-edit input:focus {
   all:unset;
   background-color: white;
+  width:100px;
 }
 .ve-editor-btn {
   padding:6px;

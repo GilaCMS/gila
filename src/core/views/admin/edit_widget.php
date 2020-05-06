@@ -1,4 +1,9 @@
 
+<style>
+.mce-window.mce-in {
+    z-index: 99999 !important;
+}
+</style>
 <form id="widget_options_form" class="g-form">
 <input type="hidden" value="<?=$widget->id?>" id='widget_id' name='widget_id'>
 <div class="gm-12" style="display:inline-flex;margin-bottom:8px">

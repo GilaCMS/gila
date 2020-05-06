@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<?=Gila::config('language')?>">
 <?php
-View::stylesheet('lib/gila.min.css');
+View::stylesheet('core/gila.min.css');
 View::head()?>
 <style>
 <?php $theme_color=Gila::option('theme.color','orangered'); ?>

@@ -81,11 +81,19 @@ class Theme
         exit;
       }
       if ($zip->open($localfile) === true) {
+        $previousFolder = LOG_PATH.'/previous-themes/';
+        $month_in_seconds = 2592000;
         if(!file_exists($target)) mkdir($target);
         $zip->extractTo($tmp_name);
         $zip->close();
         if(file_exists($target)) {
-        rename($target, Gila::dir(LOG_PATH.'/previous-themes/'.date("Y-m-d H:i:s").' '.$download));
+          rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$download));
+        }
+        $previousPackages = scandir($previousFolder);
+        foreach($previousPackages as $folder) {
+          if(filemtime($previousFolder.$folder) < time()-$month_in_seconds) {
+            FileManager::delete($previousFolder.$folder);
+          }
         }
         $unzipped = scandir($tmp_name);
         if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
@@ -109,7 +117,8 @@ class Theme
   static function copyAssets($theme)
   {
     $assets = 'themes/'.$theme.'/assets';
-    if(file_exists($assets)) FileManager::copy($assets, 'assets/theme/'.$theme);
+    $target = Gila::dir('assets/themes/');
+    if(file_exists($assets)) FileManager::copy($assets, $target.$theme);
   }
 
   /**

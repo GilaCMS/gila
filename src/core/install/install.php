@@ -56,7 +56,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $GLOBALS['config']['admin_email'] = $_POST['adm_email'];
         $GLOBALS['config']['rewrite'] = false;
         $GLOBALS['config']['use_webp'] = function_exists("imagewebp") ? 1 : 0;
-        $GLOBALS['config']['media_uploads'] = 'data/uploads';
+        //$GLOBALS['config']['media_uploads'] = 'data/uploads';
         if(function_exists("apache_get_modules"))  if(in_array('mod_rewrite', apache_get_modules()))
             $GLOBALS['config']['rewrite'] = true;
 

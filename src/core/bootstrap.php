@@ -24,11 +24,12 @@ spl_autoload_register(function ($class) {
   $class=str_replace('__','-',$class);
   $Class=ucfirst($class);
 
-  if (file_exists('src/core/classes/'.$Class.'.php')) {
-    require_once 'src/core/classes/'.$Class.'.php';
-  }
-  else if (file_exists('src/core/classes/'.$class.'.php')) {
+  if (file_exists('src/core/classes/'.$class.'.php')) {
     require_once 'src/core/classes/'.$class.'.php';
+  }
+  else if (file_exists('src/core/classes/'.$Class.'.php')) {
+    trigger_error("Class name $Class is capitalized", E_USER_WARNING);
+    require_once 'src/core/classes/'.$Class.'.php';
   }
   else if (file_exists('src/'.$class.'.php')) {
     require_once 'src/'.$class.'.php';

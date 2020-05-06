@@ -35,6 +35,9 @@ class View
   static function stylesheet($href)
   {
     if(in_array($href,self::$stylesheet)) return;
+    if(file_exists('assets/'.$href)) {
+      $href = 'assets/'.$href;
+    }
     self::$stylesheet[]=$href;
   }
 
@@ -74,10 +77,13 @@ class View
   * Adds a link tag of css file
   * @param $css Path to css file
   */
-  static function css($css)
+  static function css($css, $uri=false)
   {
     if(in_array($css,self::$css)) return;
     self::$css[]=$css;
+    if(file_exists('assets/'.$css)) {
+      $css = 'assets/'.$css;
+    }
     echo '<link rel="stylesheet" href="'.$css.'">';
   }
 
@@ -85,11 +91,15 @@ class View
   * Loads a css file asynchronously using a simple javascript function
   * @param $css Path to css file
   */
-  static function cssAsync($css)
+  static function cssAsync($css, $uri=false)
   {
     if(in_array($css,self::$css)) return;
     self::$css[]=$css;
+    if(file_exists('assets/'.$css)) {
+      $css = 'assets/'.$css;
+    }
     if(!self::$cssAsync) {
+      self::$cssAsync = true;
     ?>
     <script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script>
     <?php
@@ -101,7 +111,7 @@ class View
   * Adds a script tag of javascript file
   * @param $script Path to js file
   */
-  static function script($script, $prop = '')
+  static function script($script, $uri=false, $prop='')
   {
     if(in_array($script, self::$script)) return;
     self::$script[]=$script;
@@ -117,11 +127,11 @@ class View
   * Adds a script tag of javascript file lo load asynchronously
   * @param $script Path to js file
   */
-  static function scriptAsync($script)
+  static function scriptAsync($script, $uri=false)
   {
     if(in_array($script,self::$scriptAsync)) return;
     self::$scriptAsync[]=$script;
-    self::script($script, 'async');
+    self::script($script, $uri, 'async');
   }
 
   /**

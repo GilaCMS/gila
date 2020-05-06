@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<?=Gila::config('language')?>">
 <?php
-View::stylesheet('lib/gila.min.css');
+View::stylesheet('core/gila.min.css');
 View::stylesheet('lib/font-awesome/css/font-awesome.min.css');
 View::head()?>
 <style>

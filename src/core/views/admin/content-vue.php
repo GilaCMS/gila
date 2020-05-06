@@ -17,6 +17,7 @@ View::script('src/core/assets/admin/content.js');
 if(file_exists('src/'.$tablesrc.'.js')) View::script('src/'.$tablesrc.'.js');
 View::script('src/core/lang/content/'.Gila::config('language').'.js');
 View::script('src/core/assets/admin/listcomponent.js');
+View::script('src/core/assets/admin/vue-editor.js');
 ?>
 
 <style>

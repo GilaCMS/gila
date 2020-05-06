@@ -51,9 +51,6 @@ class admin extends controller
     if(Gila::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
       View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
-    if(Gila::config('media_uploads')==null && FS_ACCESS) {
-      View::alert('warning','Since v1.12.5 you need to set a data folder <a class="g-btn">See more</a>');
-    }
 
     $db->connect();
     View::set('posts',$db->value('SELECT count(*) from post;'));

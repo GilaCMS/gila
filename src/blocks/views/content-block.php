@@ -1,4 +1,4 @@
-<?=View::script('lib/gila.min.js')?>
+<?=View::script('core/gila.min.js')?>
 <?=View::script('lib/jquery/jquery-3.3.1.min.js')?>
 <script src="lib/CodeMirror/codemirror.js"></script>
 <script src="lib/CodeMirror/javascript.js"></script>
@@ -7,12 +7,14 @@
 
 <?=View::script("lib/tinymce/tinymce.min.js")?>
 <?=View::script('src/core/assets/admin/listcomponent.js');?>
+<?=View::script('src/core/assets/admin/vue-editor.js');?>
 <?=View::script('src/core/assets/admin/media.js')?>
 <?=View::script('lib/select2/select2.min.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
 <?=View::css('src/blocks/assets/blocks.css')?>
 <?=View::cssAsync('lib/select2/select2.min.css')?>
+<?=View::cssAsync('src/core/assets/admin/vue-editor.css')?>
 <link rel="stylesheet" href="lib/CodeMirror/codemirror.css">
 
 <?php
