@@ -2,16 +2,16 @@
 
 class View
 {
-  private static $script = array();
-  private static $scriptAsync = array();
-  private static $css = array();
+  private static $script = [];
+  private static $scriptAsync = [];
+  private static $css = [];
   private static $cssAsync = false;
-  private static $meta = array();
-  private static $alert = array();
-  public static $part = array();
-  public static $stylesheet = array();
-  public static $cdn_paths = array();
-  public static $view_file = array();
+  private static $meta = [];
+  private static $alert = [];
+  public static $part = [];
+  public static $stylesheet = [];
+  public static $cdn_paths = [];
+  public static $view_file = [];
   public static $parent_theme = false;
   public static $canonical;
   public static $renderer;

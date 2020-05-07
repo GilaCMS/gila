@@ -1,6 +1,6 @@
 <?php
 
-use core\models\user;
+use core\models\User;
 
 class Session
 {

@@ -76,15 +76,15 @@ class Db
   {
     if (!is_array($args)) {
       $argsBkp = $args;
-      $args = array($argsBkp);
-  }
+      $args = [$argsBkp];
+   }
 
-  $stmt = $this->link->prepare($q);
-  $dt = "";
-  foreach($args as $v) {
-    $x = $this->link->real_escape_string($v);
-    $dt .= is_int($v)? 'i': (is_string($v)? 's': (is_double($v)? 'd': 'b'));
-  }
+    $stmt = $this->link->prepare($q);
+    $dt = "";
+    foreach($args as $v) {
+      $x = $this->link->real_escape_string($v);
+      $dt .= is_int($v)? 'i': (is_string($v)? 's': (is_double($v)? 'd': 'b'));
+    }
     array_unshift($args, $dt);
     $refarg = [];
     foreach ($args as $key => $value) $refarg[] =& $args[$key];
@@ -110,7 +110,7 @@ class Db
     return $res;
   }
 
-  public function insert($table,$params=[])
+  public function insert($table, $params = [])
   {
     if (!$this->connected) $this->connect();
     $cols = implode(", ", array_keys($params));
@@ -170,7 +170,7 @@ class Db
     return mysqli_error($this->link);
   }
 
-  function value($q,$p=null)
+  function value($q, $p = null)
   {
     if($res = $this->query($q,$p)) {
       return mysqli_fetch_row($res)[0];

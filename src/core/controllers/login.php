@@ -1,6 +1,6 @@
 <?php
 
-use core\models\user as user;
+use core\models\User;
 
 class login extends Controller
 {

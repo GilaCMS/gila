@@ -23,6 +23,8 @@ class Gila
   static $mt;
   static $base_url;
   static $slaveDB = [];
+  static $langPaths = [];
+  static $langLoaded = false;
 
   /**
   * Registers new controllers
@@ -114,6 +116,16 @@ class Gila
   * @param $path (string) Path to the folder/prefix of language json files
   */
   static function addLang($path)
+  {
+    if(in_array($path, self::$langPaths)) return;
+
+    if(self::$langLoaded==true) {
+      self::loadLang($path);
+    }
+    self::$langPaths[] = $path;
+  }
+
+  static function loadLang($path)
   {
     $filepath = 'src/'.$path.Gila::config('language').'.json';
     if(file_exists($filepath)) {
@@ -500,6 +512,10 @@ class Gila
 $GLOBALS['lang'] = [];
 
 function __($key, $alt = null) {
+  if(Gila::$langLoaded==false) {
+    foreach(Gila::$langPaths as $path) Gila::loadLang($path);
+    Gila::$langLoaded = true;
+  }
   if(@isset($GLOBALS['lang'][$key])) {
     if($GLOBALS['lang'][$key] != '')
       return $GLOBALS['lang'][$key];

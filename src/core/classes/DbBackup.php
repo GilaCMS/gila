@@ -36,7 +36,7 @@ class DbBackup
 
     if ($tables == '*')
     {
-      $tables = array();
+      $tables = [];
       $result = $db->query('SHOW TABLES');
       while($row = mysqli_fetch_row($result)) $tables[] = $row[0];
     } else {

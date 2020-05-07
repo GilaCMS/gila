@@ -46,7 +46,11 @@ class fm extends Controller
       if(is_file($file)) $extension = '.'; else $extension = '';
       if(isset($this->pathinfo['extension'])) $extension = $this->pathinfo['extension'];
 
-      $newfile = array('name'=>$file,'size'=>$stat['size'],'mtime'=>date("Y-m-d H:i:s", $stat['mtime']),'mode'=>$stat['mode'],'ext'=>$extension);
+      $newfile = [
+        'name'=> $file, 'size'=> $stat['size'],
+        'mtime'=> date("Y-m-d H:i:s", $stat['mtime']),
+        'mode'=> $stat['mode'], 'ext'=> $extension
+      ];
       $filelist[] = $newfile;
     }
 

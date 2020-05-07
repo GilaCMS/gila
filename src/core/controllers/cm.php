@@ -1,5 +1,5 @@
 <?php
-use core\models\user as user;
+use core\models\User;
 
 /**
 * Lists content types and shows grid content data
