@@ -1,6 +1,5 @@
-<?php global $g?>
 <base href="<?=Gila::base_url()?>">
-<title><?=@$g->page_title?></title>
+<title><?=$page_title?></title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Gila CMS">

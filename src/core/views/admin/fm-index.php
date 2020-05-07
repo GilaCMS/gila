@@ -13,7 +13,7 @@
 <?php
 $mode_ext = ['php'=>'php','html'=>'htmlmixed','htm'=>'htmlmixed','js'=>'javascript','css'=>'css'];
 $img_ext = ['jpg','jpeg','gif','png','svg','ico','tiff'];
-$basepath = substr($c->filepath,0, strlen(realpath('')));
+$basepath = substr($filepath,0, strlen(realpath('')));
 if($basepath != realpath('')) $filepath = realpath('');
 $pathinfo = pathinfo($filepath);
 $ext = $pathinfo['extension'];
@@ -43,7 +43,7 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     } else if(is_dir($filepath) || $filepath=='') {
       // do nothing
     } else {
-      $value = htmlentities(file_get_contents($c->filepath));
+      $value = htmlentities(file_get_contents($filepath));
     ?>
     <span class="g-btn" onclick="savefile('<?=$show_path?>')"><?=_('Save')?></span>
     <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>

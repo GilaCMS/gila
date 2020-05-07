@@ -20,7 +20,7 @@ class DbBackup
       }
     }
 
-    View::set('dir',$this->dir);
+    View::set('dbBackupDir',$this->dir);
     View::set('csrf',gForm::getToken('db_backup2'));
     View::renderAdmin('admin/db_backup.php');
   }

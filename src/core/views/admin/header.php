@@ -3,7 +3,7 @@
 
 <head>
   <base href="<?=Gila::base_url()?>">
-  <?php View::set('page_title',((Gila::config('title')??'Gila CMS').' - '.($page_title??__('Administration')))) ?>
+  <title><?=((Gila::config('title')??'Gila CMS').' - '.($page_title??__('Administration')))?></title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1">
   <link rel="icon" type="image/png" href="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>">

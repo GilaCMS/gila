@@ -1,2 +1,2 @@
-<h3><?=$category?></h3>
+<h3><?=$categoryName?></h3>
 <?php include 'blog-list.php'; ?>

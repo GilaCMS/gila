@@ -99,7 +99,6 @@ class Router
 
   static function get_action(&$controller,&$args):string
   {
-    global $c;
     if(isset(self::$action)) return self::$action;
     $action = self::request('action',@$args[0]?:'index');
 

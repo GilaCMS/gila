@@ -2,7 +2,7 @@
 <!-- Posts -->
 <div class="row wrapper">
     <div class="gm-9">
-    <?php foreach ($c->posts as $r) { ?>
+    <?php foreach ($posts as $r) { ?>
     <div class="gm-12 row gap-8px post-review">
             <?php
             if($img=View::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
@@ -14,7 +14,7 @@
             ?>
 
         <div class="<?=$title_gl?>">
-            <a href="<?=$c->get_url($r['id'],$r['slug'])?>">
+            <a href="<?=$r['url']?>">
                 <h2 class="post-title" style="margin-top:0"><?=$r['title']?></h2>
             </a>
             <?=strip_tags($r['post'])?>

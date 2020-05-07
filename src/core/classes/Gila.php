@@ -219,7 +219,7 @@ class Gila
     } else $list = $key;
     foreach ($list as $k=>$i) {
       if(is_numeric($k)) {
-        Gila::$amenu[]=$i; // depreciated
+        Gila::$amenu[]=$i; // DEPRECIATED
       } else {
         Gila::$amenu[$k]=$i;
       }
@@ -284,18 +284,6 @@ class Gila
   {
     if ($type == 'alert') $type = '';
     return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
-  }
-
-  /**
-  * Compares two string values. Returns false if any of two is not defined
-  * @return Boolean
-  */
-  static function equal($v1,$v2)
-  {
-    if (!isset($v1)) return false;
-    if (!isset($v2)) return false;
-    if ($v1 == $v2) return true;
-    return false;
   }
 
   /**

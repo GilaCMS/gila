@@ -34,9 +34,6 @@ spl_autoload_register(function ($class) {
   else if (file_exists('src/'.$class.'.php')) {
     require_once 'src/'.$class.'.php';
   }
-  else if (file_exists('lib/'.$class.'.php')) {
-    require_once 'lib/'.$class.'.php';
-  }
 });
 if(file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';
@@ -77,7 +74,6 @@ else {
 }
 
 Event::fire('load');
-$g = new Gila();
 
 $theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";

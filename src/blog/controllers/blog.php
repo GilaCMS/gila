@@ -9,7 +9,6 @@ use core\models\User;
 */
 class Blog extends Controller
 {
-  public $x;
   public static $page; /** The page number */
   public static $totalPosts;
   public static $totalPages;
@@ -17,7 +16,6 @@ class Blog extends Controller
 
   function __construct ()
   {
-    $this->x = "pedo";
     self::$page = intval(@$_GET['page'])?:1;
     self::$ppp = 12;
     self::$totalPosts = null;
@@ -83,8 +81,8 @@ class Blog extends Controller
     $tag = htmlentities($tag);
     Gila::canonical('tag/'.$tag);
     View::set('page_title', '#'.$tag.' | '.Gila::config('title'));
-    View::set('tag',$tag);
-    View::set('page',self::$page);
+    View::set('tag', $tag);
+    View::set('page', self::$page);
     View::set('posts', Post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
     View::render('blog-tag.php');
   }
@@ -112,9 +110,9 @@ class Blog extends Controller
     $name = $db->value("SELECT title from postcategory WHERE id=?",$category);
     Gila::canonical('blog/category/'.$category.'/'.$name.'/');
     self::$totalPosts = Post::total(['category'=>$category]);
-    View::set('category', $name);
+    View::set('categoryName', $name);
     View::set('page_title', $name);
-    View::set('page',self::$page);
+    View::set('page', self::$page);
     View::set('posts', Post::getPosts(['posts'=>self::$ppp,'category'=>$category,'page'=>self::$page]));
     View::render('blog-category.php');
   }
@@ -154,13 +152,13 @@ class Blog extends Controller
         $r['user_id'] = $db->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
       }
       $user_id = $r['user_id'];
-      View::set('author_id',$user_id);
-      View::set('title',$r['title']);
+      View::set('author_id', $user_id);
+      View::set('title', $r['title']);
       View::set('page_title', $r['title']);
-      View::set('slug',$r['slug']);
-      View::set('text',$r['post']);
-      View::set('id',$r['id']);
-      View::set('updated',$r['updated']);
+      View::set('slug', $r['slug']);
+      View::set('text', $r['post']);
+      View::set('id', $r['id']);
+      View::set('updated', $r['updated']);
 
       Gila::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
       View::meta('og:title',$r['title']);
@@ -263,7 +261,7 @@ class Blog extends Controller
     return self::$totalPages;
   }
 
-  static function get_url($id,$slug=NULL)
+  static function get_url($id,$slug=NULL) // DEPRECIATED
   {
     if($slug==NULL) return Gila::make_url('blog','',['p'=>$id]);
     return Gila::make_url('blog','',['p'=>$id,'slug'=>$slug]);

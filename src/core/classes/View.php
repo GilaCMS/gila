@@ -16,11 +16,11 @@ class View
   public static $canonical;
   public static $renderer;
 
-  static function set($param,$value)
+  static function set($param, $value)
   {
-    global $g,$c;
+    global $g,$c; // DEPRECIATED since 1.13.0
     self::$part[$param]=$value;
-    @$g->$param = $value;
+    @$g->$param = $value; 
     @$c->$param = $value;
   }
 

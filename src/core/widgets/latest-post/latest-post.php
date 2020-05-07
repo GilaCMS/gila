@@ -26,7 +26,7 @@ if($widget_data->show_thumbnails == 1) {
 
 foreach ($posts as $key=>$r ) {
   echo "<li>";
-  echo "<a href='".blog::get_url($r['id'],$r['slug'])."'>";
+  echo "<a href='".Gila::make_url('blog','',['p'=>$r['id'],'slug'=>$r['slug']])."'>";
   if($widget_data->show_thumbnails == 1) if($stacked[$key]!==false){
     if($img=View::thumb_xs($r['img'])) {
       echo "<img src='$img' style='float:left;margin-right:6px'> ";
