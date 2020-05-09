@@ -123,9 +123,9 @@ View::alerts();
   </div>
 </div>
 
-<?=View::script('src/core/assets/admin/media.js')?>
+<?=View::script('core/admin/media.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('src/core/assets/admin/listcomponent.js');?>
+<?=View::script('core/admin/listcomponent.js');?>
 
 <script>
 function addon_activate(p){

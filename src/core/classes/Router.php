@@ -113,8 +113,9 @@ class Router
     if(isset($args[0]) && $args[0]==$action)
       array_shift($args);
 
-    self::$action = $action;
-    return $action;
+    $action = explode('.', $action);
+    self::$action = $action[0];
+    return self::$action;
   }
 
   /**

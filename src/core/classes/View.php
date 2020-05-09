@@ -437,7 +437,7 @@ class View
       $max = (int)$prefix;
     }
 
-    $file = self::getThumbName($src, $max);
+    $file = self::getThumbName($src, $max, $prefix);
     if($file==false) return false;
     if($file==$src) return $src;
 
@@ -450,7 +450,7 @@ class View
     return $file;
   }
 
-  static function getThumbName ($src, $max)
+  static function getThumbName ($src, $max, $prefix = '')
   {
     $pathinfo = pathinfo($src);
     $ext = strtolower($pathinfo['extension']);
@@ -460,7 +460,7 @@ class View
     $key = $pathinfo['filename'].$ext.$max;
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
-    if(substr($src,0,strlen('assets')+1) == 'assets/') {
+    if(substr($src,0,7) == 'assets/') {
       // dont create new thumbs for existing websites
       $slugify = new Cocur\Slugify\Slugify();
       return SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;

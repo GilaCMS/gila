@@ -92,7 +92,7 @@ function block_create(content,type,pos) {
   cblock_type=type
   cblock_pos=pos
   g.ajax(href,function(data){
-    g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'create_widget delete_widget'})
+    g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'create_widget'})
     block_edit_open()
   });
 }

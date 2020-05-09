@@ -66,10 +66,10 @@ View::alerts();
 </div>
 
 
-<?=View::script('src/core/assets/admin/media.js')?>
+<?=View::script('core/admin/media.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('src/core/lang/content/'.Gila::config('language').'.js');?>
-<?=View::script('src/core/assets/admin/listcomponent.js');?>
+<?=View::script('core/lang/content/'.Gila::config('language').'.js');?>
+<?=View::script('core/admin/listcomponent.js');?>
 <script>
 function theme_activate(p) {
   g.loader()

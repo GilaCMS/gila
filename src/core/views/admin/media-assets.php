@@ -55,8 +55,8 @@ if($path=='src') {
   <?php
 }
 
-View::script('src/core/assets/admin/media.js');
-View::script('src/core/lang/content/'.Gila::config('language').'.js');
+View::script('core/admin/media.js');
+View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
 <div id='admin-media-div'>
 <div class='g-gal wrapper gap-8px' style='background:white;'>

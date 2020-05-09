@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" href="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>">
   <?=View::css('core/gila.min.css')?>
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-  <?=View::css('src/core/assets/admin/style.css')?>
+  <?=View::css('core/admin/style.css')?>
   <?=View::script("lib/jquery/jquery-3.3.1.min.js")?>
   <?=View::script("core/gila.min.js")?>
   <style>#topbar .g-navbar>li>a{color:#222}#topbar .g-navbar>li>a:hover{color:#ddd}</style>
@@ -27,6 +27,7 @@
         </a>
       </div>
       <ul class="g-nav vertical lazy" data-load="lzld/amenu">
+      ...
       </ul>
     </div>
     <!-- /#sidebar-wrapper -->

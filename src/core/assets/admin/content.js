@@ -269,13 +269,17 @@ Vue.component('g-table', {
       }
 
       if(displayType=='checkbox') if(cv==1){
-        return '<i style="color:green" class="fa fa-check fa-2x"></i>'//-square-o
+        return '<i style="color:green" class="fa fa-check fa-2x"></i>'
       } else {
         return '<i style="color:red" class="fa fa-remove fa-2x"></i>'
       }
 
-      if(displayType=='media') if(cv!=null){
-        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
+      if(displayType=='media') if(cv!=null) {
+        if(cv.split('.').pop()=='svg') {
+          return '<img src="'+cv+'" style="max-height:80px;max-width:80px"></img>'
+        } else {
+          return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
+        }
       } else {
         return '';
       }

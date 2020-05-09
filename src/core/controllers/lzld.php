@@ -31,7 +31,7 @@ class lzld extends Controller
     $file = $_GET['src'];
     $ext = explode('.', $file);
     $ext = $ext[count($ext)-1];
-    $size = (int)$_GET['media_thumb'] ?? 80;
+    $size = isset($_GET['media_thumb'])? (int)$_GET['media_thumb']: 80;
     $file = View::thumb($file, 'media_thumb/', $size);
 
     if (file_exists($file)) {
@@ -52,7 +52,9 @@ class lzld extends Controller
           header("Content-Type: image/png");
           break;
         default:
-          if($ext=='svg') echo file_get_contents($file);
+          if($ext=='svg' && substr($path,0,7) == 'assets/') {
+            echo file_get_contents($file);
+          }
           return;
           break;
       }

@@ -3,7 +3,7 @@
 return [
     'image'=>[
         "type"=>"media",
-        "default"=>"src/core/assets/photo.png"
+        "default"=>"assets/core/photo.png"
     ],
     'caption'=>[
         "type"=>"text"
