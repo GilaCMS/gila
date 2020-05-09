@@ -10,9 +10,9 @@ class Image
    * @param $max_height (int) Maximun height in pixels for the new image
    * @return boolean True if the thumbnail is created successfully
    */
-  static function make_thumb ($src,$file,$max_width,$max_height,$img_type=null)
+  static function makeThumb ($src,$file,$max_width,$max_height,$img_type=null)
   {
-    $src = self::local_path($src);
+    $src = self::localPath($src);
     if($src == false) return false;
     Gila::dir(substr($file, 0, strrpos($file,'/')));
 
@@ -36,7 +36,7 @@ class Image
 
     if($img_type==null) $img_type = $image[2];
 
-    $tmp = self::create_tmp($newwidth, $newheight, $image[2]);
+    $tmp = self::createTmp($newwidth, $newheight, $image[2]);
     $img_src = self::create($src, $image[2]);
 
     imagecopyresampled($tmp,$img_src,0,0,0,0,$newwidth,$newheight,$src_width,$src_height);
@@ -65,7 +65,7 @@ class Image
     return imageCreateFromJPEG($src);
   }
 
-  static function create_tmp ($width, $height, $type = 2) {
+  static function createTmp ($width, $height, $type = 2) {
     $tmp = imagecreatetruecolor($width,$height);
     if($type == 3 || $type == 32) {
       $color = imagecolorallocatealpha($tmp, 0, 0, 0, 127);
@@ -111,13 +111,13 @@ class Image
    * @param $max_height (int) Maximun height in pixels for the new images
    * @return Array
    */
-  static function make_stack ($revision,$src_array,$file,$max_width,$max_height)
+  static function makeStack ($revision,$src_array,$file,$max_width,$max_height)
   {
     $response = [];
     $dst_y = 0; $total_y = 0;
 
     foreach($src_array as $key=>$src) {
-      $_src = self::local_path($src);
+      $_src = self::localPath($src);
       if($_src == false) $_src = $src;
       Gila::dir(substr($file, 0, strrpos($file,'/')));
 
@@ -148,7 +148,7 @@ class Image
       } else $response[$key] = false;
     }
 
-    $tmp = self::create_tmp($max_width, $total_y,3);
+    $tmp = self::createTmp($max_width, $total_y,3);
 
     foreach($response as $key=>$img) if($img){
       $src = $src_array[$key];
@@ -165,7 +165,7 @@ class Image
     return [$file.'?'.$revision, $response];
   }
 
-  static function local_path($src)
+  static function localPath($src)
   {
     if(parse_url($src, PHP_URL_HOST) != null) if(strpos($src, Gila::config('base')) !== 0) {
       $_src = SITE_PATH.'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);

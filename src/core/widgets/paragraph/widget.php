@@ -2,7 +2,7 @@
 
 return [
     'text'=>[
-        'type'=>'tinymce',
+        'type'=>'paragraph',
         'default'=>'Paragraph',
         'allow-tags'=>true
     ]

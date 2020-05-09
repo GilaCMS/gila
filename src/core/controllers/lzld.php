@@ -4,7 +4,7 @@
 class lzld extends Controller
 {
 
-  function indexAction ($x)
+  function indexAction ()
   {
 
   }
@@ -17,13 +17,13 @@ class lzld extends Controller
     if ($widget) if ($widget->active==1) {
       $widget_data = json_decode($widget->data);
       @$widget_data->widget_id = $id;
-      View::widget_body($widget->widget, $widget_data);
+      View::widgetBody($widget->widget, $widget_data);
     }
   }
 
   function widget_areaAction ($area)
   {
-    View::widget_area($area);
+    View::widgetArea($area);
   }
 
   function thumbAction ()
@@ -61,6 +61,28 @@ class lzld extends Controller
       http_response_code(404);
     }
 
+  }
+
+  function amenuAction () {
+    @header("Pragma: cache");
+    @header("Cache-Control: max-age=60");
+    foreach (Gila::$amenu as $key => $value) {
+      if(isset($value['access'])) if(!Gila::hasPrivilege($value['access'])) continue;
+      if(isset($value['icon'])) $icon = 'fa-'.$value['icon']; else $icon='';
+      $url = $value[1]=='#'? Gila::url('admin/'.$value[1]): $value[1]; 
+      echo "<li><a href='".$url."'><i class='fa {$icon}'></i>";
+      echo " <span>".__("$value[0]")."</span></a>";
+      if(isset($value['children'])) {
+        echo "<ul class=\"dropdown\">";
+        foreach ($value['children'] as $subkey => $subvalue) {
+          if(isset($subvalue['access'])) if(!Gila::hasPrivilege($subvalue['access'])) continue;
+          if(isset($subvalue['icon'])) $icon = 'fa-'.$subvalue['icon']; else $icon='';
+          echo "<li><a href='".Gila::url($subvalue[1])."'><i class='fa {$icon}'></i> ".__("$subvalue[0]")."</a></li>";
+        }
+        echo "</ul>";
+      }
+      echo "</li>";
+    }
   }
 
 }

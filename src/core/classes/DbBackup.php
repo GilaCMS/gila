@@ -10,7 +10,7 @@ class DbBackup
     $this->dir = Gila::dir(LOG_PATH.'/db-backups/');
 
     if (gForm::posted('db_backup')) {
-      $this->backup_tables();
+      $this->backupTables();
     }
     if (isset($_GET['csrf']) && gForm::verifyToken($_GET['csrf'], 'db_backup2')) {
       if (isset($_GET['source'])) $this->source($_GET['source']);
@@ -29,7 +29,7 @@ class DbBackup
   * Backup the whole database or just a table
   * @param $tables optional (Array) The tables to backup. Default: '*'(all)
   */
-  function backup_tables($tables = '*')
+  function backupTables($tables = '*')
   {
     global $db;
     $return = '';

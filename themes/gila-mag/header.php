@@ -32,7 +32,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
 <body>
   <div  style="max-width:1100px; margin:auto">
     <div class="header">
-        <?php View::widget_area('body'); ?>
+        <?php View::widgetArea('body'); ?>
         <div class="inline-block">
           <a href="<?=Gila::base_url()?>" style="color:#333;">
           <?php

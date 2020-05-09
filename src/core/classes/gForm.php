@@ -27,7 +27,7 @@ class gForm
       return $v;
     }
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = (string)Session::user_id();
+    $gsession = (string)Session::userId();
     for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 32)];
     Session::key('_t'.$name, $gsession);
     return $gsession;

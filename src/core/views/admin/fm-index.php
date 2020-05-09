@@ -50,12 +50,12 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
     </div>
     <textarea id="textarea"><?=$value?></textarea>
-    
-    <script src="lib/CodeMirror/codemirror.js"></script>
-    <script src="lib/CodeMirror/css.js"></script>
-    <script src="lib/CodeMirror/xml.js"></script>
-    <script src="lib/CodeMirror/htmlmixed.js"></script>
-    <script src="lib/CodeMirror/javascript.js"></script>
+
+    <?=View::script('lib/CodeMirror/codemirror.js')?>
+    <?=View::script('lib/CodeMirror/javascript.js')?>
+    <?=View::script('lib/CodeMirror/css.js')?>
+    <?=View::script('lib/CodeMirror/xml.js')?>
+    <?=View::script('lib/CodeMirror/htmlmixed.js')?>
     
     <script>
     requiredRes = new Array()

@@ -42,7 +42,7 @@ function menu_item($mi, $tag=''){
     }
     if($mi['type']=='widget') {
         echo '<li><a href=\"'.$url.'\" >'.$mi['name'].'</a><ul style="min-width:240px">';
-        View::widget_body(@$mi['widget']);
+        View::widgetBody(@$mi['widget']);
         echo '</ul>';
         return;
     }

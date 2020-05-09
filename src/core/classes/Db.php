@@ -30,10 +30,6 @@ class Db
   {
     if ($this->connected) return;
     $this->link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
-    //if (!$this->link) {
-    //  echo "Could not connect to DB: Error ", mysqli_connect_errno();
-    //  exit;
-    //}
     $this->link->set_charset("utf8");
     if($this->profiling) $this->link->query('SET profiling=1;');
     $this->connected = true;
@@ -69,7 +65,7 @@ class Db
   }
 
   public function log($folder = false) {
-  $this->profiling = $folder;
+    $this->profiling = $folder;
   }
 
   public function execute($q, $args = null)
@@ -152,11 +148,6 @@ class Db
     return $arr;
   }
 
-  function getArray($q)
-  {
-      return $this->getList;
-  }
-
   function getList($q, $args = null)
   {
     $arr=[];
@@ -179,11 +170,3 @@ class Db
   }
 
 }
-
-/**
-* @example $db
-* @code
-* global $db;
-* $db = new Db('localhost', 'root', '', '');
-* @endcode
-*/

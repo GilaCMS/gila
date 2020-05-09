@@ -12,7 +12,7 @@ class cm extends Controller
 
   function __construct ()
   {
-    $this->permissions = User::permissions(Session::user_id());
+    $this->permissions = User::permissions(Session::userId());
     $this->table = Router::get("t",2);
     if(!isset(Gila::$content[$this->table])) {
       http_response_code(404);

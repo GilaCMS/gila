@@ -137,7 +137,7 @@ class user
 
   static function logoutFromDevice($n) {
     global $db;
-    $sessions = User::metaList(Session::user_id(), 'GSESSIONID');
+    $sessions = User::metaList(Session::userId(), 'GSESSIONID');
     if(!isset($sessions[$n])) return false;
     $db->query("DELETE FROM usermeta WHERE `vartype`='GSESSIONID' AND `value`=?;",
       $sessions[$n]);

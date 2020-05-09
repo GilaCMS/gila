@@ -1,12 +1,12 @@
 :root{--ve-bg: #ddd}
-.ve-editor{border:1px solid grey;width:100%}
+.ve-editor{border:1px solid lightgrey;width:100%}
 .ve-edit-node button{ min-width: 40px; background:grey; border-width: 0; color:white; padding: 4px 8px }
 .ve-edit-node td{ padding: 6px}
-.ve-editor-bar{background: var(--ve-bg);padding: 6px 0;}
+.ve-editor-bar{border-bottom: 1px solid lightgrey;padding: 6px;}
 .ve-footbar button,.ve-editor-bar button{border-width: 0; vertical-align: top}
 .ve-footbar button:hover,.ve-editor-bar button:hover{background: #bbb}
 .ve-footbar{background: var(--ve-bg);}
-.ve-editor-area{min-height: 200px; overflow: scroll; padding:10px;}
+.ve-editor-area{min-height: 140px; overflow: scroll; padding:6px;}
 .ve-editor-area table{width:100%}
 .ve-editor-area th,.ve-editor-area td,.ve-editor-area figure,p{border:1px dashed #bbb}
 .ve-editor-area figure{display: inline-block;}

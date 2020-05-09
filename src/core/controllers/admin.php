@@ -17,8 +17,6 @@ class admin extends Controller
   */
   function indexAction ()
   {
-    global $db;
-
     $id = Router::get('page_id',1) ?? null;
 
     if ($id && ($r = core\models\Page::getByIdSlug($id)) && ($r['publish']==1)
@@ -53,11 +51,11 @@ class admin extends Controller
     }
 
     $db->connect();
-    View::set('posts',$db->value('SELECT count(*) from post;'));
-    View::set('pages',$db->value('SELECT count(*) from page;'));
-    View::set('users',$db->value('SELECT count(*) from user;'));
+    View::set('postsC', $db->value('SELECT count(*) from post;'));
+    View::set('pagesC', $db->value('SELECT count(*) from page;'));
+    View::set('usersC', $db->value('SELECT count(*) from user;'));
     $db->close();
-    View::set('packages',count($GLOBALS['config']['packages']));
+    View::set('packagesC', count($GLOBALS['config']['packages']));
     View::renderAdmin('admin/dashboard.php');
   }
 
@@ -195,7 +193,7 @@ class admin extends Controller
   function logoutAction ()
   {
     global $db;
-    User::metaDelete(Session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+    User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
     echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
   }
@@ -218,7 +216,7 @@ class admin extends Controller
         $maxWidth = Gila::config('maxImgWidth') ?? 0;
         $maxHeight = Gila::config('maxImgHeight') ?? 0;
         if($maxWidth>0 && $maxHeight>0) {
-          image::make_thumb($path, $path, $maxWidth, $maxHeight);
+          Image::makeThumb($path, $path, $maxWidth, $maxHeight);
         }
       } else echo "<div class='alert error'>Error: not a media file!</div>";
     }
@@ -272,7 +270,7 @@ class admin extends Controller
     $device = Router::request('device');
     if(User::logoutFromDevice($device)) {
       $info = [];
-      $sessions = User::metaList(Session::user_id(), 'GSESSIONID');
+      $sessions = User::metaList(Session::userId(), 'GSESSIONID');
       foreach($sessions as $key=>$session) {
         $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
         $info[$key] = UserAgent::info($user_agent);

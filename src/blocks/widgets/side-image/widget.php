@@ -2,7 +2,7 @@
 
 return [
   "text"=>[
-    "type"=>"tinymce",
+    "type"=>"paragraph",
     "allow-tags"=>true
   ],
   "image"=>[

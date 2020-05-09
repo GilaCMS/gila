@@ -10,7 +10,7 @@ class Theme
     $download = Router::post('download');
     if($download) self::download($download);
     $save_options = Router::get('save_options');
-    if($save_options) self::save_options($save_options);
+    if($save_options) self::saveOptions($save_options);
     $options = Router::post('options');
     if($options) self::options($options);
   }
@@ -151,7 +151,7 @@ class Theme
   * Saves option values for a theme
   * @param $theme (string) Theme name
   */
-  static function save_options($theme)
+  static function saveOptions($theme)
   {
     global $db;
     $jsonFile = 'themes/'.$theme.'/package.json';

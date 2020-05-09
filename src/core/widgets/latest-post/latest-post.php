@@ -16,7 +16,7 @@ if($widget_data->show_thumbnails == 1) {
     $posts[] = $r;
     $img[]=$r['img'];
   }
-  list($stacked_file, $stacked) = View::thumb_stack($img, $stacked_file,80,80);
+  list($stacked_file, $stacked) = View::thumbStack($img, $stacked_file,80,80);
 } else {
   foreach (core\models\Post::getLatest($widget_data->n_post) as $r ) {
     $posts[] = $r;

@@ -1,7 +1,7 @@
 <?=View::script('core/gila.min.js')?>
 <?=View::script('lib/jquery/jquery-3.3.1.min.js')?>
-<script src="lib/CodeMirror/codemirror.js"></script>
-<script src="lib/CodeMirror/javascript.js"></script>
+<?=View::script('lib/CodeMirror/codemirror.js')?>
+<?=View::script('lib/CodeMirror/javascript.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
 <?=View::script('src/blocks/assets/vue-draggable.min.js');?>
 
@@ -15,7 +15,7 @@
 <?=View::css('src/blocks/assets/blocks.css')?>
 <?=View::cssAsync('lib/select2/select2.min.css')?>
 <?=View::cssAsync('src/core/assets/admin/vue-editor.css')?>
-<link rel="stylesheet" href="lib/CodeMirror/codemirror.css">
+<?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 
 <?php
 global $db;

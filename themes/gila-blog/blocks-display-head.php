@@ -26,7 +26,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
 <?php
 $bgimg = Gila::option('theme.header-image');
 if($bgimg) {
-    $srcset = View::thumb_srcset($bgimg);
+    $srcset = View::thumbSrcset($bgimg);
     echo "background: url({$srcset[0]});";
     echo "background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);";
 }

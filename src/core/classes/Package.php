@@ -12,7 +12,7 @@ class Package
     $deactivate = Router::post('deactivate');
     if($deactivate) self::deactivate($deactivate);
     $save_options = Router::get('save_options');
-    if($save_options) self::save_options($save_options);
+    if($save_options) self::saveOptions($save_options);
     $options = Router::post('options');
     if($options) self::options($options);
     $download = Router::post('download');
@@ -242,7 +242,7 @@ class Package
   * Saves option values for a package
   * @param $package (string) Package name
   */
-  static function save_options($package)
+  static function saveOptions($package)
   {
     if (file_exists('src/'.$package)) {
       global $db;

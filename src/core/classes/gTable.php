@@ -76,7 +76,7 @@ class gTable
     }
 
     if($user_id = $this->table['filter_owner']) {
-      @$this->table['filters'][$user_id] = Session::user_id();
+      @$this->table['filters'][$user_id] = Session::userId();
       foreach(['search-boxes','csv','list','edit','create'] as $key) {
         if(isset($this->table[$key])) {
           $this->table[$key] = array_diff($this->table[$key], [$user_id]);

@@ -56,5 +56,5 @@
 </div>
 
 <div class="widget-area-dashboard wrapper">
-  <?php View::widget_area('dashboard'); ?>
+  <?php View::widgetArea('dashboard'); ?>
 </div>

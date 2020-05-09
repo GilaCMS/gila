@@ -2,7 +2,7 @@
 <!-- Posts -->
 <div class="row">
     <div class="gm-9 wrapper" style="border-right: 1px dashed #ccc">
-    <?php View::widget_area('frontpage'); ?>
+    <?php View::widgetArea('frontpage'); ?>
     <?php foreach ($posts as $r) { ?>
     <div class="gm-12 row gap-8px post-review">
             <?php
@@ -30,6 +30,6 @@
         <input name='search' class="g-input fullwidth" value="<?=(htmlentities($search)??'')?>">
         <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
-      <?php View::widget_area('sidebar'); ?>
+      <?php View::widgetArea('sidebar'); ?>
     </div>
 </div>
