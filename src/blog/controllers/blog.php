@@ -146,7 +146,6 @@ class Blog extends Controller
     global $db;
 
     if (($r = Post::getByIdSlug($id)) && ($r['publish']==1)) {
-      Router::action('post');
       $id = $r['id'];
       if(!$r['user_id']) {
         $r['user_id'] = $db->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);

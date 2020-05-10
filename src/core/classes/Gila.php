@@ -246,7 +246,7 @@ class Gila
   */
   static function config($key, $value = null)
   {
-    if ($value === null) {
+    if ($value === null) { // DEPRECIATED should use setConfig()
       if(isset($GLOBALS['config'][$key])) {
         return $GLOBALS['config'][$key];
       }

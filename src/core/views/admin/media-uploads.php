@@ -1,6 +1,6 @@
 <?php
 $upload_folder = Gila::config('media_uploads') ?? 'assets';
-$path = Router::request('path', $_COOKIE['media_path']??$upload_folder);
+$path = Router::request('path', Session::key('media_path') ?? $upload_folder);
 if($path[0]=='.') {
   $path = $upload_folder;
   $monthDir = SITE_PATH.$path.'/'.date("Y-m", time());
@@ -9,8 +9,8 @@ if($path[0]=='.') {
     $path = $monthDir;
   }
 }
-setcookie('media_path', $path, time()+86400);
-setcookie('media_tab', 'uploads', time()+86400);
+Session::key('media_path', $path);
+Session::key('media_tabs', 'uploads');
 
 $dpath = realpath(SITE_PATH.$upload_folder);
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));

@@ -165,7 +165,7 @@ class Session
 
   function user_id() { // DEPRECIATED
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    return self::user_Id();
+    return self::userId();
   }
 
   /**

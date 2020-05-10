@@ -66,8 +66,7 @@ class lzld extends Controller
   }
 
   function amenuAction () {
-    @header("Pragma: cache");
-    @header("Cache-Control: max-age=60");
+    $userId = Session::userId();
     foreach (Gila::$amenu as $key => $value) {
       if(isset($value['access'])) if(!Gila::hasPrivilege($value['access'])) continue;
       if(isset($value['icon'])) $icon = 'fa-'.$value['icon']; else $icon='';

@@ -26,9 +26,9 @@ class Theme
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'),true);
         $require = [];
         if(isset($pac['require'])) foreach ($pac['require'] as $key => $value) {
-          if(!in_array($key, Gila::packages())&&($key!='core'))
+          if(!in_array($key, Gila::packages())&&($key!='core')) {
             $require[$key]=$key.' v'.$value;
-          else {
+          } else {
             $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'),true);
             if(version_compare($pacx['version'], $value) < 0) $require[$key]=$key.' v'.$value;
           }
