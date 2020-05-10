@@ -163,7 +163,7 @@ class Session
     return self::$user_id;
   }
 
-  function user_id() { // DEPRECIATED
+  static function user_id() { // DEPRECIATED
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     return self::userId();
   }
