@@ -30,10 +30,6 @@ class Db
   {
     if ($this->connected) return;
     $this->link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
-    //if (!$this->link) {
-    //  echo "Could not connect to DB: Error ", mysqli_connect_errno();
-    //  exit;
-    //}
     $this->link->set_charset("utf8");
     if($this->profiling) $this->link->query('SET profiling=1;');
     $this->connected = true;
@@ -69,22 +65,22 @@ class Db
   }
 
   public function log($folder = false) {
-  $this->profiling = $folder;
+    $this->profiling = $folder;
   }
 
   public function execute($q, $args = null)
   {
     if (!is_array($args)) {
       $argsBkp = $args;
-      $args = array($argsBkp);
-  }
+      $args = [$argsBkp];
+   }
 
-  $stmt = $this->link->prepare($q);
-  $dt = "";
-  foreach($args as $v) {
-    $x = $this->link->real_escape_string($v);
-    $dt .= is_int($v)? 'i': (is_string($v)? 's': (is_double($v)? 'd': 'b'));
-  }
+    $stmt = $this->link->prepare($q);
+    $dt = "";
+    foreach($args as $v) {
+      $x = $this->link->real_escape_string($v);
+      $dt .= is_int($v)? 'i': (is_string($v)? 's': (is_double($v)? 'd': 'b'));
+    }
     array_unshift($args, $dt);
     $refarg = [];
     foreach ($args as $key => $value) $refarg[] =& $args[$key];
@@ -110,7 +106,7 @@ class Db
     return $res;
   }
 
-  public function insert($table,$params=[])
+  public function insert($table, $params = [])
   {
     if (!$this->connected) $this->connect();
     $cols = implode(", ", array_keys($params));
@@ -152,11 +148,6 @@ class Db
     return $arr;
   }
 
-  function getArray($q)
-  {
-      return $this->getList;
-  }
-
   function getList($q, $args = null)
   {
     $arr=[];
@@ -170,7 +161,7 @@ class Db
     return mysqli_error($this->link);
   }
 
-  function value($q,$p=null)
+  function value($q, $p = null)
   {
     if($res = $this->query($q,$p)) {
       return mysqli_fetch_row($res)[0];
@@ -179,11 +170,3 @@ class Db
   }
 
 }
-
-/**
-* @example $db
-* @code
-* global $db;
-* $db = new Db('localhost', 'root', '', '');
-* @endcode
-*/

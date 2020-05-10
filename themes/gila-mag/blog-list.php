@@ -2,8 +2,8 @@
 <!-- Posts -->
 <div class="row">
     <div class="gm-9 wrapper" style="border-right: 1px dashed #ccc">
-    <?php View::widget_area('frontpage'); ?>
-    <?php foreach ($c->posts as $r) { ?>
+    <?php View::widgetArea('frontpage'); ?>
+    <?php foreach ($posts as $r) { ?>
     <div class="gm-12 row gap-8px post-review">
             <?php
             if($img=View::thumb_sm($r['img'],$r['id'].'__sm.jpg')){
@@ -15,7 +15,7 @@
             ?>
 
         <div class="<?=$title_gl?>">
-            <a href="<?=blog::get_url($r['id'],$r['slug'])?>">
+            <a href="<?=Gila::make_url('blog','',['p'=>$r['id'],'slug'=>$r['slug']])?>">
                 <h2 class="post-title" style="margin-top:0"><?=$r['title']?></h2>
             </a>
             <?=$r['description']?>
@@ -30,6 +30,6 @@
         <input name='search' class="g-input fullwidth" value="<?=(htmlentities($search)??'')?>">
         <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
-      <?php View::widget_area('sidebar'); ?>
+      <?php View::widgetArea('sidebar'); ?>
     </div>
 </div>

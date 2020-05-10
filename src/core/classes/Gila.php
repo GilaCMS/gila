@@ -23,6 +23,8 @@ class Gila
   static $mt;
   static $base_url;
   static $slaveDB = [];
+  static $langPaths = [];
+  static $langLoaded = false;
 
   /**
   * Registers new controllers
@@ -114,6 +116,16 @@ class Gila
   * @param $path (string) Path to the folder/prefix of language json files
   */
   static function addLang($path)
+  {
+    if(in_array($path, self::$langPaths)) return;
+
+    if(self::$langLoaded==true) {
+      self::loadLang($path);
+    }
+    self::$langPaths[] = $path;
+  }
+
+  static function loadLang($path)
   {
     $filepath = 'src/'.$path.Gila::config('language').'.json';
     if(file_exists($filepath)) {
@@ -207,7 +219,7 @@ class Gila
     } else $list = $key;
     foreach ($list as $k=>$i) {
       if(is_numeric($k)) {
-        Gila::$amenu[]=$i; // depreciated
+        Gila::$amenu[]=$i; // DEPRECIATED
       } else {
         Gila::$amenu[$k]=$i;
       }
@@ -234,7 +246,7 @@ class Gila
   */
   static function config($key, $value = null)
   {
-    if ($value === null) {
+    if ($value === null) { // DEPRECIATED should use setConfig()
       if(isset($GLOBALS['config'][$key])) {
         return $GLOBALS['config'][$key];
       }
@@ -272,18 +284,6 @@ class Gila
   {
     if ($type == 'alert') $type = '';
     return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
-  }
-
-  /**
-  * Compares two string values. Returns false if any of two is not defined
-  * @return Boolean
-  */
-  static function equal($v1,$v2)
-  {
-    if (!isset($v1)) return false;
-    if (!isset($v2)) return false;
-    if ($v1 == $v2) return true;
-    return false;
   }
 
   /**
@@ -455,7 +455,7 @@ class Gila
   {
     if(!is_array($pri)) $pri=explode(' ',$pri);
     if(!isset($GLOBALS['user_privileges'])) {
-      $GLOBALS['user_privileges'] = core\models\user::permissions(Session::user_id());
+      $GLOBALS['user_privileges'] = core\models\User::permissions(Session::userId());
     }
 
     foreach($pri as $p) if(@in_array($p,$GLOBALS['user_privileges'])) return true;
@@ -500,6 +500,10 @@ class Gila
 $GLOBALS['lang'] = [];
 
 function __($key, $alt = null) {
+  if(Gila::$langLoaded==false) {
+    foreach(Gila::$langPaths as $path) Gila::loadLang($path);
+    Gila::$langLoaded = true;
+  }
   if(@isset($GLOBALS['lang'][$key])) {
     if($GLOBALS['lang'][$key] != '')
       return $GLOBALS['lang'][$key];

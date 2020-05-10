@@ -1,7 +1,7 @@
 <?php
 namespace core\models;
 
-class page
+class Page
 {
   static function getById($id)
   {

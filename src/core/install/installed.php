@@ -1,7 +1,7 @@
 
 <head>
 	<base href="<?=Gila::base_url()?>">
-	<link type="text/css" rel="stylesheet" href="lib/gila.min.css"/>
+	<link type="text/css" rel="stylesheet" href="core/gila.min.css"/>
 	<link type="text/css" rel="stylesheet" href="lib/rj.css"/>
 	<title>Gila CMS</title>
 </head>

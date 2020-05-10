@@ -5,10 +5,10 @@ echo gForm::hiddenInput('db_backup');
 echo "<button class='g-btn' onclick='submit();'>Make a new backup</button></form>";
 
 echo "<br><br><br>";
-$files1 = scandir($c->dir);
+$files1 = scandir($dbBackupDir);
 echo '<div class="row">';
 if (count($files1)>2) {
-  echo "Backups found in /$c->dir:";
+  echo "Backups found in /$dbBackupDir:";
   echo '<table class="g-table table-hover"><tbody>';
   for($i=2;$i<count($files1);$i++) {
       echo '<tr><td>'.$files1[$i].'';

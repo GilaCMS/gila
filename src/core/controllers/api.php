@@ -1,7 +1,7 @@
 <?php
 
 
-class api extends controller
+class api extends Controller
 {
     function __construct ()
     {

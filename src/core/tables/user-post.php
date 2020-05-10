@@ -12,7 +12,7 @@ return [
   'filter_owner'=> 'user_id',
   'events'=>[
     ['change', function(&$row) {
-      $row['user_id']=Session::user_id();
+      $row['user_id']=Session::userId();
     }]
   ]
 ];

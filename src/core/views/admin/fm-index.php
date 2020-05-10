@@ -13,7 +13,7 @@
 <?php
 $mode_ext = ['php'=>'php','html'=>'htmlmixed','htm'=>'htmlmixed','js'=>'javascript','css'=>'css'];
 $img_ext = ['jpg','jpeg','gif','png','svg','ico','tiff'];
-$basepath = substr($c->filepath,0, strlen(realpath('')));
+$basepath = substr($filepath,0, strlen(realpath('')));
 if($basepath != realpath('')) $filepath = realpath('');
 $pathinfo = pathinfo($filepath);
 $ext = $pathinfo['extension'];
@@ -43,19 +43,19 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     } else if(is_dir($filepath) || $filepath=='') {
       // do nothing
     } else {
-      $value = htmlentities(file_get_contents($c->filepath));
+      $value = htmlentities(file_get_contents($filepath));
     ?>
     <span class="g-btn" onclick="savefile('<?=$show_path?>')"><?=_('Save')?></span>
     <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
     <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
     </div>
     <textarea id="textarea"><?=$value?></textarea>
-    
-    <script src="lib/CodeMirror/codemirror.js"></script>
-    <script src="lib/CodeMirror/css.js"></script>
-    <script src="lib/CodeMirror/xml.js"></script>
-    <script src="lib/CodeMirror/htmlmixed.js"></script>
-    <script src="lib/CodeMirror/javascript.js"></script>
+
+    <?=View::script('lib/CodeMirror/codemirror.js')?>
+    <?=View::script('lib/CodeMirror/javascript.js')?>
+    <?=View::script('lib/CodeMirror/css.js')?>
+    <?=View::script('lib/CodeMirror/xml.js')?>
+    <?=View::script('lib/CodeMirror/htmlmixed.js')?>
     
     <script>
     requiredRes = new Array()

@@ -2,7 +2,7 @@
 namespace core\models;
 use Gila;
 
-class post
+class Post
 {
   static function getById($id)
   {
@@ -26,6 +26,7 @@ class post
         ob_end_clean();
         $row['post'] .= $out;
       }
+      $row['url'] = Gila::make_url('blog','',['p'=>$row['id'],'slug'=>$row['slug']]);
       return $row;
     }
     return false;
@@ -84,6 +85,7 @@ class post
       ORDER BY id DESC LIMIT $start_from,$ppp";
     $res = $db->query($ql);
     if ($res) while ($r = mysqli_fetch_assoc($res)) {
+      $r['url'] = Gila::make_url('blog','',['p'=>$r['id'],'slug'=>$r['slug']]);
       yield $r;
     }
   }

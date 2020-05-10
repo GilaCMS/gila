@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<?=Gila::config('language')?>">
 <?php
-View::stylesheet('lib/gila.min.css');
+View::stylesheet('core/gila.min.css');
 View::head()?>
 <style>
 <?php $theme_color=Gila::option('theme.color','orangered'); ?>
@@ -32,7 +32,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
 <body>
   <div  style="max-width:1100px; margin:auto">
     <div class="header">
-        <?php View::widget_area('body'); ?>
+        <?php View::widgetArea('body'); ?>
         <div class="inline-block">
           <a href="<?=Gila::base_url()?>" style="color:#333;">
           <?php

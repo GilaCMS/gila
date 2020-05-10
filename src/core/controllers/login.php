@@ -1,8 +1,8 @@
 <?php
 
-use core\models\user as user;
+use core\models\User;
 
-class login extends controller
+class login extends Controller
 {
 
   function __construct ()
@@ -40,12 +40,12 @@ class login extends controller
       $email = $_POST['email'];
       $password = $_POST['password'];
       $name = $_POST['name'];
-      if(user::getByEmail($email)) {
+      if(User::getByEmail($email)) {
         View::alert('error', __('register_error1'));
       }
       else {
         // register the user
-        if(user::create($email,$password,$name)) {
+        if(User::create($email,$password,$name)) {
           // success
           View::includeFile('login-register-success.php');
           return;
@@ -63,13 +63,13 @@ class login extends controller
     $rpt = 'reset-password-time';
 
     if(isset($_GET['rp'])) {
-      $r = user::getByResetCode($_GET['rp']);
+      $r = User::getByResetCode($_GET['rp']);
       if (!$r) {
         echo  __('reset_error1');
       }
       else if(isset($_POST['pass'])) {
         $idUser=$r[0];
-        user::updatePassword($idUser,$_POST['pass']);
+        User::updatePassword($idUser,$_POST['pass']);
         View::includeFile('login-change-success.php');
       } else {
         Session::key($rpa, 0);
@@ -91,7 +91,7 @@ class login extends controller
       return;
     }
 
-    $r = user::getByEmail($email);
+    $r = User::getByEmail($email);
     Session::define([$rpa=>0,$rpt=>time()]);
     $tries = (int)Session::key($rpa);
     $lastTime = (int)Session::key($rpt);
@@ -108,7 +108,7 @@ class login extends controller
       $msg .= $baseurl."login/password_reset?rp=$reset_code\n\n";
       $msg .= __('reset_msg_ln4');
       $headers = "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
-      user::meta($r['id'],'reset_code',$reset_code);
+      User::meta($r['id'],'reset_code',$reset_code);
       new sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
 
@@ -123,9 +123,9 @@ class login extends controller
       echo '{"error":"Credencials missing"}';
       return;
     }
-    $usr = user::getByEmail($_POST['email']);
+    $usr = User::getByEmail($_POST['email']);
     if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
-      $token = core\models\user::meta($usr['id'], 'token');
+      $token = core\models\User::meta($usr['id'], 'token');
       if($token) {
         echo '{"token":"'.$token.'"}';
         return;

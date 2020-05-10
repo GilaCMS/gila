@@ -2,15 +2,15 @@
 <html lang="<?=Gila::config('language')?>">
 
 <head>
-    <base href="<?=Gila::base_url()?>">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="<?=Gila::base_url()?>">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?=Gila::config('title')?> - <?=__('reset_pass')?></title>
+  <title><?=Gila::config('title')?> - <?=__('reset_pass')?></title>
 
-    <link href="lib/gila.min.css" rel="stylesheet">
-    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <?=View::css('core/gila.min.css')?>
+  <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
 </head>
 
 <body>

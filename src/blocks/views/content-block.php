@@ -1,19 +1,21 @@
-<?=View::script('lib/gila.min.js')?>
+<?=View::script('core/gila.min.js')?>
 <?=View::script('lib/jquery/jquery-3.3.1.min.js')?>
-<script src="lib/CodeMirror/codemirror.js"></script>
-<script src="lib/CodeMirror/javascript.js"></script>
+<?=View::script('lib/CodeMirror/codemirror.js')?>
+<?=View::script('lib/CodeMirror/javascript.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('src/blocks/assets/vue-draggable.min.js');?>
+<?=View::script('blocks/vue-draggable.min.js');?>
 
 <?=View::script("lib/tinymce/tinymce.min.js")?>
-<?=View::script('src/core/assets/admin/listcomponent.js');?>
-<?=View::script('src/core/assets/admin/media.js')?>
+<?=View::script('core/admin/listcomponent.js');?>
+<?=View::script('core/admin/vue-editor.js');?>
+<?=View::script('core/admin/media.js')?>
 <?=View::script('lib/select2/select2.min.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-<?=View::css('src/blocks/assets/blocks.css')?>
+<?=View::css('blocks/blocks.css')?>
 <?=View::cssAsync('lib/select2/select2.min.css')?>
-<link rel="stylesheet" href="lib/CodeMirror/codemirror.css">
+<?=View::cssAsync('core/admin/vue-editor.css')?>
+<?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 
 <?php
 global $db;

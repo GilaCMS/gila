@@ -1,6 +1,6 @@
 <ul class="g-nav">
 <?php
-use core\models\page as page;
+use core\models\Page;
 
 $menu_items = $menu_data['children'];
 
@@ -27,7 +27,7 @@ function menu_item($mi, $tag=''){
     $name = isset($mi['name'])?$mi['name']:'';
 
     if($mi['type']=='page') {
-        if($r=page::getById(@$mi['id'])){
+        if($r=Page::getById(@$mi['id'])){
             $url = $r['slug'];
             $name = $r['title'];
         }
@@ -42,7 +42,7 @@ function menu_item($mi, $tag=''){
     }
     if($mi['type']=='widget') {
         echo '<li><a href=\"'.$url.'\" >'.$mi['name'].'</a><ul style="min-width:240px">';
-        View::widget_body(@$mi['widget']);
+        View::widgetBody(@$mi['widget']);
         echo '</ul>';
         return;
     }

@@ -1,6 +1,6 @@
 <?php
 
-class controller
+class Controller
 {
   static function admin()
   {

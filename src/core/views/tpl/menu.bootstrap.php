@@ -1,6 +1,6 @@
 <ul class="nav navbar-nav navbar-right">
 <?php
-use core\models\page as page;
+use core\models\Page;
 
 $menu_items = $menu_data['children'];
 
@@ -28,7 +28,7 @@ function menu_item($mi){
     $name = isset($mi['name'])?$mi['name']:'';
 
     if($mi['type']=='page') {
-        if($r=page::getById(@$mi['id'])){
+        if($r=Page::getById(@$mi['id'])){
             $url = $r['slug'];
             $name = $r['title'];
         }

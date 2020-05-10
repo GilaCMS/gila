@@ -22,7 +22,7 @@
 
     <br><div class="gm-12 row">
     <label class="gm-6"><?=__('Twitter Account')?></label>
-    <input name='twitter_account' value="<?=$c->twitter_account?>" class="gm-6" />
+    <input name='twitter_account' value="<?=$twitter_account?>" class="gm-6" />
     </div>
 
     <br><button type="submit" name="submit-btn" onclick="this.value='submited'"
@@ -56,7 +56,7 @@
     <fieldset>
     <br><div class="gm-12 row">
     <label class="gm-6"><?=__('Unique Token Key')?></label>
-    <input readonly type="text" value="<?=$c->token?>" class="gm-6" />
+    <input readonly type="text" value="<?=$token?>" class="gm-6" />
     </div>
 
     <br><div class="gm-12">
@@ -71,7 +71,7 @@
 </div>
 
   <?php
-  $sessions = core\models\user::metaList(Session::user_id(), 'GSESSIONID');
+  $sessions = core\models\User::metaList(Session::userId(), 'GSESSIONID');
   $info = [];
   foreach($sessions as $key=>$session) if(file_exists(LOG_PATH.'/sessions/'.$session)) {
     $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;

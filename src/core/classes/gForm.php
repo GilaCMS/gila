@@ -27,7 +27,7 @@ class gForm
       return $v;
     }
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = (string)Session::user_id();
+    $gsession = (string)Session::userId();
     for ($p = strlen($gsession); $p < 15; $p++) $gsession .= $chars[mt_rand(0, 32)];
     Session::key('_t'.$name, $gsession);
     return $gsession;
@@ -195,7 +195,7 @@ class gForm
     /* CONTENT
     if($type=='content') {
       $table = $op['table'];
-      $tablesrc = explode('.',Gila::$content[$table])[0];
+      $tablesrc = explode('.', Gila::$content[$table])[0];
       include __DIR__.'/content.php';
     }*/
   }

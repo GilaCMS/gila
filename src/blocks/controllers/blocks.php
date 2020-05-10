@@ -1,9 +1,6 @@
 <?php
 
-use core\models\widget;
-use core\models\user;
-
-class blocks extends controller
+class blocks extends Controller
 {
   static private $draft = false;
 

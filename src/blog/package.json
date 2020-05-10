@@ -1,6 +1,6 @@
 {
   "name":"Blog",
-  "version":"1.5.1",
+  "version":"1.6.0",
   "description":"Adds the blog controller.",
   "lang":"core/lang/admin/",
   "options": {
@@ -13,6 +13,6 @@
     "twitter-site": []
   },
   "require": {
-    "core": "1.10.9"
+    "core": "1.13.0"
   }
 }

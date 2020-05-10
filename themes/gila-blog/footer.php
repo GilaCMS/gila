@@ -4,7 +4,7 @@
 <footer  class="fullwidth pad"  style="">
   <div style="max-width:900px; margin:auto">
     <div class="footer-widget">
-        <?php View::widget_area('foot')?>
+        <?php View::widgetArea('foot')?>
     </div>
     <p class="copyright footer-text">
         <?=Gila::option('theme.footer-text','Copyright &copy; Your Website '.date('Y'));?>

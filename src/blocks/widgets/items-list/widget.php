@@ -4,12 +4,12 @@ return [
     'items'=>[
         'type'=>'list',
         'fields'=>[
-            'image'=>['type'=>'media','default'=>'src/core/assets/cogs.png'],
+            'image'=>['type'=>'media','default'=>'assets/core/check.png'],
             'name'=>[],
             'text'=>[],
             'url'=>[],
         ],
-        'default'=>'[["src/core/assets/cogs.png", "Feature"],["src/core/assets/cogs.png", "Feature"],["src/core/assets/cogs.png", "Feature"]]'
+        'default'=>'[["assets/core/check.png", "Feature"],["assets/core/check.png", "Feature"],["assets/core/check.png", "Feature"]]'
     ],
     'image'=>[
         'type'=>'media'

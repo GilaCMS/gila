@@ -1,6 +1,6 @@
 <?php
 
-use core\models\user;
+use core\models\User;
 
 class Session
 {
@@ -12,7 +12,7 @@ class Session
   {
     if(self::$started==true) return;
     self::$started = true;
-    session_set_cookie_params(24*3600);
+    @session_set_cookie_params(24*3600);
 
     try {
       @session_start();
@@ -22,7 +22,7 @@ class Session
     Session::define(['user_id'=>0]);
 
     if (isset($_POST['username']) && isset($_POST['password']) && Session::waitForLogin()==0) {
-      $usr = user::getByEmail($_POST['username']);
+      $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
         Session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
         unset($_SESSION['failed_attempts']);
@@ -32,10 +32,10 @@ class Session
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
-      if(Session::user_id()===0) {
+      if(Session::userId()===0) {
         if(isset($_COOKIE['GSESSIONID'])) {
-          foreach (user::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
-            $usr = user::getById($user_id);
+          foreach (User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
+            $usr = User::getById($user_id);
             if ($usr && $usr['active']==1) {
               Session::user($usr['id'], $usr['username'], $usr['email']);
             }
@@ -43,12 +43,12 @@ class Session
         }
       } else {
         if(!isset($_COOKIE['GSESSIONID'])) {
-          self::setCookie (Session::user_id());
+          self::setCookie (Session::userId());
         }
       }
 
       if(isset($_COOKIE['GSESSIONID'])) if(!file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-        user::metaDelete(Session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+        User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
         Session::destroy();
       }
     }
@@ -72,11 +72,11 @@ class Session
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
     $gsession = (string)$id;
     for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
-    user::meta($id, 'GSESSIONID', $gsession, true);
-    setcookie('GSESSIONID', $gsession, time()+(86400 * 30), '/');
+    User::meta($id, 'GSESSIONID', $gsession, true);
+    @setcookie('GSESSIONID', $gsession, time()+(86400 * 30), '/');
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if(isset($_COOKIE['GSESSIONID'])) {
-      user::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
+      User::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
     } else {
       // setcookie('GSESSIONID', $gsession, time() + (86400 * 30),
       //  '/', null, null, true, ['samesite'=>'Strict']);
@@ -143,13 +143,13 @@ class Session
   * Returns user id
   * @return int User's id. 0 if user is not logged in.
   */
-  static function user_id ()
+  static function userId ()
   {
     if(isset(self::$user_id)) return self::$user_id;
     $user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
     if($token && !isset($_COOKIE['GSESSIONID'])) {
-      $usr = user::getByMeta('token', $token);
+      $usr = User::getByMeta('token', $token);
       if($usr) {
         $user_id = $usr['id'];
       }
@@ -163,14 +163,19 @@ class Session
     return self::$user_id;
   }
 
+  static function user_id() { // DEPRECIATED
+    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
+    return self::userId();
+  }
+
   /**
   * Destroys the session session
   */
   static function destroy ()
   {
-    if(self::user_id()>0) {
+    if(self::userId()>0) {
       $session_log = new Logger(LOG_PATH.'/sessions.log');
-      $session_log->info('End',['user_id'=>self::user_id(), 'email'=>self::key('user_email')]);
+      $session_log->info('End',['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
     }
     @$_SESSION = [];
     @session_destroy();

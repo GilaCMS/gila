@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="<?=Gila::config('language')?>">
 <?php
-View::stylesheet('lib/gila.min.css');
+View::stylesheet('core/gila.min.css');
 View::stylesheet('lib/font-awesome/css/font-awesome.min.css');
 View::head()?>
 <style>
@@ -26,7 +26,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
 <?php
 $bgimg = Gila::option('theme.header-image');
 if($bgimg) {
-    $srcset = View::thumb_srcset($bgimg);
+    $srcset = View::thumbSrcset($bgimg);
     echo "background: url({$srcset[0]});";
     echo "background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);";
 }

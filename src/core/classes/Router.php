@@ -32,7 +32,7 @@ class Router
       Router::$args = [];
     }
 
-    $controller = Router::get_controller(Router::$args);
+    $controller = Router::getController(Router::$args);
     $controller_file = 'src/'.Gila::$controller[$controller].'.php';
 
     if(!file_exists($controller_file)) {
@@ -52,7 +52,7 @@ class Router
     if(isset(Gila::$on_controller[$controller]))
       foreach(Gila::$on_controller[$controller] as $fn) $fn();
 
-    $action = Router::get_action($controllerClass, Router::$args);
+    $action = Router::getAction($controllerClass, Router::$args);
     $action_fn = $action.'Action';
 
     if(isset(Gila::$before[$controller][$action]))
@@ -73,7 +73,7 @@ class Router
     }
   }
 
-  static function get_controller (&$args):string
+  static function getController (&$args):string
   {
     if(isset(self::$controller)) return self::$controller;
     $default = Gila::config('default-controller');
@@ -97,13 +97,13 @@ class Router
     return $controller;
   }
 
-  static function get_action(&$controller,&$args):string
+  static function getAction(&$controller,&$args):string
   {
-    global $c;
     if(isset(self::$action)) return self::$action;
     $action = self::request('action',@$args[0]?:'index');
 
-    if (!method_exists($controller,$action.'Action')) {
+    if (!method_exists($controller,$action.'Action') &&
+        !isset(Gila::$action[$controller][$action])) {
       if (method_exists($controller,'indexAction')) {
         $action = 'index';
       } else {
@@ -114,8 +114,9 @@ class Router
     if(isset($args[0]) && $args[0]==$action)
       array_shift($args);
 
-    self::$action = $action;
-    return $action;
+    $action = explode('.', $action);
+    self::$action = $action[0];
+    return self::$action;
   }
 
   /**
@@ -166,7 +167,7 @@ class Router
   */
   static function controller ()
   {
-    return @Router::get_controller(self::$args);
+    return @Router::getController(self::$args);
   }
 
   /**
@@ -174,8 +175,8 @@ class Router
   */
   static function action ($set = null)
   {
-    if($set) self::$action = $set;
-    return @Router::get_action(self::controller(),self::$args);
+    if($set) self::$action = $set; // DEPRECIATED 
+    return @Router::getAction(self::controller(), self::$args);
   }
 
   static function args_shift()

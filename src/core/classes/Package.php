@@ -12,11 +12,11 @@ class Package
     $deactivate = Router::post('deactivate');
     if($deactivate) self::deactivate($deactivate);
     $save_options = Router::get('save_options');
-    if($save_options) self::save_options($save_options);
+    if($save_options) self::saveOptions($save_options);
     $options = Router::post('options');
     if($options) self::options($options);
     $download = Router::post('download');
-    if(Gila::config('test')=='1') $download = Router::request('test');
+    if(Gila::config('test')=='1') $download = Router::request('test') ?? $download;
     if($download && FS_ACCESS) {
       if(self::download($download)==true) {
         if(!$_REQUEST['g_response']) {
@@ -153,11 +153,20 @@ class Package
       return false;
     }
     if ($zip->open($localfile) === true) {
+      $previousFolder = LOG_PATH.'/previous-packages/';
+      $month_in_seconds = 2592000;
       $zip->extractTo($tmp_name);
       $zip->close();
       if(file_exists($target)) {
-        rename($target, Gila::dir(LOG_PATH.'/previous-packages/'.date("Y-m-d H:i:s").' '.$package));
+        rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$package));
       }
+      $previousPackages = scandir($previousFolder);
+      foreach($previousPackages as $folder) {
+        if(filemtime($previousFolder.$folder) < time()-$month_in_seconds) {
+          FileManager::delete($previousFolder.$folder);
+        }
+      }
+      
       $unzipped = scandir($tmp_name);
       if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
       rename($tmp_name, $target);
@@ -233,7 +242,7 @@ class Package
   * Saves option values for a package
   * @param $package (string) Package name
   */
-  static function save_options($package)
+  static function saveOptions($package)
   {
     if (file_exists('src/'.$package)) {
       global $db;

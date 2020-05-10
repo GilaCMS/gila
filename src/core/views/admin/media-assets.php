@@ -1,5 +1,5 @@
 <?php
-$path = Router::request('path', $_COOKIE['asset_path'] ?? 'src');
+$path = Router::request('path', Session::key('asset_path') ?? 'src');
 if($path[0]=='.') $path = 'src';
 
 $acceptedPath = false;
@@ -17,7 +17,8 @@ if($path!='src') {
   }
   if($acceptedPath == false) $path = 'src';
 }
-setcookie('media_path', $path, time()+86400);
+Session::key('asset_path', $path);
+Session::key('media_tabs', 'assets');
 $disabled = ($path=='')?'disabled':'';
 
 $files=[];
@@ -55,8 +56,8 @@ if($path=='src') {
   <?php
 }
 
-View::script('src/core/assets/admin/media.js');
-View::script('src/core/lang/content/'.Gila::config('language').'.js');
+View::script('core/admin/media.js');
+View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
 <div id='admin-media-div'>
 <div class='g-gal wrapper gap-8px' style='background:white;'>

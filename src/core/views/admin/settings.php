@@ -26,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (Router::post('submit-btn')=='subm
   Gila::updateConfigFile();
   View::alert('success',__('_changes_updated'));
 }
-View::script('src/core/assets/admin/media.js');
-View::script('src/core/lang/content/'.Gila::config('language').'.js');
+View::script('core/admin/media.js');
+View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
 
 <div class="gm-12">
@@ -45,7 +45,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 <?php } ?>
 
   <br>
-  <?php echo gForm::input('gila_user_register',["type"=>"switcher"],Gila::config('user_register'),__("New users can register")) ?>
+  <?php echo gForm::input('gila_user_register',["type"=>"switcher"], Gila::config('user_register'),__("New users can register")) ?>
 
   <br><div class="gm-12">
     <label class="gm-4"><?=__("Timezone")?></label>
@@ -94,10 +94,10 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <h2><?=__("Advanced Settings")?></h2><hr>
 
   <br>
-  <?php echo gForm::input('gila_use_cdn', ["type"=>"switcher"],Gila::config('use_cdn'), __("Use CDN")) ?>
+  <?php echo gForm::input('gila_use_cdn', ["type"=>"switcher"], Gila::config('use_cdn'), __("Use CDN")) ?>
 
   <br>
-  <?php echo gForm::input('gila_rewrite', ["type"=>"switcher"],Gila::config('rewrite'), __("Pretty Urls")) ?>
+  <?php echo gForm::input('gila_rewrite', ["type"=>"switcher"], Gila::config('rewrite'), __("Pretty Urls")) ?>
 
   <br><div class="gm-12">
   <label class="gm-4"><?=__("Default Controller")?></label>

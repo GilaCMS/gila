@@ -1,24 +1,26 @@
-<?=View::css('src/core/assets/admin/content.css')?>
+<?=View::css('core/admin/content.css')?>
 <?=View::cssAsync('lib/select2/select2.min.css')?>
-<?=View::cssAsync('src/core/assets/admin/vue-editor.css')?>
+<?=View::cssAsync('core/admin/vue-editor.css')?>
 
 <?=View::script('lib/jquery/jquery-3.3.1.min.js')?>
 <?=View::script('lib/select2/select2.min.js','async')?>
 <?=View::script('lib/vue/vue.min.js')?>
 
-<script src="lib/CodeMirror/codemirror.js"></script>
-<link rel="stylesheet" href="lib/CodeMirror/codemirror.css">
+<?=View::script('lib/CodeMirror/codemirror.js')?>
+<?=View::script('lib/CodeMirror/javascript.js')?>
+<?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 <style>.CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}</style>
-<script src="lib/CodeMirror/javascript.js"></script>
 <?=View::script("lib/tinymce/tinymce.min.js")?>
 
 <?php
-View::script('src/core/assets/admin/media.js');
-View::script('src/core/assets/admin/content.js');
-if(file_exists('src/'.$tablesrc.'.js')) View::script('src/'.$tablesrc.'.js');
-View::script('src/core/lang/content/'.Gila::config('language').'.js');
-View::script('src/core/assets/admin/listcomponent.js');
-View::script('src/core/assets/admin/vue-editor.js');
+View::script('core/admin/media.js');
+View::script('core/admin/content.js');
+if(file_exists('src/'.$tablesrc.'.js')) {
+  echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
+}
+View::script('core/lang/content/'.Gila::config('language').'.js');
+View::script('core/admin/listcomponent.js');
+View::script('core/admin/vue-editor.js');
 ?>
 
 <style>
@@ -29,7 +31,7 @@ View::script('src/core/assets/admin/vue-editor.js');
 
 <?php
 global $db;
-$pnk = new gTable($table, core\models\user::permissions(Session::user_id()));
+$pnk = new gTable($table, core\models\User::permissions(Session::userId()));
 $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];
@@ -130,7 +132,7 @@ function updateRegistry(){
 Save
 </button>
 
-<?=View::script('src/core/assets/lazyImgLoad.js');?>
+<?=View::script('core/lazyImgLoad.js');?>
 <script>
 var app = new Vue({
   el: 'vue-editor'

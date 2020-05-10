@@ -22,7 +22,7 @@ class gTable
     }
     $this->loadSchema($content);
 
-    if($patch = @Gila::$contentField[$this->table['name']]) { //depraciated from 1.8.0
+    if($patch = @Gila::$contentField[$this->table['name']]) { // DEPRECIATED since 1.8.0
       $this->table['fields'] = array_merge($this->table['fields'],$patch);
     }
     if(isset(Gila::$contentInit[$this->table['name']])) {
@@ -76,7 +76,7 @@ class gTable
     }
 
     if($user_id = $this->table['filter_owner']) {
-      @$this->table['filters'][$user_id] = Session::user_id();
+      @$this->table['filters'][$user_id] = Session::userId();
       foreach(['search-boxes','csv','list','edit','create'] as $key) {
         if(isset($this->table[$key])) {
           $this->table[$key] = array_diff($this->table[$key], [$user_id]);

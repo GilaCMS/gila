@@ -56,7 +56,7 @@
 </style>
 
 <?php
-use core\models\page as page;
+use core\models\Page;
 
 global $db;
 

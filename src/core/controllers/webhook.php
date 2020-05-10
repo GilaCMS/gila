@@ -1,7 +1,7 @@
 <?php
 
 
-class webhook extends controller
+class webhook extends Controller
 {
     function __construct ()
     {

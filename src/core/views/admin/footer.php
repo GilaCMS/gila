@@ -19,9 +19,11 @@ document.getElementById("menu-toggle").addEventListener("click", function(e) {
   e.preventDefault();
   document.getElementById("wrapper").classList.toggle('toggled');
   value = document.getElementById("wrapper").classList[0]=='toggled'?true:false
-  document.cookie = 'sidebar_toggled='+value+';path=/'
+  document.cookie = 'sidebar_toggled='+value+';path=/';
+  setTimeout(lazyImgLoad, 100);
 });
 </script>
+<?php View::scriptAsync("core/lazyImgLoad.js")?>
 <?php View::scripts()?>
 
 </body>

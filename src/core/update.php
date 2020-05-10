@@ -39,6 +39,7 @@ if(version_compare(Package::version('core'),'1.12.2') < 0) {
 }
 
 // always update them
-file_put_contents("lib/gila.min.css",file_get_contents("src/core/lib/gila.min.css"));
-file_put_contents("lib/gila.min.js",file_get_contents("src/core/lib/gila.min.js"));
+$assets_core = Gila::dir('assets/core/');
+file_put_contents($assets_core."gila.min.css",file_get_contents("src/core/assets/gila.min.css"));
+file_put_contents($assets_core."gila.min.js",file_get_contents("src/core/assets/gila.min.js"));
 

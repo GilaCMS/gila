@@ -1,7 +1,7 @@
 <?php
 
 
-class db_backup
+class DbBackup
 {
   private $dir;
 
@@ -10,7 +10,7 @@ class db_backup
     $this->dir = Gila::dir(LOG_PATH.'/db-backups/');
 
     if (gForm::posted('db_backup')) {
-      $this->backup_tables();
+      $this->backupTables();
     }
     if (isset($_GET['csrf']) && gForm::verifyToken($_GET['csrf'], 'db_backup2')) {
       if (isset($_GET['source'])) $this->source($_GET['source']);
@@ -20,7 +20,7 @@ class db_backup
       }
     }
 
-    View::set('dir',$this->dir);
+    View::set('dbBackupDir',$this->dir);
     View::set('csrf',gForm::getToken('db_backup2'));
     View::renderAdmin('admin/db_backup.php');
   }
@@ -29,14 +29,14 @@ class db_backup
   * Backup the whole database or just a table
   * @param $tables optional (Array) The tables to backup. Default: '*'(all)
   */
-  function backup_tables($tables = '*')
+  function backupTables($tables = '*')
   {
     global $db;
     $return = '';
 
     if ($tables == '*')
     {
-      $tables = array();
+      $tables = [];
       $result = $db->query('SHOW TABLES');
       while($row = mysqli_fetch_row($result)) $tables[] = $row[0];
     } else {

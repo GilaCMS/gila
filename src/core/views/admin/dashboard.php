@@ -5,56 +5,56 @@
 <?php if(Gila::hasPrivilege('admin')) { ?>
   <div class='gm-3 wrapper'>
     <a href="admin/content/post">
-        <div class='alert' style="background:olivedrab">
-            <span>Posts</span>
-            <div style="font-size:200%"><?=$c->posts?></div>
-        </div>
+      <div class='alert' style="background:olivedrab">
+        <span>Posts</span>
+        <div style="font-size:200%"><?=$postsC?></div>
+      </div>
     </a>
   </div>
   <div class='gm-3 wrapper'>
     <a href="admin/users">
-        <div class='alert' style="background:cornflowerblue">
-            <span>Users</span>
-            <div style="font-size:200%"><?=$c->users?></div>
-        </div>
+      <div class='alert' style="background:cornflowerblue">
+        <span>Users</span>
+        <div style="font-size:200%"><?=$usersC?></div>
+      </div>
     </a>
   </div>
   <div class='gm-3 wrapper'>
     <a href="admin/content/page">
-        <div class='alert' style="background:coral">
-            <span>Pages</span>
-            <div style="font-size:200%"><?=$c->pages?></div>
-        </div>
+      <div class='alert' style="background:coral">
+        <span>Pages</span>
+        <div style="font-size:200%"><?=$pagesC?></div>
+      </div>
     </a>
   </div>
   <div class='gm-3 wrapper'>
     <a href="admin/packages">
-        <div class='alert' style="background:orchid">
-            <span>Packages</span>
-            <div style="font-size:200%"><?=$c->packages?></div>
-        </div>
+      <div class='alert' style="background:orchid">
+        <span>Packages</span>
+        <div style="font-size:200%"><?=$packagesC?></div>
+      </div>
     </a>
   </div>
 <?php } else if(Gila::hasPrivilege('editor')) { ?>
   <div class='gm-6 wrapper'>
     <a href="admin/content/post">
-        <div class='alert' style="background:olivedrab">
-            <span>Posts</span>
-            <div style="font-size:200%"><?=$c->posts?></div>
-        </div>
+      <div class='alert' style="background:olivedrab">
+        <span>Posts</span>
+        <div style="font-size:200%"><?=$postsC?></div>
+      </div>
     </a>
   </div>
   <div class='gm-6 wrapper'>
     <a href="admin/content/page">
-        <div class='alert' style="background:coral">
-            <span>Pages</span>
-            <div style="font-size:200%"><?=$c->pages?></div>
-        </div>
+      <div class='alert' style="background:coral">
+        <span>Pages</span>
+        <div style="font-size:200%"><?=$pagesC?></div>
+      </div>
     </a>
   </div>
 <?php } ?>
 </div>
 
 <div class="widget-area-dashboard wrapper">
-    <?php View::widget_area('dashboard'); ?>
+  <?php View::widgetArea('dashboard'); ?>
 </div>

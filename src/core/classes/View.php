@@ -2,25 +2,25 @@
 
 class View
 {
-  private static $script = array();
-  private static $scriptAsync = array();
-  private static $css = array();
+  private static $script = [];
+  private static $scriptAsync = [];
+  private static $css = [];
   private static $cssAsync = false;
-  private static $meta = array();
-  private static $alert = array();
-  public static $part = array();
-  public static $stylesheet = array();
-  public static $cdn_paths = array();
-  public static $view_file = array();
+  private static $meta = [];
+  private static $alert = [];
+  public static $part = [];
+  public static $stylesheet = [];
+  public static $cdn_paths = [];
+  public static $view_file = [];
   public static $parent_theme = false;
   public static $canonical;
   public static $renderer;
 
-  static function set($param,$value)
+  static function set($param, $value)
   {
-    global $g,$c;
+    global $g,$c; // DEPRECIATED since 1.13.0
     self::$part[$param]=$value;
-    @$g->$param = $value;
+    @$g->$param = $value; 
     @$c->$param = $value;
   }
 
@@ -35,6 +35,9 @@ class View
   static function stylesheet($href)
   {
     if(in_array($href,self::$stylesheet)) return;
+    if(file_exists('assets/'.$href)) {
+      $href = 'assets/'.$href;
+    }
     self::$stylesheet[]=$href;
   }
 
@@ -74,10 +77,13 @@ class View
   * Adds a link tag of css file
   * @param $css Path to css file
   */
-  static function css($css)
+  static function css($css, $uri=false)
   {
     if(in_array($css,self::$css)) return;
     self::$css[]=$css;
+    if(file_exists('assets/'.$css)) {
+      $css = 'assets/'.$css;
+    }
     echo '<link rel="stylesheet" href="'.$css.'">';
   }
 
@@ -85,11 +91,15 @@ class View
   * Loads a css file asynchronously using a simple javascript function
   * @param $css Path to css file
   */
-  static function cssAsync($css)
+  static function cssAsync($css, $uri=false)
   {
     if(in_array($css,self::$css)) return;
     self::$css[]=$css;
+    if(file_exists('assets/'.$css)) {
+      $css = 'assets/'.$css;
+    }
     if(!self::$cssAsync) {
+      self::$cssAsync = true;
     ?>
     <script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script>
     <?php
@@ -101,7 +111,7 @@ class View
   * Adds a script tag of javascript file
   * @param $script Path to js file
   */
-  static function script($script, $prop = '')
+  static function script($script, $uri=false, $prop='')
   {
     if(in_array($script, self::$script)) return;
     self::$script[]=$script;
@@ -117,11 +127,11 @@ class View
   * Adds a script tag of javascript file lo load asynchronously
   * @param $script Path to js file
   */
-  static function scriptAsync($script)
+  static function scriptAsync($script, $uri=false)
   {
     if(in_array($script,self::$scriptAsync)) return;
     self::$scriptAsync[]=$script;
-    self::script($script, 'async');
+    self::script($script, $uri, 'async');
   }
 
   /**
@@ -261,7 +271,7 @@ class View
     if(file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file),true);
     } else {
-      $menu_data = core\models\menu::defaultData();
+      $menu_data = core\models\Menu::defaultData();
     }
     include self::getViewFile($tpl);
   }
@@ -269,7 +279,7 @@ class View
   static function widget ($id,$widget_exp=null)
   {
     global $db,$widget_data;
-    if($res = core\models\widget::getById($id)){
+    if($res = core\models\Widget::getById($id)){
       $widget_data = json_decode($res[0]->data);
       $widget_type = $res[0]->widget;
     } else {
@@ -311,7 +321,7 @@ class View
   * @param widget_data  (array) Optional. The data to be used
   * @param widget_file (string) Optional. Alternative wiget view file
   */
-  static function widget_body ($type, $widget_data=null, $widget_file=null)
+  static function widgetBody ($type, $widget_data=null, $widget_file=null)
   {
     if($widget_file != null) {
       $widget_file = self::getThemePath().'/widgets/'.$widget_file.'.php';
@@ -328,10 +338,16 @@ class View
     @include $widget_file;
   }
 
+  static function widget_body ($type, $widget_data=null, $widget_file=null) // DEPRECIATED
+  {
+    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
+    self::widgetBody($type, $widget_data, $widget_file);
+  }
+
   static function getWidgetBody ($type, $widget_data=null, $widget_file=null)
   {
     ob_start();
-    View::widget_body($type, $widget_data, $widget_file);
+    View::widgetBody($type, $widget_data, $widget_file);
     $html = ob_get_contents();
     ob_end_clean();
     return $html;
@@ -346,7 +362,7 @@ class View
     foreach($blocks as $b) {
       if(!is_object($b)) $b = (object)$b;
       //echo '<div class="block '.$b->_type.'">';
-      View::widget_body($b->_type, $b);
+      View::widgetBody($b->_type, $b);
       //echo '</div>'; 
     }
   }
@@ -356,11 +372,11 @@ class View
   * @param $area (string) Area name
   * @param $div (optional boolean) If true, widget body will be printed as child of <div class="widget"> item.
   */
-  static function widget_area ($area, $div=true, $type=null, $widget_file=null)
+  static function widgetArea ($area, $div=true, $type=null, $widget_file=null)
   {
     global $widget_data;
 
-    $widgets = core\models\widget::getActiveByArea($area);
+    $widgets = core\models\Widget::getActiveByArea($area);
     if ($widgets) foreach ($widgets as $widget) {
       if($type != null) if($widget['widget'] != $type) continue;
 
@@ -374,16 +390,22 @@ class View
         echo '<div class="widget-body">';
       }
 
-      self::widget_body($widget['widget'], $widget_data);
+      self::widgetBody($widget['widget'], $widget_data);
       if($div) echo '</div></div>';
     }
     Event::fire($area);
   }
 
+  static function widget_area ($area, $div=true, $type=null, $widget_file=null) // DEPRECIATED
+  {
+    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
+    self::widgetArea($area, $div, $type, $widget_file);
+  }
+
   static function getWidgetArea ($area)
   {
     ob_start();
-    View::widget_area($area);
+    View::widgetArea($area);
     $html = ob_get_contents();
     ob_end_clean();
     return $html;
@@ -401,41 +423,73 @@ class View
 
   static function thumb ($src, $prefix='', $max=180)
   {
-    if($src==null) return false;
-    $pathinfo = pathinfo($src);
-    $ext = strtolower($pathinfo['extension']);
-    if(in_array($ext, ['svg','webm'])) return $src;
-    $slugify = new Cocur\Slugify\Slugify();
+    if(empty($src)) return false;
 
-    if(image::imageExtention($ext)==false) return false;
     if(Gila::config('use_webp')) {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp' )!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;
       }
     }
+
     if(is_numeric($prefix)) {
       $prefix .= '/';
       $max = (int)$prefix;
     }
 
-    $file = SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
+    $file = self::getThumbName($src, $max, $prefix);
+    if($file==false) return false;
+    if($file==$src) return $src;
+
     $max_width = $max;
     $max_height = $max;
-    if($src=='') return false;
     if (!file_exists($file)) {
-      image::make_thumb($src, $file, $max_width, $max_height, $type??null);
+      Image::makeThumb($src, $file, $max_width, $max_height, $type??null);
     }
-    Event::fire('View::thumb',[$src,$file]);
+    Event::fire('View::thumb', [$src,$file]);
     return $file;
   }
 
-  static function thumb_stack ($src_array, $file, $max=180)
+  static function getThumbName ($src, $max, $prefix = '')
+  {
+    $pathinfo = pathinfo($src);
+    $ext = strtolower($pathinfo['extension']);
+    if(in_array($ext, ['svg','webm'])) return $src;
+    $file = null;
+    $thumbs = [];
+    $key = $pathinfo['filename'].$ext.$max;
+    $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
+
+    if(substr($src,0,7) == 'assets/') {
+      // dont create new thumbs for existing websites
+      $slugify = new Cocur\Slugify\Slugify();
+      return SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
+    }
+    
+
+    if(file_exists($thumbsjson)) {
+      $thumbs = json_decode(file_get_contents($thumbsjson),true);
+      $file = $thumbs[$key] ?? null;
+    }
+    if(!$file) {
+      if(Image::imageExtention($ext)==false) return false;
+      $basename = '';
+      do {
+        $basename .= hash('sha1', uniqid(true));
+        $file = SITE_PATH.'tmp/'.$basename.'-'.$max.'.'.$ext;
+        $thumbs[$key] = $file;
+      } while(strlen($basename) < 30 || file_exists($file));
+      file_put_contents($thumbsjson, json_encode($thumbs));
+    }
+    return $file;
+  }
+
+  static function thumbStack ($src_array, $file, $max=180)
   {
     $max_width = $max;
     $max_height = $max;
     if (!file_exists($file) || !file_exists($file.'.json')) {
-      return image::make_stack(1,$src_array, $file, $max_width, $max_height);
+      return Image::makeStack(1, $src_array, $file, $max_width, $max_height);
     }
     $stack = json_decode(file_get_contents($file.'.json'),true);
     if(!is_array($stack[1]))  $stack[1] = [];
@@ -444,30 +498,36 @@ class View
     foreach($src_array as $key=>$value) {
       $key_src = $stack[1][$key]['src'];
       if($key_src != $value && pathinfo($key_src)['extension']=='jpg') {
-        return image::make_stack($stack[0]+1,$src_array, $file, $max_width, $max_height);
+        return Image::makeStack($stack[0]+1, $src_array, $file, $max_width, $max_height);
       }
     }
-    Event::fire('View::thumb_stack',[$src_array,$file]);
-    return [$file.'?'.$stack[0],$stack[1]];
+    Event::fire('View::thumbStack', [$src_array,$file]);
+    return [$file.'?'.$stack[0], $stack[1]];
   }
 
-  static function thumb_xs ($src,$id=null)
+  static function thumb_stack ($src_array, $file, $max=180) // DEPRECIATED
+  {
+    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
+    self::thumbStack($src_array, $file, $max);
+  }
+
+  static function thumb_xs ($src,$id=null) // DEPRECIATED
   {
     return View::thumb($src,'xs/', 80);
   }
-  static function thumb_sm ($src,$id=null)
+  static function thumb_sm ($src,$id=null) // DEPRECIATED
   {
     return View::thumb($src,'sm/', 200);
   }
-  static function thumb_md ($src,$id=null)
+  static function thumb_md ($src,$id=null) // DEPRECIATED
   {
     return View::thumb($src,'md/', 400);
   }
-  static function thumb_lg ($src,$id=null)
+  static function thumb_lg ($src,$id=null) // DEPRECIATED
   {
     return self::thumb($src,'lg/', 800);
   }
-  static function thumb_xl ($src,$id=null)
+  static function thumb_xl ($src,$id=null) // DEPRECIATED
   {
     return View::thumb($src,'xl/', 1200);
   }
@@ -498,17 +558,23 @@ class View
   }
 
   /**
-  * $srcset = View::thumb_srcset($src);
+  * $srcset = View::thumbSrcset($src);
   * @example background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);
   * @example <img srcset="{$srcset[0]}, {$srcset[0]} 2x" src="{$srcset[0]}"
   */
-  static function thumb_srcset ($src, $sizes = [1200,320])
+  static function thumbSrcset ($src, $sizes = [1200,320])
   {
     $r = [];
     foreach($sizes as $w) {
       $r[] = View::thumb($src, $w.'/', $w);
     }
     return $r;
+  }
+
+  static function thumb_srcset ($src, $sizes = [1200,320]) // DEPRECIATED
+  {
+    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
+    return self::thumbSrcset($src, $sizes);
   }
 
 }

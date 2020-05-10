@@ -1,9 +1,9 @@
 <?php
 
-use core\models\widget;
-use core\models\user;
+use core\models\Widget;
+use core\models\User;
 
-class admin extends controller
+class admin extends Controller
 {
 
   public function __construct ()
@@ -17,11 +17,9 @@ class admin extends controller
   */
   function indexAction ()
   {
-    global $db;
-
     $id = Router::get('page_id',1) ?? null;
 
-    if ($id && ($r = core\models\page::getByIdSlug($id)) && ($r['publish']==1)
+    if ($id && ($r = core\models\Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
       View::set('title',$r['title']);
       View::set('text',$r['page']);
@@ -51,16 +49,13 @@ class admin extends controller
     if(Gila::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
       View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
-    if(Gila::config('media_uploads')==null && FS_ACCESS) {
-      View::alert('warning','Since v1.12.5 you need to set a data folder <a class="g-btn">See more</a>');
-    }
 
     $db->connect();
-    View::set('posts',$db->value('SELECT count(*) from post;'));
-    View::set('pages',$db->value('SELECT count(*) from page;'));
-    View::set('users',$db->value('SELECT count(*) from user;'));
+    View::set('postsC', $db->value('SELECT count(*) from post;'));
+    View::set('pagesC', $db->value('SELECT count(*) from page;'));
+    View::set('usersC', $db->value('SELECT count(*) from user;'));
     $db->close();
-    View::set('packages',count($GLOBALS['config']['packages']));
+    View::set('packagesC', count($GLOBALS['config']['packages']));
     View::renderAdmin('admin/dashboard.php');
   }
 
@@ -70,7 +65,7 @@ class admin extends controller
   function widgetsAction ()
   {
     if ($id = Router::get('id',1)) {
-      View::set('widget',widget::getById($id));
+      View::set('widget', Widget::getById($id));
       View::renderFile('admin/edit_widget.php');
       return;
     }
@@ -88,7 +83,7 @@ class admin extends controller
       return;
     }
 
-    $src = explode('.',Gila::$content[$type])[0];
+    $src = explode('.', Gila::$content[$type])[0];
     View::set('table', $type);
     View::set('tablesrc', $src);
     if($id == null) {
@@ -101,7 +96,7 @@ class admin extends controller
 
   function update_widgetAction ()
   {
-    echo widget::update($_POST);
+    echo Widget::update($_POST);
   }
 
   function usersAction ()
@@ -198,7 +193,7 @@ class admin extends controller
   function logoutAction ()
   {
     global $db;
-    user::metaDelete(Session::user_id(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+    User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
     echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
   }
@@ -221,7 +216,7 @@ class admin extends controller
         $maxWidth = Gila::config('maxImgWidth') ?? 0;
         $maxHeight = Gila::config('maxImgHeight') ?? 0;
         if($maxWidth>0 && $maxHeight>0) {
-          image::make_thumb($path, $path, $maxWidth, $maxHeight);
+          Image::makeThumb($path, $path, $maxWidth, $maxHeight);
         }
       } else echo "<div class='alert error'>Error: not a media file!</div>";
     }
@@ -237,7 +232,7 @@ class admin extends controller
 
   function db_backupAction()
   {
-    new db_backup();
+    new DbBackup();
   }
 
   function fmAction()
@@ -264,18 +259,18 @@ class admin extends controller
   {
     Gila::addLang('core/lang/myprofile/');
     $user_id = Session::key('user_id');
-    core\models\profile::postUpdate($user_id);
+    core\models\Profile::postUpdate($user_id);
     View::set('page_title', __('My Profile'));
-    View::set('twitter_account',user::meta($user_id,'twitter_account'));
-    View::set('token',user::meta($user_id,'token'));
+    View::set('twitter_account', User::meta($user_id,'twitter_account'));
+    View::set('token', User::meta($user_id,'token'));
     View::renderAdmin('admin/myprofile.php');
   }
 
   function deviceLogoutAction() {
     $device = Router::request('device');
-    if(user::logoutFromDevice($device)) {
+    if(User::logoutFromDevice($device)) {
       $info = [];
-      $sessions = user::metaList(Session::user_id(), 'GSESSIONID');
+      $sessions = User::metaList(Session::userId(), 'GSESSIONID');
       foreach($sessions as $key=>$session) {
         $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
         $info[$key] = UserAgent::info($user_agent);
