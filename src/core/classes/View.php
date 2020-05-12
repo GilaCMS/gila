@@ -115,7 +115,7 @@ class View
   {
     if(in_array($script, self::$script)) return;
     self::$script[]=$script;
-    if(Gila::config('use_cdn')=='1' && isset(self::$cdn_paths[$script])) {
+    if(@isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
     } else if(file_exists('assets/'.$script)) {
       $script = 'assets/'.$script;
@@ -146,7 +146,7 @@ class View
 
   static function renderAdmin($file, $package = 'core')
   {
-    if(Router::request('g_response')=='content') {
+    if(Router::request('g_response')==='content') {
       self::renderFile($file, $package);
       return;
     }
@@ -159,7 +159,7 @@ class View
 
   static function render($file, $package = 'core')
   {
-    if(Router::request('g_response')=='json') {
+    if(Router::request('g_response')==='json') {
       foreach (self::$part as $key => $value) if(is_object($value)) {
         self::$part[$key]=[];
         foreach($value as $r) {
@@ -170,7 +170,7 @@ class View
       exit;
     }
 
-    if(Router::request('g_response')=='content') {
+    if(Router::request('g_response')==='content') {
       self::renderFile($file, $package);
       return;
     }
@@ -188,12 +188,12 @@ class View
 
   static function renderFile($filename, $package = 'core')
   {
-    $controller = Router::controller();
-    $action = Router::action();
+    $controller = Router::getController();
+    $action = Router::getAction();
     if(isset(Gila::$onaction[$controller][$action])) {
       foreach(Gila::$onaction[$controller][$action] as $fn) $fn();
     }
-    if(self::includeFile($filename, $package)==false) {
+    if(self::includeFile($filename, $package)===false) {
       http_response_code(404);
       self::includeFile('404.php');
     }
@@ -216,7 +216,7 @@ class View
 
     $file = self::getViewFile($filename, $package);
     if($file) {
-      if($filename == 'header.php' || $filename  == 'footer.php') {
+      if($filename === 'header.php' || $filename  === 'footer.php') {
         include_once $file;
       } else {
         include $file;
@@ -289,7 +289,7 @@ class View
 
     $widget_file = self::getThemePath().'/widgets/'.$widget_type.'.php';
 
-    if(file_exists($widget_file) == false)
+    if(file_exists($widget_file) === false)
     {
       @$widget_file = "src/".Gila::$widget[$type]."/$type.php";
       if(!isset(Gila::$widget[$type])) if($type==='text') {
@@ -328,7 +328,7 @@ class View
     } else {
       $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
     }
-    if(file_exists($widget_file) == false) {
+    if(file_exists($widget_file) === false) {
       @$widget_file = "src/".Gila::$widget[$type]."/$type.php";
       if(!isset(Gila::$widget[$type])) {
         echo "Widget <b>".$type."</b> is not found";
@@ -414,11 +414,7 @@ class View
   static function img ($src, $prefix='', $max=180)
   {
     $pathinfo = pathinfo($src);
-    if(strtolower($pathinfo['extension'])=='svg') {
-      include $src;
-    } else {
-      return '<img src="'._url(self::thumb($src, $prefix, $max)).'">';
-    }
+    return '<img src="'._url(self::thumb($src, $prefix, $max)).'">';
   }
 
   static function thumb ($src, $prefix='', $max=180)
@@ -438,8 +434,8 @@ class View
     }
 
     $file = self::getThumbName($src, $max, $prefix);
-    if($file==false) return false;
-    if($file==$src) return $src;
+    if($file===false) return false;
+    if($file===$src) return $src;
 
     $max_width = $max;
     $max_height = $max;
@@ -460,10 +456,9 @@ class View
     $key = $pathinfo['filename'].$ext.$max;
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
-    if(substr($src,0,7) == 'assets/') {
+    if(substr($src,0,7) === 'assets/') {
       // dont create new thumbs for existing websites
-      $slugify = new Cocur\Slugify\Slugify();
-      return SITE_PATH.'tmp/'.$prefix.$slugify->slugify($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
+      return SITE_PATH.'tmp/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     }
     
 
@@ -472,7 +467,7 @@ class View
       $file = $thumbs[$key] ?? null;
     }
     if(!$file) {
-      if(Image::imageExtention($ext)==false) return false;
+      if(Image::imageExtention($ext)===false) return false;
       $basename = '';
       do {
         $basename .= hash('sha1', uniqid(true));
@@ -537,7 +532,7 @@ class View
 
     foreach(self::$view_file as $key => $value) {
       $exploded = explode('--', $key);
-      if($exploded[0] == $template){
+      if($exploded[0] === $template){
         $options[] = explode('.', $exploded[1])[0];
       }
     }

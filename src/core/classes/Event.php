@@ -27,7 +27,7 @@ class Event
   {
     $response = false;
     if (isset(Event::$handlers[$event])) foreach (Event::$handlers[$event] as $handler) {
-      if ($params == null) $handler(); else $handler($params);
+      if ($params === null) $handler(); else $handler($params);
       $response = true;
     }
     return $response;
@@ -44,7 +44,7 @@ class Event
   static function get($event, $default, $params = null)
   {
     if (isset(Event::$handlers[$event])) {
-      if ($params == null)
+      if ($params === null)
         return Event::$handlers[$event][0]();
       else
         return Event::$handlers[$event][0]($params);

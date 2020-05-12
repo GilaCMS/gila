@@ -2,15 +2,12 @@
 
 global $db;
 
-Gila::controllers([
-  'admin'=> 'core/controllers/admin',
-  'api'=> 'core/controllers/api',
-  'cm'=> 'core/controllers/cm',
-  'login'=> 'core/controllers/login',
-  'webhook'=> 'core/controllers/webhook',
-  'lzld'=> 'core/controllers/lzld',
-  'fm'=> 'core/controllers/fm'
-]);
+Router::controller('admin', 'core/controllers/admin');
+Router::controller('cm', 'core/controllers/cm');
+Router::controller('login', 'core/controllers/login');
+Router::controller('webhook', 'core/controllers/webhook');
+Router::controller('lzld', 'core/controllers/lzld');
+Router::controller('fm', 'core/controllers/fm');
 
 Gila::$amenu = [
   ['Dashboard','admin','icon'=>'dashboard'],
@@ -57,16 +54,16 @@ Gila::$privilege['admin']="Administrator access.";
 Gila::$privilege['editor']="Can publish or edit posts from other users.";
 Gila::$privilege['developer']="Special access in developer tools.";
 
-Gila::content('post','core/tables/post.php');
-Gila::content('user-post','core/tables/user-post.php');
-Gila::content('postcategory','core/tables/postcategory.php');
-Gila::content('user','core/tables/user.php');
-Gila::content('userrole','core/tables/userrole.php');
-Gila::content('page','core/tables/page.php');
-Gila::content('widget','core/tables/widget.php');
+Gila::table('post','core/tables/post.php');
+Gila::table('user-post','core/tables/user-post.php');
+Gila::table('postcategory','core/tables/postcategory.php');
+Gila::table('user','core/tables/user.php');
+Gila::table('userrole','core/tables/userrole.php');
+Gila::table('page','core/tables/page.php');
+Gila::table('widget','core/tables/widget.php');
 
 Gila::addLang('core/lang/');
 
 if(Gila::config('use_cdn')=='1') {
-  include_once 'src/core/assets/cdn_paths.php';
+  View::$cdn_paths = include('src/core/assets/cdn_paths.php');
 }

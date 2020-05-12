@@ -10,7 +10,7 @@ class Session
 
   static function start ()
   {
-    if(self::$started==true) return;
+    if(self::$started===true) return;
     self::$started = true;
     @session_set_cookie_params(24*3600);
 
@@ -21,9 +21,9 @@ class Session
     }
     Session::define(['user_id'=>0]);
 
-    if (isset($_POST['username']) && isset($_POST['password']) && Session::waitForLogin()==0) {
+    if (isset($_POST['username']) && isset($_POST['password']) && Session::waitForLogin()===0) {
       $usr = User::getByEmail($_POST['username']);
-      if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
+      if ($usr && $usr['active']===1 && password_verify($_POST['password'], $usr['pass'])) {
         Session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
         unset($_SESSION['failed_attempts']);
       } else {
@@ -36,7 +36,7 @@ class Session
         if(isset($_COOKIE['GSESSIONID'])) {
           foreach (User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
             $usr = User::getById($user_id);
-            if ($usr && $usr['active']==1) {
+            if ($usr && $usr['active']===1) {
               Session::user($usr['id'], $usr['username'], $usr['email']);
             }
           }
@@ -110,7 +110,7 @@ class Session
   static function key ($var, $val = null, $t = 0)
   {
     self::start();
-    if ($val == null) {
+    if ($val === null) {
       return $_SESSION[Session::md5($var)]?? null;
     }
     $_SESSION[Session::md5($var)] = $val;
@@ -155,7 +155,7 @@ class Session
       }
     } else {
       self::start();
-      if(isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']=='GET') {
+      if(isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
         @$user_id = $_SESSION[Session::md5('user_id')];
       }
     }

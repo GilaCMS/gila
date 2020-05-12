@@ -103,8 +103,7 @@ return [
   'events'=>[
     ['change',function(&$row) {
       if($row['slug']=='') {
-        $slugify = new Cocur\Slugify\Slugify();
-        $row['slug'] = $slugify->slugify($row['title']);
+        $row['slug'] = Slugify::text($row['title']);
       }
     }]
   ]

@@ -6,8 +6,8 @@ class gForm
   static private $input_type;
 
   static function posted($name = '*') {
-    if ($_SERVER['REQUEST_METHOD']=='POST') {
-      if(Session::key('_t'.$name)==$_POST['formToken']) {
+    if ($_SERVER['REQUEST_METHOD']==='POST') {
+      if(Session::key('_t'.$name)===$_POST['formToken']) {
         if($name!=='*') {
           Session::unsetKey('_t'.$name);
         }
@@ -18,7 +18,7 @@ class gForm
   }
 
   static function verifyToken($check, $name = '*') {
-    if(Session::key('_t'.$name)==$check) return true;
+    if(Session::key('_t'.$name)===$check) return true;
     return false;
   }
 
@@ -60,7 +60,7 @@ class gForm
     $label = isset($op['title'])?$op['title']:$label;
     $label = __($label);
     if($label=='') $label='&nbsp;';
-    if(@$op['required'] == true) $label .= ' *';
+    if(@$op['required'] === true) $label .= ' *';
 
     $html .= '<label class="gm-4">'.$label;
     if(isset($op['helptext'])) $html .= '<br><span style="font-weight:400;font-size:90%">'.$op['helptext'].'</span>';

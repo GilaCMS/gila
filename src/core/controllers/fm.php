@@ -169,8 +169,8 @@ class fm extends Controller
   function setPaths()
   {
     $this->path = $this->sitepath;
-    if (isset($_GET['path']))  if(!$_GET['path']=='') $this->path = str_replace('\\','/',$_GET['path']);
-    if (isset($_POST['path']))  if(!$_POST['path']=='') $this->path = str_replace('\\','/',$_POST['path']);
+    if (isset($_GET['path']))  if(!$_GET['path']=='') $this->path = strtr($_GET['path'], ['\\'=>'/']);
+    if (isset($_POST['path']))  if(!$_POST['path']=='') $this->path = strtr($_POST['path'], ['\\'=>'/']);
     $this->path = realpath($this->path);
     $base = substr($this->path, 0, strlen($this->sitepath));
     if($base != $this->sitepath) $this->path = $this->sitepath;

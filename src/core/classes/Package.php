@@ -16,9 +16,9 @@ class Package
     $options = Router::post('options');
     if($options) self::options($options);
     $download = Router::post('download');
-    if(Gila::config('test')=='1') $download = Router::request('test') ?? $download;
+    if(Gila::config('test')=='1') $download = Router::request('test', $download);
     if($download && FS_ACCESS) {
-      if(self::download($download)==true) {
+      if(self::download($download)===true) {
         if(!$_REQUEST['g_response']) {
           echo '<meta http-equiv="refresh" content="2;url='.Gila::base_url().'/admin/packages" />';
           echo __('_package_downloaded').'. Redirecting...';
@@ -60,11 +60,11 @@ class Package
         }
         if(isset($pac['options'])) {
           foreach($pac['options'] as $key=>$option) if(@$option['required']==true) {
-            if(Gila::option($activate.'.'.$key)==null) $require_op[] = @$option['title']?:$key;
+            if(Gila::option($activate.'.'.$key)===null) $require_op[] = @$option['title']?:$key;
           }
         }
 
-        if($require==[] && $require_op==[]) {
+        if($require===[] && $require_op===[]) {
           $GLOBALS['config']['packages'][]=$activate;
           self::copyAssets($activate);
           self::update($activate);
@@ -142,7 +142,7 @@ class Package
       return false;
     }
     $file = 'https://gilacms.com/assets/packages/'.$package.'.zip';
-    if(substr($pinfo['download_url'],0,8)=='https://'){
+    if(substr($pinfo['download_url'],0,8)==='https://'){
       $file = $pinfo['download_url'];
     }
 
@@ -193,7 +193,7 @@ class Package
         if(file_exists($config)) {
           include $config;
           $db = new Db($GLOBALS['config']['db']);
-          if($package=='core' ||
+          if($package==='core' ||
               in_array($package, $GLOBALS['config']['packages'])) {
             include $update_file;
           }
@@ -251,7 +251,7 @@ class Package
           ON DUPLICATE KEY UPDATE `value`='$value';";
         $db->query($ql);
       }
-      if(Gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
+      if(Gila::config('env')==='pro') unlink(LOG_PATH.'/load.php');
     }
   }
 
@@ -315,7 +315,7 @@ class Package
   {
     if(Gila::config('check4updates')==0) return;
     $now = new DateTime("now");
-    if(Gila::option('checked4updates')==null) {
+    if(Gila::option('checked4updates')===null) {
       Gila::setOption('checked4updates', $now->format('Y-m-d'));
       $diff = 1000;
     } else {

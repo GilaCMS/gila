@@ -34,7 +34,7 @@ class Theme
           }
         }
 
-        if($require==[]) {
+        if($require===[]) {
           $GLOBALS['config']['theme']=$activate;
           self::copyAssets($activate);
           Gila::updateConfigFile();
@@ -69,7 +69,7 @@ class Theme
         exit;
       }
       $file = 'https://gilacms.com/assets/themes/'.$download.'.zip';
-      if(substr($pinfo['download_url'],0,8)=='https://'){
+      if(substr($pinfo['download_url'],0,8)==='https://'){
         $file = $pinfo['download_url'];
       }
       if(isset($_GET['src'])) $file = $_GET['src'];
@@ -96,7 +96,7 @@ class Theme
           }
         }
         $unzipped = scandir($tmp_name);
-        if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
+        if(count(scandir($tmp_name))===3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
         rename($tmp_name, $target);
         if(file_exists($target.'__tmp__')) rmdir($target.'__tmp__');
         self::copyAssets($download);

@@ -20,6 +20,7 @@ npm-debug.log
 TODO.md
 tests/basic.results.csv
 tests/jmeter.log
+tests/performance
 
 # excluded
 !src/core/
