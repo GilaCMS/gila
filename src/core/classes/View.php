@@ -443,7 +443,7 @@ class View
       Image::makeThumb($src, $file, $max_width, $max_height, $type??null);
     }
     Event::fire('View::thumb', [$src,$file]);
-    return $file;
+    return Gila::base_url().$file;
   }
 
   static function getThumbName ($src, $max, $prefix = '')
@@ -456,11 +456,11 @@ class View
     $key = $pathinfo['filename'].$ext.$max;
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
-    if(substr($src,0,7) === 'assets/') {
+    if(substr($src,0,5) !== 'data/') {
       // dont create new thumbs for existing websites
       return SITE_PATH.'tmp/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     }
-    
+
 
     if(file_exists($thumbsjson)) {
       $thumbs = json_decode(file_get_contents($thumbsjson),true);
@@ -468,9 +468,8 @@ class View
     }
     if(!$file) {
       if(Image::imageExtention($ext)===false) return false;
-      $basename = '';
       do {
-        $basename .= hash('sha1', uniqid(true));
+        $basename = substr(hash('sha1', uniqid(true)),0,30);
         $file = SITE_PATH.'tmp/'.$basename.'-'.$max.'.'.$ext;
         $thumbs[$key] = $file;
       } while(strlen($basename) < 30 || file_exists($file));
