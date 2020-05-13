@@ -37,23 +37,21 @@ class Router
     $controller = Router::getController();
     $ctrlPath = Router::$controllers[$controller];
     $ctrlClass = substr($ctrlPath, strrpos($ctrlPath, '/' )+1);
+    require_once('src/'.$ctrlPath.'.php');
+    $action = Router::getAction($ctrlClass);
 
-    if(file_exists('src/'.$ctrlPath.'.php')===false) {
-      @trigger_error("Controller could not be found: $controller=>$ctrlPath.php", E_NOTICE);
+    if($action === '') {
+      @http_response_code(404);
       return;
     }
 
-    require_once('src/'.$ctrlPath.'.php');
-
-    if($ctrlClass=='blog') $ctrlClass='Blog'; // DEPRECIATED
-
+    if($ctrlClass==='blog') $ctrlClass='Blog'; // DEPRECIATED
     $c = new $ctrlClass();
 
     // find function to run after controller construction
     if(isset(Gila::$on_controller[$controller]))
       foreach(Gila::$on_controller[$controller] as $fn) $fn();
 
-    $action = Router::getAction($ctrlClass);
     $action_fn = $action.'Action';
     $action_m = $action_fn.ucwords(self::$method);
 
@@ -113,20 +111,21 @@ class Router
   {
     if(isset(self::$action)) return self::$action;
     $args = &self::$args;
-    $action = self::request('action',@$args[0]?:'index');
+    $action = self::request('action', @$args[0]?:'index');
 
     if (!method_exists($ctrClass,$action.'Action') &&
         !isset(self::$actions[self::getController()][$action])) {
       if (method_exists($ctrClass,'indexAction')) {
-        $action = 'index';
+        $action = $args[0] ? 'index' : 'index';
       } else {
         $action = '';
       }
     }
 
-    if(isset($args[0]) && $args[0]===$action)
+    if(isset($args[0]) && $args[0]===$action) {
       array_shift($args);
-
+    }
+    
     $action = explode('.', $action);
     self::$action = $action[0];
     return self::$action;
@@ -213,7 +212,7 @@ class Router
     array_shift(self::$args);
   }
 
-  function setUrl($_url) {
+  static function setUrl($_url) {
     if($_url!==false) {
       Router::$url = strip_tags($_url);
       Router::$args = explode("/", Router::$url);
@@ -228,7 +227,7 @@ class Router
     if(isset(View::$canonical)) {
       $request_uri = View::$canonical;
     } else {
-      $request_uri = $_SERVER['REQUEST_URI'];
+      $request_uri = strtok($_SERVER['REQUEST_URI'], '?');
     }
 
     $dir = Gila::dir(LOG_PATH.'/cache0/');

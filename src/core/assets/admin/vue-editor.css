@@ -6,7 +6,7 @@
 .ve-footbar button,.ve-editor-bar button{border-width: 0; vertical-align: top}
 .ve-footbar button:hover,.ve-editor-bar button:hover{background: #bbb}
 .ve-footbar{background: var(--ve-bg);}
-.ve-editor-area{min-height: 140px; overflow: scroll; padding:6px;}
+.ve-editor-area{min-height: 50px; overflow: scroll; padding:6px;}
 .ve-editor-area table{width:100%}
 .ve-editor-area th,.ve-editor-area td,.ve-editor-area figure,p{border:1px dashed #bbb}
 .ve-editor-area figure{display: inline-block;}

@@ -171,7 +171,7 @@ content_blocks_app = new Vue({
     <img src="src/core/assets/admin/close.svg" class="add-block-x" @click="add_block=false">
     <div class="add-block-grid centered">
       <div class="add-block-btn" v-for="b in blocks" @click="createBlock('<?=$contentType.'/'.$id?>', b.name, selected_pos)">
-        <img v-if="b.preview" :src="'src/'+b.preview" class="preview">
+        <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview">
         <div v-else class="logo">
           <img v-if="b.logo" :src="'src/'+b.logo">
           <h4 v-else>{{b.name[0].toUpperCase()}}</h4>

@@ -144,6 +144,11 @@ class BlogCtrl extends Controller
   function postShow($id=null)
   {
     global $db;
+    $cacheTime = Gila::option('blog.cache');
+    if(Session::userId()===0 && $cacheTime > 0) {
+      Gila::canonical('blog/'.$r['id']);
+      Router::cache($cacheTime, [$id], [Gila::mt('post')]);
+    }
 
     if (($r = Post::getByIdSlug($id)) && ($r['publish']==1)) {
       $id = $r['id'];
