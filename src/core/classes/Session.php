@@ -73,7 +73,6 @@ class Session
     $gsession = (string)$id;
     for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
     User::meta($id, 'GSESSIONID', $gsession, true);
-    @setcookie('GSESSIONID', $gsession, time()+(86400 * 30), '/');
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if(isset($_COOKIE['GSESSIONID'])) {
       User::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
