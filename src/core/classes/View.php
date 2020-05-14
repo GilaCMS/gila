@@ -443,7 +443,7 @@ class View
       Image::makeThumb($src, $file, $max_width, $max_height, $type??null);
     }
     Event::fire('View::thumb', [$src,$file]);
-    return Gila::base_url().$file;
+    return $file;
   }
 
   static function getThumbName ($src, $max, $prefix = '')

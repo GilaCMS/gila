@@ -617,7 +617,6 @@ function open_gallery_post() {
 }
 function open_select_row(row,table,name) {
   input_select_row = row;
-  return
   g.post("cm/select_row/"+table,"",function(gal){
     g.dialog({title:_e(name),body:gal,buttons:'select_row_source',type:'modal',id:'select_row_dialog',class:'large'})
   })

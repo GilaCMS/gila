@@ -9,6 +9,7 @@
 <?=View::script('core/admin/listcomponent.js');?>
 <?=View::script('core/admin/vue-editor.js');?>
 <?=View::script('core/admin/media.js')?>
+<?=View::script('core/lang/content/'.Gila::config('language').'.js')?>
 <?=View::script('lib/select2/select2.min.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
@@ -182,4 +183,4 @@ content_blocks_app = new Vue({
   </div>
 </div>
 
-<?=View::script("src/blocks/assets/content-block.js")?>
+<?=View::script("blocks/content-block.js")?>
