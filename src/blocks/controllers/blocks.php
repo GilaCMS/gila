@@ -59,6 +59,7 @@ class blocks extends Controller
           }
         } else if($allowed!==true) {
           $widget_data[$key] = strip_tags($widget_data[$key], $allowed);
+          $widget_data[$key] = str_replace('="javascript:', '="', $widget_data[$key]);
         }
       }
       $widget_data['_type'] = $type;

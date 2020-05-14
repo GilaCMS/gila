@@ -233,12 +233,13 @@ class gTable
       if(array_key_exists($key, $this->table['fields'])) {
         if ($this->fieldAttr($key, 'qcolumn')) continue;
         if ($allowed = $this->fieldAttr($key, 'allow-tags')) {
-          if($allowed!=true)
-            $value=strip_tags($value,$allowed);
+          if($allowed!==true) {
+            $value = strip_tags($value, $allowed);
+          }
         } else {
-          $value=strip_tags($value);
+          $value = strip_tags($value);
         }
-        if (in_array($this->fieldAttr($key, 'type'),['joins','meta'])) continue;
+        if (in_array($this->fieldAttr($key, 'type'), ['joins','meta'])) continue;
 
         if(is_array($value)) {
           foreach($value as $subkey=>$subvalue) {

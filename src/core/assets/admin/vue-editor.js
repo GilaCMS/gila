@@ -20,13 +20,14 @@ var mydata = {
     blockquote:{label:"<i class='fa fa-quote-left'></i>",action:"setNode",args:'BLOCKQUOTE'},
     link:{label:"<i class='fa fa-link'></i>",action:"setNode",args:['A',null,{href:''}]},
     code:{label:"<sup>+</sup><i class='fa fa-code'></i>",action:"insertNode",args:['PRE','<code><br></code>']},
-    unset:{label:"T<sub>x</sub>",action:"unsetNode",args:['B','I','DEL','INS','SUB','SUB','SUP','BLOCKQUOTE']},
-    h1:{label:"<i class='fa fa-header'></i>",action:"setNode",args:['H1','Header1']},
-    h2:{label:"<sup>+</sup><i class='fa fa-header'></i><sub>2</sub>",action:"setNode",args:['H2','Header2']},
-    h3:{label:"<sup>+</sup><i class='fa fa-header'></i><sub>3</sub>",action:"setNode",args:['H3','Header3']},
-    h4:{label:"<sup>+</sup><i class='fa fa-header'></i><sub>4</sub>",action:"setNode",args:['H4','Header4']},
+    h1:{label:"<i class='fa fa-header'></i>",action:"setNode",args:'H1'},
+    h2:{label:"<i class='fa fa-header'></i><sub>2</sub>",action:"setNode",args:'H2'},
+    h3:{label:"<i class='fa fa-header'></i><sub>3</sub>",action:"setNode",args:'H3'},
+    h4:{label:"<i class='fa fa-header'></i><sub>4</sub>",action:"setNode",args:'H4'},
     ul:{label:"<sup>+</sup><i class='fa fa-list-ul'></i>",action:"insertNode",args:['UL','<li>Item',true]},
     ol:{label:"<sup>+</sup><i class='fa fa-list-ol'></i>",action:"insertNode",args:['OL','<li>Item',true]},
+    newline:{label:"<sup>+</sup>nl",action:"append",args:'<br>'},
+    unset:{label:"T<sub>x</sub>",action:"unsetNode",args:['B','I','DEL','INS','SUB','SUB','SUP','BLOCKQUOTE']},
     aleft:{label:"<i class='fa fa-align-left'></i>",action:"setStyle",args:['text-align','left']},
     amiddle:{label:"<i class='fa fa-align-center'></i>",action:"setStyle",args:['text-align','center']},
     ajustify:{label:"<i class='fa fa-align-justify'></i>",action:"setStyle",args:['text-align','justify']},
@@ -36,7 +37,7 @@ var mydata = {
     table:{label:"<i class='fa fa-table'></i>",action:"insertNode",args:['TABLE','<tr><td><td><td><tr><td><td><td><tr><td><td><td>']},
   },
   buttons_i:['bold','italian','blockquote','link','del','ins','sup','sub',
-'unset','h1','h2','h3','ul','ol','code'], //,'aleft','amiddle','aright'
+  'h1','h2','h3','ul','ol','code','newline','unset'], //,'aleft','amiddle','aright'
   node_buttons:{
   },
   figure:[],
@@ -52,8 +53,8 @@ Vue.component('vue-editor', {
   template: '<div class="ve-editor">\
   <div class="ve-editor-bar">\
     <span class="ve-editor-btn" v-for="btn in buttons_i" v-on:mousedown="btnAction(btn)"\
-     :index="btn" v-html="buttons_def[btn].label"></span><br>\
-     &nbsp;<span v-if="node2edit!=false" class="ve-editor-edit">\
+     :index="btn" v-html="buttons_def[btn].label"></span>\
+     <div v-if="node2edit!=false" class="ve-editor-edit">\
       <{{node2edit.nodeName}}>\
       <span class="ve-editor-btn" v-on:click="unsetEditNode">Unset</span>\
       <span class="ve-editor-btn" v-on:click="deleteEditNode">Delete</span>\
@@ -61,7 +62,7 @@ Vue.component('vue-editor', {
         &nbsp;<input v-model="nodeobj[key]" v-on:input="updateEditNode"\
         :placeholder="key">\
       </span>\
-    </span>\
+    </div>\
   </div>\
   <input v-model="content" type="hidden" :name="name" >\
   <div style="position:relative">\
@@ -263,6 +264,19 @@ Vue.component('vue-editor', {
 
           this.range = this.sel.getRangeAt(0);
           this.node2edit = false
+          // clean up script,p and div tag
+          all = el.getElementsByTagName("DIV");
+          for (let i=all.length-1, min=-1; i>min; i--) {
+            anchor = all[i]
+            if(typeof anchor!=='undefined' && anchor!=el &&
+                typeof anchor.parentNode!=='undefined' && anchor.parentNode!=el.parentNode) {
+              while(anchor.firstChild) {
+                anchor.parentNode.insertBefore(anchor.firstChild, anchor);
+              }
+              anchor.parentNode.removeChild(anchor);
+            }
+          }
+
           return true;
         }
       }
@@ -284,6 +298,9 @@ Vue.component('vue-editor', {
     keydown: function() {
       if(!this.onEditor()) return
       if(event.keyCode==13) {
+        nodeName = this.sel.anchorNode.parentNode.nodeName;
+        if(['LI'].includes(nodeName)) return;
+        if(['OL','UL','PRE','CODE','A','B','I','BLOCKQUOTE'].includes(nodeName)) return;
         document.execCommand('insertHTML', false, '<br><br>');
         event.preventDefault();
       }

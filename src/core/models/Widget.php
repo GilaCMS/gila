@@ -39,6 +39,7 @@ class widget
         }
       } else if($allowed!==true) {
         $data['option'][$key] = strip_tags($data['option'][$key], $allowed);
+        $data['option'][$key] = str_replace('="javascript:' ,'="', $data['option'][$key]);
       }
     }
     $widget_data = isset($data['option']) ? json_encode($data['option']) : '[]';

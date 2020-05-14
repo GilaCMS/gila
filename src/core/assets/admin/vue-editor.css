@@ -6,15 +6,16 @@
 .ve-footbar button,.ve-editor-bar button{border-width: 0; vertical-align: top}
 .ve-footbar button:hover,.ve-editor-bar button:hover{background: #bbb}
 .ve-footbar{background: var(--ve-bg);}
-.ve-editor-area{min-height: 50px; overflow: scroll; padding:6px;}
+.ve-editor-area{min-height: 50px;max-height: 150px; overflow: scroll; padding:6px;}
 .ve-editor-area table{width:100%}
 .ve-editor-area th,.ve-editor-area td,.ve-editor-area figure,p{border:1px dashed #bbb}
 .ve-editor-area figure{display: inline-block;}
 .ve-editor-area pre{background-color: #e6e6e6; padding: 6px; border: 1px solid #ccc}
 .ve-editor-area blockquote{border-left: 3px solid grey; padding:10px; font-size: 1.3em; font-style: italic}
-.ve-editor-edit {color:orangered}
+.ve-editor-edit {color:orangered; background: lightgrey; border: 2px solid lightgrey}
 .ve-editor-edit input,.ve-editor-edit input:focus {
   all:unset;
+  color:#333;
   background-color: white;
   width:100px;
 }
