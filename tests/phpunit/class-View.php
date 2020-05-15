@@ -18,7 +18,7 @@ class ClassView extends TestCase
 	{
 		Gila::widgets(['paragraph'=>'core/widgets/paragraph']);
 		$html = View::getWidgetBody('paragraph', ['text'=>'Hello world']);
-		$this->assertEquals('<p>Hello world</p>', $html);
+		$this->assertEquals('<div style="padding:8px">\n<p>Hello world</p><div>', $html);
 	}
 
 	public function test_getThumbName()
