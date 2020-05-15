@@ -115,7 +115,7 @@ class View
   {
     if(in_array($script, self::$script)) return;
     self::$script[]=$script;
-    if(@isset(self::$cdn_paths[$script])) {
+    if(isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
     } else if(file_exists('assets/'.$script)) {
       $script = 'assets/'.$script;
