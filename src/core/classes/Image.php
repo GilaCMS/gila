@@ -13,7 +13,7 @@ class Image
   static function makeThumb ($src,$file,$max_width,$max_height,$img_type=null)
   {
     $src = self::localPath($src);
-    if($src == false) return false;
+    if($src === false) return false;
     Gila::dir(substr($file, 0, strrpos($file,'/')));
 
     if(!$image = @getimagesize($src)) return false;
@@ -34,7 +34,7 @@ class Image
       $newheight=$src_height;
     }
 
-    if($img_type==null) $img_type = $image[2];
+    if($img_type===null) $img_type = $image[2];
 
     $tmp = self::createTmp($newwidth, $newheight, $image[2]);
     $img_src = self::create($src, $image[2]);
@@ -53,13 +53,13 @@ class Image
    */
   static function create ($src, $type = 2)
   {
-    if($type == 1)
+    if($type === 1)
       return imageCreateFromGIF($src);
-    if($type == 2)
+    if($type === 2)
       return imageCreateFromJPEG($src);
-    if($type == 3)
+    if($type === 3)
       return imageCreateFromPNG($src);
-    if($type == 32)
+    if($type === 32)
       return imageCreateFromWebp($src);
 
     return imageCreateFromJPEG($src);
@@ -67,7 +67,7 @@ class Image
 
   static function createTmp ($width, $height, $type = 2) {
     $tmp = imagecreatetruecolor($width,$height);
-    if($type == 3 || $type == 32) {
+    if($type === 3 || $type === 32) {
       $color = imagecolorallocatealpha($tmp, 0, 0, 0, 127);
       imagecolortransparent($tmp, $color);
       imagefill($tmp, 0, 0, $color);
@@ -118,7 +118,7 @@ class Image
 
     foreach($src_array as $key=>$src) {
       $_src = self::localPath($src);
-      if($_src == false) $_src = $src;
+      if($_src === false) $_src = $src;
       Gila::dir(substr($file, 0, strrpos($file,'/')));
 
       if($image = @getimagesize($_src)) {

@@ -9,6 +9,7 @@
 <?=View::script('core/admin/listcomponent.js');?>
 <?=View::script('core/admin/vue-editor.js');?>
 <?=View::script('core/admin/media.js')?>
+<?=View::script('core/lang/content/'.Gila::config('language').'.js')?>
 <?=View::script('lib/select2/select2.min.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
@@ -171,7 +172,7 @@ content_blocks_app = new Vue({
     <img src="src/core/assets/admin/close.svg" class="add-block-x" @click="add_block=false">
     <div class="add-block-grid centered">
       <div class="add-block-btn" v-for="b in blocks" @click="createBlock('<?=$contentType.'/'.$id?>', b.name, selected_pos)">
-        <img v-if="b.preview" :src="'src/'+b.preview" class="preview">
+        <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview">
         <div v-else class="logo">
           <img v-if="b.logo" :src="'src/'+b.logo">
           <h4 v-else>{{b.name[0].toUpperCase()}}</h4>
@@ -182,4 +183,4 @@ content_blocks_app = new Vue({
   </div>
 </div>
 
-<?=View::script("src/blocks/assets/content-block.js")?>
+<?=View::script("blocks/content-block.js")?>

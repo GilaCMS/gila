@@ -27,20 +27,6 @@ class Gila
   static $langLoaded = false;
 
   /**
-  * Registers new controllers
-  * @param $list (Assoc Array) Controllers to register
-  * @code
-  * Gila::controllers( [‘ctrl’=>’my_package/controllers/ctrl’] );
-  * @endcode
-  */
-  static function controllers($list)
-  {
-    foreach ($list as $k=>$item) {
-      Gila::$controller[$k]=$item;
-    }
-  }
-
-  /**
   * Registers new a controller
   * @param $c (string) Controller name as given in url path
   * @param $file (string) Controller's filepath without the php extension
@@ -49,10 +35,9 @@ class Gila
   * Gila::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
   * @endcode
   */
-  static function controller($c, $file, $name=null)
+  static function controller($c, $path, $name=null) // DEPRECIATED 
   {
-    Gila::$controller[$c] = $file;
-    if($name!=null) Gila::$controllerClass[$c] = $name;
+    Router::controller($c, $path);
   }
 
   /**
@@ -73,7 +58,7 @@ class Gila
   * @param $c (string) The controller's class name
   * @param $fn (function) Callback
   * @code
-  * Gila::route('blog', function(){ blog::ppp = 24; });
+  * Gila::onController('blog', function(){ BlogCtrl::ppp = 24; });
   * @endcode
   */
   static function onController($c, $fn)
@@ -87,12 +72,12 @@ class Gila
   * @param $action (string) The action
   * @param $fn (function) Callback
   * @code
-  * Gila::action('blog', 'topics', function(){ blog::tagsAction(); });
+  * Gila::action('blog', 'topics', function(){ ... });
   * @endcode
   */
-  static function action($c, $action, $fn)
+  static function action($c, $action, $fn) // DEPRACIATED -> Router::action()
   {
-    self::$action[$c][$action] = $fn;
+    Router::$actions[$c][$action] = $fn;
   }
 
   /**
@@ -119,7 +104,7 @@ class Gila
   {
     if(in_array($path, self::$langPaths)) return;
 
-    if(self::$langLoaded==true) {
+    if(self::$langLoaded===true) {
       self::loadLang($path);
     }
     self::$langPaths[] = $path;
@@ -165,6 +150,11 @@ class Gila
   */
   static function content($key, $path)
   {
+    self::table($key, $path);
+  }
+
+  static function table($key, $path)
+  {
     self::$content[$key] = $path;
   }
 
@@ -188,6 +178,11 @@ class Gila
   * @code Gila::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
   */
   static function contentInit($key, $init)
+  {
+    self::tableInit($key, $init);
+  }
+
+  static function tableInit($key, $init)
   {
     @self::$contentInit[$key][] = $init;
     if(isset(gTable::$tableList[$key])) {
@@ -282,7 +277,7 @@ class Gila
   */
   static function alert ($type, $msg)
   {
-    if ($type == 'alert') $type = '';
+    if ($type === 'alert') $type = '';
     return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
   }
 
@@ -317,7 +312,7 @@ class Gila
     @Gila::$option[$option] = $value;
     $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
     $db->query($ql);
-    if(Gila::config('env')=='pro') unlink(LOG_PATH.'/load.php');
+    if(Gila::config('env') === 'pro') unlink(LOG_PATH.'/load.php');
   }
 
   /**
@@ -376,11 +371,11 @@ class Gila
 
   static function url($url)
   {
-    if($url=='#') return Router::url().'#';
+    if($url==='#') return Router::url().'#';
 
     if(Gila::config('rewrite')) {
       $var = explode('/',$url);
-      if(Gila::config('default-controller') == $var[0]) if($var[0]!='admin'){
+      if(Gila::config('default-controller') === $var[0]) if($var[0]!='admin'){
         return substr($url, strlen($var[0])+1);
       }
       return $url;
@@ -414,7 +409,7 @@ class Gila
         $params.=$value;
       }
 
-      if((Gila::config('default-controller') == $c) && ($c != 'admin')) $c=''; else $c.='/';
+      if((Gila::config('default-controller') === $c) && ($c != 'admin')) $c=''; else $c.='/';
       if($action!='') $action.='/';
       if($gpt = Router::request('g_preview_theme')) $params.='?g_preview_theme='.$gpt;
       return $c.$action.$params;
@@ -469,7 +464,7 @@ class Gila
   static function dir ($path)
   {
     if (file_exists($path)) return $path;
-    $p = explode('/', str_replace("\\", "/", $path));
+    $p = explode('/', strtr($path, ["\\"=>"/"]));
     $path = '';
     foreach ($p as $folder) if($folder!=null){
       $path .= $folder.'/';
@@ -500,7 +495,7 @@ class Gila
 $GLOBALS['lang'] = [];
 
 function __($key, $alt = null) {
-  if(Gila::$langLoaded==false) {
+  if(Gila::$langLoaded===false) {
     foreach(Gila::$langPaths as $path) Gila::loadLang($path);
     Gila::$langLoaded = true;
   }

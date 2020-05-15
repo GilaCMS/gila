@@ -34,7 +34,7 @@ class DbBackup
     global $db;
     $return = '';
 
-    if ($tables == '*')
+    if ($tables === '*')
     {
       $tables = [];
       $result = $db->query('SHOW TABLES');
@@ -60,7 +60,7 @@ class DbBackup
       while ($num_rows>$row_n) {
         $row_inx = 0;
         $result=false;
-        if($table=='option') {
+        if($table==='option') {
           $result = $db->query('SELECT * FROM `option`
             WHERE `option` NOT LIKE "%_key"
             AND `option` NOT LIKE "%_token"
@@ -79,7 +79,7 @@ class DbBackup
             $row_n++;
             $row_inx++;
 
-            if ($row_inx == 100) {
+            if ($row_inx === 100) {
               $row_inx = 1;
               $fline .= ");\n";
             }

@@ -118,7 +118,7 @@ class gTable
   function select(&$fields = null)
   {
     $select = [];
-    if($fields == null) $fields = $this->fields();
+    if($fields === null) $fields = $this->fields();
 
     foreach ($fields as $key => $value) {
       $select[$key] = '`'.$this->db->res($value).'`';
@@ -143,9 +143,9 @@ class gTable
     $select = $this->fields();
 
     foreach ($select as $key => $value) {
-      if($this->fieldAttr($key, 'type') == "number") {
+      if($this->fieldAttr($key, 'type') === "number") {
         $select[$key] = 'SUM('.$value.') as '.$value;
-      } else if($groupby == $value) {
+      } else if($groupby === $value) {
         if($qcolumn = $this->fieldAttr($value, 'qcolumn')) {
           $select[$key] = $qcolumn.' as '.$value;
         }
@@ -181,8 +181,8 @@ class gTable
       $order = $this->db->res($order);
       $o = is_numeric($key) ? explode('_', $order) : [$key, $order];
       if(!array_key_exists($o[0], $this->table['fields'])) continue;
-      if($o[1]=='a') $o[1]='ASC';
-      if($o[1]=='d') $o[1]='DESC';
+      if($o[1]==='a') $o[1]='ASC';
+      if($o[1]==='d') $o[1]='DESC';
       $_orders[] = $o[0].' '.$o[1];
     }
 
@@ -195,7 +195,7 @@ class gTable
   }
 
   function limit($limit = null) {
-    if($limit==null) {
+    if($limit===null) {
       $limit = $this->startIndex();
       if(isset($this->table['pagination'])) {
         $limit .= ','.$this->table['pagination'];
@@ -217,7 +217,7 @@ class gTable
 
   function event($event, &$data) {
     if(isset($this->table['events'])) foreach($this->table['events'] as $ev) {
-      if($ev[0]==$event) {
+      if($ev[0]===$event) {
         $ev[1]($data);
       }
     }
@@ -225,7 +225,7 @@ class gTable
 
   function set(&$fields = null) {
     $set = [];
-    if($fields==null) $fields=$_POST;
+    if($fields===null) $fields=$_POST;
     foreach(@$this->table['filters'] as $k=>$f) $fields[$k]=$f;
     $this->event('change', $fields);
 
@@ -233,21 +233,22 @@ class gTable
       if(array_key_exists($key, $this->table['fields'])) {
         if ($this->fieldAttr($key, 'qcolumn')) continue;
         if ($allowed = $this->fieldAttr($key, 'allow-tags')) {
-          if($allowed!=true)
-            $value=strip_tags($value,$allowed);
+          if($allowed!==true) {
+            $value = strip_tags($value, $allowed);
+          }
         } else {
-          $value=strip_tags($value);
+          $value = strip_tags($value);
         }
-        if (in_array($this->fieldAttr($key, 'type'),['joins','meta'])) continue;
+        if (in_array($this->fieldAttr($key, 'type'), ['joins','meta'])) continue;
 
         if(is_array($value)) {
           foreach($value as $subkey=>$subvalue) {
-            if($subkey == 'fn') $set[] = "$key=$subvalue";
-            if($subkey == 'add') $set[] = "$key=$key+$subvalue";
+            if($subkey === 'fn') $set[] = "$key=$subvalue";
+            if($subkey === 'add') $set[] = "$key=$key+$subvalue";
           }
         } else {
-          if($value=='') if($def = $this->fieldAttr($key, 'default')) $value = $def;
-          $value = str_replace("'","\'",$value);
+          if($value==='') if($def = $this->fieldAttr($key, 'default')) $value = $def;
+          $value = strtr($value, ["'"=>"\'"]);
           $set[] = "$key='$value'";
         }
       }
@@ -259,10 +260,10 @@ class gTable
   }
 
   function updateJoins ($id, &$fields = null) {
-    if($fields==null) $fields=$_POST;
+    if($fields===null) $fields=$_POST;
 
     foreach($fields as $key=>$value) {
-      if(@$this->table['fields'][$key]['type'] == 'joins') {
+      if(@$this->table['fields'][$key]['type'] === 'joins') {
         $jt = $this->table['fields'][$key]["jt"];
         $arrv = explode(",",$value);
         $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
@@ -275,14 +276,14 @@ class gTable
   }
 
   function updateMeta ($id, &$fields = null) {
-    if($fields==null) $fields=$_POST;
+    if($fields===null) $fields=$_POST;
 
     foreach($fields as $key=>$value) {
-      if(@$this->table['fields'][$key]['type'] == 'meta') {
+      if(@$this->table['fields'][$key]['type'] === 'meta') {
         $mt = $this->table['fields'][$key]["mt"];
         $vt = $this->table['fields'][$key]["metatype"];
         if(is_string($value)) {
-          if(@$this->table['fields'][$key]['values'] == 1) {
+          if(@$this->table['fields'][$key]['values'] === 1) {
             $arrv = [$value];
           } else {
             $arrv = explode(",",$value);
@@ -301,7 +302,7 @@ class gTable
 
   function where($fields = null) {
     $filters = [];
-    if($fields==null) return '';
+    if($fields===null) return '';
     if(isset($this->table['filters'])) {
       foreach($this->table['filters'] as $k=>$f) $fields[$k]=$f;
     }
@@ -315,12 +316,12 @@ class gTable
               $filters[] = $key . self::$basicOps[$subkey] . $subvalue;
               continue;
             }
-            if($subkey == 'gts') $filters[] = "$key>'$subvalue'";
-            if($subkey == 'lts') $filters[] = "$key<'$subvalue'";
-            if($subkey == 'begin') $filters[] = "$key like '$subvalue%'";
-            if($subkey == 'end') $filters[] = "$key like '%$subvalue'";
-            if($subkey == 'has') $filters[] = "$key like '%$subvalue%'";
-            if($subkey == 'in') $filters[] = "$key IN($subvalue)";
+            if($subkey === 'gts') $filters[] = "$key>'$subvalue'";
+            if($subkey === 'lts') $filters[] = "$key<'$subvalue'";
+            if($subkey === 'begin') $filters[] = "$key like '$subvalue%'";
+            if($subkey === 'end') $filters[] = "$key like '%$subvalue'";
+            if($subkey === 'has') $filters[] = "$key like '%$subvalue%'";
+            if($subkey === 'in') $filters[] = "$key IN($subvalue)";
           }
         } else {
           $value = $this->db->res($value);
@@ -376,7 +377,7 @@ class gTable
   }
 
   function getFields($output = '') {
-    if($output=='') return $this->table->fields;
+    if($output==='') return $this->table->fields;
     $fields = [];
     foreach($this->fields($output) as $fkey) {
       $fields[$fkey] = $this->table['fields'][$fkey];
@@ -393,8 +394,8 @@ class gTable
         $fv=$field['default'];
       } else if(isset($field['type'])) {
         if(isset($field['options'])) $fv="0";
-        if($field['type']=="date") $fv=date("Y-m-d");
-        if($field['type']=="number") $fv="0";
+        if($field['type']==="date") $fv=date("Y-m-d");
+        if($field['type']==="number") $fv="0";
       }
       $row[]=$fv;
       $row[$key]=$fv;

@@ -12,7 +12,7 @@
     </p>
   </div>
 </footer>
-<script src="src/core/assets/lazyImgLoad.js" async></script>
+<?php View::scriptAsync("core/lazyImgLoad.js")?>
 <?php Event::fire('footer')?>
 </body>
 

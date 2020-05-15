@@ -7,7 +7,7 @@ use core\models\User;
 /**
 * The blog controller, get calls for display of posts
 */
-class Blog extends Controller
+class BlogCtrl extends Controller
 {
   public static $page; /** The page number */
   public static $totalPosts;
@@ -54,7 +54,7 @@ class Blog extends Controller
         View::render('blog-homepage.php','blog');
         return;
       }
-      View::set('page',blog::$page);
+      View::set('page', self::$page);
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
       View::render('frontpage.php');
     }
@@ -144,6 +144,11 @@ class Blog extends Controller
   function postShow($id=null)
   {
     global $db;
+    $cacheTime = Gila::option('blog.cache');
+    if(Session::userId()===0 && $cacheTime > 0) {
+      Gila::canonical('blog/'.$r['id']);
+      Router::cache($cacheTime, [$id], [Gila::mt('post')]);
+    }
 
     if (($r = Post::getByIdSlug($id)) && ($r['publish']==1)) {
       $id = $r['id'];
@@ -266,10 +271,12 @@ class Blog extends Controller
     return Gila::make_url('blog','',['p'=>$id,'slug'=>$slug]);
   }
 
-  static function thumb_sm($img,$id)
+  static function thumb_sm($img,$id) // DEPRECIATED
   {
     $target = 'post_sm/'.str_replace(["://",":\\\\","\\","/",":"], "_", $img);
     return View::thumb_sm($img, $target);
   }
 
 }
+
+class_alias('BlogCtrl', 'blog'); // DEPRECIATED

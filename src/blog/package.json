@@ -10,7 +10,14 @@
         "summary": "Summary", "summary_large_image": "Large Image"
       }
     },
-    "twitter-site": []
+    "twitter-site": [],
+    "cache": {
+      "title": "Cache",
+      "type": "select",
+      "options": {
+        "0": "-", "300": "5 min", "3600": "1 hour", "86400": "1 day"
+      }
+    }
   },
   "require": {
     "core": "1.13.0"

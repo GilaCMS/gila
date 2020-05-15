@@ -17,11 +17,12 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
 g.dialog.buttons.create_widget = {title:'Create',fn:function(){
   block_edit_close()
   g.loader()
-  href='blocks/create/'+cblock_content+'?type='+cblock_type+'&pos='+cblock_pos;
+  widget_id = cblock_content.replace('/','_')+'_'+cblock_pos;
+  href='blocks/create?id='+widget_id+'&type='+cblock_type+'&pos='+cblock_pos;
   g.ajax({url:href,method:'POST',fn:function(data){
     content_blocks_app.blocks = JSON.parse(data)
     let fm=new FormData(g.el('widget_options_form'))
-    fm.append('widget_id',cblock_content.replace('/','_')+'_'+cblock_pos)
+    fm.append('widget_id',widget_id)
     g('#gila-popup').parent().remove();
     g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
       g.loader(false)

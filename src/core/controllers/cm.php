@@ -13,7 +13,7 @@ class cm extends Controller
   function __construct ()
   {
     $this->permissions = User::permissions(Session::userId());
-    $this->table = Router::get("t",2);
+    $this->table = Router::get("t",1);
     if(!isset(Gila::$content[$this->table])) {
       http_response_code(404);
       exit;
@@ -151,7 +151,7 @@ class cm extends Controller
         $str = preg_replace("/\t/", "", $str);//\\t
         $str = preg_replace("/\r?\n/", "", $str);//\\n
         if($str=="null") $str="";
-        if(strstr($str, '"') || strstr($str, ',')) $str = '"' . str_replace('"', '""', $str) . '"';
+        if(strstr($str, '"') || strstr($str, ',')) $str = '"' . strtr($str, ['"'=>'""']) . '"';
       }
       echo implode(',',$r)."\n";
     }

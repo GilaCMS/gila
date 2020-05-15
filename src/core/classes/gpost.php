@@ -27,7 +27,7 @@ class gpost
       'http' => [
         'method'  => $args['method']??'POST',
         'header'  => "Content-type: application/$content_type\r\n".$header_str,
-        'content' => ($content_type=='json'? json_encode($data): http_build_query($data)),
+        'content' => ($content_type==='json'? json_encode($data): http_build_query($data)),
         'ignore_errors' => $ignore_error
       ]
     ];
@@ -46,10 +46,10 @@ class gpost
   }
 
   public function header($key=null) {
-    if($key==null) return $this->header;
+    if($key===null) return $this->header;
     foreach($this->header as $header) if(strpos($header, $key)!==false) {
       $pos = strlen($key);
-      if($header[$pos]==':') $pos++;
+      if($header[$pos]===':') $pos++;
       return trim(substr($header, $pos));
     }
     return null;

@@ -10,19 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class ClassGila extends TestCase
 {
-	public function test_cotrollers()
-	{
-		Gila::controllers(['ctrl1'=>'path1','ctrl2'=>'path2']);
-		$this->assertEquals('path2', Gila::$controller['ctrl2']);
-		$this->assertEquals('path1', Gila::$controller['ctrl1']);
-	}
-
-	public function test_controller()
-	{
-		Gila::controller('ctrlx','pathx','classx');
-		$this->assertEquals('pathx', Gila::$controller['ctrlx']);
-		$this->assertEquals('classx', Gila::$controllerClass['ctrlx']);
-	}
 
 	public function test_route()
 	{

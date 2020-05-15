@@ -12,7 +12,7 @@ class blocks extends Controller
 
   function indexAction ()
   {
-    $table = Router::get('t',1);
+    $table = Router::request('t');
     $id = Router::get('id',2);
     $widgets = self::readBlocks($table, $id);
     View::set('contentType', $table);
@@ -40,7 +40,7 @@ class blocks extends Controller
   function updateAction ()
   {
     global $db;
-    $id = Router::post('widget_id',2);
+    $id = Router::request('widget_id');
     $idArray = explode('_',$id);
     $content = $idArray[0];
     $id = (int)$idArray[1];
@@ -59,6 +59,7 @@ class blocks extends Controller
           }
         } else if($allowed!==true) {
           $widget_data[$key] = strip_tags($widget_data[$key], $allowed);
+          $widget_data[$key] = str_replace('="javascript:', '="', $widget_data[$key]);
         }
       }
       $widget_data['_type'] = $type;
@@ -94,16 +95,16 @@ class blocks extends Controller
       $wfile = SITE_PATH.'tmp/stacked-wdgt'.$rid.'.jpg';
       $nextwfile = SITE_PATH.'tmp/stacked-wdgt'.$nextrid.'.jpg';
       if(file_exists($wfile)) {
-          rename($wfile.'.json', SITE_PATH.'tmp/tmp_wgtjpgjson');
-          rename($wfile, SITE_PATH.'tmp/tmp_wgtjpg');
+        rename($wfile.'.json', SITE_PATH.'tmp/tmp_wgtjpgjson');
+        rename($wfile, SITE_PATH.'tmp/tmp_wgtjpg');
       }
       if(file_exists($nextwfile)) {
-          rename($nextwfile.'.json', $wfile.'.json');
-          rename($nextwfile, $wfile);
+        rename($nextwfile.'.json', $wfile.'.json');
+        rename($nextwfile, $wfile);
       }
       if(file_exists(SITE_PATH.'tmp/tmp_wgtjpg')) {
-          rename(SITE_PATH.'tmp/tmp_wgtjpgjson', $nextwfile.'.json');
-          rename(SITE_PATH.'tmp/tmp_wgtjpg', $nextwfile);
+        rename(SITE_PATH.'tmp/tmp_wgtjpgjson', $nextwfile.'.json');
+        rename(SITE_PATH.'tmp/tmp_wgtjpg', $nextwfile);
       }
     }
 
@@ -115,9 +116,11 @@ class blocks extends Controller
   function createAction ()
   {
     global $db;
-    $content = Router::get('t',1);
-    $id = Router::get('id',2);
-    $pos = (int)$_REQUEST['pos'];
+    $rid = $_REQUEST['id'];
+    $idArray = explode('_',$rid);
+    $content = $idArray[0];
+    $id = $idArray[1];
+    $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id);
     $new = ['_type'=>$_REQUEST['type']];
     $widget_folder = 'src/'.Gila::$widget[$_REQUEST['type']];
