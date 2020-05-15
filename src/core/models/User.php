@@ -35,7 +35,7 @@ class user
 
   static function metaDelete($id, $meta, $value=null) {
     global $db;
-    if($value==null) {
+    if($value===null) {
       $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=?", [$id, $meta]);
     } else {
       $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=? AND `value`=?", [$id, $meta, $value]);

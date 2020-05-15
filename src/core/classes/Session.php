@@ -12,7 +12,7 @@ class Session
   {
     if(self::$started===true) return;
     self::$started = true;
-    @session_set_cookie_params(24*3600);
+    session_set_cookie_params(24*3600);
 
     try {
       @session_start();
@@ -32,13 +32,16 @@ class Session
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
-      if(Session::userId()===0) {
+      if(Session::userId()==0) {
         if(isset($_COOKIE['GSESSIONID'])) {
-          foreach (User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']) as $user_id) {
-            $usr = User::getById($user_id);
+          $user_ids = User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']);
+          if(isset($user_ids[0])) {
+            $usr = User::getById($user_id[0]);
             if ($usr && $usr['active']===1) {
               Session::user($usr['id'], $usr['username'], $usr['email']);
             }
+          } else {
+            @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
           }
         }
       } else {
@@ -72,19 +75,14 @@ class Session
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
     $gsession = (string)$id;
     for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
-    User::meta($id, 'GSESSIONID', $gsession, true);
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if(isset($_COOKIE['GSESSIONID'])) {
       User::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
-    } else {
-      // setcookie('GSESSIONID', $gsession, time() + (86400 * 30),
-      //  '/', null, null, true, ['samesite'=>'Strict']);
-      header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
+      @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
     }
-    $data = [
-      'user_agent'=>$_SERVER['HTTP_USER_AGENT']
-    ];
-    file_put_contents(LOG_PATH.'/sessions/'.$gsession, json_encode($data));
+    header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
+    User::meta($id, 'GSESSIONID', $gsession, true);
+    Session::createFile($gsession);
   }
 
   /**
@@ -157,6 +155,10 @@ class Session
       if(isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
         @$user_id = $_SESSION[Session::md5('user_id')];
       }
+      if(isset($_COOKIE['GSESSIONID']) &&
+          !file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
+        Session::createFile($_COOKIE['GSESSIONID']);
+      }
     }
     self::$user_id = $user_id;
     return self::$user_id;
@@ -165,6 +167,13 @@ class Session
   static function user_id() { // DEPRECIATED
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     return self::userId();
+  }
+
+  static function createFile($gsession) {
+    $data = [
+      'user_agent'=>$_SERVER['HTTP_USER_AGENT']
+    ];
+    file_put_contents(LOG_PATH.'/sessions/'.$gsession, json_encode($data));
   }
 
   /**
@@ -176,6 +185,7 @@ class Session
       $session_log = new Logger(LOG_PATH.'/sessions.log');
       $session_log->info('End',['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
     }
+    @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
     @$_SESSION = [];
     @session_destroy();
   }
