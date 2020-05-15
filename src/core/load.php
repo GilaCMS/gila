@@ -65,5 +65,5 @@ Gila::table('widget','core/tables/widget.php');
 Gila::addLang('core/lang/');
 
 if(Gila::config('use_cdn')=='1') {
-  View::$cdn_paths = include('src/core/assets/cdn_paths.php');
+  View::$cdn_paths = include('src/core/cdn_paths.php');
 }

@@ -5,7 +5,7 @@
 <div class="gm-grid" style="justify-items:center;margin-bottom:1em">
 <?php
   foreach(json_decode($data['cards'],true) as $key=>$card) {
-    echo '<div class="g-card wrapper" style="text-align:center;max-width:300px">';
+    echo '<div class="g-card wrapper bg-white" style="text-align:center;max-width:300px">';
     if($card[0]) {
       echo '<div class="g-card-image" style="padding:0 25%">';
       echo View::img($card[0], 'c_', 400);
