@@ -1,11 +1,12 @@
 <?php
 
 return [
-    'image'=>[
+    'image'=> [
         "type"=>"media",
         "default"=>"assets/core/photo.png"
     ],
-    'caption'=>[
-        "type"=>"text"
+    'description'=> [],
+    'caption'=> [
+        "type"=>"paragraph"
     ]
 ];

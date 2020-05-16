@@ -8,6 +8,7 @@ log/sessions/*
 sites/*
 data/*
 data/uploads/*
+assets/uploads/*
 
 vendor/
 node_modules/
@@ -48,6 +49,7 @@ tests/performance
 
 !assets/.htaccess
 !assets/lib
+!assets/uploads
 !assets/gila-logo.png
 !assets/gila-logo.svg
 
