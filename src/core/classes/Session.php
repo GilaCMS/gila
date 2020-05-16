@@ -12,19 +12,20 @@ class Session
   {
     if(self::$started===true) return;
     self::$started = true;
-    session_set_cookie_params(24*3600);
+    @session_set_cookie_params(86400); 
 
     try {
       @session_start();
     } catch (Exception $e) {
       trigger_error($e->getMessage());
     }
-    Session::define(['user_id'=>0]);
+    self::define(['user_id'=>0]);
 
-    if (isset($_POST['username']) && isset($_POST['password']) && Session::waitForLogin()===0) {
+    if (isset($_POST['username']) && isset($_POST['password']) && self::waitForLogin()===0) {
       $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']===1 && password_verify($_POST['password'], $usr['pass'])) {
-        Session::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
+        self::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
+        self::setCookie($usr['id']);
         unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();
@@ -32,13 +33,13 @@ class Session
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
-      if(Session::userId()==0) {
+      if(self::userId()==0) {
         if(isset($_COOKIE['GSESSIONID'])) {
           $user_ids = User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']);
           if(isset($user_ids[0])) {
-            $usr = User::getById($user_id[0]);
-            if ($usr && $usr['active']===1) {
-              Session::user($usr['id'], $usr['username'], $usr['email']);
+            $usr = User::getById($user_ids[0]);
+            if ($usr['active']===1) {
+              self::user($usr['id'], $usr['username'], $usr['email']);
             }
           } else {
             @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
@@ -46,13 +47,13 @@ class Session
         }
       } else {
         if(!isset($_COOKIE['GSESSIONID'])) {
-          self::setCookie (Session::userId());
+          self::setCookie(self::userId());
         }
       }
 
       if(isset($_COOKIE['GSESSIONID'])) if(!file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-        User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
-        Session::destroy();
+        User::metaDelete(self::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+        self::destroy();
       }
     }
 
@@ -60,15 +61,14 @@ class Session
 
   static function user ($id, $name, $email, $msg=null)
   {
-    Session::key('user_id', $id);
-    Session::key('user_name', $name);
-    Session::key('user_email', $email);
+    self::key('user_id', $id);
+    self::key('user_name', $name);
+    self::key('user_email', $email);
     self::$user_id = $id;
     if($msg!==null) {
       $session_log = new Logger(LOG_PATH.'/sessions.log');
       $session_log->info($msg,['user_id'=>$id, 'email'=>$email]);
     }
-    self::setCookie($id);
   }
 
   static function setCookie ($id) {
@@ -82,7 +82,7 @@ class Session
     }
     header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
     User::meta($id, 'GSESSIONID', $gsession, true);
-    Session::createFile($gsession);
+    self::createFile($gsession);
   }
 
   /**
@@ -92,8 +92,11 @@ class Session
   static function define ($vars)
   {
     self::start();
-    foreach ($vars as $k=>$v) if(!isset($_SESSION[Session::md5($k)])) {
-      $_SESSION[Session::md5($k)]=$v;
+    foreach ($vars as $var=>$val) {
+      $key = $GLOBALS['config']['db']['name'].$var;
+      if(!isset($_SESSION[$k])) {
+        $_SESSION[$key] = $val;
+      }
     }
   }
 
@@ -107,16 +110,17 @@ class Session
   static function key ($var, $val = null, $t = 0)
   {
     self::start();
+    $key = $GLOBALS['config']['db']['name'].$var;
     if ($val === null) {
-      return $_SESSION[Session::md5($var)]?? null;
+      return $_SESSION[$key]?? null;
     }
-    $_SESSION[Session::md5($var)] = $val;
+    $_SESSION[$key] = $val;
 
     if($t !== 0){
       if(is_object($val) || is_array($val)){
       $value = json_encode($val);
       }
-      setcookie(Session::md5($var), $val, (time() + $t));
+      setcookie($var, $val, (time() + $t));
     }
   }
 
@@ -127,13 +131,14 @@ class Session
   static function unsetKey ($var)
   {
     self::start();
-    unset($_SESSION[Session::md5($var)]);
+    $key = $GLOBALS['config']['db']['name'].$var;
+    unset($_SESSION[$key]);
   }
 
   private static function md5 ($key)
   {
     $dbname = $GLOBALS['config']['db']['name'];
-    return md5($dbname.$key);
+    return $dbname.$key;
   }
 
   /**
@@ -153,11 +158,11 @@ class Session
     } else {
       self::start();
       if(isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
-        @$user_id = $_SESSION[Session::md5('user_id')];
+        @$user_id = self::key('user_id');
       }
       if(isset($_COOKIE['GSESSIONID']) &&
           !file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-        Session::createFile($_COOKIE['GSESSIONID']);
+        self::createFile($_COOKIE['GSESSIONID']);
       }
     }
     self::$user_id = $user_id;
@@ -193,7 +198,7 @@ class Session
   static function waitForLogin()
   {
     $wait = 0;
-    Session::define(['failed_attempts'=>[]]);
+    self::define(['failed_attempts'=>[]]);
     if(@$_SESSION['failed_attempts']) {
       foreach($_SESSION['failed_attempts'] as $key=>$value) {
         if($value+120<time()) array_splice($_SESSION['failed_attempts'], $key, 1);
