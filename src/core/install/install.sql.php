@@ -103,9 +103,9 @@ $link->query("INSERT INTO user(id,username,email,pass,active,reset_code)
   VALUES(1,'$_user','$_email','$_pass',1,'');");
 $link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
 $link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
-VALUES(1,1,'Hello World','hello_world','This is the first post','This is the first post',1,CURRENT_TIMESTAMP);");
+  VALUES(1,1,'Hello World','hello_world','This is the first post. You can edit it from administration.','This is the first post',1,CURRENT_TIMESTAMP);");
 $link->query("INSERT INTO page(id,title,slug,content,publish,updated,template)
-VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP,'');");
+  VALUES(1,'About','about','This is a page to describe your website',1,CURRENT_TIMESTAMP,'');");
 
 // preinstall widgets on dashboard
 $wtext1 = '{"text":"<ol><li><a href=\\\"admin\\\/content\\\/postcategory\\\">Create Categories<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/page\\\">Edit About Page<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/post\\\">Create Posts<\\\/a><\\\/li><li><a href=\\\"admin\\\/media\\\">Upload Images<\\\/a><\\\/li><li><a href=\\\"admin\\\/settings\\\">Set Basic Settings<\\\/a><\\\/li><\\\/ol>"}';

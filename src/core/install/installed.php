@@ -1,9 +1,8 @@
 
 <head>
 	<base href="<?=Gila::base_url()?>">
-	<link type="text/css" rel="stylesheet" href="core/gila.min.css"/>
-	<link type="text/css" rel="stylesheet" href="lib/rj.css"/>
 	<title>Gila CMS</title>
+	<style><?=file_get_contents("src/core/assets/gila.min.css")?></style>
 </head>
 <body class="bg-lightgrey">
 <div class="gm-6 centered row" style="">
