@@ -149,6 +149,7 @@ class BlogCtrl extends Controller
       Gila::canonical('blog/'.$r['id']);
       Router::cache($cacheTime, [$id], [Gila::mt('post')]);
     }
+    Router::$action = "post";
 
     if (($r = Post::getByIdSlug($id)) && ($r['publish']==1)) {
       $id = $r['id'];

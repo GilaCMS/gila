@@ -52,7 +52,9 @@ class lzld extends Controller
           header("Content-Type: image/png");
           break;
         default:
-          if($ext=='svg' && substr($path,0,7) == 'assets/') {
+          if($ext=='svg' && 
+              (substr($file,0,7) == 'assets/' || substr($file,0,4) == 'src/')) {
+            header("Content-Type: image/svg+xml");
             echo file_get_contents($file);
           }
           return;
@@ -67,10 +69,11 @@ class lzld extends Controller
 
   function amenuAction () {
     $userId = Session::userId();
+    $base = $_GET['base'] ?? 'admin';
     foreach (Gila::$amenu as $key => $value) {
       if(isset($value['access'])) if(!Gila::hasPrivilege($value['access'])) continue;
       if(isset($value['icon'])) $icon = 'fa-'.$value['icon']; else $icon='';
-      $url = $value[1]=='#'? Gila::url('admin/'.$value[1]): $value[1]; 
+      $url = $value[1]=='#'? Gila::url($base.'#'): $value[1]; 
       echo "<li><a href='".$url."'><i class='fa {$icon}'></i>";
       echo " <span>".__("$value[0]")."</span></a>";
       if(isset($value['children'])) {

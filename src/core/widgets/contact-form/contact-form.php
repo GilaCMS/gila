@@ -11,7 +11,7 @@ if (gForm::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptc
   <label><?=__("Name")?></label>
   <input name="name" class="form-control g-input" required/>
   <label><?=__("E-mail")?></label>
-  <input name="email" class="form-control g-input" required/>
+  <input name="email" class="form-control g-input" type="email" required/>
   <label><?=__("Subject")?></label>
   <textarea name="message" class="form-control g-input" required></textarea>
   <?php Event::fire('recaptcha.form')?>

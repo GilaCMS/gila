@@ -34,11 +34,11 @@ class Router
 
     self::setUrl($_url);
 
-    $controller = Router::getController();
-    $ctrlPath = Router::$controllers[$controller];
+    $controller = self::getController();
+    $ctrlPath = self::$controllers[$controller];
     $ctrlClass = substr($ctrlPath, strrpos($ctrlPath, '/' )+1);
     require_once('src/'.$ctrlPath.'.php');
-    $action = Router::getAction($ctrlClass);
+    $action = self::getAction($ctrlClass);
 
     if($action === '') {
       @http_response_code(404);
@@ -83,20 +83,20 @@ class Router
     if(isset(self::$controller)) return self::$controller;
     $args = &self::$args;
     $default = Gila::config('default-controller');
-    $controller = Router::request('c',$default);
+    $controller = self::request('c',$default);
 
     if (isset($args[0])) {
       if(isset(Gila::$controller[$args[0]])) {
         $controller = $args[0];
         array_shift($args);
-        Router::$controllers[$controller] = Gila::$controller[$controller];
-      } else if(isset(Router::$controllers[$args[0]])) {
+        self::$controllers[$controller] = Gila::$controller[$controller];
+      } else if(isset(self::$controllers[$args[0]])) {
         $controller = $args[0];
         array_shift($args);
       }
     }
 
-    if ($controller===$default && !isset(Router::$controllers[$default])) {
+    if ($controller===$default && !isset(self::$controllers[$default])) {
       // default-controller not found so have to reset on config.php file
       $controller = 'admin';
       Gila::config('default-controller','admin');
@@ -153,8 +153,8 @@ class Router
 
   static function param ($key, $n = null)
   {
-    if ($n!==null && isset(Router::$args[$n-1]) && Router::$args[$n-1]!==null) {
-      return Router::$args[$n-1];
+    if ($n!==null && isset(self::$args[$n-1]) && self::$args[$n-1]!==null) {
+      return self::$args[$n-1];
     }
     else if (isset($_GET[$key])) {
       return $_GET[$key];
@@ -193,9 +193,9 @@ class Router
   static function controller ($name = null, $path = null)
   {
     if($name===null) {
-      return @Router::getController(); // DEPRECIATED
+      return @self::getController(); // DEPRECIATED
     }
-    Router::$controllers[$name] = $path;
+    self::$controllers[$name] = $path;
   }
 
   /**
@@ -204,7 +204,7 @@ class Router
   static function action ($set = null)
   {
     if($set) self::$action = $set; // DEPRECIATED 
-    return @Router::getAction(self::getController(), self::$args);
+    return @self::getAction(self::getController(), self::$args);
   }
 
   static function args_shift() // DEPRECIATED used only from controllers/api
@@ -214,16 +214,20 @@ class Router
 
   static function setUrl($_url) {
     if($_url!==false) {
-      Router::$url = strip_tags($_url);
-      Router::$args = explode("/", Router::$url);
+      self::$url = strip_tags($_url);
+      self::$args = explode("/", self::$url);
     }
     else {
-      Router::$url = false;
-      Router::$args = [];
+      self::$url = false;
+      self::$args = [];
     }
   }
 
   static function cache ($time = 3600, $args = null, $uniques = null) {
+    if ($_SERVER['REQUEST_METHOD']!=="GET") {
+      // only for get requests
+      return;
+    }
     if(isset(View::$canonical)) {
       $request_uri = View::$canonical;
     } else {
@@ -238,7 +242,12 @@ class Router
       self::$caching_file .= '|'.implode('|',$uniques);
     }
     if(file_exists(self::$caching_file) && filemtime(self::$caching_file)+$time>time()) {
-      if(sizeof($_REQUEST)>1) return;
+      if(sizeof($_GET)>1) return;
+      $controller = self::getController();
+      $action = self::getAction();
+      if(isset(Gila::$onaction[$controller][$action])) {
+        foreach(Gila::$onaction[$controller][$action] as $fn) $fn();
+      }
       include self::$caching_file;
       exit;
     } else {

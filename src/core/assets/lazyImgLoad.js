@@ -13,7 +13,7 @@ function lazyImgLoad() {
     let el,r;
     el = imgs[i]
     r = el.getBoundingClientRect();
-	  if (r.bottom > 0 && r.width>0 && r.right > 0 &&
+	  if (r.bottom > 0 && r.right > 0 &&
 	      r.top < (window.innerHeight || document.documentElement.clientHeight) &&
 	      r.left < (window.innerWidth || document.documentElement.clientWidth) ) {
       if (el.getAttribute('data-src')) {

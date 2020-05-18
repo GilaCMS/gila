@@ -113,7 +113,7 @@ content_blocks_app = new Vue({
     blockIcon: function(type) {
       if(typeof content_blocks[type]!=='undefined'
           && typeof content_blocks[type].logo!=='undefined') {
-        return '<img src="src/'+content_blocks[type].logo+'">'
+        return '<img src="lzld/thumb?src=src/'+content_blocks[type].logo+'">'
       } else {
         return '<h4>'+type[0].toUpperCase()+'</h4>' 
       }
@@ -169,12 +169,12 @@ content_blocks_app = new Vue({
 
 <div id='blocks_app'>
   <div v-if="add_block" id="add_block">
-    <img src="src/core/assets/admin/close.svg" class="add-block-x" @click="add_block=false">
+    <img src="assets/core/admin/close.svg" class="add-block-x" @click="add_block=false">
     <div class="add-block-grid centered">
       <div class="add-block-btn" v-for="b in blocks" @click="createBlock('<?=$contentType.'/'.$id?>', b.name, selected_pos)">
         <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview">
         <div v-else class="logo">
-          <img v-if="b.logo" :src="'src/'+b.logo">
+          <img v-if="b.logo" :src="'lzld/thumb?src=src/'+b.logo">
           <h4 v-else>{{b.name[0].toUpperCase()}}</h4>
           <div>{{b.name}}<div>
         </div>

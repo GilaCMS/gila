@@ -26,7 +26,7 @@
           <img style="max-width:180px;max-height:60px" src="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>" class="centered">
         </a>
       </div>
-      <ul class="g-nav vertical lazy" data-load="lzld/amenu">
+      <ul class="g-nav vertical lazy" data-load="lzld/amenu?base=<?=Gila::url('#')?>">
       ...
       </ul>
     </div>

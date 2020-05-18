@@ -63,7 +63,7 @@ global $db;
 $itemTypes = MenuItemTypes::getItemTypes();
 ?>
 
-<script src="lib/vue/vue.min.js"></script>
+<?=View::script("lib/vue/vue.min.js")?>
 
 <!-- item template -->
 <script type="text/x-template" id="item-template">
