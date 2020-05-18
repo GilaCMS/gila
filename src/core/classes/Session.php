@@ -94,7 +94,7 @@ class Session
     self::start();
     foreach ($vars as $var=>$val) {
       $key = $GLOBALS['config']['db']['name'].$var;
-      if(!isset($_SESSION[$k])) {
+      if(!isset($_SESSION[$key])) {
         $_SESSION[$key] = $val;
       }
     }
