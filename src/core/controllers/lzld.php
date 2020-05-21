@@ -32,7 +32,7 @@ class lzld extends Controller
     $ext = explode('.', $file);
     $ext = $ext[count($ext)-1];
     $size = isset($_GET['media_thumb'])? (int)$_GET['media_thumb']: 80;
-    $file = View::thumb($file, 'media_thumb/', $size);
+    $file = View::thumb($file, "thumb$size/", $size);
 
     if (file_exists($file)) {
       ob_end_clean();

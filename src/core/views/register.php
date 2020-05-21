@@ -1,22 +1,7 @@
-<!DOCTYPE html>
-<html lang="<?=Gila::config('language')?>">
+<?php View::includeFile('login-header.php');?>
 
-<head>
-  <base href="<?=Gila::base_url()?>">
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title><?=Gila::config('title')?> - <?=__('Register')?></title>
-
-  <?=View::css('core/gila.min.css')?>
-  <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-  <?php Event::fire('register.head')?>
-</head>
-
-<body>
   <?php View::alerts()?>
-  <div class="gl-4 centered">
+  <div class="gl-4 centered wrapper g-card">
     <div class="border-buttom-main_ text-align-center">
       <div style="width:16%;display:inline-block">
         <img src="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>">
@@ -24,7 +9,7 @@
       <h3><?=__('Register')?></h3>
     </div>
 
-    <form role="form" method="post" action="" class="g-form wrapper g-card">
+    <form role="form" method="post" action="" class="g-form">
       <label><?=__('Name')?></label>
       <div class="form-group">
         <input class="form-control fullwidth" name="name" autofocus required>
