@@ -45,8 +45,21 @@ class login extends Controller
       }
       else {
         // register the user
-        if(User::create($email,$password,$name)) {
+        $active = Gila::config('user_activation')=='auto'? 1: 0;
+        if(User::create($email,$password,$name,$active)) {
           // success
+          if(Gila::config('user_activation')=='byemail') {
+            $baseurl = Gila::base_url();
+            $subject = __('activate_msg_ln1').' '.$r['username'];
+            $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,50);
+            $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
+            $msg .= __('activatemsg_ln3')." $baseurl\n\n";
+            $msg .= $baseurl."login/activate?ap=$activate_code\n\n";
+            $msg .= __('reset_msg_ln4');
+            $headers = "From: ".Gila::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+            User::meta($r['id'],'activate_code',$activate_code);
+            new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+          }
           View::includeFile('login-register-success.php');
           return;
         } else {
@@ -57,8 +70,32 @@ class login extends Controller
     View::includeFile('register.php');
   }
 
+  function activateAction() {
+    if(Session::key('user_id')>0) {
+      echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
+      return;
+    }
+
+    if(isset($_GET['ap'])) {
+      $r = User::getIdsByMeta('activate_code', $_GET['rp']);
+      if (!isset($r[0])) {
+        echo  __('activate_error1');
+      } else {
+        User::updateActive($r['id'], 1);
+        User::metaDelete($r['id'], 'activate_code');
+        View::includeFile('login-activate-success.php');
+      }
+      return;
+    }
+    http_response_code(400);
+  }
+
   function password_resetAction()
   {
+    if(Session::key('user_id')>0) {
+      echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
+      return;
+    }
     $rpa = 'reset-password-attempt';
     $rpt = 'reset-password-time';
 
@@ -107,9 +144,9 @@ class login extends Controller
       $msg .= __('reset_msg_ln3')." $baseurl\n\n";
       $msg .= $baseurl."login/password_reset?rp=$reset_code\n\n";
       $msg .= __('reset_msg_ln4');
-      $headers = "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
+      $headers = "From: ".Gila::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
       User::meta($r['id'],'reset_code',$reset_code);
-      new sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+      new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
 
     View::includeFile('login-change-emailed.php');

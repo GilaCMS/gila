@@ -275,11 +275,7 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null) {
-        if(cv.split('.').pop()=='svg') {
-          return '<img src="'+cv+'" style="max-height:80px;max-width:80px"></img>'
-        } else {
-          return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
-        }
+        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"'+style+'></img>'
       } else {
         return '';
       }
