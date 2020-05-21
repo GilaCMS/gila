@@ -10,22 +10,34 @@ use PHPUnit\Framework\TestCase;
 
 class RequestsTest extends TestCase
 {
+  protected $userId;
 
-  public function test_login_auth()
+  public function setUp()
   {
     global $db;
     $this->createUserTable();
     $pass = Gila::hash("password");
     $db->query("INSERT INTO user SET email=?, pass=?, active=1;",
       ["test_login_auth@email.com", Gila::hash("password")]);
-    $db->query("INSERT INTO usermeta SET `value`='ABC', user_id=?, `vartype`='token';",
-      [$db->insert_id]);
+    $uid = $db->insert_id;
+    $db->query("INSERT INTO usermeta SET `value`='ABC', user_id=?, `vartype`='token';", [$uid]);
+    $db->query("INSERT INTO usermeta SET `value`=1, user_id=?, `vartype`='role';", [$uid]);
+    $this->userId = $uid;
+  }
+
+  public function tearDown()
+  {
+    $db->query("DELETE FROM user WHERE email='test_login_auth@email.com';");
+    $db->query("DELETE FROM usermeta WHERE user_id=?;", $this->$userId);
+  }
+
+  public function test_login_auth()
+  {
     $_POST['email'] = "test_login_auth@email.com";
     $_POST['password'] = "password";
     Gila::controller('login', 'core/controllers/login');
     $response = $this->request('login/auth');
     $this->assertEquals('{"token":"ABC"}', $response);
-    $db->query("DELETE FROM user WHERE email='test_login_auth@email.com';");
   }
 
   public function test_blocks()
@@ -35,6 +47,7 @@ class RequestsTest extends TestCase
     Gila::table('post','core/tables/post.php');
     $gtable = new gTable('post');
     $gtable->update();
+    $_SERVER['HTTP_TOKEN'] = 'ABC';
 
     $_GET = ['id'=>'new', 'type'=>'paragraph'];
     $response = $this->request('blocks/edit');

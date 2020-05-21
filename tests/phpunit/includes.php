@@ -6,6 +6,7 @@ include __DIR__.'/../../src/core/classes/Gila.php';
 include __DIR__.'/../../src/core/classes/Router.php';
 include __DIR__.'/../../src/core/classes/FileManager.php';
 include __DIR__.'/../../src/core/classes/Db.php';
+include __DIR__.'/../../src/core/classes/Session.php';
 define('SITE_PATH', '');
 define('LOG_PATH', 'log');
 define('CONFIG_PHP', 'config.php');
