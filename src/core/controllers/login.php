@@ -48,7 +48,7 @@ class login extends Controller
       else {
         // register the user
         $active = Gila::config('user_activation')=='auto'? 1: 0;
-        if(User::create($email,$password,$name,$active)) {
+        if($user_Id = User::create($email,$password,$name,$active)) {
           // success
           if(Gila::config('user_activation')=='byemail') {
             $baseurl = Gila::base_url();
@@ -59,7 +59,7 @@ class login extends Controller
             $msg .= $baseurl."login/activate?ap=$activate_code\n\n";
             $msg .= __('reset_msg_ln4');
             $headers = "From: ".Gila::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
-            User::meta($r['id'],'activate_code',$activate_code);
+            User::meta($user_Id, 'activate_code', $activate_code);
             new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
           }
           View::includeFile('login-register-success.php');
@@ -79,12 +79,12 @@ class login extends Controller
     }
 
     if(isset($_GET['ap'])) {
-      $r = User::getIdsByMeta('activate_code', $_GET['rp']);
-      if (!isset($r[0])) {
+      $ids = User::getIdsByMeta('activate_code', $_GET['ap']);
+      if (!isset($ids[0])) {
         echo  __('activate_error1');
       } else {
-        User::updateActive($r['id'], 1);
-        User::metaDelete($r['id'], 'activate_code');
+        User::updateActive($ids[0], 1);
+        User::metaDelete($ids[0], 'activate_code');
         View::includeFile('login-activate-success.php');
       }
       return;
