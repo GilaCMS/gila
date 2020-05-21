@@ -1,16 +1,9 @@
 <?php
-chdir(__DIR__.'/../../');
-include __DIR__.'/../../vendor/autoload.php';
-include __DIR__.'/../../src/core/classes/Db.php';
-include __DIR__.'/../../src/core/classes/Gila.php';
-include __DIR__.'/../../src/core/classes/Router.php';
-include __DIR__.'/../../src/core/classes/Controller.php';
-include __DIR__.'/../../src/core/models/User.php';
-define('SITE_PATH', '');
-define('CONFIG_PHP', 'config.php');
-$db = new Db("127.0.0.1", "g_user", "password", "g_db");
 
-use PHPUnit\Framework\TestCase;
+include(__DIR__.'/includes.php');
+include(__DIR__.'/../../src/core/classes/Controller.php');
+include(__DIR__.'/../../src/core/classes/Package.php');
+include(__DIR__.'/../../src/core/models/User.php');
 
 class RequestsTest extends TestCase
 {
@@ -30,6 +23,23 @@ class RequestsTest extends TestCase
     $response = $this->request('login/auth');
     $this->assertEquals('{"token":"ABC"}', $response);
     $db->query("DELETE FROM user WHERE email='test_login_auth@email.com';");
+  }
+
+  public function test_blocks()
+  {
+    Gila::controller('blocks', 'blocks/controllers/blocks');
+    Package::update('blocks');
+    Gila::table('post','core/tables/post.php');
+    $gtable = new gTable('post');
+    $gtable->update();
+
+    $_GET = ['id'=>'new', 'type'=>'paragraph'];
+    $response = $this->request('blocks/edit');
+    $this->assertContains('<vue-editor id="option[text]"', $response);
+    
+    $_GET = ['id'=>'post_1_0', 'type'=>'paragraph'];
+    $response = $this->request('blocks/create');
+    $this->assertEquals('[{"_type":"paragraph"}]', $response);
   }
 
   function createUserTable()
@@ -58,8 +68,9 @@ class RequestsTest extends TestCase
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
   }
 
-  function request($url)
+  function request($url, $params=[], $method='GET')
   {
+    $_SERVER['REQUEST_METHOD'] = $method;
     ob_start();
     Router::run($url);
     $response = ob_get_contents();
