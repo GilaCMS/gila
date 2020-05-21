@@ -130,9 +130,8 @@ content_blocks_app = new Vue({
     },
     block_save: function() {
       _this = this
-      href='blocks/save?id=<?=$contentType.'_'.$id?>';
       g.loader()
-      g.ajax(href,function(data) {
+      g.post('blocks/save', 'id=<?=$contentType.'_'.$id?>', function(data) {
         g.loader(false)
         _this.draft = false;
         g.alert("Saved", "success");
@@ -140,9 +139,8 @@ content_blocks_app = new Vue({
     },
     block_discard: function() {
       _this = this
-      href='blocks/discard?id=<?=$contentType.'_'.$id?>';
       g.loader()
-      g.ajax(href,function(data) {
+      g.post('blocks/discard', 'id=<?=$contentType.'_'.$id?>', function(data) {
         g.loader(false)
         _this.draft = false;
         blocks_preview_reload(data)

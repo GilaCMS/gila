@@ -21,7 +21,7 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
   g.post('blocks/create', 'id='+widget_id+'&type='+cblock_type, function(data){
     content_blocks_app.blocks = JSON.parse(data)
     let fm=new FormData(g.el('widget_options_form'))
-    fm.append('widget_id',widget_id)
+    fm.set('widget_id',widget_id)
     g('#gila-popup').parent().remove();
     g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
       g.loader(false)
