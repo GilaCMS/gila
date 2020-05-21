@@ -18,8 +18,7 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
   block_edit_close()
   g.loader()
   widget_id = cblock_content.replace('/','_')+'_'+cblock_pos;
-  href='blocks/create?id='+widget_id+'&type='+cblock_type+'&pos='+cblock_pos;
-  g.ajax({url:href,method:'POST',fn:function(data){
+  g.post('blocks/create', 'id='+widget_id+'&type='+cblock_type, function(data){
     content_blocks_app.blocks = JSON.parse(data)
     let fm=new FormData(g.el('widget_options_form'))
     fm.append('widget_id',widget_id)
@@ -29,7 +28,7 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
       blocks_preview_reload(data)
       content_blocks_app.draft = true
     }})
-  }})
+  })
 }}
 
 g.dialog.buttons.delete_widget = {title:'Delete',class:'error',fn:function() {
@@ -107,9 +106,8 @@ function block_edit(id,type) {
 };
 
 function block_pos(id,pos) {
-  href='blocks/pos/?id='+id+'&pos='+pos;
   g.loader()
-  g.ajax(href,function(data) {
+  g.post('blocks/pos', 'id='+id+'&pos='+pos, function(data) {
     g.loader(false)
     blocks_preview_reload(data)
     content_blocks_app.draft = true
@@ -118,10 +116,9 @@ function block_pos(id,pos) {
 
 function block_del(id) {
   if(confirm("You really want to delete this block?")) {
-    href='blocks/delete/?id='+id;
     g.loader()
     console.log(href)
-    g.ajax(href,function(data) {
+    g.post('blocks/delete', 'id='+id, function(data) {
       g.loader(false)
       blocks_preview_reload(data)
       content_blocks_app.draft = true

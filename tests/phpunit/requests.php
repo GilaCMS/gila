@@ -4,6 +4,8 @@ include(__DIR__.'/includes.php');
 include(__DIR__.'/../../src/core/classes/Controller.php');
 include(__DIR__.'/../../src/core/classes/Package.php');
 include(__DIR__.'/../../src/core/models/User.php');
+include(__DIR__.'/../../src/core/classes/gTable.php');
+include(__DIR__.'/../../src/core/classes/TableSchema.php');
 use PHPUnit\Framework\TestCase;
 
 class RequestsTest extends TestCase
@@ -37,18 +39,22 @@ class RequestsTest extends TestCase
     $_GET = ['id'=>'new', 'type'=>'paragraph'];
     $response = $this->request('blocks/edit');
     $this->assertContains('<vue-editor id="option[text]"', $response);
+    $_GET = [];
 
-    $_GET = ['id'=>'post_1_0', 'type'=>'paragraph'];
+    $_POST = ['id'=>'post_1_0', 'type'=>'paragraph'];
     $response = $this->request('blocks/create');
     $this->assertEquals('[{"_type":"paragraph"}]', $response);
-    $_GET = ['id'=>'post_1_1', 'type'=>'image'];
+    $_POST = ['id'=>'post_1_1', 'type'=>'image'];
     $response = $this->request('blocks/create');
     $this->assertEquals('[{"_type":"paragraph"},{"_type":"image"}]', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something']];
-    $_GET = [];
     $response = $this->request('blocks/update');
     $this->assertEquals('[{"text":"Something","_type":"paragraph"},{"_type":"image"}]', $response);
+
+    $_POST = ['id'=>'post_1_1'];
+    $response = $this->request('blocks/delete');
+    $this->assertEquals('[{"text":"Something","_type":"paragraph"}]', $response);
   }
 
   function createUserTable()

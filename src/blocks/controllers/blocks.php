@@ -72,12 +72,12 @@ class blocks extends Controller
   function posAction ()
   {
     global $db;
-    $rid = $_REQUEST['id'];
+    $rid = $_POST['id'];
     $idArray = explode('_',$rid);
     $content = $idArray[0];
     $id = (int)$idArray[1];
     $pos = (int)$idArray[2];
-    $newpos = (int)$_REQUEST['pos'];
+    $newpos = (int)$_POST['pos'];
     $widgets = self::readBlocks($content, $id);
 
     if($newpos<0 || $newpos>count($widgets)-1) {
@@ -116,14 +116,14 @@ class blocks extends Controller
   function createAction ()
   {
     global $db;
-    $rid = $_REQUEST['id'];
+    $rid = $_POST['id'];
     $idArray = explode('_',$rid);
     $content = $idArray[0];
     $id = $idArray[1];
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id);
-    $new = ['_type'=>$_REQUEST['type']];
-    $widget_folder = 'src/'.Gila::$widget[$_REQUEST['type']];
+    $new = ['_type'=>$_POST['type']];
+    $widget_folder = 'src/'.Gila::$widget[$_POST['type']];
     $fields = include $widget_folder.'/widget.php';
     foreach($fields as $key=>$field) {
       if(isset($field['default'])) $new[$key] = $field['default'];
@@ -136,7 +136,7 @@ class blocks extends Controller
   function deleteAction ()
   {
     global $db;
-    $rid = $_REQUEST['id'];
+    $rid = $_POST['id'];
     $idArray = explode('_',$rid);
     $content = $idArray[0];
     $id = $idArray[1];
