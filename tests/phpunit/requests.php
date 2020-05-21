@@ -36,10 +36,14 @@ class RequestsTest extends TestCase
     $_GET = ['id'=>'new', 'type'=>'paragraph'];
     $response = $this->request('blocks/edit');
     $this->assertContains('<vue-editor id="option[text]"', $response);
-    
+
     $_GET = ['id'=>'post_1_0', 'type'=>'paragraph'];
     $response = $this->request('blocks/create');
     $this->assertEquals('[{"_type":"paragraph"}]', $response);
+    $_GET = ['id'=>'post_1_1', 'type'=>'image'];
+    $response = $this->request('blocks/create');
+    $this->assertEquals('[{"_type":"paragraph"},{"_type":"image"}]', $response);
+
   }
 
   function createUserTable()

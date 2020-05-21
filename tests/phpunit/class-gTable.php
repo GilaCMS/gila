@@ -4,6 +4,7 @@
 include(__DIR__.'/includes.php');
 include(__DIR__.'/../../src/core/classes/gTable.php');
 include(__DIR__.'/../../src/core/classes/TableSchema.php');
+use PHPUnit\Framework\TestCase;
 
 class ClassGTable extends TestCase
 {

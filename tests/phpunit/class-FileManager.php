@@ -2,6 +2,7 @@
 
 include(__DIR__.'/includes.php');
 FileManager::$sitepath = realpath(__DIR__.'/../../');
+use PHPUnit\Framework\TestCase;
 
 class ClassFileManager extends TestCase
 {

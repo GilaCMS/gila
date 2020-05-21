@@ -3,6 +3,7 @@
 include(__DIR__.'/includes.php');
 include(__DIR__.'/../../src/core/classes/View.php');
 include(__DIR__.'/../../src/core/classes/Image.php');
+use PHPUnit\Framework\TestCase;
 
 class ClassView extends TestCase
 {

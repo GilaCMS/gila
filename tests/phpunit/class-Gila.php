@@ -1,6 +1,7 @@
 <?php
 
 include(__DIR__.'/includes.php');
+use PHPUnit\Framework\TestCase;
 
 class ClassGila extends TestCase
 {

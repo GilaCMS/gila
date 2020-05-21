@@ -11,6 +11,5 @@ define('LOG_PATH', 'log');
 define('CONFIG_PHP', 'config.php');
 define('FS_ACCESS', true);
 
-use PHPUnit\Framework\TestCase;
 $GLOBALS['user_privileges'] = ['admin'];
 $db = new Db("127.0.0.1", "g_user", "password", "g_db");
