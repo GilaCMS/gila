@@ -4,6 +4,7 @@ include(__DIR__.'/includes.php');
 include(__DIR__.'/../../src/core/classes/Controller.php');
 include(__DIR__.'/../../src/core/classes/Package.php');
 include(__DIR__.'/../../src/core/models/User.php');
+use PHPUnit\Framework\TestCase;
 
 class RequestsTest extends TestCase
 {
@@ -44,6 +45,10 @@ class RequestsTest extends TestCase
     $response = $this->request('blocks/create');
     $this->assertEquals('[{"_type":"paragraph"},{"_type":"image"}]', $response);
 
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something']];
+    $_GET = [];
+    $response = $this->request('blocks/update');
+    $this->assertEquals('[{"text":"Something","_type":"paragraph"},{"_type":"image"}]', $response);
   }
 
   function createUserTable()
