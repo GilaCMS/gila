@@ -1,41 +1,23 @@
-<!DOCTYPE html>
-<html lang="<?=Gila::config('language')?>">
+<?php View::includeFile('login-header.php');?>
 
-<head>
-  <base href="<?=Gila::base_url()?>">
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title><?=Gila::config('title')?> - <?=__('reset_pass')?></title>
-
-  <?=View::css('core/gila.min.css')?>
-  <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-</head>
-
-<body>
-
-    <div class="gl-4 centered">
-
-        <div class="border-buttom-main_ text-align-center">
-            <div style="width:16%;display:inline-block">
-                <img src="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>">
-            </div>
-            <h3><?=__('reset_pass')?></h3>
-        </div>
-
-        <form role="form" method="post" action="" class="g-card g-form wrapper">
-            <p><?=__('reset_submit_pass')?><p>
-            <div class="form-group">
-                <input class="form-control fullwidth" placeholder="<?=__('New Password')?>" name="pass" type="password" autofocus>
-            </div>
-            <div class="form-group">
-                <input class="form-control fullwidth" placeholder="<?=__('Confirm Password')?>" name="pass2" type="password" autofocus>
-            </div>
-
-            <input type="submit" class="btn btn-primary btn-block" value="<?=__('Change Password')?>">
-        </form>
+  <div class="gl-4 centered wrapper g-card bg-white">
+    <div class="border-buttom-main_ text-align-center">
+      <div style="width:16%;display:inline-block">
+        <img src="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>">
+      </div>
+      <h3><?=__('reset_pass')?></h3>
     </div>
+    <form role="form" method="post" action="" class="g-form">
+      <p><?=__('reset_submit_pass')?><p>
+      <div class="form-group">
+        <input class="form-control fullwidth" placeholder="<?=__('New Password')?>" name="pass" type="password" autofocus>
+      </div>
+      <div class="form-group">
+        <input class="form-control fullwidth" placeholder="<?=__('Confirm Password')?>" name="pass2" type="password" autofocus>
+      </div>
+      <input type="submit" class="btn btn-primary btn-block" value="<?=__('Change Password')?>">
+    </form>
+  </div>
 
 </body>
 

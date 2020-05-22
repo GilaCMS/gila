@@ -23,6 +23,7 @@ $GLOBALS['config'] = array (
   'rewrite' => '1',
   'default.menu' => '0',
   'user_register' => '0',
+  'user_activation' => 'byadmin',
   'use_cdn' => '0',
   'admin_email' => 'admin@mail.com',
   'admin_logo' => '',

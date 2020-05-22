@@ -31,5 +31,8 @@
   "_theme_downloaded": "Teema on alla laaditud!",
   "_theme_not_downloaded": "Teema pole alla laaditud!",
   "_packages_required": "Need pakid on vaja aktiveerida",
-  "_options_required": "These options need to be set"
+  "_options_required": "These options need to be set",
+  "New Users Activation": "Uued kasutajad aktiveerimine",
+  "Automatically": "Automaatselt",
+  "Email activation link": "Saada aktiveerimise link"
 }

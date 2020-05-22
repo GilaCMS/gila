@@ -31,5 +31,8 @@
   "_theme_downloaded": "Tema indirilen !",
   "_theme_not_downloaded": "Tema değil indirilen !",
   "_packages_required": "Bu paketler etkinleştirilmelidir",
-  "_options_required": "Bu seçenekler ayarlanması gerekir"
+  "_options_required": "Bu seçenekler ayarlanması gerekir",
+  "New Users Activation": "Yeni Kullanıcılar Aktivasyon",
+  "Automatically": "Otomatik olarak",
+  "Email activation link": "Gönder Aktivasyon linki"
 }

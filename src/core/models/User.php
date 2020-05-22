@@ -115,6 +115,12 @@ class user
     return $db->query("UPDATE user SET username=? where id=?;",[$name,$id]);
   }
 
+  static function updateActive($id, $value)
+  {
+    global $db;
+    return $db->query("UPDATE user SET active=? where id=?;",[$value, $id]);
+  }
+
   static function permissions($id) {
     if($id == 0) {
       if(Session::key('permissions')) return Session::key('permissions');

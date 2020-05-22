@@ -802,3 +802,14 @@ input:focus + .helptext{
   grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
   max-width:240px;
 }
+
+.pointer\:hover:hover{
+  cursor:pointer;
+}
+.shadow\:hover:hover{
+  box-shadow:0 0 3px grey;
+}
+
+.oval {
+  border-radius: 50%;
+}

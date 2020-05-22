@@ -31,5 +31,8 @@
   "_theme_downloaded": "Tema turun !",
   "_theme_not_downloaded": "Tema tidak turun !",
   "_packages_required": "Dapat Pakej mesti diaktifkan",
-  "_options_required": "Pilihan ini perlu ditetapkan"
+  "_options_required": "Pilihan ini perlu ditetapkan",
+  "New Users Activation": "Pengguna baru Pengaktifan",
+  "Automatically": "Secara automatik",
+  "Email activation link": "Pautan pengaktifan menghantar"
 }

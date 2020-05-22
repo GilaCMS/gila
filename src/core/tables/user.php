@@ -20,6 +20,13 @@ return [
       'title'=>'ID',
       'edit'=>false
     ],
+    'photo'=> [
+      'type'=>'meta',
+      'input-type'=>'media',
+      'title'=>'Photo',
+      'mt'=>['usermeta', 'user_id', 'value'],
+      'metatype'=>['vartype', 'photo']
+    ],
     'username'=> [
       'title'=>'Name',
       'qtype'=>'varchar(80)'
