@@ -13,6 +13,7 @@ class Profile
     if (Router::post('submit-btn')==='submited'){
       User::updateName($user_id, strip_tags($_POST['gila_username']));
       User::meta($user_id, 'twitter_account', strip_tags($_POST['twitter_account']));
+      User::meta($user_id, 'photo', strip_tags($_POST['gila_photo']));
       View::alert('success', __('_changes_updated'));
     }
 

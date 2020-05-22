@@ -400,6 +400,7 @@ gtableCommand['edit'] = {
     g.get('cm/edit_form/'+_this.name+'?id='+irow,function(data){
       _this.edit_html = data
       g.loader(false)
+      app.$forceUpdate()
     })
   }
 }

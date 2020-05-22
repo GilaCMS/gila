@@ -54,26 +54,25 @@ Vue.component('input-list', {
 })
 
 Vue.component('input-media', {
-  template: '<div style="width:200px;height:200px">\
-<img :src="\'lzld/thumb?src=\'+value" style="max-width:100%">\
+  template: '<div class="pointer:hover shadow:hover" \
+  style="width:160px;height:160px;background:var(--main-input-color);\
+  justify-content: center; align-content: center; display: grid;" \
+  :onclick="\'open_media_gallery(\\\'#imd\'+name+\'\\\')\'">\
+<img :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%">\
+<input v-model="value" type="hidden" :id="\'imd\'+name" :name="name">\
 </div>\
 ',
-  props: ['name','value'],
-  //data: function() {
-  //  return {
-  //    pos: JSON.parse(this.value),
-  //    fields: JSON.parse(this.fieldset),
-  //    ivalue: this.value
-  //  }
-  //},
+  props: ['name','value','fieldset'],
+  data: function() {
+    return {
+      field: []
+    }
+  },
   methods:{
-    update: function(){
-      //this.ivalue = JSON.stringify(this.pos)
-    },
-    beforeCreate: function(){
-      //this.pos=JSON.parse(this.value)
-      //this.fields=JSON.parse(this.fieldset)
-      //this.ivalue = this.value
+    beforeCreate: function() {
+      if(typeof this.fieldset!=='undefined') {
+        this.field = JSON.parse(this.fieldset)
+      }
     }
   }
 })
