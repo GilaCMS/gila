@@ -4,7 +4,7 @@ class Controller
 {
   static function admin()
   {
-    if(Session::userId()==0) {
+    if(Session::userId()===0) {
       Gila::addLang('core/lang/login/');
       if(Session::waitForLogin()>0) {
         View::alert('error', __('login_error_msg2'));
