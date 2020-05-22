@@ -58,6 +58,7 @@ Vue.component('input-media', {
   style="width:160px;height:160px;background:var(--main-input-color);\
   justify-content: center; align-content: center; display: grid; position:relative" \
   :onclick="\'open_media_gallery(\\\'#imd\'+name+\'\\\')\'">\
+<img v-if="!value" src="assets/core/camera.svg" style="width:80px">\
 <img v-if="value" :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%">\
 <svg v-if="value" height="28" width="28" @click.stop="value=null;return false;"\
 style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
