@@ -135,6 +135,6 @@ Save
 <?=View::script('core/lazyImgLoad.js');?>
 <script>
 var app = new Vue({
-  el: 'vue-editor'
+  el: '#post-edit-item-form'
 });
 </script>

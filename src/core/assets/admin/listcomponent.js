@@ -52,3 +52,28 @@ Vue.component('input-list', {
     }
   }
 })
+
+Vue.component('input-media', {
+  template: '<div style="width:200px;height:200px">\
+<img :src="\'lzld/thumb?src=\'+value" style="max-width:100%">\
+</div>\
+',
+  props: ['name','value'],
+  //data: function() {
+  //  return {
+  //    pos: JSON.parse(this.value),
+  //    fields: JSON.parse(this.fieldset),
+  //    ivalue: this.value
+  //  }
+  //},
+  methods:{
+    update: function(){
+      //this.ivalue = JSON.stringify(this.pos)
+    },
+    beforeCreate: function(){
+      //this.pos=JSON.parse(this.value)
+      //this.fields=JSON.parse(this.fieldset)
+      //this.ivalue = this.value
+    }
+  }
+})
