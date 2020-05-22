@@ -59,6 +59,7 @@ Vue.component('input-media', {
   justify-content: center; align-content: center; display: grid;" \
   :onclick="\'open_media_gallery(\\\'#imd\'+name+\'\\\')\'">\
 <img :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%">\
+<svg height="24" width="24" style="position:absolute;right:0;top:0" viewBox="0 0 28 28"><circle cx="14" cy="14" r="10" stroke-width="0" fill="#929292"></circle><line x1="8" y1="8" x2="20" y2="20" style="stroke:#fff;stroke-width:3"><line x1="20" y1="8" x2="20" y2="8" style="stroke:#fff;stroke-width:3"></line></svg>\
 <input v-model="value" type="hidden" :id="\'imd\'+name" :name="name">\
 </div>\
 ',

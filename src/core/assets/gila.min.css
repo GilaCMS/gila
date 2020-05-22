@@ -803,8 +803,11 @@ input:focus + .helptext{
   max-width:240px;
 }
 
-.cursor-pointer:hover{
+.pointer\:hover:hover{
   cursor:pointer;
+}
+.shadow\:hover:hover{
+  box-shadow:0 0 3px grey;
 }
 
 .oval {
