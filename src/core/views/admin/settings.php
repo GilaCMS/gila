@@ -49,7 +49,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <?php echo gForm::input('gila_user_register',["type"=>"switcher"], Gila::config('user_register'),__("New users can register")) ?>
 
   <br>
-  <?php echo gForm::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automaticaly'),'byemail'=>__('With activation link'),'byadmin'=>__('Administration')]], Gila::config('user_activation'), __("New Users activation")) ?>
+  <?php echo gForm::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Gila::config('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
     <label class="gm-4"><?=__("Timezone")?></label>

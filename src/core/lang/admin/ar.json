@@ -31,5 +31,8 @@
   "_theme_downloaded": "موضوع تحميل!",
   "_theme_not_downloaded": "موضوع ليس تحميلها!",
   "_packages_required": "يجب تنشيط هذه الحزم",
-  "_options_required": "تحتاج هذه الخيارات التي سيتم تحديدها"
+  "_options_required": "تحتاج هذه الخيارات التي سيتم تحديدها",
+  "New Users Activation": "تنشيط المستخدمين الجدد",
+  "Automatically": "تلقائيا",
+  "Email activation link": "رابط إرسال تفعيل"
 }

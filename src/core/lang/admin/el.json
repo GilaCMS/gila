@@ -18,7 +18,7 @@
     "Position": "Θέση",
     "Active": "Ενεργοποιημένο",
     "Admin Logo": "Εικονότυπο Διαχείρησης",
-    "Favicon": "Favicon",
+    "Favicon": "Εικονιδιο σελδας",
     "Check For Updates": "Έλεγχος νεων εκδόσεων",
     "Max Media Upload": "Μέγιστο Μεγεθος Εικόνων",
     "is_available_on_version": "είναι διαθέσιμο στην έκδοση",
@@ -31,5 +31,8 @@
     "_theme_downloaded": "Το θέμα εγκαταστάθηκε!",
     "_theme_not_downloaded": "Το θέμα δεν μπόρεσε να εγκατασταθεί!",
     "_packages_required": "Αυτά τα πακέτα πρέπει να ενεργοποιηθούν",
-    "_options_required": "These options need to be set"
+    "_options_required": ";Αυτές οι ρυθμίσεις είναι υποχρεωτικές",
+    "New Users Activation": "Ενεργοποίηση νεων χρηστων",
+    "Automatically": "Αυτομάτως",
+    "Email activation link": "Αποστολή συνδέσμου ενεργοποίησης"
 }

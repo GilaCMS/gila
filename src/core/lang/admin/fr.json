@@ -31,5 +31,8 @@
   "_theme_downloaded":"Theme téléchargé !",
   "_theme_not_downloaded":"Le thème n'a pas été téléchargé !",
   "_packages_required":"Ces packs doivent êtres activés",
-  "_options_required":"Ces options ont besoin d'être mises"
+  "_options_required":"Ces options ont besoin d'être mises",
+  "New Users Activation": "L'activation de nouveaux utilisateurs",
+  "Automatically": "Automatique",
+  "Email activation link": "Lien d'activation envoyer"
 }

@@ -31,5 +31,8 @@
   "_theme_downloaded": "テーマをダウンロード！",
   "_theme_not_downloaded": "テーマは、ダウンロードされていません！",
   "_packages_required": "これらのパッケージは、アクティブにする必要があり",
-  "_options_required": "これらのオプションを設定する必要が"
+  "_options_required": "これらのオプションを設定する必要が",
+  "New Users Activation": "新規ユーザーのアクティブ化",
+  "Automatically": "自動的に",
+  "Email activation link": "送信アクティベーションリンク"
 }
