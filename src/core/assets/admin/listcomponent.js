@@ -54,12 +54,17 @@ Vue.component('input-list', {
 })
 
 Vue.component('input-media', {
-  template: '<div class="pointer:hover shadow:hover" \
+  template: '<div class="pointer:hover shadow:hover;" \
   style="width:160px;height:160px;background:var(--main-input-color);\
-  justify-content: center; align-content: center; display: grid;" \
+  justify-content: center; align-content: center; display: grid; position:relative" \
   :onclick="\'open_media_gallery(\\\'#imd\'+name+\'\\\')\'">\
-<img :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%">\
-<svg height="24" width="24" style="position:absolute;right:0;top:0" viewBox="0 0 28 28"><circle cx="14" cy="14" r="10" stroke-width="0" fill="#929292"></circle><line x1="8" y1="8" x2="20" y2="20" style="stroke:#fff;stroke-width:3"><line x1="20" y1="8" x2="20" y2="8" style="stroke:#fff;stroke-width:3"></line></svg>\
+<img v-if="value" :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%">\
+<svg v-if="value" height="28" width="28" @click.stop="value=null;return false;"\
+style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
+  <circle cx="14" cy="14" r="10" stroke-width="0" fill="#666"></circle>\
+  <line x1="9" y1="9" x2="18" y2="18" style="stroke:#fff;stroke-width:3"></line>\
+  <line x1="9" y1="18" x2="18" y2="9" style="stroke:#fff;stroke-width:3"></line>\
+</svg>\
 <input v-model="value" type="hidden" :id="\'imd\'+name" :name="name">\
 </div>\
 ',
