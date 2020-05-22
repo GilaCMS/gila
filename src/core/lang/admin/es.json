@@ -31,5 +31,8 @@
     "_theme_downloaded": "El tema se instalo!",
     "_theme_not_downloaded": "El tema no se instalo!",
     "_packages_required": "Eses paquetes deben ser activados",
-    "_options_required": "These options need to be set"
+    "_options_required": "These options need to be set",
+    "New Users Activation": "Activacion de nuevos usuarios",
+    "Automatically": "Automaticamente",
+    "Email activation link": "Enviar liga de activacion"
 }

@@ -4,12 +4,19 @@
 .device-pill.selected {opacity:1}
 </style>
 <?=View::script('lib/vue/vue.min.js')?>
+<?=View::script('core/admin/listcomponent.js')?>
+<?=View::script('core/admin/media.js')?>
 
 <div class="row">
-<div class="gm-6">
+<div id="profile-forms" class="gm-6">
     <?php View::alerts(); ?>
     <form method="post" action="admin/profile" class="g-form">
     <fieldset>
+    <br><div class="gm-12 row">
+    <label class="gm-6"><?=__('Photo')?></label>
+    <div class="gm-6"><input-media name="gila_photo" value="<?=$user_photo?>"/></div>
+    </div>
+
     <br><div class="gm-12 row">
     <label class="gm-6"><?=__('Name')?></label>
     <input name="gila_username" value="<?=Session::key('user_name')?>" class="gm-6" />
@@ -117,6 +124,10 @@ var connectedDevicesApp = new Vue({
     }
   }
 })
+
+var profileForms = new Vue({
+  el: '#profile-forms'
+});
 
 </script>
 

@@ -132,6 +132,11 @@ class gForm
         }
         return $html . '</select>';
       },
+      "media2"=> function($name,$field,$ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        $ov = htmlspecialchars($ov);
+        return '<input-media name="'.$name.'" value="'.$ov.'">';
+      },
       "media"=> function($name,$field,$ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);

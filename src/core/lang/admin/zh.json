@@ -31,5 +31,8 @@
   "_theme_downloaded": "主题下载！",
   "_theme_not_downloaded": "主题不下载！",
   "_packages_required": "这些软件包必须被激活",
-  "_options_required": "这些选项需要设置"
+  "_options_required": "这些选项需要设置",
+  "New Users Activation": "新用户激活",
+  "Automatically": "自动",
+  "Email activation link": "发送激活链接"
 }

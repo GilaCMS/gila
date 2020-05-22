@@ -31,5 +31,8 @@
   "_theme_downloaded": "Тема скачано !",
   "_theme_not_downloaded": "Тема не загружается !",
   "_packages_required": "Эти пакеты должны быть активированы",
-  "_options_required": "Эти параметры должны быть установлены"
+  "_options_required": "Эти параметры должны быть установлены",
+  "New Users Activation": "Активация новых пользователей",
+  "Automatically": "Автоматически",
+  "Email activation link": "Отправить ссылку активации"
 }

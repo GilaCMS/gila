@@ -45,7 +45,7 @@
           }
           ?>
         <li style="color:unset">
-          <a href="#">
+          <a href="<?=Gila::url('#')?>">
             <i class="fa fa-user"></i> <?=Session::key('user_name')?> <i class="fa fa-angle-down"></i>
           </a>
           <ul class="text-align-left" style="right:0">

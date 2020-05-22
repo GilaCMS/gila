@@ -31,5 +31,8 @@
   "_theme_downloaded": "Tema download !",
   "_theme_not_downloaded": "Tema tidak di-download !",
   "_packages_required": "Paket-paket ini harus diaktifkan",
-  "_options_required": "Opsi ini perlu ditetapkan"
+  "_options_required": "Opsi ini perlu ditetapkan",
+  "New Users Activation": "Pengguna baru Aktivasi",
+  "Automatically": "Secara otomatis",
+  "Email activation link": "Kirim link aktivasi"
 }

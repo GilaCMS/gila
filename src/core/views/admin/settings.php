@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (Router::post('submit-btn')=='subm
   Gila::config('check4updates',$_POST['gila_check4updates']);
   Gila::config('rewrite',$_POST['gila_rewrite']);
   Gila::config('user_register',$_POST['gila_user_register']);
+  Gila::config('user_activation',$_POST['gila_user_activation']);
   Gila::config('use_cdn',$_POST['gila_use_cdn']);
   Gila::config('use_webp',$_POST['gila_webp']);
   Gila::config('maxImgWidth',$_POST['gila_maxImgWidth']);
@@ -46,6 +47,9 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 
   <br>
   <?php echo gForm::input('gila_user_register',["type"=>"switcher"], Gila::config('user_register'),__("New users can register")) ?>
+
+  <br>
+  <?php echo gForm::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Gila::config('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
     <label class="gm-4"><?=__("Timezone")?></label>

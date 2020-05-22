@@ -31,5 +31,8 @@
   "_theme_downloaded": "تم دانلود !",
   "_theme_not_downloaded": "تم های دانلود نشده!",
   "_packages_required": "این بسته باید فعال شود",
-  "_options_required": "این گزینه را باید تنظیم کنیم"
+  "_options_required": "این گزینه را باید تنظیم کنیم",
+  "New Users Activation": "فعال سازی کاربران جدید",
+  "Automatically": "بطور خودکار",
+  "Email activation link": "ارسال لینک فعال سازی"
 }

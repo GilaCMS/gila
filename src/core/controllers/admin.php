@@ -263,6 +263,7 @@ class admin extends Controller
     View::set('page_title', __('My Profile'));
     View::set('twitter_account', User::meta($user_id,'twitter_account'));
     View::set('token', User::meta($user_id,'token'));
+    View::set('user_photo', User::meta($user_id,'photo'));
     View::renderAdmin('admin/myprofile.php');
   }
 

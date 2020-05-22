@@ -31,5 +31,8 @@
     "_theme_downloaded":"Theme downloaded!",
     "_theme_not_downloaded":"Theme not downloaded!",
     "_packages_required":"These packages must be activated",
-    "_options_required":"These options need to be set"
+    "_options_required":"These options need to be set",
+    "New Users Activation": "New Users Activation",
+    "Automatically": "Automatically",
+    "Email activation link": "Send activation link"
 }

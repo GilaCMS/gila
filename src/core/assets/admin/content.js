@@ -262,7 +262,9 @@ Vue.component('g-table', {
       }
 
       // Display type
-      if (typeof field['input-type'] != "undefined") {
+      if (typeof field['display-type'] != "undefined") {
+        displayType = field['display-type'];
+      } else if (typeof field['input-type'] != "undefined") {
         displayType = field['input-type'];
       } else {
         displayType = field.type;
@@ -275,11 +277,7 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null) {
-        if(cv.split('.').pop()=='svg') {
-          return '<img src="'+cv+'" style="max-height:80px;max-width:80px"></img>'
-        } else {
-          return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
-        }
+        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"'+style+'></img>'
       } else {
         return '';
       }
@@ -402,6 +400,7 @@ gtableCommand['edit'] = {
     g.get('cm/edit_form/'+_this.name+'?id='+irow,function(data){
       _this.edit_html = data
       g.loader(false)
+      app.$forceUpdate()
     })
   }
 }
