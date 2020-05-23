@@ -59,7 +59,7 @@ class Session
 
   }
 
-  static function user ($id, $name, $email, $msg=null)
+  static function user ($id, $name='', $email='', $msg=null)
   {
     self::key('user_id', $id);
     self::key('user_name', $name);
@@ -145,7 +145,7 @@ class Session
   * Returns user id
   * @return int User's id. 0 if user is not logged in.
   */
-  static function userId ()
+  static function userId ():int
   {
     if(isset(self::$user_id)) return self::$user_id;
     $user_id = 0;
@@ -158,7 +158,7 @@ class Session
     } else {
       self::start();
       if(isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
-        @$user_id = self::key('user_id');
+        @$user_id = self::key('user_id') ?? 0;
       }
       if(isset($_COOKIE['GSESSIONID']) &&
           !file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {

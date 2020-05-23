@@ -70,12 +70,12 @@ class gTable
     $this->table = include $path;
     if(isset($table)) $this->table = $table;
 
-    if($ext = $this->table['extends']) {
+    if($ext = $this->table['extends']??null) {
       $extTable = include 'src/'.$ext;
       $this->table = array_merge_recursive($extTable, $this->table);
     }
 
-    if($user_id = $this->table['filter_owner']) {
+    if($user_id = $this->table['filter_owner']??null) {
       @$this->table['filters'][$user_id] = Session::userId();
       foreach(['search-boxes','csv','list','edit','create'] as $key) {
         if(isset($this->table[$key])) {

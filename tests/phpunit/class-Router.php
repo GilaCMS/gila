@@ -1,13 +1,7 @@
 <?php
-chdir(__DIR__.'/../../');
-include __DIR__.'/../../vendor/autoload.php';
-include __DIR__.'/../../src/core/classes/Gila.php';
-include __DIR__.'/../../src/core/classes/Router.php';
-include __DIR__.'/../../src/core/classes/Controller.php';
-include __DIR__.'/../../src/core/classes/Session.php';
-define("LOG_PATH", "log");
-define("CONFIG_PHP", "config.php");
 
+include(__DIR__.'/includes.php');
+include(__DIR__.'/../../src/core/classes/Controller.php');
 use PHPUnit\Framework\TestCase;
 
 class ClassRouter extends TestCase

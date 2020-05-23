@@ -1,15 +1,7 @@
 <?php
-chdir(__DIR__.'/../../');
-include __DIR__.'/../../vendor/autoload.php';
-include __DIR__.'/../../src/core/classes/View.php';
-include __DIR__.'/../../src/core/classes/Gila.php';
-include __DIR__.'/../../src/core/classes/Router.php';
-include __DIR__.'/../../src/core/classes/Image.php';
-include __DIR__.'/../../src/core/classes/FileManager.php';
-define("LOG_PATH", "log");
-define("SITE_PATH", "");
-define("CONFIG_PHP", "config.php");
 
+include(__DIR__.'/includes.php');
+include(__DIR__.'/../../src/core/classes/Image.php');
 use PHPUnit\Framework\TestCase;
 
 class ClassView extends TestCase

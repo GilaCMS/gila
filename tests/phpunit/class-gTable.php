@@ -1,16 +1,10 @@
 
 <?php
-chdir(__DIR__.'/../../');
-include __DIR__.'/../../vendor/autoload.php';
-include __DIR__.'/../../src/core/classes/gTable.php';
-include __DIR__.'/../../src/core/classes/TableSchema.php';
-include __DIR__.'/../../src/core/classes/Gila.php';
-include __DIR__.'/../../src/core/classes/Db.php';
-define("LOG_PATH", "log");
-define("CONFIG_PHP", "config.php");
-use PHPUnit\Framework\TestCase;
 
-$db = new Db("127.0.0.1", "g_user", "password", "g_db");
+include(__DIR__.'/includes.php');
+include(__DIR__.'/../../src/core/classes/gTable.php');
+include(__DIR__.'/../../src/core/classes/TableSchema.php');
+use PHPUnit\Framework\TestCase;
 
 class ClassGTable extends TestCase
 {
