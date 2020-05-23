@@ -21,7 +21,7 @@ class login extends Controller
     } else if (isset($_POST['username']) && isset($_POST['password'])) {
       View::alert('error', __('login_error_msg'));
     }
-    View::set('title', _('Log In'));
+    View::set('title', __('Log In'));
     View::includeFile('login.php');
   }
 
@@ -36,7 +36,7 @@ class login extends Controller
        echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
        return;
     }
-    View::set('title', _('Register'));
+    View::set('title', __('Register'));
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && Event::get('recaptcha',true)) {
       $email = $_POST['email'];
