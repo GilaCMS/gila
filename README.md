@@ -30,8 +30,17 @@ Installation
 1. Create a new database and a user with all privileges in MySql
 2. Run /install in your browser
 3. Fill all fields with the database credentials and the admin's data of the website
-4. If you get an error that config.php cannot be created make sure that the folder is writable
-5. The installation is complete
+4. The installation is complete
+
+Download
+========
+```
+# with composer
+composer create-project gilacms/gila
+
+# with git
+git clone https://github.com/GilaCMS/gila.git gila
+```
 
 Run with Docker
 ===============
@@ -39,13 +48,13 @@ Prepare the database
 ```
 docker run --name mariadb1 -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=g_db -e MYSQL_USER=g_user -e MYSQL_PASSWORD=password -d mariadb
 ```
-Get the mariadb1 ip (Database hostname)
+Get the mariadb1 ip (use it as Database Hostname)
 ```
 sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mariadb1
 ```
-Run the container at http://localhost
+Run the container at http://localhost:8088 (DB Name: g_db, DB User: g_user, DB Password: my-secret-pw)
 ```
-docker run  -d -p 80:80 vzuburlis/gilacms
+docker run  -d -p 8088:80 vzuburlis/gilacms
 ```
 
 Useful Links
