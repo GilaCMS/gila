@@ -7,8 +7,10 @@ include(__DIR__.'/../../src/core/models/User.php');
 include(__DIR__.'/../../src/core/classes/gTable.php');
 include(__DIR__.'/../../src/core/classes/TableSchema.php');
 include(__DIR__.'/../../src/core/classes/gForm.php');
+include(__DIR__.'/../../src/core/classes/Sendmail.php');
 use PHPUnit\Framework\TestCase;
 $GLOBALS['config']['db']['name'] = 'g_db';
+Event::listen('sendmail', function($x){ return true; });
 
 class RequestsTest extends TestCase
 {
@@ -41,6 +43,52 @@ class RequestsTest extends TestCase
     Gila::controller('login', 'core/controllers/login');
     $response = $this->request('login/auth', 'POST');
     $this->assertEquals('{"token":"ABC"}', $response);
+  }
+
+  public function test_register()
+  {
+    global $db;
+    Session::user(0);
+    $email = "test_register@email.com";
+    $_POST['email'] = $email;
+    $_POST['password'] = "pass";
+    $_POST['name'] = "Register Test";
+    $GLOBALS['config']['user_activation'] = 'byadmin';
+    $GLOBALS['config']['user_register'] = 0;
+    $db->query('DELETE FROM user WHERE email=?;', $email);
+
+    $this->request('login/register', 'POST');
+    $uid = $db->value('SELECT id from user WHERE email=?;', $email);
+    $this->assertNull($uid);
+
+    $GLOBALS['config']['user_register'] = 1;
+    $this->request('login/register', 'POST');
+    $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
+    $this->assertEquals(0, $active);
+    $db->query('DELETE FROM user WHERE email=?;', $email);
+
+    $GLOBALS['config']['user_activation'] = 'auto';
+    $this->request('login/register', 'POST');
+    $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
+    $this->assertEquals(1, $active);
+    $db->query('DELETE FROM user WHERE email=?;', $email);
+
+    $GLOBALS['config']['user_activation'] = 'byemail';
+    $this->request('login/register', 'POST');
+    $uid = $db->value('SELECT id FROM user WHERE email=?;', $email);
+    $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
+    $this->assertEquals(0, $active);
+
+    $_GET['ap'] = 'wrongcode';
+    $this->request('login/activate', 'GET');
+    $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
+    $this->assertEquals(0, $active);
+
+    $_GET['ap'] = $db->value('SELECT `value` FROM usermeta WHERE 
+      vartype="activate_code" AND user_id=?;', $uid);
+    $this->request('login/activate', 'GET');
+    $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
+    $this->assertEquals(1, $active);
   }
 
   public function test_blocks()
@@ -99,7 +147,8 @@ class RequestsTest extends TestCase
       `reset_code` varchar(60) DEFAULT NULL,
       `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (`id`)
+      PRIMARY KEY (`id`),
+      KEY `email` (`email`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     
     $db->query('CREATE TABLE IF NOT EXISTS `usermeta` (

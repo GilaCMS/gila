@@ -163,10 +163,8 @@ class Db
 
   function value($q, $p = null)
   {
-    if($res = $this->query($q,$p)) {
-      return mysqli_fetch_row($res)[0];
-    }
-    return null;
+    $res = $this->query($q,$p);
+    return mysqli_fetch_row($res)[0] ?? null;
   }
 
 }

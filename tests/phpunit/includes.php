@@ -16,3 +16,4 @@ define('FS_ACCESS', true);
 
 $GLOBALS['user_privileges'] = ['admin'];
 $db = new Db("127.0.0.1", "g_user", "password", "g_db");
+$db = new Db("127.0.0.1", "guser", "12345", "gila150");

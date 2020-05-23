@@ -59,7 +59,7 @@ class Session
 
   }
 
-  static function user ($id, $name, $email, $msg=null)
+  static function user ($id, $name='', $email='', $msg=null)
   {
     self::key('user_id', $id);
     self::key('user_name', $name);

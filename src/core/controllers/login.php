@@ -34,7 +34,7 @@ class login extends Controller
   {
     if(Session::key('user_id')>0 || Gila::config('user_register')!=1) {
        echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
-       exit;
+       return;
     }
     View::set('title', _('Register'));
 
