@@ -137,6 +137,16 @@ class gForm
         $ov = htmlspecialchars($ov);
         return '<input-media name="'.$name.'" value="'.$ov.'">';
       },
+      "media-gallery"=> function($name,$field,$ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        if(!is_array(json_decode($ov))) {
+          $ov = explode(',',$ov);
+          for($i=count($ov);$i<$field['max'];$i++) array_push($ov,'');
+          $ov = json_encode($ov);
+        }
+        $ov = htmlspecialchars($ov);
+        return '<input-gallery name="'.$name.'" value="'.$ov.'"></input-gallery>';
+      },
       "media"=> function($name,$field,$ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);

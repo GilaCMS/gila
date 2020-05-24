@@ -39,7 +39,7 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
       <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
       <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
 <?php
-      echo '</div><img src="'.$show_path.'" style="max-width:400px">';
+      echo '</div><img src="lzld/thumb?size=600&src='.$show_path.'" style="max-width:400px">';
     } else if(is_dir($filepath) || $filepath=='') {
       // do nothing
     } else {
