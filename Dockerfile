@@ -7,11 +7,19 @@ ENV TZ=America/Mexico_City
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y install php php-json php-mysql php-mbstring php-zip php-gd
 RUN a2enmod rewrite
-RUN apt-get -y install wget zip unzip
-RUN wget https://github.com/GilaCMS/gila/archive/master.zip
-RUN unzip master.zip
-RUN mv gila-master/* /var/www/html
-RUN mv gila-master/.htaccess /var/www/html
+
+WORKDIR /var/www/html/
+COPY src src
+COPY themes themes
+COPY assets assets
+COPY log log
+COPY sites sites
+COPY data data
+COPY tmp tmp
+COPY robots.txt robits.txt
+COPY config.default.php config.default.php
+COPY .htaccess .htaccess
+COPY index.php index.php
 RUN chmod 777 -R /var/www/html
 RUN rm /var/www/html/index.html
 RUN apt-get clean
