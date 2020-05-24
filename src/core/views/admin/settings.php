@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Gila::updateConfigFile();
   echo '{"success":true}';
   return;
-  //View::alert('success',__('_changes_updated'));
 }
 View::script('core/admin/media.js');
 View::script('core/lang/content/'.Gila::config('language').'.js');
@@ -95,7 +94,6 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   </div>
 
   <br>
-  <!--a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a-->
   <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
 
   <h2><?=__("Advanced Settings")?></h2><hr>
@@ -135,8 +133,6 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   </div>
 
   <br>
-  
-  <!--a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a-->
   <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
 </form>
 </div>
