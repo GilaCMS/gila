@@ -301,7 +301,9 @@ class gTable
 
   function getMT($key) {
     $vt = $this->table['fields'][$key]["metatype"];
-    if(isset($this->table['meta-table'])) {
+    if(isset($this->table[$key]['meta-table'])) {
+      $mt = $this->table[$key]['meta-table'];
+    } else if(isset($this->table['meta-table'])) {
       $mt = $this->table['meta-table'];
     } else {
       // DEPRECIATED remove 'mt' attribute at v2.x
@@ -413,6 +415,24 @@ class gTable
       $row[$key]=$fv;
     }
     return $row;
+  }
+
+  function getMeta($id, $type = null)
+  {
+    if(!isset($this->table['meta-table'])) return null;
+    $db = Gila::slaveDB();
+    $m = $this->table['meta-table'];
+    if($type!==null) {
+      return $db->getList("SELECT {$m[3]} FROM {$m[0]}
+        WHERE {$m[1]}=? AND $m[2]=?;", [$id, $type]);
+    } else {
+      $list = [];
+      $gen = $db->gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
+      foreach($gen as $row) {
+        @$list[$row[0]][] = $row[1];
+      }
+      return $list;
+    }
   }
 
   function getRow($filters, $args = [])

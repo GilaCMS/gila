@@ -46,4 +46,17 @@ class ClassGTable extends TestCase
     $this->assertEquals(" WHERE title like '%s%'", $gtable->where(['title'=>['has'=>'s']]));
     $this->assertEquals(" WHERE id IN(10,11)", $gtable->where(['id'=>['in'=>'10,11']]));
   }
+
+  public function test_getMeta()
+  {
+    global $db;
+    Gila::table('post','core/tables/post.php');
+    $gtable = new gTable('post');
+
+    $db->query("DELETE FROM postmeta WHERE vartype IN('fruit','color')");
+    $db->query("INSERT INTO postmeta(post_id, vartype, `value`)
+      VALUES(1,'fruit','orange'),(1,'fruit','apple'),(1,'color','red'),(2,'color','blue');");
+    $this->assertEquals(['orange','apple'], $gtable->getMeta(1, 'fruit'));
+    $this->assertEquals(['red'], $gtable->getMeta(1)['color']);
+  }
 }
