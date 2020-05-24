@@ -1,6 +1,6 @@
 
 <?php View::alerts()?>
-<style>#main-wrapper{background: inherit !important;border:none}</style>
+<style>#main-wrapper>div{background: inherit !important;border:none}</style>
 <div class='row'>
 <?php if(Gila::hasPrivilege('admin')) { ?>
   <div class='gm-3 wrapper'>

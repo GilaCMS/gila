@@ -20,10 +20,9 @@ return [
         'title'=>'Description', 'list'=>false
       ]
   ],
-  'events'=>[
+  'events'=> [
     ['change',function(&$row) {
       if($row['slug']=='') {
-        $slugify = new Cocur\Slugify\Slugify();
         $row['slug'] = Slugify::text($row['title']);
       }
     }]

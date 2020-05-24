@@ -1,13 +1,13 @@
 {
-	"name":"reCAPTCHA",
-	"version":"1.0.0",
-	"description":"Adds recaptcha in register form.",
-	"url":"https://gilacms.com/addons/package/recaptcha",
-	"options":{
-		"site_key": {
+  "name":"reCAPTCHA",
+  "version":"1.1.0",
+  "description":"Adds recaptcha in register form.",
+  "url":"https://gilacms.com/addons/package/recaptcha",
+  "options":{
+    "site_key": {
       "required": true
     },
-		"secret_key": {
+    "secret_key": {
       "required": true
     }
   },

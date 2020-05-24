@@ -162,7 +162,7 @@ function update_gallery_body(path) {
   }})
 }
 
-g.click('.media-tabs-side>div', function(e){
+g.click('.media-tabs-side>div', function(){
   g(this).parent().children().style('opacity', 0.3)
   this.style.opacity=1;
   g.post("admin/media?media_tab="+g(this).attr('data-tab'), "g_response=content",function(gal){

@@ -24,6 +24,7 @@ tests/jmeter.log
 tests/performance
 
 # excluded
+!*/package.json
 !src/core/
 !src/Cocur/
 !src/blog/
