@@ -4,7 +4,7 @@ foreach ($_POST as $key=>$value) {
   $_POST[$key] = strip_tags($value);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') if (Router::post('submit-btn')=='submited'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $_lc=substr($_POST['gila_base'],-1);
   if($_lc!='/' && $_lc!='\\') $_POST['gila_base'].='/';
   foreach ($config_list as $key => $value) {
@@ -25,7 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') if (Router::post('submit-btn')=='subm
   Gila::config('maxImgWidth',$_POST['gila_maxImgWidth']);
   Gila::config('maxImgHeight',$_POST['gila_maxImgHeight']);
   Gila::updateConfigFile();
-  View::alert('success',__('_changes_updated'));
+  echo '{"success":true}';
+  return;
+  //View::alert('success',__('_changes_updated'));
 }
 View::script('core/admin/media.js');
 View::script('core/lang/content/'.Gila::config('language').'.js');
@@ -93,7 +95,8 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   </div>
 
   <br>
-  <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>
+  <!--a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a-->
+  <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
 
   <h2><?=__("Advanced Settings")?></h2><hr>
 
@@ -132,6 +135,16 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   </div>
 
   <br>
-  <a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a>
+  
+  <!--a class="g-btn" onclick="document.getElementsByName('submit-btn')[0].value='submited'; document.getElementById('settings-form').submit();"><?=__("Submit")?></a-->
+  <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
 </form>
 </div>
+
+<script>
+function save_settings() {
+  g.postForm('settings-form', function() {
+    g.alert('<?=__('_changes_updated')?>', 'success')
+  })
+}
+</script>

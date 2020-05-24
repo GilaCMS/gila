@@ -23,7 +23,7 @@ gtableCommand.edit_widget = {
     fn: function(table,id){
         href='admin/widgets?id='+id;
         widget_dialog_edit_table = table;
-        g.ajax(href,function(data){
+        g.get(href, function(data){
             g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'update_widget'})
             app = new Vue({
                 el: '#widget_options_form'

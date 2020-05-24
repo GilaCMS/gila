@@ -421,7 +421,7 @@ gtableCommand['edit_popup'] = {
   fa: "pencil",
   fn: function(table,irow) {
   href='cm/edit_form/'+table.name+'?id='+irow;
-    g.ajax(href,function(data){
+    g.post(href, function(data){
       g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
