@@ -55,7 +55,7 @@ Vue.component('input-list', {
 
 Vue.component('input-media', {
   template: '<div class="pointer:hover shadow:hover;" \
-  style="width:160px;height:160px;background:var(--main-input-color);\
+  style="width:160px;height:160px;background:var(--main-input-color);max-width:100%\
   justify-content: center; align-content: center; display: grid; position:relative" \
   :onclick="\'open_media_gallery(\\\'#imd\'+name+\'\\\')\'">\
 <img v-if="!value" src="assets/core/camera.svg" style="width:80px">\

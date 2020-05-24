@@ -277,7 +277,7 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null) {
-        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"'+style+'></img>'
+        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
       } else {
         return '';
       }

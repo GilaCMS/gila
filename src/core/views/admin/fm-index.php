@@ -1,6 +1,6 @@
 <?=View::css('lib/CodeMirror/codemirror.css')?>
 <style>
-#main-wrapper{background:none!important;border:none;margin:0}
+#main-wrapper>div{background:none!important;border:none;margin:0}
 .fm_dir{overflow: hidden;padding:10px;line-height:1.5;background:white;}
 .fm_dir a{color:#333; display:inline-flex}
 .fm_dir a:hover{color:#000}

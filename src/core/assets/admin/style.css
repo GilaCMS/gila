@@ -33,3 +33,14 @@ body { overflow-x: hidden; }
 .widget-area-dashboard .widget{background:white}
 .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: var(--main-padding); background: var(--main-bg-color); color: var(--main-color); }
 .widget-area-dashboard .widget-body {padding:0.5em}
+
+#main-wrapper {
+    position: absolute;
+    left:0;
+}
+
+@media(min-width:800px) {
+  #main-wrapper {
+      position: static;
+  }
+}

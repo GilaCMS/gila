@@ -1,4 +1,4 @@
-<style>#main-wrapper{background: inherit !important;border:none}</style>
+<style>#main-wrapper>div{background: inherit !important;border:none}</style>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));grid-gap:20px">
 <?php
 foreach (Gila::$content as $key=>$ct) { ?>

@@ -12,7 +12,7 @@
   <?=View::css('core/admin/style.css')?>
   <?=View::script("lib/jquery/jquery-3.3.1.min.js")?>
   <?=View::script("core/gila.min.js")?>
-  <style>#topbar .g-navbar>li>a{color:#222}#topbar .g-navbar>li>a:hover{color:#ddd}</style>
+  <style>#topbar .g-navbar>li>a{color:#222}#topbar .g-navbar>li>a:hover{color:inherit;background:inherit}</style>
 </head>
 
 <?php if(!isset($_COOKIE['sidebar_toggled'])) $_COOKIE['sidebar_toggled']='true' ?>
@@ -33,7 +33,7 @@
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
-    <div class="g-group fullwidth bordered" style="vertical-align:baseline; background:white;">
+    <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:white;">
       <a href="#menu-toggle" class="btn btn-white g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
       <a href="<?=Gila::base_url()?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
 
@@ -56,6 +56,6 @@
         </ul>
       </span>
     </div>
-    <div class="md-12">
+    <div class="md-12" id="main-wrapper">
 
-      <div class="wrapper bordered" style="background:white;margin:10px" id='main-wrapper'>
+      <div class="wrapper bordered" style="background:white;margin:10px">
