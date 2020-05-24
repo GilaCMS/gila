@@ -94,7 +94,6 @@ class gForm
 
     self::$input_type = [
       "select"=> function($name,$field,$ov) {
-        //if(!isset($field['options'])) die("<b>Option $key require options</b>");
         $html = '<select class="g-input" name="'.$name.'">';
         foreach($field['options'] as $value=>$name) {
           $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
@@ -145,7 +144,7 @@ class gForm
           $ov = json_encode($ov);
         }
         $ov = htmlspecialchars($ov);
-        return '<input-gallery name="'.$name.'" value="'.$ov.'"></input-gallery>';
+        return '<input-gallery name="'.$name.'" value="'.$ov.'">';
       },
       "media"=> function($name,$field,$ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
