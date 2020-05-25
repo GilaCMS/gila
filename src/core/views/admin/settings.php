@@ -128,8 +128,9 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <br>
   <div class="gm-12">
   <label class="gm-4"><?=__("Max Media Upload")?> (px)</label>
-  <input name="gila_maxImgWidth" value="<?=Gila::config('maxImgWidth')?>" type="number" class="gm-2" />
-  &times;<input name="gila_maxImgHeight" value="<?=Gila::config('maxImgHeight')?>" type="number" class="gm-2" />
+  <input name="gila_maxImgWidth" value="<?=Gila::config('maxImgWidth')?>" type="number" class="gm-2" style="width:120px"/>
+  &times;
+  <input name="gila_maxImgHeight" value="<?=Gila::config('maxImgHeight')?>" type="number" class="gm-2" style="width:120px" />
   </div>
 
   <br>
