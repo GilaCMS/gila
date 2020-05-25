@@ -169,7 +169,7 @@ Vue.component('g-table', {
     },
     runtool: function(tool,e) {
       this.query=this.filters;
-      for(fkey in _this.filter) {
+      for(fkey in this.filter) {
         if(this.filter[fkey]!=='') this.query += '&'+fkey+'='+this.filter[fkey]
       }
       gtableTool[tool].fn(this)
@@ -282,7 +282,7 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
-        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
+        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80" style="max-width:80px></img>'
       } else {
         return '';
       }
