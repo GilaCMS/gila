@@ -91,7 +91,7 @@ function block_create(content,type,pos) {
   cblock_content=content
   cblock_type=type
   cblock_pos=pos
-  g.ajax(href,function(data){
+  g.get(href, function(data){
     g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'create_widget'})
     block_edit_open()
   });
@@ -99,7 +99,7 @@ function block_create(content,type,pos) {
 
 function block_edit(id,type) {
   href='blocks/edit?id='+id+"&type="+type;
-  g.ajax(href,function(data){
+  g.get(href, function(data){
     g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'update_widget delete_widget'})
     block_edit_open()
   });

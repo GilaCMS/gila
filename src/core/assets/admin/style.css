@@ -17,8 +17,9 @@ body { overflow-x: hidden; }
     transition: all 0.5s ease;
     top:0;
     opacity:0;
+    box-shadow: 4px 0 12px grey;
 }
-#sidebar-wrapper a{ font-weight: 700; background: inherit; }
+#sidebar-wrapper a{ font-weight: 700; background: inherit;}
 
 #sidebar-wrapper .g-nav li{ color:#fff;}
 #sidebar-wrapper .g-nav li a{ color:#ccc; }
@@ -42,5 +43,8 @@ body { overflow-x: hidden; }
 @media(min-width:800px) {
   #main-wrapper {
       position: static;
+  }
+  #sidebar-wrapper {
+      box-shadow: none;
   }
 }

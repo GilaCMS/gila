@@ -125,11 +125,11 @@ class gTable
       if($qcolumn = $this->fieldAttr($value, 'qcolumn')) {
         $select[$key] = $qcolumn.' as '.$value;
       }
-      if($mt = $this->fieldAttr($value, 'mt')) {
-        $vt = $this->fieldAttr($value, 'metatype');
+      if(@$this->table['fields'][$value]['type'] === 'meta') {
+        list($mt,$vt) = $this->getMT($value);
         $this_id = $this->name().".".$this->id();
-        $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[2]}`) FROM {$mt[0]} ";
-        $select[$key] .= "WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
+        $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[3]}`) FROM {$mt[0]} ";
+        $select[$key] .= "WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$mt[2]}='{$vt}') as ".$value;
       }
       if($qcolumn = $this->fieldAttr($value, 'jt')) {
         unset($select[$key]);
@@ -149,11 +149,11 @@ class gTable
         if($qcolumn = $this->fieldAttr($value, 'qcolumn')) {
           $select[$key] = $qcolumn.' as '.$value;
         }
-        if($mt = $this->fieldAttr($value, 'mt')) {
-          $vt = $this->fieldAttr($value, 'metatype');
+        if(@$this->table['fields'][$value]['type'] === 'meta') {
+          list($mt,$vt) = $this->getMT($value);
           $this_id = $this->name().".".$this->id();
-          $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[2]}`) FROM {$mt[0]} ";
-          $select[$key] .= "WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$vt[0]}='{$vt[1]}') as ".$value;
+          $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[3]}`) FROM {$mt[0]} ";
+          $select[$key] .= "WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$mt[2]}='{$vt}') as ".$value;
         }
       } else {
         $select[$key] = "'' as ".$value;
@@ -280,8 +280,7 @@ class gTable
 
     foreach($fields as $key=>$value) {
       if(@$this->table['fields'][$key]['type'] === 'meta') {
-        $mt = $this->table['fields'][$key]["mt"];
-        $vt = $this->table['fields'][$key]["metatype"];
+        list($mt,$vt) = $this->getMT($key);
         if(is_string($value)) {
           if(@$this->table['fields'][$key]['values'] === 1) {
             $arrv = [$value];
@@ -289,15 +288,30 @@ class gTable
             $arrv = explode(",",$value);
           }
         } else $arrv = $value;
-        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$vt[0]}`='{$vt[1]}';");
+        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$mt[2]}`='{$vt}';");
         foreach($arrv as $arrv_k=>$arrv_v) if($arrv_v!='' && $arrv_v!=null) {
           $arrv_v = strip_tags($arrv_v);
-          $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[2]}`,`{$vt[0]}`) VALUES('$id','$arrv_v','{$vt[1]}');");
+          $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`) VALUES('$id','$arrv_v','{$vt}');");
         }
         continue;
       }
     }
 
+  }
+
+  function getMT($key) {
+    $vt = $this->table['fields'][$key]["metatype"];
+    if(isset($this->table[$key]['meta-table'])) {
+      $mt = $this->table[$key]['meta-table'];
+    } else if(isset($this->table['meta-table'])) {
+      $mt = $this->table['meta-table'];
+    } else {
+      // DEPRECIATED remove 'mt' attribute at v2.x
+      $mt = $this->table['fields'][$key]["mt"];
+      $tmp = $mt[2]; $mt[2] = $vt[0]; $mt[3] = $tmp;
+    }
+    $vt = isset($vt[1])? $vt[1]: $vt;
+    return [$mt, $vt];
   }
 
   function where($fields = null) {
@@ -401,6 +415,24 @@ class gTable
       $row[$key]=$fv;
     }
     return $row;
+  }
+
+  function getMeta($id, $type = null)
+  {
+    if(!isset($this->table['meta-table'])) return null;
+    $db = Gila::slaveDB();
+    $m = $this->table['meta-table'];
+    if($type!==null) {
+      return $db->getList("SELECT {$m[3]} FROM {$m[0]}
+        WHERE {$m[1]}=? AND $m[2]=?;", [$id, $type]);
+    } else {
+      $list = [];
+      $gen = $db->gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
+      foreach($gen as $row) {
+        @$list[$row[0]][] = $row[1];
+      }
+      return $list;
+    }
   }
 
   function getRow($filters, $args = [])

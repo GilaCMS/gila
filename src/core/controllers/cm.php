@@ -291,14 +291,14 @@ class cm extends Controller
     $data = $_POST;
 
     $pnk->event('create', $data);
-    if(isset($_REQUEST['id'])) {
+    if(isset($_POST['id'])) {
       $fields = $pnk->fields('clone');
       if (($idkey = array_search($pnk->id(), $fields)) !== false) {
         unset($fields[$idkey]);
       }
       $fields =  implode(',', $fields );
       $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
-      $res = $db->query($q, $_REQUEST['id']);
+      $res = $db->query($q, $_POST['id']);
       $id = $db->insert_id;
     } else {
       $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");

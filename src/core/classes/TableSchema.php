@@ -36,6 +36,17 @@ class TableSchema
       $q = "ALTER TABLE $tname ADD KEY `$key` (`$key`);";
       $db->query($q);
     }
+
+    // CREATE META TABLE
+    if(isset($table['meta-table'])) {
+      $m = $table['meta-table'];
+      $q = "CREATE TABLE IF NOT EXISTS `{$m[0]}`(id INT NOT NULL AUTO_INCREMENT,
+        `{$m[1]}` int(11) DEFAULT NULL,
+        `{$m[2]}` varchar(80) DEFAULT NULL,
+        `{$m[3]}` varchar(255) DEFAULT NULL,
+        PRIMARY KEY (`id`),  KEY `{$m[1]}` (`{$m[1]}`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+      $db->query($q);
+    }
   }
 
 }

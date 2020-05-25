@@ -100,6 +100,7 @@ Vue.component('g-table', {
     },
     filters: this.gfilters,
     filter: [],
+    query: '',
     selected_rows: [],
     order: [],
     group: null,
@@ -167,6 +168,10 @@ Vue.component('g-table', {
       gtableCommand[com].fn(this,irow)
     },
     runtool: function(tool,e) {
+      this.query=this.filters;
+      for(fkey in this.filter) {
+        if(this.filter[fkey]!=='') this.query += '&'+fkey+'='+this.filter[fkey]
+      }
       gtableTool[tool].fn(this)
       e.preventDefault()
     },
@@ -276,8 +281,8 @@ Vue.component('g-table', {
         return '<i style="color:red" class="fa fa-remove fa-2x"></i>'
       }
 
-      if(displayType=='media') if(cv!=null) {
-        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80"></img>'
+      if(displayType=='media') if(cv!=null && cv.length>0) {
+        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80" style="max-width:80px></img>'
       } else {
         return '';
       }
@@ -416,7 +421,7 @@ gtableCommand['edit_popup'] = {
   fa: "pencil",
   fn: function(table,irow) {
   href='cm/edit_form/'+table.name+'?id='+irow;
-    g.ajax(href,function(data){
+    g.post(href, function(data){
       g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
@@ -498,7 +503,7 @@ gtableTool['add'] = {
     let _this = table
     _this.edititem = 'new'
     _this.edit_html = "Loading..."
-    g.get('cm/edit_form/'+_this.name,function(data){
+    g.get('cm/edit_form/'+_this.name, function(data){
       _this.edit_html = data
     })
   }
@@ -509,7 +514,7 @@ gtableTool['addrow'] = {
     let _this
     _this = table
     _this.edit_html = _e("Loading")+"..."
-    g.get('cm/insert_row/'+_this.name+'?'+_this.filters,function(data){
+    g.post('cm/insert_row/'+_this.name, _this.query,function(data){
       data = JSON.parse(data)
       if(typeof _this.data.rows=='undefined') {
         _this.data.rows = [data.rows[0]]
@@ -520,7 +525,7 @@ gtableTool['addrow'] = {
 gtableTool['csv'] = {
   fa: "arrow-down", label: "Csv",
   fn: function(table) {
-    window.location.href = 'cm/csv/'+table.name+'?'+table.filters;
+    window.location.href = 'cm/csv/'+table.name+'?'+table.query;
   }
 }
 gtableTool['log_selected'] = {

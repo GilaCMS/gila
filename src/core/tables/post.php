@@ -10,6 +10,7 @@ return [
   'commands'=> ['edit','delete'],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish','user_id'],
+  'meta-table'=>['postmeta', 'post_id', 'vartype', 'value'],
   'permissions'=>[
     'create'=>['admin','editor'],
     'update'=>['admin','editor'],
