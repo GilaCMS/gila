@@ -4,17 +4,18 @@ class Cache
 {
   static $page_name;
   static $uniques;
+  static $cachePath = __DIR__.'/../../../cacheItem';
 
   static function set ($name, $data, $uniques = null) {
-    $dir = Gila::dir(LOG_PATH.'/cacheItem');
-    $name = $dir.'/'.str_replace('/', '-', $name);
+    $dir = Gila::dir(self::$cachePath);
+    $name = $dir.str_replace('/', '-', $name);
     $caching_file = $name;
     if($uniques!==null) $caching_file .= '|'.implode('|',$uniques);
     return file_put_contents($caching_file, $data);
   }
 
   static function get ($name, $time = 3600, $uniques = null) {
-    $dir = Gila::dir(LOG_PATH.'/cacheItem');
+    $dir = Gila::dir(self::$cachePath);
     if(!is_array($uniques)) {
       $uniques = [$uniques]; 
     }
