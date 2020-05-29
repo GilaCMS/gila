@@ -7,6 +7,7 @@ class Router
   static $caching = false;
   static $caching_file;
   static $controllers = [];
+  static $on_controller;
   static $actions = [];
   static $method;
   static $controller;
@@ -23,16 +24,10 @@ class Router
     global $c;
 
     self::$method = $_SERVER['REQUEST_METHOD'];
-    if(isset(Gila::$route[$_url])) {
-      Gila::$route[$_url]();
-      return;
-    }
-    foreach(self::$route as $route) if($route[0]===self::$method && $route[1]===$_url) {
-      $route[2]();
-      return;
-    }
-
     self::setUrl($_url);
+    if(self::matchRoutes(self::$route)==true){
+      return;
+    }
 
     $controller = self::getController();
     $ctrlPath = self::$controllers[$controller];
@@ -49,8 +44,8 @@ class Router
     $c = new $ctrlClass();
 
     // find function to run after controller construction
-    if(isset(Gila::$on_controller[$controller]))
-      foreach(Gila::$on_controller[$controller] as $fn) $fn();
+    if(isset(self::$on_controller[$controller]))
+      foreach(self::$on_controller[$controller] as $fn) $fn();
 
     $action_fn = $action.'Action';
     $action_m = $action_fn.ucwords(self::$method);
@@ -68,14 +63,6 @@ class Router
       @http_response_code(404);
     }
 
-    // end of response
-    if(self::$caching===true) {
-      $out2 = ob_get_contents();
-      $clog = new Logger(LOG_PATH.'/cache.log');
-      if(!file_put_contents(self::$caching_file, $out2)){
-        $clog->error(self::$caching_file);
-      }
-    }
   }
 
   static function getController ():string
@@ -85,22 +72,13 @@ class Router
     $default = Gila::config('default-controller');
     $controller = self::request('c',$default);
 
-    if (isset($args[0])) {
-      if(isset(Gila::$controller[$args[0]])) {
-        $controller = $args[0];
-        array_shift($args);
-        self::$controllers[$controller] = Gila::$controller[$controller];
-      } else if(isset(self::$controllers[$args[0]])) {
-        $controller = $args[0];
-        array_shift($args);
-      }
+    if (isset($args[0]) && isset(self::$controllers[$args[0]])) {
+      $controller = $args[0];
+      array_shift($args);
     }
 
-    if ($controller===$default && !isset(self::$controllers[$default])) {
-      // default-controller not found so have to reset on config.php file
+    if (!isset(self::$controllers[$controller])) {
       $controller = 'admin';
-      Gila::config('default-controller','admin');
-      Gila::updateConfigFile();
     }
 
     self::$controller = $controller;
@@ -142,13 +120,13 @@ class Router
     if(is_int($fn) || $fn===null) { // DEPRECIATED
       return self::param($string, $fn);      
     } else {
-      self::add('get', $string, $fn);
+      self::add($string, $fn);
     }
   }
 
-  static function add ($method, $string, $fn)
+  static function add ($string, $fn, $method = 'GET')
   {
-    self::$route[] = [$method, $string, $fn];
+    self::$route[] = [$string, $fn, $method];
   }
 
   static function param ($key, $n = null)
@@ -233,30 +211,35 @@ class Router
     } else {
       $request_uri = strtok($_SERVER['REQUEST_URI'], '?');
     }
-
-    $dir = Gila::dir(LOG_PATH.'/cache0/');
-    self::$caching_file = $dir.str_replace(['/','\\'],'_',$request_uri);
-    if($args !== null) self::$caching_file .= '|'.implode('|',$args);
-    if($uniques !== null) {
-      $pre_unique = self::$caching_file;
-      self::$caching_file .= '|'.implode('|',$uniques);
-    }
-    if(file_exists(self::$caching_file) && filemtime(self::$caching_file)+$time>time()) {
-      if(sizeof($_GET)>1) return;
-      $controller = self::getController();
-      $action = self::getAction();
-      if(isset(Gila::$onaction[$controller][$action])) {
-        foreach(Gila::$onaction[$controller][$action] as $fn) $fn();
-      }
-      include self::$caching_file;
-      exit;
-    } else {
-      if($uniques !== null) {
-        array_map('unlink', glob($pre_unique.'*'));
-      }
-      ob_start();
-      self::$caching = true;
-    }
+    if($args !== null) $request_uri .= '|'.implode('|',$args);
+    Cache::page($request_uri, $time, $uniques);
   }
 
+  static function matchRoutes(&$routes) {
+    $path_match_found = false;
+    $route_match_found = false;
+
+    foreach($routes as $route) {
+      if(preg_match('#^'.$route[0].'$#', self::$url,$matches)){
+        $path_match_found = true;
+        if(self::$method == $route[2]){
+          array_shift($matches);
+          call_user_func_array($route[1], $matches);
+          $route_match_found = true;
+          break;
+        }
+      }
+    }
+
+    if(!$route_match_found){
+      if($path_match_found){
+        header("HTTP/1.0 405 Method Not Allowed");
+        if(self::$methodNotAllowed){
+          call_user_func_array(self::$methodNotAllowed, [self::$url,$method]);
+        }
+      }
+    }
+    return $path_match_found;
+
+  }
 }

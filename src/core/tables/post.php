@@ -12,6 +12,7 @@ return [
   'qkeys'=>['slug','publish','user_id'],
   'meta-table'=>['postmeta', 'post_id', 'vartype', 'value'],
   'permissions'=>[
+    'read'=>['admin','editor'],
     'create'=>['admin','editor'],
     'update'=>['admin','editor'],
     'delete'=>['admin','editor']

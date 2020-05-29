@@ -79,5 +79,12 @@ if(file_exists("themes/$theme/load.php")) include "themes/$theme/load.php";
 if(is_array(Gila::config('cors'))) foreach(Gila::config('cors') as $url) {
   @header('Access-Control-Allow-Origin: '.$url);
 }
+Router::add('routex/(.*)', function($x=1,$y=2){ echo 'route#'.$x.$y; }, 'GET');
 
+Event::listen('footer', function(){
+  global $starttime;
+  $end = microtime(true);
+  $creationtime = ($end - $starttime);
+  printf("<br>Page created in %.6f seconds.", $creationtime);
+});
 Router::run($_GET['url'] ?? '');

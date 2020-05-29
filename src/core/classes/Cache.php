@@ -2,31 +2,31 @@
 
 class Cache
 {
-  static $name;
+  static $page_name;
   static $uniques;
 
   static function set ($name, $data, $uniques = null) {
-    $dir = Gila::dir(LOG_PATH.'/cacheItem/');
+    $dir = Gila::dir(__DIR__.'/../../../'.LOG_PATH.'/cacheItem/');
+    $name = $dir.'/'.str_replace('/', '-', $name);
     $caching_file = $name;
-    if($uniques) $caching_file .= '|'.implode('|',$uniques);
-    $caching_file = $dir.str_replace('/', '_', $caching_file);
+    if($uniques!==null) $caching_file .= '|'.implode('|',$uniques);
     return file_put_contents($caching_file, $data);
   }
 
   static function get ($name, $time = 3600, $uniques = null) {
-    $dir = Gila::dir(LOG_PATH.'/cacheItem/');
+    $dir = Gila::dir(__DIR__.'/../../../'.LOG_PATH.'/cacheItem/');
     if(!is_array($uniques)) {
-        $uniques[] = $uniques; 
+      $uniques = [$uniques]; 
     }
+    $name = $dir.str_replace('/', '-', $name);
     $caching_file = $name;
-    if($uniques) $caching_file .= '|'.implode('|',$uniques);
-    $caching_file = $dir.str_replace('/', '_', $caching_file);
+    if($uniques!==null) $caching_file .= '|'.implode('|',$uniques);
 
     if(file_exists($caching_file) && filemtime($caching_file)+$time>time()) {
       return file_get_contents($caching_file);
     } else {
       if($uniques !== null) {
-        array_map('unlink', glob($uniques[0].'*'));
+        array_map('unlink', glob($name.'*'));
       }
     }
     return null;
@@ -34,7 +34,7 @@ class Cache
 
   static function remember ($name, $time, $fn, $uniques = null) {
     if($data = self::get($name, $time, $uniques)) {
-        return $data;
+      return $data;
     }
     if($uniques) {
       $data = $fn($uniques);
@@ -47,17 +47,26 @@ class Cache
 
   static function page ($name, $time, $uniques = null) {
     if($data = self::get($name, $time, $uniques)) {
+      $controller = Router::getController();
+      $action = Router::getAction();
+      if(isset(Gila::$onaction[$controller][$action])) {
+        foreach(Gila::$onaction[$controller][$action] as $fn) $fn();
+      }
       echo $data;
-      exit;
+      global $starttime;
+      $end = microtime(true);
+      $creationtime = ($end - $starttime);
+      printf("<br>Page created in %.6f seconds.", $creationtime);
+          exit;
     }
     ob_start();
-    self::$name = $name;
+    self::$page_name = $name;
     self::$uniques = $uniques;
 
     register_shutdown_function(function(){
       $out2 = ob_get_contents();
-      if(!self::set(self::$name, $out2, self::$uniques)) {
-        trigger_error("Could not save cache: ".self::$caching_file);
+      if(!Cache::set(self::$page_name, $out2, self::$uniques)) {
+        trigger_error("Could not save cache: ".self::$page_name, E_USER_WARNING);
       }
     });
   }
