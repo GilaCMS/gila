@@ -8,7 +8,7 @@ class Cache
 
   static function set ($name, $data, $uniques = null) {
     $dir = Gila::dir(self::$cachePath);
-    $name = $dir.str_replace('/', '-', $name);
+    $name = $dir.'/'.str_replace('/', '-', $name);
     $caching_file = $name;
     if($uniques!==null) $caching_file .= '|'.implode('|',$uniques);
     return file_put_contents($caching_file, $data);
@@ -19,7 +19,7 @@ class Cache
     if(!is_array($uniques)) {
       $uniques = [$uniques]; 
     }
-    $name = $dir.str_replace('/', '-', $name);
+    $name = $dir.'/'.str_replace('/', '-', $name);
     $caching_file = $name;
     if($uniques!==null) $caching_file .= '|'.implode('|',$uniques);
 
