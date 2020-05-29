@@ -52,12 +52,7 @@ class Cache
       if(isset(Gila::$onaction[$controller][$action])) {
         foreach(Gila::$onaction[$controller][$action] as $fn) $fn();
       }
-      echo $data;
-      global $starttime;
-      $end = microtime(true);
-      $creationtime = ($end - $starttime);
-      printf("<br>Page created in %.6f seconds.", $creationtime);
-          exit;
+      exit;
     }
     ob_start();
     self::$page_name = $name;

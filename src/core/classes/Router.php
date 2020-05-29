@@ -207,19 +207,23 @@ class Router
   }
 
   static function matchRoutes(&$routes) {
+    $matched = false;
     foreach($routes as $route) {
       if(preg_match('#^'.$route[0].'$#', self::$url,$matches)) {
+        $matched = true;
         if(self::$method == $route[2]) {
           array_shift($matches);
           call_user_func_array($route[1], $matches);
-        } else {
-          header("HTTP/1.0 405 Method Not Allowed");
-          if(self::$methodNotAllowed){
-            call_user_func_array(self::$methodNotAllowed, [self::$url,$method]);
-          }  
+          return true;
         }
-        return true;
       }
+    }
+    if($matched) {
+      @http_response_code(405);
+      if(self::$methodNotAllowed){
+        call_user_func_array(self::$methodNotAllowed, [self::$url, self::$method]);
+      }
+      return true;
     }
     return false;
   }
