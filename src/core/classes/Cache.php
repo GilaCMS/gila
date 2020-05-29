@@ -6,7 +6,7 @@ class Cache
   static $uniques;
 
   static function set ($name, $data, $uniques = null) {
-    $dir = Gila::dir(LOG_PATH.'/cacheItem/'); //__DIR__.'/../../../'.
+    $dir = Gila::dir(LOG_PATH.'/cacheItem');
     $name = $dir.'/'.str_replace('/', '-', $name);
     $caching_file = $name;
     if($uniques!==null) $caching_file .= '|'.implode('|',$uniques);
@@ -14,7 +14,7 @@ class Cache
   }
 
   static function get ($name, $time = 3600, $uniques = null) {
-    $dir = Gila::dir(LOG_PATH.'/cacheItem/');
+    $dir = Gila::dir(LOG_PATH.'/cacheItem');
     if(!is_array($uniques)) {
       $uniques = [$uniques]; 
     }

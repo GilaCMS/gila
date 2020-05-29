@@ -12,7 +12,7 @@ class ClassCache extends TestCase
 		FileManager::delete(LOG_PATH.'/cacheItem');
 		$data = Cache::get('itemTest1');
 		$this->assertEquals(null, $data);
-		$data = Cache::set('itemTest1', 'data1');
+		Cache::set('itemTest1', 'data1');
 		$data = Cache::get('itemTest1');
 		$this->assertEquals('data1', $data);
 
