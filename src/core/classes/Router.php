@@ -7,7 +7,7 @@ class Router
   static $caching = false;
   static $caching_file;
   static $controllers = [];
-  static $on_controller;
+  static $on_controller = [];
   static $actions = [];
   static $method;
   static $controller;
@@ -216,30 +216,20 @@ class Router
   }
 
   static function matchRoutes(&$routes) {
-    $path_match_found = false;
-    $route_match_found = false;
-
     foreach($routes as $route) {
-      if(preg_match('#^'.$route[0].'$#', self::$url,$matches)){
-        $path_match_found = true;
-        if(self::$method == $route[2]){
+      if(preg_match('#^'.$route[0].'$#', self::$url,$matches)) {
+        if(self::$method == $route[2]) {
           array_shift($matches);
           call_user_func_array($route[1], $matches);
-          $route_match_found = true;
-          break;
+        } else {
+          header("HTTP/1.0 405 Method Not Allowed");
+          if(self::$methodNotAllowed){
+            call_user_func_array(self::$methodNotAllowed, [self::$url,$method]);
+          }  
         }
+        return true;
       }
     }
-
-    if(!$route_match_found){
-      if($path_match_found){
-        header("HTTP/1.0 405 Method Not Allowed");
-        if(self::$methodNotAllowed){
-          call_user_func_array(self::$methodNotAllowed, [self::$url,$method]);
-        }
-      }
-    }
-    return $path_match_found;
-
+    return false;
   }
 }
