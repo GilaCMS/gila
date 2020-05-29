@@ -60,7 +60,7 @@ class Cache
 
     register_shutdown_function(function(){
       $out2 = ob_get_contents();
-      if(!Cache::set(self::$page_name, $out2, self::$uniques)) {
+      if(!self::set(self::$page_name, $out2, self::$uniques)) {
         trigger_error("Could not save cache: ".self::$page_name, E_USER_WARNING);
       }
     });

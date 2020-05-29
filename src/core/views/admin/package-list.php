@@ -30,20 +30,21 @@ if(Package::check4updates()) {
 }
 
 
-foreach ($packages as $pkey=>$p) if($p->package!='core') {
+foreach ($packages as $pkey=>$p) if($p->package!='core' || Gila::config('env')=='dev') {
   if(isset($p->lang)) Gila::addLang($p->lang);
 
   // Border color
   if (file_exists('src/'.$p->package)) {
     if (in_array($p->package,$GLOBALS['config']['packages'])) {
-      $border = "border-left:4px solid lightgreen;";
+      $border = "border-left:4px solid forestgreen;";
     } else $border = "border-left:4px solid lightgrey";
   } else $border = "";
-  $table .= '<tr><td style="color:grey;text-align:center;width: 3em;'.$border.'">';
+  $table .= '<tr>';
+  $table .= '<td style="color:grey;text-align:center;width: 3em;'.$border.'">';
 
   // Logo
   if (file_exists($dir."{$p->package}/logo.png")) {
-    $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'" />';
+    $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'"/>';
   } else if (isset($p->logo) && $p->logo!='') {
     $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
   } else {
@@ -57,7 +58,7 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
   // Description
   $desc = __($p->package.':desc');
   if($desc==$p->package.':desc') $desc = $p->description?:'No description';
-  $table .= '<p>'.$desc.'</p>';
+  $table .= '<br>'.$desc.'<br>';
 
   // Additional info
   $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
@@ -74,12 +75,17 @@ foreach ($packages as $pkey=>$p) if($p->package!='core') {
 
   // Buttons
   if (file_exists('src/'.$p->package)) {
-    if (in_array($p->package,$GLOBALS['config']['packages'])) {
-      $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
+    if (in_array($p->package,$GLOBALS['config']['packages']) || $p->package=='core') {
+      if(Gila::config('env')=='dev') {
+        $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
+      }
+      if($p->package!='core') {
+        $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
+      }
     } else {
-      if($p->package=='core') {
-        $table .= "";
-      } else $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
+      if($p->package!='core') {
+        $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
+      }
     }
     if(isset($p->options)) {
       $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>";
@@ -106,7 +112,7 @@ $links=[
 ];
 View::alerts();
 ?>
-<div class="row">
+<div class="row" id='packages-list'>
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
   foreach($links as $link){
     $active = (Router::url()==$link[1]?'active':'');
@@ -118,7 +124,7 @@ View::alerts();
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
   </ul>
-  <div class="tab-content gs-12 wrapper">
+  <div class="tab-content gs-12">
     <div><br><table class='g-table' id="tbl-packages" style="margin-left:5px;display:table"><?=$table?></table></div>
   </div>
 </div>
@@ -186,4 +192,18 @@ function addon_options(p) {
   })
 }
 
+var packageListApp = new Vue({
+  el: '#packages-list',
+  data: {
+    selectedPackage: null
+  },
+  methods: {
+    selectPackage: function(x) {
+      this.selectedPackage = x
+      g.post('admin/packages','html='+x, function(html){
+        g.modal({body:html,class:'large'})
+      })
+    }
+  }
+});
 </script>
