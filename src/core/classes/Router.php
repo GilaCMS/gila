@@ -68,21 +68,17 @@ class Router
   static function getController ():string
   {
     if(isset(self::$controller)) return self::$controller;
-    $args = &self::$args;
     $default = Gila::config('default-controller');
-    $controller = self::request('c',$default);
+    self::$controller = self::request('c',$default);
 
-    if (isset($args[0]) && isset(self::$controllers[$args[0]])) {
-      $controller = $args[0];
-      array_shift($args);
+    if (isset(self::$args[0]) && isset(self::$controllers[self::$args[0]])) {
+      self::$controller = self::$args[0];
+      array_shift(self::$args);
     }
-
     if (!isset(self::$controllers[$controller])) {
-      $controller = 'admin';
+      self::$controller = 'admin';
     }
-
-    self::$controller = $controller;
-    return $controller;
+    return self::$controller;
   }
 
   static function getAction($ctrClass = null):string
@@ -183,11 +179,6 @@ class Router
   {
     if($set) self::$action = $set; // DEPRECIATED 
     return @self::getAction(self::getController(), self::$args);
-  }
-
-  static function args_shift() // DEPRECIATED used only from controllers/api
-  {
-    array_shift(self::$args);
   }
 
   static function setUrl($_url) {
