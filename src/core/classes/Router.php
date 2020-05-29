@@ -75,7 +75,7 @@ class Router
       self::$controller = self::$args[0];
       array_shift(self::$args);
     }
-    if (!isset(self::$controllers[$controller])) {
+    if (!isset(self::$controllers[self::$controller])) {
       self::$controller = 'admin';
     }
     return self::$controller;
