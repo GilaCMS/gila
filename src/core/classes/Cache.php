@@ -4,7 +4,7 @@ class Cache
 {
   static $page_name;
   static $uniques;
-  static $cachePath = __DIR__.'/../../../cacheItem';
+  static $cachePath = __DIR__.'/../../../'.LOG_PATH.'/cacheItem';
 
   static function set ($name, $data, $uniques = null) {
     $dir = Gila::dir(self::$cachePath);
