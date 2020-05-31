@@ -31,14 +31,14 @@ class Cache
     return null;
   }
 
-  static function remember ($name, $time, $fn, $uniques = null) {
+  static function remember ($name, $time, $fn, $uniques = []) {
     if($data = self::get($name, $time, $uniques)) {
       return $data;
     }
-    if($uniques) {
-      $data = $fn($uniques);
-    } else {
+    if($uniques===[]) {
       $data = $fn();
+    } else {
+      $data = $fn($uniques);
     }
     self::set($name, $data, $uniques);
     return $data;

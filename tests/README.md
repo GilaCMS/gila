@@ -43,8 +43,9 @@ composer install
 
 Now you must have a new directory vendor that contains phpunit package. You can run the tests from root directory like this.
 ```
-./vendor/phpunit/phpunit/phpunit tests/phpunit/class-gila.php
+./vendor/phpunit/phpunit/phpunit tests/phpunit/class-Gila.php
 ```
+In order to run all tests, make sure you that  *phpunits/includes.php* can connect on a local database.
 
 More informations for the phpunit
 https://phpunit.de

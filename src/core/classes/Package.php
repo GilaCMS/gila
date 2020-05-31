@@ -76,7 +76,9 @@ class Package
         }
 
         if($require===[] && $require_op===[]) {
-          $GLOBALS['config']['packages'][]=$activate;
+          if(!in_array($activate, $GLOBALS['config']['packages'])) {
+            $GLOBALS['config']['packages'][]=$activate;
+          }
           self::copyAssets($activate);
           self::update($activate);
           Gila::updateConfigFile();
