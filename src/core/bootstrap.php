@@ -21,18 +21,23 @@ ini_set("error_log", "log/error.log");
 
 spl_autoload_register(function ($class) {
   $classMap = [
-    'Gila'=> 'src/core/classes/Gila.php',
+    'Cache'=> 'src/core/classes/Cache.php',
     'Controller'=> 'src/core/classes/Controller.php',
-    'gForm'=> 'src/core/classes/gForm.php',
-    'Router'=> 'src/core/classes/Router.php',
-    'View'=> 'src/core/classes/View.php',
-    'Session'=> 'src/core/classes/Session.php',
     'Db'=> 'src/core/classes/Db.php',
     'Event'=> 'src/core/classes/Event.php',
-    'Package'=> 'src/core/classes/Package.php',
-    'Theme'=> 'src/core/classes/Theme.php',
+    'FileManager'=> 'src/core/classes/FileManager.php',
+    'Gila'=> 'src/core/classes/Gila.php',
+    'gForm'=> 'src/core/classes/gForm.php',
+    'gTable'=> 'src/core/classes/gTable.php',
+    'Image'=> 'src/core/classes/Image.php',
+    'Logger'=> 'src/core/classes/Logger.php',
     'Menu'=> 'src/core/classes/Menu.php',
-    'gTable'=> 'src/core/classes/gTable.php'
+    'Package'=> 'src/core/classes/Package.php',
+    'Router'=> 'src/core/classes/Router.php',
+    'Session'=> 'src/core/classes/Session.php',
+    'Slugify'=> 'src/core/classes/Slugify.php',
+    'Theme'=> 'src/core/classes/Theme.php',
+    'View'=> 'src/core/classes/View.php',
   ];
 
   if(isset($classMap[$class])) {

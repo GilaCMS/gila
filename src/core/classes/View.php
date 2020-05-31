@@ -374,26 +374,23 @@ class View
   */
   static function widgetArea ($area, $div=true, $type=null, $widget_file=null)
   {
-    echo Cache::remember('widget-area-'.$area, 300, function() use($area, $type, $div){
-      $return = '';
-      $widgets = core\models\Widget::getActiveByArea($area);
-      if ($widgets) foreach ($widgets as $widget) {
-        if($type != null) if($widget['widget'] != $type) continue;
+    $widgets = core\models\Widget::getActiveByArea($area);
+    if ($widgets) foreach ($widgets as $widget) {
+      if($type != null) if($widget['widget'] != $type) continue;
 
-        $widget_id = json_decode($widget['id']);
-        $widget_data = json_decode($widget['data']);
-        @$widget_data->widget_id = $widget_id;
-        if($div) {
-          $return .= '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
-          if($widget['title']!='') $return .= '<div class="widget-title">'.$widget['title'].'</div>';
-          $return .= '<div class="widget-body">';
-        }
-  
-        $return .= self::getWidgetBody($widget['widget'], $widget_data);
-        if($div) $return .= '</div></div>';
+      $widget_id = json_decode($widget['id']);
+      $widget_data = json_decode($widget['data']);
+      @$widget_data->widget_id = $widget_id;
+
+      if($div){
+        echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
+        if($widget['title']!='') echo '<div class="widget-title">'.$widget['title'].'</div>';
+        echo '<div class="widget-body">';
       }
-      return $return;
-    }, [Gila::mt('widget')]);
+
+      self::widgetBody($widget['widget'], $widget_data);
+      if($div) echo '</div></div>';
+    }
     Event::fire($area);
   }
 

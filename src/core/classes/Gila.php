@@ -318,7 +318,6 @@ class Gila
   */
   static function mt($arg) {
     if(!isset(self::$mt)) self::loadMt();
-    $args = func_get_args();
     if(is_array($arg)) {
       $array = [];
       foreach($arg as $a) $array[] = self::$mt[$a];
