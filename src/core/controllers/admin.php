@@ -187,6 +187,7 @@ class admin extends Controller
 
   function loginAction ()
   {
+    View::set('title', __('Log In'));
     View::renderAdmin('login.php');
   }
 

@@ -282,7 +282,7 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
-        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80" style="max-width:80px></img>'
+        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80" style="max-width:80px"></img>'
       } else {
         return '';
       }
@@ -421,7 +421,7 @@ gtableCommand['edit_popup'] = {
   fa: "pencil",
   fn: function(table,irow) {
   href='cm/edit_form/'+table.name+'?id='+irow;
-    g.post(href, function(data){
+    g.get(href,function(data){
       g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'

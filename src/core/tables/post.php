@@ -50,7 +50,7 @@ return [
       'title'=>'User',
       'type'=>'select',
       'qoptions'=>"SELECT id, username FROM user",
-      'qtype'=>'varchar(80) CHARACTER SET latin1 DEFAULT NULL'
+      'qtype'=>'int(11) unsigned DEFAULT NULL'
     ],
     "categories"=>[
       'edit'=>true,
