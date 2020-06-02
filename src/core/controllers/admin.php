@@ -42,18 +42,18 @@ class admin extends Controller
   function dashboardAction ()
   {
     global $db;
-//    $wfolders=['log','themes','src','tmp','assets','data'];
-//    foreach($wfolders as $wf) if(is_writable($wf)==false) {
-//      View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
-//    }
-//    if(Gila::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
-//      View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
-//    }
+    $wfolders=['log','themes','src','tmp','assets','data'];
+    foreach($wfolders as $wf) if(is_writable($wf)==false) {
+      View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
+    }
+    if(Gila::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
+      View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
+    }
 
     $db->connect();
-    View::set('postsC', 2);//$db->value('SELECT count(*) from post;'));
-    View::set('pagesC', 2);//$db->value('SELECT count(*) from page;'));
-    View::set('usersC', 2);//$db->value('SELECT count(*) from user;'));
+    View::set('postsC', $db->value('SELECT count(*) from post;'));
+    View::set('pagesC', $db->value('SELECT count(*) from page;'));
+    View::set('usersC', $db->value('SELECT count(*) from user;'));
     $db->close();
     View::set('packagesC', count($GLOBALS['config']['packages']));
     View::renderAdmin('admin/dashboard.php');
