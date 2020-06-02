@@ -11,6 +11,7 @@ class Controller
       } else if (isset($_POST['username']) && isset($_POST['password'])) {
         View::alert('error', __('login_error_msg'));
       }
+      View::set('title', __('Log In'));
       View::renderFile('login.php');
       exit;
     }

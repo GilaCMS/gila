@@ -23,7 +23,7 @@ body { overflow-x: hidden; }
 
 #sidebar-wrapper .g-nav li{ color:#fff;}
 #sidebar-wrapper .g-nav li a{ color:#ccc; }
-#sidebar-wrapper .g-nav li a i{ margin: 0 4px; }
+#sidebar-wrapper .g-nav li a i{ margin: 4px; font-size:120%;}
 #sidebar-wrapper .g-nav li ul li a{ color:#444; }
 #sidebar-wrapper .g-nav li ul{ box-shadow:1px 1px 4px black;border:0 }
 #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }

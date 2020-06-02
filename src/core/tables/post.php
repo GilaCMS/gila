@@ -12,6 +12,7 @@ return [
   'qkeys'=>['slug','publish','user_id'],
   'meta-table'=>['postmeta', 'post_id', 'vartype', 'value'],
   'permissions'=>[
+    'read'=>['admin','editor'],
     'create'=>['admin','editor'],
     'update'=>['admin','editor'],
     'delete'=>['admin','editor']
@@ -49,7 +50,7 @@ return [
       'title'=>'User',
       'type'=>'select',
       'qoptions'=>"SELECT id, username FROM user",
-      'qtype'=>'varchar(80) CHARACTER SET latin1 DEFAULT NULL'
+      'qtype'=>'int(11) unsigned DEFAULT NULL'
     ],
     "categories"=>[
       'edit'=>true,

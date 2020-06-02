@@ -11,7 +11,7 @@ class Package
     if($activate) self::activate($activate);
     $deactivate = Router::post('deactivate');
     if($deactivate) self::deactivate($deactivate);
-    $save_options = Router::get('save_options');
+    $save_options = Router::param('save_options');
     if($save_options) self::saveOptions($save_options);
     $options = Router::post('options');
     if($options) self::options($options);
@@ -26,6 +26,8 @@ class Package
         } else echo '{"success":true}';
       } else echo '{"success":true}';
     }
+    $html = Router::post('html');
+    if($html) self::display($html);
   }
 
   static function config($package) {
@@ -39,6 +41,14 @@ class Package
     return self::config($package)['version'];
   }
 
+  static function display($package)
+  {
+    $itemName = 'package-html';
+    echo Cache::remember($itemName, 259200, function($u) {
+      return file_get_contents("https://gilacms.com/addons/package/{$u[0]}/html");
+    }, [$package, self::config($package)['version']??'']);
+  }
+
   /**
   * Activates a package
   * @param $activate (string) Package name to activate
@@ -46,7 +56,8 @@ class Package
   static function activate($activate)
   {
     if (in_array($activate, scandir('src/'))) {
-      if(!in_array($activate, $GLOBALS['config']['packages'])) {
+      if(!in_array($activate, $GLOBALS['config']['packages']) ||
+         Gila::config('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'),true);
         $require = [];
         $require_op = [];
@@ -65,7 +76,9 @@ class Package
         }
 
         if($require===[] && $require_op===[]) {
-          $GLOBALS['config']['packages'][]=$activate;
+          if(!in_array($activate, $GLOBALS['config']['packages'])) {
+            $GLOBALS['config']['packages'][]=$activate;
+          }
           self::copyAssets($activate);
           self::update($activate);
           Gila::updateConfigFile();

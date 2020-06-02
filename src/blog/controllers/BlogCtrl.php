@@ -145,9 +145,9 @@ class BlogCtrl extends Controller
   {
     global $db;
     $cacheTime = Gila::option('blog.cache');
+    Gila::canonical('blog/'.$id);
     if(Session::userId()==0 && $cacheTime > 0) {
-      Gila::canonical('blog/'.$r['id']);
-      Router::cache($cacheTime, [$id], [Gila::mt('post')]);
+      Cache::page('blog/post'.$id, $cacheTime, [Gila::mt('post')]);
     }
     Router::$action = "post";
 

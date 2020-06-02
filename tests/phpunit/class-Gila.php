@@ -6,12 +6,6 @@ use PHPUnit\Framework\TestCase;
 class ClassGila extends TestCase
 {
 
-	public function test_route()
-	{
-		Gila::route('test.txt', function(){ return 'test'; });
-		$this->assertEquals(function(){ return 'test'; }, Gila::$route['test.txt']);
-	}
-
 	public function test_addLang()
 	{
 		Gila::config('language','es');

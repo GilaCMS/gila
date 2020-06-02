@@ -263,7 +263,7 @@ button:hover{
 .btn-warning{background-color:var(--main-warning-color)!important}
 .btn-primary{background-color:var(--main-primary-color)!important}
 .btn-danger,.btn-error{background-color:var(--main-error-color)!important}
-
+.btn-sm{padding:4px}
 
 
 .g-form input, .g-form select, .g-input{
@@ -436,7 +436,7 @@ input:focus + .helptext{
   border-top:1px solid var(--main-border-color);
 }
 .gila-popup>.closebtn{
-  font-size:1.5em;
+  font-size: 2.5em;
   position: absolute;
   right: 0;
 }
@@ -496,6 +496,14 @@ input:focus + .helptext{
     margin-left:-450px;
     width:900px;
   }
+}
+
+.gila-popup.overlay {
+  top:0;
+  bottom:0;
+  max-height:unset;
+  -webkit-animation-name:unset;
+  animation-name:unset;
 }
 
 .row::after{
@@ -652,10 +660,14 @@ input:focus + .helptext{
 
 .g-tabs>li.active,
 .g-tabs>li:hover{
-    background: var(--main-bg-color);;
-    border-bottom:3px solid var(--main-a-color);
-    transition:all 0s;
-    margin-bottom:-1px;
+  color: var(--main-a-color);
+  border-bottom:3px solid var(--main-a-color);
+  transition:all 0s;
+  margin-bottom:-1px;
+}
+.g-tabs>li.active a,
+.g-tabs>li:hover a{
+  color: var(--main-a-color);
 }
 .g-tabs>li>a{
   color: var(--main-color)

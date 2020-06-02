@@ -374,8 +374,6 @@ class View
   */
   static function widgetArea ($area, $div=true, $type=null, $widget_file=null)
   {
-    global $widget_data;
-
     $widgets = core\models\Widget::getActiveByArea($area);
     if ($widgets) foreach ($widgets as $widget) {
       if($type != null) if($widget['widget'] != $type) continue;

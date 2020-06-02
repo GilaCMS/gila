@@ -24,12 +24,15 @@ class ClassRouter extends TestCase
 
 	public function test_add()
 	{
-		Router::add('GET', 'test.txt', function(){ echo 'test.get'; });
-		Router::add('POST', 'test.txt', function(){ echo 'test.post'; });
+		Router::add('test.txt', function(){ echo 'test.get'; });
+		Router::add('test.txt', function(){ echo 'test.post'; }, 'POST');
+		Router::add('routex/(.*)', function($x){ echo 'route#'.$x; }, 'GET');
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$this->assertEquals('test.get', $this->request('test.txt'));
 		$_SERVER['REQUEST_METHOD'] = 'POST';
 		$this->assertEquals('test.post', $this->request('test.txt'));
+		$_SERVER['REQUEST_METHOD'] = 'GET';
+		$this->assertEquals('route#8', $this->request('routex/8'));
 	}
 
 	public function test_param()

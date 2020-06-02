@@ -20,6 +20,31 @@ if(!isset($_GET['url'])) $_GET['url'] = substr($_SERVER['REQUEST_URI'],1);
 ini_set("error_log", "log/error.log");
 
 spl_autoload_register(function ($class) {
+  $classMap = [
+    'Cache'=> 'src/core/classes/Cache.php',
+    'Controller'=> 'src/core/classes/Controller.php',
+    'Db'=> 'src/core/classes/Db.php',
+    'Event'=> 'src/core/classes/Event.php',
+    'FileManager'=> 'src/core/classes/FileManager.php',
+    'Gila'=> 'src/core/classes/Gila.php',
+    'gForm'=> 'src/core/classes/gForm.php',
+    'gTable'=> 'src/core/classes/gTable.php',
+    'Image'=> 'src/core/classes/Image.php',
+    'Logger'=> 'src/core/classes/Logger.php',
+    'Menu'=> 'src/core/classes/Menu.php',
+    'Package'=> 'src/core/classes/Package.php',
+    'Router'=> 'src/core/classes/Router.php',
+    'Session'=> 'src/core/classes/Session.php',
+    'Slugify'=> 'src/core/classes/Slugify.php',
+    'Theme'=> 'src/core/classes/Theme.php',
+    'View'=> 'src/core/classes/View.php',
+  ];
+
+  if(isset($classMap[$class])) {
+    require_once $classMap[$class];
+    return true;
+  }
+
   $class = strtr($class, ['\\'=>'/', '__'=>'-']);
   $Class = ucfirst($class);
 

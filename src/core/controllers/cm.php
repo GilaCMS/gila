@@ -254,7 +254,11 @@ class cm extends Controller
 
     foreach($ids as $id) {
       $data = $_POST;
-      $pnk->event('update', $data);
+      if(isset($_GET['id'])) {
+        $pnk->event('update', $data);
+      } else {
+        $pnk->event('create', $data);
+      }
       $pnk->updateMeta($id);
       $pnk->updateJoins($id);
       $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($data)} WHERE {$pnk->id()}=?;",$id);

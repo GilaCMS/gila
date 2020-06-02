@@ -4,9 +4,6 @@
 
 class Gila
 {
-  static $controller;
-  static $on_controller;
-  static $controllerClass;
   static $action;
   static $before;
   static $onaction;
@@ -48,9 +45,9 @@ class Gila
   * Gila::route('some.txt', function(){ echo 'Some text.'; });
   * @endcode
   */
-  static function route($r, $fn)
+  static function route($r, $fn) // DEPRECIATED
   {
-    Gila::$route[$r] = $fn;
+    Router::add($r, $fn);
   }
 
   /**
@@ -61,9 +58,9 @@ class Gila
   * Gila::onController('blog', function(){ BlogCtrl::ppp = 24; });
   * @endcode
   */
-  static function onController($c, $fn)
+  static function onController($c, $fn) // DEPRECIATED
   {
-    self::$on_controller[$c][] = $fn;
+    Router::$on_controller[$c][] = $fn;
   }
 
   /**
@@ -75,7 +72,7 @@ class Gila
   * Gila::action('blog', 'topics', function(){ ... });
   * @endcode
   */
-  static function action($c, $action, $fn) // DEPRACIATED -> Router::action()
+  static function action($c, $action, $fn) // DEPRECIATED -> Router::action()
   {
     Router::$actions[$c][$action] = $fn;
   }
@@ -321,7 +318,6 @@ class Gila
   */
   static function mt($arg) {
     if(!isset(self::$mt)) self::loadMt();
-    $args = func_get_args();
     if(is_array($arg)) {
       $array = [];
       foreach($arg as $a) $array[] = self::$mt[$a];

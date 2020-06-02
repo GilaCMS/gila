@@ -50,4 +50,5 @@ jobs:
       - run: ./vendor/bin/phpunit tests/phpunit/class-FileManager.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-Router.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-Slugify.php
+      - run: ./vendor/bin/phpunit tests/phpunit/class-Cache.php
       - run: ./vendor/bin/phpunit tests/phpunit/requests.php
