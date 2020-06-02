@@ -436,7 +436,7 @@ input:focus + .helptext{
   border-top:1px solid var(--main-border-color);
 }
 .gila-popup>.closebtn{
-  font-size:1.5em;
+  font-size: 2.5em;
   position: absolute;
   right: 0;
 }
@@ -496,6 +496,14 @@ input:focus + .helptext{
     margin-left:-450px;
     width:900px;
   }
+}
+
+.gila-popup.overlay {
+  top:0;
+  bottom:0;
+  max-height:unset;
+  -webkit-animation-name:unset;
+  animation-name:unset;
 }
 
 .row::after{

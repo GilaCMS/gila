@@ -434,6 +434,23 @@ gtableCommand['edit_popup'] = {
   }
 }
 
+gtableCommand['edit_overlay'] = {
+  fa: "pencil",
+  fn: function(table,irow) {
+  href='cm/edit_form/'+table.name+'?id='+irow;
+    g.get(href,function(data){
+      g.dialog({class:'lightscreen large overlay',body:data,type:'modal',buttons:'popup_update'})
+      app = new Vue({
+        el: '#'+table.name+'-edit-item-form'
+      })
+      textareas=g('.codemirror-js').all
+      for(i=0;i<textareas.length;i++) {
+        cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
+      }
+    })
+  }
+}
+
 g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
   form = g('#gila-popup form').all[0]
   data = new FormData(form);
