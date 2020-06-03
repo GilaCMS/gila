@@ -4,13 +4,13 @@
 
 class Gila
 {
-  static $controller;
-  static $on_controller;
-  static $controllerClass;
-  static $action;
-  static $before;
-  static $onaction;
-  static $route;
+  //static $controller;
+  //static $on_controller;
+  //static $controllerClass;
+  //static $action;
+  //static $before;
+  //static $onaction;
+  //static $route;
   static $widget;
   static $package;
   static $amenu;
@@ -77,7 +77,7 @@ class Gila
   */
   static function action($c, $action, $fn) // DEPRECATED -> Router::action()
   {
-    Router::$actions[$c][$action] = $fn;
+    Router::action($c, $action, $fn);
   }
 
   /**
@@ -86,14 +86,14 @@ class Gila
   * @param $action (string) The action
   * @param $fn (function) Callback
   */
-  static function before($c, $action, $fn)
+  static function before($c, $action, $fn) // DEPRECATED -> Router::before()
   {
-    self::$before[$c][$action][] = $fn;
+    Router::before($c, $action, $fn);
   }
 
-  static function onAction($c, $action, $fn)
+  static function onAction($c, $action, $fn) // DEPRECATED -> Router::onAction()
   {
-    self::$onaction[$c][$action][] = $fn;
+    Router::onAction($c, $action, $fn);
   }
 
   /**
@@ -150,11 +150,6 @@ class Gila
   */
   static function content($key, $path)
   {
-    self::table($key, $path);
-  }
-
-  static function table($key, $path)
-  {
     self::$content[$key] = $path;
   }
 
@@ -178,11 +173,6 @@ class Gila
   * @code Gila::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
   */
   static function contentInit($key, $init)
-  {
-    self::tableInit($key, $init);
-  }
-
-  static function tableInit($key, $init)
   {
     @self::$contentInit[$key][] = $init;
     if(isset(gTable::$tableList[$key])) {

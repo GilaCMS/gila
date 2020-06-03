@@ -11,7 +11,7 @@ class ClassGTable extends TestCase
   public function test_gTable()
   {
     global $db;
-    Gila::table('post','core/tables/post.php');
+    Gila::content('post','core/tables/post.php');
     $gtable = new gTable('post');
     $this->assertEquals('post', $gtable->name());
     $this->assertEquals('id', $gtable->id());
@@ -32,7 +32,7 @@ class ClassGTable extends TestCase
 
   public function test_where()
   {
-    Gila::table('post','core/tables/post.php');
+    Gila::content('post','core/tables/post.php');
     $gtable = new gTable('post');
 
     $this->assertEquals(" WHERE id>10", $gtable->where(['id'=>['gt'=>10]]));
@@ -50,7 +50,7 @@ class ClassGTable extends TestCase
   public function test_getMeta()
   {
     global $db;
-    Gila::table('post','core/tables/post.php');
+    Gila::content('post','core/tables/post.php');
     $gtable = new gTable('post');
 
     $db->query("DELETE FROM postmeta WHERE vartype IN('fruit','color')");

@@ -99,7 +99,7 @@ class RequestsTest extends TestCase
       'paragraph'=>'core/widgets/paragraph',
       'image'=>'core/widgets/image']);
     Package::update('blocks');
-    Gila::table('post','core/tables/post.php');
+    Gila::content('post','core/tables/post.php');
     $gtable = new gTable('post');
     $gtable->update();
     Session::user(self::$userId, 'Test', 'test@mail.com');

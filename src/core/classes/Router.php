@@ -9,6 +9,8 @@ class Router
   static $controllers = [];
   static $on_controller = [];
   static $actions = [];
+  static $before = [];
+  static $onaction = [];
   static $method;
   static $controller;
   static $action;
@@ -175,10 +177,24 @@ class Router
   /**
   * Returns the name of the action
   */
-  static function action ($set = null)
+  static function action ($c=null, $action=null, $fn=null)
   {
-    if($set) self::$action = $set; // DEPRECATED 
-    return @self::getAction(self::getController(), self::$args);
+    if($fn!==null) {
+      Router::$actions[$c][$action] = $fn;
+      return;
+    }
+    if($action===null && $set!==null) self::$action = $set; // DEPRECATED
+    return @self::getAction(self::getController(), self::$args); // DEPRECATED
+  }
+
+  static function before($c, $action, $fn)
+  {
+    self::$before[$c][$action][] = $fn;
+  }
+
+  static function onAction($c, $action, $fn)
+  {
+    self::$onaction[$c][$action][] = $fn;
   }
 
   static function setUrl($_url) {
@@ -192,7 +208,7 @@ class Router
     }
   }
 
-  static function cache ($time = 3600, $args = null, $uniques = null) {
+  static function cache ($time = 3600, $args = null, $uniques = null) { // DEPRECATED
     if ($_SERVER['REQUEST_METHOD']!=="GET") {
       // only for get requests
       return;

@@ -45,6 +45,7 @@ class Cache
   }
 
   static function page ($name, $time, $uniques = null) {
+    if($_SERVER['REQUEST_METHOD']!=="GET") return;
     if($data = self::get($name, $time, $uniques)) {
       $controller = Router::getController();
       $action = Router::getAction();

@@ -54,13 +54,13 @@ Gila::$privilege['admin']="Administrator access.";
 Gila::$privilege['editor']="Can publish or edit posts from other users.";
 Gila::$privilege['developer']="Special access in developer tools.";
 
-Gila::table('post','core/tables/post.php');
-Gila::table('user-post','core/tables/user-post.php');
-Gila::table('postcategory','core/tables/postcategory.php');
-Gila::table('user','core/tables/user.php');
-Gila::table('userrole','core/tables/userrole.php');
-Gila::table('page','core/tables/page.php');
-Gila::table('widget','core/tables/widget.php');
+Gila::content('post','core/tables/post.php');
+Gila::content('user-post','core/tables/user-post.php');
+Gila::content('postcategory','core/tables/postcategory.php');
+Gila::content('user','core/tables/user.php');
+Gila::content('userrole','core/tables/userrole.php');
+Gila::content('page','core/tables/page.php');
+Gila::content('widget','core/tables/widget.php');
 
 Gila::addLang('core/lang/');
 
