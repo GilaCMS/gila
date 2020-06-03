@@ -22,7 +22,7 @@ class gTable
     }
     $this->loadSchema($content);
 
-    if($patch = @Gila::$contentField[$this->table['name']]) { // DEPRECIATED since 1.8.0
+    if($patch = @Gila::$contentField[$this->table['name']]) { // DEPRECATED since 1.8.0
       $this->table['fields'] = array_merge($this->table['fields'],$patch);
     }
     if(isset(Gila::$contentInit[$this->table['name']])) {
@@ -306,7 +306,7 @@ class gTable
     } else if(isset($this->table['meta-table'])) {
       $mt = $this->table['meta-table'];
     } else {
-      // DEPRECIATED remove 'mt' attribute at v2.x
+      // DEPRECATED remove 'mt' attribute at v2.x
       $mt = $this->table['fields'][$key]["mt"];
       $tmp = $mt[2]; $mt[2] = $vt[0]; $mt[3] = $tmp;
     }

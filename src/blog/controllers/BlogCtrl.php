@@ -266,13 +266,13 @@ class BlogCtrl extends Controller
     return self::$totalPages;
   }
 
-  static function get_url($id,$slug=NULL) // DEPRECIATED
+  static function get_url($id,$slug=NULL) // DEPRECATED
   {
     if($slug==NULL) return Gila::make_url('blog','',['p'=>$id]);
     return Gila::make_url('blog','',['p'=>$id,'slug'=>$slug]);
   }
 
-  static function thumb_sm($img,$id) // DEPRECIATED
+  static function thumb_sm($img,$id) // DEPRECATED
   {
     $target = 'post_sm/'.str_replace(["://",":\\\\","\\","/",":"], "_", $img);
     return View::thumb_sm($img, $target);
@@ -280,4 +280,4 @@ class BlogCtrl extends Controller
 
 }
 
-class_alias('BlogCtrl', 'blog'); // DEPRECIATED
+class_alias('BlogCtrl', 'blog'); // DEPRECATED

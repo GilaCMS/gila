@@ -319,21 +319,20 @@ input:focus + .helptext{
 .g-radio label{background:var(--main-input-color)}
 .g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
-/* Radio Switcher */
-.g-switcher{position:relative;z-index:1;margin:4px}
-.g-switcher input{position:absolute;opacity:0;width: 51px;height: 26px;top:-2px;left:-2px;}
-.g-switcher .g-slider{position:absolute;z-index: -100}
-.g-switcher input[value="1"]:checked + .g-slider{
+/* Toggle switch */
+.g-switch{position:relative;z-index:1;margin:4px}
+.g-switch input{position:absolute;opacity:0;width: 51px;height: 26px;top:-2px;left:-2px;}
+.g-switch .g-slider{position:absolute;z-index: -100}
+.g-switch input[value="1"]:checked + .g-slider{
   background-color:var(--main-success-color);
 }
-.g-switcher input:checked{ display:none}
-.g-switcher input:checked + .g-slider:before{
+.g-switch input:checked{ display:none}
+.g-switch input:checked + .g-slider:before{
   -webkit-transform:translateX(25px);
   -ms-transform:translateX(25px);
   transform:translateX(25px);
 }
 
-.g-switch input{display:none;}
 .g-slider{
   cursor:pointer;
   background-color:grey;
@@ -360,11 +359,6 @@ input:focus + .helptext{
 }
 .g-switch input:focus + .g-slider{
   box-shadow:0 0 1px var(--main-success-color);
-}
-.g-switch input:checked + .g-slider:before{
-  -webkit-transform:translateX(20px);
-  -ms-transform:translateX(20px);
-  transform:translateX(20px);
 }
 .g-slider{
   border-radius:21px;

@@ -40,7 +40,7 @@ class Router
       return;
     }
 
-    if($ctrlClass==='blog') $ctrlClass='Blog'; // DEPRECIATED
+    if($ctrlClass==='blog') $ctrlClass='Blog'; // DEPRECATED
     $c = new $ctrlClass();
 
     // find function to run after controller construction
@@ -113,7 +113,7 @@ class Router
   */
   static function get ($string, $fn = null)
   {
-    if(is_int($fn) || $fn===null) { // DEPRECIATED
+    if(is_int($fn) || $fn===null) { // DEPRECATED
       return self::param($string, $fn);      
     } else {
       self::add($string, $fn);
@@ -167,7 +167,7 @@ class Router
   static function controller ($name = null, $path = null)
   {
     if($name===null) {
-      return @self::getController(); // DEPRECIATED
+      return @self::getController(); // DEPRECATED
     }
     self::$controllers[$name] = $path;
   }
@@ -177,7 +177,7 @@ class Router
   */
   static function action ($set = null)
   {
-    if($set) self::$action = $set; // DEPRECIATED 
+    if($set) self::$action = $set; // DEPRECATED 
     return @self::getAction(self::getController(), self::$args);
   }
 

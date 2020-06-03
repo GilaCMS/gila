@@ -82,10 +82,11 @@ class gForm
     return $html . '</div>';
   }
 
-  static function addInputType ($index, $value)
+  static function addInputType ($index, $value) // DEPRECATED
   {
-    if(!isset(self::$input_type)) self::initInputTypes();
-    self::$input_type[$index] = $value;
+    Gila::addList($index, $value);
+    //if(!isset(self::$input_type)) self::initInputTypes();
+    //self::$input_type[$index] = $value;
   }
 
   static function initInputTypes()
@@ -112,7 +113,7 @@ class gForm
         return $html . '</select>';
       },
       "radio"=> function($name,$field,$ov) {
-        $html = '<div class="g-radio g-input">';
+        $html = '<div class="g-radio g-input" style="padding-left: 0;padding-right: 0;">';
         foreach($field['options'] as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
@@ -162,10 +163,13 @@ class gForm
         </span></span></div>';
       },
       "textarea"=> function($name,$field,$ov) {
-        return '<textarea class="codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+      },
+      "codemirror"=> function($name,$field,$ov) {
+        return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "tinymce"=> function($name,$field,$ov) {
-        return '<textarea class="tinymce" id="'.$name.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth tinymce" id="'.$name.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "paragraph"=> function($name,$field,$ov) {
         return '<vue-editor id="'.$name.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
@@ -179,11 +183,11 @@ class gForm
         return $html . '</select>';
       },
       "checkbox"=> function($name,$field,$ov) {
-        return self::$input_type['switcher']($name,$field,$ov);
+        return self::$input_type['switch']($name,$field,$ov);
       },
-      "switcher"=> function($name,$field,$ov) {
+      "switch"=> function($name,$field,$ov) {
         if($ov==1) $checked=["","checked"]; else $checked=["checked",""];
-        return '<div class="g-switcher ">
+        return '<div class="g-switch">
         <input name="'.$name.'" type="radio" value="0" id="chsw_'.$name.'" '.$checked[0].'>
         <input name="'.$name.'" type="radio" value="1" id="chsw_'.$name.'" '.$checked[1].'>
         <div class="g-slider"></div>
@@ -206,6 +210,10 @@ class gForm
         return $html . '</select>';
       }
     ];
+
+    foreach(Gila::getList('input-type') as $type=>$value) {
+      self::$input_type[$type] = $value;
+    }
     /* CONTENT
     if($type=='content') {
       $table = $op['table'];
