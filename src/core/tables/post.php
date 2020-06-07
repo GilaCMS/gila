@@ -55,6 +55,7 @@ return [
     "categories"=>[
       'edit'=>true,
       'type'=>'meta',
+      //'input-type'=>'radio',
       "mt"=>['postmeta', 'post_id', 'value'],
       'metatype'=>['vartype', 'category'],
       "title"=>"Categories",

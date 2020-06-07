@@ -1,9 +1,9 @@
 <?=View::css('core/admin/content.css')?>
-<?=View::cssAsync('lib/select2/select2.min.css')?>
+<?php//View::cssAsync('lib/select2/select2.min.css')?>
 <?=View::cssAsync('core/admin/vue-editor.css')?>
 
-<?=View::script('lib/jquery/jquery-3.3.1.min.js')?>
-<?=View::script('lib/select2/select2.min.js','async')?>
+<?php//View::script('lib/jquery/jquery-3.3.1.min.js')?>
+<?php//View::script('lib/select2/select2.min.js','async')?>
 <?=View::script('lib/vue/vue.min.js')?>
 
 <?=View::script('lib/CodeMirror/codemirror.js')?>
@@ -19,7 +19,7 @@ if(file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
 View::script('core/lang/content/'.Gila::config('language').'.js');
-View::script('core/admin/listcomponent.js');
+View::script('core/admin/vue-components.js');
 View::script('core/admin/vue-editor.js');
 ?>
 

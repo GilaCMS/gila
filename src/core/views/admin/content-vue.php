@@ -1,29 +1,22 @@
 <?=View::css('core/admin/content.css')?>
-<?=View::cssAsync('lib/select2/select2.min.css')?>
 <?=View::cssAsync('core/admin/vue-editor.css')?>
-<?=View::cssAsync('https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css')?>
-
-<?=View::script('lib/jquery/jquery-3.3.1.min.js')?>
-<?=View::script('lib/select2/select2.min.js','async')?>
 <?=View::script('lib/vue/vue.min.js')?>
-<?=View::script('https://unpkg.com/vue-multiselect@2.1.0')?>
-
-<?=View::script('lib/CodeMirror/codemirror.js')?>
-<?=View::script('lib/CodeMirror/javascript.js')?>
-<?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
-<style>.CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}</style>
-<?=View::script("lib/tinymce/tinymce.min.js")?>
 
 <?php
-View::script('core/admin/media.js');
 View::script('core/admin/content.js');
 if(file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
-View::script('core/lang/content/'.Gila::config('language').'.js');
-View::script('core/admin/listcomponent.js');
-View::script('core/admin/vue-editor.js');
+View::scriptAsync('core/lang/content/'.Gila::config('language').'.js');
+View::scriptAsync('core/admin/media.js');
+View::scriptAsync('core/admin/vue-components.js');
+View::scriptAsync('core/admin/vue-editor.js');
+View::scriptAsync('lib/CodeMirror/codemirror.js');
+View::scriptAsync('lib/CodeMirror/javascript.js');
+View::cssAsync('lib/CodeMirror/codemirror.css');
 ?>
+<style>.CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}</style>
+<?=View::scriptAsync("lib/tinymce/tinymce.min.js")?>
 
 <style>
 .type-textarea label{width:100%}

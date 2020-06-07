@@ -111,11 +111,8 @@ class Form
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
         if(is_string($ov)) $ov = explode(',',$ov);
-        $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
-        foreach($field['options'] as $value=>$name) {
-          $html .= '<option value="'.$value.'"'.(in_array($value,$ov)?' selected':'').'>'.$name.'</option>';
-        }
-        return $html . '</select>';
+        $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
+        return $html.= 'options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
       "radio"=> function($name,$field,$ov) {
         $html = '<div class="g-radio g-input" style="padding-left: 0;padding-right: 0;">';
@@ -123,7 +120,7 @@ class Form
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
           $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'" '.$checked[0].'>';
-          $html .= '<label for="'.$id.'">'.$display.'</label>';
+          $html .= '<label for="'.$id.$value.'">'.$display.'</label>';
         }
         return $html . '</div>';
       },

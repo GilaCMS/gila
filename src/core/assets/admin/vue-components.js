@@ -101,3 +101,42 @@ Vue.component('input-gallery', {
     }
   }
 })
+
+
+Vue.component('g-multiselect', {
+  template: '<div :id="\'gm-\'+name+value" style="padding:var(--main-padding);min-width:180px;cursor:pointer;\
+  background:var(--main-input-color)" @click="dropdown=true">\
+  <span v-for="(value,i) in values" @click="toggle(value)"\
+  style="color:white;background:var(--main-primary-color);margin-right:4px;padding:4px;border-radius:4px">\
+  &times; {{opList[value]}}</span>&nbsp;\
+  <div v-if="dropdown" style="position:absolute; min-width:160px; padding:0;\
+  margin:12px -12px;border:1px solid lightgrey; z-index:1;\
+  background:white;">\
+  <div style="float:right;font-size:150%;margin:0 4px" @click.stop="dropdown=false">&times;</div>\
+  <div v-for="(op,i) in opList" style="padding:6px" @click="toggle(i)" v-html="optionDisplay(op,i)"></div>\
+  </div>\
+  <input v-model="ivalue" type="hidden" :name="name">\
+</div>',
+  props: ['name','value','options'],
+  data: function() {
+    return {
+      values: JSON.parse(this.value)??[],
+      ivalue: JSON.parse(this.value).join(',')??'',
+      opList: JSON.parse(this.options),
+      dropdown: false
+    }
+  },
+  methods: {
+    toggle: function(i) {
+      var index = this.values.indexOf(i);
+      if (index === -1) this.values.push(i); else this.values.splice(index, 1);
+      this.dropdown=false
+      this.ivalue = this.values.join(',')
+    },
+    optionDisplay: function(op,i) {
+      var index = this.values.indexOf(i);
+      if (index !== -1) op = op+" &#10003;";
+      return op
+    }
+  }
+})
