@@ -1,6 +1,6 @@
 <?php
 
-class gForm
+class Form
 {
   static private $html;
   static private $input_type;
@@ -69,24 +69,29 @@ class gForm
     if($type) {
       if(isset(self::$input_type[$type])) {
         $html .= self::$input_type[$type]($name,$op,$ov);
-      } else if(in_array($type,['hidden','date','time','color','password','email'])) {
-      /* OTHER TYPES */
-        $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'">';
+      } else if(in_array($type,['hidden','date','datetime-local','time','color','password','email'])) {
+        if($type=='datetime-local' && $ov) {
+          $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
+        }
+        $req = $op['required']? ' required':'';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
       } else {
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'">';
+        $req = $op['required']? ' required':'';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
       }
     } else {
-      $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'">';
+      $req = $op['required']? ' required':'';
+      $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
     }
 
     return $html . '</div>';
   }
 
-  static function addInputType ($index, $value) // DEPRECATED
+  static function addInputType ($index, $value)
   {
     Gila::addList($index, $value);
-    //if(!isset(self::$input_type)) self::initInputTypes();
-    //self::$input_type[$index] = $value;
+    if(!isset(self::$input_type)) self::initInputTypes();
+    self::$input_type[$index] = $value;
   }
 
   static function initInputTypes()
@@ -117,7 +122,7 @@ class gForm
         foreach($field['options'] as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
-          $html .= ($value==$ov?' checked':'').' id="'.$id.'" '.$checked[0].'>';
+          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'" '.$checked[0].'>';
           $html .= '<label for="'.$id.'">'.$display.'</label>';
         }
         return $html . '</div>';
@@ -188,8 +193,8 @@ class gForm
       "switch"=> function($name,$field,$ov) {
         if($ov==1) $checked=["","checked"]; else $checked=["checked",""];
         return '<div class="g-switch">
-        <input name="'.$name.'" type="radio" value="0" id="chsw_'.$name.'" '.$checked[0].'>
-        <input name="'.$name.'" type="radio" value="1" id="chsw_'.$name.'" '.$checked[1].'>
+        <input name="'.$name.'" type="radio" value="0" id="chsw_'.$name.'0" '.$checked[0].'>
+        <input name="'.$name.'" type="radio" value="1" id="chsw_'.$name.'1" '.$checked[1].'>
         <div class="g-slider"></div>
         </div>
         ';
@@ -222,3 +227,5 @@ class gForm
     }*/
   }
 }
+
+class_alias('Form', 'gForm');

@@ -422,7 +422,7 @@ gtableCommand['edit_popup'] = {
   fn: function(table,irow) {
   href='cm/edit_form/'+table.name+'?id='+irow;
     g.get(href,function(data){
-      g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+      g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
       })
@@ -430,6 +430,7 @@ gtableCommand['edit_popup'] = {
       for(i=0;i<textareas.length;i++) {
         cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
       }
+      if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
     })
   }
 }
@@ -439,7 +440,7 @@ gtableCommand['edit_overlay'] = {
   fn: function(table,irow) {
   href='cm/edit_form/'+table.name+'?id='+irow;
     g.get(href,function(data){
-      g.dialog({class:'lightscreen large overlay',body:data,type:'modal',buttons:'popup_update'})
+      g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large overlay',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
       })
@@ -447,6 +448,7 @@ gtableCommand['edit_overlay'] = {
       for(i=0;i<textareas.length;i++) {
         cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
       }
+      if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
     })
   }
 }
@@ -467,7 +469,7 @@ g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
   }
   g.ajax({method:'post',url:url,data:data,fn:function(data) {
     data = JSON.parse(data)
-    if(id=='new') {
+    if(id=='new' || id==0) {
       _this.data.rows.unshift(data.rows[0])
     } else {
       _this.update_row(data.rows[0])
@@ -536,6 +538,23 @@ gtableTool['addrow'] = {
       if(typeof _this.data.rows=='undefined') {
         _this.data.rows = [data.rows[0]]
       } else _this.data.rows.unshift(data.rows[0])
+    })
+  }
+}
+gtableTool['add_popup'] = {
+  fa: "plus", label: _e("New"),
+  fn: function(table) {
+    href='cm/edit_form/'+table.name;
+    g.get(href,function(data){
+      g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+      app = new Vue({
+        el: '#'+table.name+'-edit-item-form'
+      })
+      textareas=g('.codemirror-js').all
+      for(i=0;i<textareas.length;i++) {
+        cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
+      }
+      if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
     })
   }
 }

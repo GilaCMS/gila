@@ -1,6 +1,6 @@
 <?php
 
-class gTable
+class Table
 {
   private $table;
   private $permissions;
@@ -45,7 +45,7 @@ class gTable
       $child_table = new gTable($key,$permissions);
       $child['table'] = $child_table->getTable();
     }
-    $this->table['title'] = __($this->table['title']);
+    $this->table['title'] = __($this->table['title']??$this->table['name']);
 
     if(!isset($this->table['permissions'])) $this->table['permissions'] = [];
     $p = &$this->table['permissions'];
@@ -226,7 +226,10 @@ class gTable
   function set(&$fields = null) {
     $set = [];
     if($fields===null) $fields=$_POST;
-    foreach(@$this->table['filters'] as $k=>$f) $fields[$k]=$f;
+    foreach(@$this->table['filters'] as $k=>$f) if(isset($fields[$k])) {
+      // should check if $fields[$k] validates the filter restrictions
+      $fields[$k]=$f;
+    }
     $this->event('change', $fields);
 
     foreach($fields as $key=>$value) {
@@ -300,13 +303,13 @@ class gTable
   }
 
   function getMT($key) {
-    $vt = $this->table['fields'][$key]["metatype"];
-    if(isset($this->table[$key]['meta-table'])) {
-      $mt = $this->table[$key]['meta-table'];
+    $vt = $this->table['fields'][$key]["meta-key"]??$this->table['fields'][$key]["metatype"];
+    if(isset($this->table['fields'][$key]['meta-table'])) {
+      $mt = $this->table['fields'][$key]['meta-table'];
     } else if(isset($this->table['meta-table'])) {
       $mt = $this->table['meta-table'];
     } else {
-      // DEPRECATED remove 'mt' attribute at v2.x
+      // DEPRECATED remove 'mt','metatype' attributes at v2.x
       $mt = $this->table['fields'][$key]["mt"];
       $tmp = $mt[2]; $mt[2] = $vt[0]; $mt[3] = $tmp;
     }
@@ -336,6 +339,7 @@ class gTable
             if($subkey === 'end') $filters[] = "$key like '%$subvalue'";
             if($subkey === 'has') $filters[] = "$key like '%$subvalue%'";
             if($subkey === 'in') $filters[] = "$key IN($subvalue)";
+            if($subkey === 'inset') $filters[] = "FIND_IN_SET($subvalue, $key)>0";
           }
         } else {
           $value = $this->db->res($value);
@@ -485,3 +489,5 @@ class gTable
   }
 
 }
+
+class_alias('Table', 'gTable');

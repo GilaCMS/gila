@@ -229,7 +229,7 @@ class cm extends Controller
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
     $pnk = new gTable($this->table, $this->permissions);
 
-    if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
+    if(isset($_GET['id']) && $_GET['id']>0 && $pnk->can('update')) {
       $id = $_GET['id'];
     } else if($pnk->can('create')) {
       $insert_fields = [];
