@@ -298,8 +298,9 @@ class Package
   {
     global $db;
     $file = LOG_PATH.'/load.php';
-    $contents = file_get_contents('src/core/load.php');//"/*--- Load file ---*/";
-    foreach(Gila::packages() as $package) {
+    $contents = '<?php';
+    $packages = array_merge(['core'], Gila::packages());
+    foreach($packages as $package) {
       $handle = @fopen("src/$package/load.php", "r");
       if ($handle) {
         $line = fgets($handle);
