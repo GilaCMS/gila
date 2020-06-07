@@ -5,7 +5,7 @@ class TableSchema
 
   function __construct ($name)
   {
-    $gtable = new gTable($name);
+    $gtable = new Table($name);
     $table = $gtable->getTable();
     self::update($table);
   }

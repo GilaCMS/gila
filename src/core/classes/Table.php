@@ -42,7 +42,7 @@ class Table
       } else $field['title'] = __($key);
     }
     if(isset($this->table['children'])) foreach ($this->table['children'] as $key => &$child) {
-      $child_table = new gTable($key,$permissions);
+      $child_table = new Table($key,$permissions);
       $child['table'] = $child_table->getTable();
     }
     $this->table['title'] = __($this->table['title']??$this->table['name']);
