@@ -1,9 +1,5 @@
 <?=View::css('core/admin/content.css')?>
-<?php//View::cssAsync('lib/select2/select2.min.css')?>
 <?=View::cssAsync('core/admin/vue-editor.css')?>
-
-<?php//View::script('lib/jquery/jquery-3.3.1.min.js')?>
-<?php//View::script('lib/select2/select2.min.js','async')?>
 <?=View::script('lib/vue/vue.min.js')?>
 
 <?=View::script('lib/CodeMirror/codemirror.js')?>

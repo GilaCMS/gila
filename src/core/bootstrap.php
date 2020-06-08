@@ -40,6 +40,8 @@ spl_autoload_register(function ($class) {
     'Slugify'=> 'src/core/classes/Slugify.php',
     'Theme'=> 'src/core/classes/Theme.php',
     'View'=> 'src/core/classes/View.php',
+    'gpost'=> 'src/core/classes/HttpPost.php',
+    'HttpPost'=> 'src/core/classes/HttpPost.php',
   ];
 
   if(isset($classMap[$class])) {

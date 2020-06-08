@@ -4,13 +4,6 @@
 
 class Gila
 {
-  //static $controller;
-  //static $on_controller;
-  //static $controllerClass;
-  //static $action;
-  //static $before;
-  //static $onaction;
-  //static $route;
   static $widget;
   static $package;
   static $amenu;

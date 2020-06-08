@@ -14,7 +14,7 @@ Event::listen('recaptcha',function(){
   if($secret=='') return false;
   if(!isset($_POST['g-recaptcha-response'])) return false;
 
-  $response = new gpost('https://www.google.com/recaptcha/api/siteverify',
+  $response = new HttpPost('https://www.google.com/recaptcha/api/siteverify',
     ['secret' => $secret, 'response' => $_POST['g-recaptcha-response']],
     ['type'=>'x-www-form-urlencoded']);
   return json_decode($response)->success;

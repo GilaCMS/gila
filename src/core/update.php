@@ -41,9 +41,3 @@ if(version_compare(Package::version('core'),'1.12.2') < 0) {
 if(version_compare(Package::version('core'),'1.13.0') < 0) {
   FileManager::copy('lib','assets/lib');
 }
-
-// always update them
-$assets_core = Gila::dir('assets/core/');
-file_put_contents($assets_core."gila.min.css",file_get_contents("src/core/assets/gila.min.css"));
-file_put_contents($assets_core."gila.min.js",file_get_contents("src/core/assets/gila.min.js"));
-

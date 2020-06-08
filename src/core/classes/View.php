@@ -361,9 +361,7 @@ class View
   static function blocks (&$blocks) {
     foreach($blocks as $b) {
       if(!is_object($b)) $b = (object)$b;
-      //echo '<div class="block '.$b->_type.'">';
       View::widgetBody($b->_type, $b);
-      //echo '</div>'; 
     }
   }
 
@@ -546,7 +544,7 @@ class View
       $options[] = explode('.', $base)[0];
     }
 
-    return array_unique($options);//;
+    return array_unique($options);
   }
 
   /**
