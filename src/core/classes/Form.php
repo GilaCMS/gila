@@ -108,7 +108,7 @@ class Form
         return $html . '</select>';
       },
       "meta"=> function($name,$field,$ov) {
-        if(@$field['meta-csv']==true) {
+        if(@$field['meta-csv']==true || @$field['meta_csv']==true) {
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
         if(is_string($ov)) $ov = explode(',',$ov);

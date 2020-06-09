@@ -148,7 +148,7 @@ var blocks_app = new Vue({
 
 function open_gallery_post() {
   g.post("admin/media","g_response=content&path=assets",function(gal){ 
-    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',class:'large',id:'media_dialog'})
+    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',class:'large',id:'media_dialog','z-index':99999})
   })
 }
 

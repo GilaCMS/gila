@@ -10,13 +10,13 @@ Vue.component('g-table', {
           <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
           </select>\
         </div>\
-        <div v-if="table[\'search-box\']" style="position:relative;display:inline-block" class="search-box">\
+        <div v-if="table[\'search-box\'] || table[\'search_box\']" style="position:relative;display:inline-block" class="search-box">\
           <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-          @keyup="if($event.which == \'8\') runsearch()"\
+          @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
           @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
           <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
         </div>\
-        <div v-if="table[\'search-boxes\']" v-for="sb in table[\'search-boxes\']" style="position:relative;display:inline-block" class="search-box">\
+        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" style="position:relative;display:inline-block" class="search-box">\
           <label>&nbsp;{{field_label(sb)}}</label>\
           <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
             <option value="" selected>-</option>\
@@ -377,7 +377,7 @@ function transformClassComponents() {
     tinymce.init(g_tinymce_options)
   }
 
-  if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
+  if(typeof $ != 'undefined' && typeof $.fn.select2 != 'undefined') $(".select2").select2();
 }
 
 function readFromClassComponents() {
@@ -428,11 +428,7 @@ gtableCommand['edit_popup'] = {
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
       })
-      textareas=g('.codemirror-js').all
-      for(i=0;i<textareas.length;i++) {
-        cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
-      }
-      if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
+      transformClassComponents()
     })
   }
 }
@@ -516,7 +512,7 @@ gtableTool['add'] = {
     })
   }
 }
-gtableTool['addrow'] = {
+gtableTool['add_row'] = {
   fa: "plus", label: _e("New"),
   fn: function(table) {
     let _this
@@ -539,11 +535,7 @@ gtableTool['add_popup'] = {
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
       })
-      textareas=g('.codemirror-js').all
-      for(i=0;i<textareas.length;i++) {
-        cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
-      }
-      if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
+      transformClassComponents()
     })
   }
 }
@@ -554,7 +546,7 @@ gtableTool['csv'] = {
   }
 }
 gtableTool['log_selected'] = {
-  fa: "arrow-down", label: "Csv",
+  fa: "arrow-down", label: "Log",
   fn: function(table) {
     console.log(table.selected_rows);
   }
@@ -571,6 +563,7 @@ gtableTool['uploadcsv'] = {
     g.dialog({title:_e("Upload")+" CSV", body:bodyMsg, buttons:'',type:'modal', class:'large', id:'select_row_dialog'})
   }
 }
+gtableTool['upload_csv'] = gtableTool['uploadcsv']
 gtableTool['addfrom'] = {
   fa: "plus", label: _e("New from"),
   fn: function(table) {
@@ -634,14 +627,10 @@ g.dialog.buttons.select_row_source = {
     g('#select_row_dialog').parent().remove();
   }
 }
-function open_gallery() {
-  g.post("admin/media","g_response=content"+'&formToken='+csrfToken,function(gal){
-    g.dialog({title:"Media gallery",body:gal,buttons:'select_path',type:'modal',class:'large',id:'media_dialog'})
-  })
-}
+
 function open_gallery_post() {
   g.post("admin/media","g_response=content"+'&formToken='+csrfToken,function(gal){ 
-    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog'})
+    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog','z-index':99999})
   })
 }
 function open_select_row(row,table,name) {

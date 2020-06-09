@@ -254,7 +254,7 @@ class cm extends Controller
 
     foreach($ids as $id) {
       $data = $_POST;
-      if(isset($_GET['id'])) {
+      if(isset($_GET['id']) && $_GET['id']>0) {
         $pnk->event('update', $data);
       } else {
         $pnk->event('create', $data);

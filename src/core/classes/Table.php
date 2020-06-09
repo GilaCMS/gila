@@ -77,7 +77,7 @@ class Table
 
     if($user_id = $this->table['filter_owner']??null) {
       @$this->table['filters'][$user_id] = Session::userId();
-      foreach(['search-boxes','csv','list','edit','create'] as $key) {
+      foreach(['search_boxes','csv','list','edit','create'] as $key) {
         if(isset($this->table[$key])) {
           $this->table[$key] = array_diff($this->table[$key], [$user_id]);
         }
@@ -303,11 +303,11 @@ class Table
   }
 
   function getMT($key) {
-    $vt = $this->table['fields'][$key]["meta-key"]??$this->table['fields'][$key]["metatype"];
-    if(isset($this->table['fields'][$key]['meta-table'])) {
-      $mt = $this->table['fields'][$key]['meta-table'];
-    } else if(isset($this->table['meta-table'])) {
-      $mt = $this->table['meta-table'];
+    $vt = $this->table['fields'][$key]["meta_key"]??$this->table['fields'][$key]["metatype"];
+    if(isset($this->table['fields'][$key]['meta_table'])) {
+      $mt = $this->table['fields'][$key]['meta_table'];
+    } else if(isset($this->table['meta_table'])) {
+      $mt = $this->table['meta_table'];
     } else {
       // DEPRECATED remove 'mt','metatype' attributes at v2.x
       $mt = $this->table['fields'][$key]["mt"];
@@ -423,9 +423,9 @@ class Table
 
   function getMeta($id, $type = null)
   {
-    if(!isset($this->table['meta-table'])) return null;
+    if(!isset($this->table['meta_table'])) return null;
     $db = Gila::slaveDB();
-    $m = $this->table['meta-table'];
+    $m = $this->table['meta_table'];
     if($type!==null) {
       return $db->getList("SELECT {$m[3]} FROM {$m[0]}
         WHERE {$m[1]}=? AND $m[2]=?;", [$id, $type]);

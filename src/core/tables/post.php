@@ -5,20 +5,20 @@ return [
   'title'=> 'Posts',
   'pagination'=> 15,
   'id'=>'id',
-  'tools'=>['add','csv'],
+  'tools'=>['add','csv','log_selected'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
   'commands'=> ['edit','delete'],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish','user_id'],
-  'meta-table'=>['postmeta', 'post_id', 'vartype', 'value'],
+  'meta_table'=>['postmeta', 'post_id', 'vartype', 'value'],
   'permissions'=>[
     'read'=>['admin','editor'],
     'create'=>['admin','editor'],
     'update'=>['admin','editor'],
     'delete'=>['admin','editor']
   ],
-  'search-box'=>true,
-  'search-boxes'=> ['user_id'],
+  'search_box'=>true,
+  'search_boxes'=> ['user_id'],
   'fields'=> [
     'id'=> [
       'title'=>'ID',
@@ -29,9 +29,8 @@ return [
       'title'=>'Thumbnail',
       'type'=>'meta',
       'input-type'=>'media',
-      'meta-csv'=>true,
-      "mt"=>['postmeta', 'post_id', 'value'],
-      'metatype'=>['vartype', 'thumbnail']
+      'meta_csv'=>true,
+      'meta_key'=>['vartype', 'thumbnail']
     ],
     'title'=> [
       'title'=>'Title',
@@ -55,9 +54,7 @@ return [
     "categories"=>[
       'edit'=>true,
       'type'=>'meta',
-      //'input-type'=>'radio',
-      "mt"=>['postmeta', 'post_id', 'value'],
-      'metatype'=>['vartype', 'category'],
+      'meta_key'=>'category',
       "title"=>"Categories",
       "qoptions"=>"SELECT id,title FROM postcategory;"
     ],
@@ -65,9 +62,8 @@ return [
       'list'=>false,
       'edit'=>true,
       'type'=>'meta',
-      'meta-csv'=>true,
-      "mt"=>['postmeta', 'post_id', 'value'],
-      'metatype'=>['vartype', 'tag'],
+      'meta_csv'=>true,
+      'meta_key'=>'tag',
       "title"=>"Tags"
     ],
     'post'=>[
