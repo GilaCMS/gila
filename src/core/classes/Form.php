@@ -81,7 +81,8 @@ class Form
       }
     } else {
       $req = $op['required']? ' required':'';
-      $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
+      $value = !empty($ov)? 'value="'.htmlspecialchars($ov).'"': '';
+      $html .= '<input class="g-input" name="'.$name.'" '.$value.$req.'>';
     }
 
     return $html . '</div>';

@@ -348,11 +348,13 @@ class cm extends Controller
     $t = htmlentities($this->table);
     $pnk = new gTable($t, $this->permissions);
     if(!$pnk->can('update')) return;
+    $callback = Router::param("callback") ?? $t.'_action';
 
     $fields = $pnk->fields('edit');
     $id = Router::get("id",2);
     $id = (int)$id;
-    echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"><div>';
+    echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
+    echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button><div>';
     echo gForm::hiddenInput();
     if($id) {
       $w = ['id'=>$id];

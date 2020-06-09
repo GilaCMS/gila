@@ -11,7 +11,9 @@ Vue.component('g-table', {
           </select>\
         </div>\
         <div v-if="table[\'search-box\']" style="position:relative;display:inline-block" class="search-box">\
-          <input v-model="search" class=" g-input" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
+          <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
+          @keyup="if($event.which == \'8\') runsearch()"\
+          @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
           <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
         </div>\
         <div v-if="table[\'search-boxes\']" v-for="sb in table[\'search-boxes\']" style="position:relative;display:inline-block" class="search-box">\
@@ -420,7 +422,7 @@ gtableCommand['edit_page'] = {
 gtableCommand['edit_popup'] = {
   fa: "pencil",
   fn: function(table,irow) {
-  href='cm/edit_form/'+table.name+'?id='+irow;
+  href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
@@ -435,25 +437,12 @@ gtableCommand['edit_popup'] = {
   }
 }
 
-gtableCommand['edit_overlay'] = {
-  fa: "pencil",
-  fn: function(table,irow) {
-  href='cm/edit_form/'+table.name+'?id='+irow;
-    g.get(href,function(data){
-      g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large overlay',body:data,type:'modal',buttons:'popup_update'})
-      app = new Vue({
-        el: '#'+table.name+'-edit-item-form'
-      })
-      textareas=g('.codemirror-js').all
-      for(i=0;i<textareas.length;i++) {
-        cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
-      }
-      if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
-    })
-  }
-}
-
 g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
+  form = g('#gila-popup form').all[0]
+  form.getElementsByTagName("BUTTON")[0].click()
+}};
+
+function g_form_popup_update() {
   form = g('#gila-popup form').all[0]
   data = new FormData(form);
   t = form.getAttribute('data-table')
@@ -478,7 +467,7 @@ g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
   }})
 
   g('#gila-popup').parent().remove();
-}};
+} 
 
 
 gtableCommand['clone'] = {
@@ -544,7 +533,7 @@ gtableTool['addrow'] = {
 gtableTool['add_popup'] = {
   fa: "plus", label: _e("New"),
   fn: function(table) {
-    href='cm/edit_form/'+table.name;
+    href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
