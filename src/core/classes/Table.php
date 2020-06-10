@@ -313,7 +313,7 @@ class Table
       $mt = $this->table['fields'][$key]["mt"];
       $tmp = $mt[2]; $mt[2] = $vt[0]; $mt[3] = $tmp;
     }
-    $vt = isset($vt[1])? $vt[1]: $vt;
+    $vt = is_array($vt)? $vt[1]: $vt;
     return [$mt, $vt];
   }
 

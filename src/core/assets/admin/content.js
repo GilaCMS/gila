@@ -372,9 +372,10 @@ function transformClassComponents() {
   mce_editor=[]
   tinymce.remove() //remove all tinymce editors
   for(i=0;i<textareas.length;i++) {
-    mce_editor[i] = textareas[i].name;
-    g_tinymce_options.selector = '[name='+textareas[i].name+']'
-    tinymce.init(g_tinymce_options)
+    mce_editor[i] = {id: textareas[i].id, name: textareas[i].name};
+    mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));
+    mce_editor[i].settings.selector = '[name='+textareas[i].name+']'
+    tinymce.init(mce_editor[i].settings)
   }
 
   if(typeof $ != 'undefined' && typeof $.fn.select2 != 'undefined') $(".select2").select2();
@@ -383,8 +384,7 @@ function transformClassComponents() {
 function readFromClassComponents() {
   let values = new Array()
   for (x in mce_editor)  {
-    console.log(mce_editor[x])
-    values[mce_editor[x]] = tinymce.get(mce_editor[x]).getContent()
+    values[mce_editor[x].name] = tinymce.get(mce_editor[x].id).getContent()
   }
   textareas=g('.codemirror-js').all
   for (x in cmirror) {

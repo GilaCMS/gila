@@ -172,10 +172,12 @@ class Form
         return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "tinymce"=> function($name,$field,$ov) {
-        return '<textarea class="g-input fullwidth tinymce" id="'.$name.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        $id = 'm_'.str_replace(['[',']'], '_', $name);  
+        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "paragraph"=> function($name,$field,$ov) {
-        return '<vue-editor id="'.$name.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
+        $id = 'm_'.str_replace(['[',']'], '_', $name);  
+        return '<vue-editor id="'.$name.'" name="'.$id.'" text="'.htmlentities($ov).'"></vue-editor>';
       },
       "language"=> function($name,$field,$ov) {
         $html = '<select class="g-input" name="'.$name.'">';
