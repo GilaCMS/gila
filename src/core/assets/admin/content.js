@@ -377,6 +377,10 @@ function transformClassComponents() {
     mce_editor[i] = {id: textareas[i].id, name: textareas[i].name};
     mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));
     mce_editor[i].settings.selector = '[name='+textareas[i].name+']'
+    mce_editor[i].settings.file_picker_callback = function(cb, value, meta) {
+      input_filename = cb;
+      open_gallery_post();
+    }
     tinymce.init(mce_editor[i].settings)
   }
 
