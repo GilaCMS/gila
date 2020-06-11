@@ -54,8 +54,8 @@ Vue.component('input-list', {
 })
 
 Vue.component('input-media', {
-  template: '<div class="pointer:hover shadow:hover;background:var(--main-input-color);" \
-  style="width:160px;height:160px;max-width:100%;max-height:100%;display: grid;\
+  template: '<div class="pointer:hover shadow:hover;" \
+  style="background:var(--main-input-color);width:160px;height:160px;max-width:100%;max-height:100%;display: grid;\
   justify-content:center; align-content:center; position:relative;min-width:50px;" \
   :onclick="\'open_media_gallery(\\\'#imd\'+idByName()+\'\\\')\'">\
 <img v-if="!value" src="assets/core/camera.svg" style="width:50px;margin:auto">\
@@ -106,7 +106,8 @@ Vue.component('input-gallery', {
 
 Vue.component('g-multiselect', {
   template: '<div :id="\'gm-\'+name+value" style="padding:var(--main-padding);min-width:180px;cursor:pointer;\
-  background:var(--main-input-color)" @click="dropdown=!dropdown">\
+  background:var(--main-input-color);position:relative" @click="dropdown=!dropdown">\
+  <span v-if="values==[]">{{placeholder}}</span>\
   <span v-for="(value,i) in values" @click="toggle(value)"\
   style="color:white;background:var(--main-primary-color);margin-right:4px;padding:4px;border-radius:4px">\
   &times; {{opList[value]}}</span>&nbsp;\
@@ -118,10 +119,11 @@ Vue.component('g-multiselect', {
   </div>\
   <input v-for="(v,i) in values" type="hidden" :value="v" :name="name+\'[\'+i+\']\'">\
 </div>',
-  props: ['name','value','options'],
+  props: ['name','value','options','placeholder'],
   data: function() {
     return {
       values: JSON.parse(this.value)??[],
+      placeholder: this.placeholder??'xexexe',
       opList: JSON.parse(this.options),
       dropdown: false
     }
