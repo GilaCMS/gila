@@ -54,6 +54,7 @@ class Form
   {
     self::initInputTypes();
     $type = @$op['input-type']?:@$op['type'];
+    $type = @$op['input_type']?:$type;
     $html = '<div class="gm-12 row type-'.$type.'">';
     $label = ucwords(str_replace(['-','_'],' ',$key));
     $label = isset($op['label'])?$op['label']:$label;

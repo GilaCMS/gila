@@ -271,7 +271,7 @@ class View
     if(file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file),true);
     } else {
-      $menu_data = core\models\Menu::defaultData();
+      $menu_data = Menu::defaultData();
     }
     include self::getViewFile($tpl);
   }

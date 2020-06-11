@@ -188,27 +188,6 @@ script{display:none!important}
   opacity:1;
 }
 
-
-.column-2, .column-3, .column-4, .column-5, .column-6{
-  -webkit-column-gap:20px;
-  -moz-column-gap:20px;
-  column-gap:20px;
-}
-.column-2{ -webkit-column-count:2; -moz-column-count:2; column-count:2; }
-.column-3{ -webkit-column-count:3; -moz-column-count:3; column-count:3; }
-.column-4{ -webkit-column-count:4; -moz-column-count:4; column-count:4; }
-.column-5{ -webkit-column-count:5; -moz-column-count:5; column-count:5; }
-.column-6{ -webkit-column-count:6; -moz-column-count:6; column-count:6; }
-.column-rule{
-  -webkit-column-rule-style:solid;
-  -moz-column-rule-style:solid;
-  column-rule-style:solid;
-  -webkit-column-rule-width:1px;
-  -moz-column-rule-width:1px;
-  column-rule-width:1px;
-  column-rule-color:var(--main-color);
-}
-
 .bg-white{ background-color:white}
 .bg-black{ background-color:#000}
 .bg-red{ background-color:red}
@@ -315,8 +294,8 @@ input:focus + .helptext{
 }
 
 /* Radios */
-.g-radio input{display: none; }
-.g-radio label{background:var(--main-input-color)}
+.g-radio input{display: none;}
+.g-radio label{background:var(--main-input-color);border-radius:4px}
 .g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
 /* Toggle switch */
@@ -366,22 +345,14 @@ input:focus + .helptext{
 .g-slider:before{
   border-radius:50%;
 }
+
 .g-badge {
-  position: relative;
-}
-.g-badge::after {
-  position: relative;
-  background: red;
-  background: attr(data-bg);
-  top: -8px;
-  left: -3px;
+  background: var(--main-error-color);
   border-radius: 4px;
-  padding: 2px;
+  padding: 4px;
   font-weight: bold;
-  font-size:80%;
-  font-family:Arial, Helvetica, sans-serif;
-  content: attr(data-count);
-  color: white;
+  font-size:75%;
+  color:white;
 }
 
 
@@ -402,7 +373,7 @@ input:focus + .helptext{
   left:0;
   right:0;
   display: grid;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto 1fr auto;
   border:1px solid var(--main-border-color);
   z-index:99999;
   padding: 0;
@@ -412,7 +383,7 @@ input:focus + .helptext{
 
 .gila-popup.small{
   top:10%;
-  bottom:unset;
+  bottom:auto;
   left:unset;
   right:unset;
   margin-left:37.5%;
@@ -423,7 +394,7 @@ input:focus + .helptext{
 @media only screen and (min-width:800px){
   .gila-popup{
     top:10%;
-    bottom:inherit;
+    bottom:unset;
     left:inherit;
     right:inherit;
     top:10%;

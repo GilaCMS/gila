@@ -68,25 +68,7 @@ class lzld extends Controller
   }
 
   function amenuAction () {
-    $userId = Session::userId();
-    $base = $_GET['base'] ?? 'admin';
-    foreach (Gila::$amenu as $key => $value) {
-      if(isset($value['access'])) if(!Gila::hasPrivilege($value['access'])) continue;
-      if(isset($value['icon'])) $icon = 'fa-'.$value['icon']; else $icon='';
-      $url = $value[1]=='#'? Gila::url($base.'#'): $value[1]; 
-      echo "<li><a href='".$url."'><i class='fa {$icon}'></i>";
-      echo " <span>".__("$value[0]")."</span></a>";
-      if(isset($value['children'])) {
-        echo "<ul class=\"dropdown\">";
-        foreach ($value['children'] as $subkey => $subvalue) {
-          if(isset($subvalue['access'])) if(!Gila::hasPrivilege($subvalue['access'])) continue;
-          if(isset($subvalue['icon'])) $icon = 'fa-'.$subvalue['icon']; else $icon='';
-          echo "<li><a href='".Gila::url($subvalue[1])."'><i class='fa {$icon}'></i> ".__("$subvalue[0]")."</a></li>";
-        }
-        echo "</ul>";
-      }
-      echo "</li>";
-    }
+    echo Menu::getHtml(Gila::$amenu, $_GET['base'] ?? 'admin');
   }
 
 }

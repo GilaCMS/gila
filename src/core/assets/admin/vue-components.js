@@ -107,7 +107,7 @@ Vue.component('input-gallery', {
 Vue.component('g-multiselect', {
   template: '<div :id="\'gm-\'+name+value" style="padding:var(--main-padding);min-width:180px;cursor:pointer;\
   background:var(--main-input-color);position:relative" @click="dropdown=!dropdown">\
-  <span v-if="values==[]">{{placeholder}}</span>\
+  <span v-if="values.length==0" style="opacity:0.5">{{placetext}}</span>\
   <span v-for="(value,i) in values" @click="toggle(value)"\
   style="color:white;background:var(--main-primary-color);margin-right:4px;padding:4px;border-radius:4px">\
   &times; {{opList[value]}}</span>&nbsp;\
@@ -118,12 +118,13 @@ Vue.component('g-multiselect', {
   <div v-for="(op,i) in opList" style="padding:6px" @click="toggle(i)" v-html="optionDisplay(op,i)"></div>\
   </div>\
   <input v-for="(v,i) in values" type="hidden" :value="v" :name="name+\'[\'+i+\']\'">\
+  <input v-if="values.length==0" type="hidden" value="" :name="name">\
 </div>',
   props: ['name','value','options','placeholder'],
   data: function() {
     return {
       values: JSON.parse(this.value)??[],
-      placeholder: this.placeholder??'xexexe',
+      placetext: this.placeholder??'...',
       opList: JSON.parse(this.options),
       dropdown: false
     }

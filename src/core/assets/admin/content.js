@@ -269,8 +269,10 @@ Vue.component('g-table', {
       }
 
       // Display type
-      if (typeof field['display-type'] != "undefined") {
-        displayType = field['display-type'];
+      if (typeof field.display_type != "undefined") {
+        displayType = field.display_type;
+      } else if (typeof field.input_type != "undefined") {
+        displayType = field.input_type;
       } else if (typeof field['input-type'] != "undefined") {
         displayType = field['input-type'];
       } else {
