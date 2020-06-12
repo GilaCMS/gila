@@ -158,8 +158,8 @@ class Theme
     if (file_exists($jsonFile)) {
       $data = json_decode(file_get_contents($jsonFile),true);
       foreach($_POST['option'] as $key=>$value) if(isset($data['options'][$key])){
-        if(!isset($data['options'][$key]['allow-tags'])
-            || $data['options'][$key]['allow-tags']===false) {
+        if(!isset($data['options'][$key]['allow_tags'])
+            || $data['options'][$key]['allow_tags']===false) {
           $value=strip_tags($value);
         }
         $ql="INSERT INTO `option`(`option`,`value`) VALUES('theme.$key',?) ON DUPLICATE KEY UPDATE `value`=?;";

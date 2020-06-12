@@ -32,7 +32,7 @@ class widget
     $fields = include $widget_folder.'/widget.php';
 
     foreach($data['option'] as $key=>$value) {
-      $allowed = $fields[$key]['allow-tags'] ?? false;
+      $allowed = $fields[$key]['allow_tags'] ?? false;
       if($allowed==false) {
         if(!json_decode($data['option'][$key])) {
           $data['option'][$key] = strip_tags($data['option'][$key]);

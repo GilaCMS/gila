@@ -3,7 +3,7 @@
 return [
   "text"=>[
     "type"=>"paragraph",
-    "allow-tags"=>true
+    "allow_tags"=>true
   ],
   "image"=>[
     "type"=>"media"

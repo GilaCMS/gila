@@ -4,7 +4,9 @@ mce_editor=new Array()
 
 g.dialog.buttons.update_widget = {title:'Update',fn:function(){
   block_edit_close()
+  widget_id = cblock_content.replace('/','_')+'_'+cblock_pos;
   let fm=new FormData(g.el('widget_options_form'))
+  fm.set('widget_id',widget_id)
   g('#gila-popup').parent().remove();
   g.loader()
   g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){

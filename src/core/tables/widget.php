@@ -37,7 +37,7 @@ return [
         ],
         'data'=> [
           'title'=>'Data', 'list'=>false, 'edit'=>false,
-          'type'=>'text','allow-tags'=>true
+          'type'=>'text','allow_tags'=>true
         ],
     ],
     'events'=>[

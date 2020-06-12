@@ -26,20 +26,25 @@ return [
     'slug'=> [
       'title'=>'Slug',
     ],
-    //'updated'=> [],
     'publish'=> [
       'title'=>'Public',
       'style'=>'width:8%',
-      'type'=>'checkbox','edit'=>true
+      'type'=>'checkbox',
+      'edit'=>true
     ],
     'template'=> [
       'title'=>'Template',
       'template'=>'page',
-      'type'=>'template','edit'=>true
+      'type'=>'template',
+      'edit'=>true
     ],
     'content'=> [
-      'title'=>'Content','list'=>false,'edit'=>true,
-      'type'=>'textarea', 'input-type'=>'tinymce', 'allow-tags'=>true
+      'title'=>'Content',
+      'list'=>false,
+      'edit'=>true,
+      'type'=>'textarea',
+      'input_type'=>'tinymce',
+      'allow_tags'=>true
     ]
   ]
 ];

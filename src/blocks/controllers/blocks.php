@@ -52,7 +52,7 @@ class blocks extends Controller
       $widget_data = $_POST['option'] ?? [];
 
       foreach($widget_data as $key=>$value) {
-        $allowed = $fields[$key]['allow-tags'] ?? false;
+        $allowed = $fields[$key]['allow_tags'] ?? false;
         if($allowed==false) {
           if(!json_decode($widget_data[$key])) {
             $widget_data[$key] = strip_tags($widget_data[$key]);

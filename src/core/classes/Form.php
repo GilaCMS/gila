@@ -116,6 +116,14 @@ class Form
         $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
         return $html.= 'options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
+      "select2"=> function($name,$field,$ov) { //DEPRECATED
+        if(is_string($ov)) $ov = explode(',',$ov);
+        $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
+        foreach($field['options'] as $value=>$name) {
+          $html .= '<option value="'.$value.'"'.(in_array($value,$ov)?' selected':'').'>'.$name.'</option>';
+        }
+        return $html . '</select>';
+      },
       "radio"=> function($name,$field,$ov) {
         $html = '<div class="g-radio g-input" style="padding-left: 0;padding-right: 0;">';
         foreach($field['options'] as $value=>$display) {
@@ -178,7 +186,7 @@ class Form
       },
       "paragraph"=> function($name,$field,$ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);  
-        return '<vue-editor id="'.$name.'" name="'.$id.'" text="'.htmlentities($ov).'"></vue-editor>';
+        return '<vue-editor id="'.$id.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
       },
       "language"=> function($name,$field,$ov) {
         $html = '<select class="g-input" name="'.$name.'">';

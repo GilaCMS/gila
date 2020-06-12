@@ -28,7 +28,7 @@ return [
     'thumbnail'=> [
       'title'=>'Thumbnail',
       'type'=>'meta',
-      'input-type'=>'media',
+      'input_type'=>'media',
       'meta_csv'=>true,
       'meta_key'=>['vartype', 'thumbnail']
     ],
@@ -54,6 +54,7 @@ return [
     "categories"=>[
       'edit'=>true,
       'type'=>'meta',
+      'input_type'=>'select2',
       'meta_key'=>'category',
       "title"=>"Categories",
       "qoptions"=>"SELECT id,title FROM postcategory;"
@@ -71,8 +72,8 @@ return [
       'title'=>'Post',
       'edit'=>true,
       'type'=>'textarea',
-      'input-type'=>'tinymce',
-      'allow-tags'=>true,
+      'input_type'=>'tinymce',
+      'allow_tags'=>true,
       'qtype'=>'TEXT'
     ],
     'publish'=> [

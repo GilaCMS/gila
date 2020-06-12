@@ -235,7 +235,7 @@ class Table
     foreach($fields as $key=>$value) {
       if(array_key_exists($key, $this->table['fields'])) {
         if ($this->fieldAttr($key, 'qcolumn')) continue;
-        if ($allowed = $this->fieldAttr($key, 'allow-tags')) {
+        if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
           if($allowed!==true) {
             $value = strip_tags($value, $allowed);
           }
