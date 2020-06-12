@@ -4,10 +4,8 @@ mce_editor=new Array()
 
 g.dialog.buttons.update_widget = {title:'Update',fn:function(){
   block_edit_close()
-  widget_id = cblock_content.replace('/','_')+'_'+cblock_pos;
   let fm=new FormData(g.el('widget_options_form'))
-  fm.set('widget_id',widget_id)
-  g('#gila-popup').parent().remove();
+  g('#widget-popup').parent().remove();
   g.loader()
   g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
     g.loader(false)
@@ -24,7 +22,7 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
     content_blocks_app.blocks = JSON.parse(data)
     let fm=new FormData(g.el('widget_options_form'))
     fm.set('widget_id',widget_id)
-    g('#gila-popup').parent().remove();
+    g('#widget-popup').parent().remove();
     g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
       g.loader(false)
       blocks_preview_reload(data)
@@ -35,7 +33,7 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
 
 g.dialog.buttons.delete_widget = {title:'Delete',class:'error',fn:function() {
   let el = g('#widget_options_form input[name=widget_id]').all[0]
-  g('#gila-popup').parent().remove();
+  g('#widget-popup').parent().remove();
   block_del(el.value)
 }}
 
@@ -94,7 +92,7 @@ function block_create(content,type,pos) {
   cblock_type=type
   cblock_pos=pos
   g.get(href, function(data){
-    g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'create_widget'})
+    g.dialog({class:'lightscreen large',id:'widget-popup',body:data,type:'modal',buttons:'create_widget'})
     block_edit_open()
   });
 }
@@ -102,7 +100,7 @@ function block_create(content,type,pos) {
 function block_edit(id,type) {
   href='blocks/edit?id='+id+"&type="+type;
   g.get(href, function(data){
-    g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'update_widget delete_widget'})
+    g.dialog({class:'lightscreen large',id:'widget-popup',body:data,type:'modal',buttons:'update_widget delete_widget'})
     block_edit_open()
   });
 };

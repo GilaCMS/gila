@@ -31,15 +31,15 @@ class BlogCtrl extends Controller
   */
   function indexAction()
   {
-    if ($id=Router::get('page_id',1)) {
+    if ($id=Router::param('page_id',1)) {
       $this->postShow($id);
       return;
     }
-    if ($id=Router::get('p',1)) {
+    if ($id=Router::param('p',1)) {
       $this->postShow($id);
       return;
     }
-    if ($s=Router::get('search')) {
+    if ($s=Router::param('search')) {
       $s = strip_tags($s);
       View::set('search', $s);
       View::set('posts', Post::search($s));
@@ -123,7 +123,7 @@ class BlogCtrl extends Controller
   function authorAction()
   {
     global $db;
-    $user_id = Router::get('author',1);
+    $user_id = Router::param('author',1);
     Gila::canonical('author/'.$user_id);
     $res = $db->get("SELECT username,id from user WHERE id=? OR username=?",[$user_id,$user_id]);
     if($res) {
@@ -228,7 +228,7 @@ class BlogCtrl extends Controller
   */
   function searchAction()
   {
-    if ($s=Router::get('search',1)) {
+    if ($s=Router::param('search',1)) {
       $s = strip_tags($s);
       View::set('search', $s);
       View::set('page_title', $s.' | '.Gila::config('title'));

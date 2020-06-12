@@ -358,9 +358,10 @@ class View
     @include $block_file;
   }
 
-  static function blocks (&$blocks) {
-    foreach($blocks as $b) {
+  static function blocks (&$blocks, $anchors=false) {
+    foreach($blocks as $key=>$b) {
       if(!is_object($b)) $b = (object)$b;
+      if($anchors) echo "<span id='w$key'></span>";
       View::widgetBody($b->_type, $b);
     }
   }

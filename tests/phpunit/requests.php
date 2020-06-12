@@ -110,7 +110,7 @@ class RequestsTest extends TestCase
 
     $_GET = ['id'=>'new', 'type'=>'paragraph'];
     $response = $this->request('blocks/edit');
-    $this->assertContains('<vue-editor id="option[text]"', $response);
+    $this->assertContains('<vue-editor id="m_option_text_"', $response);
     $_GET = [];
 
     $_POST = ['id'=>'post_1_0', 'type'=>'paragraph'];

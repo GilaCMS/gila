@@ -45,7 +45,7 @@ $cid = $contentType.'_'.$id.'_';
       <button v-if="pos>0" class='btn-arrows-v' @click='block_pos("<?=$cid?>"+pos, pos-1)'>
         <i class='fa fa-arrows-v'></i>
       </button>
-      <div class="block-div">
+      <div class="block-div" @mouseover="blocks_preview.src='blocks/display?t=<?=$contentType?>&id=<?=$id?>#w'+pos">
         <div v-html="blockIcon(w._type)" class="first-div"></div>
         <div :class="blockTitleClass(w)"> {{blockTitle(w)}}</div>
         <button class='btn-edit' @click='block_edit("<?=$cid?>"+pos ,w._type)'>

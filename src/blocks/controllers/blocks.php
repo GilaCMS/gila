@@ -155,7 +155,7 @@ class blocks extends Controller
     View::renderFile('blocks-display-head.php', 'blocks');
     echo '<body><article style="transform: scale(0.8);transform-origin: 50% 0%;" id="'.$content.'">';
     Event::fire('body');
-    View::blocks($blocks);
+    View::blocks($blocks, true);
     echo '</article></body>';
     Event::fire('foot');
   }
