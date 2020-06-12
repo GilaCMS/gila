@@ -14,6 +14,10 @@ View::scriptAsync('core/admin/vue-editor.js');
 View::scriptAsync('lib/CodeMirror/codemirror.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
 View::cssAsync('lib/CodeMirror/codemirror.css');
+// DEPRECATED the below
+View::script('lib/jquery/jquery-3.3.1.min.js');
+View::script('lib/select2/select2.min.js');
+View::css('lib/select2/select2.min.css');
 ?>
 <style>.CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}</style>
 <?=View::scriptAsync("lib/tinymce/tinymce.min.js")?>
