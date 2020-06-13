@@ -16,22 +16,21 @@ Gila::$amenu = [
     ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin editor'],
     ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin editor'],
     ['Media','admin/media','icon'=>'image','access'=>'admin editor'],
-    ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
   ]],
-  ['Posts','admin/content/user-post','icon'=>'pencil','access'=>'writer'],
   'admin'=>['Administration','#','icon'=>'wrench','access'=>'admin editor','children'=>[
     ['Users','admin/users','icon'=>'users','access'=>'admin admin_user admin_userrole admin_permissions'],
     ['Main Menu','admin/menu','icon'=>'bars','access'=>'admin editor'],
     ['Widgets','admin/content/widget','icon'=>'th-large','access'=>'admin editor'],
     ['Packages','admin/packages','icon'=>'dropbox','access'=>'admin'],
     ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
-    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin']
+    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
+    ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
   ]],
+  ['Posts','admin/content/user-post','icon'=>'pencil','access'=>'writer'],
 ];
 
 if(FS_ACCESS) {
-  Gila::amenu_child('content', ['Logs','admin/fm?f=log','icon'=>'folder','access'=>'admin']);
-  Gila::amenu_child('admin', ['PHPinfo','admin/phpinfo','icon'=>'info-circle','access'=>'admin']);
+  Gila::amenu_child('admin', ['Logs','admin/fm?f=log','icon'=>'folder','access'=>'admin']);
 }
 
 Gila::widgets([
