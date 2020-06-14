@@ -229,7 +229,7 @@ class cm extends Controller
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
     $pnk = new gTable($this->table, $this->permissions);
 
-    if(isset($_GET['id']) && $_GET['id']!='' && $pnk->can('update')) {
+    if(isset($_GET['id']) && $_GET['id']>0 && $pnk->can('update')) {
       $id = $_GET['id'];
     } else if($pnk->can('create')) {
       $insert_fields = [];
@@ -254,7 +254,7 @@ class cm extends Controller
 
     foreach($ids as $id) {
       $data = $_POST;
-      if(isset($_GET['id'])) {
+      if(isset($_GET['id']) && $_GET['id']>0) {
         $pnk->event('update', $data);
       } else {
         $pnk->event('create', $data);
@@ -348,11 +348,13 @@ class cm extends Controller
     $t = htmlentities($this->table);
     $pnk = new gTable($t, $this->permissions);
     if(!$pnk->can('update')) return;
+    $callback = Router::param("callback") ?? $t.'_action';
 
     $fields = $pnk->fields('edit');
     $id = Router::get("id",2);
     $id = (int)$id;
-    echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"><div>';
+    echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
+    echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button><div>';
     echo gForm::hiddenInput();
     if($id) {
       $w = ['id'=>$id];

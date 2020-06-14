@@ -52,7 +52,7 @@ class blocks extends Controller
       $widget_data = $_POST['option'] ?? [];
 
       foreach($widget_data as $key=>$value) {
-        $allowed = $fields[$key]['allow-tags'] ?? false;
+        $allowed = $fields[$key]['allow_tags'] ?? false;
         if($allowed==false) {
           if(!json_decode($widget_data[$key])) {
             $widget_data[$key] = strip_tags($widget_data[$key]);
@@ -155,7 +155,7 @@ class blocks extends Controller
     View::renderFile('blocks-display-head.php', 'blocks');
     echo '<body><article style="transform: scale(0.8);transform-origin: 50% 0%;" id="'.$content.'">';
     Event::fire('body');
-    View::blocks($blocks);
+    View::blocks($blocks, true);
     echo '</article></body>';
     Event::fire('foot');
   }

@@ -1,6 +1,6 @@
 <?php
 
-class gTable
+class Table
 {
   private $table;
   private $permissions;
@@ -22,7 +22,7 @@ class gTable
     }
     $this->loadSchema($content);
 
-    if($patch = @Gila::$contentField[$this->table['name']]) { // DEPRECIATED since 1.8.0
+    if($patch = @Gila::$contentField[$this->table['name']]) { // DEPRECATED since 1.8.0
       $this->table['fields'] = array_merge($this->table['fields'],$patch);
     }
     if(isset(Gila::$contentInit[$this->table['name']])) {
@@ -42,10 +42,10 @@ class gTable
       } else $field['title'] = __($key);
     }
     if(isset($this->table['children'])) foreach ($this->table['children'] as $key => &$child) {
-      $child_table = new gTable($key,$permissions);
+      $child_table = new Table($key,$permissions);
       $child['table'] = $child_table->getTable();
     }
-    $this->table['title'] = __($this->table['title']);
+    $this->table['title'] = __($this->table['title']??$this->table['name']);
 
     if(!isset($this->table['permissions'])) $this->table['permissions'] = [];
     $p = &$this->table['permissions'];
@@ -77,7 +77,7 @@ class gTable
 
     if($user_id = $this->table['filter_owner']??null) {
       @$this->table['filters'][$user_id] = Session::userId();
-      foreach(['search-boxes','csv','list','edit','create'] as $key) {
+      foreach(['search_boxes','csv','list','edit','create'] as $key) {
         if(isset($this->table[$key])) {
           $this->table[$key] = array_diff($this->table[$key], [$user_id]);
         }
@@ -226,13 +226,16 @@ class gTable
   function set(&$fields = null) {
     $set = [];
     if($fields===null) $fields=$_POST;
-    foreach(@$this->table['filters'] as $k=>$f) $fields[$k]=$f;
+    foreach(@$this->table['filters'] as $k=>$f) if(isset($fields[$k])) {
+      // should check if $fields[$k] validates the filter restrictions
+      $fields[$k]=$f;
+    }
     $this->event('change', $fields);
 
     foreach($fields as $key=>$value) {
       if(array_key_exists($key, $this->table['fields'])) {
         if ($this->fieldAttr($key, 'qcolumn')) continue;
-        if ($allowed = $this->fieldAttr($key, 'allow-tags')) {
+        if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
           if($allowed!==true) {
             $value = strip_tags($value, $allowed);
           }
@@ -300,17 +303,17 @@ class gTable
   }
 
   function getMT($key) {
-    $vt = $this->table['fields'][$key]["metatype"];
-    if(isset($this->table[$key]['meta-table'])) {
-      $mt = $this->table[$key]['meta-table'];
-    } else if(isset($this->table['meta-table'])) {
-      $mt = $this->table['meta-table'];
+    $vt = $this->table['fields'][$key]["meta_key"]??$this->table['fields'][$key]["metatype"];
+    if(isset($this->table['fields'][$key]['meta_table'])) {
+      $mt = $this->table['fields'][$key]['meta_table'];
+    } else if(isset($this->table['meta_table'])) {
+      $mt = $this->table['meta_table'];
     } else {
-      // DEPRECIATED remove 'mt' attribute at v2.x
+      // DEPRECATED remove 'mt','metatype' attributes at v2.x
       $mt = $this->table['fields'][$key]["mt"];
       $tmp = $mt[2]; $mt[2] = $vt[0]; $mt[3] = $tmp;
     }
-    $vt = isset($vt[1])? $vt[1]: $vt;
+    $vt = is_array($vt)? $vt[1]: $vt;
     return [$mt, $vt];
   }
 
@@ -336,6 +339,7 @@ class gTable
             if($subkey === 'end') $filters[] = "$key like '%$subvalue'";
             if($subkey === 'has') $filters[] = "$key like '%$subvalue%'";
             if($subkey === 'in') $filters[] = "$key IN($subvalue)";
+            if($subkey === 'inset') $filters[] = "FIND_IN_SET($subvalue, $key)>0";
           }
         } else {
           $value = $this->db->res($value);
@@ -419,9 +423,9 @@ class gTable
 
   function getMeta($id, $type = null)
   {
-    if(!isset($this->table['meta-table'])) return null;
+    if(!isset($this->table['meta_table'])) return null;
     $db = Gila::slaveDB();
-    $m = $this->table['meta-table'];
+    $m = $this->table['meta_table'];
     if($type!==null) {
       return $db->getList("SELECT {$m[3]} FROM {$m[0]}
         WHERE {$m[1]}=? AND $m[2]=?;", [$id, $type]);
@@ -485,3 +489,5 @@ class gTable
   }
 
 }
+
+class_alias('Table', 'gTable');

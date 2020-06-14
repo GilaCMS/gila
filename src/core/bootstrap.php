@@ -27,8 +27,10 @@ spl_autoload_register(function ($class) {
     'Event'=> 'src/core/classes/Event.php',
     'FileManager'=> 'src/core/classes/FileManager.php',
     'Gila'=> 'src/core/classes/Gila.php',
-    'gForm'=> 'src/core/classes/gForm.php',
-    'gTable'=> 'src/core/classes/gTable.php',
+    'gForm'=> 'src/core/classes/Form.php',
+    'gTable'=> 'src/core/classes/Table.php',
+    'Form'=> 'src/core/classes/Form.php',
+    'Table'=> 'src/core/classes/Table.php',
     'Image'=> 'src/core/classes/Image.php',
     'Logger'=> 'src/core/classes/Logger.php',
     'Menu'=> 'src/core/classes/Menu.php',
@@ -38,6 +40,8 @@ spl_autoload_register(function ($class) {
     'Slugify'=> 'src/core/classes/Slugify.php',
     'Theme'=> 'src/core/classes/Theme.php',
     'View'=> 'src/core/classes/View.php',
+    'gpost'=> 'src/core/classes/HttpPost.php',
+    'HttpPost'=> 'src/core/classes/HttpPost.php',
   ];
 
   if(isset($classMap[$class])) {

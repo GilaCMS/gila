@@ -18,7 +18,7 @@ class View
 
   static function set($param, $value)
   {
-    global $g,$c; // DEPRECIATED since 1.13.0
+    global $g,$c; // DEPRECATED since 1.13.0
     self::$part[$param]=$value;
     @$g->$param = $value; 
     @$c->$param = $value;
@@ -271,7 +271,7 @@ class View
     if(file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file),true);
     } else {
-      $menu_data = core\models\Menu::defaultData();
+      $menu_data = Menu::defaultData();
     }
     include self::getViewFile($tpl);
   }
@@ -338,7 +338,7 @@ class View
     @include $widget_file;
   }
 
-  static function widget_body ($type, $widget_data=null, $widget_file=null) // DEPRECIATED
+  static function widget_body ($type, $widget_data=null, $widget_file=null) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     self::widgetBody($type, $widget_data, $widget_file);
@@ -358,12 +358,11 @@ class View
     @include $block_file;
   }
 
-  static function blocks (&$blocks) {
-    foreach($blocks as $b) {
+  static function blocks (&$blocks, $anchors=false) {
+    foreach($blocks as $key=>$b) {
       if(!is_object($b)) $b = (object)$b;
-      //echo '<div class="block '.$b->_type.'">';
+      if($anchors) echo "<span id='w$key'></span>";
       View::widgetBody($b->_type, $b);
-      //echo '</div>'; 
     }
   }
 
@@ -394,7 +393,7 @@ class View
     Event::fire($area);
   }
 
-  static function widget_area ($area, $div=true, $type=null, $widget_file=null) // DEPRECIATED
+  static function widget_area ($area, $div=true, $type=null, $widget_file=null) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     self::widgetArea($area, $div, $type, $widget_file);
@@ -497,29 +496,29 @@ class View
     return [$file.'?'.$stack[0], $stack[1]];
   }
 
-  static function thumb_stack ($src_array, $file, $max=180) // DEPRECIATED
+  static function thumb_stack ($src_array, $file, $max=180) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     self::thumbStack($src_array, $file, $max);
   }
 
-  static function thumb_xs ($src,$id=null) // DEPRECIATED
+  static function thumb_xs ($src,$id=null) // DEPRECATED
   {
     return View::thumb($src,'xs/', 80);
   }
-  static function thumb_sm ($src,$id=null) // DEPRECIATED
+  static function thumb_sm ($src,$id=null) // DEPRECATED
   {
     return View::thumb($src,'sm/', 200);
   }
-  static function thumb_md ($src,$id=null) // DEPRECIATED
+  static function thumb_md ($src,$id=null) // DEPRECATED
   {
     return View::thumb($src,'md/', 400);
   }
-  static function thumb_lg ($src,$id=null) // DEPRECIATED
+  static function thumb_lg ($src,$id=null) // DEPRECATED
   {
     return self::thumb($src,'lg/', 800);
   }
-  static function thumb_xl ($src,$id=null) // DEPRECIATED
+  static function thumb_xl ($src,$id=null) // DEPRECATED
   {
     return View::thumb($src,'xl/', 1200);
   }
@@ -546,7 +545,7 @@ class View
       $options[] = explode('.', $base)[0];
     }
 
-    return array_unique($options);//;
+    return array_unique($options);
   }
 
   /**
@@ -563,7 +562,7 @@ class View
     return $r;
   }
 
-  static function thumb_srcset ($src, $sizes = [1200,320]) // DEPRECIATED
+  static function thumb_srcset ($src, $sizes = [1200,320]) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     return self::thumbSrcset($src, $sizes);

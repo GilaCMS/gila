@@ -1,6 +1,6 @@
 <?php
 
-class gForm
+class Form
 {
   static private $html;
   static private $input_type;
@@ -54,6 +54,7 @@ class gForm
   {
     self::initInputTypes();
     $type = @$op['input-type']?:@$op['type'];
+    $type = @$op['input_type']?:$type;
     $html = '<div class="gm-12 row type-'.$type.'">';
     $label = ucwords(str_replace(['-','_'],' ',$key));
     $label = isset($op['label'])?$op['label']:$label;
@@ -69,14 +70,20 @@ class gForm
     if($type) {
       if(isset(self::$input_type[$type])) {
         $html .= self::$input_type[$type]($name,$op,$ov);
-      } else if(in_array($type,['hidden','date','time','color','password','email'])) {
-      /* OTHER TYPES */
-        $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'">';
+      } else if(in_array($type,['hidden','date','datetime-local','time','color','password','email'])) {
+        if($type=='datetime-local' && $ov) {
+          $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
+        }
+        $req = $op['required']? ' required':'';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
       } else {
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'">';
+        $req = $op['required']? ' required':'';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
       }
     } else {
-      $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'">';
+      $req = $op['required']? ' required':'';
+      $value = !empty($ov)? 'value="'.htmlspecialchars($ov).'"': '';
+      $html .= '<input class="g-input" name="'.$name.'" '.$value.$req.'>';
     }
 
     return $html . '</div>';
@@ -84,6 +91,7 @@ class gForm
 
   static function addInputType ($index, $value)
   {
+    Gila::addList($index, $value);
     if(!isset(self::$input_type)) self::initInputTypes();
     self::$input_type[$index] = $value;
   }
@@ -101,9 +109,14 @@ class gForm
         return $html . '</select>';
       },
       "meta"=> function($name,$field,$ov) {
-        if(@$field['meta-csv']==true) {
+        if(@$field['meta-csv']==true || @$field['meta_csv']==true) {
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
+        if(is_string($ov)) $ov = explode(',',$ov);
+        $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
+        return $html.= 'options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
+      },
+      "select2"=> function($name,$field,$ov) { //DEPRECATED
         if(is_string($ov)) $ov = explode(',',$ov);
         $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
         foreach($field['options'] as $value=>$name) {
@@ -112,12 +125,12 @@ class gForm
         return $html . '</select>';
       },
       "radio"=> function($name,$field,$ov) {
-        $html = '<div class="g-radio g-input">';
+        $html = '<div class="g-radio g-input" style="padding-left: 0;padding-right: 0;">';
         foreach($field['options'] as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
-          $html .= ($value==$ov?' checked':'').' id="'.$id.'" '.$checked[0].'>';
-          $html .= '<label for="'.$id.'">'.$display.'</label>';
+          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'" '.$checked[0].'>';
+          $html .= '<label for="'.$id.$value.'">'.$display.'</label>';
         }
         return $html . '</div>';
       },
@@ -162,13 +175,18 @@ class gForm
         </span></span></div>';
       },
       "textarea"=> function($name,$field,$ov) {
-        return '<textarea class="codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+      },
+      "codemirror"=> function($name,$field,$ov) {
+        return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "tinymce"=> function($name,$field,$ov) {
-        return '<textarea class="tinymce" id="'.$name.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        $id = 'm_'.str_replace(['[',']'], '_', $name);  
+        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "paragraph"=> function($name,$field,$ov) {
-        return '<vue-editor id="'.$name.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
+        $id = 'm_'.str_replace(['[',']'], '_', $name);  
+        return '<vue-editor id="'.$id.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
       },
       "language"=> function($name,$field,$ov) {
         $html = '<select class="g-input" name="'.$name.'">';
@@ -179,13 +197,13 @@ class gForm
         return $html . '</select>';
       },
       "checkbox"=> function($name,$field,$ov) {
-        return self::$input_type['switcher']($name,$field,$ov);
+        return self::$input_type['switch']($name,$field,$ov);
       },
-      "switcher"=> function($name,$field,$ov) {
+      "switch"=> function($name,$field,$ov) {
         if($ov==1) $checked=["","checked"]; else $checked=["checked",""];
-        return '<div class="g-switcher ">
-        <input name="'.$name.'" type="radio" value="0" id="chsw_'.$name.'" '.$checked[0].'>
-        <input name="'.$name.'" type="radio" value="1" id="chsw_'.$name.'" '.$checked[1].'>
+        return '<div class="g-switch">
+        <input name="'.$name.'" type="radio" value="0" id="chsw_'.$name.'0" '.$checked[0].'>
+        <input name="'.$name.'" type="radio" value="1" id="chsw_'.$name.'1" '.$checked[1].'>
         <div class="g-slider"></div>
         </div>
         ';
@@ -206,6 +224,10 @@ class gForm
         return $html . '</select>';
       }
     ];
+
+    foreach(Gila::getList('input-type') as $type=>$value) {
+      self::$input_type[$type] = $value;
+    }
     /* CONTENT
     if($type=='content') {
       $table = $op['table'];
@@ -214,3 +236,5 @@ class gForm
     }*/
   }
 }
+
+class_alias('Form', 'gForm');

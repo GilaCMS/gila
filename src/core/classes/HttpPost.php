@@ -1,6 +1,6 @@
 <?php
 
-class gpost
+class HttpPost
 {
   private static $prefix = [];
   private $body;
@@ -60,6 +60,7 @@ class gpost
   }
 }
 
+class_alias('HttpPost', 'gpost');
 /* Examples
-new gpost('https://hooks.slack.com/services/xxxxxxxx',['text'=>"Slack bot msg"]);
+new HttpPost('https://hooks.slack.com/services/xxxxxxxx',['text'=>"Slack bot msg"]);
  */

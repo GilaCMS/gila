@@ -9,6 +9,8 @@ class Router
   static $controllers = [];
   static $on_controller = [];
   static $actions = [];
+  static $before = [];
+  static $onaction = [];
   static $method;
   static $controller;
   static $action;
@@ -40,7 +42,7 @@ class Router
       return;
     }
 
-    if($ctrlClass==='blog') $ctrlClass='Blog'; // DEPRECIATED
+    if($ctrlClass==='blog') $ctrlClass='Blog'; // DEPRECATED
     $c = new $ctrlClass();
 
     // find function to run after controller construction
@@ -113,7 +115,7 @@ class Router
   */
   static function get ($string, $fn = null)
   {
-    if(is_int($fn) || $fn===null) { // DEPRECIATED
+    if(is_int($fn) || $fn===null) { // DEPRECATED
       return self::param($string, $fn);      
     } else {
       self::add($string, $fn);
@@ -167,7 +169,7 @@ class Router
   static function controller ($name = null, $path = null)
   {
     if($name===null) {
-      return @self::getController(); // DEPRECIATED
+      return @self::getController(); // DEPRECATED
     }
     self::$controllers[$name] = $path;
   }
@@ -175,10 +177,24 @@ class Router
   /**
   * Returns the name of the action
   */
-  static function action ($set = null)
+  static function action ($c=null, $action=null, $fn=null)
   {
-    if($set) self::$action = $set; // DEPRECIATED 
-    return @self::getAction(self::getController(), self::$args);
+    if($fn!==null) {
+      Router::$actions[$c][$action] = $fn;
+      return;
+    }
+    if($action===null && $set!==null) self::$action = $set; // DEPRECATED
+    return @self::getAction(self::getController(), self::$args); // DEPRECATED
+  }
+
+  static function before($c, $action, $fn)
+  {
+    self::$before[$c][$action][] = $fn;
+  }
+
+  static function onAction($c, $action, $fn)
+  {
+    self::$onaction[$c][$action][] = $fn;
   }
 
   static function setUrl($_url) {
@@ -192,7 +208,7 @@ class Router
     }
   }
 
-  static function cache ($time = 3600, $args = null, $uniques = null) {
+  static function cache ($time = 3600, $args = null, $uniques = null) { // DEPRECATED
     if ($_SERVER['REQUEST_METHOD']!=="GET") {
       // only for get requests
       return;

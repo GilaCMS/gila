@@ -10,7 +10,6 @@
   <?=View::css('core/gila.min.css')?>
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
-  <?=View::script("lib/jquery/jquery-3.3.1.min.js")?>
   <?=View::script("core/gila.min.js")?>
   <style>#topbar .g-navbar>li>a{color:#222}#topbar .g-navbar>li>a:hover{color:inherit;background:inherit}</style>
 </head>

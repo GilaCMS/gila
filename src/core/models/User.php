@@ -126,7 +126,7 @@ class user
       if(Session::key('permissions')) return Session::key('permissions');
     }
 
-    $response = User::metaList( $id, 'privilege'); // DEPRECIATED since 1.9.0
+    $response = User::metaList( $id, 'privilege'); // DEPRECATED since 1.9.0
     $roles = User::metaList($id, 'role');
     $rp = Gila::config('permissions');
     if($id != 0) {

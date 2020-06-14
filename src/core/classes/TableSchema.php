@@ -5,7 +5,7 @@ class TableSchema
 
   function __construct ($name)
   {
-    $gtable = new gTable($name);
+    $gtable = new Table($name);
     $table = $gtable->getTable();
     self::update($table);
   }
@@ -38,8 +38,8 @@ class TableSchema
     }
 
     // CREATE META TABLE
-    if(isset($table['meta-table'])) {
-      $m = $table['meta-table'];
+    if(isset($table['meta_table'])) {
+      $m = $table['meta_table'];
       $q = "CREATE TABLE IF NOT EXISTS `{$m[0]}`(id INT NOT NULL AUTO_INCREMENT,
         `{$m[1]}` int(11) DEFAULT NULL,
         `{$m[2]}` varchar(80) DEFAULT NULL,

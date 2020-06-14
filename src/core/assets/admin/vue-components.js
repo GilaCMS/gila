@@ -55,8 +55,8 @@ Vue.component('input-list', {
 
 Vue.component('input-media', {
   template: '<div class="pointer:hover shadow:hover;" \
-  style="width:160px;height:160px;background:var(--main-input-color);max-width:100%;\
-  justify-content: center; align-content: center; display: grid; position:relative;min-width:50px;" \
+  style="background:var(--main-input-color);width:160px;height:160px;max-width:100%;max-height:100%;display: grid;\
+  justify-content:center; align-content:center; position:relative;min-width:50px;" \
   :onclick="\'open_media_gallery(\\\'#imd\'+idByName()+\'\\\')\'">\
 <img v-if="!value" src="assets/core/camera.svg" style="width:50px;margin:auto">\
 <img v-if="value" :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%;margin:auto">\
@@ -91,13 +91,54 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
 
 Vue.component('input-gallery', {
   template: '<div style="display: grid; gap: 1em; width: 100%;\
-  grid-template-columns: repeat(auto-fit,minmax(80px,160px));">\
+  grid-template-columns: repeat(auto-fit,minmax(50px,120px));\
+  grid-template-rows: repeat(auto-fit, 120px);">\
   <input-media v-for="(src,i) in sources" :value="src" :name="name+\'[\'+i+\']\'">\
 </div>',
   props: ['name','value'],
   data: function() {
     return {
       sources: JSON.parse(this.value)
+    }
+  }
+})
+
+
+Vue.component('g-multiselect', {
+  template: '<div :id="\'gm-\'+name+value" style="padding:var(--main-padding);min-width:180px;cursor:pointer;\
+  background:var(--main-input-color);position:relative" @click="dropdown=!dropdown">\
+  <span v-if="values.length==0" style="opacity:0.5">{{placetext}}</span>\
+  <span v-for="(value,i) in values" @click="toggle(value)"\
+  style="color:white;background:var(--main-primary-color);margin-right:4px;padding:4px;border-radius:4px">\
+  &times; {{opList[value]}}</span>&nbsp;\
+  <div v-if="dropdown" style="position:absolute; min-width:160px; padding:0;\
+  margin:12px -12px;border:1px solid lightgrey; z-index:1;\
+  background:white;">\
+  <div style="float:right;font-size:150%;margin:0 4px" @click.stop="dropdown=false">&times;</div>\
+  <div v-for="(op,i) in opList" style="padding:6px" @click="toggle(i)" v-html="optionDisplay(op,i)"></div>\
+  </div>\
+  <input v-for="(v,i) in values" type="hidden" :value="v" :name="name+\'[\'+i+\']\'">\
+  <input v-if="values.length==0" type="hidden" value="" :name="name">\
+</div>',
+  props: ['name','value','options','placeholder'],
+  data: function() {
+    return {
+      values: JSON.parse(this.value)??[],
+      placetext: this.placeholder??'...',
+      opList: JSON.parse(this.options),
+      dropdown: false
+    }
+  },
+  methods: {
+    toggle: function(i) {
+      var index = this.values.indexOf(i);
+      if (index === -1) this.values.push(i); else this.values.splice(index, 1);
+      this.dropdown=false
+    },
+    optionDisplay: function(op,i) {
+      var index = this.values.indexOf(i);
+      if (index !== -1) op = op+" &#10003;";
+      return op
     }
   }
 })

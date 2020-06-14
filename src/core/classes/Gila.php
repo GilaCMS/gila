@@ -4,10 +4,6 @@
 
 class Gila
 {
-  static $action;
-  static $before;
-  static $onaction;
-  static $route;
   static $widget;
   static $package;
   static $amenu;
@@ -32,7 +28,7 @@ class Gila
   * Gila::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
   * @endcode
   */
-  static function controller($c, $path, $name=null) // DEPRECIATED 
+  static function controller($c, $path, $name=null) // DEPRECATED 
   {
     Router::controller($c, $path);
   }
@@ -45,7 +41,7 @@ class Gila
   * Gila::route('some.txt', function(){ echo 'Some text.'; });
   * @endcode
   */
-  static function route($r, $fn) // DEPRECIATED
+  static function route($r, $fn) // DEPRECATED
   {
     Router::add($r, $fn);
   }
@@ -58,7 +54,7 @@ class Gila
   * Gila::onController('blog', function(){ BlogCtrl::ppp = 24; });
   * @endcode
   */
-  static function onController($c, $fn) // DEPRECIATED
+  static function onController($c, $fn) // DEPRECATED
   {
     Router::$on_controller[$c][] = $fn;
   }
@@ -72,9 +68,9 @@ class Gila
   * Gila::action('blog', 'topics', function(){ ... });
   * @endcode
   */
-  static function action($c, $action, $fn) // DEPRECIATED -> Router::action()
+  static function action($c, $action, $fn) // DEPRECATED -> Router::action()
   {
-    Router::$actions[$c][$action] = $fn;
+    Router::action($c, $action, $fn);
   }
 
   /**
@@ -83,14 +79,14 @@ class Gila
   * @param $action (string) The action
   * @param $fn (function) Callback
   */
-  static function before($c, $action, $fn)
+  static function before($c, $action, $fn) // DEPRECATED -> Router::before()
   {
-    self::$before[$c][$action][] = $fn;
+    Router::before($c, $action, $fn);
   }
 
-  static function onAction($c, $action, $fn)
+  static function onAction($c, $action, $fn) // DEPRECATED -> Router::onAction()
   {
-    self::$onaction[$c][$action][] = $fn;
+    Router::onAction($c, $action, $fn);
   }
 
   /**
@@ -147,11 +143,6 @@ class Gila
   */
   static function content($key, $path)
   {
-    self::table($key, $path);
-  }
-
-  static function table($key, $path)
-  {
     self::$content[$key] = $path;
   }
 
@@ -160,7 +151,7 @@ class Gila
   * @param $key (string) Name of content type
   * @param $field (string) Index of the field
   * @param $table (Assoc array) Value of the field
-  * DEPRECIATED @see Gila::contentInit()
+  * DEPRECATED @see Gila::contentInit()
   */
   static function contentField($key, $field, $table)
   {
@@ -175,11 +166,6 @@ class Gila
   * @code Gila::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
   */
   static function contentInit($key, $init)
-  {
-    self::tableInit($key, $init);
-  }
-
-  static function tableInit($key, $init)
   {
     @self::$contentInit[$key][] = $init;
     if(isset(gTable::$tableList[$key])) {
@@ -211,7 +197,7 @@ class Gila
     } else $list = $key;
     foreach ($list as $k=>$i) {
       if(is_numeric($k)) {
-        Gila::$amenu[]=$i; // DEPRECIATED
+        Gila::$amenu[]=$i; // DEPRECATED
       } else {
         Gila::$amenu[$k]=$i;
       }
@@ -238,7 +224,7 @@ class Gila
   */
   static function config($key, $value = null)
   {
-    if ($value === null) { // DEPRECIATED should use setConfig()
+    if ($value === null) { // DEPRECATED should use setConfig()
       if(isset($GLOBALS['config'][$key])) {
         return $GLOBALS['config'][$key];
       }
@@ -270,7 +256,7 @@ class Gila
   }
 
   /**
-  * DEPRECIATED @see View::alert()
+  * DEPRECATED @see View::alert()
   */
   static function alert ($type, $msg)
   {

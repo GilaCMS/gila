@@ -10,11 +10,13 @@ Vue.component('g-table', {
           <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
           </select>\
         </div>\
-        <div v-if="table[\'search-box\']" style="position:relative;display:inline-block" class="search-box">\
-          <input v-model="search" class=" g-input" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
+        <div v-if="table[\'search-box\'] || table[\'search_box\']" style="position:relative;display:inline-block" class="search-box">\
+          <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
+          @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+          @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
           <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
         </div>\
-        <div v-if="table[\'search-boxes\']" v-for="sb in table[\'search-boxes\']" style="position:relative;display:inline-block" class="search-box">\
+        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" style="position:relative;display:inline-block" class="search-box">\
           <label>&nbsp;{{field_label(sb)}}</label>\
           <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
             <option value="" selected>-</option>\
@@ -267,8 +269,10 @@ Vue.component('g-table', {
       }
 
       // Display type
-      if (typeof field['display-type'] != "undefined") {
-        displayType = field['display-type'];
+      if (typeof field.display_type != "undefined") {
+        displayType = field.display_type;
+      } else if (typeof field.input_type != "undefined") {
+        displayType = field.input_type;
       } else if (typeof field['input-type'] != "undefined") {
         displayType = field['input-type'];
       } else {
@@ -370,19 +374,23 @@ function transformClassComponents() {
   mce_editor=[]
   tinymce.remove() //remove all tinymce editors
   for(i=0;i<textareas.length;i++) {
-    mce_editor[i] = textareas[i].name;
-    g_tinymce_options.selector = '[name='+textareas[i].name+']'
-    tinymce.init(g_tinymce_options)
+    mce_editor[i] = {id: textareas[i].id, name: textareas[i].name};
+    mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));
+    mce_editor[i].settings.selector = '[name='+textareas[i].name+']'
+    mce_editor[i].settings.file_picker_callback = function(cb, value, meta) {
+      input_filename = cb;
+      open_gallery_post();
+    }
+    tinymce.init(mce_editor[i].settings)
   }
 
-  if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
+  if(typeof $ != 'undefined' && typeof $.fn.select2 != 'undefined') $(".select2").select2();
 }
 
 function readFromClassComponents() {
   let values = new Array()
   for (x in mce_editor)  {
-    console.log(mce_editor[x])
-    values[mce_editor[x]] = tinymce.get(mce_editor[x]).getContent()
+    values[mce_editor[x].name] = tinymce.get(mce_editor[x].id).getContent()
   }
   textareas=g('.codemirror-js').all
   for (x in cmirror) {
@@ -420,38 +428,23 @@ gtableCommand['edit_page'] = {
 gtableCommand['edit_popup'] = {
   fa: "pencil",
   fn: function(table,irow) {
-  href='cm/edit_form/'+table.name+'?id='+irow;
+  href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
-      g.dialog({class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+      g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
       })
-      textareas=g('.codemirror-js').all
-      for(i=0;i<textareas.length;i++) {
-        cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
-      }
-    })
-  }
-}
-
-gtableCommand['edit_overlay'] = {
-  fa: "pencil",
-  fn: function(table,irow) {
-  href='cm/edit_form/'+table.name+'?id='+irow;
-    g.get(href,function(data){
-      g.dialog({class:'lightscreen large overlay',body:data,type:'modal',buttons:'popup_update'})
-      app = new Vue({
-        el: '#'+table.name+'-edit-item-form'
-      })
-      textareas=g('.codemirror-js').all
-      for(i=0;i<textareas.length;i++) {
-        cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
-      }
+      transformClassComponents()
     })
   }
 }
 
 g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
+  form = g('#gila-popup form').all[0]
+  form.getElementsByTagName("BUTTON")[0].click()
+}};
+
+function g_form_popup_update() {
   form = g('#gila-popup form').all[0]
   data = new FormData(form);
   t = form.getAttribute('data-table')
@@ -467,7 +460,7 @@ g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
   }
   g.ajax({method:'post',url:url,data:data,fn:function(data) {
     data = JSON.parse(data)
-    if(id=='new') {
+    if(id=='new' || id==0) {
       _this.data.rows.unshift(data.rows[0])
     } else {
       _this.update_row(data.rows[0])
@@ -476,7 +469,7 @@ g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
   }})
 
   g('#gila-popup').parent().remove();
-}};
+} 
 
 
 gtableCommand['clone'] = {
@@ -525,7 +518,7 @@ gtableTool['add'] = {
     })
   }
 }
-gtableTool['addrow'] = {
+gtableTool['add_row'] = {
   fa: "plus", label: _e("New"),
   fn: function(table) {
     let _this
@@ -539,6 +532,19 @@ gtableTool['addrow'] = {
     })
   }
 }
+gtableTool['add_popup'] = {
+  fa: "plus", label: _e("New"),
+  fn: function(table) {
+    href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
+    g.get(href,function(data){
+      g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+      app = new Vue({
+        el: '#'+table.name+'-edit-item-form'
+      })
+      transformClassComponents()
+    })
+  }
+}
 gtableTool['csv'] = {
   fa: "arrow-down", label: "Csv",
   fn: function(table) {
@@ -546,7 +552,7 @@ gtableTool['csv'] = {
   }
 }
 gtableTool['log_selected'] = {
-  fa: "arrow-down", label: "Csv",
+  fa: "arrow-down", label: "Log",
   fn: function(table) {
     console.log(table.selected_rows);
   }
@@ -563,6 +569,7 @@ gtableTool['uploadcsv'] = {
     g.dialog({title:_e("Upload")+" CSV", body:bodyMsg, buttons:'',type:'modal', class:'large', id:'select_row_dialog'})
   }
 }
+gtableTool['upload_csv'] = gtableTool['uploadcsv']
 gtableTool['addfrom'] = {
   fa: "plus", label: _e("New from"),
   fn: function(table) {
@@ -626,14 +633,10 @@ g.dialog.buttons.select_row_source = {
     g('#select_row_dialog').parent().remove();
   }
 }
-function open_gallery() {
-  g.post("admin/media","g_response=content"+'&formToken='+csrfToken,function(gal){
-    g.dialog({title:"Media gallery",body:gal,buttons:'select_path',type:'modal',class:'large',id:'media_dialog'})
-  })
-}
+
 function open_gallery_post() {
   g.post("admin/media","g_response=content"+'&formToken='+csrfToken,function(gal){ 
-    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog'})
+    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog','z-index':99999})
   })
 }
 function open_select_row(row,table,name) {

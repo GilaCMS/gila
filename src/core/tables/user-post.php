@@ -11,7 +11,7 @@ return [
   ],
   'filter_owner'=> 'user_id',
   'events'=>[
-    ['change', function(&$row) {
+    ['create', function(&$row) {
       $row['user_id']=Session::userId();
     }]
   ]

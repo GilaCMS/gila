@@ -4,9 +4,9 @@ include(__DIR__.'/includes.php');
 include(__DIR__.'/../../src/core/classes/Controller.php');
 include(__DIR__.'/../../src/core/classes/Package.php');
 include(__DIR__.'/../../src/core/models/User.php');
-include(__DIR__.'/../../src/core/classes/gTable.php');
+include(__DIR__.'/../../src/core/classes/Table.php');
 include(__DIR__.'/../../src/core/classes/TableSchema.php');
-include(__DIR__.'/../../src/core/classes/gForm.php');
+include(__DIR__.'/../../src/core/classes/Form.php');
 include(__DIR__.'/../../src/core/classes/Sendmail.php');
 use PHPUnit\Framework\TestCase;
 $GLOBALS['config']['db']['name'] = 'g_db';
@@ -99,8 +99,8 @@ class RequestsTest extends TestCase
       'paragraph'=>'core/widgets/paragraph',
       'image'=>'core/widgets/image']);
     Package::update('blocks');
-    Gila::table('post','core/tables/post.php');
-    $gtable = new gTable('post');
+    Gila::content('post','core/tables/post.php');
+    $gtable = new Table('post');
     $gtable->update();
     Session::user(self::$userId, 'Test', 'test@mail.com');
     $_POST = ['id'=>'post_1'];
@@ -110,7 +110,7 @@ class RequestsTest extends TestCase
 
     $_GET = ['id'=>'new', 'type'=>'paragraph'];
     $response = $this->request('blocks/edit');
-    $this->assertContains('<vue-editor id="option[text]"', $response);
+    $this->assertContains('<vue-editor id="m_option_text_"', $response);
     $_GET = [];
 
     $_POST = ['id'=>'post_1_0', 'type'=>'paragraph'];

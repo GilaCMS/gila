@@ -47,7 +47,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 <?php } ?>
 
   <br>
-  <?php echo gForm::input('gila_user_register',["type"=>"switcher"], Gila::config('user_register'),__("New users can register")) ?>
+  <?php echo gForm::input('gila_user_register',["type"=>"switch"], Gila::config('user_register'),__("New users can register")) ?>
 
   <br>
   <?php echo gForm::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Gila::config('user_activation'), __("New Users activation")) ?>
@@ -99,10 +99,10 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <h2><?=__("Advanced Settings")?></h2><hr>
 
   <br>
-  <?php echo gForm::input('gila_use_cdn', ["type"=>"switcher"], Gila::config('use_cdn'), __("Use CDN")) ?>
+  <?php echo gForm::input('gila_use_cdn', ["type"=>"switch"], Gila::config('use_cdn'), __("Use CDN")) ?>
 
   <br>
-  <?php echo gForm::input('gila_rewrite', ["type"=>"switcher"], Gila::config('rewrite'), __("Pretty Urls")) ?>
+  <?php echo gForm::input('gila_rewrite', ["type"=>"switch"], Gila::config('rewrite'), __("Pretty Urls")) ?>
 
   <br><div class="gm-12">
   <label class="gm-4"><?=__("Default Controller")?></label>
@@ -120,10 +120,10 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <?php echo gForm::input('gila_env', ["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]], Gila::config('env'), __("Environment")) ?>
 
   <br>
-  <?php echo gForm::input('gila_check4updates', ["type"=>"switcher"], Gila::config('check4updates'), __("Check For Updates")) ?>
+  <?php echo gForm::input('gila_check4updates', ["type"=>"switch"], Gila::config('check4updates'), __("Check For Updates")) ?>
 
   <br>
-  <?php echo gForm::input('gila_webp', ["type"=>"switcher"], Gila::config('use_webp'), __("Use WEBP")) ?>
+  <?php echo gForm::input('gila_webp', ["type"=>"switch"], Gila::config('use_webp'), __("Use WEBP")) ?>
 
   <br>
   <div class="gm-12">

@@ -1,20 +1,17 @@
 <?=View::script('core/gila.min.js')?>
-<?=View::script('lib/jquery/jquery-3.3.1.min.js')?>
 <?=View::script('lib/CodeMirror/codemirror.js')?>
 <?=View::script('lib/CodeMirror/javascript.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
 <?=View::script('blocks/vue-draggable.min.js');?>
 
 <?=View::script("lib/tinymce/tinymce.min.js")?>
-<?=View::script('core/admin/listcomponent.js');?>
+<?=View::script('core/admin/vue-components.js');?>
 <?=View::script('core/admin/vue-editor.js');?>
 <?=View::script('core/admin/media.js')?>
 <?=View::script('core/lang/content/'.Gila::config('language').'.js')?>
-<?=View::script('lib/select2/select2.min.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
 <?=View::css('blocks/blocks.css')?>
-<?=View::cssAsync('lib/select2/select2.min.css')?>
 <?=View::cssAsync('core/admin/vue-editor.css')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 
@@ -48,7 +45,7 @@ $cid = $contentType.'_'.$id.'_';
       <button v-if="pos>0" class='btn-arrows-v' @click='block_pos("<?=$cid?>"+pos, pos-1)'>
         <i class='fa fa-arrows-v'></i>
       </button>
-      <div class="block-div">
+      <div class="block-div" @mouseover="blocks_preview.src='blocks/display?t=<?=$contentType?>&id=<?=$id?>#w'+pos">
         <div v-html="blockIcon(w._type)" class="first-div"></div>
         <div :class="blockTitleClass(w)"> {{blockTitle(w)}}</div>
         <button class='btn-edit' @click='block_edit("<?=$cid?>"+pos ,w._type)'>

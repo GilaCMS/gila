@@ -23,8 +23,8 @@ return [
         'update'=>['admin'],
         'delete'=>['admin']
     ],
-    'search-box'=> true,
-    'search-boxes'=> ['area','widget'],
+    'search_box'=> true,
+    'search_boxes'=> ['area','widget'],
     'fields'=> [
         'id'=> ['title'=>'ID', 'edit'=>false],
         'widget'=> ['title'=>'Type', 'type'=>'select', 'options'=>$widgets, 'create'=>true],
@@ -37,7 +37,7 @@ return [
         ],
         'data'=> [
           'title'=>'Data', 'list'=>false, 'edit'=>false,
-          'type'=>'text','allow-tags'=>true
+          'type'=>'text','allow_tags'=>true
         ],
     ],
     'events'=>[
