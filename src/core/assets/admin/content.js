@@ -28,9 +28,14 @@ Vue.component('g-table', {
           </div>\
         </div>\
       </div>\
-      <span v-if="table.tools">\
-        <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
-      </span>\
+      <div>\
+        <span v-if="table.bulk_actions && selected_rows.length>0">\
+          <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
+        </span>\
+        <span v-if="table.tools">\
+          <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
+        </span>\
+      </div>\
     </div>\
     <div v-if="edititem" class="edititem">\
       <span v-if="edititem>0 || edititem==\'new\'" class="btn" @click="edititem=0"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> \
@@ -53,7 +58,7 @@ Vue.component('g-table', {
     <thead>\
       <tr>\
         <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\
-          <i :class="checkboxClassBulk()"aria-hidden="true"></i>\
+          <i :class="checkboxClassBulk()" aria-hidden="true"></i>\
         </th>\
         <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)"\
           v-if="showField(ifield)">\
@@ -171,6 +176,7 @@ Vue.component('g-table', {
       gtableCommand[com].fn(this,irow)
     },
     runtool: function(tool,e) {
+      if(tool==0) return;
       this.query=this.filters;
       for(fkey in this.filter) {
         if(this.filter[fkey]!=='') this.query += '&'+fkey+'='+this.filter[fkey]
@@ -294,7 +300,12 @@ Vue.component('g-table', {
 
 
       if (typeof field.options != "undefined") if(cv!==null) {
-        if (typeof field.options[cv] != "undefined") return field.options[cv]
+        if (typeof field.options[cv] != "undefined") {
+          if(field.option_colors && field.option_colors[cv]) {
+            return '<span class="g-badge" style="background:'+field.option_colors[cv]+'">'+field.options[cv]+'</span>';
+          }
+          return field.options[cv]
+        }
         let resp = ''
         let csv = cv.split(',')
         for(i=0;i<csv.length;i++)  if(typeof field.options[csv[i]] != "undefined") {
