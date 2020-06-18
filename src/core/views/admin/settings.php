@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 View::script('core/admin/media.js');
 View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
+<style>.g-switch{z-index:1}#settings-form>div>div{width:33%;display:inline-block}</style>
 
 <div class="gm-12">
 <?php View::alerts(); ?>
@@ -79,16 +80,16 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 
   <br><div class="gm-12">
     <label class="gm-4"><?=__("Admin Logo")?></label>
-    <div class="gm-4" style="display:inline-flex"><span class="g-group" style="display:inline-block">
-      <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
+    <div class="gm-4" style="display:inline-flex"><span class="g-group">
+      <span class="btn g-group-item" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
       <span class="g-group-item"><input class="fullwidth" value="<?=Gila::config('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
     </span></div>
   </div>
 
   <br><div class="gm-12">
     <label class="gm-4"><?=__("Favicon")?></label>
-    <div class="gm-4" style="display:inline-flex"><span class="g-group" style="display:inline-block">
-      <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery('#m_favicon')"><i class="fa fa-image"></i></span>
+    <div class="gm-4" style="display:inline-flex"><span class="g-group">
+      <span class="btn g-group-item" onclick="open_media_gallery('#m_favicon')"><i class="fa fa-image"></i></span>
       <span class="g-group-item"><input class="fullwidth" value="<?=Gila::config('favicon')?>" id="m_favicon" name="gila_favicon"></span>
     </span></div>
   </div>

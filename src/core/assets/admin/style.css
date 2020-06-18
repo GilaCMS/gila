@@ -13,7 +13,7 @@ body { overflow-x: hidden; }
     margin-left: -200px;
     overflow-y: auto;
     overflow-y: hidden;
-    background: #000;
+    background: var(--main-dark-color);
     transition: all 0.5s ease;
     top:0;
     opacity:0;
@@ -22,7 +22,7 @@ body { overflow-x: hidden; }
 #sidebar-wrapper a{ font-weight: 700; background: inherit;}
 
 #sidebar-wrapper .g-nav li{ color:#fff;}
-#sidebar-wrapper .g-nav li a{ color:#ccc; }
+#sidebar-wrapper .g-nav li a{ color:#e8e8e8; }
 #sidebar-wrapper .g-nav li a i{ margin: 4px; font-size:120%;}
 #sidebar-wrapper .g-nav li ul li a{ color:#444; }
 #sidebar-wrapper .g-nav li ul{ box-shadow:1px 1px 4px black;border:0 }
@@ -38,6 +38,7 @@ body { overflow-x: hidden; }
 #main-wrapper {
     position: absolute;
     left:0;
+    max-width: 100%;
 }
 
 @media(min-width:800px) {

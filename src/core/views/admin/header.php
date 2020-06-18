@@ -33,8 +33,10 @@
 
     <!-- Page Content -->
     <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:white;">
-      <a href="#menu-toggle" class="btn btn-white g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
-      <a href="<?=Gila::base_url()?>" class="btn btn-white g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
+      &nbsp;<a href="#menu-toggle" class="g-icon-btn g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
+      <?php if('admin'!=Gila::config('default-controller')){?>
+      &nbsp;<a href="<?=Gila::base_url()?>" class="g-icon-btn g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
+      <?php } ?>
 
       <span class="g-group-item fullwidth text-align-right" id="topbar">
         <ul class="g-nav g-navbar" style="background:unset">
@@ -43,11 +45,12 @@
             echo "<li>{$b['icon']}<span class='badge' data-count='{$b['count']()}'></span></li>";
           }
           ?>
-        <li style="color:unset">
+        <li style="color:unset" class="dropdown">
           <a href="<?=Gila::url('#')?>">
-            <i class="fa fa-user"></i> <?=Session::key('user_name')?> <i class="fa fa-angle-down"></i>
+            <i class="fa fa-user"></i> <?=Session::key('user_name')?>
           </a>
-          <ul class="text-align-left" style="right:0">
+          <ul class="text-align-left dropdown-menu" style="right:0">
+            <div class="g-screen" onclick="g('.dropdown').removeClass('open')"></div>
             <li><a href="admin/profile"><?=__("My Profile")?></a></li>
             <li><a href="admin/logout"><?=__("Logout")?></a></li>
           </ul>

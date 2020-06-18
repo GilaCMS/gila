@@ -354,7 +354,9 @@ class cm extends Controller
     $id = Router::get("id",2);
     $id = (int)$id;
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
-    echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button><div>';
+    echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button>';
+    echo '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
+    echo 'justify-content: space-around;">';
     echo gForm::hiddenInput();
     if($id) {
       $w = ['id'=>$id];

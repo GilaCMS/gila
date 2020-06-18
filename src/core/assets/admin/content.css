@@ -79,7 +79,12 @@
   padding: 10px 8px;
   font-size: 13px;
   border-collapse: collapse;
-  border-top: 1px solid #ccc;
+}
+.g-table table td {
+  border-top: 1px solid #ddd;
+}
+.g-table table th {
+  border-bottom: 1px solid #bbb;
 }
 
 .g-dialog {
@@ -194,11 +199,11 @@
   margin: 4px;
   cursor: pointer;
   border-width: 0;
-  opacity: 0.1;
+  opacity: 0.2;
 }
 
 .g-table table tbody tr .g-com:hover {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 .g-tool-active {
@@ -226,8 +231,8 @@
 
 .g-sorti {
   opacity: 0.2;
-  float: right;
-  display: table-cell;
+  position: absolute;
+  right: 0;
 }
 
 th:hover .g-sorti, .sort-desc, .sort-asc {
@@ -348,17 +353,14 @@ td[col] .g-input {
   margin-top: 2em;
 }
 
-.g-form {
-  margin: 1em 0;
-}
-
 .g-table table th, .g-table table td {
   font-size: 0.8em;
-  padding: 4px;
 }
 
 .g-table table th {
-  padding: 10px 4px;
+  position:sticky;
+  top:0;
+  z-index:1;
 }
 
 .g-table .g-table {
@@ -378,26 +380,24 @@ td[col] .g-input {
   margin: 0.8em 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .g-table .com-btn {
   cursor: pointer;
-  opacity: 0.6;
+  margin-right:6px;
+  opacity: 0.8;
 }
 
 .g-table .com-btn:hover {
-  opacity: 1;
+  opacity: 0.8;
+}
+@media only screen and (min-width:1000px){
+  .g-table .com-btn {
+    opacity: 0.2;
+  }  
 }
 
-.td-com {
-  display: flex;
-}
-
-.td-com>* {
-  margin-right: 5px;
-  padding: 0.5em;
-  font-size: 1em;
-}
 
 .pagination>li {
   padding: 0.6em;

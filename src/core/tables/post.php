@@ -67,6 +67,13 @@ return [
       'meta_key'=>'tag',
       "title"=>"Tags"
     ],
+    'publish'=> [
+      'title'=>'Public',
+      'style'=>'width:8%',
+      'type'=>'checkbox',
+      'edit'=>true,
+      'qtype'=>'INT(1) DEFAULT NULL'
+    ],
     'post'=>[
       'list'=>false,
       'title'=>'Post',
@@ -75,13 +82,6 @@ return [
       'input_type'=>'tinymce',
       'allow_tags'=>true,
       'qtype'=>'TEXT'
-    ],
-    'publish'=> [
-      'title'=>'Public',
-      'style'=>'width:8%',
-      'type'=>'checkbox',
-      'edit'=>true,
-      'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'updated'=> [
       'title'=>'Updated',
