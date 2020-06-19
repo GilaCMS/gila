@@ -333,7 +333,10 @@ class cm extends Controller
     header('Content-Type: application/json');
     $gtable = new gTable($this->table, $this->permissions);
     if($gtable->can('delete')) {
-      $gtable->deleteRow($_POST['id']);
+      $ids = explode(',', $_POST['id']);
+      foreach($ids as $id) {
+        $gtable->deleteRow($id);
+      }
       $response = '{"id":"'.$_POST['id'].'"}';
     } else {
       http_response_code(403);

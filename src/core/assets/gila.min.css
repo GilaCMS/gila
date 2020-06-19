@@ -682,6 +682,7 @@ input:focus + .helptext{
   padding:8px;
   border-collapse:collapse;
   background:white;
+  overflow-wrap: break-word;
 }
 .g-table td{
   border-top:1px solid var(--main-border-color);

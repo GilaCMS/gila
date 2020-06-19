@@ -153,10 +153,10 @@ Vue.component('g-table', {
         }
       })
     },
-    select_row: function(irow) {
-      var index = this.selected_rows.indexOf(irow)
+    select_row: function(rowId) {
+      var index = this.selected_rows.indexOf(rowId)
       if(index === -1) {
-        this.selected_rows.push(irow);
+        this.selected_rows.push(rowId);
       } else {
         this.selected_rows.splice(index, 1);
       }
@@ -549,7 +549,6 @@ gtableCommand['delete'] = {
       fn: function(data) {
         for(i=0;i<_this.data.rows.length;i++) if(_this.data.rows[i][0] == _id) {
           _this.data.rows.splice(i,1)
-          //_this.$forceUpdate()
         }
       }
     });
@@ -604,6 +603,22 @@ gtableTool['log_selected'] = {
   fa: "arrow-down", label: "Log",
   fn: function(table) {
     console.log(table.selected_rows);
+  }
+}
+gtableTool['delete'] = {
+  fa: "arrow-down", label: _e("Delete"),
+  fn: function(table) {
+    console.log();
+    let _this = table
+    if(confirm(_e("Delete registries?"))) g.ajax({
+      url: "cm/delete?t="+_this.name,
+      data: {id:table.selected_rows.join()},
+      method: 'post',
+      fn: function(data) {
+        _this.selected_rows = []
+        _this.load_page()
+      }
+    });
   }
 }
 gtableTool['uploadcsv'] = {
