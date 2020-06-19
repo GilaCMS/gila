@@ -31,6 +31,7 @@
 .tr_checkbox, .bulk_checkbox {
  margin: 0 6px;
  max-width: 10px;
+ font-size: 140%;
 }
 
 .g-table table .hightlight {
@@ -63,7 +64,6 @@
 .g-table h1 {
   display: inline-block;
   margin: 14px 0;
-  float: left;
 }
 
 .g-table .detail-row h1 {

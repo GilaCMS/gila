@@ -71,7 +71,7 @@ Vue.component('g-table', {
     </thead>\
     <tbody>\
       <tr v-for="(row,irow) in data.rows" :row-id="irow">\
-        <td v-if="table.bulk_actions" @click="select_row(row[0])">\
+        <td v-if="table.bulk_actions" @click="select_row(row[0], irow, $event)">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
         <td v-for="(field,ifield) in data.fields" :col="ifield" :value="row[ifield]" \
@@ -122,7 +122,8 @@ Vue.component('g-table', {
     bulk_selected: 0,
     updateRows: [],
     inlineEdit: false,
-    intervalUpdate: null
+    intervalUpdate: null,
+    irowSelected: null
   }},
   updated: function() {
     if(this.edititem==0) return;
@@ -153,17 +154,37 @@ Vue.component('g-table', {
         }
       })
     },
-    select_row: function(rowId) {
+    select_row: function(rowId, irow=null, event=null) {
       var index = this.selected_rows.indexOf(rowId)
       if(index === -1) {
         this.selected_rows.push(rowId);
       } else {
         this.selected_rows.splice(index, 1);
       }
+
+      if (event && event.shiftKey && this.irowSelected) {
+        step = Math.sign(this.irowSelected - irow)
+        for(i=irow+step; i!=this.irowSelected+step; i+=step) {
+          row_id = this.data.rows[i][0]
+          console.log(row_id)
+          index2 = this.selected_rows.indexOf(row_id)
+          if(index === -1) {
+            if(index2===-1) {
+              this.selected_rows.push(row_id);
+            }
+          } else {
+            if(index2>-1) {
+              this.selected_rows.splice(index2, 1);
+            }
+          }
+        }
+      }
+
       this.bulk_selected = -1;
       if(this.selected_rows.length==0) {
         this.bulk_selected = 0;
       }
+      this.irowSelected = irow
     },
     toggleSelectAll: function() {
       this.selected_rows = [];
