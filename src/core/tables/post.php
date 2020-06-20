@@ -5,7 +5,7 @@ return [
   'title'=> 'Posts',
   'pagination'=> 15,
   'id'=>'id',
-  'tools'=>['add','csv','log_selected'],
+  'tools'=>['add','csv'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
   'commands'=> ['edit','delete'],
   'lang'=>'core/lang/admin/',

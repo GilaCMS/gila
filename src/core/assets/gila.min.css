@@ -128,7 +128,7 @@ script{display:none!important}
   line-height:20px;
   cursor:pointer;
   transition:0.3s;
-  opacity:.8;
+  opacity:.5;
 }
 
 .trans-cubic-bezier{
@@ -274,7 +274,7 @@ input:focus + .helptext{
   outline:none;
 }
 .g-form label,.g-label{
-  padding:var(--main-padding);
+  padding:0.3em 0;
   font:14px Arial;
   font-weight:bold;
 }

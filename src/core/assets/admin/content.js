@@ -5,18 +5,18 @@ Vue.component('g-table', {
     <div v-if="edititem==0" class="g-table-head">\
       <div>\
       <div class="g-table-title" v-html="table.title"></div>\
-        <div v-if="table.group" style="position:relative;display:inline-block" class="search-box">\
-          <select v-model="group" class="g-input" @change="runsearch()">\
-          <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
-          </select>\
-        </div>\
-        <div v-if="table[\'search-box\'] || table[\'search_box\']" style="position:relative;display:inline-block" class="search-box">\
+        <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
           <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
           @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
           @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
           <svg height="24" width="24" style="position:absolute;right:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
         </div>\
-        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" style="position:relative;display:inline-block" class="search-box">\
+        <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
+          <select v-model="group" class="g-input" @change="runsearch()">\
+          <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
+          </select>\
+        </div>\
+        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" class="g-searchbox">\
           <label>&nbsp;{{field_label(sb)}}</label>\
           <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
             <option value="" selected>-</option>\

@@ -55,7 +55,7 @@ class Form
     self::initInputTypes();
     $type = @$op['input-type']?:@$op['type'];
     $type = @$op['input_type']?:$type;
-    $html = '<div class="g-label type-'.$type.'">';
+    $html = '<div class="type-'.$type.'">';
     $label = ucwords(str_replace(['-','_'],' ',$key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
@@ -63,7 +63,7 @@ class Form
     if($label=='') $label='&nbsp;';
     if(@$op['required'] === true) $label .= ' *';
 
-    $html .= '<div>'.$label;
+    $html .= '<div class="g-label">'.$label;
     if(isset($op['helptext'])) $html .= '<br><span style="font-weight:400;font-size:90%">'.$op['helptext'].'</span>';
     $html .= '</div>';
 

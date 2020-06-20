@@ -46,7 +46,7 @@
           }
           ?>
         <li style="color:unset" class="dropdown">
-          <a href="<?=Gila::url('#')?>">
+          <a href="javascript:void(0)">
             <i class="fa fa-user"></i> <?=Session::key('user_name')?>
           </a>
           <ul class="text-align-left dropdown-menu" style="right:0">
