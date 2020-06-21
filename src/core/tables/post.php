@@ -5,7 +5,7 @@ return [
   'title'=> 'Posts',
   'pagination'=> 15,
   'id'=>'id',
-  'tools'=>['add','csv','log_selected'],
+  'tools'=>['add','csv'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
   'commands'=> ['edit','delete'],
   'lang'=>'core/lang/admin/',
@@ -67,6 +67,13 @@ return [
       'meta_key'=>'tag',
       "title"=>"Tags"
     ],
+    'publish'=> [
+      'title'=>'Public',
+      'style'=>'width:8%',
+      'type'=>'checkbox',
+      'edit'=>true,
+      'qtype'=>'INT(1) DEFAULT NULL'
+    ],
     'post'=>[
       'list'=>false,
       'title'=>'Post',
@@ -75,13 +82,6 @@ return [
       'input_type'=>'tinymce',
       'allow_tags'=>true,
       'qtype'=>'TEXT'
-    ],
-    'publish'=> [
-      'title'=>'Public',
-      'style'=>'width:8%',
-      'type'=>'checkbox',
-      'edit'=>true,
-      'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'updated'=> [
       'title'=>'Updated',

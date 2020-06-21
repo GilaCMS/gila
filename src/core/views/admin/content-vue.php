@@ -11,7 +11,7 @@ View::scriptAsync('core/lang/content/'.Gila::config('language').'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
 View::scriptAsync('core/admin/vue-editor.js');
-View::scriptAsync('lib/CodeMirror/codemirror.js');
+View::script('lib/CodeMirror/codemirror.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
 View::cssAsync('lib/CodeMirror/codemirror.css');
 // DEPRECATED the below

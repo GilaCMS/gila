@@ -5,18 +5,18 @@ Vue.component('g-table', {
     <div v-if="edititem==0" class="g-table-head">\
       <div>\
       <div class="g-table-title" v-html="table.title"></div>\
-        <div v-if="table.group" style="position:relative;display:inline-block" class="search-box">\
+        <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
+          <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
+          @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+          @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
+          <svg height="24" width="24" style="position:absolute;right:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+        </div>\
+        <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
           <select v-model="group" class="g-input" @change="runsearch()">\
           <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
           </select>\
         </div>\
-        <div v-if="table[\'search-box\'] || table[\'search_box\']" style="position:relative;display:inline-block" class="search-box">\
-          <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-          @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
-          @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
-          <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
-        </div>\
-        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" style="position:relative;display:inline-block" class="search-box">\
+        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" class="g-searchbox">\
           <label>&nbsp;{{field_label(sb)}}</label>\
           <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
             <option value="" selected>-</option>\
@@ -28,9 +28,14 @@ Vue.component('g-table', {
           </div>\
         </div>\
       </div>\
-      <span v-if="table.tools" style="float:right">\
-        <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px" v-html="tool_label(tool)"></span>\
-      </span>\
+      <div>\
+        <span v-if="table.bulk_actions && selected_rows.length>0">\
+          <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
+        </span>\
+        <span v-if="table.tools">\
+          <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
+        </span>\
+      </div>\
     </div>\
     <div v-if="edititem" class="edititem">\
       <span v-if="edititem>0 || edititem==\'new\'" class="btn" @click="edititem=0"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> \
@@ -49,13 +54,14 @@ Vue.component('g-table', {
      :gfilters="\'&amp;\'+child.parent_id+\'=\'+edititem">\
     </g-table>\
 \
-    <table v-if="edititem==0 || child==1" class="" cur-page="1"  group-by="">\
+    <table v-if="edititem==0 || child==1" class="" cur-page="1"  group-by="" style="position:relative">\
     <thead>\
       <tr>\
         <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\
-          <i :class="checkboxClassBulk()"aria-hidden="true"></i>\
+          <i :class="checkboxClassBulk()" aria-hidden="true"></i>\
         </th>\
-        <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)" v-if="showField(ifield)">\
+        <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)"\
+          v-if="showField(ifield)">\
           <i :class="sortiClass(ifield)" :col="ifield""></i>\
           <span v-html="field_label(ifield)"></span>\
         </th>\
@@ -64,15 +70,16 @@ Vue.component('g-table', {
       </tr>\
     </thead>\
     <tbody>\
-      <tr v-for="(row,irow) in data.rows" :row-id="row.id">\
-        <td v-if="table.bulk_actions" @click="select_row(row[0])">\
+      <tr v-for="(row,irow) in data.rows" :row-id="irow">\
+        <td v-if="table.bulk_actions" @click="select_row(row[0], irow, $event)">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
-        <td v-for="(field,ifield) in data.fields" :col="ifield" :value="row[ifield]" :class="field" v-if="showField(field)">\
-          <span v-html="display_cell(irow,ifield)" @click="clicked_cell(irow,ifield)"></span>\
+        <td v-for="(field,ifield) in data.fields" :col="ifield" :value="row[ifield]" \
+        :class="field" v-if="showField(field)" v-html="display_cell(irow,ifield)"\
+        @keydown="inlineDataUpdate(irow)">\
         </td>\
         <td v-if="table.commands" class="td-com">\
-          <span v-for="(com,icom) in table.commands" @click="command(com,row[0])" class="g-btn btn-white com-btn" v-html="command_label(com)"></span>\
+          <span v-for="(com,icom) in table.commands" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
         </td>\
       </tr>\
       <tr v-if="data.rows.length==0">\
@@ -112,7 +119,11 @@ Vue.component('g-table', {
     page:1,
     type: this.gtype,
     child: this.gchild,
-    bulk_selected: 0
+    bulk_selected: 0,
+    updateRows: [],
+    inlineEdit: false,
+    intervalUpdate: null,
+    irowSelected: null
   }},
   updated: function() {
     if(this.edititem==0) return;
@@ -143,17 +154,37 @@ Vue.component('g-table', {
         }
       })
     },
-    select_row: function(irow) {
-      var index = this.selected_rows.indexOf(irow)
+    select_row: function(rowId, irow=null, event=null) {
+      var index = this.selected_rows.indexOf(rowId)
       if(index === -1) {
-        this.selected_rows.push(irow);
+        this.selected_rows.push(rowId);
       } else {
         this.selected_rows.splice(index, 1);
       }
+
+      if (event && event.shiftKey && this.irowSelected) {
+        step = Math.sign(this.irowSelected - irow)
+        for(i=irow+step; i!=this.irowSelected+step; i+=step) {
+          row_id = this.data.rows[i][0]
+          console.log(row_id)
+          index2 = this.selected_rows.indexOf(row_id)
+          if(index === -1) {
+            if(index2===-1) {
+              this.selected_rows.push(row_id);
+            }
+          } else {
+            if(index2>-1) {
+              this.selected_rows.splice(index2, 1);
+            }
+          }
+        }
+      }
+
       this.bulk_selected = -1;
       if(this.selected_rows.length==0) {
         this.bulk_selected = 0;
       }
+      this.irowSelected = irow
     },
     toggleSelectAll: function() {
       this.selected_rows = [];
@@ -170,6 +201,7 @@ Vue.component('g-table', {
       gtableCommand[com].fn(this,irow)
     },
     runtool: function(tool,e) {
+      if(tool==0) return;
       this.query=this.filters;
       for(fkey in this.filter) {
         if(this.filter[fkey]!=='') this.query += '&'+fkey+'='+this.filter[fkey]
@@ -291,9 +323,18 @@ Vue.component('g-table', {
         return '';
       }
 
+      if(displayType=='number') {
+        return '<div style="text-align:right">'+dv+'</div>';
+      }
+
 
       if (typeof field.options != "undefined") if(cv!==null) {
-        if (typeof field.options[cv] != "undefined") return field.options[cv]
+        if (typeof field.options[cv] != "undefined") {
+          if(field.option_colors && field.option_colors[cv]) {
+            return '<span class="g-badge" style="background:'+field.option_colors[cv]+'">'+field.options[cv]+'</span>';
+          }
+          return field.options[cv]
+        }
         let resp = ''
         let csv = cv.split(',')
         for(i=0;i<csv.length;i++)  if(typeof field.options[csv[i]] != "undefined") {
@@ -302,7 +343,10 @@ Vue.component('g-table', {
         return resp
       }
 
-      return dv
+      if(field.inline_edit) {
+        return '<div contenteditable="true" data-field="'+fkey+'">'+dv+'</div>';
+      }
+      return dv;
     },
     showField: function(field) {
       if(typeof this.table.fields[field].show=='undefined') return true
@@ -344,6 +388,10 @@ Vue.component('g-table', {
       if(this.bulk_selected>0) cl='fa-check-square-o';
       if(this.bulk_selected<0) cl='fa-minus-square-o';
       return 'fa bulk_checkbox '+cl;
+    },
+    inlineDataUpdate: function(irow){
+      if(this.inlineEdit==false) return;
+      this.updateRows.push(irow);
     }
   },
   mounted: function() {
@@ -358,6 +406,28 @@ Vue.component('g-table', {
     }
     if(this.data.rows.length==0) this.load_page({page:1})
     rootVueGTables.push(this)
+
+    this.intervalUpdate = setInterval(function(_this){
+      for(i=0; i<_this.updateRows.length; i++) {
+        irow = _this.updateRows[i]
+        row = _this.data.rows[irow];
+        id = row[0];
+        data = {}
+        tr = g('tr[row-id="'+irow+'"] [contenteditable="true"]').all
+        for(j=0; j<tr.length; j++) {
+          field = tr[j].getAttribute('data-field')
+          value = tr[j].innerHTML
+          data[field] = value
+        }
+
+        url = 'cm/update_rows/'+_this.name+'?id='+id
+        g.ajax({method:'post',url:url,data:data,fn:function(data) {
+          console.log("Saved #"+id);
+        }})
+
+      }
+      _this.updateRows = [];
+    }, 3000, this);
   }
 })
 
@@ -500,7 +570,6 @@ gtableCommand['delete'] = {
       fn: function(data) {
         for(i=0;i<_this.data.rows.length;i++) if(_this.data.rows[i][0] == _id) {
           _this.data.rows.splice(i,1)
-          //_this.$forceUpdate()
         }
       }
     });
@@ -555,6 +624,22 @@ gtableTool['log_selected'] = {
   fa: "arrow-down", label: "Log",
   fn: function(table) {
     console.log(table.selected_rows);
+  }
+}
+gtableTool['delete'] = {
+  fa: "arrow-down", label: _e("Delete"),
+  fn: function(table) {
+    console.log();
+    let _this = table
+    if(confirm(_e("Delete registries?"))) g.ajax({
+      url: "cm/delete?t="+_this.name,
+      data: {id:table.selected_rows.join()},
+      method: 'post',
+      fn: function(data) {
+        _this.selected_rows = []
+        _this.load_page()
+      }
+    });
   }
 }
 gtableTool['uploadcsv'] = {

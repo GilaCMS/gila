@@ -333,7 +333,10 @@ class cm extends Controller
     header('Content-Type: application/json');
     $gtable = new gTable($this->table, $this->permissions);
     if($gtable->can('delete')) {
-      $gtable->deleteRow($_POST['id']);
+      $ids = explode(',', $_POST['id']);
+      foreach($ids as $id) {
+        $gtable->deleteRow($id);
+      }
       $response = '{"id":"'.$_POST['id'].'"}';
     } else {
       http_response_code(403);
@@ -354,7 +357,9 @@ class cm extends Controller
     $id = Router::get("id",2);
     $id = (int)$id;
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
-    echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button><div>';
+    echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button>';
+    echo '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
+    echo 'justify-content: space-around;gap:0.8em">';
     echo gForm::hiddenInput();
     if($id) {
       $w = ['id'=>$id];

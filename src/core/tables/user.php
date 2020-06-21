@@ -44,6 +44,7 @@ return [
     'userrole'=> [
       'title'=>'Roles',
       'type'=>'meta',
+      'input_type'=>'select2',
       'edit'=>true,
       'mt'=>['usermeta', 'user_id', 'value'],
       'metatype'=>['vartype', 'role'],

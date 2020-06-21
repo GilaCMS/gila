@@ -55,7 +55,7 @@ class Form
     self::initInputTypes();
     $type = @$op['input-type']?:@$op['type'];
     $type = @$op['input_type']?:$type;
-    $html = '<div class="gm-12 row type-'.$type.'">';
+    $html = '<div class="type-'.$type.'">';
     $label = ucwords(str_replace(['-','_'],' ',$key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
@@ -63,9 +63,9 @@ class Form
     if($label=='') $label='&nbsp;';
     if(@$op['required'] === true) $label .= ' *';
 
-    $html .= '<label class="gm-4">'.$label;
+    $html .= '<div class="g-label">'.$label;
     if(isset($op['helptext'])) $html .= '<br><span style="font-weight:400;font-size:90%">'.$op['helptext'].'</span>';
-    $html .= '</label>';
+    $html .= '</div>';
 
     if($type) {
       if(isset(self::$input_type[$type])) {
@@ -163,14 +163,14 @@ class Form
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
-          <span class="btn g-group-item" style="width:28px" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
+          <span class="btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
           <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
       "key"=> function($name,$field,$ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);  
         return '<div class="g-group">
-          <span class="btn g-group-item" style="width:28px" onclick="open_select_from_table(\'#'.$id.'\',\''.$field['table'].'\',\''.$field['title'].'\')"><i class="fa fa-key"></i></span>
+          <span class="btn g-group-item" onclick="open_select_from_table(\'#'.$id.'\',\''.$field['table'].'\',\''.$field['title'].'\')"><i class="fa fa-key"></i></span>
           <span class="g-group-item"><input class="fullwidth" value="'.($ov??0).'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
