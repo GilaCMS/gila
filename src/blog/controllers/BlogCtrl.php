@@ -31,7 +31,7 @@ class BlogCtrl extends Controller
   */
   function indexAction()
   {
-    if ($id=Router::param('page_id',1)) {
+    if ($id=Router::path()) {
       $this->postShow($id);
       return;
     }

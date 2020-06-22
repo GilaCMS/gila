@@ -109,7 +109,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <label class="gm-4"><?=__("Default Controller")?></label>
   <select name="gila_dc" value="<?=Gila::config('default-controller')?>" class="gm-4">
   <?php
-  foreach (Router::$controllers as $k=>$value) if($value[0] != '.') if(!in_array($k,['cm','login','webhook','fm','lzld'])){
+  foreach (Router::$controllers as $k=>$value) if($value[0] != '.') if(!in_array($k,['cm','login','webhook','fm','lzld','blocks'])){
     $sel = (Gila::config('default-controller')==$k?'selected':'');
     echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
   }

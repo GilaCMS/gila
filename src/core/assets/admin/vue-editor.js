@@ -71,7 +71,7 @@ Vue.component('vue-editor', {
     </div>\
   </div>',
 
-  data: function(){ return mydata },
+  data: function(){ mydata.content=this.text; return mydata; },
   props: ['buttons','text','name'],
   created: function () {
     if(typeof this.buttons!='undefined') this.buttons_i=this.buttons.split(' ')

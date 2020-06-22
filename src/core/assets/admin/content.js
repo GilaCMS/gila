@@ -61,7 +61,7 @@ Vue.component('g-table', {
           <i :class="checkboxClassBulk()" aria-hidden="true"></i>\
         </th>\
         <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)"\
-          v-if="showField(ifield)">\
+          v-if="showField(ifield)" :style="thStyle(ifield)">\
           <i :class="sortiClass(ifield)" :col="ifield""></i>\
           <span v-html="field_label(ifield)"></span>\
         </th>\
@@ -74,8 +74,8 @@ Vue.component('g-table', {
         <td v-if="table.bulk_actions" @click="select_row(row[0], irow, $event)">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
-        <td v-for="(field,ifield) in data.fields" :col="ifield" :value="row[ifield]" \
-        :class="field" v-if="showField(field)" v-html="display_cell(irow,ifield)"\
+        <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
+        :col="ifield" :value="row[ifield]" :class="field" v-html="display_cell(irow,ifield)"\
         @keydown="inlineDataUpdate(irow)">\
         </td>\
         <td v-if="table.commands" class="td-com">\
@@ -377,6 +377,15 @@ Vue.component('g-table', {
       if(this.order[key]=='ASC') cl='fa-chevron-up'
       if(this.order[key]=='DESC') cl='fa-chevron-down'
       return 'g-sorti fa '+cl;
+    },
+    thStyle: function(key){
+      style = '';
+      if(this.table.fields[key].width) {
+        style = 'width:'+this.table.fields[key].width+';'
+      } else {
+        style = 'width:min-content;'
+      }
+      return style;
     },
     checkboxClass: function(irow){
       cl = ''

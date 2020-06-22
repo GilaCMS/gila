@@ -158,7 +158,11 @@ class Router
     return @strip_tags($r);
   }
 
-  static function url ()
+  static function url () // DEPRACATED
+  {
+    return self::path();
+  }
+  static function path ()
   {
     return self::$url;
   }

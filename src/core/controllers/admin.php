@@ -2,6 +2,7 @@
 
 use core\models\Widget;
 use core\models\User;
+use core\models\Page;
 
 class admin extends Controller
 {
@@ -17,9 +18,9 @@ class admin extends Controller
   */
   function indexAction ()
   {
-    $id = Router::get('page_id',1) ?? null;
+    $id = Router::path() ?? null;
 
-    if ($id && ($r = core\models\Page::getByIdSlug($id)) && ($r['publish']==1)
+    if ($id && ($r = Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
       View::set('title',$r['title']);
       View::set('text',$r['page']);
