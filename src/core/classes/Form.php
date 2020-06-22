@@ -164,7 +164,7 @@ class Form
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
           <span class="btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
-          <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
+          <span class="g-group-item"><input class="g-input fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
       "key"=> function($name,$field,$ov) {
