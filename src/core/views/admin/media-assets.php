@@ -49,8 +49,8 @@ if($path=='src') {
 <i class='fa fa-arrow-left'></i></a>
 <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
 <span class="g-group-item" style="position:relative;">
-  <input class='g-input input-filter fullwidth' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
-  <i class="fa fa-filter" style="position:absolute;margin:12px;right:0;top:0"></i>
+  <input class='g-input input-filter' oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
+  <i class="fa fa-filter" style="position:absolute;margin:0.3em;right:0.3em;top:0"></i>
 </span>
 
   <?php

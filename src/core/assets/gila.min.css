@@ -240,7 +240,7 @@ button:hover{
 .btn-sm{padding:4px}
 
 
-.g-form select, .g-input{
+.g-form input, .g-form select, .g-input{
   padding:var(--main-padding);
   border:0;
   border-bottom:2px solid var(--main-input-color);
@@ -249,7 +249,7 @@ button:hover{
   margin:4px 0;
   background:var(--main-input-color);
 }
-.g-form select:focus, .g-input:focus{
+.g-form input:focus, .g-form select:focus, .g-input:focus{
   border-bottom:2px solid var(--main-a-color);
   transition:0.2s;
 }
@@ -294,7 +294,7 @@ input:focus + .helptext{
 .g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
 /* Toggle switch */
-.g-switch{position:relative;margin:var(--main-padding) 0}
+.g-switch{position:relative;z-index:1;margin:var(--main-padding) 0}
 .g-switch input{position:absolute;opacity:0;width: 51px;height: 26px;top:-2px;left:-2px;cursor:pointer;}
 .g-switch .g-slider{position:absolute;z-index: -100}
 .g-switch input[value="1"]:checked + .g-slider{
@@ -785,4 +785,17 @@ input:focus + .helptext{
 
 .oval {
   border-radius: 50%;
+}
+
+@keyframes move-left{
+  from{opacity:0;transform:translateX(6em)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes move-right{
+  from{transform:translateX(-6em)}
+  to{transform:translateX(0)}
+}
+@keyframes fade-in{
+  from{opacity:0}
+  to{opacity:1}
 }

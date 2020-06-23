@@ -60,4 +60,4 @@
     </div>
     <div class="md-12" id="main-wrapper">
 
-      <div class="wrapper bordered" style="background:white;margin:10px">
+      <div class="wrapper " style="">

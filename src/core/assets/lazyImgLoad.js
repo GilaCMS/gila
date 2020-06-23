@@ -28,6 +28,10 @@ function lazyImgLoad() {
 	      el.style.backgroundImage = imgs[i].getAttribute('data-image');
 	      el.removeAttribute('data-image');
 	    }
+      if (el.getAttribute('data-animation')) {
+	      el.style.animation = imgs[i].getAttribute('data-animation');
+	      el.removeAttribute('data-animation');
+	    }
       if (el.getAttribute('data-load')) {
         let xhttp = new XMLHttpRequest();
         let _el = el;

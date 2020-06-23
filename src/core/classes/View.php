@@ -359,11 +359,13 @@ class View
   }
 
   static function blocks (&$blocks, $anchors=false) {
+    $html = "";
     foreach($blocks as $key=>$b) {
       if(!is_object($b)) $b = (object)$b;
-      if($anchors) echo "<span id='w$key'></span>";
-      View::widgetBody($b->_type, $b);
+      if($anchors) $html .= "<span id='w$key'></span>";
+      $html .= View::getWidgetBody($b->_type, $b);
     }
+    return $html;
   }
 
   /**
