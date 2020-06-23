@@ -35,16 +35,16 @@ class ClassTable extends TestCase
     Gila::content('post','core/tables/post.php');
     $Table = new Table('post');
 
-    $this->assertEquals(" WHERE id>10", $Table->where(['id'=>['gt'=>10]]));
-    $this->assertEquals(" WHERE id>=10", $Table->where(['id'=>['ge'=>10]]));
-    $this->assertEquals(" WHERE id<10", $Table->where(['id'=>['lt'=>10]]));
-    $this->assertEquals(" WHERE id<=10", $Table->where(['id'=>['le'=>10]]));
-    $this->assertEquals(" WHERE id>'10'", $Table->where(['id'=>['gts'=>10]]));
-    $this->assertEquals(" WHERE id<'10'", $Table->where(['id'=>['lts'=>10]]));
-    $this->assertEquals(" WHERE title like 'a%'", $Table->where(['title'=>['begin'=>'a']]));
-    $this->assertEquals(" WHERE title like '%x'", $Table->where(['title'=>['end'=>'x']]));
-    $this->assertEquals(" WHERE title like '%s%'", $Table->where(['title'=>['has'=>'s']]));
-    $this->assertEquals(" WHERE id IN(10,11)", $Table->where(['id'=>['in'=>'10,11']]));
+    $this->assertEquals(" WHERE `id`>10", $Table->where(['id'=>['gt'=>10]]));
+    $this->assertEquals(" WHERE `id`>=10", $Table->where(['id'=>['ge'=>10]]));
+    $this->assertEquals(" WHERE `id`<10", $Table->where(['id'=>['lt'=>10]]));
+    $this->assertEquals(" WHERE `id`<=10", $Table->where(['id'=>['le'=>10]]));
+    $this->assertEquals(" WHERE `id`>'10'", $Table->where(['id'=>['gts'=>10]]));
+    $this->assertEquals(" WHERE `id`<'10'", $Table->where(['id'=>['lts'=>10]]));
+    $this->assertEquals(" WHERE `title` like 'a%'", $Table->where(['title'=>['begin'=>'a']]));
+    $this->assertEquals(" WHERE `title` like '%x'", $Table->where(['title'=>['end'=>'x']]));
+    $this->assertEquals(" WHERE `title` like '%s%'", $Table->where(['title'=>['has'=>'s']]));
+    $this->assertEquals(" WHERE `id` IN(10,11)", $Table->where(['id'=>['in'=>'10,11']]));
   }
 
   public function test_getMeta()
