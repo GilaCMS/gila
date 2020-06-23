@@ -15,7 +15,6 @@ class Gila
   static $contentInit = [];
   static $mt;
   static $base_url;
-  static $slaveDB = [];
   static $langPaths = [];
   static $langLoaded = false;
 
@@ -456,20 +455,6 @@ class Gila
 
     }
     return $path;
-  }
-
-  static function slaveDB ($add = null)
-  {
-    global $db;
-    if ($add) {
-      self::$slaveDB[] = $add;
-    } else {
-      $slaves = count(self::$slaveDB);
-      if($slaves>0) {
-        return self::$slaveDB[rand(0, $slaves-1)];
-      }
-      return $db;
-    }
   }
 
 }

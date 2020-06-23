@@ -434,15 +434,15 @@ class Table
 
   function getMeta($id, $type = null)
   {
+    global $db;
     if(!isset($this->table['meta_table'])) return null;
-    $db = Gila::slaveDB();
     $m = $this->table['meta_table'];
     if($type!==null) {
       return $db->getList("SELECT {$m[3]} FROM {$m[0]}
         WHERE {$m[1]}=? AND $m[2]=?;", [$id, $type]);
     } else {
       $list = [];
-      $gen = $db->gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
+      $gen = $db->read()->gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
       foreach($gen as $row) {
         @$list[$row[0]][] = $row[1];
       }
@@ -458,6 +458,7 @@ class Table
 
   function getRows($filters = [], $args = [])
   {
+    global $db;
     if(!$this->can('read')) {
       return [];
     }
@@ -466,8 +467,7 @@ class Table
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
-    $db = Gila::slaveDB();
-    $res = $db->getAssoc("SELECT $select
+    $res = $db->read()->getAssoc("SELECT $select
       FROM {$this->name()}$where$orderby$limit;");
     return $res;
   }
@@ -486,10 +486,10 @@ class Table
 
   function totalRows(&$filters = [])
   {
+    global $db;
     if(!$this->can('read')) return;
     $where = $this->where($filters);
-    $db = Gila::slaveDB();
-    $res = $db->value("SELECT COUNT(*) FROM {$this->name()}$where;");
+    $res = $db->read()->value("SELECT COUNT(*) FROM {$this->name()}$where;");
     return $res;
   }
 

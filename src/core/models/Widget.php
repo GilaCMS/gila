@@ -6,20 +6,20 @@ class widget
 {
   static function getById($id)
   {
-    $db = Gila::slaveDB();
+    global $db;
     $res = $db->query("SELECT * FROM widget WHERE id=?",$id);
     return mysqli_fetch_object($res);
   }
 
   static function getByWidget($w)
   {
-    $db = Gila::slaveDB();
+    global $db;
     return $db->query("SELECT * FROM widget WHERE widget=?",$w);
   }
 
   static function getActiveByArea($area)
   {
-    $db = Gila::slaveDB();
+    global $db;
     $db->connect();
     return $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos;",$area);
   }

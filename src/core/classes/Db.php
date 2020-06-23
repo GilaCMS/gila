@@ -8,6 +8,8 @@ class Db
   private $connected,$link;
   public $insert_id,$result;
   public $profiling = '';
+  public $replicas = [];
+  private Db $replica;
 
   function __construct($host = 'localhost', $user = 'root', $pass = '', $dsch = '')
   {
@@ -165,6 +167,20 @@ class Db
   {
     $res = $this->query($q,$p);
     return mysqli_fetch_row($res)[0] ?? null;
+  }
+
+  function read()
+  {
+    if (isset($this->replica)) {
+      return $this->replica;
+    }
+    $count = count($this->replicas);
+    if ($count>0) {
+      $this->replica = new Db($this->replicas[rand(0, $count-1)]);
+    } else {
+      $this->replica = &$this;
+    }
+    return $this->replica;
   }
 
 }

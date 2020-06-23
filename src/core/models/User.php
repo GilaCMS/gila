@@ -3,6 +3,7 @@ namespace core\models;
 use Gila;
 use Session;
 use Event;
+use Db;
 
 class user
 {
@@ -44,10 +45,10 @@ class user
 
   static function metaList($id, $meta, $values = null)
   {
-    $db = Gila::slaveDB();
+    global $db;
     if ($values===null) {
       $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
-      return $db->getList($ql,[$id, $meta]);
+      return $db->read()->getList($ql,[$id, $meta]);
     }
 
     if(!is_array($values)) return false;
@@ -68,35 +69,35 @@ class user
 
   static function getByMeta($key, $value)
   {
-    $db = Gila::slaveDB();
-    $res = $db->get("SELECT * FROM user WHERE id=(SELECT user_id FROM usermeta WHERE vartype=? AND value=? LIMIT 1)", [$key, $value]);
+    global $db;
+    $res = $db->read()->get("SELECT * FROM user WHERE id=(SELECT user_id FROM usermeta WHERE vartype=? AND value=? LIMIT 1)", [$key, $value]);
     if($res) return $res[0];
     return false;
   }
 
   static function getByEmail($email)
   {
-    $db = Gila::slaveDB();
-    $res = $db->get("SELECT * FROM user WHERE email=?", $email);
+    global $db;
+    $res = $db->read()->get("SELECT * FROM user WHERE email=?", $email);
     if($res) return $res[0];
     return false;
   }
 
   static function getById($id)
   {
-    $db = Gila::slaveDB();
-    $res = $db->get("SELECT * FROM user WHERE id=?", $id);
+    global $db;
+    $res = $db->read()->get("SELECT * FROM user WHERE id=?", $id);
     if($res) return $res[0];
     return false;
   }
 
   static function getByResetCode($rp)
   {
-    $db = Gila::slaveDB();
-    $user_id = $db->value("SELECT user_id FROM usermeta where vartype='reset_code' and value=?;",$rp);
+    global $db;
+    $user_id = $db->read()->value("SELECT user_id FROM usermeta where vartype='reset_code' and value=?;",$rp);
     echo $user_id;
     if(!$user_id) return false;
-    return $db->get("SELECT * FROM user where id='$user_id';")[0];
+    return $db->read()->get("SELECT * FROM user where id='$user_id';")[0];
   }
 
   static function updatePassword($id,$pass)

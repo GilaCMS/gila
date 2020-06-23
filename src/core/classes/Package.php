@@ -24,7 +24,7 @@ class Package
           echo __('_package_downloaded').'. Redirecting...';
           exit;
         } else echo '{"success":true}';
-      } else echo '{"success":true}';
+      } else echo '{"success":false}';
     }
     $html = Router::post('html');
     if($html) self::display($html);

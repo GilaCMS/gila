@@ -165,7 +165,6 @@ function addon_download(p) {
     } else {
       g.alert("<?=__('_package_not_downloaded')?>",'warning');
     }
-    this.style.color="#000";
   }
 )};
 
