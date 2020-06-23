@@ -24,10 +24,6 @@ Gila CMS
 Gila CMS is a content management system made in PHP and MySql.
 Built with MVC architecture, is very easy to develop on it any costumized solution.
 
-Security
-========
-If you discover any security related issues, please email contact@gilacms.com instead of using the issue tracker.
-
 Download
 ========
 ```

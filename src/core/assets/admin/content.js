@@ -16,7 +16,7 @@ Vue.component('g-table', {
           <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
           </select>\
         </div>\
-        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" class="g-searchbox">\
+        <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
           <label>&nbsp;{{field_label(sb)}}</label>\
           <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
             <option value="" selected>-</option>\

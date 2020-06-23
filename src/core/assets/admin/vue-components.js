@@ -4,15 +4,16 @@ Vue.component('input-list', {
     template: '<div>\
 <div v-for="(row,key) in pos">\
 <span v-for="(field,fkey) in fields">\
-	<span v-if="field==&quot;image&quot;" style="width:50px" >\
+	<span v-if="isMedia(field)" style="width:50px" >\
 		<img :src="imgSrc(pos[key][fkey])"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
 		<input v-model="pos[key][fkey]" type="hidden" :id="\'il\'+field+key" @input="update">\
 	</span>\
-	<input v-if="field!=&quot;image&quot;" v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update" :placeholder="field.toUpperCase()">\
+  <input v-else v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update"\
+  :placeholder="field.toUpperCase()" class="g-input">\
 </span>\
-&nbsp;<span @click="removeEl(key)" class="btn btn-error">-</span>\
+&nbsp;<span @click="removeEl(key)" class="btn btn-error btn-small">-</span>\
 </div>\
-<a @click="add()" class="btn btn-success">+</a>\
+<a @click="add()" class="btn btn-success btn-small">+</a>\
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
@@ -41,6 +42,11 @@ Vue.component('input-list', {
         return src;
       }
       return 'lzld/thumb?src='+src;
+    },
+    isMedia: function(field) {
+      if(field=='image') return true
+      if(typeof this.fieldset[field]=='undefined') return false
+      return this.fieldset[field].type=='media'
     },
     update: function(){
       this.ivalue = JSON.stringify(this.pos)
@@ -112,7 +118,7 @@ Vue.component('g-multiselect', {
   style="color:white;background:var(--main-primary-color);margin-right:4px;padding:4px;border-radius:4px">\
   &times; {{opList[value]}}</span>&nbsp;\
   <div v-if="dropdown" style="position:absolute; min-width:160px; padding:0;\
-  margin:12px -12px;border:1px solid lightgrey; z-index:1;\
+  margin:12px -12px;border:1px solid lightgrey; z-index:2;\
   background:white;">\
   <div style="float:right;font-size:150%;margin:0 4px" @click.stop="dropdown=false">&times;</div>\
   <div v-for="(op,i) in opList" style="padding:6px" @click="toggle(i)" v-html="optionDisplay(op,i)"></div>\
