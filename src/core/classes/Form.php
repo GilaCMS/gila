@@ -74,10 +74,10 @@ class Form
         if($type=='datetime-local' && $ov) {
           $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
         }
-        $req = $op['required']? ' required':'';
+        $req = isset($op['required'])? ' required':'';
         $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
       } else {
-        $req = $op['required']? ' required':'';
+        $req = isset($op['required'])? ' required':'';
         $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
       }
     } else {

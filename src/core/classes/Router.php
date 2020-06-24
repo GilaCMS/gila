@@ -122,9 +122,9 @@ class Router
     }
   }
 
-  static function add ($string, $fn, $method = 'GET')
+  static function add ($string, $fn, $method = 'GET', $permission = null)
   {
-    self::$route[] = [$string, $fn, $method];
+    self::$route[] = [$string, $fn, $method, $permission];
   }
 
   static function param ($key, $n = null)
@@ -231,6 +231,10 @@ class Router
     foreach($routes as $route) {
       if(preg_match('#^'.$route[0].'$#', self::$url,$matches)) {
         $matched = true;
+        if($route[3]!==null && Gila::hasPrivilege($route[3])===false) {
+          @http_response_code(403);
+          return true;
+        }
         if(self::$method == $route[2]) {
           array_shift($matches);
           call_user_func_array($route[1], $matches);
@@ -240,9 +244,6 @@ class Router
     }
     if($matched) {
       @http_response_code(405);
-      if(self::$methodNotAllowed){
-        call_user_func_array(self::$methodNotAllowed, [self::$url, self::$method]);
-      }
       return true;
     }
     return false;
