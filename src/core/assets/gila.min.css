@@ -294,7 +294,7 @@ input:focus + .helptext{
 .g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
 /* Toggle switch */
-.g-switch{position:relative;z-index:1;margin:var(--main-padding) 0}
+.g-switch{position:relative;z-index:1;margin:4px 0;height:26px}
 .g-switch input{position:absolute;opacity:0;width: 51px;height: 26px;top:-2px;left:-2px;cursor:pointer;}
 .g-switch .g-slider{position:absolute;z-index: -100}
 .g-switch input[value="1"]:checked + .g-slider{

@@ -129,7 +129,7 @@ class Form
         foreach($field['options'] as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
-          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'" '.$checked[0].'>';
+          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
           $html .= '<label for="'.$id.$value.'">'.$display.'</label>';
         }
         return $html . '</div>';

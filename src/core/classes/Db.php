@@ -9,7 +9,7 @@ class Db
   public $insert_id,$result;
   public $profiling = '';
   public $replicas = [];
-  private Db $replica;
+  private $replica;
 
   function __construct($host = 'localhost', $user = 'root', $pass = '', $dsch = '')
   {

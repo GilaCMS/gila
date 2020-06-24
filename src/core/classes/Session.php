@@ -82,6 +82,7 @@ class Session
     }
     header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
     User::meta($id, 'GSESSIONID', $gsession, true);
+    $_COOKIE['GSESSIONID'] = $gsession;
     self::createFile($gsession);
   }
 
