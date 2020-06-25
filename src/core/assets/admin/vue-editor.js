@@ -109,9 +109,6 @@ Vue.component('vue-editor', {
         case 'insertNode':
         this.insertNode(args[0],args[1],args[2],args[3])
         break
-        case 'saveHtml':
-        this.saveHtml()
-        break
       }
     },
     setNode: function (x,html='',obj=null) {
@@ -246,9 +243,6 @@ Vue.component('vue-editor', {
     },
     figureEdit: function(obj) {
       this.figure=obj
-    },
-    saveHtml: function() {
-      console.log(document.getElementById(this.areaID).innerHTML)
     },
     onEditor: function () {
       el = document.getElementById(this.areaID)

@@ -117,7 +117,6 @@ function block_pos(id,pos) {
 function block_del(id) {
   if(confirm("You really want to delete this block?")) {
     g.loader()
-    console.log(href)
     g.post('blocks/delete', 'id='+id, function(data) {
       g.loader(false)
       blocks_preview_reload(data)

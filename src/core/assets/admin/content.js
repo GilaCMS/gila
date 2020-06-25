@@ -638,7 +638,6 @@ gtableTool['log_selected'] = {
 gtableTool['delete'] = {
   fa: "arrow-down", label: _e("Delete"),
   fn: function(table) {
-    console.log();
     let _this = table
     if(confirm(_e("Delete registries?"))) g.ajax({
       url: "cm/delete?t="+_this.name,

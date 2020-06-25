@@ -91,10 +91,8 @@ content_blocks_app = new Vue({
       dropzoneSelector: '#content_blocks_list',
       draggableSelector: '.block-li',
       onDrop(event) {
-        console.log(event)
         pos = event.items[0].getAttribute('data-pos')
         index = getElementIndex(event.items[0])-1
-        console.log(pos,index)
         if(pos==='add') {
           block_add(index)
           event.items[0].parentNode.appendChild(event.items[0]);
