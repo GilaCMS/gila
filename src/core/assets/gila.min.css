@@ -264,6 +264,9 @@ input:focus + .helptext{
   transition:.5s;
   z-index:0;
 }
+textare.g-input, .g-input[type=text] {
+  width:100%;
+}
 
 
 *:focus{

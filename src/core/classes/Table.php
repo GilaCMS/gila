@@ -39,7 +39,7 @@ class Table
       }
       if(isset($field['title'])) {
         $field['title'] = __($field['title']);
-      } else $field['title'] = __($key);
+      } else $field['title'] = ucfirst(__($key));
     }
     if(isset($this->table['children'])) foreach ($this->table['children'] as $key => &$child) {
       $child_table = new Table($key,$permissions);

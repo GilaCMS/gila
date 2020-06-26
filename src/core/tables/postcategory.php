@@ -4,7 +4,7 @@ return [
   'name'=> 'postcategory',
   'title'=> 'Categories',
   'tools'=>['add','csv'],
-  'commands'=>['edit','clone'],
+  'commands'=>['edit_popup','clone'],
   'id'=>'id',
   'csv'=> ['id','title'],
   'permissions'=>[

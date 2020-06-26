@@ -500,7 +500,7 @@ gtableCommand['edit'] = {
 gtableCommand['edit_page'] = {
   fa: "pencil",
   fn: function(table,irow){
-    location.replace('admin/content/'+table.name+'/'+irow)
+    window.location.href = 'admin/content/'+table.name+'/'+irow
   }
 }
 
