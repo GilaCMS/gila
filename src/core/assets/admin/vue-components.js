@@ -148,3 +148,61 @@ Vue.component('g-multiselect', {
     }
   }
 })
+
+Vue.component('input-keywords', {
+  template: '<div :id="\'gm-\'+name+value" style="min-width:180px;cursor:pointer;\
+  background:var(--main-input-color);position:relative" @click="dropdown=!dropdown">\
+  <span v-if="values.length==0" style="opacity:0.5">{{placetext}}</span>\
+  <span v-for="(tag,i) in values" @click="toggle(tag)"\
+  style="color:white;background:var(--main-primary-color);display: inline-block;\
+  margin:6px;padding:4px;border-radius:4px;word-break: break-all;">\
+  &times; {{tag}}</span>&nbsp;\
+  <input v-model="newTag" @keypress.stop="keyPressed($event)"\
+  style="border-bottom:1px solid rgba(0,0,0,0.5)">\
+  <div v-if="dropdown && tagList.length>0" style="position:absolute; min-width:160px; padding:0;\
+  margin:12px -12px;border:1px solid lightgrey; z-index:1;\
+  background:white;">\
+  <div style="float:right;font-size:150%;margin:0 4px" @click.stop="dropdown=false">&times;</div>\
+  <div v-for="tag in tagList" style="padding:6px" @click="toggle(tag)" v-html="tagDisplay(tag)"></div>\
+  </div>\
+  <input v-for="(v,i) in values" type="hidden" :value="v" :name="name+\'[\'+i+\']\'">\
+  <input v-if="values.length==0" type="hidden" value="" :name="name">\
+</div>',
+  props: ['name','value','keywords','placeholder'],
+  data: function() {
+    console.log(this.value)
+    return {
+      values: JSON.parse(this.value)??[],
+      placetext: this.placeholder?this.placeholder:' ...',
+      tagList: this.keywords? this.keywords.split(','): [],
+      dropdown: false,
+      newTag: ''
+    }
+  },
+  methods: {
+    toggle: function(i) {
+      var index = this.values.indexOf(i);
+      if (index === -1) this.values.push(i); else this.values.splice(index, 1);
+      this.dropdown=false
+    },
+    tagDisplay: function(tag) {
+      var index = this.values.indexOf(tag);
+      if (index !== -1) tag = tag+" &#10003;";
+      return tag
+    },
+    keyPressed: function(event) {
+      var i = this.newTag.trim()
+      if(['Enter'].includes(event.key)) {
+        var index = this.values.indexOf(i);
+        if (index === -1) this.values.push(i);
+        this.newTag = ''
+      } else if(event.key!=',') {
+        this.newTag += event.key
+      }
+      event.preventDefault()
+    },
+    valuesSplit: function() {
+      return this.values.split()
+    }
+  }
+})

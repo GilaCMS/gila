@@ -116,6 +116,11 @@ class Form
         $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
         return $html.= 'options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
+      "keywords"=> function($name,$field,$ov) {
+        if(is_string($ov)) $ov = explode(',',$ov);
+        $html = '<input-keywords value="'.htmlspecialchars(json_encode($ov??[])).'"';
+        return $html.= ' name="'.$name.'">';
+      },
       "select2"=> function($name,$field,$ov) { //DEPRECATED
         if(is_string($ov)) $ov = explode(',',$ov);
         $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
