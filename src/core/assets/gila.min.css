@@ -788,8 +788,8 @@ input:focus + .helptext{
 }
 
 @keyframes move-left{
-  from{opacity:0;transform:translateX(6em)}
-  to{opacity:1;transform:translateX(0)}
+  from{transform:translateX(6em)}
+  to{transform:translateX(0)}
 }
 @keyframes move-right{
   from{transform:translateX(-6em)}
