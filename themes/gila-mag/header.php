@@ -11,7 +11,8 @@ body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
 .widget .g-nav.vertical li a{color: #181818;padding: 4px 12px}
 .widget .g-nav.vertical li a:hover{color: <?=$theme_color?>;}
 .widget-title{ background: <?=$theme_color?>; color: white;padding:8px}
-.footer-widget .widget{width:33%; display:inline-grid;min-width: 240px}
+.footer-widget .widget{width:33%; display:inline-grid;min-width: 240px;}
+.footer-widget .widget-title{background:inherit}
 .post-review{border-bottom: 1px dashed #ccc;}
 .post-review a{color: #181818;}
 .post-review a:hover{color: <?=$theme_color?>;}

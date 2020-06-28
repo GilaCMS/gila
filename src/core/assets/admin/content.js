@@ -381,9 +381,12 @@ Vue.component('g-table', {
     thStyle: function(key){
       style = '';
       if(this.table.fields[key].width) {
-        style = 'width:'+this.table.fields[key].width+';'
+        style += 'width:'+this.table.fields[key].width+';'
       } else {
-        style = 'width:min-content;'
+        style += 'width:min-content;'
+      }
+      if(this.table.fields[key].type && this.table.fields[key].type=='number') {
+        style += 'text-align:right;'
       }
       return style;
     },
@@ -513,18 +516,19 @@ gtableCommand['edit_popup'] = {
       app = new Vue({
         el: '#'+table.name+'-edit-item-form'
       })
+      g_tinymce_options.height = 125;
       transformClassComponents()
     })
   }
 }
 
-g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
-  form = g('#gila-popup form').all[0]
+g.dialog.buttons.popup_update = {title:'Update', fn:function(btn){
+  form = g('.gila-popup form').last()
   form.getElementsByTagName("BUTTON")[0].click()
 }};
 
 function g_form_popup_update() {
-  form = g('#gila-popup form').all[0]
+  form = g('.gila-popup form').last()
   data = new FormData(form);
   t = form.getAttribute('data-table')
   id = form.getAttribute('data-id')
@@ -532,8 +536,11 @@ function g_form_popup_update() {
     _this = rootVueGTables[i]
   }
 
-  if(id=='new') {
+  if(id=='new'||id==0) {
     url = 'cm/update_rows/'+t
+    if(typeof _this.filters!='undefined') {
+      url = url+'?'+_this.filters
+    }
   } else {
     url = 'cm/update_rows/'+t+'?id='+id
   }
@@ -547,7 +554,7 @@ function g_form_popup_update() {
     _this.$forceUpdate()
   }})
 
-  g('#gila-popup').parent().remove();
+  g.closeModal();
 } 
 
 

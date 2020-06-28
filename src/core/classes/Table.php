@@ -507,8 +507,7 @@ class Table
     $insert_fields = [];
     $insert_values = [];
     $this->event('create', $data);
-    // add the filter values NEVER happens
-    foreach($this->$table['fields'] as $field=>$value) {
+    foreach($this->table['fields'] as $field=>$value) {
       if (isset($data[$field])) {
         $insert_fields[] = $field;
         $insert_values[] = (int)$data[$field];

@@ -356,10 +356,18 @@ td[col] .g-input {
   z-index:1;
 }
 
-.g-table .g-table {
+.g-table .g-table, .g-form .g-table  {
   border: 1px solid lightgrey;
   border-left: 4px solid lightgreen;
   margin-top: 2em;
+  grid-column: 1/-1;
+}
+
+.g-form .g-table-title {
+  margin-left: 0.5em;
+}
+.g-form .g-input {
+  width:100%;
 }
 
 .g-table-title {
