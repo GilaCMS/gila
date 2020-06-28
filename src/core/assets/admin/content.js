@@ -1,4 +1,5 @@
 rootVueGTables = []
+edit_popup_app = null
 
 Vue.component('g-table', {
   template: '<div class="g-table">\
@@ -513,11 +514,15 @@ gtableCommand['edit_popup'] = {
   href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
-      app = new Vue({
-        el: '#'+table.name+'-edit-item-form'
+      formId = '#'+table.name+'-edit-item-form'
+      edit_popup_app = new Vue({
+        el: formId,
+        data: {id:irow}
       })
-      g_tinymce_options.height = 125;
+      g_tinymce_options.height = 110;
       transformClassComponents()
+      console.log(formId+' input')
+      g(formId+' input').all[1].focus()
     })
   }
 }
@@ -548,11 +553,18 @@ function g_form_popup_update() {
     data = JSON.parse(data)
     if(id=='new' || id==0) {
       _this.data.rows.unshift(data.rows[0])
+      edit_popup_app.id = _this.data.rows[0][0]
+      if(typeof _this.table.children!='undefined') setTimeout(function(){
+        document.getElementById("edit_popup_child").scrollIntoView();
+      }, 100)
     } else {
       _this.update_row(data.rows[0])
     }
-    _this.$forceUpdate()
   }})
+
+  if((id=='new'||id==0) && typeof _this.table.children!='undefined') {
+    return
+  }
 
   g.closeModal();
 } 
@@ -623,10 +635,14 @@ gtableTool['add_popup'] = {
     href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
-      app = new Vue({
-        el: '#'+table.name+'-edit-item-form'
+      formId = '#'+table.name+'-edit-item-form'
+      edit_popup_app = new Vue({
+        el: formId,
+        data: {id:0}
       })
+      g_tinymce_options.height = 110;
       transformClassComponents()
+      g(formId+' input').all[1].focus()
     })
   }
 }

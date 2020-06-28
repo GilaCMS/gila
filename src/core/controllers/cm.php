@@ -358,11 +358,14 @@ class cm extends Controller
       echo gForm::html($pnk->getFields('edit'));
     }
 
-    if($id) foreach($pnk->getTable()['children']??[] as $ckey=>$child) {
-      echo '<g-table gtype="'.$ckey.'" gchild=1 ';
+    $child_id = '<span id="edit_popup_child"></span>';
+    foreach($pnk->getTable()['children']??[] as $ckey=>$child) {
+      echo $child_id;
+      $child_id = "";
+      echo '<g-table v-if="id>0" gtype="'.$ckey.'" gchild=1 ';
       echo 'gtable="'.htmlentities(json_encode($child['table'])).'" ';
       echo 'gfields="'.htmlentities(json_encode($child['list'])).'" ';
-      echo 'gfilters="&amp;'.$child['parent_id'].'='.$id.'">';
+      echo ':gfilters="\'&amp;'.$child['parent_id'].'=\'+id">';
       echo '</g-table>';
     }
 
