@@ -9,9 +9,9 @@ class fm extends Controller
 
   function __construct ()
   {
-    if(!Gila::hasPrivilege('admin')
-     && !Gila::hasPrivilege('upload_assets')
-     && !Gila::hasPrivilege('edit_assets')) exit;
+    if(!Session::hasPrivilege('admin')
+     && !Session::hasPrivilege('upload_assets')
+     && !Session::hasPrivilege('edit_assets')) exit;
      $this->sitepath = realpath(__DIR__.'/../../../'.SITE_PATH);
      FileManager::$sitepath = $this->sitepath;
      $this->setPaths();
@@ -64,7 +64,7 @@ class fm extends Controller
         !FileManager::allowedFileType($this->path)) {
       die("Permission denied");
     }
-    if (!Gila::hasPrivilege('admin')) exit; 
+    if (!Session::hasPrivilege('admin')) exit; 
     if (!is_file($this->path)) die("Path is not a file");
     echo htmlspecialchars(file_get_contents($this->path));
   }
@@ -110,7 +110,7 @@ class fm extends Controller
         !FileManager::allowedPath($this->relativePath)) {
       die("Permission denied1");
     }
-    if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('edit_assets')) {
+    if(!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("User dont have permision to edit files");
     }
 
@@ -125,7 +125,7 @@ class fm extends Controller
     if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
-    if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('upload_assets')) {
+    if(!Session::hasPrivilege('admin') && !Session::hasPrivilege('upload_assets')) {
       die("Permission denied.");
     }
     if(!isset($_FILES['uploadfiles'])) {
@@ -157,7 +157,7 @@ class fm extends Controller
     if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
-    if(!Gila::hasPrivilege('admin') && !Gila::hasPrivilege('edit_assets')) {
+    if(!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("Permission denied.");
     }
     if(!unlink($this->path) && !rmdir($this->path)){

@@ -39,7 +39,7 @@ class Table
       }
       if(isset($field['title'])) {
         $field['title'] = __($field['title']);
-      } else $field['title'] = __($key);
+      } else $field['title'] = ucfirst(__($key));
     }
     if(isset($this->table['children'])) foreach ($this->table['children'] as $key => &$child) {
       $child_table = new Table($key,$permissions);
@@ -121,21 +121,27 @@ class Table
     if($fields === null) $fields = $this->fields();
 
     foreach ($fields as $key => $value) {
-      $select[$key] = '`'.$this->db->res($value).'`';
-      if($qcolumn = $this->fieldAttr($value, 'qcolumn')) {
-        $select[$key] = $qcolumn.' as '.$value;
-      }
-      if(@$this->table['fields'][$value]['type'] === 'meta') {
-        list($mt,$vt) = $this->getMT($value);
-        $this_id = $this->name().".".$this->id();
-        $select[$key] = "(SELECT GROUP_CONCAT(`{$mt[3]}`) FROM {$mt[0]} ";
-        $select[$key] .= "WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$mt[2]}='{$vt}') as ".$value;
-      }
+      $select[$key] = $this->getColumnKey($value);
       if($qcolumn = $this->fieldAttr($value, 'jt')) {
         unset($select[$key]);
       }
     }
     return implode(',', $select);
+  }
+
+  function getColumnKey($value, $select=true)
+  {
+    if($qcolumn = $this->fieldAttr($value, 'qcolumn')) {
+      return $qcolumn.($select? ' as '.$value: '');
+    }
+    if(@$this->table['fields'][$value]['type'] === 'meta') {
+      list($mt,$vt) = $this->getMT($value);
+      $this_id = $this->name().".".$this->id();
+      $qcolumn = "(SELECT GROUP_CONCAT(`{$mt[3]}`) FROM {$mt[0]} ";
+      $qcolumn .= "WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$mt[2]}='{$vt}')";
+      return $qcolumn.($select? ' as '.$value: '');
+    }
+    return '`'.$this->db->res($value).'`';
   }
 
   function selectsum($groupby)
@@ -327,6 +333,7 @@ class Table
     foreach($fields as $key=>$value) if(!is_numeric($key)) {
       if(array_key_exists($key, $this->table['fields'])) {
         if(is_array($value)) {
+          $key = $this->getColumnKey($key);
           foreach($value as $subkey=>$subvalue) {
             $subvalue = $this->db->res($subvalue);
             if(isset(self::$basicOps[$subkey])) {
@@ -341,8 +348,12 @@ class Table
             if($subkey === 'in') $filters[] = "$key IN($subvalue)";
             if($subkey === 'inset') $filters[] = "FIND_IN_SET($subvalue, $key)>0";
           }
+        } else if(@$this->table['fields'][$key]['type']=='meta') {
+          $key = $this->getColumnKey($key,false);
+          //die("FIND_IN_SET($value, $key)>0");
+          $filters[] = "FIND_IN_SET($value, $key)>0";
         } else {
-          $value = $this->db->res($value);
+          $key = $this->getColumnKey($key);
           $filters[] = "$key='$value'";
         }
       }
@@ -423,15 +434,15 @@ class Table
 
   function getMeta($id, $type = null)
   {
+    global $db;
     if(!isset($this->table['meta_table'])) return null;
-    $db = Gila::slaveDB();
     $m = $this->table['meta_table'];
     if($type!==null) {
       return $db->getList("SELECT {$m[3]} FROM {$m[0]}
         WHERE {$m[1]}=? AND $m[2]=?;", [$id, $type]);
     } else {
       $list = [];
-      $gen = $db->gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
+      $gen = $db->read()->gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
       foreach($gen as $row) {
         @$list[$row[0]][] = $row[1];
       }
@@ -447,6 +458,7 @@ class Table
 
   function getRows($filters = [], $args = [])
   {
+    global $db;
     if(!$this->can('read')) {
       return [];
     }
@@ -455,8 +467,7 @@ class Table
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
-    $db = Gila::slaveDB();
-    $res = $db->getAssoc("SELECT $select
+    $res = $db->read()->getAssoc("SELECT $select
       FROM {$this->name()}$where$orderby$limit;");
     return $res;
   }
@@ -475,10 +486,10 @@ class Table
 
   function totalRows(&$filters = [])
   {
+    global $db;
     if(!$this->can('read')) return;
     $where = $this->where($filters);
-    $db = Gila::slaveDB();
-    $res = $db->value("SELECT COUNT(*) FROM {$this->name()}$where;");
+    $res = $db->read()->value("SELECT COUNT(*) FROM {$this->name()}$where;");
     return $res;
   }
 
@@ -486,6 +497,28 @@ class Table
   {
     $this->event('delete', $id);
     $res = $this->db->query("DELETE FROM {$this->name()} WHERE {$this->id()}=?;", $id);
+  }
+
+  function createRow($data = [])
+  {
+    if($this->can('create') === false) {
+      return false;
+    }
+    $insert_fields = [];
+    $insert_values = [];
+    $this->event('create', $data);
+    foreach($this->table['fields'] as $field=>$value) {
+      if (isset($data[$field])) {
+        $insert_fields[] = $field;
+        $insert_values[] = (int)$data[$field];
+      }
+    }
+    $fnames = implode(',', $insert_fields);
+    $values = implode(',', $insert_values);
+    $q = "INSERT INTO {$this->name()}($fnames) VALUES($values);";
+    $res = $this->db->query($q);
+    $id = $this->db->insert_id;
+    return $id;
   }
 
 }

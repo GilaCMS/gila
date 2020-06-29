@@ -16,7 +16,7 @@
 
 <?php if(!isset($_COOKIE['sidebar_toggled'])) $_COOKIE['sidebar_toggled']='true' ?>
 
-<body style="background:#f5f5f5">
+<body style="background:var(--main-bg-color)">
   <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
     <!-- Sidebar g-nav vertical -->
     <div id="sidebar-wrapper">

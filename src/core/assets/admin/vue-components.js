@@ -4,15 +4,16 @@ Vue.component('input-list', {
     template: '<div>\
 <div v-for="(row,key) in pos">\
 <span v-for="(field,fkey) in fields">\
-	<span v-if="field==&quot;image&quot;" style="width:50px" >\
+	<span v-if="isMedia(field)" style="width:50px" >\
 		<img :src="imgSrc(pos[key][fkey])"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
 		<input v-model="pos[key][fkey]" type="hidden" :id="\'il\'+field+key" @input="update">\
 	</span>\
-	<input v-if="field!=&quot;image&quot;" v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update" :placeholder="field.toUpperCase()">\
+  <input v-else v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update"\
+  :placeholder="field.toUpperCase()" class="g-input">\
 </span>\
-&nbsp;<span @click="removeEl(key)" class="btn btn-error">-</span>\
+&nbsp;<span @click="removeEl(key)" class="btn btn-error btn-small">-</span>\
 </div>\
-<a @click="add()" class="btn btn-success">+</a>\
+<a @click="add()" class="btn btn-success btn-small">+</a>\
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
@@ -41,6 +42,11 @@ Vue.component('input-list', {
         return src;
       }
       return 'lzld/thumb?src='+src;
+    },
+    isMedia: function(field) {
+      if(field=='image') return true
+      if(typeof this.fieldset[field]=='undefined') return false
+      return this.fieldset[field].type=='media'
     },
     update: function(){
       this.ivalue = JSON.stringify(this.pos)
@@ -112,7 +118,7 @@ Vue.component('g-multiselect', {
   style="color:white;background:var(--main-primary-color);margin-right:4px;padding:4px;border-radius:4px">\
   &times; {{opList[value]}}</span>&nbsp;\
   <div v-if="dropdown" style="position:absolute; min-width:160px; padding:0;\
-  margin:12px -12px;border:1px solid lightgrey; z-index:1;\
+  margin:12px -12px;border:1px solid lightgrey; z-index:2;\
   background:white;">\
   <div style="float:right;font-size:150%;margin:0 4px" @click.stop="dropdown=false">&times;</div>\
   <div v-for="(op,i) in opList" style="padding:6px" @click="toggle(i)" v-html="optionDisplay(op,i)"></div>\
@@ -139,6 +145,64 @@ Vue.component('g-multiselect', {
       var index = this.values.indexOf(i);
       if (index !== -1) op = op+" &#10003;";
       return op
+    }
+  }
+})
+
+Vue.component('input-keywords', {
+  template: '<div :id="\'gm-\'+name+value" style="min-width:180px;cursor:pointer;\
+  background:var(--main-input-color);position:relative" @click="dropdown=!dropdown">\
+  <span v-if="values.length==0" style="opacity:0.5">{{placetext}}</span>\
+  <span v-for="(tag,i) in values" @click="toggle(tag)"\
+  style="color:white;background:var(--main-primary-color);display: inline-block;\
+  margin:6px;padding:4px;border-radius:4px;word-break: break-all;">\
+  &times; {{tag}}</span>&nbsp;\
+  <input v-model="newTag" @keypress.stop="keyPressed($event)"\
+  style="border-bottom:1px solid rgba(0,0,0,0.5)">\
+  <div v-if="dropdown && tagList.length>0" style="position:absolute; min-width:160px; padding:0;\
+  margin:12px -12px;border:1px solid lightgrey; z-index:1;\
+  background:white;">\
+  <div style="float:right;font-size:150%;margin:0 4px" @click.stop="dropdown=false">&times;</div>\
+  <div v-for="tag in tagList" style="padding:6px" @click="toggle(tag)" v-html="tagDisplay(tag)"></div>\
+  </div>\
+  <input v-for="(v,i) in values" type="hidden" :value="v" :name="name+\'[\'+i+\']\'">\
+  <input v-if="values.length==0" type="hidden" value="" :name="name">\
+</div>',
+  props: ['name','value','keywords','placeholder'],
+  data: function() {
+    console.log(this.value)
+    return {
+      values: JSON.parse(this.value)??[],
+      placetext: this.placeholder?this.placeholder:' ...',
+      tagList: this.keywords? this.keywords.split(','): [],
+      dropdown: false,
+      newTag: ''
+    }
+  },
+  methods: {
+    toggle: function(i) {
+      var index = this.values.indexOf(i);
+      if (index === -1) this.values.push(i); else this.values.splice(index, 1);
+      this.dropdown=false
+    },
+    tagDisplay: function(tag) {
+      var index = this.values.indexOf(tag);
+      if (index !== -1) tag = tag+" &#10003;";
+      return tag
+    },
+    keyPressed: function(event) {
+      var i = this.newTag.trim()
+      if(['Enter'].includes(event.key)) {
+        var index = this.values.indexOf(i);
+        if (index === -1) this.values.push(i);
+        this.newTag = ''
+      } else if(event.key!=',') {
+        this.newTag += event.key
+      }
+      event.preventDefault()
+    },
+    valuesSplit: function() {
+      return this.values.split()
     }
   }
 })

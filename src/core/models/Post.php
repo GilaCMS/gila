@@ -1,6 +1,7 @@
 <?php
 namespace core\models;
 use Gila;
+use Db;
 
 class Post
 {
@@ -11,20 +12,16 @@ class Post
 
   static function getByIdSlug($id)
   {
-    $db = Gila::slaveDB();
+    global $db;
     $ql="SELECT id,description,title,post,publish,slug,updated,user_id,
       (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
       (SELECT GROUP_CONCAT(b.value SEPARATOR ',') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
       FROM post WHERE (id=? OR slug=?)";
-    $res = $db->query($ql,[$id,$id]);
+    $res = $db->read()->query($ql,[$id,$id]);
     if($row = mysqli_fetch_array($res)) {
-      if($blocks = $db->value("SELECT blocks FROM post WHERE (id=? OR slug=?);", [$id,$id])) {
+      if($blocks = $db->read()->value("SELECT blocks FROM post WHERE (id=? OR slug=?);", [$id,$id])) {
         $blocks = json_decode($blocks);
-        ob_start();
-        \View::blocks($blocks);
-        $out = ob_get_contents();
-        ob_end_clean();
-        $row['post'] .= $out;
+        $row['post'] .= \View::blocks($blocks);
       }
       $row['url'] = Gila::make_url('blog','',['p'=>$row['id'],'slug'=>$row['slug']]);
       return $row;
@@ -45,22 +42,22 @@ class Post
 
   static function getMeta($meta)
   {
-    $db = Gila::slaveDB();
+    global $db;
     $ql = "SELECT value,COUNT(*) AS count FROM postmeta where vartype=? GROUP BY value;";
-    return $db->get($ql,[$meta]);
+    return $db->read()->get($ql,[$meta]);
   }
 
   static function getByUserID($id)
   {
-    $db = Gila::slaveDB();
-    return $db->get("SELECT * FROM post WHERE user_id=?",$id)[0];
+    global $db;
+    return $db->read()->get("SELECT * FROM post WHERE user_id=?",$id)[0];
   }
 
   static function total ($args=[])
   {
-    $db = Gila::slaveDB();
+    global $db;
     $where = self::where($args);
-    return $db->value("SELECT COUNT(*) FROM post WHERE $where;");
+    return $db->read()->value("SELECT COUNT(*) FROM post WHERE $where;");
   }
 
   static function getLatest($n=8)
@@ -70,7 +67,7 @@ class Post
 
   static function getPosts ($args=[])
   {
-    $db = Gila::slaveDB();
+    global $db;
     $ppp = isset($args['posts'])?$args['posts']:8;
     $where = self::where($args);
     $start_from = isset($args['from'])?$args['from']:0;
@@ -83,7 +80,7 @@ class Post
       FROM post
       WHERE $where
       ORDER BY id DESC LIMIT $start_from,$ppp";
-    $res = $db->query($ql);
+    $res = $db->read()->query($ql);
     if ($res) while ($r = mysqli_fetch_assoc($res)) {
       $r['url'] = Gila::make_url('blog','',['p'=>$r['id'],'slug'=>$r['slug']]);
       yield $r;
@@ -98,7 +95,7 @@ class Post
   }
 
   static function search ($s) {
-    $db = Gila::slaveDB();
+    global $db;
     $res = $db->query("SELECT id,description,title,slug,SUBSTRING(post,1,300) as post,
       (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
       FROM post WHERE publish=1
@@ -109,7 +106,7 @@ class Post
   }
 
   static function categories() {
-    $db = Gila::slaveDB();
+    global $db;
     return $db->get("SELECT id,title FROM postcategory;");
   }
 

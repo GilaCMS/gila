@@ -24,7 +24,7 @@
   z-index: 9999;
 }
 .add-block-grid{
-  display:grid;grid-gap:1em;grid-template-columns:repeat(auto-fill, minmax(180px,1fr));
+  display:grid;grid-gap:1em;grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
   width:80%;
   max-height:80%;
   overflow:auto;
@@ -36,10 +36,10 @@
 }
 
 .add-block-btn .preview{
-  border: 1px solid #cacaca;
+  border: 1px solid #ccc;
 }
 .add-block-btn .preview:hover{
-  box-shadow: 0 0 2px #cacaca;
+  box-shadow: 0 0 6px #999;
 }
 .add-block-btn .logo{
   padding:8px;

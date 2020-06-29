@@ -74,10 +74,10 @@ class Form
         if($type=='datetime-local' && $ov) {
           $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
         }
-        $req = $op['required']? ' required':'';
+        $req = isset($op['required'])? ' required':'';
         $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
       } else {
-        $req = $op['required']? ' required':'';
+        $req = isset($op['required'])? ' required':'';
         $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
       }
     } else {
@@ -116,6 +116,11 @@ class Form
         $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
         return $html.= 'options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
+      "keywords"=> function($name,$field,$ov) {
+        if(is_string($ov)) $ov = explode(',',$ov);
+        $html = '<input-keywords value="'.htmlspecialchars(json_encode($ov??[])).'"';
+        return $html.= ' name="'.$name.'">';
+      },
       "select2"=> function($name,$field,$ov) { //DEPRECATED
         if(is_string($ov)) $ov = explode(',',$ov);
         $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
@@ -129,7 +134,7 @@ class Form
         foreach($field['options'] as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
-          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'" '.$checked[0].'>';
+          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
           $html .= '<label for="'.$id.$value.'">'.$display.'</label>';
         }
         return $html . '</div>';
@@ -164,7 +169,7 @@ class Form
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
           <span class="btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
-          <span class="g-group-item"><input class="fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
+          <span class="g-group-item"><input class="g-input fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
       "key"=> function($name,$field,$ov) {
@@ -175,7 +180,7 @@ class Form
         </span></span></div>';
       },
       "textarea"=> function($name,$field,$ov) {
-        return '<textarea class="g-input fullwidth" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth" name="'.$name.'" style="resize:vertical;">'.htmlentities($ov).'</textarea>';
       },
       "codemirror"=> function($name,$field,$ov) {
         return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';

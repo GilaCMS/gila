@@ -1,4 +1,6 @@
 <?php
+use core\models\Page;
+use core\models\Post;
 
 class blocks extends Controller
 {
@@ -152,12 +154,27 @@ class blocks extends Controller
     $content = Router::get('t',1);
     $id = Router::get('id',2);
     $blocks = self::readBlocks($content, $id);
-    View::renderFile('blocks-display-head.php', 'blocks');
-    echo '<body><article style="transform: scale(0.8);transform-origin: 50% 0%;" id="'.$content.'">';
-    Event::fire('body');
-    View::blocks($blocks, true);
-    echo '</article></body>';
-    Event::fire('foot');
+    if($content=="page" && $r = Page::getByIdSlug($id)) {
+      View::set('title', $r['title']);
+      View::set('text', $r['page'].View::blocks($blocks, true));
+      if($r['template']==''||$r['template']===null) {
+        View::render('page.php');
+      } else {
+        View::renderFile('page--'.$r['template'].'.php');
+      }
+      echo '<style>html{scroll-behavior: smooth;}</style>';
+    } else if($content=="post" && $r = Post::getByIdSlug($id)) {
+      View::set('title', $r['title']);
+      View::set('text', $r['post'].View::blocks($blocks, true));
+      View::render('single-post.php');
+      echo '<style>html{scroll-behavior: smooth;}</style>';
+    } else {
+      View::renderFile('blocks-display-head.php', 'blocks');
+      Event::fire('body');
+      echo View::blocks($blocks, true);
+      echo '</article></body>';
+      Event::fire('foot');
+    }
   }
 
   function saveAction ()

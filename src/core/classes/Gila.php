@@ -15,7 +15,6 @@ class Gila
   static $contentInit = [];
   static $mt;
   static $base_url;
-  static $slaveDB = [];
   static $langPaths = [];
   static $langLoaded = false;
 
@@ -428,15 +427,9 @@ class Gila
   * @param $pri (string/array) The privilege(s) to check
   * @return Boolean
   */
-  static function hasPrivilege ($pri)
+  static function hasPrivilege ($pri) // DEPRECATED
   {
-    if(!is_array($pri)) $pri=explode(' ',$pri);
-    if(!isset($GLOBALS['user_privileges'])) {
-      $GLOBALS['user_privileges'] = core\models\User::permissions(Session::userId());
-    }
-
-    foreach($pri as $p) if(@in_array($p,$GLOBALS['user_privileges'])) return true;
-    return false;
+    return Session::hasPrivilege($pri);
   }
 
   /**
@@ -456,20 +449,6 @@ class Gila
 
     }
     return $path;
-  }
-
-  static function slaveDB ($add = null)
-  {
-    global $db;
-    if ($add) {
-      self::$slaveDB[] = $add;
-    } else {
-      $slaves = count(self::$slaveDB);
-      if($slaves>0) {
-        return self::$slaveDB[rand(0, $slaves-1)];
-      }
-      return $db;
-    }
   }
 
 }

@@ -8,9 +8,9 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
 	}
   let fm=new FormData(g.el('widget_options_form'))
   let _app=app
-console.log(fm)
+
   g.ajax({url:'admin/update_widget?g_response=content',method:'POST',data:fm,fn:function(data){
-	 g('#gila-popup').parent().remove();
+	  g.closeModal();
     data = JSON.parse(data)
     widget_dialog_edit_table.update_row(data.rows[0])
     widget_dialog_edit_table.$forceUpdate()

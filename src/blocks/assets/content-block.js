@@ -4,9 +4,9 @@ mce_editor=new Array()
 
 g.dialog.buttons.update_widget = {title:'Update',fn:function(){
   block_edit_close()
-  let fm=new FormData(g.el('widget_options_form'))
-  g('#widget-popup').parent().remove();
   g.loader()
+  fm = new FormData(widget_options_form)
+  g('#widget-popup').parent().remove();
   g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
     g.loader(false)
     blocks_preview_reload(data)
@@ -20,7 +20,7 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
   widget_id = cblock_content.replace('/','_')+'_'+cblock_pos;
   g.post('blocks/create', 'id='+widget_id+'&type='+cblock_type, function(data){
     content_blocks_app.blocks = JSON.parse(data)
-    let fm=new FormData(g.el('widget_options_form'))
+    fm = new FormData(widget_options_form)
     fm.set('widget_id',widget_id)
     g('#widget-popup').parent().remove();
     g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
@@ -72,7 +72,7 @@ function block_edit_open() {
   for(i=0;i<textareas.length;i++) {
     cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
   }
-  $(".select2").select2();
+  if(typeof $!='undefined') $(".select2").select2();
 }
 
 function block_edit_close() {
@@ -117,7 +117,6 @@ function block_pos(id,pos) {
 function block_del(id) {
   if(confirm("You really want to delete this block?")) {
     g.loader()
-    console.log(href)
     g.post('blocks/delete', 'id='+id, function(data) {
       g.loader(false)
       blocks_preview_reload(data)

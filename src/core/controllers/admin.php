@@ -2,6 +2,7 @@
 
 use core\models\Widget;
 use core\models\User;
+use core\models\Page;
 
 class admin extends Controller
 {
@@ -17,9 +18,9 @@ class admin extends Controller
   */
   function indexAction ()
   {
-    $id = Router::get('page_id',1) ?? null;
+    $id = Router::path() ?? null;
 
-    if ($id && ($r = core\models\Page::getByIdSlug($id)) && ($r['publish']==1)
+    if ($id && ($r = Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
       View::set('title',$r['title']);
       View::set('text',$r['page']);
@@ -46,7 +47,7 @@ class admin extends Controller
     foreach($wfolders as $wf) if(is_writable($wf)==false) {
       View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
     }
-    if(Gila::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
+    if(Session::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
       View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
 
@@ -74,7 +75,7 @@ class admin extends Controller
   function contentAction ($type = null, $id = null)
   {
     if($type == null) {
-      if(Gila::hasPrivilege('admin')) {
+      if(Session::hasPrivilege('admin')) {
         View::renderAdmin('admin/contenttype.php');
       } else {
         http_response_code(404);
@@ -298,7 +299,7 @@ class admin extends Controller
   function menuAction()
   {
     $menu = Router::get('menu',1);
-    if($menu != null) if(Gila::hasPrivilege('admin')) {
+    if($menu != null) if(Session::hasPrivilege('admin')) {
       $folder = Gila::dir(LOG_PATH.'/menus/');
       $file = $folder.$menu.'.json';
       if($_SERVER['REQUEST_METHOD'] == 'POST') {

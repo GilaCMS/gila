@@ -1,42 +1,8 @@
 rootVueGTables = []
+edit_popup_app = null
 
 Vue.component('g-table', {
   template: '<div class="g-table">\
-    <div v-if="edititem==0" class="g-table-head">\
-      <div>\
-      <div class="g-table-title" v-html="table.title"></div>\
-        <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
-          <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-          @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
-          @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
-          <svg height="24" width="24" style="position:absolute;right:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
-        </div>\
-        <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
-          <select v-model="group" class="g-input" @change="runsearch()">\
-          <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
-          </select>\
-        </div>\
-        <div v-if="table[\'search-boxes\'] || table[\'search_boxes\']" v-for="sb in table[\'search-boxes\']" class="g-searchbox">\
-          <label>&nbsp;{{field_label(sb)}}</label>\
-          <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
-            <option value="" selected>-</option>\
-            <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
-          </select>\
-          <div v-else style="position:relative;display:inline-block">\
-            <input v-model="search" class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
-            <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
-          </div>\
-        </div>\
-      </div>\
-      <div>\
-        <span v-if="table.bulk_actions && selected_rows.length>0">\
-          <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
-        </span>\
-        <span v-if="table.tools">\
-          <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
-        </span>\
-      </div>\
-    </div>\
     <div v-if="edititem" class="edititem">\
       <span v-if="edititem>0 || edititem==\'new\'" class="btn" @click="edititem=0"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> \
       <label class="g-label" v-html="table.title"></label>\
@@ -56,12 +22,47 @@ Vue.component('g-table', {
 \
     <table v-if="edititem==0 || child==1" class="" cur-page="1"  group-by="" style="position:relative">\
     <thead>\
+      <tr><td colspan=100>\
+        <div v-if="edititem==0" class="g-table-head">\
+        <div><div class="g-table-title" v-html="table.title"></div>\
+          <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
+            <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
+            @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+            @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text" style="padding-left:28px">\
+            <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+          </div>\
+          <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
+            <select v-model="group" class="g-input" @change="runsearch()">\
+            <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
+            </select>\
+          </div>\
+          <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
+            <label>&nbsp;{{field_label(sb)}}</label>\
+            <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
+              <option value="" selected>-</option>\
+              <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
+            </select>\
+            <div v-else style="position:relative;display:inline-block">\
+              <input v-model="search" class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
+              <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+            </div>\
+          </div>\
+        </div>\
+        <div>\
+          <span v-if="table.bulk_actions && selected_rows.length>0">\
+            <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
+          </span>\
+          <span v-if="table.tools">\
+            <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
+          </span>\
+        </div></div></td>\
+      </tr>\
       <tr>\
         <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\
           <i :class="checkboxClassBulk()" aria-hidden="true"></i>\
         </th>\
         <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)"\
-          v-if="showField(ifield)">\
+          v-if="showField(ifield)" :style="thStyle(ifield)">\
           <i :class="sortiClass(ifield)" :col="ifield""></i>\
           <span v-html="field_label(ifield)"></span>\
         </th>\
@@ -70,12 +71,12 @@ Vue.component('g-table', {
       </tr>\
     </thead>\
     <tbody>\
-      <tr v-for="(row,irow) in data.rows" :row-id="irow">\
+      <tr v-for="(row,irow) in data.rows" :row-id="irow" :class="{selected:selectedRow(row[0])}">\
         <td v-if="table.bulk_actions" @click="select_row(row[0], irow, $event)">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
-        <td v-for="(field,ifield) in data.fields" :col="ifield" :value="row[ifield]" \
-        :class="field" v-if="showField(field)" v-html="display_cell(irow,ifield)"\
+        <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
+        :col="ifield" :value="row[ifield]" :class="field" v-html="display_cell(irow,ifield)"\
         @keydown="inlineDataUpdate(irow)">\
         </td>\
         <td v-if="table.commands" class="td-com">\
@@ -378,10 +379,25 @@ Vue.component('g-table', {
       if(this.order[key]=='DESC') cl='fa-chevron-down'
       return 'g-sorti fa '+cl;
     },
+    thStyle: function(key){
+      style = '';
+      if(this.table.fields[key].width) {
+        style += 'width:'+this.table.fields[key].width+';'
+      } else {
+        style += 'width:min-content;'
+      }
+      if(this.table.fields[key].type && this.table.fields[key].type=='number') {
+        style += 'text-align:right;'
+      }
+      return style;
+    },
     checkboxClass: function(irow){
       cl = ''
-      if(this.selected_rows.indexOf(irow)>-1) cl='fa-check-square-o'; else cl='fa-square-o';
+      if(this.selectedRow(irow)) cl='fa-check-square-o'; else cl='fa-square-o';
       return 'fa tr_checkbox '+cl;
+    },
+    selectedRow: function(irow){
+      return this.selected_rows.indexOf(irow)>-1;
     },
     checkboxClassBulk: function(){
       cl = 'fa-square-o'
@@ -491,7 +507,7 @@ gtableCommand['edit'] = {
 gtableCommand['edit_page'] = {
   fa: "pencil",
   fn: function(table,irow){
-    location.replace('admin/content/'+table.name+'/'+irow)
+    window.location.href = 'admin/content/'+table.name+'/'+irow
   }
 }
 
@@ -501,21 +517,26 @@ gtableCommand['edit_popup'] = {
   href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
-      app = new Vue({
-        el: '#'+table.name+'-edit-item-form'
+      formId = '#'+table.name+'-edit-item-form'
+      edit_popup_app = new Vue({
+        el: formId,
+        data: {id:irow}
       })
+      g_tinymce_options.height = 110;
       transformClassComponents()
+      console.log(formId+' input')
+      g(formId+' input').all[1].focus()
     })
   }
 }
 
-g.dialog.buttons.popup_update = {title:'Update', fn:function(e){
-  form = g('#gila-popup form').all[0]
+g.dialog.buttons.popup_update = {title:'Update', fn:function(btn){
+  form = g('.gila-popup form').last()
   form.getElementsByTagName("BUTTON")[0].click()
 }};
 
 function g_form_popup_update() {
-  form = g('#gila-popup form').all[0]
+  form = g('.gila-popup form').last()
   data = new FormData(form);
   t = form.getAttribute('data-table')
   id = form.getAttribute('data-id')
@@ -523,8 +544,11 @@ function g_form_popup_update() {
     _this = rootVueGTables[i]
   }
 
-  if(id=='new') {
+  if(id=='new'||id==0) {
     url = 'cm/update_rows/'+t
+    if(typeof _this.filters!='undefined') {
+      url = url+'?'+_this.filters
+    }
   } else {
     url = 'cm/update_rows/'+t+'?id='+id
   }
@@ -532,13 +556,20 @@ function g_form_popup_update() {
     data = JSON.parse(data)
     if(id=='new' || id==0) {
       _this.data.rows.unshift(data.rows[0])
+      edit_popup_app.id = _this.data.rows[0][0]
+      if(typeof _this.table.children!='undefined') setTimeout(function(){
+        document.getElementById("edit_popup_child").scrollIntoView();
+      }, 100)
     } else {
       _this.update_row(data.rows[0])
     }
-    _this.$forceUpdate()
   }})
 
-  g('#gila-popup').parent().remove();
+  if((id=='new'||id==0) && typeof _this.table.children!='undefined') {
+    return
+  }
+
+  g.closeModal();
 } 
 
 
@@ -607,10 +638,14 @@ gtableTool['add_popup'] = {
     href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
-      app = new Vue({
-        el: '#'+table.name+'-edit-item-form'
+      formId = '#'+table.name+'-edit-item-form'
+      edit_popup_app = new Vue({
+        el: formId,
+        data: {id:0}
       })
+      g_tinymce_options.height = 110;
       transformClassComponents()
+      g(formId+' input').all[1].focus()
     })
   }
 }
@@ -629,7 +664,6 @@ gtableTool['log_selected'] = {
 gtableTool['delete'] = {
   fa: "arrow-down", label: _e("Delete"),
   fn: function(table) {
-    console.log();
     let _this = table
     if(confirm(_e("Delete registries?"))) g.ajax({
       url: "cm/delete?t="+_this.name,

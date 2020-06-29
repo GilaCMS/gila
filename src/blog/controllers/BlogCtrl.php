@@ -31,11 +31,11 @@ class BlogCtrl extends Controller
   */
   function indexAction()
   {
-    if ($id=Router::param('page_id',1)) {
+    if($id = Router::path()) if($id !== "blog" && $id !== "blog/"){
       $this->postShow($id);
       return;
     }
-    if ($id=Router::param('p',1)) {
+    if ($id=Router::param('p')) {
       $this->postShow($id);
       return;
     }
@@ -151,7 +151,10 @@ class BlogCtrl extends Controller
     }
     Router::$action = "post";
 
-    if (($r = Post::getByIdSlug($id)) && ($r['publish']==1)) {
+    $args = explode('/', $id);
+    $postId = $args[0]==='blog'? $args[1]: $args[0]; 
+
+    if (($r = Post::getByIdSlug($postId)) && ($r['publish']==1)) {
       $id = $r['id'];
       if(!$r['user_id']) {
         $r['user_id'] = $db->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);

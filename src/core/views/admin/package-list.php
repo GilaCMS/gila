@@ -44,7 +44,7 @@ foreach ($packages as $pkey=>$p) if($p->package!='core' || Gila::config('env')==
 
   // Logo
   if (file_exists($dir."{$p->package}/logo.png")) {
-    $table .= '<img class="fa fa-3x logo-3x" src="'."src/{$p->package}/logo.png".'"/>';
+    $table .= '<img class="fa fa-3x logo-3x" src="'."lzld/thumb?src=src/{$p->package}/logo.png".'"/>';
   } else if (isset($p->logo) && $p->logo!='') {
     $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
   } else {
@@ -165,7 +165,6 @@ function addon_download(p) {
     } else {
       g.alert("<?=__('_package_not_downloaded')?>",'warning');
     }
-    this.style.color="#000";
   }
 )};
 

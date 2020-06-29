@@ -10,7 +10,7 @@ if($path[0]=='.') {
   }
 }
 Session::key('media_path', $path);
-Session::key('media_tabs', 'uploads');
+Session::key('media_tab', 'uploads');
 
 $dpath = realpath(SITE_PATH.$upload_folder);
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));
@@ -27,20 +27,20 @@ View::script('core/admin/media.js');
 View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
 
-<div id='admin-media-div'><div class='fullwidth bordered inline-flex'>
+<div id='admin-media-div'><div class='fullwidth inline-flex' style="gap:0.2em">
   <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
   <i class='fa fa-arrow-left'></i></a>
   <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
-<?php if(Gila::hasPrivilege('admin upload_assets')){ ?>
+<?php if(Session::hasPrivilege('admin upload_assets')){ ?>
   <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
   accept="image/*,video/*,audio/*" onchange='gallery_upload_files()'
   multiple data-path="<?=$path?>" data-csrf="<?=gForm::getToken()?>">
 <?php } ?>
-  <span class="g-group-item fullwidth" style="position:relative;">
-    <input class='g-input input-filter fullwidth' style="height:100%" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
-    <i class="fa fa-filter" style="position:absolute;margin:12px;right:0;top:0"></i>
+  <span class="g-group-item fullwidth" style="position:relative;padding:0">
+    <input class='g-input input-filter fullwidth' style="margin:0" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
+    <i class="fa fa-filter" style="position:absolute;margin:0.3em;right:0.3em;top:0.3em"></i>
   </span>
-  <?php if(Gila::hasPrivilege('admin edit_assets')){ ?>
+  <?php if(Session::hasPrivilege('admin edit_assets')){ ?>
   <button class="btn btn-white" onclick="gallery_create('<?=$path?>')"><i class="fa fa-folder-o"></i></button>
   <button class="btn btn-white" onclick="gallery_move_selected('<?=$path?>')"><strong>N</strong></button>
   <button class="btn btn-white" onclick="gallery_refresh_thumb('<?=$path?>')"><i class="fa fa-refresh"></i></button>

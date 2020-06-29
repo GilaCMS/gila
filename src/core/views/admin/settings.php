@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 View::script('core/admin/media.js');
 View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
-<style>.g-switch{z-index:1}#settings-form>div>div{width:33%;display:inline-block}</style>
+<style>.g-switch{z-index:1}#settings-form>div>*{width:33%;display:inline-block}</style>
 
 <div class="gm-12">
 <?php View::alerts(); ?>
@@ -42,8 +42,8 @@ View::script('core/lang/content/'.Gila::config('language').'.js');
 <?php
 foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <br><div class="gm-12">
-  <label class="gm-4"><?=__($value)?></label>
-  <input name="gila_<?=$key?>" value="<?=Gila::config($key)?>" class="gm-4" />
+  <label class="g-label gm-4"><?=__($value)?></label>
+  <input class="g-input" name="gila_<?=$key?>" value="<?=Gila::config($key)?>" class="gm-4" />
   </div>
 <?php } ?>
 
@@ -54,7 +54,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <?php echo gForm::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Gila::config('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
-    <label class="gm-4"><?=__("Timezone")?></label>
+    <label class="g-label gm-4"><?=__("Timezone")?></label>
     <select name="gila_timezone" value="<?=Gila::config('timezone')?>" class="gm-4">
     <?php
     foreach (DateTimeZone::listIdentifiers() as $value) {
@@ -66,7 +66,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   </div>
 
   <br><div class="gm-12">
-    <label class="gm-4"><?=__("Language")?></label>
+    <label class="g-label gm-4"><?=__("Language")?></label>
     <select name="gila_language" value="<?=Gila::config('language')?>" class="gm-4">
     <?php
     $languages = include('src/core/lang/languages.php');
@@ -79,18 +79,18 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   </div>
 
   <br><div class="gm-12">
-    <label class="gm-4"><?=__("Admin Logo")?></label>
+    <label class="g-label gm-4"><?=__("Admin Logo")?></label>
     <div class="gm-4" style="display:inline-flex"><span class="g-group">
       <span class="btn g-group-item" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
-      <span class="g-group-item"><input class="fullwidth" value="<?=Gila::config('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
+      <span class="g-group-item"><input class="fullwidth g-input" value="<?=Gila::config('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
     </span></div>
   </div>
 
   <br><div class="gm-12">
-    <label class="gm-4"><?=__("Favicon")?></label>
+    <label class="g-label gm-4"><?=__("Favicon")?></label>
     <div class="gm-4" style="display:inline-flex"><span class="g-group">
       <span class="btn g-group-item" onclick="open_media_gallery('#m_favicon')"><i class="fa fa-image"></i></span>
-      <span class="g-group-item"><input class="fullwidth" value="<?=Gila::config('favicon')?>" id="m_favicon" name="gila_favicon"></span>
+      <span class="g-group-item"><input class="fullwidth g-input" value="<?=Gila::config('favicon')?>" id="m_favicon" name="gila_favicon"></span>
     </span></div>
   </div>
 
@@ -106,10 +106,10 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <?php echo gForm::input('gila_rewrite', ["type"=>"switch"], Gila::config('rewrite'), __("Pretty Urls")) ?>
 
   <br><div class="gm-12">
-  <label class="gm-4"><?=__("Default Controller")?></label>
+  <label class="g-label gm-4"><?=__("Default Controller")?></label>
   <select name="gila_dc" value="<?=Gila::config('default-controller')?>" class="gm-4">
   <?php
-  foreach (Router::$controllers as $k=>$value) if($value[0] != '.') if(!in_array($k,['cm','login','webhook','fm','lzld'])){
+  foreach (Router::$controllers as $k=>$value) if($value[0] != '.') if(!in_array($k,['cm','login','webhook','fm','lzld','blocks'])){
     $sel = (Gila::config('default-controller')==$k?'selected':'');
     echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
   }
@@ -128,7 +128,7 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
 
   <br>
   <div class="gm-12">
-  <label class="gm-4"><?=__("Max Media Upload")?> (px)</label>
+  <label class="g-label gm-4"><?=__("Max Media Upload")?> (px)</label>
   <input name="gila_maxImgWidth" value="<?=Gila::config('maxImgWidth')?>" type="number" class="gm-2" style="width:120px"/>
   &times;
   <input name="gila_maxImgHeight" value="<?=Gila::config('maxImgHeight')?>" type="number" class="gm-2" style="width:120px" />

@@ -24,14 +24,6 @@ Gila CMS
 Gila CMS is a content management system made in PHP and MySql.
 Built with MVC architecture, is very easy to develop on it any costumized solution.
 
-
-Installation
-============
-1. Create a new database and a user with all privileges in MySql
-2. Run /install in your browser
-3. Fill all fields with the database credentials and the admin's data of the website
-4. The installation is complete
-
 Download
 ========
 ```
@@ -41,6 +33,13 @@ composer create-project gilacms/gila
 # with git
 git clone https://github.com/GilaCMS/gila.git gila
 ```
+
+Installation
+============
+1. Create a new database and a user with all privileges in MySql
+2. Run /install in your browser
+3. Fill all fields with the database credentials and the admin's data of the website
+4. The installation is complete
 
 Run with Docker
 ===============

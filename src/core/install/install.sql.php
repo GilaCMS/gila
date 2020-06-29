@@ -101,7 +101,7 @@ $_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
 $link->query("INSERT INTO userrole(id,userrole) VALUES(1,'Admin');");
 $link->query("INSERT INTO user(id,username,email,pass,active,reset_code)
   VALUES(1,'$_user','$_email','$_pass',1,'');");
-$link->query("INSERT INTO usermeta VALUES(1,1,'privilege','admin');");
+$link->query("INSERT INTO usermeta VALUES(1,1,'role',1);");
 $link->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
   VALUES(1,1,'Hello World','hello_world','This is the first post. You can edit it from administration.','This is the first post',1,CURRENT_TIMESTAMP);");
 $link->query("INSERT INTO page(id,title,slug,content,publish,updated,template)

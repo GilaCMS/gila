@@ -231,22 +231,10 @@ class cm extends Controller
 
     if(isset($_GET['id']) && $_GET['id']>0 && $pnk->can('update')) {
       $id = $_GET['id'];
-    } else if($pnk->can('create')) {
-      $insert_fields = [];
-      $insert_values = [];
-      // add the filter values
-      foreach($pnk->getTable()['fields'] as $field=>$value) {
-        if (isset($_GET[$field])) {
-          $insert_fields[]=$field;
-          $insert_values[]=(int)$_GET[$field];
-        }
-      }
-      $fnames = implode(',',$insert_fields);
-      $values = implode(',',$insert_values);
-      $q = "INSERT INTO {$pnk->name()}($fnames) VALUES($values);";
-      $res = $db->query($q);
-      $id = $db->insert_id;
-    } else return;
+    } else {
+      $id = $pnk->createRow($_GET);
+      if($id===0) return;
+    }
 
     $result = [];
     $ids = explode(',',$id);
@@ -294,8 +282,8 @@ class cm extends Controller
     $result = [];
     $data = $_POST;
 
-    $pnk->event('create', $data);
     if(isset($_POST['id'])) {
+      $pnk->event('create', $data);
       $fields = $pnk->fields('clone');
       if (($idkey = array_search($pnk->id(), $fields)) !== false) {
         unset($fields[$idkey]);
@@ -304,10 +292,10 @@ class cm extends Controller
       $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
       $res = $db->query($q, $_POST['id']);
       $id = $db->insert_id;
+      // TODO copy meta values and links
     } else {
-      $res = $db->query("INSERT INTO {$pnk->name()}() VALUES();");
-      $id = $db->insert_id;
-      if($id==0) {
+      $id = $pnk->createRow($data);
+      if($id===0) {
         echo "Row was not created. Does this table exist?";
         exit;
       } else {
@@ -369,6 +357,18 @@ class cm extends Controller
     } else {
       echo gForm::html($pnk->getFields('edit'));
     }
+
+    $child_id = '<span id="edit_popup_child"></span>';
+    foreach($pnk->getTable()['children']??[] as $ckey=>$child) {
+      echo $child_id;
+      $child_id = "";
+      echo '<g-table v-if="id>0" gtype="'.$ckey.'" gchild=1 ';
+      echo 'gtable="'.htmlentities(json_encode($child['table'])).'" ';
+      echo 'gfields="'.htmlentities(json_encode($child['list'])).'" ';
+      echo ':gfilters="\'&amp;'.$child['parent_id'].'=\'+id">';
+      echo '</g-table>';
+    }
+
     echo '</div></form>';
   }
 

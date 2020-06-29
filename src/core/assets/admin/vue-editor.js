@@ -71,7 +71,7 @@ Vue.component('vue-editor', {
     </div>\
   </div>',
 
-  data: function(){ return mydata },
+  data: function(){ mydata.content=this.text; return mydata; },
   props: ['buttons','text','name'],
   created: function () {
     if(typeof this.buttons!='undefined') this.buttons_i=this.buttons.split(' ')
@@ -108,9 +108,6 @@ Vue.component('vue-editor', {
         break
         case 'insertNode':
         this.insertNode(args[0],args[1],args[2],args[3])
-        break
-        case 'saveHtml':
-        this.saveHtml()
         break
       }
     },
@@ -246,9 +243,6 @@ Vue.component('vue-editor', {
     },
     figureEdit: function(obj) {
       this.figure=obj
-    },
-    saveHtml: function() {
-      console.log(document.getElementById(this.areaID).innerHTML)
     },
     onEditor: function () {
       el = document.getElementById(this.areaID)

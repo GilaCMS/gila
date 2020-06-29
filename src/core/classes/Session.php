@@ -82,6 +82,7 @@ class Session
     }
     header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
     User::meta($id, 'GSESSIONID', $gsession, true);
+    $_COOKIE['GSESSIONID'] = $gsession;
     self::createFile($gsession);
   }
 
@@ -210,6 +211,17 @@ class Session
       $wait = $wait<0? 0: $wait;
     }
     return $wait;
+  }
+
+  static function hasPrivilege ($pri)
+  {
+    if(!is_array($pri)) $pri=explode(' ',$pri);
+    if(!isset($GLOBALS['user_privileges'])) {
+      $GLOBALS['user_privileges'] = core\models\User::permissions(Session::userId());
+    }
+
+    foreach($pri as $p) if(@in_array($p,$GLOBALS['user_privileges'])) return true;
+    return false;
   }
 
 }

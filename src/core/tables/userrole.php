@@ -8,7 +8,7 @@ return [
   'tools'=>["add","csv"],
   'csv'=>["id","userrole"],
   'lang'=>'core/lang/admin/',
-  "commands"=> ["edit"],
+  "commands"=> ["edit_popup"],
   'permissions'=>[
     'create'=>['admin','admin_userrole'],
     'read'=>['admin','admin_userrole'],

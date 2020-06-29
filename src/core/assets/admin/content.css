@@ -21,7 +21,7 @@
 }
 
 .g-table table tbody tr:hover td {
-  background: #e8e8e8;
+  background: #f4f4f4;
 }
 
 .g-table table tbody tr:hover .g-com {
@@ -80,7 +80,7 @@
   font-size: 13px;
   border-collapse: collapse;
 }
-.g-table table td {
+.g-table tbody td {
   border-top: 1px solid #ddd;
 }
 .g-table table th {
@@ -203,13 +203,12 @@
   cursor: pointer
 }
 
-.ui-selecting {
-  background: #FECA40;
+tr.selecting td, tr.selecting td:hover {
+  background-color: #d0d0ff;
 }
 
-.ui-selected {
-  background: #F39814 !important;
-  color: white;
+tr.selected td {
+  background-color: #d0d0ff!important;
 }
 
 .g-icon {
@@ -219,9 +218,7 @@
 }
 
 .g-sorti {
-  opacity: 0.2;
-  position: absolute;
-  right: 0;
+  opacity: 0.3;
 }
 
 th:hover .g-sorti, .sort-desc, .sort-asc {
@@ -350,16 +347,28 @@ td[col] .g-input {
   font-size: 0.8em;
 }
 
-.g-table table th {
+.g-table table thead {
   position:sticky;
   top:0;
   z-index:1;
 }
 
-.g-table .g-table {
+.g-table .g-table, .g-form .g-table  {
   border: 1px solid lightgrey;
   border-left: 4px solid lightgreen;
   margin-top: 2em;
+  grid-column: 1/-1;
+}
+
+.g-form .g-table-title {
+  margin-left: 0.5em;
+}
+.g-form .g-input {
+  width:100%;
+}
+.type-list .g-input {
+  width:auto;
+  margin-left:1px;
 }
 
 .g-table-title {

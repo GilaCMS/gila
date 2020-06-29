@@ -24,7 +24,7 @@ return [
       'title'=>'Title',
     ],
     'slug'=> [
-      'title'=>'Slug',
+      'title'=>'Path',
     ],
     'publish'=> [
       'title'=>'Public',
