@@ -236,6 +236,7 @@ button:hover{
 .btn-success{background-color:var(--main-success-color)!important}
 .btn-warning{background-color:var(--main-warning-color)!important}
 .btn-primary{background-color:var(--main-primary-color)!important}
+.btn-grey{background-color:grey!important}
 .btn-danger,.btn-error{background-color:var(--main-error-color)!important}
 .btn-sm{padding:4px}
 
@@ -293,7 +294,7 @@ textare.g-input, .g-input[type=text] {
 
 /* Radios */
 .g-radio input{display: none;}
-.g-radio label{background:var(--main-input-color);border-radius:4px}
+.g-radio label{background:var(--main-input-color);padding: var(--main-padding);}
 .g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
 /* Toggle switch */

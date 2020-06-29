@@ -13,7 +13,7 @@ return [
     'name'=> 'widget',
     'title'=> 'Widgets',
     'id'=>'id',
-    'tools'=>['add'],
+    'tools'=>['add_popup'],
     'commands'=>['edit_widget','delete'],
     'list'=> ['id','title','widget','area','pos','active'],
     'csv'=> ['id','title','widget','area','pos','active'],

@@ -5,7 +5,7 @@ return [
   'title'=> 'Users',
   'pagination'=> 15,
   'tools'=>['add','csv'],
-  'commands'=>['edit_popup'],
+  'commands'=>['edit'],
   'id'=>'id',
   'lang'=>'core/lang/admin/',
   'permissions'=>[
