@@ -3,33 +3,23 @@
 
 class DbBackup
 {
-  private $dir;
+  static private $dir;
 
-  function __construct()
+  static function setDirectory($x)
   {
-    $this->dir = Gila::dir(LOG_PATH.'/db-backups/');
+    self::$dir = $x;
+  }
 
-    if (gForm::posted('db_backup')) {
-      $this->backupTables();
-    }
-    if (isset($_GET['csrf']) && gForm::verifyToken($_GET['csrf'], 'db_backup2')) {
-      if (isset($_GET['source'])) $this->source($_GET['source']);
-      if (isset($_GET['download'])) {
-        $this->download($_GET['download']);
-        return;
-      }
-    }
-
-    View::set('dbBackupDir',$this->dir);
-    View::set('csrf',gForm::getToken('db_backup2'));
-    View::renderAdmin('admin/db_backup.php');
+  static function getDirectory()
+  {
+    return self::$dir;
   }
 
   /**
   * Backup the whole database or just a table
   * @param $tables optional (Array) The tables to backup. Default: '*'(all)
   */
-  function backupTables($tables = '*')
+  static function backupTables($tables = '*')
   {
     global $db;
     $return = '';
@@ -43,7 +33,7 @@ class DbBackup
       $tables = is_array($tables) ? $tables : explode(',',$tables);
     }
 
-    $handle = fopen($this->dir.'db-'.date("Y-m-d").'.sql','w+');
+    $handle = fopen(self::$dir.'db-'.date("Y-m-d").'.sql','w+');
 
     foreach ($tables as $table)
     {
@@ -66,7 +56,8 @@ class DbBackup
             AND `option` NOT LIKE "%_token"
             AND `option` NOT LIKE "%Key"
             AND `option` NOT LIKE "%Token"
-            LIMIT '.$row_n.',100;');
+            LIMIT '.$row_n.',100000;');
+            $row_n = $num_rows;
         } else {
           $result = $db->query('SELECT * FROM '.$table.' LIMIT '.$row_n.',100;');
         }
@@ -118,10 +109,10 @@ class DbBackup
   * Restore  database from a source file
   * @param $file (string) Relative path of the file
   */
-  function source($file) {
+  static function source($file) {
     global $db;
     $file = basename($file);
-    $db->multi_query(file_get_contents($this->dir.$file));
+    $db->multi_query(file_get_contents(self::$dir.$file));
     View::alert('success',"Backup loaded successfully!");
   }
 
@@ -129,11 +120,11 @@ class DbBackup
   * Returns a source file for download
   * @param $file (string) Relative path of the file
   */
-  function download($file) {
+  static function download($file) {
     $file = basename($file);
-    if(file_exists($this->dir.$file)) {
+    if(file_exists(self::$dir.$file)) {
       header("Content-Disposition:attachment;filename=$file");
-      readfile($this->dir.$file);
+      readfile(self::$dir.$file);
     } else {
       http_response_code(404);
     }

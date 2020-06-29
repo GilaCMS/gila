@@ -23,8 +23,7 @@ Gila::$amenu = [
     ['Widgets','admin/content/widget','icon'=>'th-large','access'=>'admin editor'],
     ['Packages','admin/packages','icon'=>'dropbox','access'=>'admin'],
     ['Themes','admin/themes','icon'=>'paint-brush','access'=>'admin'],
-    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin'],
-    ['BD Backups','admin/db_backup','icon'=>'database','access'=>'admin'],
+    ['Settings','admin/settings','icon'=>'cogs','access'=>'admin']
   ]],
   ['Posts','admin/content/user-post','icon'=>'pencil','access'=>'writer'],
 ];

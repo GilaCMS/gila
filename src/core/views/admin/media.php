@@ -1,5 +1,4 @@
 <?php
-Event::fire('admin::media-view', [$path]);
 
 echo "<input id='selected-path' type='hidden'>";
 echo "<input id='selected-image-caption' type='hidden'>";

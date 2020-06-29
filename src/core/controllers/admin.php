@@ -229,13 +229,8 @@ class admin extends Controller
   function mediaAction()
   {
     View::renderAdmin('admin/media.php');
-    Event::fire('admin::media');
   }
 
-  function db_backupAction()
-  {
-    new DbBackup();
-  }
 
   function fmAction()
   {
@@ -250,12 +245,6 @@ class admin extends Controller
     }
   }
 
-  function sqlAction()
-  {
-    self::access('admin');
-    if($q=$_POST['query']) View::set('q', $q);
-    View::renderAdmin('admin/sql.php');
-  }
 
   function profileAction()
   {
