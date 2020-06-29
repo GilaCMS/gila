@@ -3,41 +3,6 @@ edit_popup_app = null
 
 Vue.component('g-table', {
   template: '<div class="g-table">\
-    <div v-if="edititem==0" class="g-table-head">\
-      <div>\
-      <div class="g-table-title" v-html="table.title"></div>\
-        <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
-          <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-          @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
-          @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
-          <svg height="24" width="24" style="position:absolute;right:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
-        </div>\
-        <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
-          <select v-model="group" class="g-input" @change="runsearch()">\
-          <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
-          </select>\
-        </div>\
-        <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
-          <label>&nbsp;{{field_label(sb)}}</label>\
-          <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
-            <option value="" selected>-</option>\
-            <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
-          </select>\
-          <div v-else style="position:relative;display:inline-block">\
-            <input v-model="search" class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
-            <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
-          </div>\
-        </div>\
-      </div>\
-      <div>\
-        <span v-if="table.bulk_actions && selected_rows.length>0">\
-          <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
-        </span>\
-        <span v-if="table.tools">\
-          <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
-        </span>\
-      </div>\
-    </div>\
     <div v-if="edititem" class="edititem">\
       <span v-if="edititem>0 || edititem==\'new\'" class="btn" @click="edititem=0"><i class="fa fa-chevron-left" aria-hidden="true"></i></span> \
       <label class="g-label" v-html="table.title"></label>\
@@ -57,6 +22,41 @@ Vue.component('g-table', {
 \
     <table v-if="edititem==0 || child==1" class="" cur-page="1"  group-by="" style="position:relative">\
     <thead>\
+      <tr><td colspan=100>\
+        <div v-if="edititem==0" class="g-table-head">\
+        <div><div class="g-table-title" v-html="table.title"></div>\
+          <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
+            <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
+            @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+            @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text" style="padding-left:28px">\
+            <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+          </div>\
+          <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
+            <select v-model="group" class="g-input" @change="runsearch()">\
+            <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
+            </select>\
+          </div>\
+          <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
+            <label>&nbsp;{{field_label(sb)}}</label>\
+            <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
+              <option value="" selected>-</option>\
+              <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
+            </select>\
+            <div v-else style="position:relative;display:inline-block">\
+              <input v-model="search" class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
+              <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+            </div>\
+          </div>\
+        </div>\
+        <div>\
+          <span v-if="table.bulk_actions && selected_rows.length>0">\
+            <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
+          </span>\
+          <span v-if="table.tools">\
+            <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
+          </span>\
+        </div></div></td>\
+      </tr>\
       <tr>\
         <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\
           <i :class="checkboxClassBulk()" aria-hidden="true"></i>\
@@ -71,7 +71,7 @@ Vue.component('g-table', {
       </tr>\
     </thead>\
     <tbody>\
-      <tr v-for="(row,irow) in data.rows" :row-id="irow">\
+      <tr v-for="(row,irow) in data.rows" :row-id="irow" :class="{selected:selectedRow(row[0])}">\
         <td v-if="table.bulk_actions" @click="select_row(row[0], irow, $event)">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
@@ -393,8 +393,11 @@ Vue.component('g-table', {
     },
     checkboxClass: function(irow){
       cl = ''
-      if(this.selected_rows.indexOf(irow)>-1) cl='fa-check-square-o'; else cl='fa-square-o';
+      if(this.selectedRow(irow)) cl='fa-check-square-o'; else cl='fa-square-o';
       return 'fa tr_checkbox '+cl;
+    },
+    selectedRow: function(irow){
+      return this.selected_rows.indexOf(irow)>-1;
     },
     checkboxClassBulk: function(){
       cl = 'fa-square-o'

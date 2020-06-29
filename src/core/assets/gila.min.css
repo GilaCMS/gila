@@ -549,6 +549,9 @@ textare.g-input, .g-input[type=text] {
 .g-nav li{
   display:block;
 }
+.g-tabs li{
+  display:inline-block;
+}
 @media (min-width:600px) {
   .g-nav li{
     display:inline-block;
@@ -669,8 +672,8 @@ textare.g-input, .g-input[type=text] {
   }
 }
 
-.g-table tr:hover td{
-  background-color:#f8f8f8!important;
+.g-table tbody tr:hover td{
+  background-color:#f8f8f8;
 }
 .g-table th{
   text-align:left;
@@ -682,7 +685,7 @@ textare.g-input, .g-input[type=text] {
   background:white;
   overflow-wrap: break-word;
 }
-.g-table td{
+.g-table tbody td{
   border-top:1px solid var(--main-border-color);
 }
 .g-table.bordered{

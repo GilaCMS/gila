@@ -257,12 +257,17 @@ class Package
   */
   static function saveOptions($package)
   {
-    if (file_exists('src/'.$package)) {
-      global $db;
-      foreach($_POST['option'] as $key=>$value) {
-        $ql="INSERT INTO `option`(`option`,`value`) VALUES('$package.$key','$value')
-          ON DUPLICATE KEY UPDATE `value`='$value';";
-        $db->query($ql);
+    global $db;
+    $jsonFile = 'src/'.$package.'/package.json';
+    if (file_exists($jsonFile)) {
+      $data = json_decode(file_get_contents($jsonFile),true);
+      foreach($_POST['option'] as $key=>$value) if(isset($data['options'][$key])){
+        if(!isset($data['options'][$key]['allow_tags'])
+            || $data['options'][$key]['allow_tags']===false) {
+          $value=strip_tags($value);
+        }
+        $ql="INSERT INTO `option`(`option`,`value`) VALUES(?,?) ON DUPLICATE KEY UPDATE `value`=?;";
+        $db->query($ql, [$package.'.'.$key, $value, $value]);
       }
       if(Gila::config('env')==='pro') unlink(LOG_PATH.'/load.php');
     }
