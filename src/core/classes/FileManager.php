@@ -38,7 +38,7 @@ class FileManager
       'avi','webm','mp4','mkv','ogg'
     ];
     if(is_dir($path)) return true;
-    if(Gila::config('allow_filetypes') && Gila::hasPrivilege('admin')) {
+    if(Gila::config('allow_filetypes') && Session::hasPrivilege('admin')) {
       $filetypes = merge_array($filetypes, Gila::config('allow_filetypes'));
     }
     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));

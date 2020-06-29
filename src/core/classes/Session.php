@@ -213,4 +213,15 @@ class Session
     return $wait;
   }
 
+  static function hasPrivilege ($pri)
+  {
+    if(!is_array($pri)) $pri=explode(' ',$pri);
+    if(!isset($GLOBALS['user_privileges'])) {
+      $GLOBALS['user_privileges'] = core\models\User::permissions(Session::userId());
+    }
+
+    foreach($pri as $p) if(@in_array($p,$GLOBALS['user_privileges'])) return true;
+    return false;
+  }
+
 }

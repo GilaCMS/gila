@@ -19,7 +19,7 @@ class Controller
 
   static function access($pri)
   {
-    if(Gila::hasPrivilege($pri)===false) {
+    if(Session::hasPrivilege($pri)===false) {
       http_response_code(403);
       exit;
     }

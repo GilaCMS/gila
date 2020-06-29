@@ -23,7 +23,7 @@ class Menu
   {
     $html = "";
     foreach ($items as $key => $item) {
-      if(isset($item['access'])) if(!Gila::hasPrivilege($item['access'])) continue;
+      if(isset($item['access'])) if(!Session::hasPrivilege($item['access'])) continue;
       if(isset($item['icon'])) $icon = 'fa-'.$item['icon']; else $icon='';
       $url = $item[1]=='#'? 'javascript:void(0)': $item[1];
       $badge = "";

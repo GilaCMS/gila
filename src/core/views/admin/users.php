@@ -1,7 +1,7 @@
 <?php
 
 $links = [];
-if(Gila::hasPrivilege('admin admin_user')) {
+if(Session::hasPrivilege('admin admin_user')) {
   $links[] = ['Users', function() {
     $type = 'user';
     $src = explode('.', Gila::$content[$type])[0];
@@ -11,7 +11,7 @@ if(Gila::hasPrivilege('admin admin_user')) {
   }];
 }
 
-if(Gila::hasPrivilege('admin admin_userrole')) {
+if(Session::hasPrivilege('admin admin_userrole')) {
   $links[] = ['Roles', function() {
     $type = 'userrole';
     $src = explode('.', Gila::$content[$type])[0];
@@ -21,7 +21,7 @@ if(Gila::hasPrivilege('admin admin_userrole')) {
   }];
 }
 
-if(Gila::hasPrivilege('admin admin_permissions')) {
+if(Session::hasPrivilege('admin admin_permissions')) {
   $links[] = ['Permissions',function(){
     View::renderFile('admin/permissions.php');
   }];

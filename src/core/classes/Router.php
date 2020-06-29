@@ -232,7 +232,7 @@ class Router
       if(preg_match('#^'.$route[0].'$#', self::$url,$matches)) {
         $matched = true;
         if(self::$method == $route[2]) {
-          if($route[3]!==null && Gila::hasPrivilege($route[3])===false) {
+          if($route[3]!==null && Session::hasPrivilege($route[3])===false) {
             @http_response_code(403);
           } else {
             array_shift($matches);

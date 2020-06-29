@@ -2,7 +2,7 @@
 <?php View::alerts()?>
 <style>#main-wrapper>div{background: inherit !important;border:none}</style>
 <div class='row'>
-<?php if(Gila::hasPrivilege('admin')) { ?>
+<?php if(Session::hasPrivilege('admin')) { ?>
   <div class='gm-3 wrapper'>
     <a href="admin/content/post">
       <div class='alert' style="background:olivedrab">
@@ -35,7 +35,7 @@
       </div>
     </a>
   </div>
-<?php } else if(Gila::hasPrivilege('editor')) { ?>
+<?php } else if(Session::hasPrivilege('editor')) { ?>
   <div class='gm-6 wrapper'>
     <a href="admin/content/post">
       <div class='alert' style="background:olivedrab">
