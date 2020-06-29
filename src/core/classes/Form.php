@@ -180,7 +180,7 @@ class Form
         </span></span></div>';
       },
       "textarea"=> function($name,$field,$ov) {
-        return '<textarea class="g-input fullwidth" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth" name="'.$name.'" style="resize:vertical;">'.htmlentities($ov).'</textarea>';
       },
       "codemirror"=> function($name,$field,$ov) {
         return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';

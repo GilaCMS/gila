@@ -366,6 +366,10 @@ td[col] .g-input {
 .g-form .g-input {
   width:100%;
 }
+.type-list .g-input {
+  width:auto;
+  margin-left:1px;
+}
 
 .g-table-title {
   display: inline-block;

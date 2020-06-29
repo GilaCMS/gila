@@ -18,7 +18,7 @@ if($path!='src') {
   if($acceptedPath == false) $path = 'src';
 }
 Session::key('asset_path', $path);
-Session::key('media_tabs', 'assets');
+Session::key('media_tab', 'assets');
 $disabled = ($path=='')?'disabled':'';
 
 $files=[];

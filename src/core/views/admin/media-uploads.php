@@ -10,7 +10,7 @@ if($path[0]=='.') {
   }
 }
 Session::key('media_path', $path);
-Session::key('media_tabs', 'uploads');
+Session::key('media_tab', 'uploads');
 
 $dpath = realpath(SITE_PATH.$upload_folder);
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));
