@@ -22,21 +22,25 @@ return [
     ],
     'title'=> [
       'title'=>'Title',
+      'qtype'=>'varchar(80) DEFAULT NULL'
     ],
     'slug'=> [
       'title'=>'Path',
+      'qtype'=>'varchar(80) DEFAULT NULL'
     ],
     'publish'=> [
       'title'=>'Public',
       'style'=>'width:8%',
       'type'=>'checkbox',
-      'edit'=>true
+      'edit'=>true,
+      'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'template'=> [
       'title'=>'Template',
       'template'=>'page',
       'type'=>'template',
-      'edit'=>true
+      'edit'=>true,
+      'qtype'=>'varchar(30) DEFAULT NULL'
     ],
     'content'=> [
       'title'=>'Content',
@@ -44,7 +48,8 @@ return [
       'edit'=>true,
       'type'=>'textarea',
       'input_type'=>'tinymce',
-      'allow_tags'=>true
+      'allow_tags'=>true,
+      'qtype'=>'TEXT'
     ]
   ]
 ];
