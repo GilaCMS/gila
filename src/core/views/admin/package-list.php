@@ -10,8 +10,10 @@ function dl_btn($param, $class, $text) {
 
 if(Package::check4updates()) {
   $upgrated = 0;
-  $toupdate = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'),true);
-  foreach($toupdate as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
+  $upgrateList = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'),true);
+  $upgrateN = count($upgrateList);
+
+  foreach($upgrateList as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
     if(version_compare($newv, $packages[$newp]->version) == 1) {
       $logo = $dir."$newp/logo.png";
       $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;<b>";
@@ -23,8 +25,10 @@ if(Package::check4updates()) {
     } else {
       $upgrated++;
     }
+  } else {
+    $upgrateN--;
   }
-  if(count($toupdate) == $upgrated) {
+  if($upgrateN === $upgrated) {
     unlink(LOG_PATH.'/packages2update.json');
   }
 }

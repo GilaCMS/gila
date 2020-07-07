@@ -1,6 +1,7 @@
 <?php
 namespace core\models;
 use Gila;
+use HtmlInput;
 
 class widget
 {
@@ -33,20 +34,14 @@ class widget
 
     foreach($data['option'] as $key=>$value) {
       $allowed = $fields[$key]['allow_tags'] ?? false;
-      if($allowed==false) {
-        if(!json_decode($data['option'][$key])) {
-          $data['option'][$key] = strip_tags($data['option'][$key]);
-        }
-      } else if($allowed!==true) {
-        $data['option'][$key] = strip_tags($data['option'][$key], $allowed);
-        $data['option'][$key] = str_replace('="javascript:' ,'="', $data['option'][$key]);
-      }
+      $data['option'][$key] = HtmlInput::purify($data['option'][$key], $allowed);
     }
     $widget_data = isset($data['option']) ? json_encode($data['option']) : '[]';
+    $title = HtmlInput::purify($data['widget_title']);
 
     $db->query("UPDATE widget SET data=?,area=?,pos=?,title=?,active=? WHERE id=?",
-      [$widget_data, $data['widget_area'], $data['widget_pos'],
-      strip_tags($data['widget_title']), $data['widget_active'], $data['widget_id']]);
+      [$widget_data, $data['widget_area'], $data['widget_pos']??0,
+      $title, $data['widget_active']??0, $data['widget_id']]);
 
     $r = $db->get("SELECT * FROM widget WHERE id=?",[$data['widget_id']])[0];
     return json_encode(['fields'=>['id','title','widget','area','pos','active'],

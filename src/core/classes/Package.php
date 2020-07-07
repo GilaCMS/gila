@@ -262,10 +262,8 @@ class Package
     if (file_exists($jsonFile)) {
       $data = json_decode(file_get_contents($jsonFile),true);
       foreach($_POST['option'] as $key=>$value) if(isset($data['options'][$key])){
-        if(!isset($data['options'][$key]['allow_tags'])
-            || $data['options'][$key]['allow_tags']===false) {
-          $value=strip_tags($value);
-        }
+        $allowed = $data['options'][$key]['allow_tags'] ?? false;
+        $value = HtmlInput::purify($value, $allowed);
         $ql="INSERT INTO `option`(`option`,`value`) VALUES(?,?) ON DUPLICATE KEY UPDATE `value`=?;";
         $db->query($ql, [$package.'.'.$key, $value, $value]);
       }

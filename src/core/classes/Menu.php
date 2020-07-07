@@ -25,7 +25,7 @@ class Menu
     foreach ($items as $key => $item) {
       if(isset($item['access'])) if(!Session::hasPrivilege($item['access'])) continue;
       if(isset($item['icon'])) $icon = 'fa-'.$item['icon']; else $icon='';
-      $url = $item[1]=='#'? 'javascript:void(0)': $item[1];
+      $url = $item[1]=='#'? 'javascript:void(0)': htmlentities($item[1]);
       $badge = "";
       if(isset($item['counter'])) {
         $c = is_callable($item['counter'])? $item['counter'](): $item['counter'];

@@ -328,6 +328,10 @@ Vue.component('g-table', {
         return '<div style="text-align:right">'+dv+'</div>';
       }
 
+      if(displayType=='text') if (rv.text.length>100) {
+        return rv.text.substring(0, 97)+"...";
+      }
+
 
       if (typeof field.options != "undefined") if(cv!==null) {
         if (typeof field.options[cv] != "undefined") {
