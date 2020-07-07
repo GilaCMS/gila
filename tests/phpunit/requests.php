@@ -8,6 +8,7 @@ include(__DIR__.'/../../src/core/classes/Table.php');
 include(__DIR__.'/../../src/core/classes/TableSchema.php');
 include(__DIR__.'/../../src/core/classes/Form.php');
 include(__DIR__.'/../../src/core/classes/Sendmail.php');
+include(__DIR__.'/../../src/core/classes/HtmlInput.php');
 use PHPUnit\Framework\TestCase;
 $GLOBALS['config']['db']['name'] = 'g_db';
 Event::listen('sendmail', function($x){ return true; });
@@ -120,6 +121,14 @@ class RequestsTest extends TestCase
     $response = $this->request('blocks/create', 'POST');
     $image = '{"_type":"image","image":"assets\/core\/photo.png"}';
     $this->assertEquals('[{"_type":"paragraph"},'.$image.']', $response);
+
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something<a onclick="alert(0)>x</a>>']];
+    $response = $this->request('blocks/update', 'POST');
+    $this->assertEquals('[{"text":"Something<a>x</a>","_type":"paragraph"},'.$image.']', $response);
+
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something<a href="javascript:alert(0)">x</a>>']];
+    $response = $this->request('blocks/update', 'POST');
+    $this->assertEquals('[{"text":"Something<a href=\"alert(0)\">x</a>","_type":"paragraph"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something']];
     $response = $this->request('blocks/update', 'POST');
