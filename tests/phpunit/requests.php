@@ -122,26 +122,26 @@ class RequestsTest extends TestCase
     $image = '{"_type":"image","image":"assets\/core\/photo.png"}';
     $this->assertEquals('[{"_type":"paragraph"},'.$image.']', $response);
 
-    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something<a onclick="alert(0)>x</a>>']];
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p  onclick="alert(0)">Something</p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"Something<a>x</a>","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p>Something</p>","_type":"paragraph"},'.$image.']', $response);
 
-    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something<a href="javascript:alert(0)">x</a>>']];
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"Something<a href=\"alert(0)\">x</a>","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p><a href=\"alert(0)\">Something</a></p>","_type":"paragraph"},'.$image.']', $response);
 
-    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'Something']];
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p>Something</p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"Something","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p>Something</p>","_type":"paragraph"},'.$image.']', $response);
 
     $_POST = ['id'=>'post_1_1'];
     $response = $this->request('blocks/delete', 'POST');
-    $this->assertEquals('[{"text":"Something","_type":"paragraph"}]', $response);
+    $this->assertEquals('[{"text":"<p>Something</p>","_type":"paragraph"}]', $response);
 
     $_POST = ['id'=>'post_1'];
     $response = $this->request('blocks/save', 'POST');
     $blocks = $db->value('SELECT blocks from post WHERE id=1;');
-    $this->assertEquals('[{"text":"Something","_type":"paragraph"}]', $blocks);
+    $this->assertEquals('[{"text":"<p>Something</p>","_type":"paragraph"}]', $blocks);
   }
 
   static function createUserTable()
