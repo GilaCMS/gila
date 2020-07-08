@@ -26,7 +26,7 @@ class TableSchemaTest extends TestCase
     TableSchema::update([
       'name'=> 'test_sc',
       'fields'=> [
-        'col2'=> [
+        'col1'=> [
           'qtype'=> 'int'
         ]
       ]
