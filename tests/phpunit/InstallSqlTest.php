@@ -30,7 +30,7 @@ class InstallSqlTest extends TestCase
 			$tableName = $table[0];
 			$columns = $db->get('DESCRIBE '.$tableName);
 			foreach($columns as $c=>$column) {
-				$this->assertEquals($tableColumn[$tableName][$c], $column);
+				$this->assertEquals($tableColumn[$tableName][$c], $column[0]);
 			}
 		}
 
