@@ -16,9 +16,9 @@ class InstallSqlTest extends TestCase
 		$this->assertEquals(9, count($tables));
 
 		$tableColumn = [
-			'post'=>['id','user_id','title','slug','description','post','publish','created','updated'],
+			'post'=>['id','title','slug','description','user_id','publish','post','updated','created'],
 			'postmeta'=>['id','post_id','vartype','value'],
-			'page'=>['id','title','slug','content','publish','template','updated'],
+			'page'=>['id','title','slug','publish','template','content','updated'],
 			'user'=>['id','username','email','pass','active','reset_code','created','updated'],
 			'usermeta'=>['id','user_id','vartype','value'],
 			'userrole'=>['id','userrole'],
@@ -27,7 +27,7 @@ class InstallSqlTest extends TestCase
 			'postcategory'=>['id','title','slug','description']	
 		];		
 		foreach($tables as $table) {
-			$columns = $db->get('DESCRIBE '.$table);
+			$columns = $db->get('DESCRIBE '.$table[0]);
 			foreach($columns as $c=>$column) {
 				$this->assertEquals($tableColumn[$table][$c], $column);
 			}

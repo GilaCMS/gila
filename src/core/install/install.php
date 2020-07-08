@@ -71,6 +71,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       file_put_contents($configfile, $filedata);
       Package::copyAssets('core');
       Theme::copyAssets('gila-blog');
+      @unlink(LOG_PATH.'/load.php');
       include __DIR__."/installed.php";
       exit;
     }
