@@ -6,7 +6,7 @@ class InstallSqlTest extends TestCase
 {
 	public function test_installSql()
 	{
-		$link = &$db->link;
+		global $db;
 		$_user='Admin';
 		$_email='admin@mail.com';
 		$_pass='password';
