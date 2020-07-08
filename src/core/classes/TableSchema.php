@@ -21,9 +21,9 @@ class TableSchema
     $db->query($q);
 
     // DESCRIBE
-    $gen = $db->getRows("DESCRIBE $tname;");
+    $rows = $db->getRows("DESCRIBE $tname;");
     $dfields = [];
-    foreach($res as $row) {
+    foreach($rows as $row) {
       $dfields[$row[0]] = [
         'type'=> $row[1],
         'null'=> $row[2],
