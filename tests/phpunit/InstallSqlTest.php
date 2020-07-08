@@ -27,9 +27,10 @@ class InstallSqlTest extends TestCase
 			'postcategory'=>['id','title','slug','description']	
 		];		
 		foreach($tables as $table) {
-			$columns = $db->get('DESCRIBE '.$table[0]);
+			$tableName = $table[0];
+			$columns = $db->get('DESCRIBE '.$tableName);
 			foreach($columns as $c=>$column) {
-				$this->assertEquals($tableColumn[$table][$c], $column);
+				$this->assertEquals($tableColumn[$tableName][$c], $column);
 			}
 		}
 
