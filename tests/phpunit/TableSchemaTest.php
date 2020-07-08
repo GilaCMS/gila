@@ -11,6 +11,8 @@ class TableSchemaTest extends TestCase
   public function test_update()
   {
     global $db;
+    $db->query('DROP TABLE test_sc;');
+
     TableSchema::update([
       'name'=> 'test_sc',
       'fields'=> [
@@ -22,16 +24,19 @@ class TableSchemaTest extends TestCase
     $describe = $db->getRows('DESCRIBE test_sc;');
     $this->assertEquals('id', $describe[0][0]);
     $this->assertEquals('varchar(40)', $describe[1][1]);
+    $this->assertEquals(null, $describe[1][3]);
 
     TableSchema::update([
       'name'=> 'test_sc',
+      'qkeys'=> ['col1'],
       'fields'=> [
         'col1'=> [
-          'qtype'=> 'int'
+          'qtype'=> 'int(4)'
         ]
       ]
     ]);
     $describe = $db->getRows('DESCRIBE test_sc;');
-    $this->assertEquals('int', $describe[1][1]);
+    $this->assertEquals('int(4)', $describe[1][1]);
+    $this->assertEquals('MUL', $describe[1][3]);
   }
 }
