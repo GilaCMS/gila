@@ -126,6 +126,7 @@ g.dialog.buttons.select_media_path = {
     let v = g('#selected-path').attr('value')
     let c = g('#selected-image-caption').attr('value')
     g('#media_dialog').parent().remove();
+    g.closeModal();
     if(v!=null) {
       elem = g(media_path_input).all[0]
       elem.value = v;

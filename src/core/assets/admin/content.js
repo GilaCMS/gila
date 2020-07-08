@@ -740,6 +740,7 @@ g.dialog.buttons.select_path = {
     let v = g('#selected-path').attr('value')
     if(v!=null) g('[name=p_img]').attr('value', base_url+v)
     g('#media_dialog').parent().remove();
+    g.closeModal();
   }
 }
 g.dialog.buttons.select_path_post = {
@@ -747,6 +748,7 @@ g.dialog.buttons.select_path_post = {
     let v = g('#selected-path').attr('value')
     if(v!=null) input_filename(base_url+v);
     g('#media_dialog').parent().remove();
+    g.closeModal();
   }
 }
 g.dialog.buttons.select_row_source = {
