@@ -1,51 +1,58 @@
 <?php
-$link->query('CREATE TABLE IF NOT EXISTS `post` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `title` varchar(80) DEFAULT NULL,
-  `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
-  `description` varchar(200),
-  `post` text,
-  `publish` int(1) DEFAULT NULL,
-  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `slug` (`slug`),
-  KEY `publish` (`publish`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+require_once('src/core/classes/TableSchema.php');
+TableSchema::update(include 'src/core/tables/post.php');
+
+//$link->query('CREATE TABLE IF NOT EXISTS `post` (
+//  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+//  `user_id` int(11) DEFAULT NULL,
+//  `title` varchar(80) DEFAULT NULL,
+//  `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
+//  `description` varchar(200),
+//  `post` text,
+//  `publish` int(1) DEFAULT NULL,
+//  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+//  PRIMARY KEY (`id`),
+//  KEY `slug` (`slug`),
+//  KEY `publish` (`publish`)
+//) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('ALTER TABLE post ADD  FULLTEXT KEY `title` (`title`,`post`);');
 
 
-$link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) DEFAULT NULL,
-  `vartype` varchar(80) DEFAULT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `post_id` (`post_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+//$link->query('CREATE TABLE IF NOT EXISTS `postmeta` (
+//  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+//  `post_id` int(11) DEFAULT NULL,
+//  `vartype` varchar(80) DEFAULT NULL,
+//  `value` varchar(255) DEFAULT NULL,
+//  PRIMARY KEY (`id`),
+//  KEY `post_id` (`post_id`)
+//) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-$link->query('CREATE TABLE IF NOT EXISTS `postcategory` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(80) DEFAULT NULL,
-  `slug` varchar(120) DEFAULT NULL,
-  `description` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+TableSchema::update(include 'src/core/tables/postcategory.php');
 
-$link->query('CREATE TABLE IF NOT EXISTS `page` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(80) DEFAULT NULL,
-  `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
-  `content` text,
-  `publish` int(1) DEFAULT NULL,
-  `template` varchar(30) DEFAULT NULL,
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `slug` (`slug`),
-  KEY `publish` (`publish`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+//$link->query('CREATE TABLE IF NOT EXISTS `postcategory` (
+//  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+//  `title` varchar(80) DEFAULT NULL,
+//  `slug` varchar(120) DEFAULT NULL,
+//  `description` varchar(200) DEFAULT NULL,
+//  PRIMARY KEY (`id`)
+//) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+
+TableSchema::update(include 'src/core/tables/page.php');
+
+//$link->query('CREATE TABLE IF NOT EXISTS `page` (
+//  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+//  `title` varchar(80) DEFAULT NULL,
+//  `slug` varchar(80) CHARACTER SET latin1 DEFAULT NULL,
+//  `content` text,
+//  `publish` int(1) DEFAULT NULL,
+//  `template` varchar(30) DEFAULT NULL,
+//  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+//  PRIMARY KEY (`id`),
+//  KEY `slug` (`slug`),
+//  KEY `publish` (`publish`)
+//) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
 $link->query('CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

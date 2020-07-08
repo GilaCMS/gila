@@ -9,6 +9,7 @@ return [
   'csv'=> ['id','title','slug','updated','publish','page'],
   'commands'=> ['edit','delete'],
   'lang'=>'core/lang/admin/',
+  'qkeys'=>['slug','publish'],
   'permissions'=>[
     'create'=>['admin', 'editor'],
     'update'=>['admin', 'editor'],
@@ -50,6 +51,15 @@ return [
       'input_type'=>'tinymce',
       'allow_tags'=>true,
       'qtype'=>'TEXT'
+    ],
+    'updated'=> [
+      'title'=>'Updated',
+      'type'=>'date',
+      'searchbox'=>'period',
+      'edit'=>false,
+      'list'=>false,
+      'create'=>false,
+      'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
     ]
   ]
 ];
