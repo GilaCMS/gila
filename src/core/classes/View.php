@@ -1,5 +1,8 @@
 <?php
 
+namespace Gila;
+use core\models\Widget;
+
 class View
 {
   private static $script = [];
@@ -279,7 +282,7 @@ class View
   static function widget ($id,$widget_exp=null)
   {
     global $db,$widget_data;
-    if($res = core\models\Widget::getById($id)){
+    if($res = Widget::getById($id)){
       $widget_data = json_decode($res[0]->data);
       $widget_type = $res[0]->widget;
     } else {
@@ -375,7 +378,7 @@ class View
   */
   static function widgetArea ($area, $div=true, $type=null, $widget_file=null)
   {
-    $widgets = core\models\Widget::getActiveByArea($area);
+    $widgets = Widget::getActiveByArea($area);
     if ($widgets) foreach ($widgets as $widget) {
       if($type != null) if($widget['widget'] != $type) continue;
 

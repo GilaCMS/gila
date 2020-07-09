@@ -1,5 +1,11 @@
 <?php
 
+use Gila\Gila; 
+use Gila\Router; 
+use Gila\Event; 
+use Gila\Db; 
+use Gila\Session; 
+
 $site_folder = 'sites/'.$_SERVER['HTTP_HOST'];
 if(file_exists($site_folder)) {
   define('SITE_PATH', $site_folder.'/');
@@ -21,27 +27,27 @@ ini_set("error_log", "log/error.log");
 
 spl_autoload_register(function ($class) {
   $classMap = [
-    'Cache'=> 'src/core/classes/Cache.php',
-    'Controller'=> 'src/core/classes/Controller.php',
-    'Db'=> 'src/core/classes/Db.php',
-    'Event'=> 'src/core/classes/Event.php',
-    'FileManager'=> 'src/core/classes/FileManager.php',
-    'Gila'=> 'src/core/classes/Gila.php',
+    'Gila\\Cache'=> 'src/core/classes/Cache.php',
+    'Gila\\Controller'=> 'src/core/classes/Controller.php',
+    'Gila\\Db'=> 'src/core/classes/Db.php',
+    'Gila\\Event'=> 'src/core/classes/Event.php',
+    'Gila\\FileManager'=> 'src/core/classes/FileManager.php',
+    'Gila\\Gila'=> 'src/core/classes/Gila.php',
     'gForm'=> 'src/core/classes/Form.php',
     'gTable'=> 'src/core/classes/Table.php',
-    'Form'=> 'src/core/classes/Form.php',
-    'Table'=> 'src/core/classes/Table.php',
-    'Image'=> 'src/core/classes/Image.php',
-    'Logger'=> 'src/core/classes/Logger.php',
-    'Menu'=> 'src/core/classes/Menu.php',
-    'Package'=> 'src/core/classes/Package.php',
-    'Router'=> 'src/core/classes/Router.php',
-    'Session'=> 'src/core/classes/Session.php',
-    'Slugify'=> 'src/core/classes/Slugify.php',
-    'Theme'=> 'src/core/classes/Theme.php',
-    'View'=> 'src/core/classes/View.php',
+    'Gila\\Form'=> 'src/core/classes/Form.php',
+    'Gila\\Table'=> 'src/core/classes/Table.php',
+    'Gila\\Image'=> 'src/core/classes/Image.php',
+    'Gila\\Logger'=> 'src/core/classes/Logger.php',
+    'Gila\\Menu'=> 'src/core/classes/Menu.php',
+    'Gila\\Package'=> 'src/core/classes/Package.php',
+    'Gila\\Router'=> 'src/core/classes/Router.php',
+    'Gila\\Session'=> 'src/core/classes/Session.php',
+    'Gila\\Slugify'=> 'src/core/classes/Slugify.php',
+    'Gila\\Theme'=> 'src/core/classes/Theme.php',
+    'Gila\\View'=> 'src/core/classes/View.php',
     'gpost'=> 'src/core/classes/HttpPost.php',
-    'HttpPost'=> 'src/core/classes/HttpPost.php',
+    'Gila\\HttpPost'=> 'src/core/classes/HttpPost.php',
   ];
 
   if(isset($classMap[$class])) {
@@ -53,7 +59,10 @@ spl_autoload_register(function ($class) {
   $Class = ucfirst($class);
 
   if (file_exists('src/core/classes/'.$class.'.php')) {
+    //require_once 'src/core/classes/class_alias.php';
     require_once 'src/core/classes/'.$class.'.php';
+    class_alias('Gila\\'.$class, $class);
+    die($class);
   }
   else if (file_exists('src/core/classes/'.$Class.'.php')) {
     trigger_error("Class name $Class is capitalized", E_USER_WARNING);
@@ -76,6 +85,26 @@ else {
   } else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".Gila::base_url()."?install\" />";
   exit;
 }
+
+$GLOBALS['lang'] = [];
+
+function __($key, $alt = null) {
+  if(Gila::$langLoaded===false) {
+    foreach(Gila::$langPaths as $path) Gila::loadLang($path);
+    Gila::$langLoaded = true;
+  }
+  if(@isset($GLOBALS['lang'][$key])) {
+    if($GLOBALS['lang'][$key] != '')
+      return $GLOBALS['lang'][$key];
+  }
+  if($alt!=null) return $alt;
+  return $key;
+}
+
+function _url($url) {
+  return str_replace(['\'','"','<','>',':'], ['%27','%22','%3C','%3E','%3A'], $url);
+}
+
 
 if(is_array(Gila::config('trusted_domains')) &&
     isset($_SERVER['HTTP_HOST']) &&

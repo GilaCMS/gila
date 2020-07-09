@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class TableSchema
 {
 
@@ -50,3 +52,5 @@ class TableSchema
   }
 
 }
+
+class_alias('Gila\\TableSchema', 'TableSchema');

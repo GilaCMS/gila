@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Theme
 {
 
@@ -139,7 +141,7 @@ class Theme
         foreach($options as $key=>$op) {
           $values[$key] = Gila::option('theme.'.$key);
         }
-        echo gForm::html($options,$values,'option[',']');
+        echo Form::html($options,$values,'option[',']');
       }// else error alert
       echo "</form>";
       exit;
@@ -193,3 +195,5 @@ class Theme
   }
 
 }
+
+class_alias('Gila\\Theme', 'Theme');

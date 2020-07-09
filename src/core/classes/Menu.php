@@ -1,4 +1,6 @@
 <?php
+
+namespace Gila;
 use core\models\Page;
 
 class Menu
@@ -45,3 +47,5 @@ class Menu
     return $html;
   }
 }
+
+class_alias('Gila\\Menu', 'Menu');

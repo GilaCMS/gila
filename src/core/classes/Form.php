@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Form
 {
   static private $html;
@@ -242,4 +244,4 @@ class Form
   }
 }
 
-class_alias('Form', 'gForm');
+class_alias('Gila\\Form', 'gForm');

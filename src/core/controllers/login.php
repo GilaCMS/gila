@@ -165,7 +165,7 @@ class login extends Controller
     }
     $usr = User::getByEmail($_POST['email']);
     if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
-      $token = core\models\User::meta($usr['id'], 'token');
+      $token = User::meta($usr['id'], 'token');
       if($token) {
         echo '{"token":"'.$token.'"}';
         return;

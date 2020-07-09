@@ -1,4 +1,7 @@
 <?php
+use Gila\Gila;
+use Gila\Router;
+use Gila\View;
 
 global $db;
 

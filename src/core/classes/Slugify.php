@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Slugify
 {
   public static $rules;
@@ -526,3 +528,5 @@ Slugify::$rules = [
   'ỷ'=>'y',
   'ỹ'=>'y',
 ];
+
+class_alias('Gila\\Slugify', 'Slugify');

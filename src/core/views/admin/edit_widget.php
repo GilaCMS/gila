@@ -51,5 +51,5 @@ if(isset($options)) $fields = $options;
 if(isset($fields)) foreach($fields as $key=>$op) {
   $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
 }
-echo gForm::html($fields, $values, 'option[', ']');
+echo Form::html($fields, $values, 'option[', ']');
 echo "</form>";

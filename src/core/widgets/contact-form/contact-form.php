@@ -1,12 +1,12 @@
 <?php
-if (gForm::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptcha',true)) {
+if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptcha',true)) {
   new sendmail(["post"=>["name","email","message"]]);
   View::alert('success', htmlentities($widget_data->success_msg));
 }
 ?>
 
 <form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form">
-  <?=gForm::hiddenInput('contact-form'.$widget_data->widget_id)?>
+  <?=Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php View::alerts() ?>
   <label><?=__("Name")?></label>
   <input name="name" class="form-control g-input" required/>

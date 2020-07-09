@@ -348,14 +348,14 @@ class cm extends Controller
     echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button>';
     echo '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
     echo 'justify-content: space-around;gap:0.8em">';
-    echo gForm::hiddenInput();
+    echo Form::hiddenInput();
     if($id) {
       $w = ['id'=>$id];
       $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)};";
       $res = $db->get($ql)[0];
-      echo gForm::html($pnk->getFields('edit'),$res);
+      echo Form::html($pnk->getFields('edit'),$res);
     } else {
-      echo gForm::html($pnk->getFields('edit'));
+      echo Form::html($pnk->getFields('edit'));
     }
 
     $child_id = '<span id="edit_popup_child"></span>';

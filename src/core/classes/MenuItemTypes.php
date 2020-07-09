@@ -1,4 +1,6 @@
 <?php
+
+namespace Gila;
 use core\models\Page;
 
 class MenuItemTypes

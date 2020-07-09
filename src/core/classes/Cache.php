@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Cache
 {
   static $page_name;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class UserAgent
 {
   public function info($user_agent = null)
@@ -69,3 +71,5 @@ class UserAgent
     return ['os'=>$os, 'device'=>$device, 'browser'=>$browser];
   }
 }
+
+class_alias('Gila\\UserAgent', 'UserAgent');

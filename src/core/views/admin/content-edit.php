@@ -55,9 +55,9 @@ echo '<form id="'.$table.'-edit-item-form" data-table="'.$table.'" data-id="'.$i
 if($id) {
   $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()} WHERE id=$id;";
   $res = $db->get($ql)[0];
-  echo gForm::html($pnk->getFields('edit'),$res);
+  echo Form::html($pnk->getFields('edit'),$res);
 } else {
-  echo gForm::html($pnk->getFields('edit'));
+  echo Form::html($pnk->getFields('edit'));
 }
 echo '</div></form>';
 

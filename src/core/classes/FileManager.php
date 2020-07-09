@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class FileManager
 {
   static public $sitepath = __DIR__;

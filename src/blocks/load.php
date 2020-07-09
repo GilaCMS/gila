@@ -1,4 +1,5 @@
 <?php
+use Gila\Gila;
 
 Gila::controller('blocks','blocks/controllers/blocks','blocks');
 

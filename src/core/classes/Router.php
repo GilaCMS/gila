@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Router
 {
   static private $args = [];
@@ -184,7 +186,7 @@ class Router
   static function action ($c=null, $action=null, $fn=null)
   {
     if($fn!==null) {
-      Router::$actions[$c][$action] = $fn;
+      self::$actions[$c][$action] = $fn;
       return;
     }
     if($action===null && $set!==null) self::$action = $set; // DEPRECATED

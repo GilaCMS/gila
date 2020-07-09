@@ -16,5 +16,5 @@ if(isset($fields)) foreach($fields as $key=>$op) {
   $values[$key] = $widget_data[$key]?? $op[$key]['default']?? '';
 }
 
-echo gForm::html($fields, $values, 'option[', ']');
+echo Form::html($fields, $values, 'option[', ']');
 echo "</form>";

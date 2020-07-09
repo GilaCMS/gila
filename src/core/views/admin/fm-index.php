@@ -74,7 +74,7 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     ?>
 
 <script>
-var csrfToken = '<?=gForm::getToken()?>';
+var csrfToken = '<?=Form::getToken()?>';
 var dir_path='';
 updateDir("<?=$dirname?>");
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Table
 {
   private $table;
@@ -523,4 +525,5 @@ class Table
 
 }
 
-class_alias('Table', 'gTable');
+class_alias('Gila\\Table', 'gTable');
+class_alias('Gila\\Table', 'Table');

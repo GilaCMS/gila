@@ -2,6 +2,8 @@
 /**
 * A simple class for a mysqli connection
 */
+namespace Gila;
+
 class Db
 {
   private $dbhost, $user, $pass, $dsch;

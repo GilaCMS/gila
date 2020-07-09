@@ -13,7 +13,7 @@ if(is_array($options)) {
   foreach($options as $key=>$op) {
     $values[$key] = Gila::option('theme.'.$key);
   }
-  echo gForm::html($options,$values,'option[',']');
+  echo Form::html($options,$values,'option[',']');
 }// else error alert
 echo "</form>";
 ?>

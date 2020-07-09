@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+use DateTime;
 
 class Package
 {
@@ -245,7 +247,7 @@ class Package
         foreach($options as $key=>$op) {
           $values[$key] = Gila::option($pack.'.'.$key);
         }
-        echo gForm::html($options,$values,'option[',']');
+        echo Form::html($options,$values,'option[',']');
       } // else error alert
       echo "</form>";
     }

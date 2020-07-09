@@ -65,7 +65,7 @@ foreach($pages_path as $path) {
 
 cmirror=new Array()
 mce_editor=new Array()
-var csrfToken = '<?=gForm::getToken()?>'
+var csrfToken = '<?=Form::getToken()?>'
 var app = new Vue({
   el:"#vue-table"
 })
