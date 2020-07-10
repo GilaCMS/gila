@@ -9,24 +9,24 @@ class ClassRouter extends TestCase
 
 	public function test_controller()
 	{
-		Router::controller('ctrlx','pathx');
-		$this->assertEquals('pathx', Router::$controllers['ctrlx']);
+		Gila\Router::controller('ctrlx','pathx');
+		$this->assertEquals('pathx', Gila\Router::$controllers['ctrlx']);
 	}
 
 	public function test_action()
 	{
-		Router::controller('test', 'core/controllers/admin');
-		Gila::action('test', 'actionTest', function(){ echo 'action test'; });
-		Router::setUrl('test/actionTest/');
-		$this->assertEquals('test', Router::getController());
-		$this->assertEquals('actionTest', Router::getAction());
+		Gila\Router::controller('test', 'core/controllers/admin');
+		Gila\Gila::action('test', 'actionTest', function(){ echo 'action test'; });
+		Gila\Router::setUrl('test/actionTest/');
+		$this->assertEquals('test', Gila\Router::getController());
+		$this->assertEquals('actionTest', Gila\Router::getAction());
 	}
 
 	public function test_add()
 	{
-		Router::add('test.txt', function(){ echo 'test.get'; });
-		Router::add('test.txt', function(){ echo 'test.post'; }, 'POST');
-		Router::add('routex/(.*)', function($x){ echo 'route#'.$x; }, 'GET');
+		Gila\Router::add('test.txt', function(){ echo 'test.get'; });
+		Gila\Router::add('test.txt', function(){ echo 'test.post'; }, 'POST');
+		Gila\Router::add('routex/(.*)', function($x){ echo 'route#'.$x; }, 'GET');
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		$this->assertEquals('test.get', $this->request('test.txt'));
 		$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -37,33 +37,33 @@ class ClassRouter extends TestCase
 
 	public function test_param()
 	{
-		Router::$controllers = [];
-		Router::$actions = [];
+		Gila\Router::$controllers = [];
+		Gila\Router::$actions = [];
 		$_GET['qx'] = 5;
-		Router::setUrl('test/action/p1/p2/p3/p4');
-		Router::$controller = null;
-		Router::$action = null;
+		Gila\Router::setUrl('test/action/p1/p2/p3/p4');
+		Gila\Router::$controller = null;
+		Gila\Router::$action = null;
 
-		$this->assertEquals('test', Router::param('var1', 1));
-		$this->assertEquals('p1', Router::param('var1', 3));
-		$this->assertEquals('p1', Router::param('qx', 3));
-		$this->assertEquals(5, Router::param('qx'));
+		$this->assertEquals('test', Gila\Router::param('var1', 1));
+		$this->assertEquals('p1', Gila\Router::param('var1', 3));
+		$this->assertEquals('p1', Gila\Router::param('qx', 3));
+		$this->assertEquals(5, Gila\Router::param('qx'));
 
-		Router::controller('test', 'core/controllers/admin');
-		$this->assertEquals('test', Router::getController());
-		$this->assertEquals('action', Router::param('var1', 1));
-		$this->assertEquals('p2', Router::param('var1', 3));
+		Gila\Router::controller('test', 'core/controllers/admin');
+		$this->assertEquals('test', Gila\Router::getController());
+		$this->assertEquals('action', Gila\Router::param('var1', 1));
+		$this->assertEquals('p2', Gila\Router::param('var1', 3));
 
-		Gila::action('test', 'action', function(){ echo 'action test'; });
-		$this->assertEquals('action', Router::getAction());
-		$this->assertEquals('p1', Router::param('var1', 1));
-		$this->assertEquals('p3', Router::param('var1', 3));
+		Gila\Gila::action('test', 'action', function(){ echo 'action test'; });
+		$this->assertEquals('action', Gila\Router::getAction());
+		$this->assertEquals('p1', Gila\Router::param('var1', 1));
+		$this->assertEquals('p3', Gila\Router::param('var1', 3));
 	}
 
 	function request($url)
 	{
 	  ob_start();
-	  Router::run($url);
+	  Gila\Router::run($url);
 	  $response = ob_get_contents();
 	  ob_end_clean();
 	  return $response;

@@ -11,21 +11,21 @@ class ClassCache extends TestCase
 	{
 		FileManager::delete(LOG_PATH.'/cacheItem/itemTest1|');
 		FileManager::delete(LOG_PATH.'/cacheItem/itemTest2|');
-		$data = Cache::get('itemTest1');
+		$data = Gila\Cache::get('itemTest1');
 		$this->assertEquals(null, $data);
-		Cache::set('itemTest1', 'data1');
-		$data = Cache::get('itemTest1');
+		Gila\Cache::set('itemTest1', 'data1');
+		$data = Gila\Cache::get('itemTest1');
 		$this->assertEquals('data1', $data);
 
-		$data = Cache::remember('itemTest2', 3600, function(){
+		$data = Gila\Cache::remember('itemTest2', 3600, function(){
 			return 'data2';
 		}, [1]);
 		$this->assertEquals('data2', $data);
-		$data = Cache::remember('itemTest2', 3600, function(){
+		$data = Gila\Cache::remember('itemTest2', 3600, function(){
 			return 'data2-updated';
 		}, [1]);
 		$this->assertEquals('data2', $data);
-		$data = Cache::remember('itemTest2', 3600, function(){
+		$data = Gila\Cache::remember('itemTest2', 3600, function(){
 			return 'data2-updated';
 		}, [2]);
 		$this->assertEquals('data2-updated', $data);
