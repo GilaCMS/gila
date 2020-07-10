@@ -528,5 +528,3 @@ Slugify::$rules = [
   'ỷ'=>'y',
   'ỹ'=>'y',
 ];
-
-class_alias('Gila\\Slugify', 'Slugify');

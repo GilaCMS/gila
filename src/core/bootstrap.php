@@ -59,10 +59,8 @@ spl_autoload_register(function ($class) {
   $Class = ucfirst($class);
 
   if (file_exists('src/core/classes/'.$class.'.php')) {
-    //require_once 'src/core/classes/class_alias.php';
     require_once 'src/core/classes/'.$class.'.php';
     class_alias('Gila\\'.$class, $class);
-    die($class);
   }
   else if (file_exists('src/core/classes/'.$Class.'.php')) {
     trigger_error("Class name $Class is capitalized", E_USER_WARNING);
@@ -76,10 +74,9 @@ if(file_exists('vendor/autoload.php')) {
   $loader = include 'vendor/autoload.php';
 }
 
-if (file_exists(CONFIG_PHP)) {
-  require_once CONFIG_PHP;
-}
-else {
+$GLOBALS['config'] = [];
+require_once CONFIG_PHP;
+if($GLOBALS['config'] === []) {
   if(isset($_GET['install'])) {
     include 'src/core/install/index.php';
   } else echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".Gila::base_url()."?install\" />";

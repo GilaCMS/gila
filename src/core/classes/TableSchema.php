@@ -52,5 +52,3 @@ class TableSchema
   }
 
 }
-
-class_alias('Gila\\TableSchema', 'TableSchema');

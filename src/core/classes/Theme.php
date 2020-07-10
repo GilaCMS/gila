@@ -195,5 +195,3 @@ class Theme
   }
 
 }
-
-class_alias('Gila\\Theme', 'Theme');

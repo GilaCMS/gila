@@ -12,7 +12,7 @@ class lzld extends Controller
   function widgetAction ($id)
   {
     global $widget_data;
-    $widget = core\models\Widget::getById($id);
+    $widget = Gila\Widget::getById($id);
 
     if ($widget) if ($widget->active==1) {
       $widget_data = json_decode($widget->data);

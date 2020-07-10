@@ -47,5 +47,3 @@ class Menu
     return $html;
   }
 }
-
-class_alias('Gila\\Menu', 'Menu');

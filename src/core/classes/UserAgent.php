@@ -71,5 +71,3 @@ class UserAgent
     return ['os'=>$os, 'device'=>$device, 'browser'=>$browser];
   }
 }
-
-class_alias('Gila\\UserAgent', 'UserAgent');

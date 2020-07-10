@@ -526,4 +526,3 @@ class Table
 }
 
 class_alias('Gila\\Table', 'gTable');
-class_alias('Gila\\Table', 'Table');
