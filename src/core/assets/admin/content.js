@@ -328,6 +328,10 @@ Vue.component('g-table', {
         return '<div style="text-align:right">'+dv+'</div>';
       }
 
+      if(displayType=='text') if (rv.text.length>100) {
+        return rv.text.substring(0, 97)+"...";
+      }
+
 
       if (typeof field.options != "undefined") if(cv!==null) {
         if (typeof field.options[cv] != "undefined") {
@@ -736,6 +740,7 @@ g.dialog.buttons.select_path = {
     let v = g('#selected-path').attr('value')
     if(v!=null) g('[name=p_img]').attr('value', base_url+v)
     g('#media_dialog').parent().remove();
+    g.closeModal();
   }
 }
 g.dialog.buttons.select_path_post = {
@@ -743,6 +748,7 @@ g.dialog.buttons.select_path_post = {
     let v = g('#selected-path').attr('value')
     if(v!=null) input_filename(base_url+v);
     g('#media_dialog').parent().remove();
+    g.closeModal();
   }
 }
 g.dialog.buttons.select_row_source = {

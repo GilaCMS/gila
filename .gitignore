@@ -26,7 +26,6 @@ tests/performance
 # excluded
 !*/package.json
 !src/core/
-!src/Cocur/
 !src/blog/
 !src/blocks/
 !src/gila_fb_comments/

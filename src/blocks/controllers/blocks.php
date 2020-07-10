@@ -55,14 +55,7 @@ class blocks extends Controller
 
       foreach($widget_data as $key=>$value) {
         $allowed = $fields[$key]['allow_tags'] ?? false;
-        if($allowed==false) {
-          if(!json_decode($widget_data[$key])) {
-            $widget_data[$key] = strip_tags($widget_data[$key]);
-          }
-        } else if($allowed!==true) {
-          $widget_data[$key] = strip_tags($widget_data[$key], $allowed);
-          $widget_data[$key] = str_replace('="javascript:', '="', $widget_data[$key]);
-        }
+        $widget_data[$key] = HtmlInput::purify($widget_data[$key], $allowed);
       }
       $widget_data['_type'] = $type;
       $widgets[$pos] = $widget_data;

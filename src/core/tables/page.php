@@ -9,6 +9,7 @@ return [
   'csv'=> ['id','title','slug','updated','publish','page'],
   'commands'=> ['edit','delete'],
   'lang'=>'core/lang/admin/',
+  'qkeys'=>['slug','publish'],
   'permissions'=>[
     'create'=>['admin', 'editor'],
     'update'=>['admin', 'editor'],
@@ -22,21 +23,25 @@ return [
     ],
     'title'=> [
       'title'=>'Title',
+      'qtype'=>'varchar(80) DEFAULT NULL'
     ],
     'slug'=> [
       'title'=>'Path',
+      'qtype'=>'varchar(80) DEFAULT NULL'
     ],
     'publish'=> [
       'title'=>'Public',
       'style'=>'width:8%',
       'type'=>'checkbox',
-      'edit'=>true
+      'edit'=>true,
+      'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'template'=> [
       'title'=>'Template',
       'template'=>'page',
       'type'=>'template',
-      'edit'=>true
+      'edit'=>true,
+      'qtype'=>'varchar(30) DEFAULT NULL'
     ],
     'content'=> [
       'title'=>'Content',
@@ -44,7 +49,17 @@ return [
       'edit'=>true,
       'type'=>'textarea',
       'input_type'=>'tinymce',
-      'allow_tags'=>true
+      'allow_tags'=>true,
+      'qtype'=>'TEXT'
+    ],
+    'updated'=> [
+      'title'=>'Updated',
+      'type'=>'date',
+      'searchbox'=>'period',
+      'edit'=>false,
+      'list'=>false,
+      'create'=>false,
+      'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
     ]
   ]
 ];

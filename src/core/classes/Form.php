@@ -70,7 +70,7 @@ class Form
     if($type) {
       if(isset(self::$input_type[$type])) {
         $html .= self::$input_type[$type]($name,$op,$ov);
-      } else if(in_array($type,['hidden','date','datetime-local','time','color','password','email'])) {
+      } else if(in_array($type,['hidden','number','date','datetime-local','time','color','password','email'])) {
         if($type=='datetime-local' && $ov) {
           $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
         }

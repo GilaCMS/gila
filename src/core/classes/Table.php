@@ -242,9 +242,7 @@ class Table
       if(array_key_exists($key, $this->table['fields'])) {
         if ($this->fieldAttr($key, 'qcolumn')) continue;
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
-          if($allowed!==true) {
-            $value = strip_tags($value, $allowed);
-          }
+          $value = HtmlInput::purify($value, $allowed);
         } else {
           $value = strip_tags($value);
         }
