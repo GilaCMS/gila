@@ -50,6 +50,7 @@ spl_autoload_register(function ($class) {
     'Gila\\View'=> 'src/core/classes/View.php',
     'gpost'=> 'src/core/classes/HttpPost.php',
     'Gila\\HttpPost'=> 'src/core/classes/HttpPost.php',
+    'Gila\\User'=> 'src/core/models/User.php',
   ];
 
   if (isset($classMap[$class])) {
@@ -85,6 +86,20 @@ if($GLOBALS['config'] === []) {
   exit;
 }
 
+$GLOBALS['lang'] = [];
+
+function __($key, $alt = null) {
+  if(Gila::$langLoaded===false) {
+    foreach(Gila::$langPaths as $path) Gila::loadLang($path);
+    Gila::$langLoaded = true;
+  }
+  if(@isset($GLOBALS['lang'][$key])) {
+    if($GLOBALS['lang'][$key] != '')
+      return $GLOBALS['lang'][$key];
+  }
+  if($alt!=null) return $alt;
+  return $key;
+}
 
 function _url($url) {
   return str_replace(['\'','"','<','>',':'], ['%27','%22','%3C','%3E','%3A'], $url);

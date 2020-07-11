@@ -1,6 +1,6 @@
 <?php
 
-use core\models\User;
+use Gila\User;
 
 class login extends Controller
 {

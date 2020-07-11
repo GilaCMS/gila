@@ -1,5 +1,5 @@
 <?php
-use core\models\User;
+use Gila\User;
 
 /**
 * Lists content types and shows grid content data

@@ -78,7 +78,7 @@
 </div>
 
   <?php
-  $sessions = core\models\User::metaList(Session::userId(), 'GSESSIONID');
+  $sessions = Gila\User::metaList(Session::userId(), 'GSESSIONID');
   $info = [];
   foreach ($sessions as $key=>$session) {
     if (file_exists(LOG_PATH.'/sessions/'.$session)) {
@@ -88,7 +88,7 @@
         $info[$key]['current'] = true;
       }
     } else {
-      core\models\User::metaDelete(Session::userId(), 'GSESSIONID', $session);
+      Gila\User::metaDelete(Session::userId(), 'GSESSIONID', $session);
     }
   }
   ?>

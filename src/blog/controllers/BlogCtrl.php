@@ -2,7 +2,7 @@
 
 use core\models\Post;
 use core\models\Page;
-use core\models\User;
+use Gila\User;
 
 /**
 * The blog controller, get calls for display of posts

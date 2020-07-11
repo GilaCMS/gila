@@ -1,10 +1,5 @@
 <?php
-namespace core\models;
-
-use Gila;
-use Session;
-use Event;
-use Db;
+namespace Gila;
 
 class user
 {

@@ -1,7 +1,7 @@
 <?php
 
 use core\models\Widget;
-use core\models\User;
+use Gila\User;
 use core\models\Page;
 
 class admin extends Controller
