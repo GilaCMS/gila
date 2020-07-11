@@ -8,6 +8,8 @@ TableSchema::update(include 'src/core/tables/postcategory.php');
 
 TableSchema::update(include 'src/core/tables/page.php');
 
+TableSchema::update(include 'src/core/tables/user.php');
+/*
 $db->query('CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(80) DEFAULT NULL,
@@ -29,7 +31,7 @@ $db->query('CREATE TABLE IF NOT EXISTS `usermeta` (
   KEY `user_id` (`user_id`),
   KEY `vartype` (`vartype`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
-
+*/
 $db->query('CREATE TABLE IF NOT EXISTS `widget` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `widget` varchar(80) DEFAULT NULL,

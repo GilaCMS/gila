@@ -8,9 +8,10 @@ return [
   'commands'=>['edit'],
   'id'=>'id',
   'lang'=>'core/lang/admin/',
+  'meta_table'=>['usermeta', 'user_id', 'vartype', 'value'],
   'permissions'=>[
-    'create'=>['admin','admin_user'],
     'read'=>['admin','admin_user'],
+    'create'=>['admin','admin_user'],
     'update'=>['admin','admin_user'],
     'delete'=>false
   ],
@@ -24,8 +25,7 @@ return [
       'type'=>'meta',
       'input-type'=>'media',
       'title'=>'Photo',
-      'mt'=>['usermeta', 'user_id', 'value'],
-      'metatype'=>['vartype', 'photo']
+      'meta_key'=>'photo'
     ],
     'username'=> [
       'title'=>'Name',
@@ -46,22 +46,37 @@ return [
       'type'=>'meta',
       'input_type'=>'select2',
       'edit'=>true,
-      'mt'=>['usermeta', 'user_id', 'value'],
-      'metatype'=>['vartype', 'role'],
+      'meta_key'=>'role',
       'options'=>[],
       'qoptions'=>'SELECT `id`,`userrole` FROM userrole;'
+    ],
+    'updated'=> [
+      'title'=>'Updated',
+      'type'=>'date',
+      'list'=>false,
+      'edit'=>false,
+      'create'=>false,
+      'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+    ],
+    'created'=> [
+      'title'=>'Created',
+      'type'=>'date',
+      'list'=>false,
+      'edit'=>false,
+      'create'=>false,
+      'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP'
     ],
     'active'=> [
       'type'=>'checkbox',
       'title'=>'Active',
-      'qtype'=>'INT(1) DEFAULT 1'
+      'qtype'=>'INT(1) DEFAULT 0'
     ],
     'manager'=> [
       'type'=>'meta',
       'title'=>'Manager',
+      'input_type'=>'select2',
       'list'=>false,
-      'mt'=>['usermeta', 'user_id', 'value'],
-      'metatype'=>['vartype', 'manager_id'],
+      'meta_key'=>'manager_id',
       'options'=>[''=>'-'],
       'qoptions'=>'SELECT `id`,`username` FROM user;'
     ]
