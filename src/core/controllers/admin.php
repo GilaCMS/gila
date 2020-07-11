@@ -6,8 +6,7 @@ use core\models\Page;
 
 class admin extends Controller
 {
-
-  public function __construct ()
+  public function __construct()
   {
     self::admin();
     Gila::addLang('core/lang/admin/');
@@ -16,15 +15,15 @@ class admin extends Controller
   /**
   * Renders admin/dashboard.php
   */
-  function indexAction ()
+  public function indexAction()
   {
     $id = Router::path() ?? null;
 
     if ($id && ($r = Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
-      View::set('title',$r['title']);
-      View::set('text',$r['page']);
-      if($r['template']==''||$r['template']===null) {
+      View::set('title', $r['title']);
+      View::set('text', $r['page']);
+      if ($r['template']==''||$r['template']===null) {
         View::renderFile('page--admin.php');
       } else {
         View::renderFile('page--'.$r['template'].'.php');
@@ -32,7 +31,7 @@ class admin extends Controller
       return;
     }
 
-    if(Router::get('action', 1)) {
+    if (Router::get('action', 1)) {
       http_response_code(404);
       View::renderAdmin('404.php');
       return;
@@ -40,15 +39,17 @@ class admin extends Controller
     $this->dashboardAction();
   }
 
-  function dashboardAction ()
+  public function dashboardAction()
   {
     global $db;
     $wfolders=['log','themes','src','tmp','assets','data'];
-    foreach($wfolders as $wf) if(is_writable($wf)==false) {
-      View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
+    foreach ($wfolders as $wf) {
+      if (is_writable($wf)==false) {
+        View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
+      }
     }
-    if(Session::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
-      View::alert('warning','<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
+    if (Session::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
+      View::alert('warning', '<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
 
     $db->connect();
@@ -63,19 +64,19 @@ class admin extends Controller
   /**
   * List and edit widgets
   */
-  function widgetsAction ()
+  public function widgetsAction()
   {
-    if ($id = Router::get('id',1)) {
+    if ($id = Router::get('id', 1)) {
       View::set('widget', Widget::getById($id));
       View::renderFile('admin/edit_widget.php');
       return;
     }
   }
 
-  function contentAction ($type = null, $id = null)
+  public function contentAction($type = null, $id = null)
   {
-    if($type == null) {
-      if(Session::hasPrivilege('admin')) {
+    if ($type == null) {
+      if (Session::hasPrivilege('admin')) {
         View::renderAdmin('admin/contenttype.php');
       } else {
         http_response_code(404);
@@ -87,7 +88,7 @@ class admin extends Controller
     $src = explode('.', Gila::$content[$type])[0];
     View::set('table', $type);
     View::set('tablesrc', $src);
-    if($id == null) {
+    if ($id == null) {
       View::renderAdmin('admin/content-vue.php');
     } else {
       View::set('id', $id);
@@ -95,20 +96,20 @@ class admin extends Controller
     }
   }
 
-  function update_widgetAction ()
+  public function update_widgetAction()
   {
     echo Widget::update($_POST);
   }
 
-  function usersAction ()
+  public function usersAction()
   {
     View::renderAdmin('admin/users.php');
   }
 
-  function package_optionsAction()
+  public function package_optionsAction()
   {
     self::access('admin');
-    $package = Router::get('package',1);
+    $package = Router::get('package', 1);
     View::renderFile('admin/header.php');
     Package::options($package);
     View::renderFile('admin/footer.php');
@@ -118,81 +119,83 @@ class admin extends Controller
   * List and manage installed packages
   * @photo
   */
-  function packagesAction ()
+  public function packagesAction()
   {
     self::access('admin');
     if ($_SERVER['REQUEST_METHOD']=='POST' || isset($_GET['test'])) {
       new Package();
       return;
     }
-    $search = htmlentities(Router::get('search',2));
-    $tab = Router::get('tab',1);
+    $search = htmlentities(Router::get('search', 2));
+    $tab = Router::get('tab', 1);
     $packages = [];
 
-    if($tab == 'new') {
+    if ($tab == 'new') {
       $url = 'https://gilacms.com/packages/?search='.$search;
       $url .= Gila::config('test')=='1' ? '&test=1' : '';
-      if(!$contents = file_get_contents($url)) {
-          View::alert('error',"Could not connect to packages list. Please try later.");
-      } else $packages = json_decode($contents);
+      if (!$contents = file_get_contents($url)) {
+        View::alert('error', "Could not connect to packages list. Please try later.");
+      } else {
+        $packages = json_decode($contents);
+      }
     } else {
       $packages = Package::scan();
     }
-    if(!is_array($packages)) {
-      View::alert('error',"Something went wrong. Please try later.");
+    if (!is_array($packages)) {
+      View::alert('error', "Something went wrong. Please try later.");
       $packages = [];
     }
-    View::set('packages',$packages);
-    View::set('search',$search);
+    View::set('packages', $packages);
+    View::set('search', $search);
     View::renderAdmin('admin/package-list.php');
   }
 
-  function newthemesAction ()
+  public function newthemesAction()
   {
     self::access('admin');
     $packages = [];
-    $search = htmlentities(Router::get('search',2));
-    if(!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
-        View::alert('error',"Could not connect to themes list. Please try later.");
+    $search = htmlentities(Router::get('search', 2));
+    if (!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
+      View::alert('error', "Could not connect to themes list. Please try later.");
     } else {
       $packages = json_decode($contents);
     }
-    if(!is_array($packages)) {
-      View::alert('error',"Something went wrong. Please try later.");
+    if (!is_array($packages)) {
+      View::alert('error', "Something went wrong. Please try later.");
       $packages = [];
     }
-    View::set('packages',$packages);
-    View::set('search',$search);
+    View::set('packages', $packages);
+    View::set('search', $search);
     View::renderAdmin('admin/theme-list.php');
   }
 
-  function themesAction ()
+  public function themesAction()
   {
     self::access('admin');
     new theme();
     $packages = theme::scan();
-    View::set('packages',$packages);
+    View::set('packages', $packages);
     View::renderAdmin('admin/theme-list.php');
   }
 
-  function theme_optionsAction ()
+  public function theme_optionsAction()
   {
     View::renderAdmin('admin/theme-options.php');
   }
 
-  function settingsAction ()
+  public function settingsAction()
   {
     self::access('admin');
     View::renderAdmin('admin/settings.php');
   }
 
-  function loginAction ()
+  public function loginAction()
   {
     View::set('title', __('Log In'));
     View::renderAdmin('login.php');
   }
 
-  function logoutAction ()
+  public function logoutAction()
   {
     global $db;
     User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
@@ -200,44 +203,51 @@ class admin extends Controller
     echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
   }
 
-  function media_uploadAction(){
-    if(isset($_FILES['uploadfiles'])) {
-      if (isset($_FILES['uploadfiles']["error"])) if ($_FILES['uploadfiles']["error"] > 0) {
-        echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
+  public function media_uploadAction()
+  {
+    if (isset($_FILES['uploadfiles'])) {
+      if (isset($_FILES['uploadfiles']["error"])) {
+        if ($_FILES['uploadfiles']["error"] > 0) {
+          echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
+        }
       }
       $upload_folder = Gila::config('media_uploads') ?? 'assets';
       $path = Router::post('path', $upload_folder);
-      if($path[0]=='.') $path=$upload_folder;
+      if ($path[0]=='.') {
+        $path=$upload_folder;
+      }
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
-      if(in_array(pathinfo($name, PATHINFO_EXTENSION),["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
+      if (in_array(pathinfo($name, PATHINFO_EXTENSION), ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
         $path = SITE_PATH.$path.'/'.$name;
-        if(!move_uploaded_file($tmp_file, $path)) {
+        if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
         }
         $maxWidth = Gila::config('maxImgWidth') ?? 0;
         $maxHeight = Gila::config('maxImgHeight') ?? 0;
-        if($maxWidth>0 && $maxHeight>0) {
+        if ($maxWidth>0 && $maxHeight>0) {
           Image::makeThumb($path, $path, $maxWidth, $maxHeight);
         }
-      } else echo "<div class='alert error'>Error: not a media file!</div>";
+      } else {
+        echo "<div class='alert error'>Error: not a media file!</div>";
+      }
     }
 
     self::mediaAction();
   }
 
-  function mediaAction()
+  public function mediaAction()
   {
     View::renderAdmin('admin/media.php');
   }
 
 
-  function fmAction()
+  public function fmAction()
   {
     self::access('admin');
-    if(FS_ACCESS) {
+    if (FS_ACCESS) {
       $file=realpath(htmlentities($_GET['f']));
-      View::set('filepath',$file);
+      View::set('filepath', $file);
       View::renderAdmin('admin/fm-index.php');
     } else {
       http_response_code(404);
@@ -246,27 +256,30 @@ class admin extends Controller
   }
 
 
-  function profileAction()
+  public function profileAction()
   {
     Gila::addLang('core/lang/myprofile/');
     $user_id = Session::key('user_id');
     core\models\Profile::postUpdate($user_id);
     View::set('page_title', __('My Profile'));
-    View::set('twitter_account', User::meta($user_id,'twitter_account'));
-    View::set('token', User::meta($user_id,'token'));
-    View::set('user_photo', User::meta($user_id,'photo'));
+    View::set('twitter_account', User::meta($user_id, 'twitter_account'));
+    View::set('token', User::meta($user_id, 'token'));
+    View::set('user_photo', User::meta($user_id, 'photo'));
     View::renderAdmin('admin/myprofile.php');
   }
 
-  function deviceLogoutAction() {
+  public function deviceLogoutAction()
+  {
     $device = Router::request('device');
-    if(User::logoutFromDevice($device)) {
+    if (User::logoutFromDevice($device)) {
       $info = [];
       $sessions = User::metaList(Session::userId(), 'GSESSIONID');
-      foreach($sessions as $key=>$session) {
+      foreach ($sessions as $key=>$session) {
         $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
         $info[$key] = UserAgent::info($user_agent);
-        if($_COOKIE['GSESSIONID']==$session) $info[$key]['current'] = true;
+        if ($_COOKIE['GSESSIONID']==$session) {
+          $info[$key]['current'] = true;
+        }
       }
       echo json_encode($info);
     } else {
@@ -276,35 +289,38 @@ class admin extends Controller
     }
   }
 
-  function phpinfoAction()
+  public function phpinfoAction()
   {
     self::access('admin');
-    if(!FS_ACCESS) return;
+    if (!FS_ACCESS) {
+      return;
+    }
     View::includeFile('admin/header.php');
     phpinfo();
     View::includeFile('admin/footer.php');
   }
 
-  function menuAction()
+  public function menuAction()
   {
-    $menu = Router::get('menu',1);
-    if($menu != null) if(Session::hasPrivilege('admin')) {
-      $folder = Gila::dir(LOG_PATH.'/menus/');
-      $file = $folder.$menu.'.json';
-      if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if(isset($_POST['menu'])) {
-          file_put_contents($file,strip_tags($_POST['menu']));
+    $menu = Router::get('menu', 1);
+    if ($menu != null) {
+      if (Session::hasPrivilege('admin')) {
+        $folder = Gila::dir(LOG_PATH.'/menus/');
+        $file = $folder.$menu.'.json';
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+          if (isset($_POST['menu'])) {
+            file_put_contents($file, strip_tags($_POST['menu']));
+            echo json_encode(["msg"=>__('_changes_updated')]);
+            exit;
+          }
+        } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+          unlink($file);
           echo json_encode(["msg"=>__('_changes_updated')]);
           exit;
         }
-      } else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-        unlink($file);
-        echo json_encode(["msg"=>__('_changes_updated')]);
-        exit;
       }
     }
-    View::set('menu',($menu?:'mainmenu'));
+    View::set('menu', ($menu?:'mainmenu'));
     View::renderAdmin('admin/menu_editor.php');
   }
-
 }

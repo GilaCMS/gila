@@ -101,8 +101,8 @@ return [
     ]
   ],
   'events'=>[
-    ['change',function(&$row) {
-      if($row['slug']=='') {
+    ['change',function (&$row) {
+      if ($row['slug']=='') {
         $row['slug'] = Slugify::text($row['title']);
       }
     }]

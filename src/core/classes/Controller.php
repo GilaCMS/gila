@@ -4,13 +4,13 @@ namespace Gila;
 
 class Controller
 {
-  static function admin()
+  public static function admin()
   {
-    if(Session::userId()===0) {
+    if (Session::userId()===0) {
       Gila::addLang('core/lang/login/');
-      if(Session::waitForLogin()>0) {
+      if (Session::waitForLogin()>0) {
         View::alert('error', __('login_error_msg2'));
-      } else if (isset($_POST['username']) && isset($_POST['password'])) {
+      } elseif (isset($_POST['username']) && isset($_POST['password'])) {
         View::alert('error', __('login_error_msg'));
       }
       View::set('title', __('Log In'));
@@ -19,9 +19,9 @@ class Controller
     }
   }
 
-  static function access($pri)
+  public static function access($pri)
   {
-    if(Session::hasPrivilege($pri)===false) {
+    if (Session::hasPrivilege($pri)===false) {
       http_response_code(403);
       exit;
     }

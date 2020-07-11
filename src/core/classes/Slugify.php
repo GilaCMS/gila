@@ -6,13 +6,13 @@ class Slugify
 {
   public static $rules;
 
-  static function text ($text, $separator = '-') {
+  public static function text($text, $separator = '-')
+  {
     $slug = mb_strtolower($text);
     $slug = strtr($slug, self::$rules);
     $slug = preg_replace('/([^A-Za-z0-9]|-)+/', $separator, $slug);
     return trim($slug, $separator);
   }
-
 }
 
 Slugify::$rules = [

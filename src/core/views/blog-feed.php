@@ -13,17 +13,17 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
   <title><?=$title?></title>
   <link><?=Gila::config('base')?></link>
 </image>
-<?php foreach($items as $item) {
-$item = (object)$item;
-?>
+<?php foreach ($items as $item) {
+  $item = (object)$item; ?>
 <item>
 <title><?=$item->title?></title>
   <link><?=Gila::config('base').'blog/'.$item->id?></link>
   <guid><?=Gila::config('base').'blog/'.$item->slug?></guid>
-  <pubDate><?=date('r',strtotime($item->updated))?></pubDate>
+  <pubDate><?=date('r', strtotime($item->updated))?></pubDate>
   <description><![CDATA[<?=$item->post?>]]></description>
 </item>
-<?php } ?>
+<?php
+} ?>
 </channel>
 </rss>
 

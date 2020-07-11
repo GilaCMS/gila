@@ -14,7 +14,7 @@ class BlogCtrl extends Controller
   public static $totalPages;
   public static $ppp; /** Posts per page */
 
-  function __construct ()
+  public function __construct()
   {
     self::$page = intval(@$_GET['page'])?:1;
     self::$ppp = 12;
@@ -29,11 +29,13 @@ class BlogCtrl extends Controller
   * If none, will render homepage.php or frontpage.php
   * @see postShow()
   */
-  function indexAction()
+  public function indexAction()
   {
-    if($id = Router::path()) if($id !== "blog" && $id !== "blog/"){
-      $this->postShow($id);
-      return;
+    if ($id = Router::path()) {
+      if ($id !== "blog" && $id !== "blog/") {
+        $this->postShow($id);
+        return;
+      }
     }
     if ($id=Router::param('p')) {
       $this->postShow($id);
@@ -47,24 +49,25 @@ class BlogCtrl extends Controller
       return;
     }
 
-    if($_GET['url']!='' || View::getViewFile('homepage.php')==false) {
+    if ($_GET['url']!='' || View::getViewFile('homepage.php')==false) {
       if ($r = Page::getByIdSlug('')) {
-        View::set('title',$r['title']);
-        View::set('text',$r['page']);
-        View::render('blog-homepage.php','blog');
+        View::set('title', $r['title']);
+        View::set('text', $r['page']);
+        View::render('blog-homepage.php', 'blog');
         return;
       }
       View::set('page', self::$page);
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
       View::render('frontpage.php');
+    } else {
+      View::render('homepage.php');
     }
-    else View::render('homepage.php');
   }
 
   /**
   * Displays new posts in xml feed
   */
-  function feedAction()
+  public function feedAction()
   {
     $title = Gila::config('title');
     $link = Gila::config('base');
@@ -76,7 +79,7 @@ class BlogCtrl extends Controller
   /**
   * Displays posts with a specific tag
   */
-  function tagAction($tag)
+  public function tagAction($tag)
   {
     $tag = htmlentities($tag);
     Gila::canonical('tag/'.$tag);
@@ -90,7 +93,7 @@ class BlogCtrl extends Controller
   /**
   * Display a list with all post tags
   */
-  function tagsAction()
+  public function tagsAction()
   {
     Gila::canonical('tags');
     View::set('page_title', __('Tags').' | '.Gila::config('title'));
@@ -101,13 +104,13 @@ class BlogCtrl extends Controller
   /**
   * Display posts by a category
   */
-  function categoryAction($category)
+  public function categoryAction($category)
   {
     global $db;
-    if(!is_numeric($category)) {
+    if (!is_numeric($category)) {
       $category = $db->value('SELECT id FROM postcategory WHERE slug=?', $category);
     }
-    $name = $db->value("SELECT title from postcategory WHERE id=?",$category);
+    $name = $db->value("SELECT title from postcategory WHERE id=?", $category);
     Gila::canonical('blog/category/'.$category.'/'.$name.'/');
     self::$totalPosts = Post::total(['category'=>$category]);
     View::set('categoryName', $name);
@@ -120,19 +123,19 @@ class BlogCtrl extends Controller
   /**
   * Display posts by author
   */
-  function authorAction()
+  public function authorAction()
   {
     global $db;
-    $user_id = Router::param('author',1);
+    $user_id = Router::param('author', 1);
     Gila::canonical('author/'.$user_id);
-    $res = $db->get("SELECT username,id from user WHERE id=? OR username=?",[$user_id,$user_id]);
-    if($res) {
-      View::set('author',$res[0][0]);
+    $res = $db->get("SELECT username,id from user WHERE id=? OR username=?", [$user_id,$user_id]);
+    if ($res) {
+      View::set('author', $res[0][0]);
       View::set('page_title', $res[0][0].' | '.Gila::config('title'));
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'user_id'=>$res[0][1]]));
     } else {
-      View::set('author',__('unknown'));
-      View::set('posts',[]);
+      View::set('author', __('unknown'));
+      View::set('posts', []);
     }
     View::render('blog-author.php');
   }
@@ -141,22 +144,22 @@ class BlogCtrl extends Controller
   /**
   * Display a post
   */
-  function postShow($id=null)
+  public function postShow($id=null)
   {
     global $db;
     $cacheTime = Gila::option('blog.cache');
     Gila::canonical('blog/'.$id);
-    if(Session::userId()==0 && $cacheTime > 0) {
+    if (Session::userId()==0 && $cacheTime > 0) {
       Cache::page('blog/post'.$id, $cacheTime, [Gila::mt('post')]);
     }
     Router::$action = "post";
 
     $args = explode('/', $id);
-    $postId = $args[0]==='blog'? $args[1]: $args[0]; 
+    $postId = $args[0]==='blog'? $args[1]: $args[0];
 
     if (($r = Post::getByIdSlug($postId)) && ($r['publish']==1)) {
       $id = $r['id'];
-      if(!$r['user_id']) {
+      if (!$r['user_id']) {
         $r['user_id'] = $db->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
       }
       $user_id = $r['user_id'];
@@ -169,52 +172,54 @@ class BlogCtrl extends Controller
       View::set('updated', $r['updated']);
 
       Gila::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
-      View::meta('og:title',$r['title']);
-      View::meta('og:type','website');
+      View::meta('og:title', $r['title']);
+      View::meta('og:type', 'website');
       View::meta('og:url', View::$canonical);
-      View::meta('og:description',$r['description']);
+      View::meta('og:description', $r['description']);
 
-      if ($r['img'] ) {
+      if ($r['img']) {
         View::set('img', $r['img']);
         View::meta('og:image', $r['img']);
         View::meta('twitter:image:src', Gila::base_url($r['img']));
-      } else if(Gila::config('og-image')) {
+      } elseif (Gila::config('og-image')) {
         View::meta('og:image', Gila::config('og-image'));
         View::meta('twitter:image:src', Gila::base_url(Gila::config('og-image')));
       } else {
         View::set('img', '');
       }
 
-      if($r['tags']) {
+      if ($r['tags']) {
         View::meta('keywords', $r['tags']);
       }
 
-      if($value = Gila::option('blog.twitter-card')) {
+      if ($value = Gila::option('blog.twitter-card')) {
         View::meta('twitter:card', $value);
       }
-      if($value = Gila::option('blog.twitter-site')) {
+      if ($value = Gila::option('blog.twitter-site')) {
         View::meta('twitter:site', '@'.$value);
       }
 
       if ($r = User::getById($user_id)) {
-        View::set('author',$r['username']);
-        View::meta('author',$r['username']);
-        if($creator = User::meta($user_id, 'twitter_account'))
-          View::meta('twitter:creator','@'.$creator);
-      } else View::set('author',__('unknown'));
+        View::set('author', $r['username']);
+        View::meta('author', $r['username']);
+        if ($creator = User::meta($user_id, 'twitter_account')) {
+          View::meta('twitter:creator', '@'.$creator);
+        }
+      } else {
+        View::set('author', __('unknown'));
+      }
 
       View::render('single-post.php');
-    }
-    else {
-      if($category = $db->value('SELECT id FROM postcategory WHERE slug=?', $id)) {
+    } else {
+      if ($category = $db->value('SELECT id FROM postcategory WHERE slug=?', $id)) {
         $this->categoryAction($category);
         return;
       }
   
       if (($r = Page::getByIdSlug($id)) && ($r['publish']==1)) {
-        View::set('title',$r['title']);
-        View::set('text',$r['page']);
-        if($r['template']==''||$r['template']===null) {
+        View::set('title', $r['title']);
+        View::set('text', $r['page']);
+        if ($r['template']==''||$r['template']===null) {
           View::render('page.php');
         } else {
           View::renderFile('page--'.$r['template'].'.php');
@@ -229,9 +234,9 @@ class BlogCtrl extends Controller
   /**
   * Display posts by a search query
   */
-  function searchAction()
+  public function searchAction()
   {
-    if ($s=Router::param('search',1)) {
+    if ($s=Router::param('search', 1)) {
       $s = strip_tags($s);
       View::set('search', $s);
       View::set('page_title', $s.' | '.Gila::config('title'));
@@ -239,48 +244,56 @@ class BlogCtrl extends Controller
       View::render('blog-search.php');
       return;
     }
-    View::set('page',self::$page);
-    View::set('posts',self::post(['posts'=>(self::$ppp)]));
+    View::set('page', self::$page);
+    View::set('posts', self::post(['posts'=>(self::$ppp)]));
     View::render('frontpage.php');
   }
 
-  static function post ($args = []) {
+  public static function post($args = [])
+  {
     $args['page'] = self::$page;
     return Post::getPosts($args);
   }
 
-  static function latestposts ($n = 10) {
+  public static function latestposts($n = 10)
+  {
     return Post::getLatest($n);
   }
 
-  static function posts ($args = []) {
+  public static function posts($args = [])
+  {
     $args['page'] = self::$page;
     return Post::getPosts($args);
   }
 
-  static function totalposts ($args = []) {
-    if(self::$totalPosts == null) return Post::total($args);
+  public static function totalposts($args = [])
+  {
+    if (self::$totalPosts == null) {
+      return Post::total($args);
+    }
     return self::$totalPosts;
   }
 
-  static function totalpages ($args = []) {
+  public static function totalpages($args = [])
+  {
     $totalPosts = self::totalposts($args);
     self::$totalPages = floor(($totalPosts+self::$ppp)/self::$ppp);
     return self::$totalPages;
   }
 
-  static function get_url($id,$slug=NULL) // DEPRECATED
+  public static function get_url($id, $slug=null) // DEPRECATED
   {
-    if($slug==NULL) return Gila::make_url('blog','',['p'=>$id]);
-    return Gila::make_url('blog','',['p'=>$id,'slug'=>$slug]);
+    if ($slug==null) {
+      return Gila::make_url('blog', '', ['p'=>$id]);
+    }
+    return Gila::make_url('blog', '', ['p'=>$id,'slug'=>$slug]);
   }
 
-  static function thumb_sm($img,$id) // DEPRECATED
+  public static function thumb_sm($img, $id) // DEPRECATED
   {
     $target = 'post_sm/'.str_replace(["://",":\\\\","\\","/",":"], "_", $img);
     return View::thumb_sm($img, $target);
   }
-
 }
 
 class_alias('BlogCtrl', 'blog'); // DEPRECATED

@@ -11,7 +11,7 @@
 <?php
 View::script('core/admin/media.js');
 View::script('core/admin/content.js');
-if(file_exists('src/'.$tablesrc.'.js')) {
+if (file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
 View::script('core/lang/content/'.Gila::config('language').'.js');
@@ -32,30 +32,38 @@ $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];
 
-foreach($t['js'] as $js) View::script($js);
-foreach($t['css'] as $css) View::css($css);
+foreach ($t['js'] as $js) {
+  View::script($js);
+}
+foreach ($t['css'] as $css) {
+  View::css($css);
+}
 
 $pages_path[] = View::getThemePath().'/pages/';
-if(View::$parent_theme) $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
+if (View::$parent_theme) {
+  $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
+}
 $pages_path = array_merge($pages_path, Gila::packages());
 $pages_path[] = 'src/core/templates/';
-foreach($pages_path as $path) {
-  if(file_exists($path)) {
+foreach ($pages_path as $path) {
+  if (file_exists($path)) {
     $pages = scandir($path);
-    foreach ($pages as $page) if($page[0]!='.'){
-      $templates[] = [
+    foreach ($pages as $page) {
+      if ($page[0]!='.') {
+        $templates[] = [
         'title'=>$page, 'url'=>$path.$page
       ];
+      }
     }
   }
 }
 
 $fields = $pnk->fields('edit');
 echo '<form id="'.$table.'-edit-item-form" data-table="'.$table.'" data-id="'.$id.'" class="g-form"><div>';
-if($id) {
+if ($id) {
   $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()} WHERE id=$id;";
   $res = $db->get($ql)[0];
-  echo Form::html($pnk->getFields('edit'),$res);
+  echo Form::html($pnk->getFields('edit'), $res);
 } else {
   echo Form::html($pnk->getFields('edit'));
 }

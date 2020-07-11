@@ -9,7 +9,7 @@
     </div>
     <?=View::alerts()?>
 <?php
-if(Session::waitForLogin()==0) { ?>
+if (Session::waitForLogin()==0) { ?>
   <form role="form" method="post" action="" class="g-form">
     <div class="form-group">
       <input class="form-control fullwidth" placeholder="E-mail" name="username" type="email" autofocus>
@@ -24,7 +24,9 @@ if(Session::waitForLogin()==0) { ?>
 <?php } ?>
     <p>
       <a href="login/password_reset"><?=__('forgot_pass')?></a>
-      <?php if(Gila::config('user_register')==1) echo '| <a href="login/register">'.__('Register').'</a>';?>
+      <?php if (Gila::config('user_register')==1) {
+  echo '| <a href="login/register">'.__('Register').'</a>';
+}?>
     </p>
   </div>
 

@@ -15,36 +15,43 @@ class Logger
   /**
    * If filepath is set logs will be printed on it
    */
-  function __construct($filepath = null) {
-    if ($filepath != null) $this->file = $filepath;
+  public function __construct($filepath = null)
+  {
+    if ($filepath != null) {
+      $this->file = $filepath;
+    }
   }
 
   /**
    * System is unusable.
    */
-  public function emergency($message, array $context = array()) {
-    $this->log('emergency',$message,$context);
+  public function emergency($message, array $context = array())
+  {
+    $this->log('emergency', $message, $context);
   }
 
   /**
    * Action must be taken immediately.
    */
-  public function alert($message, array $context = array()) {
-    $this->log('alert',$message,$context);
+  public function alert($message, array $context = array())
+  {
+    $this->log('alert', $message, $context);
   }
   /**
    * Critical conditions.
    */
-  public function critical($message, array $context = array()) {
-    $this->log('critical',$message,$context);
+  public function critical($message, array $context = array())
+  {
+    $this->log('critical', $message, $context);
   }
 
   /**
    * Runtime errors that do not require immediate action but should typically
    * be logged and monitored.
    */
-  public function error($message, array $context = array()) {
-    $this->log('error',$message,$context);
+  public function error($message, array $context = array())
+  {
+    $this->log('error', $message, $context);
   }
 
   /**
@@ -53,15 +60,17 @@ class Logger
    * Example: Use of deprecated APIs, poor use of an API, undesirable things
    * that are not necessarily wrong.
    */
-  public function warning($message, array $context = array()) {
-    $this->log('warning',$message,$context);
+  public function warning($message, array $context = array())
+  {
+    $this->log('warning', $message, $context);
   }
 
   /**
    * Normal but significant events.
    */
-  public function notice($message, array $context = array()) {
-    $this->log('notice',$message,$context);
+  public function notice($message, array $context = array())
+  {
+    $this->log('notice', $message, $context);
   }
 
   /**
@@ -69,24 +78,27 @@ class Logger
    *
    * Example: User logs in, SQL logs.
    */
-  public function info($message, array $context = array()) {
-    $this->log('info',$message,$context);
+  public function info($message, array $context = array())
+  {
+    $this->log('info', $message, $context);
   }
 
   /**
    * Detailed debug information.
    */
-  public function debug($message, array $context = array()) {
-    $this->log('debug',$message,$context);
+  public function debug($message, array $context = array())
+  {
+    $this->log('debug', $message, $context);
   }
 
   /**
    * Logs with an arbitrary level.
    */
-  public function log($level, $message, array $context = array()) {
+  public function log($level, $message, array $context = array())
+  {
     if ($this->file != null) {
-      $line = date("Y-m-d H:i:s").','.$level.','.$message.','.json_encode($context,true)."\n";
-      @file_put_contents($this->file,$line,FILE_APPEND);
+      $line = date("Y-m-d H:i:s").','.$level.','.$message.','.json_encode($context, true)."\n";
+      @file_put_contents($this->file, $line, FILE_APPEND);
     }
 
     foreach ($this->handlers as $handler) {
@@ -97,7 +109,8 @@ class Logger
   /**
    * Adds a new handler to the logger.
    */
-  public function pushHandler(LogHandler $handler) {
+  public function pushHandler(LogHandler $handler)
+  {
     array_unshift($this->handlers, $handler);
   }
 }

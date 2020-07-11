@@ -21,14 +21,14 @@
 
 <div class="gm-6">
   <label class="gm-4">Position</label>
-  <input id="widget_pos" name="widget_pos" value="<?=$widget->pos?>" class="gm-6 g-input">
+  <input id="widget_pos" name="widget_pos" value="<?=htmlentities($widget->pos)?>" class="gm-6 g-input">
 </div>
 </div>
 
 <div class="gm-12" style="display:inline-flex;margin-bottom:8px;gap:1em">
 <div class="gm-6">
   <label class="gm-4">Title</label>
-  <input id="widget_title" name="widget_title" value="<?=$widget->title?>" class="gm-6 g-input">
+  <input id="widget_title" name="widget_title" value="<?=htmlentities($widget->title)?>" class="gm-6 g-input">
 </div>
 
 <div class="gm-6">
@@ -46,10 +46,14 @@ $widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 
 $widget_folder = 'src/'.Gila::$widget[$widget->widget];
 
 $fields = include $widget_folder.'/widget.php';
-if(isset($options)) $fields = $options;
+if (isset($options)) {
+  $fields = $options;
+}
 
-if(isset($fields)) foreach($fields as $key=>$op) {
-  $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
+if (isset($fields)) {
+  foreach ($fields as $key=>$op) {
+    $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
+  }
 }
 echo Form::html($fields, $values, 'option[', ']');
 echo "</form>";

@@ -55,7 +55,7 @@ function gallery_move_selected(path) {
         new_path = prompt(_e('_new_filepath'), old_path);
         if(new_path != null) {
           csrfToken=g.el('upload_files').getAttribute('data-csrf')
-          $.post('fm/move', {newpath:new_path, path:old_path, formToken:csrfToken}, function(msg){
+          g.post('fm/move', {newpath:new_path, path:old_path, formToken:csrfToken}, function(msg){
               if(msg=='') msg=_e('_file_saved')
               alert(msg);
               update_gallery_body(path);
@@ -126,6 +126,7 @@ g.dialog.buttons.select_media_path = {
     let v = g('#selected-path').attr('value')
     let c = g('#selected-image-caption').attr('value')
     g('#media_dialog').parent().remove();
+    g.closeModal();
     if(v!=null) {
       elem = g(media_path_input).all[0]
       elem.value = v;

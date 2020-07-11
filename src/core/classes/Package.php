@@ -7,46 +7,65 @@ class Package
 {
   private static $config = [];
 
-  function __construct()
+  public function __construct()
   {
+    ob_end_clean();
     $activate = Router::post('activate');
-    if($activate) self::activate($activate);
+    if ($activate) {
+      self::activate($activate);
+    }
     $deactivate = Router::post('deactivate');
-    if($deactivate) self::deactivate($deactivate);
+    if ($deactivate) {
+      self::deactivate($deactivate);
+    }
     $save_options = Router::param('save_options');
-    if($save_options) self::saveOptions($save_options);
+    if ($save_options) {
+      self::saveOptions($save_options);
+    }
     $options = Router::post('options');
-    if($options) self::options($options);
+    if ($options) {
+      self::options($options);
+    }
     $download = Router::post('download');
-    if(Gila::config('test')=='1') $download = Router::request('test', $download);
-    if($download && FS_ACCESS) {
-      if(self::download($download)===true) {
-        if(!$_REQUEST['g_response']) {
+    if (Gila::config('test')=='1') {
+      $download = Router::request('test', $download);
+    }
+    if ($download && FS_ACCESS) {
+      if (self::download($download)===true) {
+        if (!$_REQUEST['g_response']) {
           echo '<meta http-equiv="refresh" content="2;url='.Gila::base_url().'/admin/packages" />';
           echo __('_package_downloaded').'. Redirecting...';
           exit;
-        } else echo '{"success":true}';
-      } else echo '{"success":false}';
+        } else {
+          echo '{"success":true}';
+        }
+      } else {
+        echo '{"success":false}';
+      }
     }
     $html = Router::post('html');
-    if($html) self::display($html);
+    if ($html) {
+      self::display($html);
+    }
   }
 
-  static function config($package) {
-    if(!isset(self::$config[$package])) {
-      self::$config[$package] = json_decode(file_get_contents('src/'.$package.'/package.json'),true);
+  public static function config($package)
+  {
+    if (!isset(self::$config[$package])) {
+      self::$config[$package] = json_decode(file_get_contents('src/'.$package.'/package.json'), true);
     }
     return self::$config[$package];
   }
 
-  static function version($package) {
+  public static function version($package)
+  {
     return self::config($package)['version'];
   }
 
-  static function display($package)
+  public static function display($package)
   {
     $itemName = 'package-html';
-    echo Cache::remember($itemName, 259200, function($u) {
+    echo Cache::remember($itemName, 259200, function ($u) {
       return file_get_contents("https://gilacms.com/addons/package/{$u[0]}/html");
     }, [$package, self::config($package)['version']??'']);
   }
@@ -55,30 +74,40 @@ class Package
   * Activates a package
   * @param $activate (string) Package name to activate
   */
-  static function activate($activate)
+  public static function activate($activate)
   {
     if (in_array($activate, scandir('src/'))) {
-      if(!in_array($activate, $GLOBALS['config']['packages']) ||
+      if (!in_array($activate, $GLOBALS['config']['packages']) ||
          Gila::config('env')=='dev') {
-        $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'),true);
+        $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
         $require_op = [];
-        if(isset($pac['require'])) foreach ($pac['require'] as $key => $value) {
-          if(!in_array($key, Gila::packages())&&($key!='core')) {
-            if(!file_exists('vendor/'.$key)) $require[$key]=$value;
-          } else {
-            $pacx = self::config($key);
-            if(version_compare($pacx['version'], $value) < 0) $require[$key]=$value;
+        if (isset($pac['require'])) {
+          foreach ($pac['require'] as $key => $value) {
+            if (!in_array($key, Gila::packages())&&($key!='core')) {
+              if (!file_exists('vendor/'.$key)) {
+                $require[$key]=$value;
+              }
+            } else {
+              $pacx = self::config($key);
+              if (version_compare($pacx['version'], $value) < 0) {
+                $require[$key]=$value;
+              }
+            }
           }
         }
-        if(isset($pac['options'])) {
-          foreach($pac['options'] as $key=>$option) if(@$option['required']==true) {
-            if(Gila::option($activate.'.'.$key)===null) $require_op[] = @$option['title']?:$key;
+        if (isset($pac['options'])) {
+          foreach ($pac['options'] as $key=>$option) {
+            if (@$option['required']==true) {
+              if (Gila::option($activate.'.'.$key)===null) {
+                $require_op[] = @$option['title']?:$key;
+              }
+            }
           }
         }
 
-        if($require===[] && $require_op===[]) {
-          if(!in_array($activate, $GLOBALS['config']['packages'])) {
+        if ($require===[] && $require_op===[]) {
+          if (!in_array($activate, $GLOBALS['config']['packages'])) {
             $GLOBALS['config']['packages'][]=$activate;
           }
           self::copyAssets($activate);
@@ -86,26 +115,29 @@ class Package
           Gila::updateConfigFile();
           self::updateLoadFile();
           usleep(300);
-        }
-        else {
-          if($require!=[]) {
+        } else {
+          if ($require!=[]) {
             $error = __('_packages_required').':';
-            foreach($require as $k=>$r) {
-              if(strpos($k, '/')) {
+            foreach ($require as $k=>$r) {
+              if (strpos($k, '/')) {
                 $error .= "<br><a href='https://gilacms.com/blog/36' target='_blank'>$k $r</a>";
               } else {
                 $error .= "<br><a href='admin/packages/new?search=$k' target='_blank'>$k v$r</a>";
               }
             }
           }
-          if($require_op!=[]) {
+          if ($require_op!=[]) {
             $error = '<br>'.__('_options_required').': '.implode(', ', $require_op);
           }
         }
-      } else $error = __("_package_activated");
-    } else $error = __("_package_not_downloaded");
+      } else {
+        $error = __("_package_activated");
+      }
+    } else {
+      $error = __("_package_not_downloaded");
+    }
 
-    if(isset($error)) {
+    if (isset($error)) {
       echo '{"success":false,"error":"'.$error.'"}';
     } else {
       echo '{"success":true}';
@@ -116,19 +148,23 @@ class Package
   * Deactivates a package and its dependecies
   * @param $deactivate (string) Package name to deactivate
   */
-  static function deactivate($deactivate)
+  public static function deactivate($deactivate)
   {
-    if (in_array($deactivate,$GLOBALS['config']['packages'])) {
+    if (in_array($deactivate, $GLOBALS['config']['packages'])) {
       $key = array_search($deactivate, $GLOBALS['config']['packages']);
       unset($GLOBALS['config']['packages'][$key]);
 
       // deactivate other packages that require $deactivate
-      foreach($GLOBALS['config']['packages'] as $p) {
+      foreach ($GLOBALS['config']['packages'] as $p) {
         $string = file_get_contents("/src/$p/package.json");
         $json_p = json_decode($string, true);
-        if(isset($json_p['require'])) if(isset($json_p['require'][$deactivate])) {
-          $key = array_search($deactivate, $GLOBALS['config']['packages']);
-          if($key !== false) unset($GLOBALS['config']['packages'][$key]);
+        if (isset($json_p['require'])) {
+          if (isset($json_p['require'][$deactivate])) {
+            $key = array_search($deactivate, $GLOBALS['config']['packages']);
+            if ($key !== false) {
+              unset($GLOBALS['config']['packages'][$key]);
+            }
+          }
         }
       }
       Gila::updateConfigFile();
@@ -142,7 +178,7 @@ class Package
   * Downloads a package from gilacms.com assets in zip
   * @param $package (string) Package name to download
   */
-  static function download($package)
+  public static function download($package)
   {
     if (!$package) {
       return false;
@@ -153,11 +189,11 @@ class Package
     $request .= Gila::config('test')=='1' && isset($_GET['test']) ? '&test=1' : '';
     $pinfo = json_decode(file_get_contents($request), true)[0];
 
-    if(!$pinfo) {
+    if (!$pinfo) {
       return false;
     }
     $file = 'https://gilacms.com/assets/packages/'.$package.'.zip';
-    if(substr($pinfo['download_url'],0,8)==='https://'){
+    if (substr($pinfo['download_url'], 0, 8)==='https://') {
       $file = $pinfo['download_url'];
     }
 
@@ -172,20 +208,32 @@ class Package
       $month_in_seconds = 2592000;
       $zip->extractTo($tmp_name);
       $zip->close();
-      if(file_exists($target)) {
-        rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$package));
+      if (file_exists($target)) {
+        $res = rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$package));
+        if ($res===false) {
+          return false;
+        }
       }
       $previousPackages = scandir($previousFolder);
-      foreach($previousPackages as $folder) {
-        if(filemtime($previousFolder.$folder) < time()-$month_in_seconds) {
+      foreach ($previousPackages as $folder) {
+        if (filemtime($previousFolder.$folder) < time()-$month_in_seconds) {
           FileManager::delete($previousFolder.$folder);
         }
       }
-      
+
       $unzipped = scandir($tmp_name);
-      if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
-      rename($tmp_name, $target);
-      if(file_exists($target.'__tmp__')) rmdir($target.'__tmp__');
+      if (count(scandir($tmp_name))==3) {
+        if ($unzipped[2][0]!='.') {
+          $tmp_name .= '/'.$unzipped[2];
+        }
+      }
+      $res = rename($tmp_name, $target);
+      if ($res===false) {
+        return false;
+      }
+      if (file_exists($target.'__tmp__')) {
+        rmdir($target.'__tmp__');
+      }
       self::updateAfterDownload($package);
       unlink(LOG_PATH.'/load.php');
       unlink($localfile);
@@ -194,60 +242,71 @@ class Package
     return false;
   }
 
-  static function updateAfterDownload($package) {
+  public static function updateAfterDownload($package)
+  {
     global $db;
     self::copyAssets($package);
     $update_file = 'src/'.$package.'/update.php';
-    if(file_exists($update_file)) {
+    if (file_exists($update_file)) {
       self::update($package);
 
       include $update_file;
       $sites = scandir('sites');
-      foreach($sites as $site) if($site[0]!='.') {
-        $config = 'sites/'.$site.'/config.php';
-        if(file_exists($config)) {
-          include $config;
-          $db = new Db($GLOBALS['config']['db']);
-          if($package==='core' ||
+      foreach ($sites as $site) {
+        if ($site[0]!='.') {
+          $config = 'sites/'.$site.'/config.php';
+          if (file_exists($config)) {
+            include $config;
+            $db = new Db($GLOBALS['config']['db']);
+            if ($package==='core' ||
               in_array($package, $GLOBALS['config']['packages'])) {
-            include $update_file;
+              include $update_file;
+            }
           }
         }
       }
     }
   }
 
-  static function update($package) {
+  public static function update($package)
+  {
     $update_file = 'src/'.$package.'/update.php';
-    if(file_exists($update_file)) include $update_file;
+    if (file_exists($update_file)) {
+      include $update_file;
+    }
   }
 
-  static function copyAssets($package) {
+  public static function copyAssets($package)
+  {
     $assets = 'src/'.$package.'/assets';
-    if(file_exists($assets)) FileManager::copy($assets, 'assets/'.$package);
+    if (file_exists($assets)) {
+      FileManager::copy($assets, 'assets/'.$package);
+    }
   }
 
   /**
   * Returns the package options on html
   * @param $package (string) Package name to generate the options code
   */
-  static function options($package)
+  public static function options($package)
   {
     if (file_exists('src/'.$package)) {
       global $db;
       echo '<form id="addon_options_form" class="g-form">';
       echo '<input id="addon_id" value="'.$package.'" type="hidden">';
       $pack=$package;
-      if(file_exists('src/'.$package.'/package.json')) {
-        $pac=json_decode(file_get_contents('src/'.$package.'/package.json'),true);
+      if (file_exists('src/'.$package.'/package.json')) {
+        $pac=json_decode(file_get_contents('src/'.$package.'/package.json'), true);
         @$options=$pac['options'];
-      } else die('Could not find src/'.$package.'/package.json');
+      } else {
+        die('Could not find src/'.$package.'/package.json');
+      }
 
-      if(is_array($options)) {
-        foreach($options as $key=>$op) {
+      if (is_array($options)) {
+        foreach ($options as $key=>$op) {
           $values[$key] = Gila::option($pack.'.'.$key);
         }
-        echo Form::html($options,$values,'option[',']');
+        echo Form::html($options, $values, 'option[', ']');
       } // else error alert
       echo "</form>";
     }
@@ -257,21 +316,23 @@ class Package
   * Saves option values for a package
   * @param $package (string) Package name
   */
-  static function saveOptions($package)
+  public static function saveOptions($package)
   {
     global $db;
     $jsonFile = 'src/'.$package.'/package.json';
     if (file_exists($jsonFile)) {
-      $data = json_decode(file_get_contents($jsonFile),true);
-      foreach($_POST['option'] as $key=>$value) if(isset($data['options'][$key])){
-        if(!isset($data['options'][$key]['allow_tags'])
-            || $data['options'][$key]['allow_tags']===false) {
-          $value=strip_tags($value);
+      $data = json_decode(file_get_contents($jsonFile), true);
+      foreach ($_POST['option'] as $key=>$value) {
+        if (isset($data['options'][$key])) {
+          $allowed = $data['options'][$key]['allow_tags'] ?? false;
+          $value = HtmlInput::purify($value, $allowed);
+          $ql="INSERT INTO `option`(`option`,`value`) VALUES(?,?) ON DUPLICATE KEY UPDATE `value`=?;";
+          $db->query($ql, [$package.'.'.$key, $value, $value]);
         }
-        $ql="INSERT INTO `option`(`option`,`value`) VALUES(?,?) ON DUPLICATE KEY UPDATE `value`=?;";
-        $db->query($ql, [$package.'.'.$key, $value, $value]);
       }
-      if(Gila::config('env')==='pro') unlink(LOG_PATH.'/load.php');
+      if (Gila::config('env')==='pro') {
+        unlink(LOG_PATH.'/load.php');
+      }
     }
   }
 
@@ -279,19 +340,21 @@ class Package
   * Returns the installed packages in an array option values for a package
   * @return Array Packages
   */
-  static function scan()
+  public static function scan()
   {
     $dir = "src/";
     $scanned = scandir($dir);
     $_packages = [];
-    foreach($scanned as $folder) if($folder[0] != '.'){
-      $json = $dir.$folder.'/package.json';
-      if(file_exists($json)) {
-        $data = json_decode(file_get_contents($json));
-        @$data->title = @$data->title?? @$data->name;
-        $data->package = $folder;
-        $data->url = @$data->homepage?? (@$data->url?? '');
-        $_packages[$folder] = $data;
+    foreach ($scanned as $folder) {
+      if ($folder[0] != '.') {
+        $json = $dir.$folder.'/package.json';
+        if (file_exists($json)) {
+          $data = json_decode(file_get_contents($json));
+          @$data->title = @$data->title?? @$data->name;
+          $data->package = $folder;
+          $data->url = @$data->homepage?? (@$data->url?? '');
+          $_packages[$folder] = $data;
+        }
       }
     }
     return $_packages;
@@ -301,13 +364,13 @@ class Package
   * Combines all package load.php files in log/load.php
   * @return Array Packages
   */
-  static function updateLoadFile()
+  public static function updateLoadFile()
   {
     global $db;
     $file = LOG_PATH.'/load.php';
     $contents = '<?php';
     $packages = array_merge(['core'], Gila::packages());
-    foreach($packages as $package) {
+    foreach ($packages as $package) {
       $handle = @fopen("src/$package/load.php", "r");
       if ($handle) {
         $line = fgets($handle);
@@ -323,8 +386,10 @@ class Package
     }
     Gila::$option=[];
     $db->connect();
-  	$res = $db->get('SELECT `option`,`value` FROM `option`;');
-  	foreach($res as $r) Gila::$option[$r[0]] = $r[1];
+    $res = $db->get('SELECT `option`,`value` FROM `option`;');
+    foreach ($res as $r) {
+      Gila::$option[$r[0]] = $r[1];
+    }
     $db->close();
 
     $contents .= "\n\nGila::\$option = ".var_export(Gila::$option, true).";\n";
@@ -332,11 +397,13 @@ class Package
     file_put_contents($file, $contents);
   }
 
-  static function check4updates()
+  public static function check4updates()
   {
-    if(Gila::config('check4updates')==0) return;
+    if (Gila::config('check4updates')==0) {
+      return;
+    }
     $now = new DateTime("now");
-    if(Gila::option('checked4updates')===null) {
+    if (Gila::option('checked4updates')===null) {
       Gila::setOption('checked4updates', $now->format('Y-m-d'));
       $diff = 1000;
     } else {
@@ -344,26 +411,29 @@ class Package
     }
 
     // check once a day
-    if($diff>1) {
+    if ($diff>1) {
       $installed_packages = self::scan();
       $packages2update = [];
       $versions = [];
-      $url = "https://gilacms.com/addons/package_versions?p[]=".implode('&p[]=',array_keys($installed_packages));
+      $url = "https://gilacms.com/addons/package_versions?p[]=".implode('&p[]=', array_keys($installed_packages));
       $url .= Gila::config('test')=='1' ? '&test=1' : '';
-      if($res = file_get_contents($url)) {
+      if ($res = file_get_contents($url)) {
         Gila::setOption('checked4updates', $now->format('Y-m-d H:i:s'));
-        $versions = json_decode($res,true);
+        $versions = json_decode($res, true);
       }
-      foreach($installed_packages as $ipac=>$pac) {
-        if(isset($versions[$ipac]) && version_compare($versions[$ipac], $pac->version) == 1)
+      foreach ($installed_packages as $ipac=>$pac) {
+        if (isset($versions[$ipac]) && version_compare($versions[$ipac], $pac->version) == 1) {
           $packages2update[$ipac] = $versions[$ipac];
+        }
       }
-      if($packages2update != [])
-        file_put_contents(LOG_PATH.'/packages2update.json',json_encode($packages2update,JSON_PRETTY_PRINT));
+      if ($packages2update != []) {
+        file_put_contents(LOG_PATH.'/packages2update.json', json_encode($packages2update, JSON_PRETTY_PRINT));
+      }
     }
 
-    if(file_exists(LOG_PATH.'/packages2update.json')) return true;
+    if (file_exists(LOG_PATH.'/packages2update.json')) {
+      return true;
+    }
     return false;
   }
-
 }

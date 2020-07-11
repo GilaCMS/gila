@@ -5,9 +5,9 @@ use core\models\Page;
 
 class MenuItemTypes
 {
-  static $itemTypes;
+  public static $itemTypes;
 
-  static function defaultData()
+  public static function defaultData()
   {
     global $db;
     $data = (object) array('type'=>'menu','children' => []);
@@ -26,25 +26,31 @@ class MenuItemTypes
     return (array) $data;
   }
 
-  static function getItemTypes()
+  public static function getItemTypes()
   {
-    if(!isset(self::$itemTypes)) self::initItemTypes();
+    if (!isset(self::$itemTypes)) {
+      self::initItemTypes();
+    }
     return self::$itemTypes;
   }
 
-  static function addItemType ($index, $value)
+  public static function addItemType($index, $value)
   {
     Gila::addList('menuItemType', $value);
   }
 
-  static function get ($mi)
+  public static function get($mi)
   {
-    if(!isset(self::$itemTypes[$mi['type']])) return false;
-    if(!isset(self::$itemTypes[$mi['type']]['response'])) return false;
+    if (!isset(self::$itemTypes[$mi['type']])) {
+      return false;
+    }
+    if (!isset(self::$itemTypes[$mi['type']]['response'])) {
+      return false;
+    }
     return self::$itemTypes[$mi['type']]['response']($mi);
   }
 
-  static function initItemTypes()
+  public static function initItemTypes()
   {
     global $db;
     $pages = Page::genPublished();
@@ -106,9 +112,8 @@ class MenuItemTypes
       ]
     ];
     $custom = Gila::getList('menuItemType');
-    foreach($custom as $n) {
+    foreach ($custom as $n) {
       self::$itemTypes[$n[0]] = $n[1];
     }
   }
-
 }

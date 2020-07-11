@@ -5,25 +5,27 @@ foreach ($_POST as $key=>$value) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $_lc=substr($_POST['gila_base'],-1);
-  if($_lc!='/' && $_lc!='\\') $_POST['gila_base'].='/';
-  foreach ($config_list as $key => $value) {
-    Gila::setConfig($key,$_POST['gila_'.$key]);
+  $_lc=substr($_POST['gila_base'], -1);
+  if ($_lc!='/' && $_lc!='\\') {
+    $_POST['gila_base'].='/';
   }
-  Gila::config('default-controller',$_POST['gila_dc']);
-  Gila::config('timezone',$_POST['gila_timezone']);
-  Gila::config('language',$_POST['gila_language']);
-  Gila::config('admin_logo',$_POST['gila_admin_logo']);
-  Gila::config('favicon',$_POST['gila_favicon']);
-  Gila::config('env',$_POST['gila_env']);
-  Gila::config('check4updates',$_POST['gila_check4updates']);
-  Gila::config('rewrite',$_POST['gila_rewrite']);
-  Gila::config('user_register',$_POST['gila_user_register']);
-  Gila::config('user_activation',$_POST['gila_user_activation']);
-  Gila::config('use_cdn',$_POST['gila_use_cdn']);
-  Gila::config('use_webp',$_POST['gila_webp']);
-  Gila::config('maxImgWidth',$_POST['gila_maxImgWidth']);
-  Gila::config('maxImgHeight',$_POST['gila_maxImgHeight']);
+  foreach ($config_list as $key => $value) {
+    Gila::setConfig($key, $_POST['gila_'.$key]);
+  }
+  Gila::config('default-controller', $_POST['gila_dc']);
+  Gila::config('timezone', $_POST['gila_timezone']);
+  Gila::config('language', $_POST['gila_language']);
+  Gila::config('admin_logo', $_POST['gila_admin_logo']);
+  Gila::config('favicon', $_POST['gila_favicon']);
+  Gila::config('env', $_POST['gila_env']);
+  Gila::config('check4updates', $_POST['gila_check4updates']);
+  Gila::config('rewrite', $_POST['gila_rewrite']);
+  Gila::config('user_register', $_POST['gila_user_register']);
+  Gila::config('user_activation', $_POST['gila_user_activation']);
+  Gila::config('use_cdn', $_POST['gila_use_cdn']);
+  Gila::config('use_webp', $_POST['gila_webp']);
+  Gila::config('maxImgWidth', $_POST['gila_maxImgWidth']);
+  Gila::config('maxImgHeight', $_POST['gila_maxImgHeight']);
   Gila::updateConfigFile();
   echo '{"success":true}';
   return;
@@ -35,20 +37,22 @@ View::script('core/lang/content/'.Gila::config('language').'.js');
 
 <div class="gm-12">
 <?php View::alerts(); ?>
-<form id="settings-form" method="post" action="<?=Gila::make_url('admin','settings')?>" class="g-form">
+<form id="settings-form" method="post" action="<?=Gila::make_url('admin', 'settings')?>" class="g-form">
   <input type="hidden" name="submit-btn">
   <h2><?=__("Basic Settings")?></h2><hr>
 
 <?php
-foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
+foreach ($config_list as $key=>$value) {
+  if ($value[0] != '.') { ?>
   <br><div class="gm-12">
   <label class="g-label gm-4"><?=__($value)?></label>
   <input class="g-input" name="gila_<?=$key?>" value="<?=Gila::config($key)?>" class="gm-4" />
   </div>
-<?php } ?>
+<?php }
+} ?>
 
   <br>
-  <?php echo Form::input('gila_user_register',["type"=>"switch"], Gila::config('user_register'),__("New users can register")) ?>
+  <?php echo Form::input('gila_user_register', ["type"=>"switch"], Gila::config('user_register'), __("New users can register")) ?>
 
   <br>
   <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Gila::config('user_activation'), __("New Users activation")) ?>
@@ -109,9 +113,13 @@ foreach ($config_list as $key=>$value) if($value[0] != '.') { ?>
   <label class="g-label gm-4"><?=__("Default Controller")?></label>
   <select name="gila_dc" value="<?=Gila::config('default-controller')?>" class="gm-4">
   <?php
-  foreach (Router::$controllers as $k=>$value) if($value[0] != '.') if(!in_array($k,['cm','login','webhook','fm','lzld','blocks'])){
-    $sel = (Gila::config('default-controller')==$k?'selected':'');
-    echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
+  foreach (Router::$controllers as $k=>$value) {
+    if ($value[0] != '.') {
+      if (!in_array($k, ['cm','login','webhook','fm','lzld','blocks'])) {
+        $sel = (Gila::config('default-controller')==$k?'selected':'');
+        echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
+      }
+    }
   }
   ?>
   </select>

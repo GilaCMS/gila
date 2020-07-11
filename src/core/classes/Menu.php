@@ -5,7 +5,7 @@ use core\models\Page;
 
 class Menu
 {
-  static function defaultData()
+  public static function defaultData()
   {
     global $db;
     $widget_data = (object) array('type'=>'menu','children' => []);
@@ -21,22 +21,32 @@ class Menu
     return (array) $widget_data;
   }
 
-  static function getHtml($items, $base="")
+  public static function getHtml($items, $base="")
   {
     $html = "";
     foreach ($items as $key => $item) {
-      if(isset($item['access'])) if(!Session::hasPrivilege($item['access'])) continue;
-      if(isset($item['icon'])) $icon = 'fa-'.$item['icon']; else $icon='';
-      $url = $item[1]=='#'? 'javascript:void(0)': $item[1];
+      if (isset($item['access'])) {
+        if (!Session::hasPrivilege($item['access'])) {
+          continue;
+        }
+      }
+      if (isset($item['icon'])) {
+        $icon = 'fa-'.$item['icon'];
+      } else {
+        $icon='';
+      }
+      $url = $item[1]=='#'? 'javascript:void(0)': htmlentities($item[1]);
       $badge = "";
-      if(isset($item['counter'])) {
+      if (isset($item['counter'])) {
         $c = is_callable($item['counter'])? $item['counter'](): $item['counter'];
-        if($c>0) $badge = " <span class=\"g-badge\">$c</span>";
+        if ($c>0) {
+          $badge = " <span class=\"g-badge\">$c</span>";
+        }
       }
       $liClass = isset($item['children'])? ' class="dropdown"': '';
       $html .= "<li$liClass><a href='".$url."'><i class='fa {$icon}'></i>";
       $html .= " <span>".__("$item[0]")."</span>$badge</a>";
-      if(isset($item['children'])) {
+      if (isset($item['children'])) {
         $html .= "<ul class=\"dropdown-menu\">";
         $html .= Menu::getHtml($item['children'], $base);
         $html .= "</ul>";

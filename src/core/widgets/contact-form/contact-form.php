@@ -1,5 +1,5 @@
 <?php
-if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptcha',true)) {
+if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptcha', true)) {
   new sendmail(["post"=>["name","email","message"]]);
   View::alert('success', htmlentities($widget_data->success_msg));
 }

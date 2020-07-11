@@ -15,10 +15,6 @@
 RewriteEngine On
 
 # exclude these folders
-RewriteCond %{REQUEST_URI} !/vendor/
-RewriteCond %{REQUEST_URI} !/src/
-RewriteCond %{REQUEST_URI} !/themes/
-RewriteCond %{REQUEST_URI} !/lib/
 RewriteCond %{REQUEST_URI} !/assets/
 RewriteCond %{REQUEST_URI} !/tmp/
 RewriteCond %{REQUEST_URI} !robots.txt

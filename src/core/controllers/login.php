@@ -4,56 +4,54 @@ use core\models\User;
 
 class login extends Controller
 {
-
-  function __construct ()
+  public function __construct()
   {
     Gila::addLang('core/lang/login/');
   }
 
-  function indexAction()
+  public function indexAction()
   {
-    if(Session::key('user_id')>0) {
-       echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
-       exit;
+    if (Session::key('user_id')>0) {
+      echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
+      exit;
     }
-    if(Session::waitForLogin()>0) {
+    if (Session::waitForLogin()>0) {
       View::alert('error', __('login_error_msg2'));
-    } else if (isset($_POST['username']) && isset($_POST['password'])) {
+    } elseif (isset($_POST['username']) && isset($_POST['password'])) {
       View::alert('error', __('login_error_msg'));
     }
     View::set('title', __('Log In'));
     View::includeFile('login.php');
   }
 
-  function callbackAction()
+  public function callbackAction()
   {
     Event::fire('login.callback');
   }
 
-  function registerAction()
+  public function registerAction()
   {
-    if(Session::key('user_id')>0 || Gila::config('user_register')!=1) {
-       echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
-       return;
+    if (Session::key('user_id')>0 || Gila::config('user_register')!=1) {
+      echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
+      return;
     }
     View::set('title', __('Register'));
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && Event::get('recaptcha',true)) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && Event::get('recaptcha', true)) {
       $email = $_POST['email'];
       $password = $_POST['password'];
       $name = $_POST['name'];
-      if(User::getByEmail($email)) {
+      if (User::getByEmail($email)) {
         View::alert('error', __('register_error1'));
-      }
-      else {
+      } else {
         // register the user
         $active = Gila::config('user_activation')=='auto'? 1: 0;
-        if($user_Id = User::create($email,$password,$name,$active)) {
+        if ($user_Id = User::create($email, $password, $name, $active)) {
           // success
-          if(Gila::config('user_activation')=='byemail') {
+          if (Gila::config('user_activation')=='byemail') {
             $baseurl = Gila::base_url();
             $subject = __('activate_msg_ln1').' '.$r['username'];
-            $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,50);
+            $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
             $msg .= __('activatemsg_ln3')." $baseurl\n\n";
             $msg .= $baseurl."login/activate?ap=$activate_code\n\n";
@@ -72,13 +70,14 @@ class login extends Controller
     View::includeFile('register.php');
   }
 
-  function activateAction() {
-    if(Session::key('user_id')>0) {
+  public function activateAction()
+  {
+    if (Session::key('user_id')>0) {
       echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
       return;
     }
 
-    if(isset($_GET['ap'])) {
+    if (isset($_GET['ap'])) {
       $ids = User::getIdsByMeta('activate_code', $_GET['ap']);
       if (!isset($ids[0])) {
         echo  __('activate_error1');
@@ -92,9 +91,9 @@ class login extends Controller
     http_response_code(400);
   }
 
-  function password_resetAction()
+  public function password_resetAction()
   {
-    if(Session::key('user_id')>0) {
+    if (Session::key('user_id')>0) {
       echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
       return;
     }
@@ -102,14 +101,13 @@ class login extends Controller
     $rpt = 'reset-password-time';
     View::set('title', __('reset_pass'));
 
-    if(isset($_GET['rp'])) {
+    if (isset($_GET['rp'])) {
       $r = User::getByResetCode($_GET['rp']);
       if (!$r) {
         echo  __('reset_error1');
-      }
-      else if(isset($_POST['pass'])) {
+      } elseif (isset($_POST['pass'])) {
         $idUser=$r[0];
-        User::updatePassword($idUser,$_POST['pass']);
+        User::updatePassword($idUser, $_POST['pass']);
         View::includeFile('login-change-success.php');
       } else {
         Session::key($rpa, 0);
@@ -118,7 +116,7 @@ class login extends Controller
       exit;
     }
 
-    if(!isset($_POST['email'])) {
+    if (!isset($_POST['email'])) {
       View::includeFile('login-change-password.php');
       return;
     }
@@ -142,23 +140,23 @@ class login extends Controller
 
       $baseurl = Gila::base_url();
       $subject = __('reset_msg_ln1').' '.$r['username'];
-      $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),0,50);
+      $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
       $msg .= __('reset_msg_ln3')." $baseurl\n\n";
       $msg .= $baseurl."login/password_reset?rp=$reset_code\n\n";
       $msg .= __('reset_msg_ln4');
       $headers = "From: ".Gila::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
-      User::meta($r['id'],'reset_code',$reset_code);
+      User::meta($r['id'], 'reset_code', $reset_code);
       new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
 
     View::includeFile('login-change-emailed.php');
   }
 
-  function authAction()
+  public function authAction()
   {
     header('Content-Type: application/json');
-    if(!isset($_POST['email']) || !isset($_POST['password'])) {
+    if (!isset($_POST['email']) || !isset($_POST['password'])) {
       http_response_code(400);
       echo '{"error":"Credencials missing"}';
       return;
@@ -166,7 +164,7 @@ class login extends Controller
     $usr = User::getByEmail($_POST['email']);
     if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
       $token = User::meta($usr['id'], 'token');
-      if($token) {
+      if ($token) {
         echo '{"token":"'.$token.'"}';
         return;
       }
