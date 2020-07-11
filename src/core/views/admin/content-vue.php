@@ -1,7 +1,7 @@
 <?php
 $gtable = new Table($table);
 $t = $gtable->getTable();
-if(!$gtable->can('read')) {
+if (!$gtable->can('read')) {
   @http_response_code(404);
   echo '<h1>403 Error</h1>';
   echo '<h2>You cannot access this content</h2>';

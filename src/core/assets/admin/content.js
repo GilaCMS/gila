@@ -77,7 +77,7 @@ Vue.component('g-table', {
         </td>\
         <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
         :col="ifield" :value="row[ifield]" :class="field" v-html="display_cell(irow,ifield)"\
-        @keydown="inlineDataUpdate(irow)">\
+        @keydown="inlineDataUpdate(irow, field)">\
         </td>\
         <td v-if="table.commands" class="td-com">\
           <span v-for="(com,icom) in table.commands" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
@@ -409,8 +409,8 @@ Vue.component('g-table', {
       if(this.bulk_selected<0) cl='fa-minus-square-o';
       return 'fa bulk_checkbox '+cl;
     },
-    inlineDataUpdate: function(irow){
-      if(this.inlineEdit==false) return;
+    inlineDataUpdate: function(irow, fkey){
+      if(!this.table.fields[fkey].inline_edit) return;
       this.updateRows.push(irow);
     }
   },
