@@ -219,7 +219,11 @@ Vue.component('g-table', {
       return this.table.fields[ifield].title
     },
     command_label: function(com) {
-      if(typeof gtableCommand[com]=='undefined') return com
+      if(this.table.action_display=='label' ||
+        typeof gtableCommand[com]=='undefined') {
+          return '<a>'+gtableCommand[com].label+'</a>';
+        }
+        
       return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'"></i>'
     },
     runsearch: function() {
@@ -443,6 +447,10 @@ Vue.component('g-table', {
         url = 'cm/update_rows/'+_this.name+'?id='+id
         g.ajax({method:'post',url:url,data:data,fn:function(data) {
           console.log("Saved #"+id);
+          tr = g('tr[row-id="'+irow+'"] td').all
+          for(j=0; j<tr.length; j++) {
+            tr[j].animate([{background:'lightgreen'},{background:'inherit'}], {duration:600})
+          }
         }})
 
       }
@@ -495,6 +503,7 @@ gtableFieldDisplay = Array()
 
 gtableCommand['edit'] = {
   fa: "pencil",
+  label: "Edit",
   fn: function(table,irow){
     let _this = table
     _this.edititem = irow
@@ -510,6 +519,7 @@ gtableCommand['edit'] = {
 
 gtableCommand['edit_page'] = {
   fa: "pencil",
+  label: "Edit",
   fn: function(table,irow){
     window.location.href = 'admin/content/'+table.name+'/'+irow
   }
@@ -517,6 +527,7 @@ gtableCommand['edit_page'] = {
 
 gtableCommand['edit_popup'] = {
   fa: "pencil",
+  label: "Edit",
   fn: function(table,irow) {
   href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
@@ -579,6 +590,7 @@ function g_form_popup_update() {
 
 gtableCommand['clone'] = {
   fa: "copy",
+  label: "Clone",
   fn: function(table,id) {
     let _this
     _this = table
@@ -592,6 +604,7 @@ gtableCommand['clone'] = {
 
 gtableCommand['delete'] = {
   fa: "trash-o",
+  label: "Delete",
   fn: function(table,id) {
     let _this = table
     let _id = id

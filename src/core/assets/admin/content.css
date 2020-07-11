@@ -395,8 +395,8 @@ td[col] .g-input {
   opacity: 0.8;
 }
 @media only screen and (min-width:1000px){
-  .g-table .com-btn {
-    opacity: 0.2;
+  .g-table .com-btn i {
+    opacity: 0.3;
   }  
 }
 
