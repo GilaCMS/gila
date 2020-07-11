@@ -1,7 +1,7 @@
 <?php
 namespace Gila;
 
-class user
+class User
 {
   public static function create($email, $password, $name = '', $active = 1)
   {
