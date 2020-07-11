@@ -8,8 +8,8 @@ class ClassGila extends TestCase
 
 	public function test_addLang()
 	{
-		Gila::config('language','es');
-		Gila::addLang('core/lang/');
+		Gila\Gila::config('language','es');
+		Gila\Gila::addLang('core/lang/');
 		$this->assertEquals('Inicio', __('Home'));
 	}
 
