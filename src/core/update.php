@@ -1,15 +1,19 @@
 <?php
 
 Gila::content('post', 'core/tables/post.php');
-$postTable = new gTable('post');
+$postTable = new Table('post');
 $postTable->update();
 
 Gila::content('page', 'core/tables/page.php');
-$pageTable = new gTable('page');
+$pageTable = new Table('page');
 $pageTable->update();
 
+Gila::content('user', 'core/tables/user.php');
+$userTable = new Table('user');
+$userTable->update();
+
 Gila::content('userrole', 'core/tables/userrole.php');
-$userroleTable = new gTable('userrole');
+$userroleTable = new Table('userrole');
 $userroleTable->update();
 
 if (version_compare(Package::version('core'), '1.8.0') < 0) {
@@ -20,7 +24,6 @@ if (version_compare(Package::version('core'), '1.8.0') < 0) {
 
 if (version_compare(Package::version('core'), '1.9.0') < 0) {
   global $db;
-  $db->query("ALTER TABLE `user` ADD COLUMN `active` tinyint(1) DEFAULT 1;");
   $db->query("ALTER TABLE `option` CHANGE COLUMN `value` `value` text;");
 }
 

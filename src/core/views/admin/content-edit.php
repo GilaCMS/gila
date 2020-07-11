@@ -27,7 +27,7 @@ View::script('core/admin/vue-editor.js');
 
 <?php
 global $db;
-$pnk = new gTable($table, core\models\User::permissions(Session::userId()));
+$pnk = new Table($table, core\models\User::permissions(Session::userId()));
 $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];

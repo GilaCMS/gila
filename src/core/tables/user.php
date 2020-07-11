@@ -53,7 +53,7 @@ return [
     'active'=> [
       'type'=>'checkbox',
       'title'=>'Active',
-      'qtype'=>'INT(1) DEFAULT 0'
+      'qtype'=>'INT(1) DEFAULT 1'
     ],
     'reset_code'=> [
       'list'=>false,

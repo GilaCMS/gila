@@ -55,7 +55,7 @@ class cm extends Controller
 
   public function describe($table)
   {
-    $pnk = new gTable($table, $this->permissions);
+    $pnk = new Table($table, $this->permissions);
     if (!$pnk->can('read')) {
       return;
     }
@@ -80,7 +80,7 @@ class cm extends Controller
 
   public function list($table, $filters, $args)
   {
-    $gtable = new gTable($table, $this->permissions);
+    $gtable = new Table($table, $this->permissions);
     if (!$gtable->can('read')) {
       return;
     }
@@ -91,7 +91,7 @@ class cm extends Controller
   public function getAction()
   {
     header('Content-Type: application/json');
-    $table = new gTable($this->table, $this->permissions);
+    $table = new Table($this->table, $this->permissions);
     if (!$table->can('read')) {
       return;
     }
@@ -102,7 +102,7 @@ class cm extends Controller
       $row = $table->getRow($_GET, $_GET);
     }
     foreach ($table->getTable()['children'] as $key=>$child) {
-      $table = new gTable($key);
+      $table = new Table($key);
       $filter = [$child['parent_id']=>$id];
       $row[$key] = $table->getRows($filter);
     }
@@ -122,7 +122,7 @@ class cm extends Controller
       $this->group_rowsAction();
       return;
     }
-    $pnk = new gTable($table, $this->permissions);
+    $pnk = new Table($table, $this->permissions);
     if (!$pnk->can('read')) {
       return;
     }
@@ -143,7 +143,7 @@ class cm extends Controller
   public function csvAction()
   {
     global $db;
-    $pnk = new gTable($this->table, $this->permissions);
+    $pnk = new Table($this->table, $this->permissions);
     $orderby = Router::request('orderby', []);
     if (!$pnk->can('read')) {
       return;
@@ -175,7 +175,7 @@ class cm extends Controller
 
   public function get_empty_csvAction()
   {
-    $pnk = new gTable($this->table, $this->permissions);
+    $pnk = new Table($this->table, $this->permissions);
     if (!$pnk->can('create')) {
       return;
     }
@@ -188,7 +188,7 @@ class cm extends Controller
   public function upload_csvAction()
   {
     global $db;
-    $pnk = new gTable($this->table, $this->permissions);
+    $pnk = new Table($this->table, $this->permissions);
     if (!$pnk->can('create')) {
       return;
     }
@@ -229,7 +229,7 @@ class cm extends Controller
   {
     global $db;
     header('Content-Type: application/json');
-    $pnk = new gTable($this->table, $this->permissions);
+    $pnk = new Table($this->table, $this->permissions);
     if (!$pnk->can('read')) {
       return;
     }
@@ -257,7 +257,7 @@ class cm extends Controller
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
       return;
     }
-    $pnk = new gTable($this->table, $this->permissions);
+    $pnk = new Table($this->table, $this->permissions);
 
     if (isset($_GET['id']) && $_GET['id']>0 && $pnk->can('update')) {
       $id = $_GET['id'];
@@ -298,7 +298,7 @@ class cm extends Controller
   public function empty_rowAction()
   {
     header('Content-Type: application/json');
-    $pnk = new gTable($this->table, $this->permissions);
+    $pnk = new Table($this->table, $this->permissions);
     $result['fields'] = $pnk->fields('create');
     $result['rows'][0] = $pnk->getEmpty();
     echo json_encode($result, JSON_PRETTY_PRINT);
@@ -311,7 +311,7 @@ class cm extends Controller
   {
     global $db;
     header('Content-Type: application/json');
-    $pnk = new gTable($this->table, $this->permissions);
+    $pnk = new Table($this->table, $this->permissions);
     if (!$pnk->can('create')) {
       return;
     }
@@ -359,7 +359,7 @@ class cm extends Controller
   public function deleteAction()
   {
     header('Content-Type: application/json');
-    $gtable = new gTable($this->table, $this->permissions);
+    $gtable = new Table($this->table, $this->permissions);
     if ($gtable->can('delete')) {
       $ids = explode(',', $_POST['id']);
       foreach ($ids as $id) {
@@ -377,7 +377,7 @@ class cm extends Controller
   {
     global $db;
     $t = htmlentities($this->table);
-    $pnk = new gTable($t, $this->permissions);
+    $pnk = new Table($t, $this->permissions);
     if (!$pnk->can('update')) {
       return;
     }
