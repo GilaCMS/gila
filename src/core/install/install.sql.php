@@ -29,7 +29,7 @@ $db->query('CREATE TABLE IF NOT EXISTS `option` (
   PRIMARY KEY (`option`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-TableSchema::update(include 'src/core/tables/user.php');
+TableSchema::update(include 'src/core/tables/userrole.php');
 
 $_user = $_POST['adm_user'];
 $_email = $_POST['adm_email'];
