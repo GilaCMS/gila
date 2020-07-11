@@ -1,19 +1,21 @@
 <?php
 namespace core\models;
+
 use View;
 use Router;
 
 class Profile
 {
-
-  static function postUpdate($user_id)
+  public static function postUpdate($user_id)
   {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      return;
+    }
 
-    if (Router::post('submit-btn')==='submited'){
+    if (Router::post('submit-btn')==='submited') {
       User::updateName($user_id, strip_tags($_POST['gila_username']));
       User::meta($user_id, 'twitter_account', strip_tags($_POST['twitter_account']));
-      if($_POST['gila_photo']==null) {
+      if ($_POST['gila_photo']==null) {
         User::metaDelete($user_id, 'photo');
       } else {
         User::meta($user_id, 'photo', strip_tags($_POST['gila_photo']));
@@ -21,13 +23,13 @@ class Profile
       View::alert('success', __('_changes_updated'));
     }
 
-    if (Router::post('submit-btn')=='password'){
+    if (Router::post('submit-btn')=='password') {
       $usr = User::getById($user_id);
       $pass = $_POST['new_pass'];
-      if(password_verify($_POST['old_pass'], $usr['pass'])) {
-        if(strlen($pass) > 4 ) {
-          if($pass===$_POST['new_pass2']) {
-            if(User::updatePassword($user_id, $pass)) {
+      if (password_verify($_POST['old_pass'], $usr['pass'])) {
+        if (strlen($pass) > 4) {
+          if ($pass===$_POST['new_pass2']) {
+            if (User::updatePassword($user_id, $pass)) {
               View::alert('success', __('_changes_updated'));
             }
           } else {
@@ -43,7 +45,7 @@ class Profile
 
     if (Router::post('token')==='generate') {
       $token = self::generateToken();
-      while(count(User::getIdsByMeta('token', $token)) > 0) {
+      while (count(User::getIdsByMeta('token', $token)) > 0) {
         $token = self::generateToken();
       }
       User::meta($user_id, 'token', $token);
@@ -56,12 +58,12 @@ class Profile
     }
   }
 
-  static function generateToken() {
+  public static function generateToken()
+  {
     $token = '';
-    while(strlen($token) < 160) {
+    while (strlen($token) < 160) {
       $token .= hash('sha512', uniqid(true));
     }
     return substr($token, 0, 160);
   }
-
 }

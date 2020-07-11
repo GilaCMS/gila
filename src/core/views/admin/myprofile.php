@@ -80,12 +80,16 @@
   <?php
   $sessions = core\models\User::metaList(Session::userId(), 'GSESSIONID');
   $info = [];
-  foreach($sessions as $key=>$session) if(file_exists(LOG_PATH.'/sessions/'.$session)) {
-    $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
-    $info[$key] = UserAgent::info($user_agent);
-    if($_COOKIE['GSESSIONID']==$session) $info[$key]['current'] = true;
-  } else {
-    core\models\User::metaDelete(Session::userId(), 'GSESSIONID', $session);
+  foreach ($sessions as $key=>$session) {
+    if (file_exists(LOG_PATH.'/sessions/'.$session)) {
+      $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
+      $info[$key] = UserAgent::info($user_agent);
+      if ($_COOKIE['GSESSIONID']==$session) {
+        $info[$key]['current'] = true;
+      }
+    } else {
+      core\models\User::metaDelete(Session::userId(), 'GSESSIONID', $session);
+    }
   }
   ?>
 <div class="gm-6 wrapper" id="currentDevices">

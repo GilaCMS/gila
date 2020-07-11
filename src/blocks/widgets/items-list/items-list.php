@@ -3,7 +3,7 @@
 .items-list img,.items-list svg{max-width:100%;height:auto;}</style>
 <div style="display: grid; grid-gap:20px;padding:20px;grid-template-columns:1fr 1fr">
 <div class="items-list" style="display: grid; grid-gap:20px;padding:20px;justify-content: center; grid-template-columns: repeat(auto-fit, minmax(150px,200px)); width:100%">
-<?php foreach(json_decode(@$widget_data->items) as $item) { ?>
+<?php foreach (json_decode(@$widget_data->items) as $item) { ?>
   <div>
     <div>
       <?=View::img($item[0], 300)?>
@@ -11,9 +11,9 @@
     <div>
       <h3><?=htmlentities($item[1])?></h3>
       <p><?=htmlentities($item[2])?></p>
-      <?php if($item[3] != '') {
-        echo '<a href="'._url($item[3]).'">Learn More</a>';
-      } ?>
+      <?php if ($item[3] != '') {
+  echo '<a href="'._url($item[3]).'">Learn More</a>';
+} ?>
     </div>
   </div>
 <?php } ?>

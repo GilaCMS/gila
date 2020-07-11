@@ -16,37 +16,41 @@ class View
   public static $canonical;
   public static $renderer;
 
-  static function set($param, $value)
+  public static function set($param, $value)
   {
     global $g,$c; // DEPRECATED since 1.13.0
     self::$part[$param]=$value;
-    @$g->$param = $value; 
+    @$g->$param = $value;
     @$c->$param = $value;
   }
 
   /**
   * Set a meta value
   */
-  static function meta($meta,$value)
+  public static function meta($meta, $value)
   {
     self::$meta[$meta]=$value;
   }
 
-  static function stylesheet($href)
+  public static function stylesheet($href)
   {
-    if(in_array($href,self::$stylesheet)) return;
-    if(file_exists('assets/'.$href)) {
+    if (in_array($href, self::$stylesheet)) {
+      return;
+    }
+    if (file_exists('assets/'.$href)) {
       $href = 'assets/'.$href;
     }
     self::$stylesheet[]=$href;
   }
 
-  static function links()
+  public static function links()
   {
-    foreach (self::$stylesheet as $link) echo '<link href="'.$link.'" rel="stylesheet">';
+    foreach (self::$stylesheet as $link) {
+      echo '<link href="'.$link.'" rel="stylesheet">';
+    }
   }
 
-  static function scripts()
+  public static function scripts()
   {
     //foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
   }
@@ -54,21 +58,23 @@ class View
   /**
   * Set an alert message
   */
-  static function alert($type,$msg)
+  public static function alert($type, $msg)
   {
     self::$alert[]=[$type,$msg];
   }
 
-  static function alerts()
+  public static function alerts()
   {
-    foreach (self::$alert as $a) echo '<div class="alert '.$a[0].'"><span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>'.$a[1].'</div>';
+    foreach (self::$alert as $a) {
+      echo '<div class="alert '.$a[0].'"><span class="closebtn" onclick="this.parentElement.style.display=\'none\';">&times;</span>'.$a[1].'</div>';
+    }
   }
 
   /**
   * Adds a css file inline
   * @param $css Path to css file
   */
-  static function cssInline($css)
+  public static function cssInline($css)
   {
     echo '<style>'.file_get_contents($css).'</style>';
   }
@@ -77,11 +83,13 @@ class View
   * Adds a link tag of css file
   * @param $css Path to css file
   */
-  static function css($css, $uri=false)
+  public static function css($css, $uri=false)
   {
-    if(in_array($css,self::$css)) return;
+    if (in_array($css, self::$css)) {
+      return;
+    }
     self::$css[]=$css;
-    if(file_exists('assets/'.$css)) {
+    if (file_exists('assets/'.$css)) {
       $css = 'assets/'.$css;
     }
     echo '<link rel="stylesheet" href="'.$css.'">';
@@ -91,16 +99,17 @@ class View
   * Loads a css file asynchronously using a simple javascript function
   * @param $css Path to css file
   */
-  static function cssAsync($css, $uri=false)
+  public static function cssAsync($css, $uri=false)
   {
-    if(in_array($css,self::$css)) return;
+    if (in_array($css, self::$css)) {
+      return;
+    }
     self::$css[]=$css;
-    if(file_exists('assets/'.$css)) {
+    if (file_exists('assets/'.$css)) {
       $css = 'assets/'.$css;
     }
-    if(!self::$cssAsync) {
-      self::$cssAsync = true;
-    ?>
+    if (!self::$cssAsync) {
+      self::$cssAsync = true; ?>
     <script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script>
     <?php
     }
@@ -111,13 +120,15 @@ class View
   * Adds a script tag of javascript file
   * @param $script Path to js file
   */
-  static function script($script, $uri=false, $prop='')
+  public static function script($script, $uri=false, $prop='')
   {
-    if(in_array($script, self::$script)) return;
+    if (in_array($script, self::$script)) {
+      return;
+    }
     self::$script[]=$script;
-    if(isset(self::$cdn_paths[$script])) {
+    if (isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
-    } else if(file_exists('assets/'.$script)) {
+    } elseif (file_exists('assets/'.$script)) {
       $script = 'assets/'.$script;
     }
     echo '<script src="'.$script.'" '.$prop.'></script>';
@@ -127,9 +138,11 @@ class View
   * Adds a script tag of javascript file lo load asynchronously
   * @param $script Path to js file
   */
-  static function scriptAsync($script, $uri=false)
+  public static function scriptAsync($script, $uri=false)
   {
-    if(in_array($script,self::$scriptAsync)) return;
+    if (in_array($script, self::$scriptAsync)) {
+      return;
+    }
     self::$scriptAsync[]=$script;
     self::script($script, $uri, 'async');
   }
@@ -138,15 +151,17 @@ class View
   * Returns the relative path of the selected theme's folder
   * @return string
   */
-  static function getThemePath()
+  public static function getThemePath()
   {
-    if($gpt = Router::request('g_preview_theme')) return 'themes/'.$gpt;
+    if ($gpt = Router::request('g_preview_theme')) {
+      return 'themes/'.$gpt;
+    }
     return 'themes/'.Gila::config('theme');
   }
 
-  static function renderAdmin($file, $package = 'core')
+  public static function renderAdmin($file, $package = 'core')
   {
-    if(Router::request('g_response')==='content') {
+    if (Router::request('g_response')==='content') {
       self::renderFile($file, $package);
       return;
     }
@@ -157,20 +172,22 @@ class View
   }
 
 
-  static function render($file, $package = 'core')
+  public static function render($file, $package = 'core')
   {
-    if(Router::request('g_response')==='json') {
-      foreach (self::$part as $key => $value) if(is_object($value)) {
-        self::$part[$key]=[];
-        foreach($value as $r) {
-          self::$part[$key][]=(array)$r;
+    if (Router::request('g_response')==='json') {
+      foreach (self::$part as $key => $value) {
+        if (is_object($value)) {
+          self::$part[$key]=[];
+          foreach ($value as $r) {
+            self::$part[$key][]=(array)$r;
+          }
         }
       }
       echo json_encode(self::$part);
       exit;
     }
 
-    if(Router::request('g_response')==='content') {
+    if (Router::request('g_response')==='content') {
       self::renderFile($file, $package);
       return;
     }
@@ -179,31 +196,33 @@ class View
     self::includeFile('footer.php');
   }
 
-  static function head($head = true)
+  public static function head($head = true)
   {
     echo $head?'<head>':'';
     self::includeFile('head.php');
     echo $head?'</head>':'';
   }
 
-  static function renderFile($filename, $package = 'core')
+  public static function renderFile($filename, $package = 'core')
   {
     $controller = Router::getController();
     $action = Router::getAction();
-    if(isset(Gila::$onaction[$controller][$action])) {
-      foreach(Gila::$onaction[$controller][$action] as $fn) $fn();
+    if (isset(Gila::$onaction[$controller][$action])) {
+      foreach (Gila::$onaction[$controller][$action] as $fn) {
+        $fn();
+      }
     }
-    if(self::includeFile($filename, $package)===false) {
+    if (self::includeFile($filename, $package)===false) {
       http_response_code(404);
       self::includeFile('404.php');
     }
   }
 
-  static function includeFile($filename, $package='core')
+  public static function includeFile($filename, $package='core')
   {
     global $c;
 
-    if(isset(self::$renderer)) {
+    if (isset(self::$renderer)) {
       $renderer = self::$renderer;
       if ($renderer($filename, $package, View::$part)) {
         return true;
@@ -215,8 +234,8 @@ class View
     }
 
     $file = self::getViewFile($filename, $package);
-    if($file) {
-      if($filename === 'header.php' || $filename  === 'footer.php') {
+    if ($file) {
+      if ($filename === 'header.php' || $filename  === 'footer.php') {
         include_once $file;
       } else {
         include $file;
@@ -231,21 +250,28 @@ class View
   * @param file (string) The file path.
   * @param package  (string) Optional. The package folder where the file is located if is not found in theme folder.
   */
-  static function getViewFile ($file, $package = 'core')
+  public static function getViewFile($file, $package = 'core')
   {
-    if(isset(self::$view_file[$file]))
+    if (isset(self::$view_file[$file])) {
       return 'src/'.self::$view_file[$file].'/views/'.$file;
+    }
 
     $tpath = self::getThemePath().'/'.$file;
-    if(file_exists($tpath)) return $tpath;
+    if (file_exists($tpath)) {
+      return $tpath;
+    }
 
-    if(self::$parent_theme) {
+    if (self::$parent_theme) {
       $tpath = 'themes/'.self::$parent_theme.'/'.$file;
-      if(file_exists($tpath)) return $tpath;
+      if (file_exists($tpath)) {
+        return $tpath;
+      }
     }
 
     $spath = 'src/'.$package.'/views/'.$file;
-    if(file_exists($spath)) return $spath;
+    if (file_exists($spath)) {
+      return $spath;
+    }
 
     return false;
   }
@@ -255,7 +281,7 @@ class View
   * @param file (string) Relative path of the view file.
   * @param package  (string) The package folder where the file is located.
   */
-  static function setViewFile ($file, $package)
+  public static function setViewFile($file, $package)
   {
     self::$view_file[$file] = $package;
   }
@@ -265,21 +291,21 @@ class View
   * @param menu (string) Name of the menu. Default=mainmenu
   * @param tpl  (string) Optional. The view template to generate html
   */
-  static function menu ($menu='mainmenu', $tpl='tpl/menu.php')
+  public static function menu($menu='mainmenu', $tpl='tpl/menu.php')
   {
     $file = LOG_PATH.'/menus/'.$menu.'.json';
-    if(file_exists($file)) {
-      $menu_data = json_decode(file_get_contents($file),true);
+    if (file_exists($file)) {
+      $menu_data = json_decode(file_get_contents($file), true);
     } else {
       $menu_data = Menu::defaultData();
     }
     include self::getViewFile($tpl);
   }
 
-  static function widget ($id,$widget_exp=null)
+  public static function widget($id, $widget_exp=null)
   {
     global $db,$widget_data;
-    if($res = core\models\Widget::getById($id)){
+    if ($res = core\models\Widget::getById($id)) {
       $widget_data = json_decode($res[0]->data);
       $widget_type = $res[0]->widget;
     } else {
@@ -289,19 +315,20 @@ class View
 
     $widget_file = self::getThemePath().'/widgets/'.$widget_type.'.php';
 
-    if(file_exists($widget_file) === false)
-    {
+    if (file_exists($widget_file) === false) {
       @$widget_file = "src/".Gila::$widget[$type]."/$type.php";
-      if(!isset(Gila::$widget[$type])) if($type==='text') {
-        $widget_file = "src/core/widgets/text/text.php";
-      } else {
-        echo "Widget <b>".$type."</b> is not found";
+      if (!isset(Gila::$widget[$type])) {
+        if ($type==='text') {
+          $widget_file = "src/core/widgets/text/text.php";
+        } else {
+          echo "Widget <b>".$type."</b> is not found";
+        }
       }
     }
 
     $dir = Gila::dir(LOG_PATH.'/cache0/widgets/');
     $_file = $dir.$widget_data->widget_id;
-    if(file_exists($_file) ) {
+    if (file_exists($_file)) {
       include $_file;
     } else {
       ob_start();
@@ -309,7 +336,7 @@ class View
       $out2 = ob_get_contents();
       //ob_end_clean();
       $clog = new Logger(LOG_PATH.'/cache.error.log');
-      if(!file_put_contents($_file, $out2)){
+      if (!file_put_contents($_file, $out2)) {
         $clog->error($_file);
       }
     }
@@ -321,30 +348,34 @@ class View
   * @param widget_data  (array) Optional. The data to be used
   * @param widget_file (string) Optional. Alternative wiget view file
   */
-  static function widgetBody ($type, $widget_data=null, $widget_file=null)
+  public static function widgetBody($type, $widget_data=null, $widget_file=null)
   {
-    if($widget_file != null) {
+    if ($widget_file != null) {
       $widget_file = self::getThemePath().'/widgets/'.$widget_file.'.php';
     } else {
       $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
     }
-    if(file_exists($widget_file) === false) {
+    if (file_exists($widget_file) === false) {
       @$widget_file = "src/".Gila::$widget[$type]."/$type.php";
-      if(!isset(Gila::$widget[$type])) {
+      if (!isset(Gila::$widget[$type])) {
         echo "Widget <b>".$type."</b> is not found";
       }
     }
-    if(is_object($widget_data)) $data = (array)$widget_data; else $data = &$widget_data;
+    if (is_object($widget_data)) {
+      $data = (array)$widget_data;
+    } else {
+      $data = &$widget_data;
+    }
     @include $widget_file;
   }
 
-  static function widget_body ($type, $widget_data=null, $widget_file=null) // DEPRECATED
+  public static function widget_body($type, $widget_data=null, $widget_file=null) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     self::widgetBody($type, $widget_data, $widget_file);
   }
 
-  static function getWidgetBody ($type, $widget_data=null, $widget_file=null)
+  public static function getWidgetBody($type, $widget_data=null, $widget_file=null)
   {
     ob_start();
     View::widgetBody($type, $widget_data, $widget_file);
@@ -353,16 +384,22 @@ class View
     return $html;
   }
 
-  static function block ($path, $widget_data) {
+  public static function block($path, $widget_data)
+  {
     $block_file = "src/$path/text.php";
     @include $block_file;
   }
 
-  static function blocks (&$blocks, $anchors=false) {
+  public static function blocks(&$blocks, $anchors=false)
+  {
     $html = "";
-    foreach($blocks as $key=>$b) {
-      if(!is_object($b)) $b = (object)$b;
-      if($anchors) $html .= "<span id='w$key'></span>";
+    foreach ($blocks as $key=>$b) {
+      if (!is_object($b)) {
+        $b = (object)$b;
+      }
+      if ($anchors) {
+        $html .= "<span id='w$key'></span>";
+      }
       $html .= View::getWidgetBody($b->_type, $b);
     }
     return $html;
@@ -373,35 +410,45 @@ class View
   * @param $area (string) Area name
   * @param $div (optional boolean) If true, widget body will be printed as child of <div class="widget"> item.
   */
-  static function widgetArea ($area, $div=true, $type=null, $widget_file=null)
+  public static function widgetArea($area, $div=true, $type=null, $widget_file=null)
   {
     $widgets = core\models\Widget::getActiveByArea($area);
-    if ($widgets) foreach ($widgets as $widget) {
-      if($type != null) if($widget['widget'] != $type) continue;
+    if ($widgets) {
+      foreach ($widgets as $widget) {
+        if ($type != null) {
+          if ($widget['widget'] != $type) {
+            continue;
+          }
+        }
 
-      $widget_id = json_decode($widget['id']);
-      $widget_data = json_decode($widget['data']);
-      @$widget_data->widget_id = $widget_id;
+        $widget_id = json_decode($widget['id']);
+        $widget_data = json_decode($widget['data']);
+        @$widget_data->widget_id = $widget_id;
 
-      if($div){
-        echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
-        if($widget['title']!='') echo '<div class="widget-title">'.$widget['title'].'</div>';
-        echo '<div class="widget-body">';
+        if ($div) {
+          echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
+          if ($widget['title']!='') {
+            echo '<div class="widget-title">'.$widget['title'].'</div>';
+          }
+          echo '<div class="widget-body">';
+        }
+
+        self::widgetBody($widget['widget'], $widget_data);
+        if ($div) {
+          echo '</div></div>';
+        }
       }
-
-      self::widgetBody($widget['widget'], $widget_data);
-      if($div) echo '</div></div>';
     }
     Event::fire($area);
   }
 
-  static function widget_area ($area, $div=true, $type=null, $widget_file=null) // DEPRECATED
+  public static function widget_area($area, $div=true, $type=null, $widget_file=null) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     self::widgetArea($area, $div, $type, $widget_file);
   }
 
-  static function getWidgetArea ($area)
+  public static function getWidgetArea($area)
   {
     ob_start();
     View::widgetArea($area);
@@ -410,31 +457,37 @@ class View
     return $html;
   }
 
-  static function img ($src, $prefix='', $max=180)
+  public static function img($src, $prefix='', $max=180)
   {
     $pathinfo = pathinfo($src);
     return '<img src="'._url(self::thumb($src, $prefix, $max)).'">';
   }
 
-  static function thumb ($src, $prefix='', $max=180)
+  public static function thumb($src, $prefix='', $max=180)
   {
-    if(empty($src)) return false;
+    if (empty($src)) {
+      return false;
+    }
 
-    if(Gila::config('use_webp')) {
-      if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp' )!==false) {
+    if (Gila::config('use_webp')) {
+      if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;
       }
     }
 
-    if(is_numeric($prefix)) {
+    if (is_numeric($prefix)) {
       $prefix .= '/';
       $max = (int)$prefix;
     }
 
     $file = self::getThumbName($src, $max, $prefix);
-    if($file===false) return false;
-    if($file===$src) return $src;
+    if ($file===false) {
+      return false;
+    }
+    if ($file===$src) {
+      return $src;
+    }
 
     $max_width = $max;
     $max_height = $max;
@@ -445,52 +498,60 @@ class View
     return $file;
   }
 
-  static function getThumbName ($src, $max, $prefix = '')
+  public static function getThumbName($src, $max, $prefix = '')
   {
     $pathinfo = pathinfo($src);
     $ext = strtolower($pathinfo['extension']);
-    if(in_array($ext, ['svg','webm'])) return $src;
+    if (in_array($ext, ['svg','webm'])) {
+      return $src;
+    }
     $file = null;
     $thumbs = [];
     $key = $pathinfo['filename'].$ext.$max;
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
-    if(substr($src,0,5) !== 'data/') {
+    if (substr($src, 0, 5) !== 'data/') {
       // dont create new thumbs for existing websites
       return SITE_PATH.'tmp/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     }
 
 
-    if(file_exists($thumbsjson)) {
-      $thumbs = json_decode(file_get_contents($thumbsjson),true);
+    if (file_exists($thumbsjson)) {
+      $thumbs = json_decode(file_get_contents($thumbsjson), true);
       $file = $thumbs[$key] ?? null;
     }
-    if(!$file) {
-      if(Image::imageExtention($ext)===false) return false;
+    if (!$file) {
+      if (Image::imageExtention($ext)===false) {
+        return false;
+      }
       do {
-        $basename = substr(hash('sha1', uniqid(true)),0,30);
+        $basename = substr(hash('sha1', uniqid(true)), 0, 30);
         $file = SITE_PATH.'tmp/'.$basename.'-'.$max.'.'.$ext;
         $thumbs[$key] = $file;
-      } while(strlen($basename) < 30 || file_exists($file));
+      } while (strlen($basename) < 30 || file_exists($file));
       file_put_contents($thumbsjson, json_encode($thumbs));
     }
     return $file;
   }
 
-  static function thumbStack ($src_array, $file, $max=180)
+  public static function thumbStack($src_array, $file, $max=180)
   {
     $max_width = $max;
     $max_height = $max;
     if (!file_exists($file) || !file_exists($file.'.json')) {
       return Image::makeStack(1, $src_array, $file, $max_width, $max_height);
     }
-    $stack = json_decode(file_get_contents($file.'.json'),true);
-    if(!is_array($stack[1]))  $stack[1] = [];
-    if(is_nan($stack[0]))  $stack[0] = 0;
+    $stack = json_decode(file_get_contents($file.'.json'), true);
+    if (!is_array($stack[1])) {
+      $stack[1] = [];
+    }
+    if (is_nan($stack[0])) {
+      $stack[0] = 0;
+    }
 
-    foreach($src_array as $key=>$value) {
+    foreach ($src_array as $key=>$value) {
       $key_src = $stack[1][$key]['src'];
-      if($key_src != $value && pathinfo($key_src)['extension']=='jpg') {
+      if ($key_src != $value && pathinfo($key_src)['extension']=='jpg') {
         return Image::makeStack($stack[0]+1, $src_array, $file, $max_width, $max_height);
       }
     }
@@ -498,51 +559,52 @@ class View
     return [$file.'?'.$stack[0], $stack[1]];
   }
 
-  static function thumb_stack ($src_array, $file, $max=180) // DEPRECATED
+  public static function thumb_stack($src_array, $file, $max=180) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     self::thumbStack($src_array, $file, $max);
   }
 
-  static function thumb_xs ($src,$id=null) // DEPRECATED
+  public static function thumb_xs($src, $id=null) // DEPRECATED
   {
-    return View::thumb($src,'xs/', 80);
+    return View::thumb($src, 'xs/', 80);
   }
-  static function thumb_sm ($src,$id=null) // DEPRECATED
+  public static function thumb_sm($src, $id=null) // DEPRECATED
   {
-    return View::thumb($src,'sm/', 200);
+    return View::thumb($src, 'sm/', 200);
   }
-  static function thumb_md ($src,$id=null) // DEPRECATED
+  public static function thumb_md($src, $id=null) // DEPRECATED
   {
-    return View::thumb($src,'md/', 400);
+    return View::thumb($src, 'md/', 400);
   }
-  static function thumb_lg ($src,$id=null) // DEPRECATED
+  public static function thumb_lg($src, $id=null) // DEPRECATED
   {
-    return self::thumb($src,'lg/', 800);
+    return self::thumb($src, 'lg/', 800);
   }
-  static function thumb_xl ($src,$id=null) // DEPRECATED
+  public static function thumb_xl($src, $id=null) // DEPRECATED
   {
-    return View::thumb($src,'xl/', 1200);
+    return View::thumb($src, 'xl/', 1200);
   }
 
-  static function getTemplates($template) {
+  public static function getTemplates($template)
+  {
     $options = [];
 
-    foreach(self::$view_file as $key => $value) {
+    foreach (self::$view_file as $key => $value) {
       $exploded = explode('--', $key);
-      if($exploded[0] === $template){
+      if ($exploded[0] === $template) {
         $options[] = explode('.', $exploded[1])[0];
       }
     }
 
     $files = glob(self::getThemePath().'/'.$template.'--*');
-    foreach($files as $file) {
+    foreach ($files as $file) {
       $base = explode('--', $file)[1];
       $options[] = explode('.', $base)[0];
     }
 
     $files = glob('src/core/views/'.$template.'--*');
-    foreach($files as $file) {
+    foreach ($files as $file) {
       $base = explode('--', $file)[1];
       $options[] = explode('.', $base)[0];
     }
@@ -555,19 +617,18 @@ class View
   * @example background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);
   * @example <img srcset="{$srcset[0]}, {$srcset[0]} 2x" src="{$srcset[0]}"
   */
-  static function thumbSrcset ($src, $sizes = [1200,320])
+  public static function thumbSrcset($src, $sizes = [1200,320])
   {
     $r = [];
-    foreach($sizes as $w) {
+    foreach ($sizes as $w) {
       $r[] = View::thumb($src, $w.'/', $w);
     }
     return $r;
   }
 
-  static function thumb_srcset ($src, $sizes = [1200,320]) // DEPRECATED
+  public static function thumb_srcset($src, $sizes = [1200,320]) // DEPRECATED
   {
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     return self::thumbSrcset($src, $sizes);
   }
-
 }

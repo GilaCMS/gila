@@ -6,14 +6,18 @@ global $db;
 $widget_data = [];
 $widget_folder = 'src/'.Gila::$widget[$type];
 $fields = include $widget_folder.'/widget.php';
-if(isset($options)) $fields = $options;
-
-if($id!=='new') {
-  $widget_data = $widgets[$pos]; 
+if (isset($options)) {
+  $fields = $options;
 }
 
-if(isset($fields)) foreach($fields as $key=>$op) {
-  $values[$key] = $widget_data[$key]?? $op[$key]['default']?? '';
+if ($id!=='new') {
+  $widget_data = $widgets[$pos];
+}
+
+if (isset($fields)) {
+  foreach ($fields as $key=>$op) {
+    $values[$key] = $widget_data[$key]?? $op[$key]['default']?? '';
+  }
 }
 
 echo gForm::html($fields, $values, 'option[', ']');

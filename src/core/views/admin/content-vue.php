@@ -4,7 +4,7 @@
 
 <?php
 View::script('core/admin/content.js');
-if(file_exists('src/'.$tablesrc.'.js')) {
+if (file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
 View::scriptAsync('core/lang/content/'.Gila::config('language').'.js');
@@ -34,20 +34,28 @@ $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];
 
-foreach($t['js'] as $js) View::script($js);
-foreach($t['css'] as $css) View::css($css);
+foreach ($t['js'] as $js) {
+  View::script($js);
+}
+foreach ($t['css'] as $css) {
+  View::css($css);
+}
 
 $pages_path[] = View::getThemePath().'/pages/';
-if(View::$parent_theme) $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
+if (View::$parent_theme) {
+  $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
+}
 $pages_path = array_merge($pages_path, Gila::packages());
 $pages_path[] = 'src/core/templates/';
-foreach($pages_path as $path) {
-  if(file_exists($path)) {
+foreach ($pages_path as $path) {
+  if (file_exists($path)) {
     $pages = scandir($path);
-    foreach ($pages as $page) if($page[0]!='.'){
-      $templates[] = [
+    foreach ($pages as $page) {
+      if ($page[0]!='.') {
+        $templates[] = [
         'title'=>$page, 'url'=>$path.$page
       ];
+      }
     }
   }
 }

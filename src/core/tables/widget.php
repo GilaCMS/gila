@@ -2,11 +2,11 @@
 
 $widget_areas = ['x'=>'(None)'];
 foreach (Gila::$widget_area as $value) {
-    $widget_areas[$value] = $value;
+  $widget_areas[$value] = $value;
 }
 $widgets = [];
 foreach (Gila::$widget as $k=>$value) {
-    $widgets[$k] = $k;
+  $widgets[$k] = $k;
 }
 
 return [
@@ -42,17 +42,25 @@ return [
     ],
     'events'=>[
         ['change',
-        function(&$row){
-            if(!isset($row['data']) || $row['data']!==null) return;
-            $wdgt_options = include 'src/'.Gila::$widget[$row['widget']].'/widget.php';
-            if(isset($options)) $wdgt_options = $options;
-            $default_data=[];
-            foreach($wdgt_options as $key=>$op) {
-                if(isset($op['default'])) $def=$op['default']; else $def='';
-                $default_data[$key]=$def;
+        function (&$row) {
+          if (!isset($row['data']) || $row['data']!==null) {
+            return;
+          }
+          $wdgt_options = include 'src/'.Gila::$widget[$row['widget']].'/widget.php';
+          if (isset($options)) {
+            $wdgt_options = $options;
+          }
+          $default_data=[];
+          foreach ($wdgt_options as $key=>$op) {
+            if (isset($op['default'])) {
+              $def=$op['default'];
+            } else {
+              $def='';
             }
+            $default_data[$key]=$def;
+          }
 
-            $row['data']=json_encode($default_data);
+          $row['data']=json_encode($default_data);
         }]
     ]
 ];

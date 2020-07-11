@@ -1,9 +1,10 @@
 <?php
 
-Event::listen('head',function(){
-    $trackingID = Gila::option('ganalytics.trackingID');
-    if($trackingID=='') return;
-    ?>
+Event::listen('head', function () {
+  $trackingID = Gila::option('ganalytics.trackingID');
+  if ($trackingID=='') {
+    return;
+  } ?>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=<?=$trackingID?>"></script>
     <script>

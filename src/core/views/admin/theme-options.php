@@ -4,16 +4,18 @@ $pack = Gila::config('theme');
 echo '<form id="theme_options_form" class="g-form">';
 echo '<input id="theme_id" value="'.$pack.'" type="hidden">';
 
-if(file_exists('themes/'.$pack.'/package.json')) {
-  $pac=json_decode(file_get_contents('themes/'.$pack.'/package.json'),true);
+if (file_exists('themes/'.$pack.'/package.json')) {
+  $pac=json_decode(file_get_contents('themes/'.$pack.'/package.json'), true);
   $options=$pac['options'];
-} else include 'themes/'.$pack.'/package.php';
+} else {
+  include 'themes/'.$pack.'/package.php';
+}
 
-if(is_array($options)) {
-  foreach($options as $key=>$op) {
+if (is_array($options)) {
+  foreach ($options as $key=>$op) {
     $values[$key] = Gila::option('theme.'.$key);
   }
-  echo gForm::html($options,$values,'option[',']');
+  echo gForm::html($options, $values, 'option[', ']');
 }// else error alert
 echo "</form>";
 ?>

@@ -4,27 +4,27 @@ use core\models\Post;
 
 class blocks extends Controller
 {
-  static private $draft = false;
+  private static $draft = false;
 
-  public function __construct ()
+  public function __construct()
   {
-      self::admin();
-      Gila::addLang('core/lang/admin/');
+    self::admin();
+    Gila::addLang('core/lang/admin/');
   }
 
-  function indexAction ()
+  public function indexAction()
   {
     $table = Router::request('t');
-    $id = Router::get('id',2);
+    $id = Router::get('id', 2);
     $widgets = self::readBlocks($table, $id);
     View::set('contentType', $table);
     View::set('id', $id);
     View::set('isDraft', self::$draft);
     View::set('widgets', $widgets);
-    View::renderAdmin("content-block.php","blocks");
+    View::renderAdmin("content-block.php", "blocks");
   }
 
-  function editAction ()
+  public function editAction()
   {
     global $db;
     if ($id = Router::get('id', 2)) {
@@ -35,11 +35,11 @@ class blocks extends Controller
       View::set('type', $_GET['type']);
       View::set('pos', $idArray[2]);
       View::set('widgets', self::readBlocks($idArray[0], $idArray[1]));
-      View::renderFile('edit_block.php','blocks');
+      View::renderFile('edit_block.php', 'blocks');
     }
   }
 
-  function updateAction ()
+  public function updateAction()
   {
     global $db;
     $id = $_POST['widget_id'];
@@ -48,12 +48,12 @@ class blocks extends Controller
     $id = (int)$idArray[1];
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id);
-    if($type = $widgets[$pos]['_type']) {
+    if ($type = $widgets[$pos]['_type']) {
       $widget_folder = 'src/'.Gila::$widget[$type];
       $fields = include $widget_folder.'/widget.php';
       $widget_data = $_POST['option'] ?? [];
 
-      foreach($widget_data as $key=>$value) {
+      foreach ($widget_data as $key=>$value) {
         $allowed = $fields[$key]['allow_tags'] ?? false;
         $widget_data[$key] = HtmlInput::purify($widget_data[$key], $allowed);
       }
@@ -64,23 +64,23 @@ class blocks extends Controller
     }
   }
 
-  function posAction ()
+  public function posAction()
   {
     global $db;
     $rid = $_POST['id'];
-    $idArray = explode('_',$rid);
+    $idArray = explode('_', $rid);
     $content = $idArray[0];
     $id = (int)$idArray[1];
     $pos = (int)$idArray[2];
     $newpos = (int)$_POST['pos'];
     $widgets = self::readBlocks($content, $id);
 
-    if($newpos<0 || $newpos>count($widgets)-1) {
+    if ($newpos<0 || $newpos>count($widgets)-1) {
       echo json_encode($widgets);
       return;
     }
 
-    for($i=$pos; $i!=$newpos; $i+=$newpos<=>$pos) {
+    for ($i=$pos; $i!=$newpos; $i+=$newpos<=>$pos) {
       // swap blocks
       $nexti = $i+($newpos<=>$pos);
       $tmp = $widgets[$i];
@@ -89,15 +89,15 @@ class blocks extends Controller
       $nextrid = $content.'_'.$id.'_'.$nexti;
       $wfile = SITE_PATH.'tmp/stacked-wdgt'.$rid.'.jpg';
       $nextwfile = SITE_PATH.'tmp/stacked-wdgt'.$nextrid.'.jpg';
-      if(file_exists($wfile)) {
+      if (file_exists($wfile)) {
         rename($wfile.'.json', SITE_PATH.'tmp/tmp_wgtjpgjson');
         rename($wfile, SITE_PATH.'tmp/tmp_wgtjpg');
       }
-      if(file_exists($nextwfile)) {
+      if (file_exists($nextwfile)) {
         rename($nextwfile.'.json', $wfile.'.json');
         rename($nextwfile, $wfile);
       }
-      if(file_exists(SITE_PATH.'tmp/tmp_wgtjpg')) {
+      if (file_exists(SITE_PATH.'tmp/tmp_wgtjpg')) {
         rename(SITE_PATH.'tmp/tmp_wgtjpgjson', $nextwfile.'.json');
         rename(SITE_PATH.'tmp/tmp_wgtjpg', $nextwfile);
       }
@@ -108,11 +108,11 @@ class blocks extends Controller
   }
 
 
-  function createAction ()
+  public function createAction()
   {
     global $db;
     $rid = $_POST['id'];
-    $idArray = explode('_',$rid);
+    $idArray = explode('_', $rid);
     $content = $idArray[0];
     $id = $idArray[1];
     $pos = (int)$idArray[2];
@@ -120,19 +120,21 @@ class blocks extends Controller
     $new = ['_type'=>$_POST['type']];
     $widget_folder = 'src/'.Gila::$widget[$_POST['type']];
     $fields = include $widget_folder.'/widget.php';
-    foreach($fields as $key=>$field) {
-      if(isset($field['default'])) $new[$key] = $field['default'];
+    foreach ($fields as $key=>$field) {
+      if (isset($field['default'])) {
+        $new[$key] = $field['default'];
+      }
     }
-    array_splice( $widgets, $pos, 0, [$new] );
+    array_splice($widgets, $pos, 0, [$new]);
     self::updateBlocks($content, $id, $widgets);
     echo json_encode($widgets);
   }
 
-  function deleteAction ()
+  public function deleteAction()
   {
     global $db;
     $rid = $_POST['id'];
-    $idArray = explode('_',$rid);
+    $idArray = explode('_', $rid);
     $content = $idArray[0];
     $id = $idArray[1];
     $pos = (int)$idArray[2];
@@ -142,21 +144,21 @@ class blocks extends Controller
     echo json_encode($widgets);
   }
 
-  function displayAction ()
+  public function displayAction()
   {
-    $content = Router::get('t',1);
-    $id = Router::get('id',2);
+    $content = Router::get('t', 1);
+    $id = Router::get('id', 2);
     $blocks = self::readBlocks($content, $id);
-    if($content=="page" && $r = Page::getByIdSlug($id)) {
+    if ($content=="page" && $r = Page::getByIdSlug($id)) {
       View::set('title', $r['title']);
       View::set('text', $r['page'].View::blocks($blocks, true));
-      if($r['template']==''||$r['template']===null) {
+      if ($r['template']==''||$r['template']===null) {
         View::render('page.php');
       } else {
         View::renderFile('page--'.$r['template'].'.php');
       }
       echo '<style>html{scroll-behavior: smooth;}</style>';
-    } else if($content=="post" && $r = Post::getByIdSlug($id)) {
+    } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
       View::set('title', $r['title']);
       View::set('text', $r['post'].View::blocks($blocks, true));
       View::render('single-post.php');
@@ -170,20 +172,20 @@ class blocks extends Controller
     }
   }
 
-  function saveAction ()
+  public function saveAction()
   {
     $rid = $_POST['id'];
-    $idArray = explode('_',$rid);
+    $idArray = explode('_', $rid);
     $content = $idArray[0];
     $id = $idArray[1];
     $widgets = self::readBlocks($content, $id);
     self::saveBlocks($content, $id, $widgets);
   }
 
-  function discardAction ()
+  public function discardAction()
   {
     $rid = $_POST['id'];
-    $idArray = explode('_',$rid);
+    $idArray = explode('_', $rid);
     $content = $idArray[0];
     $id = $idArray[1];
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
@@ -192,34 +194,40 @@ class blocks extends Controller
     echo json_encode($widgets);
   }
 
-  static function readBlocks ($content, $id) {
+  public static function readBlocks($content, $id)
+  {
     global $db;
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
-    if(file_exists($draftFile)) {
+    if (file_exists($draftFile)) {
       $json = file_get_contents($draftFile);
       self::$draft = true;
     } else {
       $content = $db->res($content);
-      $json = $db->value("SELECT blocks FROM `$content` WHERE id=?;",[$id]);
+      $json = $db->value("SELECT blocks FROM `$content` WHERE id=?;", [$id]);
       self::$draft = false;
     }
     return json_decode($json, true)??[];
   }
 
-  static function updateBlocks ($content, $id, $blocks) {
+  public static function updateBlocks($content, $id, $blocks)
+  {
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
     $json = json_encode($blocks);
     Gila::dir(LOG_PATH.'/blocks/');
     file_put_contents($draftFile, $json);
   }
 
-  static function saveBlocks ($content, $id, $blocks) {
+  public static function saveBlocks($content, $id, $blocks)
+  {
     global $db;
     $return = [];
-    foreach($blocks as $w) if($w!==null) $return[] = $w;
-    $db->query("UPDATE $content SET `blocks`=? WHERE id=?;",[json_encode($return), $id]);
+    foreach ($blocks as $w) {
+      if ($w!==null) {
+        $return[] = $w;
+      }
+    }
+    $db->query("UPDATE $content SET `blocks`=? WHERE id=?;", [json_encode($return), $id]);
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
     unlink($draftFile);
   }
-
 }

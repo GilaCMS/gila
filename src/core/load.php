@@ -28,7 +28,7 @@ Gila::$amenu = [
   ['Posts','admin/content/user-post','icon'=>'pencil','access'=>'writer'],
 ];
 
-if(FS_ACCESS) {
+if (FS_ACCESS) {
   Gila::amenu_child('admin', ['Logs','admin/fm?f=log','icon'=>'folder','access'=>'admin']);
 }
 
@@ -52,16 +52,16 @@ Gila::$privilege['admin']="Administrator access.";
 Gila::$privilege['editor']="Can publish or edit posts from other users.";
 Gila::$privilege['developer']="Special access in developer tools.";
 
-Gila::content('post','core/tables/post.php');
-Gila::content('user-post','core/tables/user-post.php');
-Gila::content('postcategory','core/tables/postcategory.php');
-Gila::content('user','core/tables/user.php');
-Gila::content('userrole','core/tables/userrole.php');
-Gila::content('page','core/tables/page.php');
-Gila::content('widget','core/tables/widget.php');
+Gila::content('post', 'core/tables/post.php');
+Gila::content('user-post', 'core/tables/user-post.php');
+Gila::content('postcategory', 'core/tables/postcategory.php');
+Gila::content('user', 'core/tables/user.php');
+Gila::content('userrole', 'core/tables/userrole.php');
+Gila::content('page', 'core/tables/page.php');
+Gila::content('widget', 'core/tables/widget.php');
 
 Gila::addLang('core/lang/');
 
-if(Gila::config('use_cdn')=='1') {
+if (Gila::config('use_cdn')=='1') {
   View::$cdn_paths = include('src/core/cdn_paths.php');
 }

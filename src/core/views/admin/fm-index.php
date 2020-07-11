@@ -13,14 +13,20 @@
 <?php
 $mode_ext = ['php'=>'php','html'=>'htmlmixed','htm'=>'htmlmixed','js'=>'javascript','css'=>'css'];
 $img_ext = ['jpg','jpeg','gif','png','svg','ico','tiff'];
-$basepath = substr($filepath,0, strlen(realpath('')));
-if($basepath != realpath('')) $filepath = realpath('');
+$basepath = substr($filepath, 0, strlen(realpath('')));
+if ($basepath != realpath('')) {
+  $filepath = realpath('');
+}
 $pathinfo = pathinfo($filepath);
 $ext = $pathinfo['extension'];
 
 $dirname = $pathinfo['dirname'];
-if(is_dir($filepath)) $dirname = $filepath;
-if($dirname=='') $dirname = '.';
+if (is_dir($filepath)) {
+  $dirname = $filepath;
+}
+if ($dirname=='') {
+  $dirname = '.';
+}
 $show_path = substr($filepath, 1+strlen(realpath('')));
 $dirname = substr($dirname, 1+strlen(realpath('')));
 
@@ -33,18 +39,17 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     <div class="wrapper"><strong><?=htmlentities($show_path)?></strong>
 <?php
   FileManager::$sitepath = realpath(SITE_PATH);
-  if(FileManager::allowedPath($dirname) && FileManager::allowedFileType($filepath)) {
-    if(in_array($ext, $img_ext)) {
-?>
+  if (FileManager::allowedPath($dirname) && FileManager::allowedFileType($filepath)) {
+    if (in_array($ext, $img_ext)) {
+      ?>
       <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
       <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
 <?php
       echo '</div><img src="lzld/thumb?size=600&src='.$show_path.'" style="max-width:400px">';
-    } else if(is_dir($filepath) || $filepath=='') {
+    } elseif (is_dir($filepath) || $filepath=='') {
       // do nothing
     } else {
-      $value = htmlentities(file_get_contents($filepath));
-    ?>
+      $value = htmlentities(file_get_contents($filepath)); ?>
     <span class="g-btn" onclick="savefile('<?=$show_path?>')"><?=_('Save')?></span>
     <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
     <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
@@ -68,7 +73,7 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     </script>
     <?php
     }
-  } else if(!is_dir($filepath)) {
+  } elseif (!is_dir($filepath)) {
     echo "<div class='alert'>Permission denied. You cannot read from this folder or file type</div>";
   }
     ?>

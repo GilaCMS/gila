@@ -3,30 +3,30 @@
 
 class lzld extends Controller
 {
-
-  function indexAction ()
+  public function indexAction()
   {
-
   }
 
-  function widgetAction ($id)
+  public function widgetAction($id)
   {
     global $widget_data;
     $widget = core\models\Widget::getById($id);
 
-    if ($widget) if ($widget->active==1) {
-      $widget_data = json_decode($widget->data);
-      @$widget_data->widget_id = $id;
-      View::widgetBody($widget->widget, $widget_data);
+    if ($widget) {
+      if ($widget->active==1) {
+        $widget_data = json_decode($widget->data);
+        @$widget_data->widget_id = $id;
+        View::widgetBody($widget->widget, $widget_data);
+      }
     }
   }
 
-  function widget_areaAction ($area)
+  public function widget_areaAction($area)
   {
     View::widgetArea($area);
   }
 
-  function thumbAction ()
+  public function thumbAction()
   {
     $file = $_GET['src'];
     $ext = explode('.', $file);
@@ -52,8 +52,8 @@ class lzld extends Controller
           header("Content-Type: image/png");
           break;
         default:
-          if($ext=='svg' && 
-              (substr($file,0,7) == 'assets/' || substr($file,0,4) == 'src/')) {
+          if ($ext=='svg' &&
+              (substr($file, 0, 7) == 'assets/' || substr($file, 0, 4) == 'src/')) {
             header("Content-Type: image/svg+xml");
             echo file_get_contents($file);
           }
@@ -64,11 +64,10 @@ class lzld extends Controller
     } else {
       http_response_code(404);
     }
-
   }
 
-  function amenuAction () {
+  public function amenuAction()
+  {
     echo Menu::getHtml(Gila::$amenu, $_GET['base'] ?? 'admin');
   }
-
 }

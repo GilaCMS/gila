@@ -73,11 +73,11 @@ $itemTypes = MenuItemTypes::getItemTypes();
           <i v-if="isFolder&&open" class="fa fa-folder-open-o" @click="toggle"></i>
           <i v-if="isFolder&&open==false"  class="fa fa-folder-o" @click="toggle"></i>
           <?php
-          foreach($itemTypes as $type=>$item) {
-              echo "<span v-if=\"model.type=='$type'\" draggable=\"false\">";
-              $template = is_callable($item['template'])? $item['template'](): $item['template'];
-              echo $template;
-              echo "</span>";
+          foreach ($itemTypes as $type=>$item) {
+            echo "<span v-if=\"model.type=='$type'\" draggable=\"false\">";
+            $template = is_callable($item['template'])? $item['template'](): $item['template'];
+            echo $template;
+            echo "</span>";
           }
           ?>
 
@@ -88,9 +88,13 @@ $itemTypes = MenuItemTypes::getItemTypes();
           <i v-if="model.type!='menu'" @click="$emit('remove')" class="fa fa-trash i-btn" style="float:right"></i>
           <span v-show="(isFolder&&open)||model.type=='menu'">
               <?php
-              foreach($itemTypes as $type=>$item) {
-                  if(isset($item['parent'])) $vif = "v-if=\"model.type=='{$item['parent']}'\""; else $vif="";
-                  echo "<span $vif class=\"add\" @click=\"addChild('$type')\">+$type</span>";
+              foreach ($itemTypes as $type=>$item) {
+                if (isset($item['parent'])) {
+                  $vif = "v-if=\"model.type=='{$item['parent']}'\"";
+                } else {
+                  $vif="";
+                }
+                echo "<span $vif class=\"add\" @click=\"addChild('$type')\">+$type</span>";
               }
               ?>
           </span>
@@ -120,16 +124,18 @@ $itemTypes = MenuItemTypes::getItemTypes();
     <ul class="g-nav vertical g-card">
     <?php
     $menus = scandir(LOG_PATH.'/menus');
-    foreach($menus as $name) if($name[0]!='.'){
-     $lname = substr($name,0,strpos($name,'.'));
-     echo '<li><a href="'.Gila::make_url('admin','menu').$lname.'">'.$lname.'</a>';
+    foreach ($menus as $name) {
+      if ($name[0]!='.') {
+        $lname = substr($name, 0, strpos($name, '.'));
+        echo '<li><a href="'.Gila::make_url('admin', 'menu').$lname.'">'.$lname.'</a>';
+      }
     }
     ?>
     </ul>
     <br>
     <div>
       <input id="new-menu" class="g-input fullwidth"><br>
-      <button class="g-btn fullwidth" onclick="window.location.href='<?=Gila::make_url('admin','menu')?>'+g('#new-menu').all[0].value"><?=__("New")?></button>
+      <button class="g-btn fullwidth" onclick="window.location.href='<?=Gila::make_url('admin', 'menu')?>'+g('#new-menu').all[0].value"><?=__("New")?></button>
     </div>
   </div>
 </div>
@@ -140,14 +146,14 @@ $itemTypes = MenuItemTypes::getItemTypes();
 <?php
 $data="{type:\"menu\",children:[]}";
 $jsonfile = LOG_PATH."/menus/$menu.json";
-if(file_exists($jsonfile)) {
-    $data = file_get_contents($jsonfile);
+if (file_exists($jsonfile)) {
+  $data = file_get_contents($jsonfile);
 }
 echo "var data = ".$data."\n";
 
 $itemTypesJSON = [];
-foreach($itemTypes as $type=>$item) {
-    $itemTypesJSON[$type] = $item['data'];
+foreach ($itemTypes as $type=>$item) {
+  $itemTypesJSON[$type] = $item['data'];
 }
 echo "var itemTypes = ".json_encode($itemTypesJSON)."\n";
 ?>
