@@ -61,14 +61,6 @@ return [
       'create'=>false,
       'qtype'=>'varchar(60)'
     ],
-    'updated'=> [
-      'title'=>'Updated',
-      'type'=>'date',
-      'list'=>false,
-      'edit'=>false,
-      'create'=>false,
-      'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
-    ],
     'created'=> [
       'title'=>'Created',
       'type'=>'date',
@@ -76,6 +68,14 @@ return [
       'edit'=>false,
       'create'=>false,
       'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP'
+    ],
+    'updated'=> [
+      'title'=>'Updated',
+      'type'=>'date',
+      'list'=>false,
+      'edit'=>false,
+      'create'=>false,
+      'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
     ],
     'manager'=> [
       'type'=>'meta',
