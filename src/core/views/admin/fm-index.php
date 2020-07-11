@@ -110,7 +110,7 @@ function createDir() {
   path = prompt("Please enter the folder name", "New Folder");
   if(path != null) {
     g.loader()
-    $.post('fm/newfolder', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
+    g.post('fm/newfolder', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
       g.loader(false);
       alert(msg);
       location.href = 'admin/fm?f='+dir_path
@@ -121,7 +121,7 @@ function createFile() {
   path = prompt("Please enter new file name", 'File.txt');
   if(path != null) {
     g.loader()
-    $.post('fm/newfile', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
+    g.post('fm/newfile', {path:dir_path+'/'+path, formToken:csrfToken},function(msg){
       g.loader(false);
       alert(msg);
       location.href = 'admin/fm?f='+dir_path+'/'+path
@@ -144,7 +144,7 @@ function uploadFile() {
 
 function savefile(path) {
   g.loader()
-  $.post('fm/save', {contents:mirror.getValue(),path:path, formToken:csrfToken},function(msg){
+  g.post('fm/save', {contents:mirror.getValue(),path:path, formToken:csrfToken},function(msg){
     g.loader(false);
     alert(msg);
   })
@@ -153,7 +153,7 @@ function movefile(path) {
   new_path = prompt("Please enter new file path", path);
   if(new_path != null) {
     g.loader()
-    $.post('fm/move', {newpath:new_path, path:path, formToken:csrfToken},function(msg){
+    g.post('fm/move', {newpath:new_path, path:path, formToken:csrfToken},function(msg){
       g.loader(false);
       alert(msg);
       location.href = 'admin/fm?f='+dir_path
@@ -163,7 +163,7 @@ function movefile(path) {
 function deletefile(path) {
   if(confirm("Are you sure you want to remove this file?")) {
     g.loader()
-    $.post('fm/delete', {path:path, formToken:csrfToken},function(msg){
+    g.post('fm/delete', {path:path, formToken:csrfToken},function(msg){
       g.loader(false)
       if(msg!='') {
         alert(msg)

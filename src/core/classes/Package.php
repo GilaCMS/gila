@@ -7,6 +7,7 @@ class Package
 
   function __construct()
   {
+    ob_end_clean();
     $activate = Router::post('activate');
     if($activate) self::activate($activate);
     $deactivate = Router::post('deactivate');
@@ -171,7 +172,8 @@ class Package
       $zip->extractTo($tmp_name);
       $zip->close();
       if(file_exists($target)) {
-        rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$package));
+        $res = rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$package));
+        if($res===false) return false;
       }
       $previousPackages = scandir($previousFolder);
       foreach($previousPackages as $folder) {
@@ -179,10 +181,11 @@ class Package
           FileManager::delete($previousFolder.$folder);
         }
       }
-      
+
       $unzipped = scandir($tmp_name);
       if(count(scandir($tmp_name))==3) if($unzipped[2][0]!='.') $tmp_name .= '/'.$unzipped[2];
-      rename($tmp_name, $target);
+      $res = rename($tmp_name, $target);
+      if($res===false) return false;
       if(file_exists($target.'__tmp__')) rmdir($target.'__tmp__');
       self::updateAfterDownload($package);
       unlink(LOG_PATH.'/load.php');

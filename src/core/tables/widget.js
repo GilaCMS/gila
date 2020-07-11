@@ -59,7 +59,7 @@ gtableCommand.edit_widget = {
             for(i=0;i<textareas.length;i++) {
                 cmirror[i]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
             }
-            if(typeof $.fn.select2 != 'undefined') $(".select2").select2();
+            if(typeof $ != 'undefined'  && typeof $.fn.select2 != 'undefined') $(".select2").select2();
         });
     }
 };
