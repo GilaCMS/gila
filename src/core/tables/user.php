@@ -50,6 +50,17 @@ return [
       'options'=>[],
       'qoptions'=>'SELECT `id`,`userrole` FROM userrole;'
     ],
+    'active'=> [
+      'type'=>'checkbox',
+      'title'=>'Active',
+      'qtype'=>'INT(1) DEFAULT 0'
+    ],
+    'reset_code'=> [
+      'list'=>false,
+      'edit'=>false,
+      'create'=>false,
+      'qtype'=>'varchar(60)'
+    ],
     'updated'=> [
       'title'=>'Updated',
       'type'=>'date',
@@ -65,11 +76,6 @@ return [
       'edit'=>false,
       'create'=>false,
       'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP'
-    ],
-    'active'=> [
-      'type'=>'checkbox',
-      'title'=>'Active',
-      'qtype'=>'INT(1) DEFAULT 0'
     ],
     'manager'=> [
       'type'=>'meta',
