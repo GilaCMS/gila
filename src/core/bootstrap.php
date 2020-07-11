@@ -86,19 +86,10 @@ if($GLOBALS['config'] === []) {
   exit;
 }
 
-$GLOBALS['lang'] = [];
 
+$GLOBALS['lang'] = [];
 function __($key, $alt = null) {
-  if(Gila::$langLoaded===false) {
-    foreach(Gila::$langPaths as $path) Gila::loadLang($path);
-    Gila::$langLoaded = true;
-  }
-  if(@isset($GLOBALS['lang'][$key])) {
-    if($GLOBALS['lang'][$key] != '')
-      return $GLOBALS['lang'][$key];
-  }
-  if($alt!=null) return $alt;
-  return $key;
+  Gila::tr($key, $alt);
 }
 
 function _url($url) {

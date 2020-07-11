@@ -6,6 +6,13 @@ use PHPUnit\Framework\TestCase;
 class ClassGila extends TestCase
 {
 
+	public function test_addLang()
+	{
+		Gila::config('language','es');
+		Gila::addLang('core/lang/');
+		$this->assertEquals('Inicio', __('Home'));
+	}
+
 	public function test_updateConfigFile()
 	{
 		$value = rand(1,100);
