@@ -192,13 +192,8 @@ class Router
   */
   public static function action($c=null, $action=null, $fn=null)
   {
-<<<<<<< HEAD
-    if($fn!==null) {
-      self::$actions[$c][$action] = $fn;
-=======
     if ($fn!==null) {
-      Router::$actions[$c][$action] = $fn;
->>>>>>> origin/master
+      self::$actions[$c][$action] = $fn;
       return;
     }
     if ($action===null && $set!==null) {
