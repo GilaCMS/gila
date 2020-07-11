@@ -4,111 +4,130 @@ $dir = "src/";
 $table = '';
 $pn = 0;
 
-function dl_btn($param, $class, $text) {
+function dl_btn($param, $class, $text)
+{
   return "<a onclick='addon_download(\"$param\")' class='g-btn $class'>$text</a>";
 }
 
-if(Package::check4updates()) {
+if (Package::check4updates()) {
   $upgrated = 0;
-  $upgrateList = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'),true);
+  $upgrateList = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'), true);
   $upgrateN = count($upgrateList);
 
-  foreach($upgrateList as $newp=>$newv) if(is_string($newp)) if(isset($packages[$newp])) {
-    if(version_compare($newv, $packages[$newp]->version) == 1) {
-      $logo = $dir."$newp/logo.png";
-      $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;<b>";
-      $alert .= $packages[$newp]->title.'</b> '.__("is_available_on_version");
-      $alert .= " $newv &nbsp;&nbsp; ".dl_btn($packages[$newp]->package, 'warning', __('Upgrade'));
-      $alert .= '&nbsp;&nbsp;<a href="https://gilacms.com/addons/package/';
-      $alert .= $packages[$newp]->package.'" class="g-btn info" target="_blank">'.__('Info').'</a>';
-      View::alert('success',$alert);
-    } else {
-      $upgrated++;
+  foreach ($upgrateList as $newp=>$newv) {
+    if (is_string($newp)) {
+      if (isset($packages[$newp])) {
+        if (version_compare($newv, $packages[$newp]->version) == 1) {
+          $logo = $dir."$newp/logo.png";
+          $alert = "<img src='$logo' style='width:40px;float:left'>&nbsp;&nbsp;<b>";
+          $alert .= $packages[$newp]->title.'</b> '.__("is_available_on_version");
+          $alert .= " $newv &nbsp;&nbsp; ".dl_btn($packages[$newp]->package, 'warning', __('Upgrade'));
+          $alert .= '&nbsp;&nbsp;<a href="https://gilacms.com/addons/package/';
+          $alert .= $packages[$newp]->package.'" class="g-btn info" target="_blank">'.__('Info').'</a>';
+          View::alert('success', $alert);
+        } else {
+          $upgrated++;
+        }
+      } else {
+        $upgrateN--;
+      }
     }
-  } else {
-    $upgrateN--;
   }
-  if($upgrateN === $upgrated) {
+  if ($upgrateN === $upgrated) {
     unlink(LOG_PATH.'/packages2update.json');
   }
 }
 
 
-foreach ($packages as $pkey=>$p) if($p->package!='core' || Gila::config('env')=='dev') {
-  if(isset($p->lang)) Gila::addLang($p->lang);
-
-  // Border color
-  if (file_exists('src/'.$p->package)) {
-    if (in_array($p->package,$GLOBALS['config']['packages'])) {
-      $border = "border-left:4px solid forestgreen;";
-    } else $border = "border-left:4px solid lightgrey";
-  } else $border = "";
-  $table .= '<tr>';
-  $table .= '<td style="color:grey;text-align:center;width: 3em;'.$border.'">';
-
-  // Logo
-  if (file_exists($dir."{$p->package}/logo.png")) {
-    $table .= '<img class="fa fa-3x logo-3x" src="'."lzld/thumb?src=src/{$p->package}/logo.png".'"/>';
-  } else if (file_exists($dir."{$p->package}/logo.svg")) {
-    $table .= '<img class="fa fa-3x logo-3x" src="'."lzld/thumb?src=src/{$p->package}/logo.svg".'"/>';
-  } else if (isset($p->logo) && $p->logo!='') {
-    $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
-  } else {
-    $table .= '<i class="fa fa-3x fa-dropbox"></i>';
-  }
-
-  // Title & version
-  $title = $p->title?:$p->package;
-  $table .= '<td style="min-width:50%;"><b>'.$title.' '.(isset($p->version)?$p->version:'').'</b>';
-
-  // Description
-  $desc = __($p->package.':desc');
-  if($desc==$p->package.':desc') $desc = $p->description?:'No description';
-  $table .= '<br>'.$desc.'<br>';
-
-  // Additional info
-  $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
-  $table .= (@$p->url?'<i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
-  $table .= (isset($p->contact)?' <i class="fa fa-envelope addon-i"</i> '.$p->contact:'');
-  if(isset($p->require)) {
-    $table .= "<br>Requires: ";
-    foreach($p->require as $req=>$ver) {
-      $table .= $req."($ver) ";
+foreach ($packages as $pkey=>$p) {
+  if ($p->package!='core' || Gila::config('env')=='dev') {
+    if (isset($p->lang)) {
+      Gila::addLang($p->lang);
     }
-  }
-  $table .= (isset($p->contact)?' <b>Contact:</b> '.$p->contact:'');
-  $table .= '<td style="min-width:50%;">';
 
-  // Buttons
-  if (file_exists('src/'.$p->package)) {
-    if (in_array($p->package,$GLOBALS['config']['packages']) || $p->package=='core') {
-      if(Gila::config('env')=='dev') {
-        $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
-      }
-      if($p->package!='core') {
-        $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
+    // Border color
+    if (file_exists('src/'.$p->package)) {
+      if (in_array($p->package, $GLOBALS['config']['packages'])) {
+        $border = "border-left:4px solid forestgreen;";
+      } else {
+        $border = "border-left:4px solid lightgrey";
       }
     } else {
-      if($p->package!='core') {
-        $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
+      $border = "";
+    }
+    $table .= '<tr>';
+    $table .= '<td style="color:grey;text-align:center;width: 3em;'.$border.'">';
+
+    // Logo
+    if (file_exists($dir."{$p->package}/logo.png")) {
+      $table .= '<img class="fa fa-3x logo-3x" src="'."lzld/thumb?src=src/{$p->package}/logo.png".'"/>';
+    } elseif (file_exists($dir."{$p->package}/logo.svg")) {
+      $table .= '<img class="fa fa-3x logo-3x" src="'."lzld/thumb?src=src/{$p->package}/logo.svg".'"/>';
+    } elseif (isset($p->logo) && $p->logo!='') {
+      $table .= '<img class="fa fa-3x logo-3x" src="'.($p->logo).'" />';
+    } else {
+      $table .= '<i class="fa fa-3x fa-dropbox"></i>';
+    }
+
+    // Title & version
+    $title = $p->title?:$p->package;
+    $table .= '<td style="min-width:50%;"><b>'.$title.' '.(isset($p->version)?$p->version:'').'</b>';
+
+    // Description
+    $desc = __($p->package.':desc');
+    if ($desc==$p->package.':desc') {
+      $desc = $p->description?:'No description';
+    }
+    $table .= '<br>'.$desc.'<br>';
+
+    // Additional info
+    $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
+    $table .= (@$p->url?'<i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
+    $table .= (isset($p->contact)?' <i class="fa fa-envelope addon-i"</i> '.$p->contact:'');
+    if (isset($p->require)) {
+      $table .= "<br>Requires: ";
+      foreach ($p->require as $req=>$ver) {
+        $table .= $req."($ver) ";
       }
     }
-    if(isset($p->options)) {
-      $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>";
+    $table .= (isset($p->contact)?' <b>Contact:</b> '.$p->contact:'');
+    $table .= '<td style="min-width:50%;">';
+
+    // Buttons
+    if (file_exists('src/'.$p->package)) {
+      if (in_array($p->package, $GLOBALS['config']['packages']) || $p->package=='core') {
+        if (Gila::config('env')=='dev') {
+          $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
+        }
+        if ($p->package!='core') {
+          $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
+        }
+      } else {
+        if ($p->package!='core') {
+          $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
+        }
+      }
+      if (isset($p->options)) {
+        $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>";
+      }
+      if (FS_ACCESS) {
+        @$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version;
+        if ($current_version && version_compare($p->version, $current_version)>0) {
+          $table .= ' '.dl_btn($p->package, 'warning', __('Upgrade'));
+        }
+      }
+      $table .= "<td>";
+      if (FS_ACCESS) {
+        $table .= "<a href='admin/fm/?f=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
+      }
+    } else {
+      if (FS_ACCESS) {
+        $table .= dl_btn($p->package, 'success', __('Download'));
+      }
+      $table .= '<td>';
     }
-    if(FS_ACCESS) {
-      @$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version;
-      if($current_version && version_compare($p->version, $current_version)>0) {
-        $table .= ' '.dl_btn($p->package, 'warning', __('Upgrade'));
-      }  
-    }
-    $table .= "<td>";
-    if(FS_ACCESS) $table .= "<a href='admin/fm/?f=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
-  } else {
-    if(FS_ACCESS) $table .= dl_btn($p->package, 'success', __('Download'));
-    $table .= '<td>';
+    $pn++;
   }
-  $pn++;
 }
 ?>
 <?php
@@ -120,7 +139,7 @@ View::alerts();
 ?>
 <div class="row" id='packages-list'>
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
-  foreach($links as $link){
+  foreach ($links as $link) {
     $active = (Router::url()==$link[1]?'active':'');
     echo '<li class="'.$active.'"><a href="'.Gila::url($link[1]).'">'.__($link[0]).'</a></li>';
   }

@@ -67,9 +67,12 @@ return [
     ]
   ],
   'events'=>[
-    ['change',function(&$row){
-      if(isset($row['pass'])) if( substr( $row['pass'], 0, 7 ) != "$2y$10$" )
-        $row['pass'] = Gila::hash($row['pass']);
+    ['change',function (&$row) {
+      if (isset($row['pass'])) {
+        if (substr($row['pass'], 0, 7) != "$2y$10$") {
+          $row['pass'] = Gila::hash($row['pass']);
+        }
+      }
     }]
   ]
 ];

@@ -4,7 +4,7 @@ class UserAgent
 {
   public function info($user_agent = null)
   {
-    if($user_agent==null) {
+    if ($user_agent==null) {
       return null;
     }
 
@@ -37,11 +37,10 @@ class UserAgent
       '/webos/i'              => 'Mobile'
     ];
 
-    foreach ($os_array as $regex => $value) 
-    {
+    foreach ($os_array as $regex => $value) {
       if (preg_match($regex, $user_agent)) {
         $os = $value;
-        $device = !preg_match('/(windows|mac|linux|ubuntu)/i',$os)
+        $device = !preg_match('/(windows|mac|linux|ubuntu)/i', $os)
                   ?'MOBILE':(preg_match('/phone/i', $os_platform)?'MOBILE':'SYSTEM');
       }
     }
@@ -58,11 +57,12 @@ class UserAgent
       '/konqueror/i'  => 'Konqueror',
       '/mobile/i'     => 'Handheld Browser'
     ];
-    foreach ($browser_array as $regex => $value) 
-    { 
-      if($found) break;
-      if (preg_match($regex, $user_agent,$result)) {
-          $browser = $value;
+    foreach ($browser_array as $regex => $value) {
+      if ($found) {
+        break;
+      }
+      if (preg_match($regex, $user_agent, $result)) {
+        $browser = $value;
       }
     }
 

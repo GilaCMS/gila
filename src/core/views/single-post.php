@@ -1,7 +1,7 @@
 <div class="row" style="">
 <div class="gm-9">
   <h1><?=$title?></h1>
-      <span class="meta">Posted by <a href="<?=Gila::url('blog/author/'.$author_id)?>"><?=$author?></a> on <?=date('F j, Y',strtotime($updated))?></span>
+      <span class="meta">Posted by <a href="<?=Gila::url('blog/author/'.$author_id)?>"><?=$author?></a> on <?=date('F j, Y', strtotime($updated))?></span>
   <hr>
 
   <!-- Post Content nl2br($text) -->

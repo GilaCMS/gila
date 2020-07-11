@@ -1,6 +1,6 @@
 <?php
-usort($tags, function($a, $b) {
-    return $a['value'] - $b['value'];
+usort($tags, function ($a, $b) {
+  return $a['value'] - $b['value'];
 });
 
 /* save for PHP 7+
@@ -9,12 +9,12 @@ usort($tags, function($a, $b) {
 });
 */
 $letter = '';
-foreach($tags as $tag) {
-    $name = $tag['value'];
-    $url = Gila::make_url('blog','tag',['tag'=>$name]);
-    if($letter != ucfirst($name[0])) {
-        $letter = ucfirst($name[0]);
-        echo '<h2>'.$letter.'</h2><hr>';
-    }
-    echo '<a href="'.$url.'">'.$name.' '.$tag['count'].'</a><br>';
+foreach ($tags as $tag) {
+  $name = $tag['value'];
+  $url = Gila::make_url('blog', 'tag', ['tag'=>$name]);
+  if ($letter != ucfirst($name[0])) {
+    $letter = ucfirst($name[0]);
+    echo '<h2>'.$letter.'</h2><hr>';
+  }
+  echo '<a href="'.$url.'">'.$name.' '.$tag['count'].'</a><br>';
 }

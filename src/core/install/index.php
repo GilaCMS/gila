@@ -1,7 +1,7 @@
 <?php
 
-if(isset($_GET['step'])) {
-  if($_GET['step']==1) {
+if (isset($_GET['step'])) {
+  if ($_GET['step']==1) {
     include __DIR__.'/install.php';
     exit;
   }

@@ -17,7 +17,7 @@
 
 <?php
 global $db;
-$title = $db->value("SELECT title FROM $contentType WHERE id=?;",[$id]);
+$title = $db->value("SELECT title FROM $contentType WHERE id=?;", [$id]);
 ?>
 
 <h2><?=htmlentities($title)?></h2>
@@ -67,11 +67,17 @@ $cid = $contentType.'_'.$id.'_';
 <?php
 $content_blocks = [];
 
-foreach(Gila::$widget as $k=>$w) {
+foreach (Gila::$widget as $k=>$w) {
   $c = ['name'=>$k];
-  if(file_exists('src/'.$w.'/logo.png')) $c['logo'] = $w.'/logo.png';
-  if(file_exists('src/'.$w.'/logo.svg')) $c['logo'] = $w.'/logo.svg';
-  if(file_exists('src/'.$w.'/preview.png')) $c['preview'] = $w.'/preview.png';
+  if (file_exists('src/'.$w.'/logo.png')) {
+    $c['logo'] = $w.'/logo.png';
+  }
+  if (file_exists('src/'.$w.'/logo.svg')) {
+    $c['logo'] = $w.'/logo.svg';
+  }
+  if (file_exists('src/'.$w.'/preview.png')) {
+    $c['preview'] = $w.'/preview.png';
+  }
   $content_blocks[$k] = $c;
 }
 ?>

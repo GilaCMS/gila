@@ -56,3 +56,5 @@ tests/performance
 
 !data/uploads/
 !data/.htaccess
+
+.php_cs.cache

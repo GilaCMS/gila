@@ -14,7 +14,9 @@
   <style>#topbar .g-navbar>li>a{color:#222}#topbar .g-navbar>li>a:hover{color:inherit;background:inherit}</style>
 </head>
 
-<?php if(!isset($_COOKIE['sidebar_toggled'])) $_COOKIE['sidebar_toggled']='true' ?>
+<?php if (!isset($_COOKIE['sidebar_toggled'])) {
+  $_COOKIE['sidebar_toggled']='true';
+} ?>
 
 <body style="background:var(--main-bg-color)">
   <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
@@ -34,14 +36,14 @@
     <!-- Page Content -->
     <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:white;">
       &nbsp;<a href="#menu-toggle" class="g-icon-btn g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
-      <?php if('admin'!=Gila::config('default-controller')){?>
+      <?php if ('admin'!=Gila::config('default-controller')) {?>
       &nbsp;<a href="<?=Gila::base_url()?>" class="g-icon-btn g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
       <?php } ?>
 
       <span class="g-group-item fullwidth text-align-right" id="topbar">
         <ul class="g-nav g-navbar" style="background:unset">
           <?php
-          foreach(Gila::getList('badge') as $b) {
+          foreach (Gila::getList('badge') as $b) {
             echo "<li>{$b['icon']}<span class='badge' data-count='{$b['count']()}'></span></li>";
           }
           ?>

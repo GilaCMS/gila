@@ -8,11 +8,13 @@ class Session
   private static $waitForLogin = 0;
   private static $user_id;
 
-  static function start ()
+  public static function start()
   {
-    if(self::$started===true) return;
+    if (self::$started===true) {
+      return;
+    }
     self::$started = true;
-    @session_set_cookie_params(86400); 
+    @session_set_cookie_params(86400);
 
     try {
       @session_start();
@@ -33,10 +35,10 @@ class Session
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
     } else {
-      if(self::userId()==0) {
-        if(isset($_COOKIE['GSESSIONID'])) {
+      if (self::userId()==0) {
+        if (isset($_COOKIE['GSESSIONID'])) {
           $user_ids = User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']);
-          if(isset($user_ids[0])) {
+          if (isset($user_ids[0])) {
             $usr = User::getById($user_ids[0]);
             if ($usr['active']===1) {
               self::user($usr['id'], $usr['username'], $usr['email']);
@@ -46,37 +48,41 @@ class Session
           }
         }
       } else {
-        if(!isset($_COOKIE['GSESSIONID'])) {
+        if (!isset($_COOKIE['GSESSIONID'])) {
           self::setCookie(self::userId());
         }
       }
 
-      if(isset($_COOKIE['GSESSIONID'])) if(!file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-        User::metaDelete(self::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
-        self::destroy();
+      if (isset($_COOKIE['GSESSIONID'])) {
+        if (!file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
+          User::metaDelete(self::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+          self::destroy();
+        }
       }
     }
-
   }
 
-  static function user ($id, $name='', $email='', $msg=null)
+  public static function user($id, $name='', $email='', $msg=null)
   {
     self::key('user_id', $id);
     self::key('user_name', $name);
     self::key('user_email', $email);
     self::$user_id = $id;
-    if($msg!==null) {
+    if ($msg!==null) {
       $session_log = new Logger(LOG_PATH.'/sessions.log');
-      $session_log->info($msg,['user_id'=>$id, 'email'=>$email]);
+      $session_log->info($msg, ['user_id'=>$id, 'email'=>$email]);
     }
   }
 
-  static function setCookie ($id) {
+  public static function setCookie($id)
+  {
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
     $gsession = (string)$id;
-    for ($p = strlen($gsession); $p < 50; $p++) $gsession .= $chars[mt_rand(0, 32)];
+    for ($p = strlen($gsession); $p < 50; $p++) {
+      $gsession .= $chars[mt_rand(0, 32)];
+    }
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
-    if(isset($_COOKIE['GSESSIONID'])) {
+    if (isset($_COOKIE['GSESSIONID'])) {
       User::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
       @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
     }
@@ -90,12 +96,12 @@ class Session
   * Define new session variables
   * @param $vars Associative Array
   */
-  static function define ($vars)
+  public static function define($vars)
   {
     self::start();
     foreach ($vars as $var=>$val) {
       $key = $GLOBALS['config']['db']['name'].$var;
-      if(!isset($_SESSION[$key])) {
+      if (!isset($_SESSION[$key])) {
         $_SESSION[$key] = $val;
       }
     }
@@ -108,7 +114,7 @@ class Session
   * @param $t optional (int) Time in seconds to save the variable in the cookie (not saved if not set)
   * @return Variable value
   */
-  static function key ($var, $val = null, $t = 0)
+  public static function key($var, $val = null, $t = 0)
   {
     self::start();
     $key = $GLOBALS['config']['db']['name'].$var;
@@ -117,9 +123,9 @@ class Session
     }
     $_SESSION[$key] = $val;
 
-    if($t !== 0){
-      if(is_object($val) || is_array($val)){
-      $value = json_encode($val);
+    if ($t !== 0) {
+      if (is_object($val) || is_array($val)) {
+        $value = json_encode($val);
       }
       setcookie($var, $val, (time() + $t));
     }
@@ -129,14 +135,14 @@ class Session
   * Unsets a session variable
   * @param $var (string) Variable name
   */
-  static function unsetKey ($var)
+  public static function unsetKey($var)
   {
     self::start();
     $key = $GLOBALS['config']['db']['name'].$var;
     unset($_SESSION[$key]);
   }
 
-  private static function md5 ($key)
+  private static function md5($key)
   {
     $dbname = $GLOBALS['config']['db']['name'];
     return $dbname.$key;
@@ -146,22 +152,24 @@ class Session
   * Returns user id
   * @return int User's id. 0 if user is not logged in.
   */
-  static function userId ():int
+  public static function userId():int
   {
-    if(isset(self::$user_id)) return self::$user_id;
+    if (isset(self::$user_id)) {
+      return self::$user_id;
+    }
     $user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
-    if($token && !isset($_COOKIE['GSESSIONID'])) {
+    if ($token && !isset($_COOKIE['GSESSIONID'])) {
       $usr = User::getByMeta('token', $token);
-      if($usr) {
+      if ($usr) {
         $user_id = $usr['id'];
       }
     } else {
       self::start();
-      if(isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
+      if (isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
         @$user_id = self::key('user_id') ?? 0;
       }
-      if(isset($_COOKIE['GSESSIONID']) &&
+      if (isset($_COOKIE['GSESSIONID']) &&
           !file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
         self::createFile($_COOKIE['GSESSIONID']);
       }
@@ -170,12 +178,14 @@ class Session
     return self::$user_id;
   }
 
-  static function user_id() { // DEPRECATED
+  public static function user_id()
+  { // DEPRECATED
     trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
     return self::userId();
   }
 
-  static function createFile($gsession) {
+  public static function createFile($gsession)
+  {
     $data = [
       'user_agent'=>$_SERVER['HTTP_USER_AGENT']
     ];
@@ -185,27 +195,31 @@ class Session
   /**
   * Destroys the session session
   */
-  static function destroy ()
+  public static function destroy()
   {
-    if(self::userId()>0) {
+    if (self::userId()>0) {
       $session_log = new Logger(LOG_PATH.'/sessions.log');
-      $session_log->info('End',['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
+      $session_log->info('End', ['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
     }
     @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
     @$_SESSION = [];
     @session_destroy();
   }
 
-  static function waitForLogin()
+  public static function waitForLogin()
   {
     $wait = 0;
     self::define(['failed_attempts'=>[]]);
-    if(@$_SESSION['failed_attempts']) {
-      foreach($_SESSION['failed_attempts'] as $key=>$value) {
-        if($value+120<time()) array_splice($_SESSION['failed_attempts'], $key, 1);
+    if (@$_SESSION['failed_attempts']) {
+      foreach ($_SESSION['failed_attempts'] as $key=>$value) {
+        if ($value+120<time()) {
+          array_splice($_SESSION['failed_attempts'], $key, 1);
+        }
       }
       $attempts = count($_SESSION['failed_attempts']);
-      if($attempts<5) return 0;
+      if ($attempts<5) {
+        return 0;
+      }
       $lastTime = $_SESSION['failed_attempts'][$attempts-1];
       $wait = $lastTime-time()+60;
       $wait = $wait<0? 0: $wait;
@@ -213,15 +227,20 @@ class Session
     return $wait;
   }
 
-  static function hasPrivilege ($pri)
+  public static function hasPrivilege($pri)
   {
-    if(!is_array($pri)) $pri=explode(' ',$pri);
-    if(!isset($GLOBALS['user_privileges'])) {
+    if (!is_array($pri)) {
+      $pri=explode(' ', $pri);
+    }
+    if (!isset($GLOBALS['user_privileges'])) {
       $GLOBALS['user_privileges'] = core\models\User::permissions(Session::userId());
     }
 
-    foreach($pri as $p) if(@in_array($p,$GLOBALS['user_privileges'])) return true;
+    foreach ($pri as $p) {
+      if (@in_array($p, $GLOBALS['user_privileges'])) {
+        return true;
+      }
+    }
     return false;
   }
-
 }

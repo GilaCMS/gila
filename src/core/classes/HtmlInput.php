@@ -2,22 +2,22 @@
 
 class HtmlInput
 {
-
   public static $eventAttributes;
 
-  public function purify($value, $allowed_tags=false) {
-    if($allowed_tags===false) {
+  public function purify($value, $allowed_tags=false)
+  {
+    if ($allowed_tags===false) {
       return strip_tags($value);
     }
-    if($allowed_tags!==true) {
+    if ($allowed_tags!==true) {
       $value = strip_tags($value, $allowed_tags);
     }
 
-    if($response = Event::get('HtmlInput::purify', null, $value)) {
+    if ($response = Event::get('HtmlInput::purify', null, $value)) {
       return $response;
     }
 
-    if(class_exists("DomDocument")) {
+    if (class_exists("DomDocument")) {
       $value = self::DOMSanitize($value);
     }
 
@@ -25,7 +25,8 @@ class HtmlInput
     return $value;
   }
 
-  public function DOMSanitize($value) {
+  public function DOMSanitize($value)
+  {
     $dom = new DOMDocument;
     $dom->loadHTML($value);
     $tags = $dom->getElementsByTagName('*');
@@ -39,7 +40,7 @@ class HtmlInput
     $value = $dom->saveHTML($body);
     $value = strtr($value, ['<body>'=>'', '</body>'=>'']);
 
-    if(substr($value, 1, 8)=='<p> </p>') {
+    if (substr($value, 1, 8)=='<p> </p>') {
       $value = substr($value, 8);
     }
     return $value;

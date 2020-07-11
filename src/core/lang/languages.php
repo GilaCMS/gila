@@ -18,4 +18,3 @@ return [
   'el'=> 'Greek (Ελληνικά)',
   'et'=> 'Estonian (Eesti)'
 ];
-

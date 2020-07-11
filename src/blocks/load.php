@@ -1,16 +1,16 @@
 <?php
 
-Gila::controller('blocks','blocks/controllers/blocks','blocks');
+Gila::controller('blocks', 'blocks/controllers/blocks', 'blocks');
 
-Gila::contentInit('page', function(&$table) {
+Gila::contentInit('page', function (&$table) {
   $table['commands'][]='blocks';
   $table['js'][]='src/blocks/assets/blocks_btn.js';
   $table['command']['blocks'] = ['link'=>'blocks/page/'];
 });
-Gila::contentInit('post', function(&$table) {
-    $table['commands'][]='blocks';
-    $table['js'][]='src/blocks/assets/blocks_btn.js';
-    $table['command']['blocks'] = ['link'=>'blocks/post/'];
+Gila::contentInit('post', function (&$table) {
+  $table['commands'][]='blocks';
+  $table['js'][]='src/blocks/assets/blocks_btn.js';
+  $table['command']['blocks'] = ['link'=>'blocks/post/'];
 });
 
 Gila::widgets([
@@ -21,4 +21,3 @@ Gila::widgets([
   'items-grid'=>'blocks/widgets/items-grid',
   'faq'=>'blocks/widgets/faq'
 ]);
-

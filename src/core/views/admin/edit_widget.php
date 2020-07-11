@@ -46,10 +46,14 @@ $widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 
 $widget_folder = 'src/'.Gila::$widget[$widget->widget];
 
 $fields = include $widget_folder.'/widget.php';
-if(isset($options)) $fields = $options;
+if (isset($options)) {
+  $fields = $options;
+}
 
-if(isset($fields)) foreach($fields as $key=>$op) {
-  $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
+if (isset($fields)) {
+  foreach ($fields as $key=>$op) {
+    $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
+  }
 }
 echo gForm::html($fields, $values, 'option[', ']');
 echo "</form>";
