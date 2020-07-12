@@ -10,6 +10,9 @@ include(__DIR__.'/../../src/core/classes/Form.php');
 include(__DIR__.'/../../src/core/classes/Sendmail.php');
 include(__DIR__.'/../../src/core/classes/HtmlInput.php');
 use PHPUnit\Framework\TestCase;
+use Gila\Gila;
+use Gila\Event;
+use Gila\Router;
 $GLOBALS['config']['db']['name'] = 'g_db';
 Event::listen('sendmail', function($x){ return true; });
 
