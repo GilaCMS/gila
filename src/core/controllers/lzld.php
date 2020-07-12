@@ -1,7 +1,7 @@
 <?php
 
 
-class lzld extends Controller
+class lzld extends Gila\Controller
 {
   public function indexAction()
   {

@@ -2,7 +2,7 @@
 use core\models\Page;
 use core\models\Post;
 
-class blocks extends Controller
+class blocks extends Gila\Controller
 {
   private static $draft = false;
 

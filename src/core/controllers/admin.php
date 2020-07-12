@@ -4,7 +4,7 @@ use core\models\Widget;
 use Gila\User;
 use core\models\Page;
 
-class admin extends Controller
+class admin extends Gila\Controller
 {
   public function __construct()
   {

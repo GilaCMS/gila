@@ -2,7 +2,7 @@
 
 use Gila\User;
 
-class login extends Controller
+class login extends Gila\Controller
 {
   public function __construct()
   {

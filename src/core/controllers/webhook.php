@@ -1,7 +1,7 @@
 <?php
 
 
-class webhook extends Controller
+class webhook extends Gila\Controller
 {
   public function __construct()
   {

@@ -7,7 +7,7 @@ use Gila\User;
 /**
 * The blog controller, get calls for display of posts
 */
-class BlogCtrl extends Controller
+class BlogCtrl extends Gila\Controller
 {
   public static $page; /** The page number */
   public static $totalPosts;

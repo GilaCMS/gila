@@ -4,7 +4,7 @@ use Gila\User;
 /**
 * Lists content types and shows grid content data
 */
-class cm extends Controller
+class cm extends Gila\Controller
 {
   private $contenttype;
   private $table;
