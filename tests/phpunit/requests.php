@@ -1,19 +1,21 @@
 <?php
 
 include(__DIR__.'/includes.php');
-include(__DIR__.'/../../src/core/classes/Controller.php');
-include(__DIR__.'/../../src/core/classes/Package.php');
-include(__DIR__.'/../../src/core/models/User.php');
-include(__DIR__.'/../../src/core/classes/Table.php');
-include(__DIR__.'/../../src/core/classes/TableSchema.php');
-include(__DIR__.'/../../src/core/classes/Form.php');
-include(__DIR__.'/../../src/core/classes/Sendmail.php');
-include(__DIR__.'/../../src/core/classes/HtmlInput.php');
+//include(__DIR__.'/../../src/core/classes/Controller.php');
+//include(__DIR__.'/../../src/core/classes/Package.php');
+//include(__DIR__.'/../../src/core/models/User.php');
+//include(__DIR__.'/../../src/core/classes/Table.php');
+//include(__DIR__.'/../../src/core/classes/TableSchema.php');
+//include(__DIR__.'/../../src/core/classes/Form.php');
+//include(__DIR__.'/../../src/core/classes/Sendmail.php');
+//include(__DIR__.'/../../src/core/classes/HtmlInput.php');
 use PHPUnit\Framework\TestCase;
 use Gila\Gila;
 use Gila\Event;
 use Gila\Router;
 use Gila\Controller;
+use Gila\Session;
+use Gila\Package;
 $GLOBALS['config']['db']['name'] = 'g_db';
 Event::listen('sendmail', function($x){ return true; });
 
