@@ -19,5 +19,5 @@ $db = new Gila\Db("127.0.0.1", "g_user", "password", "g_db");
 
 $GLOBALS['lang'] = [];
 function __($key, $alt = null) {
-  Gila\Gila::tr($key, $alt);
+  return Gila\Gila::tr($key, $alt);
 }
