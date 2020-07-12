@@ -518,7 +518,7 @@ class Gila
     return $path;
   }
 
-  public function tr($key, $alt = null) {
+  public static function tr($key, $alt = null) {
     if(self::$langLoaded===false) {
       foreach(self::$langPaths as $path) self::loadLang($path);
       self::$langLoaded = true;

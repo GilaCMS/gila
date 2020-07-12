@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="<?=Gila::config('language')?>">
+<html lang="<?=Gila\Gila::config('language')?>">
 
 <head>
-  <base href="<?=Gila::base_url()?>">
+  <base href="<?=Gila\Gila::base_url()?>">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title><?=Gila::config('title')?> - <?=($title??'')?></title>
+  <title><?=Gila\Gila::config('title')?> - <?=($title??'')?></title>
 
   <?=Gila\View::css('core/gila.min.css')?>
   <?=Gila\View::css('lib/font-awesome/css/font-awesome.min.css')?>

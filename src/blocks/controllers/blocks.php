@@ -4,6 +4,7 @@ use core\models\Post;
 use Gila\Gila;
 use Gila\View;
 use Gila\Event;
+use Gila\Router;
 
 class blocks extends \Gila\Controller
 {

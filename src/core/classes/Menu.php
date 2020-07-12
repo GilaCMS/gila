@@ -45,7 +45,7 @@ class Menu
       }
       $liClass = isset($item['children'])? ' class="dropdown"': '';
       $html .= "<li$liClass><a href='".$url."'><i class='fa {$icon}'></i>";
-      $html .= " <span>".__("$item[0]")."</span>$badge</a>";
+      $html .= " <span>".Gila::tr("$item[0]")."</span>$badge</a>";
       if (isset($item['children'])) {
         $html .= "<ul class=\"dropdown-menu\">";
         $html .= Menu::getHtml($item['children'], $base);
