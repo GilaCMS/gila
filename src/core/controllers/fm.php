@@ -1,5 +1,6 @@
 <?php
-
+use Gila\Session;
+use Gila\FileManager;
 
 class fm extends \Gila\Controller
 {

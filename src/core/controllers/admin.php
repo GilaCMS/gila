@@ -5,6 +5,7 @@ use Gila\User;
 use core\models\Page;
 use Gila\Gila;
 use Gila\View;
+use Gila\Session;
 
 class admin extends \Gila\Controller
 {

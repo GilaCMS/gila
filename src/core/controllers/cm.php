@@ -2,6 +2,7 @@
 use Gila\User;
 use Gila\Gila;
 use Gila\Form;
+use Gila\Session;
 
 /**
 * Lists content types and shows grid content data

@@ -16,6 +16,7 @@ use Gila\Router;
 use Gila\Controller;
 use Gila\Session;
 use Gila\Package;
+use Gila\Table;
 $GLOBALS['config']['db']['name'] = 'g_db';
 Event::listen('sendmail', function($x){ return true; });
 
