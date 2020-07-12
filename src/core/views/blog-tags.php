@@ -11,7 +11,7 @@ usort($tags, function($a, $b) {
 $letter = '';
 foreach ($tags as $tag) {
   $name = $tag['value'];
-  $url = Gila::make_url('blog', 'tag', ['tag'=>$name]);
+  $url = Gila\Gila::make_url('blog', 'tag', ['tag'=>$name]);
   if ($letter != ucfirst($name[0])) {
     $letter = ucfirst($name[0]);
     echo '<h2>'.$letter.'</h2><hr>';

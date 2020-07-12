@@ -14,7 +14,7 @@ Gila\View::script('core/admin/content.js');
 if (file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
-Gila\View::script('core/lang/content/'.Gila::config('language').'.js');
+Gila\View::script('core/lang/content/'.Gila\Gila::config('language').'.js');
 Gila\View::script('core/admin/vue-components.js');
 Gila\View::script('core/admin/vue-editor.js');
 ?>
@@ -43,7 +43,7 @@ $pages_path[] = Gila\View::getThemePath().'/pages/';
 if (Gila\View::$parent_theme) {
   $pages_path[] = 'themes/'.Gila\View::$parent_theme.'/templates/';
 }
-$pages_path = array_merge($pages_path, Gila::packages());
+$pages_path = array_merge($pages_path, Gila\Gila::packages());
 $pages_path[] = 'src/core/templates/';
 foreach ($pages_path as $path) {
   if (file_exists($path)) {
@@ -98,8 +98,8 @@ g_tinymce_options = {
 }
 g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templates:[])); ?>;
 
-base_url = "<?=Gila::config('base')?>"
-g_tinymce_options.document_base_url = "<?=Gila::config('base')?>"
+base_url = "<?=Gila\Gila::config('base')?>"
+g_tinymce_options.document_base_url = "<?=Gila\Gila::config('base')?>"
 
 transformClassComponents()
 

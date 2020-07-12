@@ -1,5 +1,5 @@
 <head>
-<base href="<?=Gila::base_url()?>">
+<base href="<?=Gila\Gila::base_url()?>">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php
@@ -12,8 +12,8 @@
   }
   Event::fire('head');
 
-  if (Gila::config('favicon')) {
-    echo '<link rel="icon" type="image/png" href="'.Gila::config('favicon').'">';
+  if (Gila\Gila::config('favicon')) {
+    echo '<link rel="icon" type="image/png" href="'.Gila\Gila::config('favicon').'">';
   }
 ?>
 <head>

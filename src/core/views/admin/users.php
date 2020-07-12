@@ -4,7 +4,7 @@ $links = [];
 if (Gila\Session::hasPrivilege('admin admin_user')) {
   $links[] = ['Users', function () {
     $type = 'user';
-    $src = explode('.', Gila::$content[$type])[0];
+    $src = explode('.', Gila\Gila::$content[$type])[0];
     Gila\View::set('table', $type);
     Gila\View::set('tablesrc', $src);
     Gila\View::renderFile('admin/content-vue.php');
@@ -14,7 +14,7 @@ if (Gila\Session::hasPrivilege('admin admin_user')) {
 if (Gila\Session::hasPrivilege('admin admin_userrole')) {
   $links[] = ['Roles', function () {
     $type = 'userrole';
-    $src = explode('.', Gila::$content[$type])[0];
+    $src = explode('.', Gila\Gila::$content[$type])[0];
     Gila\View::set('table', $type);
     Gila\View::set('tablesrc', $src);
     Gila\View::renderFile('admin/content-vue.php');

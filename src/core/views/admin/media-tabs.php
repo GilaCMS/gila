@@ -11,7 +11,7 @@ align-items: center;padding: 15px 0;}
 $media_tab = Router::request('media_tab', Gila\Session::key('media_tab') ?? 'uploads');
 Gila\Session::key('media_tab', $media_tab);
 
-$media_tab_list = Gila::getList('media-tab')??[];
+$media_tab_list = Gila\Gila::getList('media-tab')??[];
 $media_tab_list = array_merge([
   [
     'name'=>'uploads',

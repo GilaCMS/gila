@@ -1,5 +1,5 @@
 <?php
-$upload_folder = Gila::config('media_uploads') ?? 'assets';
+$upload_folder = Gila\Gila::config('media_uploads') ?? 'assets';
 $path = Router::request('path', Gila\Session::key('media_path') ?? $upload_folder);
 if ($path[0]=='.') {
   $path = $upload_folder;
@@ -26,7 +26,7 @@ array_splice($path_array, count($path_array)-1);
 $uppath=implode('/', $path_array);
 $path = rtrim($path, '/');
 Gila\View::script('core/admin/media.js');
-Gila\View::script('core/lang/content/'.Gila::config('language').'.js');
+Gila\View::script('core/lang/content/'.Gila\Gila::config('language').'.js');
 ?>
 
 <div id='admin-media-div'><div class='fullwidth inline-flex' style="gap:0.2em">

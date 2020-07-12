@@ -1,6 +1,6 @@
 <h1>Theme options</h1>
 <?php
-$pack = Gila::config('theme');
+$pack = Gila\Gila::config('theme');
 echo '<form id="theme_options_form" class="g-form">';
 echo '<input id="theme_id" value="'.$pack.'" type="hidden">';
 
@@ -13,7 +13,7 @@ if (file_exists('themes/'.$pack.'/package.json')) {
 
 if (is_array($options)) {
   foreach ($options as $key=>$op) {
-    $values[$key] = Gila::option('theme.'.$key);
+    $values[$key] = Gila\Gila::option('theme.'.$key);
   }
   echo Form::html($options, $values, 'option[', ']');
 }// else error alert
@@ -23,7 +23,7 @@ echo "</form>";
 
 <?=Gila\View::script('core/admin/media.js')?>
 <?=Gila\View::script('lib/vue/vue.min.js');?>
-<?=Gila\View::script('core/lang/content/'.Gila::config('language').'.js');?>
+<?=Gila\View::script('core/lang/content/'.Gila\Gila::config('language').'.js');?>
 <?=Gila\View::script('core/admin/vue-components.js');?>
 <script>
 
