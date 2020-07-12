@@ -5,7 +5,7 @@ use Gila\Gila;
 use Gila\View;
 use Gila\Event;
 
-class blocks extends Gila\Controller
+class blocks extends \Gila\Controller
 {
   private static $draft = false;
 

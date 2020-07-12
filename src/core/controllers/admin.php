@@ -6,7 +6,7 @@ use core\models\Page;
 use Gila\Gila;
 use Gila\View;
 
-class admin extends Gila\Controller
+class admin extends \Gila\Controller
 {
   public function __construct()
   {

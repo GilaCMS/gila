@@ -6,7 +6,7 @@ use Gila\Form;
 /**
 * Lists content types and shows grid content data
 */
-class cm extends Gila\Controller
+class cm extends \Gila\Controller
 {
   private $contenttype;
   private $table;

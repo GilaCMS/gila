@@ -2,7 +2,7 @@
 use Gila\Gila;
 use Gila\View;
 
-class lzld extends Gila\Controller
+class lzld extends \Gila\Controller
 {
   public function indexAction()
   {

@@ -1,7 +1,7 @@
 <?php
 
 
-class fm extends Gila\Controller
+class fm extends \Gila\Controller
 {
   public $path;
   private $relativePath;

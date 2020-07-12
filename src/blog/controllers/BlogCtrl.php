@@ -9,7 +9,7 @@ use Gila\View;
 /**
 * The blog controller, get calls for display of posts
 */
-class BlogCtrl extends Gila\Controller
+class BlogCtrl extends \Gila\Controller
 {
   public static $page; /** The page number */
   public static $totalPosts;
