@@ -14,7 +14,7 @@ class HtmlInput
       $value = strip_tags($value, $allowed_tags);
     }
 
-    if ($response = Gila\Event::get('HtmlInput::purify', null, $value)) {
+    if ($response = Event::get('HtmlInput::purify', null, $value)) {
       return $response;
     }
 
