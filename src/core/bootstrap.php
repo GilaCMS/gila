@@ -51,6 +51,7 @@ spl_autoload_register(function ($class) {
     'gpost'=> 'src/core/classes/HttpPost.php',
     'Gila\\HttpPost'=> 'src/core/classes/HttpPost.php',
     'Gila\\User'=> 'src/core/models/User.php',
+    'Gila\\HtmlInput'=> 'src/core/classes/HtmlInput.php',
   ];
 
   if (isset($classMap[$class])) {
