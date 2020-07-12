@@ -32,13 +32,13 @@ if (isset($_POST['submit']) && isset($_POST['role'])) {
   }
   Gila::setConfig('permissions', $checked);
   Gila::updateConfigFile();
-  View::alert('success', __('_changes_updated'));
+  Gila\View::alert('success', __('_changes_updated'));
 }
 
 $checked = Gila::config('permissions');
 
 
-View::alerts();
+Gila\View::alerts();
 ?>
 <br>
 <form action="<?=Gila::url('admin/users?tab=2')?>" method="POST">

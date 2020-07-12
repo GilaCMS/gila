@@ -24,7 +24,7 @@ if (Package::check4updates()) {
           $alert .= " $newv &nbsp;&nbsp; ".dl_btn($packages[$newp]->package, 'warning', __('Upgrade'));
           $alert .= '&nbsp;&nbsp;<a href="https://gilacms.com/addons/package/';
           $alert .= $packages[$newp]->package.'" class="g-btn info" target="_blank">'.__('Info').'</a>';
-          View::alert('success', $alert);
+          Gila\View::alert('success', $alert);
         } else {
           $upgrated++;
         }
@@ -135,7 +135,7 @@ $links=[
 ['Downloaded','admin/packages'],
 ['Newest','admin/packages/new']
 ];
-View::alerts();
+Gila\View::alerts();
 ?>
 <div class="row" id='packages-list'>
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
@@ -154,9 +154,9 @@ View::alerts();
   </div>
 </div>
 
-<?=View::script('core/admin/media.js')?>
-<?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('core/admin/vue-components.js');?>
+<?=Gila\View::script('core/admin/media.js')?>
+<?=Gila\View::script('lib/vue/vue.min.js');?>
+<?=Gila\View::script('core/admin/vue-components.js');?>
 
 <script>
 function addon_activate(p){

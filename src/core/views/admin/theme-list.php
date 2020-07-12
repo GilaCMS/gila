@@ -55,7 +55,7 @@ $links=[
 ['Downloaded','admin/themes'],
 ['Newest','admin/newthemes']
 ];
-View::alerts();
+Gila\View::alerts();
 ?>
 <div class="row">
   <ul class="g-nav g-tabs gs-12" id="theme-tabs"><?php
@@ -77,10 +77,10 @@ View::alerts();
 </div>
 
 
-<?=View::script('core/admin/media.js')?>
-<?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('core/lang/content/'.Gila::config('language').'.js');?>
-<?=View::script('core/admin/vue-components.js');?>
+<?=Gila\View::script('core/admin/media.js')?>
+<?=Gila\View::script('lib/vue/vue.min.js');?>
+<?=Gila\View::script('core/lang/content/'.Gila::config('language').'.js');?>
+<?=Gila\View::script('core/admin/vue-components.js');?>
 <script>
 function theme_activate(p) {
   g.loader()

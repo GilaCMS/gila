@@ -1,6 +1,6 @@
 <?php
 $upload_folder = Gila::config('media_uploads') ?? 'assets';
-$path = Router::request('path', Session::key('media_path') ?? $upload_folder);
+$path = Router::request('path', Gila\Session::key('media_path') ?? $upload_folder);
 if ($path[0]=='.') {
   $path = $upload_folder;
   $monthDir = SITE_PATH.$path.'/'.date("Y-m", time());
@@ -9,8 +9,8 @@ if ($path[0]=='.') {
     $path = $monthDir;
   }
 }
-Session::key('media_path', $path);
-Session::key('media_tab', 'uploads');
+Gila\Session::key('media_path', $path);
+Gila\Session::key('media_tab', 'uploads');
 
 $dpath = realpath(SITE_PATH.$upload_folder);
 $base = substr(realpath(SITE_PATH.$path), 0, strlen($dpath));
@@ -25,15 +25,15 @@ $path_array = explode('/', $path);
 array_splice($path_array, count($path_array)-1);
 $uppath=implode('/', $path_array);
 $path = rtrim($path, '/');
-View::script('core/admin/media.js');
-View::script('core/lang/content/'.Gila::config('language').'.js');
+Gila\View::script('core/admin/media.js');
+Gila\View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
 
 <div id='admin-media-div'><div class='fullwidth inline-flex' style="gap:0.2em">
   <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
   <i class='fa fa-arrow-left'></i></a>
   <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
-<?php if (Session::hasPrivilege('admin upload_assets')) { ?>
+<?php if (Gila\Session::hasPrivilege('admin upload_assets')) { ?>
   <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
   accept="image/*,video/*,audio/*" onchange='gallery_upload_files()'
   multiple data-path="<?=$path?>" data-csrf="<?=Form::getToken()?>">
@@ -42,7 +42,7 @@ View::script('core/lang/content/'.Gila::config('language').'.js');
     <input class='g-input input-filter fullwidth' style="margin:0" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
     <i class="fa fa-filter" style="position:absolute;margin:0.3em;right:0.3em;top:0.3em"></i>
   </span>
-  <?php if (Session::hasPrivilege('admin edit_assets')) { ?>
+  <?php if (Gila\Session::hasPrivilege('admin edit_assets')) { ?>
   <button class="btn btn-white" onclick="gallery_create('<?=$path?>')"><i class="fa fa-folder-o"></i></button>
   <button class="btn btn-white" onclick="gallery_move_selected('<?=$path?>')"><strong>N</strong></button>
   <button class="btn btn-white" onclick="gallery_refresh_thumb('<?=$path?>')"><i class="fa fa-refresh"></i></button>
@@ -79,7 +79,7 @@ foreach ($files as $file) {
     $filepath=$path.'/'.$file;
     $filename=htmlentities($file);
     if ($type=='image') {
-      $img='<img src="'.View::thumb(SITE_PATH.$filepath, 'media_thumb/', 100).'">';
+      $img='<img src="'.Gila\View::thumb(SITE_PATH.$filepath, 'media_thumb/', 100).'">';
       echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
     }
     if ($type=='video') {

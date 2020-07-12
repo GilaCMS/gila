@@ -7,10 +7,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1">
   <link rel="icon" type="image/png" href="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>">
-  <?=View::css('core/gila.min.css')?>
-  <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-  <?=View::css('core/admin/style.css')?>
-  <?=View::script("core/gila.min.js")?>
+  <?=Gila\View::css('core/gila.min.css')?>
+  <?=Gila\View::css('lib/font-awesome/css/font-awesome.min.css')?>
+  <?=Gila\View::css('core/admin/style.css')?>
+  <?=Gila\View::script("core/gila.min.js")?>
   <style>#topbar .g-navbar>li>a{color:#222}#topbar .g-navbar>li>a:hover{color:inherit;background:inherit}</style>
 </head>
 
@@ -49,7 +49,7 @@
           ?>
         <li style="color:unset" class="dropdown">
           <a href="javascript:void(0)">
-            <i class="fa fa-user"></i> <?=Session::key('user_name')?>
+            <i class="fa fa-user"></i> <?=Gila\Session::key('user_name')?>
           </a>
           <ul class="text-align-left dropdown-menu" style="right:0">
             <div class="g-screen" onclick="g('.dropdown').removeClass('open')"></div>

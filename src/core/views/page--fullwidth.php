@@ -1,3 +1,3 @@
-<?php View::includeFile('header.php')?>
+<?php Gila\View::includeFile('header.php')?>
 <?=$text?>
-<?php View::includeFile('footer.php')?>
+<?php Gila\View::includeFile('footer.php')?>

@@ -1,4 +1,4 @@
-<?php View::includeFile('header.php')?>
+<?php Gila\View::includeFile('header.php')?>
 <div class="wrapper">
   <h1><?=$title?></h1>
 
@@ -8,7 +8,7 @@
 
   <form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form bg-white wrapper">
     <?=Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
-    <?php View::alerts() ?>
+    <?php Gila\View::alerts() ?>
     <label><?=__("Name")?></label>
     <input name="name" class="form-control g-input" autofocus required/>
     <label><?=__("E-mail")?></label>
@@ -20,4 +20,4 @@
   </form>
 
 </div>
-<?php View::includeFile('footer.php')?>
+<?php Gila\View::includeFile('footer.php')?>

@@ -9,8 +9,8 @@
 
   <title><?=Gila::config('title')?> - <?=($title??'')?></title>
 
-  <?=View::css('core/gila.min.css')?>
-  <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
+  <?=Gila\View::css('core/gila.min.css')?>
+  <?=Gila\View::css('lib/font-awesome/css/font-awesome.min.css')?>
 </head>
 
 <body style="background: var(--main-bg-color)">

@@ -1,35 +1,35 @@
 <?php
 
 $links = [];
-if (Session::hasPrivilege('admin admin_user')) {
+if (Gila\Session::hasPrivilege('admin admin_user')) {
   $links[] = ['Users', function () {
     $type = 'user';
     $src = explode('.', Gila::$content[$type])[0];
-    View::set('table', $type);
-    View::set('tablesrc', $src);
-    View::renderFile('admin/content-vue.php');
+    Gila\View::set('table', $type);
+    Gila\View::set('tablesrc', $src);
+    Gila\View::renderFile('admin/content-vue.php');
   }];
 }
 
-if (Session::hasPrivilege('admin admin_userrole')) {
+if (Gila\Session::hasPrivilege('admin admin_userrole')) {
   $links[] = ['Roles', function () {
     $type = 'userrole';
     $src = explode('.', Gila::$content[$type])[0];
-    View::set('table', $type);
-    View::set('tablesrc', $src);
-    View::renderFile('admin/content-vue.php');
+    Gila\View::set('table', $type);
+    Gila\View::set('tablesrc', $src);
+    Gila\View::renderFile('admin/content-vue.php');
   }];
 }
 
-if (Session::hasPrivilege('admin admin_permissions')) {
+if (Gila\Session::hasPrivilege('admin admin_permissions')) {
   $links[] = ['Permissions',function () {
-    View::renderFile('admin/permissions.php');
+    Gila\View::renderFile('admin/permissions.php');
   }];
 }
 
 $fn = function () {
   http_response_code(404);
-  View::renderFile('404.php');
+  Gila\View::renderFile('404.php');
 };
 
 ?>

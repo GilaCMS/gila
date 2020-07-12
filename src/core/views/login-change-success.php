@@ -1,4 +1,4 @@
-<?php View::includeFile('login-header.php');?>
+<?php Gila\View::includeFile('login-header.php');?>
 
   <div class="gl-4 centered">
     <div class="g-form wrapper g-card bg-white">

@@ -34,8 +34,8 @@ function wrapper_toggle() {
   setTimeout(lazyImgLoad, 100);
 }
 </script>
-<?php View::scriptAsync("core/lazyImgLoad.js")?>
-<?php View::scripts()?>
+<?php Gila\View::scriptAsync("core/lazyImgLoad.js")?>
+<?php Gila\View::scripts()?>
 
 </body>
 </html>

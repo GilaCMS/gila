@@ -8,7 +8,7 @@
   <article>
       <?=$text?>
   </article>
-  <?php View::widgetArea('post.after'); ?>
+  <?php Gila\View::widgetArea('post.after'); ?>
 </div>
 
 <div class="gm-3 sidebar">
@@ -16,6 +16,6 @@
     <input name='search' class="g-input fullwidth" value="">
     <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
   </form>
-  <?php View::widgetArea('sidebar'); ?>
+  <?php Gila\View::widgetArea('sidebar'); ?>
 </div>
 </div>

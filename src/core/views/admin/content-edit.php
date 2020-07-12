@@ -1,22 +1,22 @@
-<?=View::css('core/admin/content.css')?>
-<?=View::cssAsync('core/admin/vue-editor.css')?>
-<?=View::script('lib/vue/vue.min.js')?>
+<?=Gila\View::css('core/admin/content.css')?>
+<?=Gila\View::cssAsync('core/admin/vue-editor.css')?>
+<?=Gila\View::script('lib/vue/vue.min.js')?>
 
-<?=View::script('lib/CodeMirror/codemirror.js')?>
-<?=View::script('lib/CodeMirror/javascript.js')?>
-<?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
+<?=Gila\View::script('lib/CodeMirror/codemirror.js')?>
+<?=Gila\View::script('lib/CodeMirror/javascript.js')?>
+<?=Gila\View::cssAsync('lib/CodeMirror/codemirror.css')?>
 <style>.CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}</style>
-<?=View::script("lib/tinymce/tinymce.min.js")?>
+<?=Gila\View::script("lib/tinymce/tinymce.min.js")?>
 
 <?php
-View::script('core/admin/media.js');
-View::script('core/admin/content.js');
+Gila\View::script('core/admin/media.js');
+Gila\View::script('core/admin/content.js');
 if (file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
-View::script('core/lang/content/'.Gila::config('language').'.js');
-View::script('core/admin/vue-components.js');
-View::script('core/admin/vue-editor.js');
+Gila\View::script('core/lang/content/'.Gila::config('language').'.js');
+Gila\View::script('core/admin/vue-components.js');
+Gila\View::script('core/admin/vue-editor.js');
 ?>
 
 <style>
@@ -27,21 +27,21 @@ View::script('core/admin/vue-editor.js');
 
 <?php
 global $db;
-$pnk = new Gila\Table($table, Gila\User::permissions(Session::userId()));
+$pnk = new Gila\Table($table, Gila\User::permissions(Gila\Session::userId()));
 $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];
 
 foreach ($t['js'] as $js) {
-  View::script($js);
+  Gila\View::script($js);
 }
 foreach ($t['css'] as $css) {
-  View::css($css);
+  Gila\View::css($css);
 }
 
-$pages_path[] = View::getThemePath().'/pages/';
-if (View::$parent_theme) {
-  $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
+$pages_path[] = Gila\View::getThemePath().'/pages/';
+if (Gila\View::$parent_theme) {
+  $pages_path[] = 'themes/'.Gila\View::$parent_theme.'/templates/';
 }
 $pages_path = array_merge($pages_path, Gila::packages());
 $pages_path[] = 'src/core/templates/';
@@ -136,7 +136,7 @@ function updateRegistry(){
 Save
 </button>
 
-<?=View::script('core/lazyImgLoad.js');?>
+<?=Gila\View::script('core/lazyImgLoad.js');?>
 <script>
 var app = new Vue({
   el: '#<?=$table?>-edit-item-form'

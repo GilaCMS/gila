@@ -6,5 +6,5 @@ echo "<input id='selected-image-caption' type='hidden'>";
 if ($_REQUEST['g_response']=='content') {
   include 'media-tabs.php';
 } else {
-  View::renderFile('admin/media-uploads.php');
+  Gila\View::renderFile('admin/media-uploads.php');
 }

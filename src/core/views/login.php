@@ -1,4 +1,4 @@
-<?php View::includeFile('login-header.php');?>
+<?php Gila\View::includeFile('login-header.php');?>
 
   <div class="gl-4 centered wrapper g-card bg-white">
     <div class="border-buttom-main_ text-align-center">
@@ -7,9 +7,9 @@
       </div>
       <h3><?=__('Log In')?></h3>
     </div>
-    <?=View::alerts()?>
+    <?=Gila\View::alerts()?>
 <?php
-if (Session::waitForLogin()==0) { ?>
+if (Gila\Session::waitForLogin()==0) { ?>
   <form role="form" method="post" action="" class="g-form">
     <div class="form-group">
       <input class="form-control fullwidth" placeholder="E-mail" name="username" type="email" autofocus>

@@ -21,10 +21,10 @@ echo "</form>";
 ?>
 <button class="g-btn" onclick="theme_save_options()">Update</button>
 
-<?=View::script('core/admin/media.js')?>
-<?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('core/lang/content/'.Gila::config('language').'.js');?>
-<?=View::script('core/admin/vue-components.js');?>
+<?=Gila\View::script('core/admin/media.js')?>
+<?=Gila\View::script('lib/vue/vue.min.js');?>
+<?=Gila\View::script('core/lang/content/'.Gila::config('language').'.js');?>
+<?=Gila\View::script('core/admin/vue-components.js');?>
 <script>
 
 app = new Vue({

@@ -30,13 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   echo '{"success":true}';
   return;
 }
-View::script('core/admin/media.js');
-View::script('core/lang/content/'.Gila::config('language').'.js');
+Gila\View::script('core/admin/media.js');
+Gila\View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
 <style>.g-switch{z-index:1}#settings-form>div>*{width:33%;display:inline-block}</style>
 
 <div class="gm-12">
-<?php View::alerts(); ?>
+<?php Gila\View::alerts(); ?>
 <form id="settings-form" method="post" action="<?=Gila::make_url('admin', 'settings')?>" class="g-form">
   <input type="hidden" name="submit-btn">
   <h2><?=__("Basic Settings")?></h2><hr>

@@ -1,5 +1,5 @@
 <?php
-$path = Router::request('path', Session::key('asset_path') ?? 'src');
+$path = Router::request('path', Gila\Session::key('asset_path') ?? 'src');
 if ($path[0]=='.') {
   $path = 'src';
 }
@@ -25,8 +25,8 @@ if ($path!='src') {
     $path = 'src';
   }
 }
-Session::key('asset_path', $path);
-Session::key('media_tab', 'assets');
+Gila\Session::key('asset_path', $path);
+Gila\Session::key('media_tab', 'assets');
 $disabled = ($path=='')?'disabled':'';
 
 $files=[];
@@ -66,8 +66,8 @@ if ($path=='src') {
   <?php
 }
 
-View::script('core/admin/media.js');
-View::script('core/lang/content/'.Gila::config('language').'.js');
+Gila\View::script('core/admin/media.js');
+Gila\View::script('core/lang/content/'.Gila::config('language').'.js');
 ?>
 <div id='admin-media-div'>
 <div class='g-gal wrapper gap-8px' style='background:white;'>
@@ -96,7 +96,7 @@ foreach ($files as $filepath) {
     }
 
     if ($type=='image') {
-      $img='<img src="'.View::thumb($filepath, 'media_thumb/', 100).'">';
+      $img='<img src="'.Gila\View::thumb($filepath, 'media_thumb/', 100).'">';
       echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$basename.'</div>';
     }
     if ($type=='folder') {

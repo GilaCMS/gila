@@ -1,4 +1,4 @@
 <?php Controller::admin()?>
-<?php View::includeFile('admin/header.php')?>
+<?php Gila\View::includeFile('admin/header.php')?>
 <?=$text?>
-<?php View::includeFile('admin/footer.php')?>
+<?php Gila\View::includeFile('admin/footer.php')?>

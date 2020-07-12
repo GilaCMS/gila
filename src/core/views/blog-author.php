@@ -1,3 +1,3 @@
 
 <h3>Author: <?=$author?></h3>
-<?php View::includeFile('blog-list.php'); ?>
+<?php Gila\View::includeFile('blog-list.php'); ?>

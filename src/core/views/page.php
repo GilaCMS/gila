@@ -1,4 +1,4 @@
-<?php View::includeFile('header.php')?>
+<?php Gila\View::includeFile('header.php')?>
 <div class="wrapper">
   <h1><?=$title?></h1>
 
@@ -6,4 +6,4 @@
       <?=$text?>
   </div>
 </div>
-<?php View::includeFile('footer.php')?>
+<?php Gila\View::includeFile('footer.php')?>
