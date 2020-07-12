@@ -2,6 +2,8 @@
 use core\models\Page;
 use core\models\Post;
 use Gila\Gila;
+use Gila\View;
+use Gila\Event;
 
 class blocks extends Gila\Controller
 {

@@ -4,6 +4,7 @@ use core\models\Widget;
 use Gila\User;
 use core\models\Page;
 use Gila\Gila;
+use Gila\View;
 
 class admin extends Gila\Controller
 {

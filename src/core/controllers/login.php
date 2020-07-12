@@ -2,6 +2,8 @@
 
 use Gila\User;
 use Gila\Gila;
+use Gila\View;
+use Gila\Event;
 
 class login extends Gila\Controller
 {
