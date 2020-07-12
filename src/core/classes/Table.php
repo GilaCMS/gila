@@ -46,9 +46,9 @@ class Table
         }
       }
       if (isset($field['title'])) {
-        $field['title'] = __($field['title']);
+        $field['title'] = Gila::tr($field['title']);
       } else {
-        $field['title'] = ucfirst(__($key));
+        $field['title'] = ucfirst(Gila::tr($key));
       }
     }
     if (isset($this->table['children'])) {
@@ -57,7 +57,7 @@ class Table
         $child['table'] = $child_table->getTable();
       }
     }
-    $this->table['title'] = __($this->table['title']??$this->table['name']);
+    $this->table['title'] = Gila::tr($this->table['title']??$this->table['name']);
 
     if (!isset($this->table['permissions'])) {
       $this->table['permissions'] = [];

@@ -73,7 +73,7 @@ class Form
     $label = ucwords(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
-    $label = __($label);
+    $label = Gila::tr($label);
     if ($label=='') {
       $label='&nbsp;';
     }
