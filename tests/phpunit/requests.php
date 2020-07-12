@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Gila\Gila;
 use Gila\Event;
 use Gila\Router;
+use Gila\Controller;
 $GLOBALS['config']['db']['name'] = 'g_db';
 Event::listen('sendmail', function($x){ return true; });
 
