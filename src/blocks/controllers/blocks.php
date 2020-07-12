@@ -1,6 +1,7 @@
 <?php
 use core\models\Page;
 use core\models\Post;
+use Gila\Gila;
 
 class blocks extends Gila\Controller
 {

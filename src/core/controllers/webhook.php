@@ -1,5 +1,5 @@
 <?php
-
+use Gila\Gila;
 
 class webhook extends Gila\Controller
 {

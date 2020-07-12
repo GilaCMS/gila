@@ -1,6 +1,7 @@
 <?php
 
 use Gila\User;
+use Gila\Gila;
 
 class login extends Gila\Controller
 {

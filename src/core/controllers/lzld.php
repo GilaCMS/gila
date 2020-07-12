@@ -1,5 +1,5 @@
 <?php
-
+use Gila\Gila;
 
 class lzld extends Gila\Controller
 {
