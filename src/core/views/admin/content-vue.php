@@ -73,7 +73,7 @@ foreach ($pages_path as $path) {
 
 cmirror=new Array()
 mce_editor=new Array()
-var csrfToken = '<?=Form::getToken()?>'
+var csrfToken = '<?=Gila\Form::getToken()?>'
 var app = new Vue({
   el:"#vue-table"
 })

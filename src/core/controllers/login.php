@@ -5,6 +5,7 @@ use Gila\Gila;
 use Gila\View;
 use Gila\Event;
 use Gila\Session;
+use Gila\Sendmail;
 
 class login extends \Gila\Controller
 {

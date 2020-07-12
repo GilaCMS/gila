@@ -52,10 +52,10 @@ foreach ($config_list as $key=>$value) {
 } ?>
 
   <br>
-  <?php echo Form::input('gila_user_register', ["type"=>"switch"], Gila\Gila::config('user_register'), __("New users can register")) ?>
+  <?php echo Gila\Form::input('gila_user_register', ["type"=>"switch"], Gila\Gila::config('user_register'), __("New users can register")) ?>
 
   <br>
-  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Gila\Gila::config('user_activation'), __("New Users activation")) ?>
+  <?php echo Gila\Form::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Gila\Gila::config('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
     <label class="g-label gm-4"><?=__("Timezone")?></label>
@@ -104,10 +104,10 @@ foreach ($config_list as $key=>$value) {
   <h2><?=__("Advanced Settings")?></h2><hr>
 
   <br>
-  <?php echo Form::input('gila_use_cdn', ["type"=>"switch"], Gila\Gila::config('use_cdn'), __("Use CDN")) ?>
+  <?php echo Gila\Form::input('gila_use_cdn', ["type"=>"switch"], Gila\Gila::config('use_cdn'), __("Use CDN")) ?>
 
   <br>
-  <?php echo Form::input('gila_rewrite', ["type"=>"switch"], Gila\Gila::config('rewrite'), __("Pretty Urls")) ?>
+  <?php echo Gila\Form::input('gila_rewrite', ["type"=>"switch"], Gila\Gila::config('rewrite'), __("Pretty Urls")) ?>
 
   <br><div class="gm-12">
   <label class="g-label gm-4"><?=__("Default Controller")?></label>
@@ -126,13 +126,13 @@ foreach ($config_list as $key=>$value) {
   </div>
 
   <br>
-  <?php echo Form::input('gila_env', ["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]], Gila\Gila::config('env'), __("Environment")) ?>
+  <?php echo Gila\Form::input('gila_env', ["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]], Gila\Gila::config('env'), __("Environment")) ?>
 
   <br>
-  <?php echo Form::input('gila_check4updates', ["type"=>"switch"], Gila\Gila::config('check4updates'), __("Check For Updates")) ?>
+  <?php echo Gila\Form::input('gila_check4updates', ["type"=>"switch"], Gila\Gila::config('check4updates'), __("Check For Updates")) ?>
 
   <br>
-  <?php echo Form::input('gila_webp', ["type"=>"switch"], Gila\Gila::config('use_webp'), __("Use WEBP")) ?>
+  <?php echo Gila\Form::input('gila_webp', ["type"=>"switch"], Gila\Gila::config('use_webp'), __("Use WEBP")) ?>
 
   <br>
   <div class="gm-12">

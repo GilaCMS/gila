@@ -398,7 +398,7 @@ class cm extends \Gila\Controller
       $w = ['id'=>$id];
       $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)};";
       $res = $db->get($ql)[0];
-      echo gForm::html($pnk->getFields('edit'), $res);
+      echo Form::html($pnk->getFields('edit'), $res);
     } else {
       echo Form::html($pnk->getFields('edit'));
     }

@@ -55,5 +55,5 @@ if (isset($fields)) {
     $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
   }
 }
-echo Form::html($fields, $values, 'option[', ']');
+echo Gila\Form::html($fields, $values, 'option[', ']');
 echo "</form>";

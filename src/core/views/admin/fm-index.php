@@ -79,7 +79,7 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     ?>
 
 <script>
-var csrfToken = '<?=Form::getToken()?>';
+var csrfToken = '<?=Gila\Form::getToken()?>';
 var dir_path='';
 updateDir("<?=$dirname?>");
 

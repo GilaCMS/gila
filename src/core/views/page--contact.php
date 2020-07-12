@@ -7,7 +7,7 @@
   </div>
 
   <form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form bg-white wrapper">
-    <?=Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
+    <?=Gila\Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
     <?php Gila\View::alerts() ?>
     <label><?=__("Name")?></label>
     <input name="name" class="form-control g-input" autofocus required/>

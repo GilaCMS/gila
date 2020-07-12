@@ -36,7 +36,7 @@ Gila\View::script('core/lang/content/'.Gila\Gila::config('language').'.js');
 <?php if (Gila\Session::hasPrivilege('admin upload_assets')) { ?>
   <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
   accept="image/*,video/*,audio/*" onchange='gallery_upload_files()'
-  multiple data-path="<?=$path?>" data-csrf="<?=Form::getToken()?>">
+  multiple data-path="<?=$path?>" data-csrf="<?=Gila\Form::getToken()?>">
 <?php } ?>
   <span class="g-group-item fullwidth" style="position:relative;padding:0">
     <input class='g-input input-filter fullwidth' style="margin:0" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>

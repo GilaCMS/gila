@@ -63,9 +63,9 @@ echo '<form id="'.$table.'-edit-item-form" data-table="'.$table.'" data-id="'.$i
 if ($id) {
   $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()} WHERE id=$id;";
   $res = $db->get($ql)[0];
-  echo Form::html($pnk->getFields('edit'), $res);
+  echo Gila\Form::html($pnk->getFields('edit'), $res);
 } else {
-  echo Form::html($pnk->getFields('edit'));
+  echo Gila\Form::html($pnk->getFields('edit'));
 }
 echo '</div></form>';
 
