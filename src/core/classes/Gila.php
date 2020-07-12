@@ -519,9 +519,9 @@ class Gila
   }
 
   public function tr($key, $alt = null) {
-    if(Gila::$langLoaded===false) {
-      foreach(Gila::$langPaths as $path) Gila::loadLang($path);
-      Gila::$langLoaded = true;
+    if(self::$langLoaded===false) {
+      foreach(self::$langPaths as $path) self::loadLang($path);
+      self::$langLoaded = true;
     }
     if(@isset($GLOBALS['lang'][$key])) {
       if($GLOBALS['lang'][$key] != '')
