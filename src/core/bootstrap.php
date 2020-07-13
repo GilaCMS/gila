@@ -90,7 +90,7 @@ if($GLOBALS['config'] === []) {
 
 $GLOBALS['lang'] = [];
 function __($key, $alt = null) {
-  Gila::tr($key, $alt);
+  return Gila::tr($key, $alt);
 }
 
 function _url($url) {

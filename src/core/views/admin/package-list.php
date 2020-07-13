@@ -9,7 +9,7 @@ function dl_btn($param, $class, $text)
   return "<a onclick='addon_download(\"$param\")' class='g-btn $class'>$text</a>";
 }
 
-if (Package::check4updates()) {
+if (Gila\Package::check4updates()) {
   $upgrated = 0;
   $upgrateList = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'), true);
   $upgrateN = count($upgrateList);
