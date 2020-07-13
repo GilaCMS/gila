@@ -1,6 +1,7 @@
 <?php
 use Gila\Gila;
 use Gila\View;
+use Gila\Menu;
 
 class lzld extends \Gila\Controller
 {

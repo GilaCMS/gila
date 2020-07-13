@@ -6,6 +6,8 @@ use core\models\Page;
 use Gila\Gila;
 use Gila\View;
 use Gila\Session;
+use Gila\Router;
+use Gila\Package;
 
 class admin extends \Gila\Controller
 {
