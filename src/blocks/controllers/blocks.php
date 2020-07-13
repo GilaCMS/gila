@@ -1,6 +1,6 @@
 <?php
-use core\models\Page;
-use core\models\Post;
+use Gila\Page;
+use Gila\Post;
 use Gila\Gila;
 use Gila\View;
 use Gila\Event;

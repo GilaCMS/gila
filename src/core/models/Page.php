@@ -1,5 +1,5 @@
 <?php
-namespace core\models;
+namespace Gila;
 
 class Page
 {
@@ -21,7 +21,7 @@ class Page
     if ($row = mysqli_fetch_array($res)) {
       if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
-        $row['page'] .= \View::blocks($blocks);
+        $row['page'] .= View::blocks($blocks);
       }
       return $row;
     }

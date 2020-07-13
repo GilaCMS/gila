@@ -28,6 +28,7 @@ if (!isset($_GET['url'])) {
 ini_set("error_log", "log/error.log");
 
 spl_autoload_register(function ($class) {
+  global $classMap;
   $classMap = [
     'Gila\\Cache'=> 'src/core/classes/Cache.php',
     'Gila\\Controller'=> 'src/core/classes/Controller.php',
@@ -50,8 +51,12 @@ spl_autoload_register(function ($class) {
     'Gila\\View'=> 'src/core/classes/View.php',
     'gpost'=> 'src/core/classes/HttpPost.php',
     'Gila\\HttpPost'=> 'src/core/classes/HttpPost.php',
-    'Gila\\User'=> 'src/core/models/User.php',
     'Gila\\HtmlInput'=> 'src/core/classes/HtmlInput.php',
+    'Gila\\User'=> 'src/core/models/User.php',
+    'Gila\\Widget'=> 'src/core/models/Widget.php',
+    'Gila\\Page'=> 'src/core/models/Page.php',
+    'Gila\\Profile'=> 'src/core/models/Profile.php',
+    'Gila\\Post'=> 'src/core/models/Post.php',
   ];
 
   if (isset($classMap[$class])) {

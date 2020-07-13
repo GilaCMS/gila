@@ -15,7 +15,7 @@
     <input name="email" class="form-control g-input" required/>
     <label><?=__("Subject")?></label>
     <textarea name="message" class="form-control g-input" style="resize:vertical" required></textarea>
-    <?php Event::fire('recaptcha.form')?>
+    <?phpGila\Event::fire('recaptcha.form')?>
     <input type="submit" class="btn btn-primary btn-block" value="<?=__('Send')?>">
   </form>
 

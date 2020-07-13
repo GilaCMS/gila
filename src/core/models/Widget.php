@@ -1,8 +1,5 @@
 <?php
-namespace core\models;
-
-use Gila;
-use HtmlInput;
+namespace Gila;
 
 class widget
 {

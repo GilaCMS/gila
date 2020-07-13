@@ -2,6 +2,7 @@
 use Gila\Gila;
 use Gila\View;
 use Gila\Menu;
+use Gila\Widget;
 
 class lzld extends \Gila\Controller
 {
@@ -12,7 +13,7 @@ class lzld extends \Gila\Controller
   public function widgetAction($id)
   {
     global $widget_data;
-    $widget = Gila\Widget::getById($id);
+    $widget = Widget::getById($id);
 
     if ($widget) {
       if ($widget->active==1) {

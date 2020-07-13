@@ -1,7 +1,6 @@
 <?php
 
 namespace Gila;
-use core\models\Page;
 
 class Menu
 {

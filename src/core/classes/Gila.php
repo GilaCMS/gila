@@ -51,7 +51,7 @@ class Gila
   * @param $c (string) The controller's class name
   * @param $fn (function) Callback
   * @code
-  * Gila::onController('blog', function(){ BlogCtrl::ppp = 24; });
+  * Gila::onController('blog', function(){ BlogController::ppp = 24; });
   * @endcode
   */
   public static function onController($c, $fn) // DEPRECATED

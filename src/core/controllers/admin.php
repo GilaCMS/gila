@@ -1,13 +1,13 @@
 <?php
 
-use core\models\Widget;
 use Gila\User;
-use core\models\Page;
+use Gila\Page;
 use Gila\Gila;
 use Gila\View;
 use Gila\Session;
 use Gila\Router;
 use Gila\Package;
+use Gila\Profile;
 
 class admin extends \Gila\Controller
 {
@@ -265,7 +265,7 @@ class admin extends \Gila\Controller
   {
     Gila::addLang('core/lang/myprofile/');
     $user_id = Session::key('user_id');
-    core\models\Profile::postUpdate($user_id);
+    Profile::postUpdate($user_id);
     View::set('page_title', __('My Profile'));
     View::set('twitter_account', User::meta($user_id, 'twitter_account'));
     View::set('token', User::meta($user_id, 'token'));

@@ -7,11 +7,11 @@
   foreach (Gila\View::$meta as $key=>$value) {
     echo '<meta name="'.$key.'" content="'.$value.'">';
   }
-  Event::fire('head.meta');
+ Gila\Event::fire('head.meta');
   foreach (Gila\View::$stylesheet as $link) {
     echo '<link href="'.Gila\Gila::base_url($link).'" rel="stylesheet">';
   }
-  Event::fire('head');
+ Gila\Event::fire('head');
   if (isset(Gila\View::$canonical)) {
     echo '<link rel="canonical" href="'.Gila\View::$canonical.'" />';
   }

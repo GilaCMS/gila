@@ -17,7 +17,7 @@ if (!@class_exists('blog')) {
 $widget_data->n_post = @$widget_data->n_post?:4;
 $widget_data->category = @$widget_data->category?:null;
 
-foreach (core\models\Post::getPosts(
+foreach (Gila\Post::getPosts(
   ['posts'=>$widget_data->n_post, 'category'=>$widget_data->category]
 ) as $key=>$r) {
   $href = Gila::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']]);

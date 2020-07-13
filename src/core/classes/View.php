@@ -1,7 +1,6 @@
 <?php
 
 namespace Gila;
-use core\models\Widget;
 
 class View
 {

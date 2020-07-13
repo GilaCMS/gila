@@ -1,16 +1,17 @@
 <?php
 
-use core\models\Post;
-use core\models\Page;
+use Gila\Post;
+use Gila\Page;
 use Gila\User;
 use Gila\Gila;
 use Gila\View;
 use Gila\Session;
+use Gila\Router;
 
 /**
 * The blog controller, get calls for display of posts
 */
-class BlogCtrl extends \Gila\Controller
+class BlogController extends \Gila\Controller
 {
   public static $page; /** The page number */
   public static $totalPosts;
@@ -299,4 +300,4 @@ class BlogCtrl extends \Gila\Controller
   }
 }
 
-class_alias('BlogCtrl', 'blog'); // DEPRECATED
+class_alias('BlogController', 'blog'); // DEPRECATED
