@@ -1,6 +1,6 @@
 <?php
 use Gila\User;
-use Gila\Gila;
+useGila\Config;
 use Gila\Form;
 use Gila\Session;
 use Gila\Router;

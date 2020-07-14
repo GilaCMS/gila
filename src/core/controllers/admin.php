@@ -2,7 +2,7 @@
 
 use Gila\User;
 use Gila\Page;
-use Gila\Gila;
+useGila\Config;
 use Gila\View;
 use Gila\Session;
 use Gila\Router;

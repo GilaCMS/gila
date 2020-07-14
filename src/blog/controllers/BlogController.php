@@ -3,7 +3,7 @@
 use Gila\Post;
 use Gila\Page;
 use Gila\User;
-use Gila\Gila;
+useGila\Config;
 use Gila\View;
 use Gila\Session;
 use Gila\Router;

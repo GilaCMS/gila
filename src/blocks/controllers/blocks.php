@@ -1,7 +1,7 @@
 <?php
 use Gila\Page;
 use Gila\Post;
-use Gila\Gila;
+useGila\Config;
 use Gila\View;
 use Gila\Event;
 use Gila\Router;
