@@ -8,10 +8,10 @@ align-items: center;padding: 15px 0;}
 </style>
 <div class="media-tabs-side">
 <?php
-$media_tab = Router::request('media_tab', Gila\Session::key('media_tab') ?? 'uploads');
-Gila\Session::key('media_tab', $media_tab);
+$media_tab = Router::request('media_tab', Session::key('media_tab') ?? 'uploads');
+Session::key('media_tab', $media_tab);
 
-$media_tab_list = Gila\Gila::getList('media-tab')??[];
+$media_tab_list = Gila::getList('media-tab')??[];
 $media_tab_list = array_merge([
   [
     'name'=>'uploads',
@@ -35,14 +35,14 @@ foreach ($media_tab_list as $mtab) {
 <?php
 
 if ($media_tab=='uploads') {
-  Gila\View::renderFile('admin/media-uploads.php');
+  View::renderFile('admin/media-uploads.php');
 } elseif ($media_tab=='assets') {
-  Gila\View::renderFile('admin/media-assets.php');
+  View::renderFile('admin/media-assets.php');
 } else {
   foreach ($media_tab_list as $mt) {
     if ($mt['name']==$media_tab) {
       $view = $mt['view'];
-      Gila\View::renderFile($view[0], $view[1]);
+      View::renderFile($view[0], $view[1]);
     }
   }
 }

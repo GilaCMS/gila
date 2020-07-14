@@ -1,19 +1,19 @@
-<?=Gila\View::script('core/gila.min.js')?>
-<?=Gila\View::script('lib/CodeMirror/codemirror.js')?>
-<?=Gila\View::script('lib/CodeMirror/javascript.js')?>
-<?=Gila\View::script('lib/vue/vue.min.js');?>
-<?=Gila\View::script('blocks/vue-draggable.min.js');?>
+<?=View::script('core/gila.min.js')?>
+<?=View::script('lib/CodeMirror/codemirror.js')?>
+<?=View::script('lib/CodeMirror/javascript.js')?>
+<?=View::script('lib/vue/vue.min.js');?>
+<?=View::script('blocks/vue-draggable.min.js');?>
 
-<?=Gila\View::script("lib/tinymce/tinymce.min.js")?>
-<?=Gila\View::script('core/admin/vue-components.js');?>
-<?=Gila\View::script('core/admin/vue-editor.js');?>
-<?=Gila\View::script('core/admin/media.js')?>
-<?=Gila\View::script('core/lang/content/'.Gila\Gila::config('language').'.js')?>
+<?=View::script("lib/tinymce/tinymce.min.js")?>
+<?=View::script('core/admin/vue-components.js');?>
+<?=View::script('core/admin/vue-editor.js');?>
+<?=View::script('core/admin/media.js')?>
+<?=View::script('core/lang/content/'.Gila::config('language').'.js')?>
 
-<?=Gila\View::css('lib/font-awesome/css/font-awesome.min.css')?>
-<?=Gila\View::css('blocks/blocks.css')?>
-<?=Gila\View::cssAsync('core/admin/vue-editor.css')?>
-<?=Gila\View::cssAsync('lib/CodeMirror/codemirror.css')?>
+<?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
+<?=View::css('blocks/blocks.css')?>
+<?=View::cssAsync('core/admin/vue-editor.css')?>
+<?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 
 <?php
 global $db;
@@ -67,7 +67,7 @@ $cid = $contentType.'_'.$id.'_';
 <?php
 $content_blocks = [];
 
-foreach (Gila\Gila::$widget as $k=>$w) {
+foreach (Gila::$widget as $k=>$w) {
   $c = ['name'=>$k];
   if (file_exists('src/'.$w.'/logo.png')) {
     $c['logo'] = $w.'/logo.png';
@@ -182,4 +182,4 @@ content_blocks_app = new Vue({
   </div>
 </div>
 
-<?=Gila\View::script("blocks/content-block.js")?>
+<?=View::script("blocks/content-block.js")?>

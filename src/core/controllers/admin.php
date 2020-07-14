@@ -8,6 +8,7 @@ use Gila\Session;
 use Gila\Router;
 use Gila\Package;
 use Gila\Profile;
+use Gila\Theme;
 
 class admin extends \Gila\Controller
 {

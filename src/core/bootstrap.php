@@ -1,6 +1,6 @@
 <?php
 
-use Gila\Gila; 
+use Gila\Config; 
 use Gila\Router; 
 use Gila\Event; 
 use Gila\Db; 
@@ -35,7 +35,7 @@ spl_autoload_register(function ($class) {
     'Gila\\Db'=> 'src/core/classes/Db.php',
     'Gila\\Event'=> 'src/core/classes/Event.php',
     'Gila\\FileManager'=> 'src/core/classes/FileManager.php',
-    'Gila\\Gila'=> 'src/core/classes/Gila.php',
+    'Gila'=> 'src/core/classes/Config.php',
     'gForm'=> 'src/core/classes/Form.php',
     'gTable'=> 'src/core/classes/Table.php',
     'Gila\\Form'=> 'src/core/classes/Form.php',
@@ -57,6 +57,7 @@ spl_autoload_register(function ($class) {
     'Gila\\Page'=> 'src/core/models/Page.php',
     'Gila\\Profile'=> 'src/core/models/Profile.php',
     'Gila\\Post'=> 'src/core/models/Post.php',
+    'Gila\\Config'=> 'src/core/classes/Config.php',
   ];
 
   if (isset($classMap[$class])) {

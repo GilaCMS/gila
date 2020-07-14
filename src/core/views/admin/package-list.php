@@ -9,7 +9,7 @@ function dl_btn($param, $class, $text)
   return "<a onclick='addon_download(\"$param\")' class='g-btn $class'>$text</a>";
 }
 
-if (Gila\Package::check4updates()) {
+if (Package::check4updates()) {
   $upgrated = 0;
   $upgrateList = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'), true);
   $upgrateN = count($upgrateList);
@@ -24,7 +24,7 @@ if (Gila\Package::check4updates()) {
           $alert .= " $newv &nbsp;&nbsp; ".dl_btn($packages[$newp]->package, 'warning', __('Upgrade'));
           $alert .= '&nbsp;&nbsp;<a href="https://gilacms.com/addons/package/';
           $alert .= $packages[$newp]->package.'" class="g-btn info" target="_blank">'.__('Info').'</a>';
-          Gila\View::alert('success', $alert);
+          View::alert('success', $alert);
         } else {
           $upgrated++;
         }
@@ -40,9 +40,9 @@ if (Gila\Package::check4updates()) {
 
 
 foreach ($packages as $pkey=>$p) {
-  if ($p->package!='core' || Gila\Gila::config('env')=='dev') {
+  if ($p->package!='core' || Gila::config('env')=='dev') {
     if (isset($p->lang)) {
-      Gila\Gila::addLang($p->lang);
+      Gila::addLang($p->lang);
     }
 
     // Border color
@@ -96,7 +96,7 @@ foreach ($packages as $pkey=>$p) {
     // Buttons
     if (file_exists('src/'.$p->package)) {
       if (in_array($p->package, $GLOBALS['config']['packages']) || $p->package=='core') {
-        if (Gila\Gila::config('env')=='dev') {
+        if (Gila::config('env')=='dev') {
           $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
         }
         if ($p->package!='core') {
@@ -135,16 +135,16 @@ $links=[
 ['Downloaded','admin/packages'],
 ['Newest','admin/packages/new']
 ];
-Gila\View::alerts();
+View::alerts();
 ?>
 <div class="row" id='packages-list'>
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
   foreach ($links as $link) {
-    $active = (Gila\Router::url()==$link[1]?'active':'');
-    echo '<li class="'.$active.'"><a href="'.Gila\Gila::url($link[1]).'">'.__($link[0]).'</a></li>';
+    $active = (Router::url()==$link[1]?'active':'');
+    echo '<li class="'.$active.'"><a href="'.Gila::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
-    <form method="get" class="inline-flex" style="float:right" action="<?=Gila\Gila::url('admin/packages/new')?>">
+    <form method="get" class="inline-flex" style="float:right" action="<?=Gila::url('admin/packages/new')?>">
       <input name='search' class="g-input fullwidth" value="<?=(isset($search)?$search:'')?>">
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
@@ -154,9 +154,9 @@ Gila\View::alerts();
   </div>
 </div>
 
-<?=Gila\View::script('core/admin/media.js')?>
-<?=Gila\View::script('lib/vue/vue.min.js');?>
-<?=Gila\View::script('core/admin/vue-components.js');?>
+<?=View::script('core/admin/media.js')?>
+<?=View::script('lib/vue/vue.min.js');?>
+<?=View::script('core/admin/vue-components.js');?>
 
 <script>
 function addon_activate(p){

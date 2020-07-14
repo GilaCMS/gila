@@ -257,6 +257,7 @@ class View
     if (isset(self::$view_file[$file])) {
       return 'src/'.self::$view_file[$file].'/views/'.$file;
     }
+    // DEPRECATED the rest
 
     $tpath = self::getThemePath().'/'.$file;
     if (file_exists($tpath)) {

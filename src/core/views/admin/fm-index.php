@@ -1,4 +1,4 @@
-<?=Gila\View::css('lib/CodeMirror/codemirror.css')?>
+<?=View::css('lib/CodeMirror/codemirror.css')?>
 <style>
 #main-wrapper>div{background:none!important;border:none;margin:0}
 .fm_dir{overflow: hidden;padding:10px;line-height:1.5;background:white;}
@@ -56,11 +56,11 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     </div>
     <textarea id="textarea"><?=$value?></textarea>
 
-    <?=Gila\View::script('lib/CodeMirror/codemirror.js')?>
-    <?=Gila\View::script('lib/CodeMirror/javascript.js')?>
-    <?=Gila\View::script('lib/CodeMirror/css.js')?>
-    <?=Gila\View::script('lib/CodeMirror/xml.js')?>
-    <?=Gila\View::script('lib/CodeMirror/htmlmixed.js')?>
+    <?=View::script('lib/CodeMirror/codemirror.js')?>
+    <?=View::script('lib/CodeMirror/javascript.js')?>
+    <?=View::script('lib/CodeMirror/css.js')?>
+    <?=View::script('lib/CodeMirror/xml.js')?>
+    <?=View::script('lib/CodeMirror/htmlmixed.js')?>
     
     <script>
     requiredRes = new Array()
@@ -79,7 +79,7 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     ?>
 
 <script>
-var csrfToken = '<?=Gila\Form::getToken()?>';
+var csrfToken = '<?=Form::getToken()?>';
 var dir_path='';
 updateDir("<?=$dirname?>");
 

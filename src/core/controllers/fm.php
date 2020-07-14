@@ -1,6 +1,7 @@
 <?php
 use Gila\Session;
 use Gila\FileManager;
+use Gila\HtmlInput;
 
 class fm extends \Gila\Controller
 {
@@ -92,7 +93,8 @@ class fm extends \Gila\Controller
     if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
-    if (!file_put_contents($this->path, $_POST['contents'])) {
+    $contents = HtmlInput::purify($_POST['contents'], true);
+    if (!file_put_contents($this->path, $contents)) {
       ob_clean();
       die("Permission denied.");
     }

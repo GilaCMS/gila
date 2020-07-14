@@ -7,18 +7,18 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <title><?=$title?></title>
 <link><?=$link?></link>
 <description><?=$description?></description>
-<atom:link href="<?=Gila\Gila::config('base')?>rss" rel="self" type="application/rss+xml" />
+<atom:link href="<?=Gila::config('base')?>rss" rel="self" type="application/rss+xml" />
 <image>
-  <url><?=Gila\Gila::config('base')?><?=Gila\Gila::config('admin_logo')?:'assets/gila-logo.png'?></url>
+  <url><?=Gila::config('base')?><?=Gila::config('admin_logo')?:'assets/gila-logo.png'?></url>
   <title><?=$title?></title>
-  <link><?=Gila\Gila::config('base')?></link>
+  <link><?=Gila::config('base')?></link>
 </image>
 <?php foreach ($items as $item) {
   $item = (object)$item; ?>
 <item>
 <title><?=$item->title?></title>
-  <link><?=Gila\Gila::config('base').'blog/'.$item->id?></link>
-  <guid><?=Gila\Gila::config('base').'blog/'.$item->slug?></guid>
+  <link><?=Gila::config('base').'blog/'.$item->id?></link>
+  <guid><?=Gila::config('base').'blog/'.$item->slug?></guid>
   <pubDate><?=date('r', strtotime($item->updated))?></pubDate>
   <description><![CDATA[<?=$item->post?>]]></description>
 </item>

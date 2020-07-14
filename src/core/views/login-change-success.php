@@ -1,4 +1,4 @@
-<?php Gila\View::includeFile('login-header.php');?>
+<?php View::includeFile('login-header.php');?>
 
   <div class="gl-4 centered">
     <div class="g-form wrapper g-card bg-white">
@@ -8,7 +8,7 @@
         </div>
         <h3><?=__('reset_pass_success')?></h3>
       </div>
-      <a class="btn btn-success btn-block" href="<?=Gila\Gila::url('login')?>"><?=__('Log In')?></a>
+      <a class="btn btn-success btn-block" href="<?=Gila::url('login')?>"><?=__('Log In')?></a>
     </div>
   </div>
 

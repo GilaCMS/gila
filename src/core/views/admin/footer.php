@@ -7,7 +7,7 @@ global $starttime;
 $end = microtime(true);
 $creationtime = ($end - $starttime);
 printf("<br>Page created in %.6f seconds.", $creationtime);
-echo "<br>Gila CMS version ".Gila\Package::version('core');
+echo "<br>Gila CMS version ".Package::version('core');
 echo " <a href='https://twitter.com/GilaCms' target='_blank' rel='noopener noreferrer'><i class='fa fa-twitter'></i></a>"
 ?>
 </div>
@@ -34,8 +34,8 @@ function wrapper_toggle() {
   setTimeout(lazyImgLoad, 100);
 }
 </script>
-<?php Gila\View::scriptAsync("core/lazyImgLoad.js")?>
-<?php Gila\View::scripts()?>
+<?php View::scriptAsync("core/lazyImgLoad.js")?>
+<?php View::scripts()?>
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 /** Common methods for Gila CMS */
 namespace Gila;
 
-class Gila
+class Config
 {
   public static $widget;
   public static $package;
@@ -25,7 +25,7 @@ class Gila
   * @param $file (string) Controller's filepath without the php extension
   * @param $name (string) Controller's class name, $c is used by default
   * @code
-  * Gila::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
+  * Config::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
   * @endcode
   */
   public static function controller($c, $path, $name=null) // DEPRECATED
@@ -38,7 +38,7 @@ class Gila
   * @param $r (string) The path
   * @param $fn (function) Callback for the route
   * @code
-  * Gila::route('some.txt', function(){ echo 'Some text.'; });
+  * Config::route('some.txt', function(){ echo 'Some text.'; });
   * @endcode
   */
   public static function route($r, $fn) // DEPRECATED
@@ -51,7 +51,7 @@ class Gila
   * @param $c (string) The controller's class name
   * @param $fn (function) Callback
   * @code
-  * Gila::onController('blog', function(){ BlogController::ppp = 24; });
+  * Config::onController('blog', function(){ BlogController::ppp = 24; });
   * @endcode
   */
   public static function onController($c, $fn) // DEPRECATED
@@ -65,7 +65,7 @@ class Gila
   * @param $action (string) The action
   * @param $fn (function) Callback
   * @code
-  * Gila::action('blog', 'topics', function(){ ... });
+  * Config::action('blog', 'topics', function(){ ... });
   * @endcode
   */
   public static function action($c, $action, $fn) // DEPRECATED -> Router::action()
@@ -129,7 +129,7 @@ class Gila
   /**
   * Registers new widgets
   * @param $list (Assoc Array) Widgets to register
-  * @code Gila::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
+  * @code Config::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
   */
   public static function widgets($list)
   {
@@ -142,7 +142,7 @@ class Gila
   * Registers new content type
   * @param $key (string) Name of content type
   * @param $path (string) Path to the table file
-  * @code Gila::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
+  * @code Config::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
   */
   public static function content($key, $path)
   {
@@ -154,7 +154,7 @@ class Gila
   * @param $key (string) Name of content type
   * @param $field (string) Index of the field
   * @param $table (Assoc array) Value of the field
-  * DEPRECATED @see Gila::contentInit()
+  * DEPRECATED @see Config::contentInit()
   */
   public static function contentField($key, $field, $table)
   {
@@ -168,7 +168,7 @@ class Gila
   * Make changes in a content type when it is initialized
   * @param $key (string) Name of content type
   * @param $init (function) Funtion to run
-  * @code Gila::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
+  * @code Config::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
   */
   public static function contentInit($key, $init)
   {
@@ -192,7 +192,7 @@ class Gila
   * @param $key (string) Index name
   * @param $item (assoc array) Array with data
   * Indices 0 for Display name, 1 for action link
-  * @code Gila::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code Config::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu($key, $item=[])
   {
@@ -215,7 +215,7 @@ class Gila
   * Add a child element on administration menu item
   * @param $key (string) Index of parent item
   * @param $item (assoc array) Array with data
-  * @code Gila::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code Config::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu_child($key, $item)
   {
@@ -367,14 +367,14 @@ class Gila
 
   public static function canonical($str)
   {
-    View::$canonical = self::config('base').Gila::url($str);
+    View::$canonical = self::config('base').Config::url($str);
   }
 
   public static function base_url($str = null)
   {
     if (!isset(self::$base_url)) {
       if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
-        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(Gila::config('base'), 0, 5)=='https'?'https':'http');
+        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(Config::config('base'), 0, 5)=='https'?'https':'http');
         self::$base_url = $scheme.'://'.$_SERVER['HTTP_HOST'];
         self::$base_url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/')).'/';
       } else {
@@ -382,7 +382,7 @@ class Gila
       }
     }
     if ($str!==null) {
-      return self::$base_url.Gila::url($str);
+      return self::$base_url.Config::url($str);
     }
     return self::$base_url;
   }
@@ -395,7 +395,7 @@ class Gila
 
     if (self::config('rewrite')) {
       $var = explode('/', $url);
-      if (Gila::config('default-controller') === $var[0]) {
+      if (Config::config('default-controller') === $var[0]) {
         if ($var[0]!='admin') {
           return substr($url, strlen($var[0])+1);
         }
@@ -531,3 +531,6 @@ class Gila
     return $key;
   }
 }
+
+class_alias('Gila\\Config', 'Gila\\Gila');
+class_alias('Gila\\Config', 'Gila');

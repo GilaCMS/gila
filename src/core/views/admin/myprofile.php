@@ -3,13 +3,13 @@
 .device-pill .close {cursor:pointer}
 .device-pill.selected {opacity:1}
 </style>
-<?=Gila\View::script('lib/vue/vue.min.js')?>
-<?=Gila\View::script('core/admin/vue-components.js')?>
-<?=Gila\View::script('core/admin/media.js')?>
+<?=View::script('lib/vue/vue.min.js')?>
+<?=View::script('core/admin/vue-components.js')?>
+<?=View::script('core/admin/media.js')?>
 
 <div class="row">
 <div id="profile-forms" class="gm-6">
-    <?php Gila\View::alerts(); ?>
+    <?php View::alerts(); ?>
     <form method="post" action="admin/profile" class="g-form">
     <fieldset>
     <br><div class="gm-12 row">
@@ -19,12 +19,12 @@
 
     <br><div class="gm-12 row">
     <label class="gm-6"><?=__('Name')?></label>
-    <input name="gila_username" value="<?=Gila\Session::key('user_name')?>" class="gm-6" />
+    <input name="gila_username" value="<?=Session::key('user_name')?>" class="gm-6" />
     </div>
 
     <br><div class="gm-12 row">
     <label class="gm-6"><?=__('Email')?></label>
-    <input disabled value="<?=Gila\Session::key('user_email')?>" class="gm-6" />
+    <input disabled value="<?=Session::key('user_email')?>" class="gm-6" />
     </div>
 
     <br><div class="gm-12 row">
@@ -78,7 +78,7 @@
 </div>
 
   <?php
-  $sessions = Gila\User::metaList(Gila\Session::userId(), 'GSESSIONID');
+  $sessions = Gila\User::metaList(Session::userId(), 'GSESSIONID');
   $info = [];
   foreach ($sessions as $key=>$session) {
     if (file_exists(LOG_PATH.'/sessions/'.$session)) {
@@ -88,7 +88,7 @@
         $info[$key]['current'] = true;
       }
     } else {
-      Gila\User::metaDelete(Gila\Session::userId(), 'GSESSIONID', $session);
+      Gila\User::metaDelete(Session::userId(), 'GSESSIONID', $session);
     }
   }
   ?>
