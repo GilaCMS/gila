@@ -10,27 +10,7 @@ TableSchema::update(include 'src/core/tables/postcategory.php');
 
 TableSchema::update(include 'src/core/tables/page.php');
 
-$db->query('CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(80) DEFAULT NULL,
-  `email` varchar(80) DEFAULT NULL,
-  `pass` varchar(120) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT 0,
-  `reset_code` varchar(60) DEFAULT NULL,
-  `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
-
-$db->query('CREATE TABLE IF NOT EXISTS `usermeta` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `vartype` varchar(80) DEFAULT NULL,
-  `value` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `vartype` (`vartype`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+TableSchema::update(include 'src/core/tables/user.php');
 
 $db->query('CREATE TABLE IF NOT EXISTS `widget` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -51,11 +31,7 @@ $db->query('CREATE TABLE IF NOT EXISTS `option` (
   PRIMARY KEY (`option`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
 
-$db->query('CREATE TABLE IF NOT EXISTS `userrole` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `userrole` varchar(80) DEFAULT NULL,
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+TableSchema::update(include 'src/core/tables/userrole.php');
 
 $_user = $_POST['adm_user'];
 $_email = $_POST['adm_email'];

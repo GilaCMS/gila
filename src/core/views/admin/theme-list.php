@@ -16,9 +16,9 @@ foreach ($packages as $pkey=>$p) {
   }
   $table .= '</p><div style="box-shadow:0 0 6px black;">';
   if (file_exists($dir.$p->package."/screenshot.jpg")) {
-    $table .= '<img src="'."themes/{$p->package}/screenshot.jpg".'"  />';
+    $table .= '<img src="'."lzld/thumb?size=360&src=themes/{$p->package}/screenshot.jpg".'"  />';
   } elseif (file_exists($dir.$p->package."/screenshot.png")) {
-    $table .= '<img src="'."themes/{$p->package}/screenshot.png".'"  />';
+    $table .= '<img src="'."lzld/thumb?size=360&src=themes/{$p->package}/screenshot.png".'"  />';
   } elseif (isset($p->screenshot)) {
     $table .= '<img src="'.$p->screenshot.'"  />';
   }
