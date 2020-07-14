@@ -1,5 +1,5 @@
 <?php
-useGila\Config;
+use Gila\Config;
 use Gila\View;
 use Gila\Menu;
 use Gila\Widget;

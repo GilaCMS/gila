@@ -1,7 +1,7 @@
 <?php
 
 use Gila\User;
-useGila\Config;
+use Gila\Config;
 use Gila\View;
 use Gila\Event;
 use Gila\Session;
