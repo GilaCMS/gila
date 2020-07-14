@@ -2,7 +2,7 @@
 
 chdir(__DIR__.'/../../');
 include_once __DIR__.'/../../vendor/autoload.php';
-include_once __DIR__.'/../../src/core/classes/Gila.php';
+include_once __DIR__.'/../../src/core/classes/Config.php';
 include_once __DIR__.'/../../src/core/classes/Router.php';
 include_once __DIR__.'/../../src/core/classes/FileManager.php';
 include_once __DIR__.'/../../src/core/classes/Db.php';

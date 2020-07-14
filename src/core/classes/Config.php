@@ -1,6 +1,4 @@
 <?php
-
-/** Common methods for Gila CMS */
 namespace Gila;
 
 class Config
