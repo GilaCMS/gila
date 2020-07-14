@@ -21,3 +21,6 @@ $GLOBALS['lang'] = [];
 function __($key, $alt = null) {
   return Gila\Config::tr($key, $alt);
 }
+
+class_alias('Gila\\Config', 'Gila');
+class_alias('Gila\\View', 'View');
