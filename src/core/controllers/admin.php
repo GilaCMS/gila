@@ -15,7 +15,7 @@ class admin extends \Gila\Controller
   public function __construct()
   {
     self::admin();
-    Gila::addLang('core/lang/admin/');
+    Config::addLang('core/lang/admin/');
   }
 
   /**
@@ -91,7 +91,7 @@ class admin extends \Gila\Controller
       return;
     }
 
-    $src = explode('.', Gila::$content[$type])[0];
+    $src = explode('.', Config::$content[$type])[0];
     View::set('table', $type);
     View::set('tablesrc', $src);
     if ($id == null) {
@@ -138,7 +138,7 @@ class admin extends \Gila\Controller
 
     if ($tab == 'new') {
       $url = 'https://gilacms.com/packages/?search='.$search;
-      $url .= Gila::config('test')=='1' ? '&test=1' : '';
+      $url .= Config::config('test')=='1' ? '&test=1' : '';
       if (!$contents = file_get_contents($url)) {
         View::alert('error', "Could not connect to packages list. Please try later.");
       } else {
@@ -206,7 +206,7 @@ class admin extends \Gila\Controller
     global $db;
     User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
+    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
   }
 
   public function media_uploadAction()
@@ -217,7 +217,7 @@ class admin extends \Gila\Controller
           echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
         }
       }
-      $upload_folder = Gila::config('media_uploads') ?? 'assets';
+      $upload_folder = Config::config('media_uploads') ?? 'assets';
       $path = Router::post('path', $upload_folder);
       if ($path[0]=='.') {
         $path=$upload_folder;
@@ -229,8 +229,8 @@ class admin extends \Gila\Controller
         if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
         }
-        $maxWidth = Gila::config('maxImgWidth') ?? 0;
-        $maxHeight = Gila::config('maxImgHeight') ?? 0;
+        $maxWidth = Config::config('maxImgWidth') ?? 0;
+        $maxHeight = Config::config('maxImgHeight') ?? 0;
         if ($maxWidth>0 && $maxHeight>0) {
           Image::makeThumb($path, $path, $maxWidth, $maxHeight);
         }
@@ -264,7 +264,7 @@ class admin extends \Gila\Controller
 
   public function profileAction()
   {
-    Gila::addLang('core/lang/myprofile/');
+    Config::addLang('core/lang/myprofile/');
     $user_id = Session::key('user_id');
     Profile::postUpdate($user_id);
     View::set('page_title', __('My Profile'));
@@ -311,7 +311,7 @@ class admin extends \Gila\Controller
     $menu = Router::get('menu', 1);
     if ($menu != null) {
       if (Session::hasPrivilege('admin')) {
-        $folder = Gila::dir(LOG_PATH.'/menus/');
+        $folder = Config::dir(LOG_PATH.'/menus/');
         $file = $folder.$menu.'.json';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           if (isset($_POST['menu'])) {

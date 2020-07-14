@@ -1,7 +1,7 @@
 <div class="row" style="">
 <div class="gm-9">
   <h1><?=$title?></h1>
-      <span class="meta">Posted by <a href="<?=Gila::url('blog/author/'.$author_id)?>"><?=$author?></a> on <?=date('F j, Y',strtotime($updated))?></span>
+      <span class="meta">Posted by <a href="<?=Config::url('blog/author/'.$author_id)?>"><?=$author?></a> on <?=date('F j, Y',strtotime($updated))?></span>
   <hr>
 
   <article>
@@ -11,7 +11,7 @@
 </div>
 
 <div class="gm-3 sidebar">
-  <form method="get" class="inline-flex" action="<?=Gila::base_url('blog')?>">
+  <form method="get" class="inline-flex" action="<?=Config::base_url('blog')?>">
     <input name='search' class="g-input fullwidth" value="">
     <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
   </form>

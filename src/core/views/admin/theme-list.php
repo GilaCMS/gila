@@ -4,7 +4,7 @@ $table = '<br><div style="display:grid;grid-gap:15px;grid-template-columns:repea
 $pn = 0;
 
 foreach ($packages as $pkey=>$p) {
-  if ($p->package == Gila::config('theme')) {
+  if ($p->package == Config::config('theme')) {
     $border="border: 2px solid green;";
   } else {
     $border="";
@@ -26,7 +26,7 @@ foreach ($packages as $pkey=>$p) {
   $table.="</div><br>";
 
   if (file_exists('themes/'.$p->package)) {
-    if ($p->package!=Gila::config('theme')) {
+    if ($p->package!=Config::config('theme')) {
       $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>".__('Select')."</a> ";
     }
     if (isset($p->options)) {
@@ -37,7 +37,7 @@ foreach ($packages as $pkey=>$p) {
         $table .= " <a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Upgrade')."</a>";
       }
     }
-    $table .= "<a href='".Gila::base_url()."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;</a> ";
+    $table .= "<a href='".Config::base_url()."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;</a> ";
     if (FS_ACCESS) {
       $table .= "<a href='admin/fm/?f=themes/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
     }
@@ -61,10 +61,10 @@ View::alerts();
   <ul class="g-nav g-tabs gs-12" id="theme-tabs"><?php
   foreach ($links as $link) {
     $active = (Router::url()==$link[1]?'active':'');
-    echo '<li class="'.$active.'"><a href="'.Gila::url($link[1]).'">'.__($link[0]).'</a></li>';
+    echo '<li class="'.$active.'"><a href="'.Config::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
-    <form method="get" class="inline-flex" style="float:right" action="<?=Gila::url('admin/newthemes')?>">
+    <form method="get" class="inline-flex" style="float:right" action="<?=Config::url('admin/newthemes')?>">
       <input name='search' class="g-input fullwidth" value="<?=($search??'')?>">
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
@@ -79,7 +79,7 @@ View::alerts();
 
 <?=View::script('core/admin/media.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('core/lang/content/'.Gila::config('language').'.js');?>
+<?=View::script('core/lang/content/'.Config::config('language').'.js');?>
 <?=View::script('core/admin/vue-components.js');?>
 <script>
 function theme_activate(p) {

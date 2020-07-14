@@ -45,7 +45,7 @@ jobs:
 
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit tests/phpunit/InstallSqlTest.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-Gila.php
+      - run: ./vendor/bin/phpunit tests/phpunit/ConfigTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-Table.php
       - run: ./vendor/bin/phpunit tests/phpunit/TableSchemaTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-View.php

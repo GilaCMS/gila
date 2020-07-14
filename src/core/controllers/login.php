@@ -11,13 +11,13 @@ class login extends \Gila\Controller
 {
   public function __construct()
   {
-    Gila::addLang('core/lang/login/');
+    Config::addLang('core/lang/login/');
   }
 
   public function indexAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
       exit;
     }
     if (Session::waitForLogin()>0) {
@@ -36,8 +36,8 @@ class login extends \Gila\Controller
 
   public function registerAction()
   {
-    if (Session::key('user_id')>0 || Gila::config('user_register')!=1) {
-      echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
+    if (Session::key('user_id')>0 || Config::config('user_register')!=1) {
+      echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
       return;
     }
     View::set('title', __('Register'));
@@ -50,18 +50,18 @@ class login extends \Gila\Controller
         View::alert('error', __('register_error1'));
       } else {
         // register the user
-        $active = Gila::config('user_activation')=='auto'? 1: 0;
+        $active = Config::config('user_activation')=='auto'? 1: 0;
         if ($user_Id = User::create($email, $password, $name, $active)) {
           // success
-          if (Gila::config('user_activation')=='byemail') {
-            $baseurl = Gila::base_url();
+          if (Config::config('user_activation')=='byemail') {
+            $baseurl = Config::base_url();
             $subject = __('activate_msg_ln1').' '.$r['username'];
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
             $msg .= __('activatemsg_ln3')." $baseurl\n\n";
             $msg .= $baseurl."login/activate?ap=$activate_code\n\n";
             $msg .= __('reset_msg_ln4');
-            $headers = "From: ".Gila::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+            $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
             User::meta($user_Id, 'activate_code', $activate_code);
             new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
           }
@@ -78,7 +78,7 @@ class login extends \Gila\Controller
   public function activateAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
       return;
     }
 
@@ -99,7 +99,7 @@ class login extends \Gila\Controller
   public function password_resetAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Gila::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
       return;
     }
     $rpa = 'reset-password-attempt';
@@ -143,14 +143,14 @@ class login extends \Gila\Controller
       Session::key($rpa, $tries+1);
       Session::key($rpt, time());
 
-      $baseurl = Gila::base_url();
+      $baseurl = Config::base_url();
       $subject = __('reset_msg_ln1').' '.$r['username'];
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
       $msg .= __('reset_msg_ln3')." $baseurl\n\n";
       $msg .= $baseurl."login/password_reset?rp=$reset_code\n\n";
       $msg .= __('reset_msg_ln4');
-      $headers = "From: ".Gila::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+      $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
       User::meta($r['id'], 'reset_code', $reset_code);
       new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }

@@ -1,7 +1,7 @@
 <?php
 
 Event::listen('recaptcha.form', function () {
-  $sitekey = Gila::option('reCAPTCHA.site_key');
+  $sitekey = Config::option('reCAPTCHA.site_key');
   if ($sitekey=='') {
     return;
   } ?>
@@ -11,7 +11,7 @@ Event::listen('recaptcha.form', function () {
 });
 
 Event::listen('recaptcha', function () {
-  $secret = Gila::option('reCAPTCHA.secret_key');
+  $secret = Config::option('reCAPTCHA.secret_key');
   if ($secret=='') {
     return false;
   }

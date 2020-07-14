@@ -1,20 +1,20 @@
 <?php
 use Gila\Gila;
 
-Gila::controller('blocks', 'blocks/controllers/blocks', 'blocks');
+Config::controller('blocks', 'blocks/controllers/blocks', 'blocks');
 
-Gila::contentInit('page', function (&$table) {
+Config::contentInit('page', function (&$table) {
   $table['commands'][]='blocks';
   $table['js'][]='src/blocks/assets/blocks_btn.js';
   $table['command']['blocks'] = ['link'=>'blocks/page/'];
 });
-Gila::contentInit('post', function (&$table) {
+Config::contentInit('post', function (&$table) {
   $table['commands'][]='blocks';
   $table['js'][]='src/blocks/assets/blocks_btn.js';
   $table['command']['blocks'] = ['link'=>'blocks/post/'];
 });
 
-Gila::widgets([
+Config::widgets([
   'side-cto'=>'blocks/widgets/side-cto',
   'side-image'=>'blocks/widgets/side-image',
   'cards'=>'blocks/widgets/cards',

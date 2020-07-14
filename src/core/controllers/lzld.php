@@ -71,6 +71,6 @@ class lzld extends \Gila\Controller
 
   public function amenuAction()
   {
-    echo Menu::getHtml(Gila::$amenu, $_GET['base'] ?? 'admin');
+    echo Menu::getHtml(Config::$amenu, $_GET['base'] ?? 'admin');
   }
 }

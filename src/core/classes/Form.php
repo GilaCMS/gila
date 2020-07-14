@@ -73,7 +73,7 @@ class Form
     $label = ucwords(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
-    $label = Gila::tr($label);
+    $label = Config::tr($label);
     if ($label=='') {
       $label='&nbsp;';
     }
@@ -111,7 +111,7 @@ class Form
 
   public static function addInputType($index, $value)
   {
-    Gila::addList($index, $value);
+    Config::addList($index, $value);
     if (!isset(self::$input_type)) {
       self::initInputTypes();
     }
@@ -266,13 +266,13 @@ class Form
       }
     ];
 
-    foreach (Gila::getList('input-type') as $type=>$value) {
+    foreach (Config::getList('input-type') as $type=>$value) {
       self::$input_type[$type] = $value;
     }
     /* CONTENT
     if($type=='content') {
       $table = $op['table'];
-      $tablesrc = explode('.', Gila::$content[$table])[0];
+      $tablesrc = explode('.', Config::$content[$table])[0];
       include __DIR__.'/content.php';
     }*/
   }

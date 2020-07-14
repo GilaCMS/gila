@@ -9,7 +9,7 @@ class FileManager
   public static function copy($source, $target)
   {
     if (is_dir($source)) {
-      $target = Gila::dir($target);
+      $target = Config::dir($target);
       $files = scandir($source);
       foreach ($files as $file) {
         if ($file!='.' && $file!='..') {
@@ -46,8 +46,8 @@ class FileManager
     if (is_dir($path)) {
       return true;
     }
-    if (Gila::config('allow_filetypes') && Session::hasPrivilege('admin')) {
-      $filetypes = merge_array($filetypes, Gila::config('allow_filetypes'));
+    if (Config::config('allow_filetypes') && Session::hasPrivilege('admin')) {
+      $filetypes = merge_array($filetypes, Config::config('allow_filetypes'));
     }
     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
     if (in_array($ext, $filetypes)) {
@@ -59,7 +59,7 @@ class FileManager
   public static function allowedPath($path)
   {
     $allowedPaths = ['tmp','log','data/public'];
-    $allowedPaths[] = Gila::config('media_uploads') ?? 'assets';
+    $allowedPaths[] = Config::config('media_uploads') ?? 'assets';
     if (FS_ACCESS) {
       $allowedPaths = array_merge($allowedPaths, ['src','themes']);
     }

@@ -8,9 +8,9 @@
         </div>
         <h3><?=__('register_success')?></h3>
       </div>
-      <?php if (Gila::config('user_activation')=='auto') { ?>
-        <a class="btn btn-success btn-block" href="<?=Gila::url('login')?>"><?=__('Log In')?></a>
-      <?php } elseif (Gila::config('user_activation')=='byemail') { ?>
+      <?php if (Config::config('user_activation')=='auto') { ?>
+        <a class="btn btn-success btn-block" href="<?=Config::url('login')?>"><?=__('Log In')?></a>
+      <?php } elseif (Config::config('user_activation')=='byemail') { ?>
         <p><?=__('register_activate_byemail')?></p>
       <?php } else { ?>
         <p><?=__('register_activate_byadmin')?></p>

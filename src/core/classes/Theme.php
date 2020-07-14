@@ -36,7 +36,7 @@ class Theme
         $require = [];
         if (isset($pac['require'])) {
           foreach ($pac['require'] as $key => $value) {
-            if (!in_array($key, Gila::packages())&&($key!='core')) {
+            if (!in_array($key, Config::packages())&&($key!='core')) {
               $require[$key]=$key.' v'.$value;
             } else {
               $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'), true);
@@ -50,7 +50,7 @@ class Theme
         if ($require===[]) {
           $GLOBALS['config']['theme']=$activate;
           self::copyAssets($activate);
-          Gila::updateConfigFile();
+          Config::updateConfigFile();
           Package::updateLoadFile();
           usleep(300);
           View::alert('success', __('_theme_selected'));
@@ -109,7 +109,7 @@ class Theme
         $zip->extractTo($tmp_name);
         $zip->close();
         if (file_exists($target)) {
-          rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$download));
+          rename($target, Config::dir($previousFolder.date("Y-m-d H:i:s").' '.$download));
         }
         $previousPackages = scandir($previousFolder);
         foreach ($previousPackages as $folder) {
@@ -133,7 +133,7 @@ class Theme
         unlink($localfile);
         echo 'ok';
         if (!$_REQUEST['g_response']) {
-          echo '<meta http-equiv="refresh" content="2;url='.Gila::base_url().'/admin/themes" />';
+          echo '<meta http-equiv="refresh" content="2;url='.Config::base_url().'/admin/themes" />';
         }
       } else {
         echo __('_theme_not_downloaded');
@@ -145,7 +145,7 @@ class Theme
   public static function copyAssets($theme)
   {
     $assets = 'themes/'.$theme.'/assets';
-    $target = Gila::dir('assets/themes/');
+    $target = Config::dir('assets/themes/');
     if (file_exists($assets)) {
       FileManager::copy($assets, $target.$theme);
     }
@@ -169,7 +169,7 @@ class Theme
 
       if (is_array($options)) {
         foreach ($options as $key=>$op) {
-          $values[$key] = Gila::option('theme.'.$key);
+          $values[$key] = Config::option('theme.'.$key);
         }
         echo Form::html($options, $values, 'option[', ']');
       }// else error alert
@@ -201,7 +201,7 @@ class Theme
           $db->query($ql, ['theme.'.$key, $value,$value]);
         }
       }
-      if (Gila::config('env')=='pro') {
+      if (Config::config('env')=='pro') {
         unlink(LOG_PATH.'/load.php');
       }
       exit;

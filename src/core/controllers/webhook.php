@@ -9,7 +9,7 @@ class webhook extends \Gila\Controller
     if ($id=Router::param('id', 1)) {
       $folder .= $id.'/';
     }
-    Gila::dir($folder);
+    Config::dir($folder);
     if ($_POST != [] || $_POST = json_decode(file_get_contents("php://input"), true)) {
       $ip = ($_SERVER['REMOTE_HOST'] ?? $_SERVER['REMOTE_ADDR']);
       file_put_contents(

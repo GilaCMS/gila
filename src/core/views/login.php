@@ -3,7 +3,7 @@
   <div class="gl-4 centered wrapper g-card bg-white">
     <div class="border-buttom-main_ text-align-center">
       <div>
-        <img src="<?=Gila::config('admin_logo')?:'assets/gila-logo.png'?>" style="max-height:4em">
+        <img src="<?=Config::config('admin_logo')?:'assets/gila-logo.png'?>" style="max-height:4em">
       </div>
       <h3><?=__('Log In')?></h3>
     </div>
@@ -24,7 +24,7 @@ if (Session::waitForLogin()==0) { ?>
 <?php } ?>
     <p>
       <a href="login/password_reset"><?=__('forgot_pass')?></a>
-      <?php if (Gila::config('user_register')==1) {
+      <?php if (Config::config('user_register')==1) {
   echo '| <a href="login/register">'.__('Register').'</a>';
 }?>
     </p>

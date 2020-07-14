@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="<?=Gila::config('language')?>">
+<html lang="<?=Config::config('language')?>">
 <?php
 View::stylesheet('core/gila.min.css');
 View::stylesheet('lib/font-awesome/css/font-awesome.min.css');
 View::head()?>
 <style>
 body{background:#fcfcfc}
-<?php $theme_color=Gila::option('theme.color','orangered');?>
+<?php $theme_color=Config::option('theme.color','orangered');?>
 :root{--main-primary-color: <?=$theme_color?>;}
 body{font-family:'Arial', sans-serif;}
 h1,h2,h3,.widget-title,.header{font-family:Arial,sans-serif;}
@@ -24,7 +24,7 @@ h1,h2,h3,.widget-title,.header{font-family:Arial,sans-serif;}
 li.active{background-color:var(--main-primary-color); color:white;}
 .header{margin-bottom: 20px;   background-color: #262626;
 <?php
-$bgimg = Gila::option('theme.header-image');
+$bgimg = Config::option('theme.header-image');
 if($bgimg) {
     $srcset = View::thumbSrcset($bgimg);
     echo "background: url({$srcset[0]});";
@@ -32,7 +32,7 @@ if($bgimg) {
 }
 ?>
 background-size: cover;
-background-position-y: <?=Gila::option('theme.header-position','center')?>;
+background-position-y: <?=Config::option('theme.header-position','center')?>;
 background-position-x: center;}
 footer{background:#464a49;margin-top:10px;color:white}
 .footer-text,footer a,footer a:hover{color:#ccc; }
@@ -57,8 +57,8 @@ footer{background:#464a49;margin-top:10px;color:white}
     <div style="max-width:1100px; margin:auto;">
         <?php View::widgetArea('body'); ?>
         <div class="gl-9" style="height:200px;text-shadow:0 0 6px black">
-          <h1><a href="<?=Gila::base_url()?>" style="color:#f5f5f5;"><?=Gila::config('title')?></a></h1>
-          <div style="color:#f5f5f5;margin-bottom:6px"><?=Gila::config('slogan')?></div>
+          <h1><a href="<?=Config::base_url()?>" style="color:#f5f5f5;"><?=Config::config('title')?></a></h1>
+          <div style="color:#f5f5f5;margin-bottom:6px"><?=Config::config('slogan')?></div>
         </div>
         <!-- Navigation -->
         <div class="gl-9">

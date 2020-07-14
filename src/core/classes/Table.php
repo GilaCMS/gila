@@ -24,16 +24,16 @@ class Table
     }
     $this->loadSchema($content);
 
-    if ($patch = @Gila::$contentField[$this->table['name']]) { // DEPRECATED since 1.8.0
+    if ($patch = @Config::$contentField[$this->table['name']]) { // DEPRECATED since 1.8.0
       $this->table['fields'] = array_merge($this->table['fields'], $patch);
     }
-    if (isset(Gila::$contentInit[$this->table['name']])) {
-      foreach (@Gila::$contentInit[$this->table['name']] as $init) {
+    if (isset(Config::$contentInit[$this->table['name']])) {
+      foreach (@Config::$contentInit[$this->table['name']] as $init) {
         $init($this->table);
       }
     }
     if (isset($this->table['lang'])) {
-      Gila::addLang($this->table['lang']);
+      Config::addLang($this->table['lang']);
     }
     foreach ($this->table['fields'] as $key => &$field) {
       if (isset($field['qoptions'])) {
@@ -46,9 +46,9 @@ class Table
         }
       }
       if (isset($field['title'])) {
-        $field['title'] = Gila::tr($field['title']);
+        $field['title'] = Config::tr($field['title']);
       } else {
-        $field['title'] = ucfirst(Gila::tr($key));
+        $field['title'] = ucfirst(Config::tr($key));
       }
     }
     if (isset($this->table['children'])) {
@@ -57,7 +57,7 @@ class Table
         $child['table'] = $child_table->getTable();
       }
     }
-    $this->table['title'] = Gila::tr($this->table['title']??$this->table['name']);
+    $this->table['title'] = Config::tr($this->table['title']??$this->table['name']);
 
     if (!isset($this->table['permissions'])) {
       $this->table['permissions'] = [];
@@ -81,8 +81,8 @@ class Table
 
   public function loadSchema($content)
   {
-    if (isset(Gila::$content[$content])) {
-      $path = 'src/'.Gila::$content[$content];
+    if (isset(Config::$content[$content])) {
+      $path = 'src/'.Config::$content[$content];
     } elseif (file_exists($content)) {
       $path = $content;
     } else {

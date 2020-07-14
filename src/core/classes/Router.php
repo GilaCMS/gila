@@ -59,8 +59,8 @@ class Router
     $action_fn = $action.'Action';
     $action_m = $action_fn.ucwords(self::$method);
 
-    if (isset(Gila::$before[$controller][$action])) {
-      foreach (Gila::$before[$controller][$action] as $fn) {
+    if (isset(Config::$before[$controller][$action])) {
+      foreach (Config::$before[$controller][$action] as $fn) {
         $fn();
       }
     }
@@ -80,7 +80,7 @@ class Router
     if (isset(self::$controller)) {
       return self::$controller;
     }
-    $default = Gila::config('default-controller');
+    $default = Config::config('default-controller');
     self::$controller = self::request('c', $default);
 
     if (isset(self::$args[0]) && isset(self::$controllers[self::$args[0]])) {

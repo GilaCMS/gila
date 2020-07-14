@@ -76,6 +76,9 @@ spl_autoload_register(function ($class) {
     require_once 'src/core/classes/'.$Class.'.php';
   } elseif (file_exists('src/'.$class.'.php')) {
     require_once 'src/'.$class.'.php';
+    if(in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
+      class_alias('Gila\\'.substr($class,12), strtr($class, ['/'=>'\\']));
+    }
   }
 });
 if (file_exists('vendor/autoload.php')) {
@@ -88,7 +91,7 @@ if($GLOBALS['config'] === []) {
   if (isset($_GET['install'])) {
     include 'src/core/install/index.php';
   } else {
-    echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".Gila::base_url()."?install\" />";
+    echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".Config::base_url()."?install\" />";
   }
   exit;
 }
@@ -96,7 +99,7 @@ if($GLOBALS['config'] === []) {
 
 $GLOBALS['lang'] = [];
 function __($key, $alt = null) {
-  return Gila::tr($key, $alt);
+  return Config::tr($key, $alt);
 }
 
 function _url($url) {
@@ -104,25 +107,25 @@ function _url($url) {
 }
 
 
-if (is_array(Gila::config('trusted_domains')) &&
+if (is_array(Config::config('trusted_domains')) &&
     isset($_SERVER['HTTP_HOST']) &&
-    !in_array($_SERVER['HTTP_HOST'], Gila::config('trusted_domains'))) {
+    !in_array($_SERVER['HTTP_HOST'], Config::config('trusted_domains'))) {
   die($_SERVER['HTTP_HOST'].' is not a trusted domain. It can be added in configuration file.');
 }
 
-$db = new Db(Gila::config('db'));
+$db = new Db(Config::config('db'));
 
 if ($GLOBALS['config']['env'] == 'dev') {
   error_reporting(E_ALL);
   ini_set('display_errors', '1');
   ini_set('display_startup_errors', '1');
-  Gila::load();
+  Config::load();
 } else {
   error_reporting(E_ERROR);
   ini_set('display_errors', 0);
   ini_set('display_startup_errors', 0);
   if (!include LOG_PATH.'/load.php') {
-    Gila::load();
+    Config::load();
     Package::updateLoadFile();
   }
 }
@@ -133,8 +136,8 @@ $theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if (file_exists("themes/$theme/load.php")) {
   include "themes/$theme/load.php";
 }
-if (is_array(Gila::config('cors'))) {
-  foreach (Gila::config('cors') as $url) {
+if (is_array(Config::config('cors'))) {
+  foreach (Config::config('cors') as $url) {
     @header('Access-Control-Allow-Origin: '.$url);
   }
 }

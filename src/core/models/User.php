@@ -7,7 +7,7 @@ class User
   {
     global $db;
     if (Event::get('validateUserPassword', true, $password)===true) {
-      $pass = ($password===null)? '': Gila::hash($password);
+      $pass = ($password===null)? '': Config::hash($password);
       $db->query("INSERT INTO user(email,pass,username,active)
         VALUES(?,?,?,?);", [$email, $pass, $name, $active]);
       return $db->insert_id;
@@ -114,7 +114,7 @@ class User
   {
     global $db;
     if (Event::get('validateUserPassword', true, $pass)===true) {
-      $db->query("UPDATE user SET pass=? where id=?;", [Gila::hash($pass),$id]);
+      $db->query("UPDATE user SET pass=? where id=?;", [Config::hash($pass),$id]);
       return true;
     } else {
       return false;
@@ -146,7 +146,7 @@ class User
 
     $response = User::metaList($id, 'privilege'); // DEPRECATED since 1.9.0
     $roles = User::metaList($id, 'role');
-    $rp = Gila::config('permissions');
+    $rp = Config::config('permissions');
     if ($id != 0) {
       foreach ($roles as $role) {
         if (isset($rp[$role])) {

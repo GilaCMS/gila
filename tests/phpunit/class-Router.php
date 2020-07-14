@@ -16,7 +16,7 @@ class ClassRouter extends TestCase
 	public function test_action()
 	{
 		Gila\Router::controller('test', 'core/controllers/admin');
-		Gila\Gila::action('test', 'actionTest', function(){ echo 'action test'; });
+		Gila\Config::action('test', 'actionTest', function(){ echo 'action test'; });
 		Gila\Router::setUrl('test/actionTest/');
 		$this->assertEquals('test', Gila\Router::getController());
 		$this->assertEquals('actionTest', Gila\Router::getAction());
@@ -54,7 +54,7 @@ class ClassRouter extends TestCase
 		$this->assertEquals('action', Gila\Router::param('var1', 1));
 		$this->assertEquals('p2', Gila\Router::param('var1', 3));
 
-		Gila\Gila::action('test', 'action', function(){ echo 'action test'; });
+		Gila\Config::action('test', 'action', function(){ echo 'action test'; });
 		$this->assertEquals('action', Gila\Router::getAction());
 		$this->assertEquals('p1', Gila\Router::param('var1', 1));
 		$this->assertEquals('p3', Gila\Router::param('var1', 3));

@@ -18,7 +18,7 @@ class cm extends \Gila\Controller
   {
     $this->permissions = User::permissions(Session::userId());
     $this->table = Router::get("t", 1);
-    if (!isset(Gila::$content[$this->table])) {
+    if (!isset(Config::$content[$this->table])) {
       http_response_code(404);
       exit;
     }
@@ -26,7 +26,7 @@ class cm extends \Gila\Controller
 
   /**
   * Lists all the registered content types
-  * @see Gila::content()
+  * @see Config::content()
   */
   public function indexAction()
   {
@@ -295,7 +295,7 @@ class cm extends \Gila\Controller
         @$result['rows'][] = $r;
       }
     }
-    Gila::setMt($pnk->name());
+    Config::setMt($pnk->name());
     echo json_encode($result, JSON_PRETTY_PRINT);
   }
 

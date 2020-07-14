@@ -14,7 +14,7 @@ View::script('core/admin/content.js');
 if (file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
-View::scriptAsync('core/lang/content/'.Gila::config('language').'.js');
+View::scriptAsync('core/lang/content/'.Config::config('language').'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
 View::scriptAsync('core/admin/vue-editor.js');
@@ -50,7 +50,7 @@ $pages_path[] = View::getThemePath().'/pages/';
 if (View::$parent_theme) {
   $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
 }
-$pages_path = array_merge($pages_path, Gila::packages());
+$pages_path = array_merge($pages_path, Config::packages());
 $pages_path[] = 'src/core/templates/';
 foreach ($pages_path as $path) {
   if (file_exists($path)) {
@@ -85,8 +85,8 @@ var app = new Vue({
 
 g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templates:[])); ?>;
 
-base_url = "<?=Gila::config('base')?>"
-g_tinymce_options.document_base_url = "<?=Gila::config('base')?>"
+base_url = "<?=Config::config('base')?>"
+g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
 
 </script>
 

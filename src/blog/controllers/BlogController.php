@@ -23,7 +23,7 @@ class BlogController extends \Gila\Controller
     self::$page = intval(@$_GET['page'])?:1;
     self::$ppp = 12;
     self::$totalPosts = null;
-    View::set('page_title', Gila::config('title'));
+    View::set('page_title', Config::config('title'));
   }
 
   /**
@@ -73,9 +73,9 @@ class BlogController extends \Gila\Controller
   */
   public function feedAction()
   {
-    $title = Gila::config('title');
-    $link = Gila::config('base');
-    $description = Gila::config('slogan');
+    $title = Config::config('title');
+    $link = Config::config('base');
+    $description = Config::config('slogan');
     $items = self::latestposts(20);
     include 'src/core/views/blog-feed.php';
   }
@@ -86,8 +86,8 @@ class BlogController extends \Gila\Controller
   public function tagAction($tag)
   {
     $tag = htmlentities($tag);
-    Gila::canonical('tag/'.$tag);
-    View::set('page_title', '#'.$tag.' | '.Gila::config('title'));
+    Config::canonical('tag/'.$tag);
+    View::set('page_title', '#'.$tag.' | '.Config::config('title'));
     View::set('tag', $tag);
     View::set('page', self::$page);
     View::set('posts', Post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
@@ -99,8 +99,8 @@ class BlogController extends \Gila\Controller
   */
   public function tagsAction()
   {
-    Gila::canonical('tags');
-    View::set('page_title', __('Tags').' | '.Gila::config('title'));
+    Config::canonical('tags');
+    View::set('page_title', __('Tags').' | '.Config::config('title'));
     View::set('tags', Post::getMeta('tag'));
     View::render('blog-tags.php');
   }
@@ -115,7 +115,7 @@ class BlogController extends \Gila\Controller
       $category = $db->value('SELECT id FROM postcategory WHERE slug=?', $category);
     }
     $name = $db->value("SELECT title from postcategory WHERE id=?", $category);
-    Gila::canonical('blog/category/'.$category.'/'.$name.'/');
+    Config::canonical('blog/category/'.$category.'/'.$name.'/');
     self::$totalPosts = Post::total(['category'=>$category]);
     View::set('categoryName', $name);
     View::set('page_title', $name);
@@ -131,11 +131,11 @@ class BlogController extends \Gila\Controller
   {
     global $db;
     $user_id = Router::param('author', 1);
-    Gila::canonical('author/'.$user_id);
+    Config::canonical('author/'.$user_id);
     $res = $db->get("SELECT username,id from user WHERE id=? OR username=?", [$user_id,$user_id]);
     if ($res) {
       View::set('author', $res[0][0]);
-      View::set('page_title', $res[0][0].' | '.Gila::config('title'));
+      View::set('page_title', $res[0][0].' | '.Config::config('title'));
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'user_id'=>$res[0][1]]));
     } else {
       View::set('author', __('unknown'));
@@ -151,10 +151,10 @@ class BlogController extends \Gila\Controller
   public function postShow($id=null)
   {
     global $db;
-    $cacheTime = Gila::option('blog.cache');
-    Gila::canonical('blog/'.$id);
+    $cacheTime = Config::option('blog.cache');
+    Config::canonical('blog/'.$id);
     if (Session::userId()==0 && $cacheTime > 0) {
-      Cache::page('blog/post'.$id, $cacheTime, [Gila::mt('post')]);
+      Cache::page('blog/post'.$id, $cacheTime, [Config::mt('post')]);
     }
     Router::$action = "post";
 
@@ -175,7 +175,7 @@ class BlogController extends \Gila\Controller
       View::set('id', $r['id']);
       View::set('updated', $r['updated']);
 
-      Gila::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
+      Config::canonical('blog/'.$r['id'].'/'.$r['slug'].'/');
       View::meta('og:title', $r['title']);
       View::meta('og:type', 'website');
       View::meta('og:url', View::$canonical);
@@ -184,10 +184,10 @@ class BlogController extends \Gila\Controller
       if ($r['img']) {
         View::set('img', $r['img']);
         View::meta('og:image', $r['img']);
-        View::meta('twitter:image:src', Gila::base_url($r['img']));
-      } elseif (Gila::config('og-image')) {
-        View::meta('og:image', Gila::config('og-image'));
-        View::meta('twitter:image:src', Gila::base_url(Gila::config('og-image')));
+        View::meta('twitter:image:src', Config::base_url($r['img']));
+      } elseif (Config::config('og-image')) {
+        View::meta('og:image', Config::config('og-image'));
+        View::meta('twitter:image:src', Config::base_url(Config::config('og-image')));
       } else {
         View::set('img', '');
       }
@@ -196,10 +196,10 @@ class BlogController extends \Gila\Controller
         View::meta('keywords', $r['tags']);
       }
 
-      if ($value = Gila::option('blog.twitter-card')) {
+      if ($value = Config::option('blog.twitter-card')) {
         View::meta('twitter:card', $value);
       }
-      if ($value = Gila::option('blog.twitter-site')) {
+      if ($value = Config::option('blog.twitter-site')) {
         View::meta('twitter:site', '@'.$value);
       }
 
@@ -243,7 +243,7 @@ class BlogController extends \Gila\Controller
     if ($s=Router::param('search', 1)) {
       $s = strip_tags($s);
       View::set('search', $s);
-      View::set('page_title', $s.' | '.Gila::config('title'));
+      View::set('page_title', $s.' | '.Config::config('title'));
       View::set('posts', Post::search($s));
       View::render('blog-search.php');
       return;
@@ -288,9 +288,9 @@ class BlogController extends \Gila\Controller
   public static function get_url($id, $slug=null) // DEPRECATED
   {
     if ($slug==null) {
-      return Gila::make_url('blog', '', ['p'=>$id]);
+      return Config::make_url('blog', '', ['p'=>$id]);
     }
-    return Gila::make_url('blog', '', ['p'=>$id,'slug'=>$slug]);
+    return Config::make_url('blog', '', ['p'=>$id,'slug'=>$slug]);
   }
 
   public static function thumb_sm($img, $id) // DEPRECATED

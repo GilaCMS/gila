@@ -13,7 +13,7 @@ class blocks extends \Gila\Controller
   public function __construct()
   {
     self::admin();
-    Gila::addLang('core/lang/admin/');
+    Config::addLang('core/lang/admin/');
   }
 
   public function indexAction()
@@ -53,7 +53,7 @@ class blocks extends \Gila\Controller
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id);
     if ($type = $widgets[$pos]['_type']) {
-      $widget_folder = 'src/'.Gila::$widget[$type];
+      $widget_folder = 'src/'.Config::$widget[$type];
       $fields = include $widget_folder.'/widget.php';
       $widget_data = $_POST['option'] ?? [];
 
@@ -122,7 +122,7 @@ class blocks extends \Gila\Controller
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id)??[];
     $new = ['_type'=>$_POST['type']];
-    $widget_folder = 'src/'.Gila::$widget[$_POST['type']];
+    $widget_folder = 'src/'.Config::$widget[$_POST['type']];
     $fields = include $widget_folder.'/widget.php';
     foreach ($fields as $key=>$field) {
       if (isset($field['default'])) {
@@ -217,7 +217,7 @@ class blocks extends \Gila\Controller
   {
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
     $json = json_encode($blocks);
-    Gila::dir(LOG_PATH.'/blocks/');
+    Config::dir(LOG_PATH.'/blocks/');
     file_put_contents($draftFile, $json);
   }
 

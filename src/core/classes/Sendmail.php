@@ -6,8 +6,8 @@ class Sendmail
 {
   public function __construct($args)
   {
-    $args['email'] = $args['email']?? Gila::config('admin_email');
-    $args['subject'] = $args['subject']?? "Message from ".Gila::config('base');
+    $args['email'] = $args['email']?? Config::config('admin_email');
+    $args['subject'] = $args['subject']?? "Message from ".Config::config('base');
     $args['headers'] = $args['headers']?? "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
     $args['message'] = $args['message']?? "";
     if ($args['message']==="") {

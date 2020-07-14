@@ -27,7 +27,7 @@ class widget
   {
     global $db;
     $widget = self::getById($data['widget_id']);
-    $widget_folder = 'src/'.Gila::$widget[$widget->widget];
+    $widget_folder = 'src/'.Config::$widget[$widget->widget];
     $fields = include $widget_folder.'/widget.php';
 
     foreach ($data['option'] as $key=>$value) {

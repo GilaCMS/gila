@@ -20,7 +20,7 @@ $widget_data->category = @$widget_data->category?:null;
 foreach (Gila\Post::getPosts(
   ['posts'=>$widget_data->n_post, 'category'=>$widget_data->category]
 ) as $key=>$r) {
-  $href = Gila::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']]);
+  $href = Config::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']]);
   echo "<li>";
   echo "<a href='$href'>";
   if ($key==0) {
