@@ -1,4 +1,4 @@
-<?php Gila\View::includeFile('login-header.php');?>
+<?php View::includeFile('login-header.php');?>
 
   <div class="gl-4 centered">
     <div class="g-form wrapper g-card bg-white">
@@ -8,9 +8,9 @@
         </div>
         <h3><?=__('register_success')?></h3>
       </div>
-      <?php if (Gila\Config::config('user_activation')=='auto') { ?>
-        <a class="btn btn-success btn-block" href="<?=Gila\Config::url('login')?>"><?=__('Log In')?></a>
-      <?php } elseif (Gila\Config::config('user_activation')=='byemail') { ?>
+      <?php if (Config::config('user_activation')=='auto') { ?>
+        <a class="btn btn-success btn-block" href="<?=Config::url('login')?>"><?=__('Log In')?></a>
+      <?php } elseif (Config::config('user_activation')=='byemail') { ?>
         <p><?=__('register_activate_byemail')?></p>
       <?php } else { ?>
         <p><?=__('register_activate_byadmin')?></p>
