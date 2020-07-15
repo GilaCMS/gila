@@ -40,6 +40,7 @@ spl_autoload_register(function ($class) {
     'gTable'=> 'src/core/classes/Table.php',
     'Gila\\Form'=> 'src/core/classes/Form.php',
     'Gila\\Table'=> 'src/core/classes/Table.php',
+    'Gila\\TableSchema'=> 'src/core/classes/TableSchema.php',
     'Gila\\Image'=> 'src/core/classes/Image.php',
     'Gila\\Logger'=> 'src/core/classes/Logger.php',
     'Gila\\Menu'=> 'src/core/classes/Menu.php',

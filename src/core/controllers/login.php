@@ -7,7 +7,7 @@ use Gila\Event;
 use Gila\Session;
 use Gila\Sendmail;
 
-class login extends \Gila\Controller
+class login extends Gila\Controller
 {
   public function __construct()
   {

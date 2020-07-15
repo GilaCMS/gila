@@ -11,7 +11,7 @@ use Gila\Router;
 /**
 * The blog controller, get calls for display of posts
 */
-class BlogController extends \Gila\Controller
+class BlogController extends Gila\Controller
 {
   public static $page; /** The page number */
   public static $totalPosts;

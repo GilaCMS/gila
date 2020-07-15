@@ -1,7 +1,7 @@
 <?php
 use Gila\Config;
 
-class webhook extends \Gila\Controller
+class webhook extends Gila\Controller
 {
   public function __construct()
   {

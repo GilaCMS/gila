@@ -6,7 +6,7 @@ use Gila\View;
 use Gila\Event;
 use Gila\Router;
 
-class blocks extends \Gila\Controller
+class blocks extends Gila\Controller
 {
   private static $draft = false;
 
@@ -59,7 +59,7 @@ class blocks extends \Gila\Controller
 
       foreach ($widget_data as $key=>$value) {
         $allowed = $fields[$key]['allow_tags'] ?? false;
-        $widget_data[$key] = \Gila\HtmlInput::purify($widget_data[$key], $allowed);
+        $widget_data[$key] = Gila\HtmlInput::purify($widget_data[$key], $allowed);
       }
       $widget_data['_type'] = $type;
       $widgets[$pos] = $widget_data;

@@ -1,16 +1,14 @@
 <?php
 
 use Gila\User;
-use Gila\Page;
 use Gila\Config;
 use Gila\View;
 use Gila\Session;
 use Gila\Router;
 use Gila\Package;
-use Gila\Profile;
-use Gila\Theme;
+use Gila\Widget;
 
-class admin extends \Gila\Controller
+class admin extends Gila\Controller
 {
   public function __construct()
   {
@@ -25,7 +23,7 @@ class admin extends \Gila\Controller
   {
     $id = Router::path() ?? null;
 
-    if ($id && ($r = Page::getByIdSlug($id)) && ($r['publish']==1)
+    if ($id && ($r = Gila\Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
       View::set('title', $r['title']);
       View::set('text', $r['page']);
@@ -178,8 +176,8 @@ class admin extends \Gila\Controller
   public function themesAction()
   {
     self::access('admin');
-    new theme();
-    $packages = theme::scan();
+    new Gila\Theme();
+    $packages = Gila\Theme::scan();
     View::set('packages', $packages);
     View::renderAdmin('admin/theme-list.php');
   }
@@ -266,7 +264,7 @@ class admin extends \Gila\Controller
   {
     Config::addLang('core/lang/myprofile/');
     $user_id = Session::key('user_id');
-    Profile::postUpdate($user_id);
+    Gila\Profile::postUpdate($user_id);
     View::set('page_title', __('My Profile'));
     View::set('twitter_account', User::meta($user_id, 'twitter_account'));
     View::set('token', User::meta($user_id, 'token'));
