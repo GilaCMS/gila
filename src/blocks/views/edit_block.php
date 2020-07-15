@@ -4,7 +4,7 @@
 <?php
 global $db;
 $widget_data = [];
-$widget_folder = 'src/'.Config::$widget[$type];
+$widget_folder = 'src/'.Gila\Config::$widget[$type];
 $fields = include $widget_folder.'/widget.php';
 if (isset($options)) {
   $fields = $options;
@@ -20,5 +20,5 @@ if (isset($fields)) {
   }
 }
 
-echo Form::html($fields, $values, 'option[', ']');
+echo Gila\Form::html($fields, $values, 'option[', ']');
 echo "</form>";
