@@ -255,6 +255,16 @@ class Config
     $GLOBALS['config'][$key] = $value;
   }
 
+  public static function set($key, $value)
+  {
+    self::setConfig($key, $value);
+  }
+
+  public static function get($key)
+  {
+    return $GLOBALS['config'][$key] ?? null;
+  }
+
   /**
   * Rewrites the config.php file
   */
@@ -295,6 +305,11 @@ class Config
       return self::$option[$option];
     }
     return $default;
+  }
+
+  public static function getOption($option, $default='')
+  {
+    return self::option($option, $default);
   }
 
   /**
