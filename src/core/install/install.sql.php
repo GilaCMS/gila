@@ -1,7 +1,7 @@
 <?php
 use Gila\TableSchema;
+require_once 'src/core/classes/TableSchema.php';
 
-require_once('src/core/classes/TableSchema.php');
 TableSchema::update(include 'src/core/tables/post.php');
 
 $db->query('ALTER TABLE post ADD  FULLTEXT KEY `title` (`title`,`post`);');

@@ -17,10 +17,10 @@ class ClassGila extends TestCase
 	public function test_updateConfigFile()
 	{
 		$value = rand(1,100);
-		include_once(__DIR__.'/../../config.default.php');
+		include_once __DIR__.'/../../config.default.php';
 		Config::setConfig('test_config_key', $value);
 		Config::updateConfigFile();
-		include_once(__DIR__.'/../../config.php');
+		include_once __DIR__.'/../../config.php';
 		$this->assertEquals($value, $GLOBALS['config']['test_config_key']);
 	}
 

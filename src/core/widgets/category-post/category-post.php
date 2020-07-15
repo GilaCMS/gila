@@ -1,6 +1,6 @@
 <?php
   echo '<style>';
-  include_once(__DIR__.'/style.css');
+  include_once __DIR__.'/style.css';
   echo '</style>';
 ?>
 <ul class="g-nav vertical five-post">

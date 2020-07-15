@@ -73,7 +73,7 @@ foreach ($config_list as $key=>$value) {
     <label class="g-label gm-4"><?=__("Language")?></label>
     <select name="gila_language" value="<?=Config::config('language')?>" class="gm-4">
     <?php
-    $languages = include('src/core/lang/languages.php');
+    $languages = include 'src/core/lang/languages.php';
     foreach ($languages as $k=>$value) {
       $sel = (Config::config('language')==$k?'selected':'');
       echo '<option value="'.$k."\" $sel>".ucwords($value).'</option>';

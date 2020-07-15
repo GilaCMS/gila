@@ -66,5 +66,5 @@ Config::content('widget', 'core/tables/widget.php');
 Config::addLang('core/lang/');
 
 if (Config::config('use_cdn')=='1') {
-  View::$cdn_paths = include('src/core/cdn_paths.php');
+  View::$cdn_paths = include 'src/core/cdn_paths.php';
 }

@@ -1,7 +1,7 @@
 <?php
 
-include(__DIR__.'/includes.php');
-include_once(__DIR__.'/../../src/core/classes/Cache.php');
+include __DIR__.'/includes.php';
+include_once __DIR__.'/../../src/core/classes/Cache.php';
 use PHPUnit\Framework\TestCase;
 use Gila\Cache;
 use Gila\FileManager;

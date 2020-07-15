@@ -1,7 +1,7 @@
 <?php
 
-include(__DIR__.'/includes.php');
-include(__DIR__.'/../../src/core/classes/Controller.php');
+include __DIR__.'/includes.php';
+include __DIR__.'/../../src/core/classes/Controller.php';
 use PHPUnit\Framework\TestCase;
 
 class ClassRouter extends TestCase

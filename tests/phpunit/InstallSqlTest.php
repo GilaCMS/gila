@@ -1,5 +1,5 @@
 <?php
-include(__DIR__.'/includes.php');
+includ (__DIR__.'/includes.php';
 use PHPUnit\Framework\TestCase;
 
 class InstallSqlTest extends TestCase

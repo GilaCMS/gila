@@ -36,7 +36,7 @@ class Router
     $controller = self::getController();
     $ctrlPath = self::$controllers[$controller];
     $ctrlClass = substr($ctrlPath, strrpos($ctrlPath, '/')+1);
-    require_once('src/'.$ctrlPath.'.php');
+    require_once 'src/'.$ctrlPath.'.php';
     $action = self::getAction($ctrlClass);
 
     if ($action === '') {
