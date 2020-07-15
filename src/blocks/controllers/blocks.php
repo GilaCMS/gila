@@ -153,7 +153,7 @@ class blocks extends Gila\Controller
     $content = Router::get('t', 1);
     $id = Router::get('id', 2);
     $blocks = self::readBlocks($content, $id);
-    if ($content=="page" && $r = Page::getByIdSlug($id)) {
+    if ($content=="page" && $r = Page::getByIdSlug($id, false)!==false) {
       View::set('title', $r['title']);
       View::set('text', $r['page'].View::blocks($blocks, true));
       if ($r['template']==''||$r['template']===null) {
