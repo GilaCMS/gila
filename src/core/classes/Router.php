@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Router
 {
   private static $args = [];
@@ -34,7 +36,7 @@ class Router
     $controller = self::getController();
     $ctrlPath = self::$controllers[$controller];
     $ctrlClass = substr($ctrlPath, strrpos($ctrlPath, '/')+1);
-    require_once('src/'.$ctrlPath.'.php');
+    require_once 'src/'.$ctrlPath.'.php';
     $action = self::getAction($ctrlClass);
 
     if ($action === '') {
@@ -57,8 +59,8 @@ class Router
     $action_fn = $action.'Action';
     $action_m = $action_fn.ucwords(self::$method);
 
-    if (isset(Gila::$before[$controller][$action])) {
-      foreach (Gila::$before[$controller][$action] as $fn) {
+    if (isset(Config::$before[$controller][$action])) {
+      foreach (Config::$before[$controller][$action] as $fn) {
         $fn();
       }
     }
@@ -78,7 +80,7 @@ class Router
     if (isset(self::$controller)) {
       return self::$controller;
     }
-    $default = Gila::config('default-controller');
+    $default = Config::config('default-controller');
     self::$controller = self::request('c', $default);
 
     if (isset(self::$args[0]) && isset(self::$controllers[self::$args[0]])) {
@@ -191,7 +193,7 @@ class Router
   public static function action($c=null, $action=null, $fn=null)
   {
     if ($fn!==null) {
-      Router::$actions[$c][$action] = $fn;
+      self::$actions[$c][$action] = $fn;
       return;
     }
     if ($action===null && $set!==null) {

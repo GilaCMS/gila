@@ -8,7 +8,7 @@
 <?=View::script('core/admin/vue-components.js');?>
 <?=View::script('core/admin/vue-editor.js');?>
 <?=View::script('core/admin/media.js')?>
-<?=View::script('core/lang/content/'.Gila::config('language').'.js')?>
+<?=View::script('core/lang/content/'.Config::config('language').'.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
 <?=View::css('blocks/blocks.css')?>
@@ -67,7 +67,7 @@ $cid = $contentType.'_'.$id.'_';
 <?php
 $content_blocks = [];
 
-foreach (Gila::$widget as $k=>$w) {
+foreach (Config::$widget as $k=>$w) {
   $c = ['name'=>$k];
   if (file_exists('src/'.$w.'/logo.png')) {
     $c['logo'] = $w.'/logo.png';

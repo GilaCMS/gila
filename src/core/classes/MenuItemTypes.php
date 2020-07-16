@@ -1,5 +1,5 @@
 <?php
-use core\models\Page;
+namespace Gila;
 
 class MenuItemTypes
 {
@@ -34,7 +34,7 @@ class MenuItemTypes
 
   public static function addItemType($index, $value)
   {
-    Gila::addList('menuItemType', $value);
+    Config::addList('menuItemType', $value);
   }
 
   public static function get($mi)
@@ -65,7 +65,7 @@ class MenuItemTypes
     }
     // remove widgets untill they are supported
     //$widgetOptions = "";
-    //foreach (array_keys(Gila::$widget) as $w) {
+    //foreach (array_keys(Config::$widget) as $w) {
     //  $widgetOptions .= "<option value=\"$w\">$w</option>";
     //}
 
@@ -109,7 +109,7 @@ class MenuItemTypes
         "template"=>"<input v-model=\"model.name\" class=\"g-input\" placeholder=\"Name\">",
       ]
     ];
-    $custom = Gila::getList('menuItemType');
+    $custom = Config::getList('menuItemType');
     foreach ($custom as $n) {
       self::$itemTypes[$n[0]] = $n[1];
     }

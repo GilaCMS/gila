@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Cache
 {
   public static $page_name;
@@ -8,7 +10,7 @@ class Cache
 
   public static function set($name, $data, $uniques = [])
   {
-    $dir = Gila::dir(self::$cachePath);
+    $dir = Config::dir(self::$cachePath);
     $name = $dir.str_replace('/', '-', $name);
     $caching_file = $name.'|'.implode('|', $uniques);
     return file_put_contents($caching_file, $data);
@@ -16,7 +18,7 @@ class Cache
 
   public static function get($name, $time = 3600, $uniques = [])
   {
-    $dir = Gila::dir(self::$cachePath);
+    $dir = Config::dir(self::$cachePath);
     if (!is_array($uniques)) {
       $uniques = [$uniques];
     }
@@ -55,8 +57,8 @@ class Cache
     if ($data = self::get($name, $time, $uniques)) {
       $controller = Router::getController();
       $action = Router::getAction();
-      if (isset(Gila::$onaction[$controller][$action])) {
-        foreach (Gila::$onaction[$controller][$action] as $fn) {
+      if (isset(Config::$onaction[$controller][$action])) {
+        foreach (Config::$onaction[$controller][$action] as $fn) {
           $fn();
         }
       }

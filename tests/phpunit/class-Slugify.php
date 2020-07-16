@@ -29,7 +29,7 @@ class ClassSlugify extends TestCase
 		];
 
 		foreach($text as $key => $slug) {
-			$this->assertEquals($slugs[$key], Slugify::text($slug));
+			$this->assertEquals($slugs[$key], Gila\Slugify::text($slug));
 		}
 
 	}

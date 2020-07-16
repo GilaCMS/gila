@@ -40,9 +40,9 @@ if (Package::check4updates()) {
 
 
 foreach ($packages as $pkey=>$p) {
-  if ($p->package!='core' || Gila::config('env')=='dev') {
+  if ($p->package!='core' || Config::config('env')=='dev') {
     if (isset($p->lang)) {
-      Gila::addLang($p->lang);
+      Config::addLang($p->lang);
     }
 
     // Border color
@@ -96,7 +96,7 @@ foreach ($packages as $pkey=>$p) {
     // Buttons
     if (file_exists('src/'.$p->package)) {
       if (in_array($p->package, $GLOBALS['config']['packages']) || $p->package=='core') {
-        if (Gila::config('env')=='dev') {
+        if (Config::config('env')=='dev') {
           $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
         }
         if ($p->package!='core') {
@@ -141,10 +141,10 @@ View::alerts();
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
   foreach ($links as $link) {
     $active = (Router::url()==$link[1]?'active':'');
-    echo '<li class="'.$active.'"><a href="'.Gila::url($link[1]).'">'.__($link[0]).'</a></li>';
+    echo '<li class="'.$active.'"><a href="'.Config::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
-    <form method="get" class="inline-flex" style="float:right" action="<?=Gila::url('admin/packages/new')?>">
+    <form method="get" class="inline-flex" style="float:right" action="<?=Config::url('admin/packages/new')?>">
       <input name='search' class="g-input fullwidth" value="<?=(isset($search)?$search:'')?>">
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>

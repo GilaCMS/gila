@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Slugify
 {
   public static $rules;

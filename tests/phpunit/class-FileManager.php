@@ -1,8 +1,10 @@
 <?php
 
-include(__DIR__.'/includes.php');
-FileManager::$sitepath = realpath(__DIR__.'/../../');
+include __DIR__.'/includes.php';
 use PHPUnit\Framework\TestCase;
+use Gila\Config;
+use Gila\FileManager;
+FileManager::$sitepath = realpath(__DIR__.'/../../');
 
 class ClassFileManager extends TestCase
 {
@@ -32,9 +34,9 @@ class ClassFileManager extends TestCase
   {
     $p = 'assets/test-copy/';
     $p1 = 'assets/test-copy1/';
-    Gila::dir($p);
+    Config::dir($p);
     file_put_contents($p.'file1', '1');
-    Gila::dir($p.'folder');
+    Config::dir($p.'folder');
     file_put_contents($p.'folder/file2', '2');
     FileManager::copy($p, $p1);
     $this->assertEquals('1', file_get_contents($p1.'file1'));

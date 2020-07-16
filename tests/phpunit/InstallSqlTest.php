@@ -1,5 +1,5 @@
 <?php
-include(__DIR__.'/includes.php');
+include __DIR__.'/includes.php';
 use PHPUnit\Framework\TestCase;
 
 class InstallSqlTest extends TestCase
@@ -10,7 +10,7 @@ class InstallSqlTest extends TestCase
 		$_user='Admin';
 		$_email='admin@mail.com';
 		$_pass='password';
-		include('src/core/install/install.sql.php');
+		include 'src/core/install/install.sql.php';
 
 		$tables = $db->get('SHOW TABLES');
 		$this->assertEquals(9, count($tables));

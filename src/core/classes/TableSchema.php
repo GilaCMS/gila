@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class TableSchema
 {
   public function __construct($name)

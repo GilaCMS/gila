@@ -15,7 +15,7 @@
             ?>
 
         <div class="<?=$title_gl?>">
-            <a href="<?=Gila::make_url('blog','',['p'=>$r['id'],'slug'=>$r['slug']])?>">
+            <a href="<?=Config::make_url('blog','',['p'=>$r['id'],'slug'=>$r['slug']])?>">
                 <h2 class="post-title" style="margin-top:0"><?=$r['title']?></h2>
             </a>
             <?=$r['description']?>
@@ -26,7 +26,7 @@
     <?php View::renderFile('pagination.php')?>
     </div>
     <div class="gm-3 sidebar">
-      <form method="get" class="inline-flex" action="<?=Gila::base_url('blog')?>">
+      <form method="get" class="inline-flex" action="<?=Config::base_url('blog')?>">
         <input name='search' class="g-input fullwidth" value="<?=(htmlentities($search)??'')?>">
         <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>

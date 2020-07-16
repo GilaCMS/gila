@@ -1,15 +1,22 @@
 <?php
 
-include(__DIR__.'/includes.php');
-include(__DIR__.'/../../src/core/classes/Controller.php');
-include(__DIR__.'/../../src/core/classes/Package.php');
-include(__DIR__.'/../../src/core/models/User.php');
-include(__DIR__.'/../../src/core/classes/Table.php');
-include(__DIR__.'/../../src/core/classes/TableSchema.php');
-include(__DIR__.'/../../src/core/classes/Form.php');
-include(__DIR__.'/../../src/core/classes/Sendmail.php');
-include(__DIR__.'/../../src/core/classes/HtmlInput.php');
+include __DIR__.'/includes.php';
+include __DIR__.'/../../src/core/classes/Controller.php';
+include __DIR__.'/../../src/core/classes/Package.php';
+include __DIR__.'/../../src/core/models/User.php';
+include __DIR__.'/../../src/core/classes/Table.php';
+include __DIR__.'/../../src/core/classes/TableSchema.php';
+include __DIR__.'/../../src/core/classes/Form.php';
+include __DIR__.'/../../src/core/classes/Sendmail.php';
+include __DIR__.'/../../src/core/classes/HtmlInput.php';
 use PHPUnit\Framework\TestCase;
+use Gila\Config;
+use Gila\Event;
+use Gila\Router;
+use Gila\Controller;
+use Gila\Session;
+use Gila\Package;
+use Gila\Table;
 $GLOBALS['config']['db']['name'] = 'g_db';
 Event::listen('sendmail', function($x){ return true; });
 
@@ -21,9 +28,9 @@ class RequestsTest extends TestCase
   {
     global $db;
     self::createUserTable();
-    $pass = Gila::hash("password");
+    $pass = Config::hash("password");
     $db->query("INSERT INTO user SET email=?, pass=?, active=1;",
-      ["test_login_auth@email.com", Gila::hash("password")]);
+      ["test_login_auth@email.com", Config::hash("password")]);
     $uid = $db->insert_id;
     $db->query("INSERT INTO usermeta SET `value`='ABC', user_id=?, `vartype`='token';", [$uid]);
     $db->query("INSERT INTO usermeta SET `value`=1, user_id=?, `vartype`='role';", [$uid]);
@@ -41,7 +48,7 @@ class RequestsTest extends TestCase
   {
     $_POST['email'] = "test_login_auth@email.com";
     $_POST['password'] = "password";
-    Gila::controller('login', 'core/controllers/login');
+    Config::controller('login', 'core/controllers/login');
     $response = $this->request('login/auth', 'POST');
     $this->assertEquals('{"token":"ABC"}', $response);
   }
@@ -95,12 +102,12 @@ class RequestsTest extends TestCase
   public function test_blocks()
   {
     global $db;
-    Gila::controller('blocks', 'blocks/controllers/blocks');
-    Gila::widgets([
+    Config::controller('blocks', 'blocks/controllers/blocks');
+    Config::widgets([
       'paragraph'=>'core/widgets/paragraph',
       'image'=>'core/widgets/image']);
     Package::update('blocks');
-    Gila::content('post','core/tables/post.php');
+    Config::content('post','core/tables/post.php');
     $gtable = new Table('post');
     $gtable->update();
     Session::user(self::$userId, 'Test', 'test@mail.com');

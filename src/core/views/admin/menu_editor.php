@@ -127,7 +127,7 @@ $itemTypes = MenuItemTypes::getItemTypes();
     foreach ($menus as $name) {
       if ($name[0]!='.') {
         $lname = substr($name, 0, strpos($name, '.'));
-        echo '<li><a href="'.Gila::make_url('admin', 'menu').$lname.'">'.$lname.'</a>';
+        echo '<li><a href="'.Config::make_url('admin', 'menu').$lname.'">'.$lname.'</a>';
       }
     }
     ?>
@@ -135,7 +135,7 @@ $itemTypes = MenuItemTypes::getItemTypes();
     <br>
     <div>
       <input id="new-menu" class="g-input fullwidth"><br>
-      <button class="g-btn fullwidth" onclick="window.location.href='<?=Gila::make_url('admin', 'menu')?>'+g('#new-menu').all[0].value"><?=__("New")?></button>
+      <button class="g-btn fullwidth" onclick="window.location.href='<?=Config::make_url('admin', 'menu')?>'+g('#new-menu').all[0].value"><?=__("New")?></button>
     </div>
   </div>
 </div>

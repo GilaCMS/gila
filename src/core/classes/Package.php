@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+use DateTime;
 
 class Package
 {
@@ -25,13 +27,13 @@ class Package
       self::options($options);
     }
     $download = Router::post('download');
-    if (Gila::config('test')=='1') {
+    if (Config::config('test')=='1') {
       $download = Router::request('test', $download);
     }
     if ($download && FS_ACCESS) {
       if (self::download($download)===true) {
         if (!$_REQUEST['g_response']) {
-          echo '<meta http-equiv="refresh" content="2;url='.Gila::base_url().'/admin/packages" />';
+          echo '<meta http-equiv="refresh" content="2;url='.Config::base_url().'/admin/packages" />';
           echo __('_package_downloaded').'. Redirecting...';
           exit;
         } else {
@@ -76,13 +78,13 @@ class Package
   {
     if (in_array($activate, scandir('src/'))) {
       if (!in_array($activate, $GLOBALS['config']['packages']) ||
-         Gila::config('env')=='dev') {
+         Config::config('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
         $require_op = [];
         if (isset($pac['require'])) {
           foreach ($pac['require'] as $key => $value) {
-            if (!in_array($key, Gila::packages())&&($key!='core')) {
+            if (!in_array($key, Config::packages())&&($key!='core')) {
               if (!file_exists('vendor/'.$key)) {
                 $require[$key]=$value;
               }
@@ -97,7 +99,7 @@ class Package
         if (isset($pac['options'])) {
           foreach ($pac['options'] as $key=>$option) {
             if (@$option['required']==true) {
-              if (Gila::option($activate.'.'.$key)===null) {
+              if (Config::option($activate.'.'.$key)===null) {
                 $require_op[] = @$option['title']?:$key;
               }
             }
@@ -105,12 +107,12 @@ class Package
         }
 
         if ($require===[] && $require_op===[]) {
-          if (!in_array($activate, $GLOBALS['config']['packages'])) {
+          if (!in_array($activate, $GLOBALS['config']['packages']) && $activate!=='core') {
             $GLOBALS['config']['packages'][]=$activate;
           }
           self::copyAssets($activate);
           self::update($activate);
-          Gila::updateConfigFile();
+          Config::updateConfigFile();
           self::updateLoadFile();
           usleep(300);
         } else {
@@ -165,7 +167,7 @@ class Package
           }
         }
       }
-      Gila::updateConfigFile();
+      Config::updateConfigFile();
       self::updateLoadFile();
       usleep(100);
       echo '{"success":true}';
@@ -184,7 +186,7 @@ class Package
     $zip = new ZipArchive;
     $target = 'src/'.$package;
     $request = 'https://gilacms.com/packages/?package='.$package;
-    $request .= Gila::config('test')=='1' && isset($_GET['test']) ? '&test=1' : '';
+    $request .= Config::config('test')=='1' && isset($_GET['test']) ? '&test=1' : '';
     $pinfo = json_decode(file_get_contents($request), true)[0];
 
     if (!$pinfo) {
@@ -207,7 +209,7 @@ class Package
       $zip->extractTo($tmp_name);
       $zip->close();
       if (file_exists($target)) {
-        $res = rename($target, Gila::dir($previousFolder.date("Y-m-d H:i:s").' '.$package));
+        $res = rename($target, Config::dir($previousFolder.date("Y-m-d H:i:s").' '.$package));
         if ($res===false) {
           return false;
         }
@@ -302,9 +304,9 @@ class Package
 
       if (is_array($options)) {
         foreach ($options as $key=>$op) {
-          $values[$key] = Gila::option($pack.'.'.$key);
+          $values[$key] = Config::option($pack.'.'.$key);
         }
-        echo gForm::html($options, $values, 'option[', ']');
+        echo Form::html($options, $values, 'option[', ']');
       } // else error alert
       echo "</form>";
     }
@@ -328,7 +330,7 @@ class Package
           $db->query($ql, [$package.'.'.$key, $value, $value]);
         }
       }
-      if (Gila::config('env')==='pro') {
+      if (Config::config('env')==='pro') {
         unlink(LOG_PATH.'/load.php');
       }
     }
@@ -367,7 +369,10 @@ class Package
     global $db;
     $file = LOG_PATH.'/load.php';
     $contents = '<?php';
-    $packages = array_merge(['core'], Gila::packages());
+    $packages = Config::packages();
+    if (!in_array('core', $packages)) {
+      $packages = array_merge(['core'], $packages);
+    }
     foreach ($packages as $package) {
       $handle = @fopen("src/$package/load.php", "r");
       if ($handle) {
@@ -382,30 +387,30 @@ class Package
         // error op
       }
     }
-    Gila::$option=[];
+    Config::$option=[];
     $db->connect();
     $res = $db->get('SELECT `option`,`value` FROM `option`;');
     foreach ($res as $r) {
-      Gila::$option[$r[0]] = $r[1];
+      Config::$option[$r[0]] = $r[1];
     }
     $db->close();
 
-    $contents .= "\n\nGila::\$option = ".var_export(Gila::$option, true).";\n";
+    $contents .= "\n\nConfig::\$option = ".var_export(Config::$option, true).";\n";
 
     file_put_contents($file, $contents);
   }
 
   public static function check4updates()
   {
-    if (Gila::config('check4updates')==0) {
+    if (Config::config('check4updates')==0) {
       return;
     }
     $now = new DateTime("now");
-    if (Gila::option('checked4updates')===null) {
-      Gila::setOption('checked4updates', $now->format('Y-m-d'));
+    if (Config::option('checked4updates')===null) {
+      Config::setOption('checked4updates', $now->format('Y-m-d'));
       $diff = 1000;
     } else {
-      $diff = date_diff(new DateTime(Gila::option('checked4updates')), new DateTime("now"))->format('%a');
+      $diff = date_diff(new DateTime(Config::option('checked4updates')), new DateTime("now"))->format('%a');
     }
 
     // check once a day
@@ -414,9 +419,9 @@ class Package
       $packages2update = [];
       $versions = [];
       $url = "https://gilacms.com/addons/package_versions?p[]=".implode('&p[]=', array_keys($installed_packages));
-      $url .= Gila::config('test')=='1' ? '&test=1' : '';
+      $url .= Config::config('test')=='1' ? '&test=1' : '';
       if ($res = file_get_contents($url)) {
-        Gila::setOption('checked4updates', $now->format('Y-m-d H:i:s'));
+        Config::setOption('checked4updates', $now->format('Y-m-d H:i:s'));
         $versions = json_decode($res, true);
       }
       foreach ($installed_packages as $ipac=>$pac) {

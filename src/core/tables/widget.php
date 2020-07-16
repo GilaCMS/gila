@@ -1,11 +1,11 @@
 <?php
 
 $widget_areas = ['x'=>'(None)'];
-foreach (Gila::$widget_area as $value) {
+foreach (Config::$widget_area as $value) {
   $widget_areas[$value] = $value;
 }
 $widgets = [];
-foreach (Gila::$widget as $k=>$value) {
+foreach (Config::$widget as $k=>$value) {
   $widgets[$k] = $k;
 }
 
@@ -46,7 +46,7 @@ return [
           if (!isset($row['data']) || $row['data']!==null) {
             return;
           }
-          $wdgt_options = include 'src/'.Gila::$widget[$row['widget']].'/widget.php';
+          $wdgt_options = include 'src/'.Config::$widget[$row['widget']].'/widget.php';
           if (isset($options)) {
             $wdgt_options = $options;
           }

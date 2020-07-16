@@ -1,9 +1,9 @@
 
 <?php
 
-include(__DIR__.'/includes.php');
-include(__DIR__.'/../../src/core/classes/Table.php');
-include(__DIR__.'/../../src/core/classes/TableSchema.php');
+include __DIR__.'/includes.php';
+include __DIR__.'/../../src/core/classes/Table.php';
+include __DIR__.'/../../src/core/classes/TableSchema.php';
 use PHPUnit\Framework\TestCase;
 
 class ClassTable extends TestCase
@@ -11,8 +11,8 @@ class ClassTable extends TestCase
   public function test_Table()
   {
     global $db;
-    Gila::content('post','core/tables/post.php');
-    $Table = new Table('post');
+    Gila\Config::content('post','core/tables/post.php');
+    $Table = new Gila\Table('post');
     $this->assertEquals('post', $Table->name());
     $this->assertEquals('id', $Table->id());
     $this->assertEquals('Description', $Table->fieldAttr('description', 'title'));
@@ -32,8 +32,8 @@ class ClassTable extends TestCase
 
   public function test_where()
   {
-    Gila::content('post','core/tables/post.php');
-    $Table = new Table('post');
+    Gila\Config::content('post','core/tables/post.php');
+    $Table = new Gila\Table('post');
 
     $this->assertEquals(" WHERE `id`>10", $Table->where(['id'=>['gt'=>10]]));
     $this->assertEquals(" WHERE `id`>=10", $Table->where(['id'=>['ge'=>10]]));
@@ -50,8 +50,8 @@ class ClassTable extends TestCase
   public function test_getMeta()
   {
     global $db;
-    Gila::content('post','core/tables/post.php');
-    $Table = new Table('post');
+    Gila\Config::content('post','core/tables/post.php');
+    $Table = new Gila\Table('post');
 
     $db->query("DELETE FROM postmeta WHERE vartype IN('fruit','color')");
     $db->query("INSERT INTO postmeta(post_id, vartype, `value`)

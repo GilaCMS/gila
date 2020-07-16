@@ -1,10 +1,14 @@
 <?php
-use core\models\User;
+use Gila\User;
+use Gila\Config;
+use Gila\Form;
+use Gila\Session;
+use Gila\Router;
 
 /**
 * Lists content types and shows grid content data
 */
-class cm extends Controller
+class cm extends Gila\Controller
 {
   private $contenttype;
   private $table;
@@ -14,7 +18,7 @@ class cm extends Controller
   {
     $this->permissions = User::permissions(Session::userId());
     $this->table = Router::get("t", 1);
-    if (!isset(Gila::$content[$this->table])) {
+    if (!isset(Config::$content[$this->table])) {
       http_response_code(404);
       exit;
     }
@@ -22,7 +26,7 @@ class cm extends Controller
 
   /**
   * Lists all the registered content types
-  * @see Gila::content()
+  * @see Config::content()
   */
   public function indexAction()
   {
@@ -291,7 +295,7 @@ class cm extends Controller
         @$result['rows'][] = $r;
       }
     }
-    Gila::setMt($pnk->name());
+    Config::setMt($pnk->name());
     echo json_encode($result, JSON_PRETTY_PRINT);
   }
 
@@ -390,14 +394,14 @@ class cm extends Controller
     echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button>';
     echo '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
     echo 'justify-content: space-around;gap:0.8em">';
-    echo gForm::hiddenInput();
+    echo Form::hiddenInput();
     if ($id) {
       $w = ['id'=>$id];
       $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)};";
       $res = $db->get($ql)[0];
-      echo gForm::html($pnk->getFields('edit'), $res);
+      echo Form::html($pnk->getFields('edit'), $res);
     } else {
-      echo gForm::html($pnk->getFields('edit'));
+      echo Form::html($pnk->getFields('edit'));
     }
 
     $child_id = '<span id="edit_popup_child"></span>';

@@ -1,11 +1,13 @@
 <?php
 
+namespace Gila;
+
 class Controller
 {
   public static function admin()
   {
     if (Session::userId()===0) {
-      Gila::addLang('core/lang/login/');
+      Config::addLang('core/lang/login/');
       if (Session::waitForLogin()>0) {
         View::alert('error', __('login_error_msg2'));
       } elseif (isset($_POST['username']) && isset($_POST['password'])) {

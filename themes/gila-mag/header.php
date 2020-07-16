@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="<?=Gila::config('language')?>">
+<html lang="<?=Config::config('language')?>">
 <?php
 View::stylesheet('core/gila.min.css');
 View::head()?>
 <style>
-<?php $theme_color=Gila::option('theme.color','orangered'); ?>
+<?php $theme_color=Config::option('theme.color','orangered'); ?>
 body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
 .widget{padding: 0; margin-top: 12px;}
 .sidebar .widget{border: 1px solid #ccc;}
@@ -35,10 +35,10 @@ li.active{background-color:var(--main-primary-color); color:white;}
     <div class="header">
         <?php View::widgetArea('body'); ?>
         <div class="inline-block">
-          <a href="<?=Gila::base_url()?>" style="color:#333;">
+          <a href="<?=Config::base_url()?>" style="color:#333;">
           <?php
-          $lgimg = Gila::option('theme.header-logo');
-          $_title = Gila::config('title');
+          $lgimg = Config::option('theme.header-logo');
+          $_title = Config::config('title');
           echo ($lgimg?'<img class="header-logo" src="'.$lgimg.'" alt="'.$_title.'">':'<h1>'.$_title.'</h1>');
           ?>
           </a>

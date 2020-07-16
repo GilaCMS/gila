@@ -1,18 +1,18 @@
 <?php
 
-Gila::content('post', 'core/tables/post.php');
+Config::content('post', 'core/tables/post.php');
 $postTable = new Table('post');
 $postTable->update();
 
-Gila::content('page', 'core/tables/page.php');
+Config::content('page', 'core/tables/page.php');
 $pageTable = new Table('page');
 $pageTable->update();
 
-Gila::content('user', 'core/tables/user.php');
+Config::content('user', 'core/tables/user.php');
 $userTable = new Table('user');
 $userTable->update();
 
-Gila::content('userrole', 'core/tables/userrole.php');
+Config::content('userrole', 'core/tables/userrole.php');
 $userroleTable = new Table('userrole');
 $userroleTable->update();
 

@@ -3,6 +3,8 @@
 /**
 * Registers and fires events (hooks)
 */
+namespace Gila;
+
 class Event
 {
   private static $handlers = [];

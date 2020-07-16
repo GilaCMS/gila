@@ -1,5 +1,6 @@
 <?php
 
+namespace Gila;
 
 class DbBackup
 {

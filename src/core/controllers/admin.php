@@ -1,15 +1,19 @@
 <?php
 
-use core\models\Widget;
-use core\models\User;
-use core\models\Page;
+use Gila\User;
+use Gila\Config;
+use Gila\View;
+use Gila\Session;
+use Gila\Router;
+use Gila\Package;
+use Gila\Widget;
 
-class admin extends Controller
+class admin extends Gila\Controller
 {
   public function __construct()
   {
     self::admin();
-    Gila::addLang('core/lang/admin/');
+    Config::addLang('core/lang/admin/');
   }
 
   /**
@@ -19,7 +23,7 @@ class admin extends Controller
   {
     $id = Router::path() ?? null;
 
-    if ($id && ($r = Page::getByIdSlug($id)) && ($r['publish']==1)
+    if ($id && ($r = Gila\Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
       View::set('title', $r['title']);
       View::set('text', $r['page']);
@@ -85,7 +89,7 @@ class admin extends Controller
       return;
     }
 
-    $src = explode('.', Gila::$content[$type])[0];
+    $src = explode('.', Config::$content[$type])[0];
     View::set('table', $type);
     View::set('tablesrc', $src);
     if ($id == null) {
@@ -132,7 +136,7 @@ class admin extends Controller
 
     if ($tab == 'new') {
       $url = 'https://gilacms.com/packages/?search='.$search;
-      $url .= Gila::config('test')=='1' ? '&test=1' : '';
+      $url .= Config::config('test')=='1' ? '&test=1' : '';
       if (!$contents = file_get_contents($url)) {
         View::alert('error', "Could not connect to packages list. Please try later.");
       } else {
@@ -172,8 +176,8 @@ class admin extends Controller
   public function themesAction()
   {
     self::access('admin');
-    new theme();
-    $packages = theme::scan();
+    new Gila\Theme();
+    $packages = Gila\Theme::scan();
     View::set('packages', $packages);
     View::renderAdmin('admin/theme-list.php');
   }
@@ -200,7 +204,7 @@ class admin extends Controller
     global $db;
     User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".Gila::config('base')."' />";
+    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
   }
 
   public function media_uploadAction()
@@ -211,7 +215,7 @@ class admin extends Controller
           echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
         }
       }
-      $upload_folder = Gila::config('media_uploads') ?? 'assets';
+      $upload_folder = Config::config('media_uploads') ?? 'assets';
       $path = Router::post('path', $upload_folder);
       if ($path[0]=='.') {
         $path=$upload_folder;
@@ -223,8 +227,8 @@ class admin extends Controller
         if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
         }
-        $maxWidth = Gila::config('maxImgWidth') ?? 0;
-        $maxHeight = Gila::config('maxImgHeight') ?? 0;
+        $maxWidth = Config::config('maxImgWidth') ?? 0;
+        $maxHeight = Config::config('maxImgHeight') ?? 0;
         if ($maxWidth>0 && $maxHeight>0) {
           Image::makeThumb($path, $path, $maxWidth, $maxHeight);
         }
@@ -258,9 +262,9 @@ class admin extends Controller
 
   public function profileAction()
   {
-    Gila::addLang('core/lang/myprofile/');
+    Config::addLang('core/lang/myprofile/');
     $user_id = Session::key('user_id');
-    core\models\Profile::postUpdate($user_id);
+    Gila\Profile::postUpdate($user_id);
     View::set('page_title', __('My Profile'));
     View::set('twitter_account', User::meta($user_id, 'twitter_account'));
     View::set('token', User::meta($user_id, 'token'));
@@ -305,7 +309,7 @@ class admin extends Controller
     $menu = Router::get('menu', 1);
     if ($menu != null) {
       if (Session::hasPrivilege('admin')) {
-        $folder = Gila::dir(LOG_PATH.'/menus/');
+        $folder = Config::dir(LOG_PATH.'/menus/');
         $file = $folder.$menu.'.json';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           if (isset($_POST['menu'])) {

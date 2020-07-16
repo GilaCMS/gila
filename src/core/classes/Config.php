@@ -1,8 +1,7 @@
 <?php
+namespace Gila;
 
-/** Common methods for Gila CMS */
-
-class Gila
+class Config
 {
   public static $widget;
   public static $package;
@@ -24,7 +23,7 @@ class Gila
   * @param $file (string) Controller's filepath without the php extension
   * @param $name (string) Controller's class name, $c is used by default
   * @code
-  * Gila::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
+  * Config::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
   * @endcode
   */
   public static function controller($c, $path, $name=null) // DEPRECATED
@@ -37,7 +36,7 @@ class Gila
   * @param $r (string) The path
   * @param $fn (function) Callback for the route
   * @code
-  * Gila::route('some.txt', function(){ echo 'Some text.'; });
+  * Config::route('some.txt', function(){ echo 'Some text.'; });
   * @endcode
   */
   public static function route($r, $fn) // DEPRECATED
@@ -50,7 +49,7 @@ class Gila
   * @param $c (string) The controller's class name
   * @param $fn (function) Callback
   * @code
-  * Gila::onController('blog', function(){ BlogCtrl::ppp = 24; });
+  * Config::onController('blog', function(){ BlogController::ppp = 24; });
   * @endcode
   */
   public static function onController($c, $fn) // DEPRECATED
@@ -64,7 +63,7 @@ class Gila
   * @param $action (string) The action
   * @param $fn (function) Callback
   * @code
-  * Gila::action('blog', 'topics', function(){ ... });
+  * Config::action('blog', 'topics', function(){ ... });
   * @endcode
   */
   public static function action($c, $action, $fn) // DEPRECATED -> Router::action()
@@ -106,7 +105,7 @@ class Gila
 
   public static function loadLang($path)
   {
-    $filepath = 'src/'.$path.Gila::config('language').'.json';
+    $filepath = 'src/'.$path.self::config('language').'.json';
     if (file_exists($filepath)) {
       $GLOBALS['lang'] = @array_merge(
         @$GLOBALS['lang'],
@@ -128,12 +127,12 @@ class Gila
   /**
   * Registers new widgets
   * @param $list (Assoc Array) Widgets to register
-  * @code Gila::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
+  * @code Config::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
   */
   public static function widgets($list)
   {
     foreach ($list as $k=>$item) {
-      Gila::$widget[$k]=$item;
+      self::$widget[$k]=$item;
     }
   }
 
@@ -141,7 +140,7 @@ class Gila
   * Registers new content type
   * @param $key (string) Name of content type
   * @param $path (string) Path to the table file
-  * @code Gila::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
+  * @code Config::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
   */
   public static function content($key, $path)
   {
@@ -153,7 +152,7 @@ class Gila
   * @param $key (string) Name of content type
   * @param $field (string) Index of the field
   * @param $table (Assoc array) Value of the field
-  * DEPRECATED @see Gila::contentInit()
+  * DEPRECATED @see Config::contentInit()
   */
   public static function contentField($key, $field, $table)
   {
@@ -167,13 +166,13 @@ class Gila
   * Make changes in a content type when it is initialized
   * @param $key (string) Name of content type
   * @param $init (function) Funtion to run
-  * @code Gila::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
+  * @code Config::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
   */
   public static function contentInit($key, $init)
   {
     @self::$contentInit[$key][] = $init;
-    if (isset(gTable::$tableList[$key])) {
-      unset(gTable::$tableList[$key]);
+    if (isset(Table::$tableList[$key])) {
+      unset(Table::$tableList[$key]);
     }
   }
 
@@ -191,7 +190,7 @@ class Gila
   * @param $key (string) Index name
   * @param $item (assoc array) Array with data
   * Indices 0 for Display name, 1 for action link
-  * @code Gila::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code Config::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu($key, $item=[])
   {
@@ -203,9 +202,9 @@ class Gila
     }
     foreach ($list as $k=>$i) {
       if (is_numeric($k)) {
-        Gila::$amenu[]=$i; // DEPRECATED
+        self::$amenu[]=$i; // DEPRECATED
       } else {
-        Gila::$amenu[$k]=$i;
+        self::$amenu[$k]=$i;
       }
     }
   }
@@ -214,14 +213,14 @@ class Gila
   * Add a child element on administration menu item
   * @param $key (string) Index of parent item
   * @param $item (assoc array) Array with data
-  * @code Gila::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code Config::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu_child($key, $item)
   {
-    if (!isset(Gila::$amenu[$key]['children'])) {
-      Gila::$amenu[$key]['children']=[];
+    if (!isset(self::$amenu[$key]['children'])) {
+      self::$amenu[$key]['children']=[];
     }
-    Gila::$amenu[$key]['children'][]=$item;
+    self::$amenu[$key]['children'][]=$item;
   }
 
   /**
@@ -254,6 +253,16 @@ class Gila
       return;
     }
     $GLOBALS['config'][$key] = $value;
+  }
+
+  public static function set($key, $value)
+  {
+    self::setConfig($key, $value);
+  }
+
+  public static function get($key)
+  {
+    return $GLOBALS['config'][$key] ?? null;
   }
 
   /**
@@ -292,10 +301,15 @@ class Gila
   */
   public static function option($option, $default='')
   {
-    if (isset(Gila::$option[$option]) && Gila::$option[$option]!='') {
-      return Gila::$option[$option];
+    if (isset(self::$option[$option]) && self::$option[$option]!='') {
+      return self::$option[$option];
     }
     return $default;
+  }
+
+  public static function getOption($option, $default='')
+  {
+    return self::option($option, $default);
   }
 
   /**
@@ -306,10 +320,10 @@ class Gila
   public static function setOption($option, $value='')
   {
     global $db;
-    @Gila::$option[$option] = $value;
+    @self::$option[$option] = $value;
     $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
     $db->query($ql);
-    if (Gila::config('env') === 'pro') {
+    if (self::config('env') === 'pro') {
       unlink(LOG_PATH.'/load.php');
     }
   }
@@ -366,22 +380,22 @@ class Gila
 
   public static function canonical($str)
   {
-    View::$canonical = Gila::config('base').Gila::url($str);
+    View::$canonical = self::config('base').Config::url($str);
   }
 
   public static function base_url($str = null)
   {
     if (!isset(self::$base_url)) {
       if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
-        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(Gila::config('base'), 0, 5)=='https'?'https':'http');
+        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(Config::config('base'), 0, 5)=='https'?'https':'http');
         self::$base_url = $scheme.'://'.$_SERVER['HTTP_HOST'];
         self::$base_url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/')).'/';
       } else {
-        self::$base_url = Gila::config('base');
+        self::$base_url = self::config('base');
       }
     }
     if ($str!==null) {
-      return self::$base_url.Gila::url($str);
+      return self::$base_url.Config::url($str);
     }
     return self::$base_url;
   }
@@ -392,9 +406,9 @@ class Gila
       return Router::url().'#';
     }
 
-    if (Gila::config('rewrite')) {
+    if (self::config('rewrite')) {
       $var = explode('/', $url);
-      if (Gila::config('default-controller') === $var[0]) {
+      if (Config::config('default-controller') === $var[0]) {
         if ($var[0]!='admin') {
           return substr($url, strlen($var[0])+1);
         }
@@ -433,7 +447,7 @@ class Gila
   public static function make_url($c, $action='', $args=[])
   {
     $params='';
-    if (Gila::config('rewrite')) {
+    if (self::config('rewrite')) {
       foreach ($args as $key=>$value) {
         if ($params!='') {
           $params.='/';
@@ -441,7 +455,7 @@ class Gila
         $params.=$value;
       }
 
-      if ((Gila::config('default-controller') === $c) && ($c != 'admin')) {
+      if ((self::config('default-controller') === $c) && ($c != 'admin')) {
         $c='';
       } else {
         $c.='/';
@@ -476,11 +490,11 @@ class Gila
         include_once "src/$package/load.php";
       }
     }
-    Gila::$option=[];
+    self::$option=[];
     $db->connect();
     $res = $db->get('SELECT `option`,`value` FROM `option`;');
     foreach ($res as $r) {
-      Gila::$option[$r[0]] = $r[1];
+      self::$option[$r[0]] = $r[1];
     }
     $db->close();
   }
@@ -516,30 +530,21 @@ class Gila
     }
     return $path;
   }
-}
 
-$GLOBALS['lang'] = [];
-
-function __($key, $alt = null)
-{
-  if (Gila::$langLoaded===false) {
-    foreach (Gila::$langPaths as $path) {
-      Gila::loadLang($path);
+  public static function tr($key, $alt = null) {
+    if(self::$langLoaded===false) {
+      foreach(self::$langPaths as $path) self::loadLang($path);
+      self::$langLoaded = true;
     }
-    Gila::$langLoaded = true;
-  }
-  if (@isset($GLOBALS['lang'][$key])) {
-    if ($GLOBALS['lang'][$key] != '') {
-      return $GLOBALS['lang'][$key];
+    if(@isset($GLOBALS['lang'][$key])) {
+      if($GLOBALS['lang'][$key] != '')
+        return $GLOBALS['lang'][$key];
     }
+    if($alt!=null) return $alt;
+    return $key;
   }
-  if ($alt!=null) {
-    return $alt;
-  }
-  return $key;
 }
 
-function _url($url)
-{
-  return str_replace(['\'','"','<','>',':'], ['%27','%22','%3C','%3E','%3A'], $url);
-}
+class_alias('Gila\\Config', 'Gila\\Gila');
+class_alias('Gila\\Config', 'Gila');
+class_alias('Gila\\Config', 'gila');

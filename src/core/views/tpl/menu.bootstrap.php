@@ -1,6 +1,6 @@
 <ul class="nav navbar-nav navbar-right">
 <?php
-use core\models\Page;
+use Gila\Page;
 
 $menu_items = $menu_data['children'];
 

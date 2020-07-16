@@ -1,8 +1,5 @@
 <?php
-namespace core\models;
-
-use View;
-use Router;
+namespace Gila;
 
 class Profile
 {

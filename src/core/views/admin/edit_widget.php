@@ -11,7 +11,7 @@
   <label class="gm-4">Widget Area</label>
   <select  id="widget_area" name="widget_area" class="gm-6 g-input">
     <?php
-    foreach (Gila::$widget_area as $value) {
+    foreach (Config::$widget_area as $value) {
       $sel = ($widget->area==$value?'selected':'');
       echo '<option value="'.$value."\" $sel>".ucwords($value).'</option>';
     }
@@ -43,7 +43,7 @@
 <?php
 global $db;
 $widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 1;", $widget->id));
-$widget_folder = 'src/'.Gila::$widget[$widget->widget];
+$widget_folder = 'src/'.Config::$widget[$widget->widget];
 
 $fields = include $widget_folder.'/widget.php';
 if (isset($options)) {
@@ -55,5 +55,5 @@ if (isset($fields)) {
     $values[$key] = isset($widget_data->$key)?$widget_data->$key:'';
   }
 }
-echo gForm::html($fields, $values, 'option[', ']');
+echo Form::html($fields, $values, 'option[', ']');
 echo "</form>";

@@ -1,18 +1,13 @@
 <?php
-namespace core\models;
+namespace Gila;
 
-use Gila;
-use Session;
-use Event;
-use Db;
-
-class user
+class User
 {
   public static function create($email, $password, $name = '', $active = 1)
   {
     global $db;
     if (Event::get('validateUserPassword', true, $password)===true) {
-      $pass = ($password===null)? '': Gila::hash($password);
+      $pass = ($password===null)? '': Config::hash($password);
       $db->query("INSERT INTO user(email,pass,username,active)
         VALUES(?,?,?,?);", [$email, $pass, $name, $active]);
       return $db->insert_id;
@@ -119,7 +114,7 @@ class user
   {
     global $db;
     if (Event::get('validateUserPassword', true, $pass)===true) {
-      $db->query("UPDATE user SET pass=? where id=?;", [Gila::hash($pass),$id]);
+      $db->query("UPDATE user SET pass=? where id=?;", [Config::hash($pass),$id]);
       return true;
     } else {
       return false;
@@ -151,7 +146,7 @@ class user
 
     $response = User::metaList($id, 'privilege'); // DEPRECATED since 1.9.0
     $roles = User::metaList($id, 'role');
-    $rp = Gila::config('permissions');
+    $rp = Config::config('permissions');
     if ($id != 0) {
       foreach ($roles as $role) {
         if (isset($rp[$role])) {

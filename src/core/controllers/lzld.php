@@ -1,7 +1,10 @@
 <?php
+use Gila\Config;
+use Gila\View;
+use Gila\Menu;
+use Gila\Widget;
 
-
-class lzld extends Controller
+class lzld extends Gila\Controller
 {
   public function indexAction()
   {
@@ -10,7 +13,7 @@ class lzld extends Controller
   public function widgetAction($id)
   {
     global $widget_data;
-    $widget = core\models\Widget::getById($id);
+    $widget = Widget::getById($id);
 
     if ($widget) {
       if ($widget->active==1) {
@@ -68,6 +71,6 @@ class lzld extends Controller
 
   public function amenuAction()
   {
-    echo Menu::getHtml(Gila::$amenu, $_GET['base'] ?? 'admin');
+    echo Menu::getHtml(Config::$amenu, $_GET['base'] ?? 'admin');
   }
 }

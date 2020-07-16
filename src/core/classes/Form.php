@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class Form
 {
   private static $html;
@@ -71,7 +73,7 @@ class Form
     $label = ucwords(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
-    $label = __($label);
+    $label = Config::tr($label);
     if ($label=='') {
       $label='&nbsp;';
     }
@@ -109,7 +111,7 @@ class Form
 
   public static function addInputType($index, $value)
   {
-    Gila::addList($index, $value);
+    Config::addList($index, $value);
     if (!isset(self::$input_type)) {
       self::initInputTypes();
     }
@@ -225,7 +227,7 @@ class Form
       },
       "language"=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';
-        $res = include('src/core/lang/languages.php');
+        $res = include 'src/core/lang/languages.php';
         foreach ($res as $key=>$r) {
           $html .= '<option value="'.$key.'"'.($key==$ov?' selected':'').'>'.$r.'</option>';
         }
@@ -264,16 +266,16 @@ class Form
       }
     ];
 
-    foreach (Gila::getList('input-type') as $type=>$value) {
+    foreach (Config::getList('input-type') as $type=>$value) {
       self::$input_type[$type] = $value;
     }
     /* CONTENT
     if($type=='content') {
       $table = $op['table'];
-      $tablesrc = explode('.', Gila::$content[$table])[0];
+      $tablesrc = explode('.', Config::$content[$table])[0];
       include __DIR__.'/content.php';
     }*/
   }
 }
 
-class_alias('Form', 'gForm');
+class_alias('Gila\\Form', 'gForm');

@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class View
 {
   private static $script = [];
@@ -156,7 +158,7 @@ class View
     if ($gpt = Router::request('g_preview_theme')) {
       return 'themes/'.$gpt;
     }
-    return 'themes/'.Gila::config('theme');
+    return 'themes/'.Config::config('theme');
   }
 
   public static function renderAdmin($file, $package = 'core')
@@ -207,8 +209,8 @@ class View
   {
     $controller = Router::getController();
     $action = Router::getAction();
-    if (isset(Gila::$onaction[$controller][$action])) {
-      foreach (Gila::$onaction[$controller][$action] as $fn) {
+    if (isset(Config::$onaction[$controller][$action])) {
+      foreach (Config::$onaction[$controller][$action] as $fn) {
         $fn();
       }
     }
@@ -255,6 +257,7 @@ class View
     if (isset(self::$view_file[$file])) {
       return 'src/'.self::$view_file[$file].'/views/'.$file;
     }
+    // DEPRECATED the rest
 
     $tpath = self::getThemePath().'/'.$file;
     if (file_exists($tpath)) {
@@ -305,7 +308,7 @@ class View
   public static function widget($id, $widget_exp=null)
   {
     global $db,$widget_data;
-    if ($res = core\models\Widget::getById($id)) {
+    if ($res = Widget::getById($id)) {
       $widget_data = json_decode($res[0]->data);
       $widget_type = $res[0]->widget;
     } else {
@@ -316,8 +319,8 @@ class View
     $widget_file = self::getThemePath().'/widgets/'.$widget_type.'.php';
 
     if (file_exists($widget_file) === false) {
-      @$widget_file = "src/".Gila::$widget[$type]."/$type.php";
-      if (!isset(Gila::$widget[$type])) {
+      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      if (!isset(Config::$widget[$type])) {
         if ($type==='text') {
           $widget_file = "src/core/widgets/text/text.php";
         } else {
@@ -326,7 +329,7 @@ class View
       }
     }
 
-    $dir = Gila::dir(LOG_PATH.'/cache0/widgets/');
+    $dir = Config::dir(LOG_PATH.'/cache0/widgets/');
     $_file = $dir.$widget_data->widget_id;
     if (file_exists($_file)) {
       include $_file;
@@ -356,8 +359,8 @@ class View
       $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
     }
     if (file_exists($widget_file) === false) {
-      @$widget_file = "src/".Gila::$widget[$type]."/$type.php";
-      if (!isset(Gila::$widget[$type])) {
+      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      if (!isset(Config::$widget[$type])) {
         echo "Widget <b>".$type."</b> is not found";
       }
     }
@@ -412,7 +415,7 @@ class View
   */
   public static function widgetArea($area, $div=true, $type=null, $widget_file=null)
   {
-    $widgets = core\models\Widget::getActiveByArea($area);
+    $widgets = Widget::getActiveByArea($area);
     if ($widgets) {
       foreach ($widgets as $widget) {
         if ($type != null) {
@@ -469,7 +472,7 @@ class View
       return false;
     }
 
-    if (Gila::config('use_webp')) {
+    if (Config::config('use_webp')) {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;

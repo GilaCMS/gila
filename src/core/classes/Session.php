@@ -1,6 +1,6 @@
 <?php
 
-use core\models\User;
+namespace Gila;
 
 class Session
 {
@@ -233,7 +233,7 @@ class Session
       $pri=explode(' ', $pri);
     }
     if (!isset($GLOBALS['user_privileges'])) {
-      $GLOBALS['user_privileges'] = core\models\User::permissions(Session::userId());
+      $GLOBALS['user_privileges'] = User::permissions(Session::userId());
     }
 
     foreach ($pri as $p) {

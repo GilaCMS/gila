@@ -1,15 +1,19 @@
 <?php
-use core\models\Page;
-use core\models\Post;
+use Gila\Page;
+use Gila\Post;
+use Gila\Config;
+use Gila\View;
+use Gila\Event;
+use Gila\Router;
 
-class blocks extends Controller
+class blocks extends Gila\Controller
 {
   private static $draft = false;
 
   public function __construct()
   {
     self::admin();
-    Gila::addLang('core/lang/admin/');
+    Config::addLang('core/lang/admin/');
   }
 
   public function indexAction()
@@ -49,13 +53,13 @@ class blocks extends Controller
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id);
     if ($type = $widgets[$pos]['_type']) {
-      $widget_folder = 'src/'.Gila::$widget[$type];
+      $widget_folder = 'src/'.Config::$widget[$type];
       $fields = include $widget_folder.'/widget.php';
       $widget_data = $_POST['option'] ?? [];
 
       foreach ($widget_data as $key=>$value) {
         $allowed = $fields[$key]['allow_tags'] ?? false;
-        $widget_data[$key] = HtmlInput::purify($widget_data[$key], $allowed);
+        $widget_data[$key] = Gila\HtmlInput::purify($widget_data[$key], $allowed);
       }
       $widget_data['_type'] = $type;
       $widgets[$pos] = $widget_data;
@@ -118,7 +122,7 @@ class blocks extends Controller
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id)??[];
     $new = ['_type'=>$_POST['type']];
-    $widget_folder = 'src/'.Gila::$widget[$_POST['type']];
+    $widget_folder = 'src/'.Config::$widget[$_POST['type']];
     $fields = include $widget_folder.'/widget.php';
     foreach ($fields as $key=>$field) {
       if (isset($field['default'])) {
@@ -149,7 +153,7 @@ class blocks extends Controller
     $content = Router::get('t', 1);
     $id = Router::get('id', 2);
     $blocks = self::readBlocks($content, $id);
-    if ($content=="page" && $r = Page::getByIdSlug($id)) {
+    if ($content=="page" && $r = Page::getByIdSlug($id, false)!==false) {
       View::set('title', $r['title']);
       View::set('text', $r['page'].View::blocks($blocks, true));
       if ($r['template']==''||$r['template']===null) {
@@ -213,7 +217,7 @@ class blocks extends Controller
   {
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
     $json = json_encode($blocks);
-    Gila::dir(LOG_PATH.'/blocks/');
+    Config::dir(LOG_PATH.'/blocks/');
     file_put_contents($draftFile, $json);
   }
 

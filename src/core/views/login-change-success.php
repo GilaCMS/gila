@@ -8,7 +8,7 @@
         </div>
         <h3><?=__('reset_pass_success')?></h3>
       </div>
-      <a class="btn btn-success btn-block" href="<?=Gila::url('login')?>"><?=__('Log In')?></a>
+      <a class="btn btn-success btn-block" href="<?=Config::url('login')?>"><?=__('Log In')?></a>
     </div>
   </div>
 

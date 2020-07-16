@@ -1,10 +1,11 @@
 
 <?php
 
-include(__DIR__.'/includes.php');
-include(__DIR__.'/../../src/core/classes/Table.php');
-include(__DIR__.'/../../src/core/classes/TableSchema.php');
+include __DIR__.'/includes.php';
+include __DIR__.'/../../src/core/classes/Table.php';
+include __DIR__.'/../../src/core/classes/TableSchema.php';
 use PHPUnit\Framework\TestCase;
+use Gila\TableSchema;
 
 class TableSchemaTest extends TestCase
 {

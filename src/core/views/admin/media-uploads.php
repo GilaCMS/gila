@@ -1,5 +1,5 @@
 <?php
-$upload_folder = Gila::config('media_uploads') ?? 'assets';
+$upload_folder = Config::config('media_uploads') ?? 'assets';
 $path = Router::request('path', Session::key('media_path') ?? $upload_folder);
 if ($path[0]=='.') {
   $path = $upload_folder;
@@ -26,7 +26,7 @@ array_splice($path_array, count($path_array)-1);
 $uppath=implode('/', $path_array);
 $path = rtrim($path, '/');
 View::script('core/admin/media.js');
-View::script('core/lang/content/'.Gila::config('language').'.js');
+View::script('core/lang/content/'.Config::config('language').'.js');
 ?>
 
 <div id='admin-media-div'><div class='fullwidth inline-flex' style="gap:0.2em">
@@ -36,7 +36,7 @@ View::script('core/lang/content/'.Gila::config('language').'.js');
 <?php if (Session::hasPrivilege('admin upload_assets')) { ?>
   <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
   accept="image/*,video/*,audio/*" onchange='gallery_upload_files()'
-  multiple data-path="<?=$path?>" data-csrf="<?=gForm::getToken()?>">
+  multiple data-path="<?=$path?>" data-csrf="<?=Form::getToken()?>">
 <?php } ?>
   <span class="g-group-item fullwidth" style="position:relative;padding:0">
     <input class='g-input input-filter fullwidth' style="margin:0" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>

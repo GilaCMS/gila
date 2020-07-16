@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 /**
  * Describes a logger instance
  * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md

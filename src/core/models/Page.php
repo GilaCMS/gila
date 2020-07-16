@@ -1,5 +1,5 @@
 <?php
-namespace core\models;
+namespace Gila;
 
 class Page
 {
@@ -14,14 +14,15 @@ class Page
   }
 
 
-  public static function getByIdSlug($id)
+  public static function getByIdSlug($id, $published=true)
   {
     global $db;
-    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug,template FROM `page` WHERE publish=1 AND (id=? OR slug=?);", [$id,$id]);
+    $publish = $published? 'publish=1 AND': '';
+    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug,template FROM `page` WHERE $publish (id=? OR slug=?);", [$id,$id]);
     if ($row = mysqli_fetch_array($res)) {
       if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
-        $row['page'] .= \View::blocks($blocks);
+        $row['page'] .= View::blocks($blocks);
       }
       return $row;
     }

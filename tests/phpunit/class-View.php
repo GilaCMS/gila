@@ -1,14 +1,17 @@
 <?php
 
-include(__DIR__.'/includes.php');
-include(__DIR__.'/../../src/core/classes/Image.php');
+include __DIR__.'/includes.php';
+include __DIR__.'/../../src/core/classes/Image.php';
 use PHPUnit\Framework\TestCase;
+use Gila\FileManager;
+use Gila\View;
+use Gila\Config;
 
 class ClassView extends TestCase
 {
 	public function test_getWidgetBody()
 	{
-		Gila::widgets(['paragraph'=>'core/widgets/paragraph']);
+		Config::widgets(['paragraph'=>'core/widgets/paragraph']);
 		$html = View::getWidgetBody('paragraph', ['text'=>'Hello world']);
 		$this->assertEquals('<p>Hello world</p>', $html);
 	}

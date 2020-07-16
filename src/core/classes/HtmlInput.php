@@ -1,4 +1,5 @@
 <?php
+namespace Gila;
 
 class HtmlInput
 {
@@ -27,7 +28,7 @@ class HtmlInput
 
   public function DOMSanitize($value)
   {
-    $dom = new DOMDocument;
+    $dom = new \DOMDocument;
     $dom->loadHTML($value);
     $tags = $dom->getElementsByTagName('*');
     foreach ($tags as $tag) {

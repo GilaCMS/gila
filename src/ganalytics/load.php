@@ -1,7 +1,7 @@
 <?php
 
 Event::listen('head', function () {
-  $trackingID = Gila::option('ganalytics.trackingID');
+  $trackingID = Config::option('ganalytics.trackingID');
   if ($trackingID=='') {
     return;
   } ?>

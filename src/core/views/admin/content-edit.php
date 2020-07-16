@@ -14,7 +14,7 @@ View::script('core/admin/content.js');
 if (file_exists('src/'.$tablesrc.'.js')) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
 }
-View::script('core/lang/content/'.Gila::config('language').'.js');
+View::script('core/lang/content/'.Config::config('language').'.js');
 View::script('core/admin/vue-components.js');
 View::script('core/admin/vue-editor.js');
 ?>
@@ -27,7 +27,7 @@ View::script('core/admin/vue-editor.js');
 
 <?php
 global $db;
-$pnk = new Table($table, core\models\User::permissions(Session::userId()));
+$pnk = new Table($table, Gila\User::permissions(Session::userId()));
 $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];
@@ -43,7 +43,7 @@ $pages_path[] = View::getThemePath().'/pages/';
 if (View::$parent_theme) {
   $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
 }
-$pages_path = array_merge($pages_path, Gila::packages());
+$pages_path = array_merge($pages_path, Config::packages());
 $pages_path[] = 'src/core/templates/';
 foreach ($pages_path as $path) {
   if (file_exists($path)) {
@@ -63,9 +63,9 @@ echo '<form id="'.$table.'-edit-item-form" data-table="'.$table.'" data-id="'.$i
 if ($id) {
   $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()} WHERE id=$id;";
   $res = $db->get($ql)[0];
-  echo gForm::html($pnk->getFields('edit'), $res);
+  echo Form::html($pnk->getFields('edit'), $res);
 } else {
-  echo gForm::html($pnk->getFields('edit'));
+  echo Form::html($pnk->getFields('edit'));
 }
 echo '</div></form>';
 
@@ -98,8 +98,8 @@ g_tinymce_options = {
 }
 g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templates:[])); ?>;
 
-base_url = "<?=Gila::config('base')?>"
-g_tinymce_options.document_base_url = "<?=Gila::config('base')?>"
+base_url = "<?=Config::config('base')?>"
+g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
 
 transformClassComponents()
 

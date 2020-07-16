@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class UserAgent
 {
   public function info($user_agent = null)

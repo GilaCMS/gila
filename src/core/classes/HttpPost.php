@@ -1,5 +1,7 @@
 <?php
 
+namespace Gila;
+
 class HttpPost
 {
   private static $prefix = [];

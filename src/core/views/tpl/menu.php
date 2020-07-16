@@ -1,6 +1,6 @@
 <ul class="g-nav">
 <?php
-use core\models\Page;
+use Gila\Page;
 
 $menu_items = $menu_data['children'];
 

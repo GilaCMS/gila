@@ -218,7 +218,7 @@ tr.selected td {
 }
 
 .g-sorti {
-  opacity: 0.3;
+  opacity: 0.4;
 }
 
 th:hover .g-sorti, .sort-desc, .sort-asc {
@@ -396,7 +396,7 @@ td[col] .g-input {
 }
 @media only screen and (min-width:1000px){
   .g-table .com-btn i {
-    opacity: 0.3;
+    opacity: 0.4;
   }  
 }
 
