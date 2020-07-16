@@ -107,7 +107,7 @@ class Package
         }
 
         if ($require===[] && $require_op===[]) {
-          if (!in_array($activate, $GLOBALS['config']['packages'])) {
+          if (!in_array($activate, $GLOBALS['config']['packages']) && $activate!=='core') {
             $GLOBALS['config']['packages'][]=$activate;
           }
           self::copyAssets($activate);
