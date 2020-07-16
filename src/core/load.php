@@ -1,4 +1,5 @@
 <?php
+
 use Gila\Config;
 use Gila\Router;
 use Gila\View;

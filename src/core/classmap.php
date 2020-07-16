@@ -7,6 +7,7 @@ return [
   'Gila\\Event'=> 'src/core/classes/Event.php',
   'Gila\\FileManager'=> 'src/core/classes/FileManager.php',
   'Gila'=> 'src/core/classes/Config.php',
+  'gila'=> 'src/core/classes/Config.php',
   'gForm'=> 'src/core/classes/Form.php',
   'gTable'=> 'src/core/classes/Table.php',
   'Gila\\Form'=> 'src/core/classes/Form.php',

@@ -547,3 +547,4 @@ class Config
 
 class_alias('Gila\\Config', 'Gila\\Gila');
 class_alias('Gila\\Config', 'Gila');
+class_alias('Gila\\Config', 'gila');

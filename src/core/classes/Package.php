@@ -369,7 +369,10 @@ class Package
     global $db;
     $file = LOG_PATH.'/load.php';
     $contents = '<?php';
-    $packages = array_merge(['core'], Config::packages());
+    $packages = Config::packages();
+    if (!in_array('core', $packages)) {
+      $packages = array_merge(['core'], $packages);
+    }
     foreach ($packages as $package) {
       $handle = @fopen("src/$package/load.php", "r");
       if ($handle) {
