@@ -60,7 +60,7 @@ if (file_exists('vendor/autoload.php')) {
 }
 
 $GLOBALS['config'] = [];
-@require_once CONFIG_PHP;
+@include_once CONFIG_PHP;
 if($GLOBALS['config'] === []) {
   if (isset($_GET['install'])) {
     include 'src/core/install/index.php';

@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     echo "</div>";
   } else {
-    $db = new Db($host, $db_user, $db_pass, $db_name);
+    $db = new Gila\Db($host, $db_user, $db_pass, $db_name);
     include __DIR__."/install.sql.php";
     // create config.php
     $filedata = file_get_contents('config.default.php');
@@ -83,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents($configfile, $filedata);
-    Package::copyAssets('core');
-    Theme::copyAssets('gila-blog');
+    Gila\Package::copyAssets('core');
+    Gila\Theme::copyAssets('gila-blog');
     @unlink(LOG_PATH.'/load.php');
     include __DIR__."/installed.php";
     exit;
