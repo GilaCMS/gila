@@ -415,18 +415,28 @@ textare.g-input, .g-input[type=text] {
     margin-left:37.5%;
     width:33%;
   }
-  .gila-popup.large{
+  .gila-popup.large, .gila-popup.overlay{
     margin-left:10%;
     width:80%;
+  }
+  .gila-popup.overlay{
+    top:0;
+    height:100%;
+    max-height: inherit;
+    animation-name: none;
   }
 }
 
 @media only screen and (min-width:1024px){
-  .gila-popup.large{
+  .gila-popup.large, .gila-popup.overlay{
     top:10%;
     left:50%;
     margin-left:-450px;
     width:900px;
+  }
+  .gila-popup.overlay{
+    top:0;
+    height:100%;
   }
   .g-nav.hover li:hover>ul{display:block;}
 }

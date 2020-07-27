@@ -10,7 +10,7 @@ class Db
   private $user;
   private $pass;
   private $dsch;
-  private $connected;
+  private $connected = false;
   private $link;
   public $insert_id;
   public $result;
@@ -31,7 +31,6 @@ class Db
       $this->pass = $pass;
       $this->dsch = $dsch;
     }
-    $this->connected = false;
   }
 
   public function connect()

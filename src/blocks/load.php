@@ -1,7 +1,6 @@
 <?php
-use Gila\Gila;
 
-Config::controller('blocks', 'blocks/controllers/blocks', 'blocks');
+Router::controller('blocks', 'blocks/controllers/blocks', 'blocks');
 
 Config::contentInit('page', function (&$table) {
   $table['commands'][]='blocks';

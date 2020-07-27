@@ -12,21 +12,26 @@
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
 <?=View::css('blocks/blocks.css')?>
+<?=View::cssAsync('core/gila.min.css')?>
 <?=View::cssAsync('core/admin/vue-editor.css')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 
 <?php
-global $db;
-$title = $db->value("SELECT title FROM $contentType WHERE id=?;", [$id]);
+if(isset($title)) {
+  echo '<h2>'.htmlentities($title).'</h2>';
+  $mainGrid = 'grid-template-columns:1fr 240px';
+  $clickToEdit = "";
+} else {
+  $mainGrid = 'grid-template-columns:1fr 68px';
+  $clickToEdit = "@click='block_edit(\"".$cid."\"+pos ,w._type)'";
+}
 ?>
 
-<h2><?=htmlentities($title)?></h2>
-
-<div style="display:grid; grid-template-columns:1fr 240px">
+<div style="display:grid; <?=$mainGrid?>">
 
   <div>
     <iframe src="blocks/display?t=<?=$contentType?>&id=<?=$id?>" id="blocks_preview"
-    style="width:100%; height:80vh; border:1px solid lightgrey"></iframe>
+    style="width:100%; height:100vh; border:1px solid lightgrey"></iframe>
   </div>
 
 <?php
@@ -34,21 +39,22 @@ $cid = $contentType.'_'.$id.'_';
 ?>
 
   <div class="block-container"
-  style_="position:absolute; right:0;top:0;bottom:0;width:200px; background:grey">
-  <div id="content_blocks_list" style="padding:10px" v-drag-and-drop:options="ddoptions">
+  style_="position:absolute; right:0;top:0;bottom:0;width:auto; background:grey; overflow-y:scroll;max-height:70vh">
+  <div id="content_blocks_list" style="padding:0" v-drag-and-drop:options="ddoptions">
     <div v-if="draft" style="margin-left:2em">
-      <button class='g-btn' @click='block_save()'>Save</button>
-      &nbsp;<button class='g-btn-white' @click='block_discard()'>Discard Draft</button>
+      <button class='g-btn' @click='block_save()'><?=(isset($title)?__('Save'):'<i class="fa fa-save"></i>')?></button>
+      <?=(isset($title)?'&nbsp;':'')?>
+      <button class='g-btn-white' @click='block_discard()'><?=(isset($title)?__('Discard Draft'):'<i class="fa fa-trash"></i>')?></button>
       <br>
     </div>
     <div v-for="(w, pos) in blocks" class="block-li" :data-pos="pos">
       <button v-if="pos>0" class='btn-arrows-v' @click='block_pos("<?=$cid?>"+pos, pos-1)'>
         <i class='fa fa-arrows-v'></i>
       </button>
-      <div class="block-div" @mouseover="blocks_preview.src='blocks/display?t=<?=$contentType?>&id=<?=$id?>#w'+pos">
+      <div class="block-div" @mouseover="blocks_preview.src='blocks/display?t=<?=$contentType?>&id=<?=$id?>#w'+pos" <?=$clickToEdit?>>
         <div v-html="blockIcon(w._type)" class="first-div"></div>
-        <div :class="blockTitleClass(w)"> {{blockTitle(w)}}</div>
-        <button class='btn-edit' @click='block_edit("<?=$cid?>"+pos ,w._type)'>
+        <div :class="blockTitleClass(w)" v-if="<?=(isset($title)?'true':'false')?>"> {{blockTitle(w)}}</div>
+        <button v-if="<?=(isset($title)?'true':'false')?>" class='btn-edit' @click='block_edit("<?=$cid?>"+pos ,w._type)'>
           <i class='fa fa-pencil'></i>
         </button>
       </div>

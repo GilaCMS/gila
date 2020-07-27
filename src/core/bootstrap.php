@@ -6,6 +6,14 @@ use Gila\Event;
 use Gila\Db; 
 use Gila\Session; 
 
+$starttime = microtime(true);
+function timeDebug($txt) {
+  global $starttime;
+  $end = microtime(true);
+  printf("<br>".$txt." %.6f seconds.", $end - $starttime);
+  $starttime = $end;
+}
+
 $site_folder = 'sites/'.$_SERVER['HTTP_HOST'];
 if (file_exists($site_folder)) {
   define('SITE_PATH', $site_folder.'/');
@@ -18,8 +26,6 @@ if (file_exists($site_folder)) {
   define('CONFIG_PHP', 'config.php');
   define('FS_ACCESS', true);
 }
-
-$starttime = microtime(true);
 
 if (!isset($_GET['url'])) {
   $_GET['url'] = substr($_SERVER['REQUEST_URI'], 1);
@@ -55,8 +61,8 @@ spl_autoload_register(function ($class) {
   }
 });
 
-if (file_exists('vendor/autoload.php')) {
-  $loader = include 'vendor/autoload.php';
+if(file_exists('vendor/autoload.php')) {
+  include_once 'vendor/autoload.php';
 }
 
 $GLOBALS['config'] = [];

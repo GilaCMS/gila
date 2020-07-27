@@ -1,4 +1,5 @@
-<div class="pad">
+<?=View::css('core/gila.min.css')?>
+<div class="pad widget-tags">
 <?php
 $widget_data->n = @$widget_data->n?:12;
 

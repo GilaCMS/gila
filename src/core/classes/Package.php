@@ -183,7 +183,7 @@ class Package
     if (!$package) {
       return false;
     }
-    $zip = new ZipArchive;
+    $zip = new \ZipArchive;
     $target = 'src/'.$package;
     $request = 'https://gilacms.com/packages/?package='.$package;
     $request .= Config::config('test')=='1' && isset($_GET['test']) ? '&test=1' : '';

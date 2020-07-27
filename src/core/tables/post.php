@@ -11,6 +11,7 @@ return [
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish','user_id'],
   'meta_table'=>['postmeta', 'post_id', 'vartype', 'value'],
+  'js'=>['src/core/tables/post.js'],
   'permissions'=>[
     'read'=>['admin','editor'],
     'create'=>['admin','editor'],

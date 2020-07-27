@@ -1,14 +1,10 @@
-<?php
-  echo '<style>';
-  include_once __DIR__.'/style.css';
-  echo '</style>';
-?>
+<?=View::css('core/widgets.css')?>
 <ul class="g-nav vertical five-post">
 <?php
 if (!@class_exists('blog')) {
-  if (file_exists("src/blog/controllers/blog.php")) {
-    include_once "src/blog/controllers/blog.php";
-    new blog();
+  if (file_exists("src/blog/controllers/BlogController.php")) {
+    include_once "src/blog/controllers/BlogController.php";
+    new BlogController();
   } else {
     return;
   }

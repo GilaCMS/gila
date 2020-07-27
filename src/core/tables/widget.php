@@ -18,6 +18,7 @@ return [
     'list'=> ['id','title','widget','area','pos','active'],
     'csv'=> ['id','title','widget','area','pos','active'],
     'lang'=>'core/lang/admin/',
+    'js'=>['src/core/tables/widget.js'],
     'permissions'=>[
         'create'=>['admin'],
         'update'=>['admin'],

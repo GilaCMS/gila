@@ -8,7 +8,6 @@ class Config
   public static $amenu;
   public static $widget_area = [];
   public static $option;
-  public static $privilege;
   public static $content;
   public static $contentField;
   public static $contentInit = [];

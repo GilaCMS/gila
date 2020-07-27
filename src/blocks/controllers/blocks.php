@@ -18,6 +18,21 @@ class blocks extends Gila\Controller
 
   public function indexAction()
   {
+    global $db;
+    $table = Router::request('t');
+    $id = Router::get('id', 2);
+    $widgets = self::readBlocks($table, $id);
+    $title = $db->value("SELECT title FROM $table WHERE id=?;", [$id]);
+    View::set('contentType', $table);
+    View::set('id', $id);
+    View::set('isDraft', self::$draft);
+    View::set('widgets', $widgets);
+    View::set('title', $title);
+    View::renderAdmin("content-block.php", "blocks");
+  }
+
+  public function popupAction()
+  {
     $table = Router::request('t');
     $id = Router::get('id', 2);
     $widgets = self::readBlocks($table, $id);
@@ -25,7 +40,8 @@ class blocks extends Gila\Controller
     View::set('id', $id);
     View::set('isDraft', self::$draft);
     View::set('widgets', $widgets);
-    View::renderAdmin("content-block.php", "blocks");
+    View::head();
+    View::renderFile("content-block.php", "blocks");
   }
 
   public function editAction()
@@ -153,7 +169,7 @@ class blocks extends Gila\Controller
     $content = Router::get('t', 1);
     $id = Router::get('id', 2);
     $blocks = self::readBlocks($content, $id);
-    if ($content=="page" && $r = Page::getByIdSlug($id, false)!==false) {
+    if ($content=="page" && $r = Page::getByIdSlug($id, false) && $r!==false) {
       View::set('title', $r['title']);
       View::set('text', $r['page'].View::blocks($blocks, true));
       if ($r['template']==''||$r['template']===null) {
@@ -162,7 +178,7 @@ class blocks extends Gila\Controller
         View::renderFile('page--'.$r['template'].'.php');
       }
       echo '<style>html{scroll-behavior: smooth;}</style>';
-    } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
+    } elseif ($content=="post" && $r = Post::getByIdSlug($id) && $r!==false) {
       View::set('title', $r['title']);
       View::set('text', $r['post'].View::blocks($blocks, true));
       View::render('single-post.php');

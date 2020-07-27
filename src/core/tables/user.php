@@ -9,6 +9,7 @@ return [
   'id'=>'id',
   'lang'=>'core/lang/admin/',
   'meta_table'=>['usermeta', 'user_id', 'vartype', 'value'],
+  'js'=>['src/core/tables/user.js'],
   'permissions'=>[
     'read'=>['admin','admin_user'],
     'create'=>['admin','admin_user'],

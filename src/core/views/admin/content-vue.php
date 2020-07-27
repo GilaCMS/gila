@@ -11,8 +11,8 @@ View::css('core/admin/content.css');
 View::cssAsync('core/admin/vue-editor.css');
 View::script('lib/vue/vue.min.js');
 View::script('core/admin/content.js');
-if (file_exists('src/'.$tablesrc.'.js')) {
-  echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>";
+if (file_exists('src/'.$tablesrc.'.js') && !in_array('src/'.$tablesrc.'.js',$t['js'])) {
+  echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>"; // DEPRECATED
 }
 View::scriptAsync('core/lang/content/'.Config::config('language').'.js');
 View::scriptAsync('core/admin/media.js');
@@ -40,7 +40,7 @@ $pages_path = [];
 $templates = [];
 
 foreach ($t['js'] as $js) {
-  View::script($js);
+  echo "<script>".file_get_contents($js)."</script>";
 }
 foreach ($t['css'] as $css) {
   View::css($css);

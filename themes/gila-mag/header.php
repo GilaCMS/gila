@@ -3,6 +3,9 @@
 <?php
 View::stylesheet('core/gila.min.css');
 View::head()?>
+
+<body>
+
 <style>
 <?php $theme_color=Config::option('theme.color','orangered'); ?>
 body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
@@ -30,7 +33,6 @@ footer{background:#464a49;margin-top:10px;color:white}
 li.active{background-color:var(--main-primary-color); color:white;}
 </style>
 
-<body>
   <div  style="max-width:1100px; margin:auto">
     <div class="header">
         <?php View::widgetArea('body'); ?>

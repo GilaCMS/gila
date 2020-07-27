@@ -4,6 +4,9 @@
 View::stylesheet('core/gila.min.css');
 View::stylesheet('lib/font-awesome/css/font-awesome.min.css');
 View::head()?>
+
+<body>
+
 <style>
 body{background:#fcfcfc}
 <?php $theme_color=Config::option('theme.color','orangered');?>
@@ -52,7 +55,6 @@ footer{background:#464a49;margin-top:10px;color:white}
 .g-nav li ul{border-width:0; background: #181818; margin-top:-2px}
 </style>
 
-<body>
     <div class="header" style="padding:0 10px;">
     <div style="max-width:1100px; margin:auto;">
         <?php View::widgetArea('body'); ?>

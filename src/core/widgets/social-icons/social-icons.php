@@ -1,18 +1,5 @@
 <?=View::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
-<style>
-.widget-social-icons {list-style: none;padding:0; display: inline-block}
-.widget-social-icons li{margin: 15px 10px 0 0; float: left; text-align: center; opacity: 0.8}
-.widget-social-icons li a i:before{
-  width: 40px;
-  margin: 0;
-  color: #fff;
-  font-size: 20px;
-  line-height: 40px;
-  display:inline-block;
-  background: #060608;
-}
-</style>
-
+<?=View::css('core/widgets.css')?>
 <ul class="widget-social-icons">
 <?php
 

@@ -1,3 +1,3 @@
 <?php
 
-Gila\Router::controller('blog', 'blog/controllers/BlogController');
+Router::controller('blog', 'blog/controllers/BlogController');

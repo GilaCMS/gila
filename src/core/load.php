@@ -52,10 +52,6 @@ Config::widgets([
 ]);
 Config::$widget_area=['dashboard'];
 
-Config::$privilege['admin']="Administrator access.";
-Config::$privilege['editor']="Can publish or edit posts from other users.";
-Config::$privilege['developer']="Special access in developer tools.";
-
 Config::content('post', 'core/tables/post.php');
 Config::content('user-post', 'core/tables/user-post.php');
 Config::content('postcategory', 'core/tables/postcategory.php');
@@ -66,6 +62,6 @@ Config::content('widget', 'core/tables/widget.php');
 
 Config::addLang('core/lang/');
 
-if (Config::config('use_cdn')=='1') {
+if (Config::config('use_cdn')==='1') {
   View::$cdn_paths = include 'src/core/cdn_paths.php';
 }

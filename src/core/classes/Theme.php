@@ -77,7 +77,7 @@ class Theme
   public static function download($download)
   {
     if ($download) {
-      $zip = new ZipArchive;
+      $zip = new \ZipArchive;
       $target = 'themes/'.$download;
       $request = 'https://gilacms.com/packages/themes?theme='.$download;
       $pinfo = json_decode(file_get_contents($request), true)[0];
