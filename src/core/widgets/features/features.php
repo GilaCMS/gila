@@ -6,7 +6,7 @@
         <h3><?=htmlentities($feature[1])?></h3>
         <p><?=htmlentities($feature[2])?></p>
         <?php if ($feature[3] != '') {
-  echo '<a href="'._url($feature[3]).'">Learn More</a>';
+  echo '<a href="'.htmlentities($feature[3]).'">Learn More</a>';
 } ?>
     </div>
 <?php } ?>

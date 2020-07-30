@@ -10,7 +10,7 @@ class Page
     if ($res) {
       return $r = mysqli_fetch_array($res);
     }
-    return false;
+    return null;
   }
 
 
@@ -26,7 +26,7 @@ class Page
       }
       return $row;
     }
-    return false;
+    return null;
   }
 
   public static function getBySlug($id)

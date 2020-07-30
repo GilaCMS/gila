@@ -382,6 +382,10 @@ class Config
     View::$canonical = self::config('base').Config::url($str);
   }
 
+  public static function base($str = null) {
+    return self::base_url($str);
+  }
+
   public static function base_url($str = null)
   {
     if (!isset(self::$base_url)) {

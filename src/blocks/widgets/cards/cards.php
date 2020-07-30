@@ -1,8 +1,9 @@
+<?=View::css('core/gila.min.css')?>
 <div style="text-align:center">
   <h2><?=$data['heading']?></h2>
   <p><?=$data['text']?></p>
 </div>
-<div class="gm-grid" style="justify-items:center;margin-bottom:1em">
+<div class="gm-grid" style="display:grid; grid-gap:1em; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));justify-items:center;margin-bottom:1em">
 <?php
   foreach (json_decode($data['cards'], true) as $key=>$card) {
     echo '<div class="g-card wrapper bg-white" style="text-align:center;max-width:300px">';

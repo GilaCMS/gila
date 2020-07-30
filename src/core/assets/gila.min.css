@@ -437,6 +437,8 @@ textare.g-input, .g-input[type=text] {
   .gila-popup.overlay{
     top:0;
     height:100%;
+    margin-left:-590px;
+    width:1180px;
   }
   .g-nav.hover li:hover>ul{display:block;}
 }

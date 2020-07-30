@@ -17,6 +17,7 @@
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 
 <?php
+$cid = $contentType.'_'.$id.'_';
 if(isset($title)) {
   echo '<h2>'.htmlentities($title).'</h2>';
   $mainGrid = 'grid-template-columns:1fr 240px';
@@ -33,10 +34,6 @@ if(isset($title)) {
     <iframe src="blocks/display?t=<?=$contentType?>&id=<?=$id?>" id="blocks_preview"
     style="width:100%; height:100vh; border:1px solid lightgrey"></iframe>
   </div>
-
-<?php
-$cid = $contentType.'_'.$id.'_';
-?>
 
   <div class="block-container"
   style_="position:absolute; right:0;top:0;bottom:0;width:auto; background:grey; overflow-y:scroll;max-height:70vh">

@@ -1,3 +1,4 @@
+<?=View::css('core/gila.min.css')?>
 <section class="side-cto" style="align-items: center;display:grid; padding:1em;
 grid-template-columns: repeat(auto-fit, minmax(360px,1fr)); grid-gap: 2em;">
   <div>

@@ -169,16 +169,16 @@ class blocks extends Gila\Controller
     $content = Router::get('t', 1);
     $id = Router::get('id', 2);
     $blocks = self::readBlocks($content, $id);
-    if ($content=="page" && $r = Page::getByIdSlug($id, false) && $r!==false) {
+    if ($content=="page" && $r = Page::getByIdSlug($id, false)) {
       View::set('title', $r['title']);
-      View::set('text', $r['page'].View::blocks($blocks, true));
-      if ($r['template']==''||$r['template']===null) {
+      View::set('text', View::blocks($blocks, true));
+      if ($r['template']===''||$r['template']===null) {
         View::render('page.php');
       } else {
         View::renderFile('page--'.$r['template'].'.php');
       }
-      echo '<style>html{scroll-behavior: smooth;}</style>';
-    } elseif ($content=="post" && $r = Post::getByIdSlug($id) && $r!==false) {
+      echo '<style>html{scroll-behavior: smooth;}[contenteditable]:hover{border:1px dotted orangered}</style>';
+    } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
       View::set('title', $r['title']);
       View::set('text', $r['post'].View::blocks($blocks, true));
       View::render('single-post.php');

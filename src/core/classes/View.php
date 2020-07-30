@@ -6,10 +6,9 @@ class View
 {
   private static $script = [];
   private static $scriptAsync = [];
-  private static $css = [];
-  private static $cssAsync = false;
   private static $meta = [];
   private static $alert = [];
+  public static $css = [];
   public static $part = [];
   public static $stylesheet = [];
   public static $cdn_paths = [];
@@ -85,7 +84,7 @@ class View
   * Adds a link tag of css file
   * @param $css Path to css file
   */
-  public static function css($css, $uri=false)
+  public static function css($css, $prop='')
   {
     if (in_array($css, self::$css)) {
       return;
@@ -94,28 +93,16 @@ class View
     if (file_exists('assets/'.$css)) {
       $css = 'assets/'.$css;
     }
-    echo '<link rel="stylesheet" href="'.$css.'">';
+
+    if (ob_get_level()) {
+      self::$stylesheet[]=$css;
+    }
+    echo '<link rel="stylesheet" href="'.$css.'" '.$prop.'>';
   }
 
-  /**
-  * Loads a css file asynchronously using a simple javascript function
-  * @param $css Path to css file
-  */
   public static function cssAsync($css, $uri=false)
   {
-    if (in_array($css, self::$css)) {
-      return;
-    }
-    self::$css[]=$css;
-    if (file_exists('assets/'.$css)) {
-      $css = 'assets/'.$css;
-    }
-    if (!self::$cssAsync) {
-      self::$cssAsync = true; ?>
-    <script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script>
-    <?php
-    }
-    echo '<script>loadCSS("'.$css.'");</script>';
+    self::css($css, 'media="print" onload="this.media=\'all\'"');
   }
 
   /**
@@ -381,10 +368,8 @@ class View
   public static function getWidgetBody($type, $widget_data=null, $widget_file=null)
   {
     ob_start();
-    View::widgetBody($type, $widget_data, $widget_file);
-    $html = ob_get_contents();
-    ob_end_clean();
-    return $html;
+    self::widgetBody($type, $widget_data, $widget_file);
+    return ob_get_clean();
   }
 
   public static function block($path, $widget_data)
@@ -454,7 +439,7 @@ class View
   public static function getWidgetArea($area)
   {
     ob_start();
-    View::widgetArea($area);
+    self::widgetArea($area);
     $html = ob_get_contents();
     ob_end_clean();
     return $html;
@@ -463,7 +448,7 @@ class View
   public static function img($src, $prefix='', $max=180)
   {
     $pathinfo = pathinfo($src);
-    return '<img src="'._url(self::thumb($src, $prefix, $max)).'">';
+    return '<img src="'.htmlentities(self::thumb($src, $prefix, $max)).'">';
   }
 
   public static function thumb($src, $prefix='', $max=180)
@@ -624,7 +609,7 @@ class View
   {
     $r = [];
     foreach ($sizes as $w) {
-      $r[] = View::thumb($src, $w.'/', $w);
+      $r[] = self::thumb($src, $w.'/', $w);
     }
     return $r;
   }

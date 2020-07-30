@@ -9,7 +9,7 @@
   }
  Event::fire('head.meta');
   foreach (View::$stylesheet as $link) {
-    echo '<link href="'.Config::base_url($link).'" rel="stylesheet">';
+    echo '<link href="'.$link.'" rel="stylesheet">';
   }
  Event::fire('head');
   if (isset(View::$canonical)) {

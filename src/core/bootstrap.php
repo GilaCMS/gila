@@ -82,11 +82,6 @@ function __($key, $alt = null) {
   return Config::tr($key, $alt);
 }
 
-function _url($url) {
-  return str_replace(['\'','"','<','>',':'], ['%27','%22','%3C','%3E','%3A'], $url);
-}
-
-
 if (is_array(Config::config('trusted_domains')) &&
     isset($_SERVER['HTTP_HOST']) &&
     !in_array($_SERVER['HTTP_HOST'], Config::config('trusted_domains'))) {

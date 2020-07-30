@@ -5,7 +5,7 @@
     if ($img[2]) {
       echo '<a href="'.htmlentities($img[2]).'">';
     } ?>
-  <img src="<?=_url(View::thumb_md($img[0]))?>" alt="<?=htmlentities($img[1])?>">
+  <img src="<?=htmlentities(View::thumb($img[0], 400))?>" alt="<?=htmlentities($img[1])?>">
   <?php
     if ($img[2]) {
       echo '</a>';
