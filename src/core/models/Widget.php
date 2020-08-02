@@ -32,6 +32,7 @@ class widget
 
     foreach ($data['option'] as $key=>$value) {
       $allowed = $fields[$key]['allow_tags'] ?? false;
+      $data['option'][$key] = utf8_decode($data['option'][$key]);
       $data['option'][$key] = HtmlInput::purify($data['option'][$key], $allowed);
     }
     $widget_data = isset($data['option']) ? json_encode($data['option']) : '[]';

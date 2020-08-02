@@ -193,10 +193,6 @@ class Theme
         if (isset($data['options'][$key])) {
           $allowed = $data['options'][$key]['allow_tags'] ?? false;
           $value = HtmlInput::purify($value, $allowed);
-          //if(!isset($data['options'][$key]['allow_tags'])
-          //    || $data['options'][$key]['allow_tags']===false) {
-          //  $value=strip_tags($value);
-          //}
           $ql="INSERT INTO `option`(`option`,`value`) VALUES(?, ?) ON DUPLICATE KEY UPDATE `value`=?;";
           $db->query($ql, ['theme.'.$key, $value,$value]);
         }
