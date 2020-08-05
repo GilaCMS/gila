@@ -32,7 +32,7 @@ class HtmlInput
     $dom->loadHTML($value);
 
     $tags = $dom->getElementsByTagName('script');
-    foreach ($tags as $tag) {
+    foreach (iterator_to_array($tags) as $tag) {
       $tag->parentNode->removeChild($tag);
     }
     $tags = $dom->getElementsByTagName('*');
