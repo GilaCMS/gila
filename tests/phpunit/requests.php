@@ -133,6 +133,10 @@ class RequestsTest extends TestCase
     $response = $this->request('blocks/update', 'POST');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"},'.$image.']', $response);
 
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<script >alert(0)</script>Something</p>']];
+    $response = $this->request('blocks/update', 'POST');
+    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"},'.$image.']', $response);
+
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
     $response = $this->request('blocks/update', 'POST');
     $this->assertEquals('[{"text":"<p><a href=\"alert(0)\">Something<\/a><\/p>","_type":"paragraph"},'.$image.']', $response);
