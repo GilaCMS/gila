@@ -135,7 +135,7 @@ class RequestsTest extends TestCase
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<script >alert(0)</script>Something</p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p>alert(0)Something<\/p>","_type":"paragraph"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
     $response = $this->request('blocks/update', 'POST');
@@ -153,6 +153,12 @@ class RequestsTest extends TestCase
     $response = $this->request('blocks/save', 'POST');
     $blocks = $db->value('SELECT blocks from post WHERE id=1;');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $blocks);
+
+    // purify post
+    $_POST = ['id'=>'post_1','post'=>'<script >alert(0)</script>Something</p>'];
+    $response = $this->request('cm/update_rows/post?id=1', 'POST');
+    $blocks = $db->value('SELECT post from post WHERE id=1;');
+    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $post);
   }
 
   static function createUserTable()

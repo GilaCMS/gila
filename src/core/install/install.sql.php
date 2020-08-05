@@ -53,7 +53,7 @@ $wtext2 = '{"text":"<ul><li><a href=\\\\\"https:\\\/\\\/www.facebook.com\\\/gila
 $wtext3 = '{"text":"<ul><li><a href=\\\"https:\\\/\\\/gila-cms.readthedocs.io\\\" target=\\\"_blank\\\">Documentation<\\\/a><\\\/li><li>Join <a href=\\\"https:\\\/\\\/gitter.im\\\/GilaCMS\\\/Lobby\\\" target=\\\\\"_blank\\\">Gitter<\\\/a><\\\/li><li>Subscribe to developers <a href=\\\"https:\\/\\/tinyletter.com\\/gilacms\\\">newsletter<\\/a><\\/li><\\\/ul>"}';
 
 $db->query("INSERT INTO widget(id,widget,title,area,active,pos,data)
-VALUES(1,'core-counters','Start Blogging','dashboard',1,1,'{}'),
+VALUES(1,'core-counters','','dashboard',1,1,'[]'),
 (2,'paragraph','Start Blogging','dashboard',1,2,'".$wtext1."'),
 (3,'paragraph','Support GilaCMS','dashboard',1,3,'".$wtext2."'),
 (4,'paragraph','Get Help','dashboard',1,4,'".$wtext3."');");
