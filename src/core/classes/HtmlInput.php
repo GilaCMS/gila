@@ -31,10 +31,6 @@ class HtmlInput
     $dom = new \DOMDocument;
     $dom->loadHTML($value);
 
-    //$tags = $dom->getElementsByTagName('script');
-    //foreach (iterator_to_array($tags) as $tag) {
-    //  $tag->parentNode->removeChild($tag);
-    //}
     $tags = $dom->getElementsByTagName('*');
     foreach ($tags as $tag) {
       foreach (self::$eventAttributes as $attr) {

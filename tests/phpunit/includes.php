@@ -15,7 +15,7 @@ define('CONFIG_PHP', 'config.php');
 define('FS_ACCESS', true);
 
 $GLOBALS['user_privileges'] = ['admin'];
-$db = new Gila\Db("127.0.0.1", "g_user", "password", "g_db");
+$db = new Gila\Db("127.0.0.1", "guser", "12345", "gila150");
 
 $GLOBALS['lang'] = [];
 function __($key, $alt = null) {

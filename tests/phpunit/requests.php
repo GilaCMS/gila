@@ -103,7 +103,6 @@ class RequestsTest extends TestCase
   {
     global $db;
     Config::controller('blocks', 'blocks/controllers/blocks');
-    Config::controller('cm', 'core/controllers/cm');
     Config::widgets([
       'paragraph'=>'core/widgets/paragraph',
       'image'=>'core/widgets/image']);
@@ -114,7 +113,7 @@ class RequestsTest extends TestCase
     Session::user(self::$userId, 'Test', 'test@mail.com');
     $_POST = ['id'=>'post_1'];
     $response = $this->request('blocks/discard');
-    $db->query('INSERT INTO post SET id=1;');
+    $db->query('REPLACE INTO post SET id=1;');
     $db->query('UPDATE post SET blocks=\'\' WHERE id=1;');
 
     $_GET = ['id'=>'new', 'type'=>'paragraph'];
@@ -154,12 +153,6 @@ class RequestsTest extends TestCase
     $response = $this->request('blocks/save', 'POST');
     $blocks = $db->value('SELECT blocks from post WHERE id=1;');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $blocks);
-
-    // purify post
-    $_POST = ['id'=>'post_1','post'=>'<script >alert(0)</script>Post'];
-    $response = $this->request('cm/update_rows/post?id=1', 'POST');
-    $post = $db->value('SELECT post from post WHERE id=1;');
-    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $post);
   }
 
   static function createUserTable()
