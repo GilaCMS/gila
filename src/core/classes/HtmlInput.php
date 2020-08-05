@@ -30,6 +30,7 @@ class HtmlInput
   {
     $dom = new \DOMDocument;
     $dom->loadHTML($value);
+
     $tags = $dom->getElementsByTagName('*');
     foreach ($tags as $tag) {
       foreach (self::$eventAttributes as $attr) {

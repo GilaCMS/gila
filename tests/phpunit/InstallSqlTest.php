@@ -36,6 +36,6 @@ class InstallSqlTest extends TestCase
 
 		$this->assertEquals(1, $db->value('SELECT COUNT(*) FROM user'));
 		$this->assertEquals(1, $db->value('SELECT COUNT(*) FROM userrole'));
-		$this->assertEquals(3, $db->value('SELECT COUNT(*) FROM widget'));
+		$this->assertEquals(4, $db->value('SELECT COUNT(*) FROM widget'));
   }
 }

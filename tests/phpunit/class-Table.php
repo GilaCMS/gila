@@ -59,4 +59,18 @@ class ClassTable extends TestCase
     $this->assertEquals(['orange','apple'], $Table->getMeta(1, 'fruit'));
     $this->assertEquals(['red'], $Table->getMeta(1)['color']);
   }
+
+  public function test_purifyHtml()
+  {
+    global $db;
+    Gila\Config::content('post','core/tables/post.php');
+    $Table = new Gila\Table('post');
+    $data = ['post'=>'<script>alert(0)</script>Post','slug'=>'post1'];
+
+    $db->query('REPLACE INTO post SET id=1;');
+    $db->query('UPDATE post SET post=\'\' WHERE id=1;');
+    $res = $db->query("UPDATE {$Table->name()}{$Table->set($data)} WHERE {$Table->id()}=1;");
+    $post = $db->value('SELECT post from post WHERE id=1;');
+    $this->assertEquals('<p>Post</p>', $post);
+  }
 }

@@ -283,7 +283,7 @@ class Table
     if ($fields===null) {
       $fields=$_POST;
     }
-    foreach (@$this->table['filters'] as $k=>$f) {
+    if(isset($this->table['filters'])) foreach ($this->table['filters'] as $k=>$f) {
       if (isset($fields[$k])) {
         // should check if $fields[$k] validates the filter restrictions
         $fields[$k]=$f;

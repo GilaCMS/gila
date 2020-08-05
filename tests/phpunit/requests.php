@@ -113,7 +113,7 @@ class RequestsTest extends TestCase
     Session::user(self::$userId, 'Test', 'test@mail.com');
     $_POST = ['id'=>'post_1'];
     $response = $this->request('blocks/discard');
-    $db->query('INSERT INTO post SET id=1;');
+    $db->query('REPLACE INTO post SET id=1;');
     $db->query('UPDATE post SET blocks=\'\' WHERE id=1;');
 
     $_GET = ['id'=>'new', 'type'=>'paragraph'];
@@ -132,6 +132,10 @@ class RequestsTest extends TestCase
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p  onclick="alert(0)">Something</p>']];
     $response = $this->request('blocks/update', 'POST');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"},'.$image.']', $response);
+
+    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<script >alert(0)</script>Something</p>']];
+    $response = $this->request('blocks/update', 'POST');
+    $this->assertEquals('[{"text":"<p>alert(0)Something<\/p>","_type":"paragraph"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
     $response = $this->request('blocks/update', 'POST');
