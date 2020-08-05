@@ -52,14 +52,14 @@ class Menu
         $childrenHtml .= Menu::getHtml($item['children'], $base);
         $childrenHtml .= "</ul>";
         //$childrenHtml .= "</ul>";
-        if(self::$active===true) {
+        if (self::$active===true) {
           self::$active = false;
           $liClass .= ' active';
         }
       } else {
         $childrenHtml = '';
       }
-      if($url==$base) {
+      if ($url==$base) {
         self::$active = true;
         $liClass .= ' active';
       }

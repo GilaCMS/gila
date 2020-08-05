@@ -1,13 +1,14 @@
 <?php
 
-use Gila\Config; 
-use Gila\Router; 
-use Gila\Event; 
-use Gila\Db; 
-use Gila\Session; 
+use Gila\Config;
+use Gila\Router;
+use Gila\Event;
+use Gila\Db;
+use Gila\Session;
 
 $starttime = microtime(true);
-function timeDebug($txt) {
+function timeDebug($txt)
+{
   global $starttime;
   $end = microtime(true);
   printf("<br>".$txt." %.6f seconds.", $end - $starttime);
@@ -55,19 +56,19 @@ spl_autoload_register(function ($class) {
     class_alias('Gila\\'.$Class, $class);
   } elseif (file_exists('src/'.$class.'.php')) {
     require_once 'src/'.$class.'.php';
-    if(in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
-      class_alias('Gila\\'.substr($class,12), strtr($class, ['/'=>'\\']));
+    if (in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
+      class_alias('Gila\\'.substr($class, 12), strtr($class, ['/'=>'\\']));
     }
   }
 });
 
-if(file_exists('vendor/autoload.php')) {
+if (file_exists('vendor/autoload.php')) {
   include_once 'vendor/autoload.php';
 }
 
 $GLOBALS['config'] = [];
 @include_once CONFIG_PHP;
-if($GLOBALS['config'] === []) {
+if ($GLOBALS['config'] === []) {
   if (isset($_GET['install'])) {
     include 'src/core/install/index.php';
   } else {
@@ -78,7 +79,8 @@ if($GLOBALS['config'] === []) {
 
 
 $GLOBALS['lang'] = [];
-function __($key, $alt = null) {
+function __($key, $alt = null)
+{
   return Config::tr($key, $alt);
 }
 
