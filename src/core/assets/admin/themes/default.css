@@ -1,0 +1,30 @@
+:root {
+  --sidebar-width: 120px;
+  ---sidebar-width: -120px;
+  --main-dark-color: #101621;
+}
+#sidebar-wrapper .g-nav{
+  text-align:center;
+  font-size:80%;
+}
+#sidebar-wrapper .g-nav>li a{
+  color: #999;
+}
+#sidebar-wrapper .g-nav>li>a>i{
+  font-size:2.6em;
+  display:block;
+  margin: 4px auto;
+  position: relative;
+  color: #333;
+}
+#sidebar-wrapper .g-nav li ul{
+  text-align:left;
+  font-size:100%;
+  min-width: 200px;
+}
+#sidebar-wrapper .g-nav>li a:hover i{
+  transition-duration: 0.4s;
+  color: #999;
+}
+.vertical li.active{border-left:none}
+.g-nav li.dropdown>a:after{content:none;display:none;}

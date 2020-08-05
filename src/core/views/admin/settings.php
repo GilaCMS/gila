@@ -1,5 +1,5 @@
 <?php
-$config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email', 'admin_theme'=>'Admin Theme'];
+$config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email'];
 foreach ($_POST as $key=>$value) {
   $_POST[$key] = strip_tags($value);
 }
@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::config('timezone', $_POST['gila_timezone']);
   Config::config('language', $_POST['gila_language']);
   Config::config('admin_logo', $_POST['gila_admin_logo']);
+  Config::config('admin_theme', $_POST['gila_admin_theme']);
   Config::config('favicon', $_POST['gila_favicon']);
   Config::config('env', $_POST['gila_env']);
   Config::config('check4updates', $_POST['gila_check4updates']);
