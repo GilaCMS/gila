@@ -65,7 +65,7 @@ class ClassTable extends TestCase
     global $db;
     Gila\Config::content('post','core/tables/post.php');
     $Table = new Gila\Table('post');
-    $data = ['post'=>'<script>alert(0)</script>Post','slug'=>'post1'];
+    $data = ['post'=>'<p><script>alert("xss")</script>Post</p>','slug'=>'post1'];
 
     $db->query('REPLACE INTO post SET id=1;');
     $db->query('UPDATE post SET post=\'\' WHERE id=1;');
