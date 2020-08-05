@@ -4,6 +4,8 @@ namespace Gila;
 
 class Menu
 {
+  private static $active = false;
+
   public static function defaultData()
   {
     global $db;
@@ -23,6 +25,7 @@ class Menu
   public static function getHtml($items, $base="")
   {
     $html = "";
+    self::$active = false;
     foreach ($items as $key => $item) {
       if (isset($item['access'])) {
         if (!Session::hasPrivilege($item['access'])) {
@@ -42,16 +45,28 @@ class Menu
           $badge = " <span class=\"g-badge\">$c</span>";
         }
       }
-      $liClass = isset($item['children'])? ' class="dropdown"': '';
+      $liClass = '';
+      if (isset($item['children'])) {
+        $liClass .= 'dropdown';
+        $childrenHtml = "<ul class=\"dropdown-menu\">";
+        $childrenHtml .= Menu::getHtml($item['children'], $base);
+        $childrenHtml .= "</ul>";
+        //$childrenHtml .= "</ul>";
+        if (self::$active===true) {
+          self::$active = false;
+          $liClass .= ' active';
+        }
+      } else {
+        $childrenHtml = '';
+      }
+      if ($url==$base) {
+        self::$active = true;
+        $liClass .= ' active';
+      }
+      $liClass = $liClass!==''? ' class="'.$liClass.'"': '';
       $html .= "<li$liClass><a href='".$url."'><i class='fa {$icon}'></i>";
       $html .= " <span>".Config::tr("$item[0]")."</span>$badge</a>";
-      if (isset($item['children'])) {
-        $html .= "<ul class=\"dropdown-menu\">";
-        $html .= Menu::getHtml($item['children'], $base);
-        $html .= "</ul>";
-        $html .= "</ul>";
-      }
-      $html .="</li>";
+      $html .= $childrenHtml."</li>";
     }
     return $html;
   }

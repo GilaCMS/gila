@@ -11,7 +11,7 @@
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
-  <style>#topbar .g-navbar>li>a{color:#222}#topbar .g-navbar>li>a:hover{color:inherit;background:inherit}</style>
+  <style><?=file_get_contents('src/core/assets/admin/themes/'.Config::config('admin_theme').'.css'??'')?></style>
 </head>
 
 <?php if (!isset($_COOKIE['sidebar_toggled'])) {
@@ -27,7 +27,7 @@
           <img style="max-width:180px;max-height:60px" src="<?=Config::config('admin_logo')?:'assets/gila-logo.png'?>" class="centered">
         </a>
       </div>
-      <ul class="g-nav vertical lazy" data-load="lzld/amenu?base=<?=Config::url('#')?>">
+      <ul class="g-nav vertical lazy" data-load="lzld/amenu?base=<?=Config::url('')?>">
       ...
       </ul>
     </div>
@@ -53,8 +53,8 @@
           </a>
           <ul class="text-align-left dropdown-menu" style="right:0">
             <div class="g-screen" onclick="g('.dropdown').removeClass('open')"></div>
-            <li><a href="admin/profile"><?=__("My Profile")?></a></li>
-            <li><a href="admin/logout"><?=__("Logout")?></a></li>
+            <li style="position:sticky"><a href="admin/profile"><?=__("My Profile")?></a></li>
+            <li style="position:sticky"><a href="admin/logout"><?=__("Logout")?></a></li>
           </ul>
         </li>
         </ul>

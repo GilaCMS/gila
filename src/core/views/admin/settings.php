@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::config('timezone', $_POST['gila_timezone']);
   Config::config('language', $_POST['gila_language']);
   Config::config('admin_logo', $_POST['gila_admin_logo']);
+  Config::config('admin_theme', $_POST['gila_admin_theme']);
   Config::config('favicon', $_POST['gila_favicon']);
   Config::config('env', $_POST['gila_env']);
   Config::config('check4updates', $_POST['gila_check4updates']);
@@ -97,6 +98,12 @@ foreach ($config_list as $key=>$value) {
       <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::config('favicon')?>" id="m_favicon" name="gila_favicon"></span>
     </span></div>
   </div>
+
+  <br>
+  <?php
+  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
+  echo Form::input('gila_admin_theme', ["type"=>"select","options"=>$options], Config::config('admin_theme'), __("Admin Theme"));
+  ?>
 
   <br>
   <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>

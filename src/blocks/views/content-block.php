@@ -18,7 +18,7 @@
 
 <?php
 $cid = $contentType.'_'.$id.'_';
-if(isset($title)) {
+if (isset($title)) {
   echo '<h2>'.htmlentities($title).'</h2>';
   $mainGrid = 'grid-template-columns:1fr 240px';
   $clickToEdit = "";

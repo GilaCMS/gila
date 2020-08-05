@@ -37,7 +37,12 @@ if ($path=='src') {
       $package = json_decode(file_get_contents('src/'.$v.'/package.json'));
       if (isset($package->assets)) {
         foreach ($package->assets as $asset) {
-          $files[] = 'src/'.$v.'/'.$asset;
+          if (file_exists('assets/'.$v.'/'.$asset)) {
+            $files[] = 'assets/'.$v.'/'.$asset;
+          } else {
+            // DEPRECATED
+            $files[] = 'src/'.$v.'/'.$asset;
+          }
         }
       }
     }

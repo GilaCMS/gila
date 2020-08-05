@@ -3,7 +3,7 @@
 :root{
   --main-a-color:orangered;
   --main-color:#333;
-  --main-bg-color:#f2f2f8;
+  --main-bg-color:#f8f9fc;
   --main-input-color:#e6e6e6;
   --main-border-color:#ccc;
   --main-dark-color:#000609;
@@ -390,9 +390,9 @@ textare.g-input, .g-input[type=text] {
   bottom:auto;
   left:unset;
   right:unset;
-  margin-left:37.5%;
+  margin-left:10%;
   min-height:40px;
-  width:33%;
+  width:80%;
 }
 
 @media only screen and (min-width:800px){

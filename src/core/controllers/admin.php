@@ -56,12 +56,6 @@ class admin extends Gila\Controller
       View::alert('warning', '<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
     }
 
-    $db->connect();
-    View::set('postsC', $db->value('SELECT count(*) from post;'));
-    View::set('pagesC', $db->value('SELECT count(*) from page;'));
-    View::set('usersC', $db->value('SELECT count(*) from user;'));
-    $db->close();
-    View::set('packagesC', count($GLOBALS['config']['packages']));
     View::renderAdmin('admin/dashboard.php');
   }
 

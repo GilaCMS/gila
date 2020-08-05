@@ -382,7 +382,8 @@ class Config
     View::$canonical = self::config('base').Config::url($str);
   }
 
-  public static function base($str = null) {
+  public static function base($str = null)
+  {
     return self::base_url($str);
   }
 
@@ -405,8 +406,8 @@ class Config
 
   public static function url($url)
   {
-    if ($url==='#') {
-      return Router::url().'#';
+    if ($url==='#'||$url==='') {
+      return Router::url().$url;
     }
 
     if (self::config('rewrite')) {
@@ -534,20 +535,28 @@ class Config
     return $path;
   }
 
-  public static function tr($key, $alt = null) {
-    if(self::$langLoaded===false) {
-      foreach(self::$langPaths as $path) self::loadLang($path);
+  public static function tr($key, $alt = null)
+  {
+    if (self::$langLoaded===false) {
+      foreach (self::$langPaths as $path) {
+        self::loadLang($path);
+      }
       self::$langLoaded = true;
     }
-    if(@isset($GLOBALS['lang'][$key])) {
-      if($GLOBALS['lang'][$key] != '')
+    if (@isset($GLOBALS['lang'][$key])) {
+      if ($GLOBALS['lang'][$key] != '') {
         return $GLOBALS['lang'][$key];
+      }
     }
-    if($alt!=null) return $alt;
+    if ($alt!=null) {
+      return $alt;
+    }
     return $key;
   }
 }
 
 class_alias('Gila\\Config', 'Gila\\Gila');
 class_alias('Gila\\Config', 'Gila');
-if(!class_exists('gila')) class_alias('Gila\\Config', 'gila');
+if (!class_exists('gila')) {
+  class_alias('Gila\\Config', 'gila');
+}
