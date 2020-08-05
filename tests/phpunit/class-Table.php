@@ -71,6 +71,6 @@ class ClassTable extends TestCase
     $db->query('UPDATE post SET post=\'\' WHERE id=1;');
     $res = $db->query("UPDATE {$Table->name()}{$Table->set($data)} WHERE {$Table->id()}=1;");
     $post = $db->value('SELECT post from post WHERE id=1;');
-    $this->assertEquals('<p>Post<\/p>', $post);
+    $this->assertEquals('<p>Post</p>', $post);
   }
 }
