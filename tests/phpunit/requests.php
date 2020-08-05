@@ -103,6 +103,7 @@ class RequestsTest extends TestCase
   {
     global $db;
     Config::controller('blocks', 'blocks/controllers/blocks');
+    Config::controller('cm', 'core/controllers/cm');
     Config::widgets([
       'paragraph'=>'core/widgets/paragraph',
       'image'=>'core/widgets/image']);
@@ -157,7 +158,7 @@ class RequestsTest extends TestCase
     // purify post
     $_POST = ['id'=>'post_1','post'=>'<script >alert(0)</script>Something</p>'];
     $response = $this->request('cm/update_rows/post?id=1', 'POST');
-    $blocks = $db->value('SELECT post from post WHERE id=1;');
+    $post = $db->value('SELECT post from post WHERE id=1;');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $post);
   }
 
