@@ -156,7 +156,7 @@ class RequestsTest extends TestCase
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $blocks);
 
     // purify post
-    $_POST = ['id'=>'post_1','post'=>'<script >alert(0)</script>Something</p>'];
+    $_POST = ['id'=>'post_1','post'=>'<script >alert(0)</script>Post'];
     $response = $this->request('cm/update_rows/post?id=1', 'POST');
     $post = $db->value('SELECT post from post WHERE id=1;');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $post);
