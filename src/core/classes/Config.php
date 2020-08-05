@@ -405,8 +405,8 @@ class Config
 
   public static function url($url)
   {
-    if ($url==='#') {
-      return Router::url().'#';
+    if ($url==='#'||$url==='') {
+      return Router::url().$url;
     }
 
     if (self::config('rewrite')) {

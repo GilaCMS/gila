@@ -1,4 +1,11 @@
 .widget-features{grid-column: 1/span 4;text-align: center;}
+@media (min-width:650px) {
+  .widget-core-counters,
+  .widget-mysql-chart{grid-column: span 2;}
+}
+@media (min-width:1100px) {
+  .widget-core-counters{grid-column: span 3;}
+}
 
 .features-grid{
   display: grid;
@@ -8,9 +15,30 @@
   grid-template-columns: repeat(auto-fit, minmax(160px,200px));
   width:100%;
 }
+.core-counters-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+  gap:1em;
+  padding:1em;
+  align-items:center;
+}
+.core-counters-grid a>div>i{
+  float:left;
+  padding-right:8px;
+  margin-right:8px;
+  color:var(--main-a-color);
+  opacity: 0.5;
+}
+.core-counters-grid a{
+  color:inherit;
+  opacity:0.8;
+}
+.core-counters-grid a:hover{
+  opacity:1;
+}
 .features-grid div{
   text-align:center;
-  padding:1em
+  padding:1em;
 }
 .features-grid img,
 .features-grid svg{

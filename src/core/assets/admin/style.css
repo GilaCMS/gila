@@ -1,16 +1,20 @@
+:root {
+  --sidebar-width: 200px;
+  ---sidebar-width: -200px;
+}
 body { overflow-x: hidden; }
 #wrapper { padding-left: 0; transition: all 0.5s ease; width:100%}
-#wrapper.toggled { padding-left: 200px; }
-#wrapper.toggled #sidebar-wrapper { width: 200px; overflow-y: visible; opacity:1 }
-#wrapper.toggled { position: absolute; margin-right: -200px; }
+#wrapper.toggled { padding-left: var(--sidebar-width); }
+#wrapper.toggled #sidebar-wrapper { width: var(--sidebar-width); overflow-y: visible; opacity:1 }
+#wrapper.toggled { position: absolute; margin-right: var(---sidebar-width); }
 
 #sidebar-wrapper {
   z-index: 1000;
   position: fixed;
-  left: 200px;
+  left: var(--sidebar-width);
   width: 0;
   height: 100%;
-  margin-left: -200px;
+  margin-left: var(---sidebar-width);
   overflow-y: auto;
   overflow-y: hidden;
   background: var(--main-dark-color);
@@ -27,10 +31,10 @@ body { overflow-x: hidden; }
 #sidebar-wrapper .g-nav li ul li a{ color:#444; }
 #sidebar-wrapper .g-nav li ul{ box-shadow:1px 1px 4px black;border:0 }
 #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
-.g-nav li ul{min-width: 200px}
+.g-nav li ul{min-width: var(--sidebar-width)}
 
 .widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); grid-gap: 20px;}
-.widget-area-dashboard > * {box-shadow: 0px 1px 6px #999; margin:0}
+.widget-area-dashboard > * {box-shadow: 0 0 6px rgba(180,190,240,0.3); margin:0}
 .widget-area-dashboard .widget{background:white}
 .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: var(--main-padding); background: var(--main-bg-color); color: var(--main-color); }
 .widget-area-dashboard .widget-body {padding:0.5em}
@@ -50,3 +54,13 @@ body { overflow-x: hidden; }
     box-shadow: none;
   }
 }
+
+#topbar .g-navbar>li>a{
+  color:#444;
+}
+#topbar .g-navbar>li>a:hover{
+  color:inherit;
+  background:inherit
+}
+
+.vertical li.active{border-left:3px solid var(--main-a-color)}

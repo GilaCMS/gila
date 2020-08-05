@@ -1,5 +1,5 @@
 <?php
-$config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email'];
+$config_list = ['title'=>'Title', 'slogan'=>'Description', 'base'=>'Website URL', 'admin_email'=>'Admin Email', 'admin_theme'=>'Admin Theme'];
 foreach ($_POST as $key=>$value) {
   $_POST[$key] = strip_tags($value);
 }
@@ -97,6 +97,12 @@ foreach ($config_list as $key=>$value) {
       <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::config('favicon')?>" id="m_favicon" name="gila_favicon"></span>
     </span></div>
   </div>
+
+  <br>
+  <?php
+  $options = ['default'=>'Gila', 'liquidcool'=>'Liquid Cool', 'deepblue'=>'Deep Blue'];
+  echo Form::input('gila_admin_theme', ["type"=>"select","options"=>$options], Config::config('admin_theme'), __("Admin Theme"));
+  ?>
 
   <br>
   <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
