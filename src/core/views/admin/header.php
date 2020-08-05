@@ -11,7 +11,7 @@
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
-  <style><?=file_get_contents('src/core/assets/admin/themes/'.Config::config('admin_theme').'.css')?></style>
+  <style><?=file_get_contents('src/core/assets/admin/themes/'.Config::config('admin_theme').'.css'??'')?></style>
 </head>
 
 <?php if (!isset($_COOKIE['sidebar_toggled'])) {

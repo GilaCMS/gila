@@ -10,7 +10,7 @@
 #sidebar-wrapper .g-nav>li a{
   color: #bceeff;
 }
-#sidebar-wrapper .g-nav>li a i{
+#sidebar-wrapper .g-nav>li>a>i{
   font-size:3em;
   display:block;
   margin: 4px auto;
@@ -20,12 +20,18 @@
   -webkit-text-fill-color: transparent;
 }
 #sidebar-wrapper .g-nav li ul{
-  transform: scale(80%) translateX(-11%) translateY(-10%);
+  /*transform: scale(80%) translateX(-11%) translateY(-10%);*/
+  text-align:left;
+  font-size:100%;
+  min-width: 200px;
 }
-#sidebar-wrapper .g-nav>li a:hover i{
+#sidebar-wrapper .g-nav>li>a:hover>i{
   margin-top: -3px;
   margin-bottom: 11px;
   transition-duration: 0.4s;
 }
-.vertical li.active{border-left:none}
+#sidebar-wrapper .g-nav>li>a:hover{
+  background: var(--main-dark-color);
+}
+  .vertical li.active{border-left:none}
 .g-nav li.dropdown>a:after{content:none;display:none;}

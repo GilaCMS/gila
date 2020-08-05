@@ -101,7 +101,7 @@ foreach ($config_list as $key=>$value) {
 
   <br>
   <?php
-  $options = ['default'=>'Gila', 'liquidcool'=>'Liquid Cool', 'deepblue'=>'Deep Blue'];
+  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
   echo Form::input('gila_admin_theme', ["type"=>"select","options"=>$options], Config::config('admin_theme'), __("Admin Theme"));
   ?>
 

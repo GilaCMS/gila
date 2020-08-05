@@ -25,7 +25,7 @@ body { overflow-x: hidden; }
 }
 #sidebar-wrapper a{ font-weight: 700; background: inherit;}
 
-#sidebar-wrapper .g-nav li{ color:#fff;}
+#sidebar-wrapper .g-nav li{ color:#fff;position:relative; }
 #sidebar-wrapper .g-nav li a{ color:#e8e8e8; }
 #sidebar-wrapper .g-nav li a i{ margin: 4px; font-size:120%;}
 #sidebar-wrapper .g-nav li ul li a{ color:#444; }
