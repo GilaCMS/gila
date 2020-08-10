@@ -751,7 +751,6 @@ g.dialog.buttons.select_path = {
   title:'Select',fn: function(){
     let v = g('#selected-path').attr('value')
     if(v!=null) g('[name=p_img]').attr('value', base_url+v)
-    g('#media_dialog').parent().remove();
     g.closeModal();
   }
 }
@@ -759,7 +758,6 @@ g.dialog.buttons.select_path_post = {
   title:'Select', fn: function() {
     let v = g('#selected-path').attr('value')
     if(v!=null) input_filename(base_url+v);
-    g('#media_dialog').parent().remove();
     g.closeModal();
   }
 }
