@@ -1,5 +1,4 @@
 <?=View::css('core/admin/content.css')?>
-<?=View::cssAsync('core/admin/vue-editor.css')?>
 <?=View::script('lib/vue/vue.min.js')?>
 
 <?=View::script('lib/CodeMirror/codemirror.js')?>
@@ -16,7 +15,6 @@ if (file_exists('src/'.$tablesrc.'.js')) {
 }
 View::script('core/lang/content/'.Config::config('language').'.js');
 View::script('core/admin/vue-components.js');
-View::script('core/admin/vue-editor.js');
 ?>
 
 <style>

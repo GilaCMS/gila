@@ -23,6 +23,7 @@ class HtmlInput
     }
 
     $value = strtr($value, ['="javascript:'=>'="', '=\'javascript:'=>'=\'']);
+    $value = utf8_decode($value);
     return $value;
   }
 

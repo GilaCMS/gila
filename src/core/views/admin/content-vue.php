@@ -8,7 +8,6 @@ if (!$gtable->can('read')) {
   return;
 }
 View::css('core/admin/content.css');
-View::cssAsync('core/admin/vue-editor.css');
 View::script('lib/vue/vue.min.js');
 View::script('core/admin/content.js');
 if (file_exists('src/'.$tablesrc.'.js') && !in_array('src/'.$tablesrc.'.js', $t['js'])) {
@@ -17,7 +16,6 @@ if (file_exists('src/'.$tablesrc.'.js') && !in_array('src/'.$tablesrc.'.js', $t[
 View::scriptAsync('core/lang/content/'.Config::config('language').'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
-View::scriptAsync('core/admin/vue-editor.js');
 View::script('lib/CodeMirror/codemirror.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
 View::cssAsync('lib/CodeMirror/codemirror.css');

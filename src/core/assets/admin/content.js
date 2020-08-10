@@ -474,7 +474,7 @@ function transformClassComponents() {
   for(i=0;i<textareas.length;i++) {
     mce_editor[i] = {id: textareas[i].id, name: textareas[i].name};
     mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));
-    mce_editor[i].settings.selector = '[name='+textareas[i].name+']'
+    mce_editor[i].settings.selector = '[name='+textareas[i].name.replace('[','\\[').replace(']','\\]')+']'
     mce_editor[i].settings.file_picker_callback = function(cb, value, meta) {
       input_filename = cb;
       open_gallery_post();
@@ -723,16 +723,15 @@ g_tinymce_options = {
   selector: '',
   relative_urls: false,
   remove_script_host: false,
-  height: 250,
-  theme: 'modern',
-  extended_valid_elements: 'script,div[v-for|v-if|v-model|style|class|id|data-load]',
-  plugins: [
-    'lists link image hr anchor pagebreak',
-    'searchreplace wordcount visualchars code',
-    'insertdatetime media nonbreaking table contextmenu ',
-    'template paste textcolor textpattern codesample'
-  ],
-  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
+  height: 300,
+  remove_linebreaks : false,
+  document_base_url: ".",
+  verify_html: false,
+  cleanup: true,
+  plugins: ['code table charmap image'],
+  menubar: false,
+  entity_encoding: 'raw',
+  toolbar: 'forecolor backcolor bold italic superscript subscript| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link image media charmap code',
   file_picker_callback: function(cb, value, meta) {
     input_filename = cb;
     open_gallery_post();
