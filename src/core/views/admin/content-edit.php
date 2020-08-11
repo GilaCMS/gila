@@ -79,7 +79,7 @@ g_tinymce_options = {
   selector: '',
   relative_urls: false,
   remove_script_host: false,
-  height: 250,
+  height: 300,
   theme: 'modern',
   extended_valid_elements: 'script,div[v-for|v-if|v-model|style|class|id|data-load]',
   plugins: [

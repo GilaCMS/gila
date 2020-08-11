@@ -537,7 +537,6 @@ gtableCommand['edit_popup'] = {
         el: formId,
         data: {id:irow}
       })
-      g_tinymce_options.height = 110;
       transformClassComponents()
       console.log(formId+' input')
       g(formId+' input').all[1].focus()
@@ -660,7 +659,6 @@ gtableTool['add_popup'] = {
         el: formId,
         data: {id:0}
       })
-      g_tinymce_options.height = 110;
       transformClassComponents()
       g(formId+' input').all[1].focus()
     })
@@ -728,10 +726,10 @@ g_tinymce_options = {
   document_base_url: ".",
   verify_html: false,
   cleanup: true,
-  plugins: ['code table charmap image'],
-  menubar: false,
+  plugins: ['code codesample table charmap image media lists link format'],
+  menubar: true,
   entity_encoding: 'raw',
-  toolbar: 'forecolor backcolor bold italic superscript subscript| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link image media charmap code',
+  toolbar: 'formatselect bold italic | bullist numlist outdent indent | link image table | alignleft aligncenter alignright alignjustify',
   file_picker_callback: function(cb, value, meta) {
     input_filename = cb;
     open_gallery_post();

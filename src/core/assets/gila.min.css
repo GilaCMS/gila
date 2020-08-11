@@ -454,6 +454,10 @@ textare.g-input, .g-input[type=text] {
 .gila-popup>.footer{
   background-color:var(--main-bg-color);
 }
+.gila-popup.large>.footer, .gila-popup.overlay>.footer{
+  display: flex;
+  flex-direction: row-reverse;
+}
 .gila-popup>.closebtn{
   font-size: 1.8em;
   position: absolute;

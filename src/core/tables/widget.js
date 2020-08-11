@@ -29,6 +29,8 @@ gtableCommand.edit_widget = {
                 el: '#widget_options_form'
             })
 
+            g_tinymce_options.height = 160;
+            g_tinymce_options.toolbar = 'format bold italic superscript subscript| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link image media charmap code'
             transformClassComponents();
         });
     }
