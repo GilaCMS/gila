@@ -270,6 +270,7 @@ class Config
   */
   public static function updateConfigFile()
   {
+    $GLOBALS['config']['updated'] = time();
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents(CONFIG_PHP, $filedata);
   }
