@@ -29,8 +29,21 @@ View::css('lib/select2/select2.min.css');
 
 <style>
 .type-textarea label{width:100%}
+.type-tinymce{min-height:250px;margin-bottom:20px}
 .type-tinymce,.type-textarea{grid-column:1/-1}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
+@media only screen and (min-width:700px){
+  #user-post-edit-item-form>div,
+  #post-edit-item-form>div{
+    grid-template-columns: 2fr 1fr!important;
+    min-height:60vh;
+  }
+  .gila-popup .type-tinymce{grid-column:1/1;grid-row:1/20}
+  .gila-popup .type-textarea{grid-column: span 1}
+}
+.tox .tox-menubar,.tox .tox-toolbar, .tox .tox-toolbar__overflow, .tox .tox-toolbar__primary{
+  background-color: #f0f0f0;
+}
 </style>
 
 <?php
@@ -85,6 +98,7 @@ g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templat
 
 base_url = "<?=Config::config('base')?>"
 g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
+g_tinymce_options.height = '100%'
 
 </script>
 

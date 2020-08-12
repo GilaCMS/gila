@@ -5,9 +5,9 @@ return [
   'title'=> 'Posts',
   'pagination'=> 15,
   'id'=>'id',
-  'tools'=>['add','csv'],
+  'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
-  'commands'=> ['edit','delete'],
+  'commands'=> ['edit_popup','delete'],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish','user_id'],
   'meta_table'=>['postmeta', 'post_id', 'vartype', 'value'],
@@ -29,7 +29,7 @@ return [
     'thumbnail'=> [
       'title'=>'Thumbnail',
       'type'=>'meta',
-      'input_type'=>'media',
+      'input_type'=>'media2',
       'meta_csv'=>true,
       'meta_key'=>['vartype', 'thumbnail']
     ],
@@ -44,6 +44,7 @@ return [
     'description'=> [
       'title'=>'Description',
       'list'=>false,
+      'input_type'=>'textarea',
       'qtype'=>'varchar(200)'
     ],
     'user_id'=> [

@@ -7,11 +7,11 @@
   --main-input-color:#e6e6e6;
   --main-border-color:#ccc;
   --main-dark-color:#000609;
-  --main-primary-color:steelblue;
+  --main-primary-color:#207ab7;
   --main-success-color:forestgreen;
   --main-warning-color:darkorange;
   --main-error-color:firebrick;
-  --main-radius:0.3em;
+  --main-radius:0.2em;
   --main-padding:0.7em;
 }
 
@@ -222,9 +222,11 @@ button:hover{
   display:inline-block;
   cursor:pointer;
   text-align:center;
+  opacity:0.95;
 }
 .btn:hover, .g-btn:hover{
   color:white;
+  opacity:1;
 }
 .error{background-color:var(--main-error-color)!important}
 .success{background-color:var(--main-success-color)!important}
@@ -275,8 +277,9 @@ textare.g-input, .g-input[type=text] {
 }
 .g-form label,.g-label{
   padding:0.3em 0;
-  font:14px Arial;
+  font-size:14px;
   font-weight:bold;
+  opacity:0.75;
 }
 
 .g-form input[type=color], .g-input[type=color]{
@@ -363,7 +366,8 @@ textare.g-input, .g-input[type=text] {
 .gila-darkscreen{
   background-color:rgba(0, 0, 0, 0.5);
   position:fixed;
-  display:flex;
+  display:grid;
+  place-items:center;
   left:0;
   top:0;
   bottom:0;
@@ -372,10 +376,6 @@ textare.g-input, .g-input[type=text] {
 }
 
 .gila-popup-s, .gila-popup, .gila-popup-m, .gila-popup-l{
-  top:0;
-  bottom:0;
-  left:0;
-  right:0;
   display: grid;
   grid-template-rows: auto 1fr auto;
   border:1px solid var(--main-border-color);
@@ -387,10 +387,6 @@ textare.g-input, .g-input[type=text] {
 
 .gila-popup.small{
   top:10%;
-  bottom:auto;
-  left:unset;
-  right:unset;
-  margin-left:10%;
   min-height:40px;
   width:80%;
 }
@@ -398,25 +394,17 @@ textare.g-input, .g-input[type=text] {
 @media only screen and (min-width:800px){
   .gila-popup{
     top:10%;
-    bottom:unset;
-    left:inherit;
-    right:inherit;
-    top:10%;
-    margin-left:20%;
     width:60%;
     animation-name:gilapopupanimation;
-    animation-duration:.3s;
-    margin-left:25%;
+    animation-duration:.2s;
     width:50%;
     min-height:80px;
     max-height:80%;
   }
   .gila-popup.small{
-    margin-left:37.5%;
     width:33%;
   }
   .gila-popup.large, .gila-popup.overlay{
-    margin-left:10%;
     width:80%;
   }
   .gila-popup.overlay{
@@ -429,15 +417,14 @@ textare.g-input, .g-input[type=text] {
 
 @media only screen and (min-width:1024px){
   .gila-popup.large, .gila-popup.overlay{
-    top:10%;
-    left:50%;
-    margin-left:-450px;
+    animation-name: none;
+    max-height:90%;
+    top:auto;
     width:900px;
   }
   .gila-popup.overlay{
-    top:0;
     height:100%;
-    margin-left:-590px;
+    max-height:100%;
     width:1180px;
   }
   .g-nav.hover li:hover>ul{display:block;}
@@ -454,8 +441,9 @@ textare.g-input, .g-input[type=text] {
 .gila-popup>.footer{
   background-color:var(--main-bg-color);
 }
+.gila-popup.large>.foot, .gila-popup.overlay>.foot,
 .gila-popup.large>.footer, .gila-popup.overlay>.footer{
-  display: flex;
+    display: flex;
   flex-direction: row-reverse;
 }
 .gila-popup>.closebtn{
@@ -475,8 +463,8 @@ textare.g-input, .g-input[type=text] {
 }
 
 @keyframes gilapopupanimation{
-  from{top:0%;opacity:0}
-  to{top:10%;opacity:1}
+  0%{top:0%;opacity:0}
+  100%{top:10%;opacity:1}
 }
 
 .row::after{
