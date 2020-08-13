@@ -385,6 +385,10 @@ textare.g-input, .g-input[type=text] {
   max-height: 100vh;
 }
 
+.gila-popup{
+  width:100%;
+}
+
 .gila-popup.small{
   top:10%;
   min-height:40px;

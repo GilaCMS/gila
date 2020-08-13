@@ -29,6 +29,7 @@ return [
     'thumbnail'=> [
       'title'=>'Thumbnail',
       'type'=>'meta',
+      'display_type'=>'media',
       'input_type'=>'media2',
       'meta_csv'=>true,
       'meta_key'=>['vartype', 'thumbnail']

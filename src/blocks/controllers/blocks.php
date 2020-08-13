@@ -40,8 +40,11 @@ class blocks extends Gila\Controller
     View::set('id', $id);
     View::set('isDraft', self::$draft);
     View::set('widgets', $widgets);
+    echo '<!DOCTYPE html><html>';
     View::head();
+    echo '<body>';
     View::renderFile("content-block.php", "blocks");
+    echo '</body></html>';
   }
 
   public function editAction()

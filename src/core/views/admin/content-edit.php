@@ -75,25 +75,6 @@ echo '</div></form>';
 cmirror=new Array()
 mce_editor=new Array()
 
-g_tinymce_options = {
-  selector: '',
-  relative_urls: false,
-  remove_script_host: false,
-  height: 300,
-  theme: 'modern',
-  extended_valid_elements: 'script,div[v-for|v-if|v-model|style|class|id|data-load]',
-  plugins: [
-    'lists link image hr anchor pagebreak',
-    'searchreplace wordcount visualchars code',
-    'insertdatetime media nonbreaking table contextmenu ',
-    'template paste textcolor textpattern codesample'
-  ],
-  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
-  file_picker_callback: function(cb, value, meta) {
-    input_filename = cb;
-    open_gallery_post();
-  },
-}
 g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templates:[])); ?>;
 
 base_url = "<?=Config::config('base')?>"

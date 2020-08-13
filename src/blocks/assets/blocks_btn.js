@@ -16,7 +16,7 @@ gtableCommand.blocks_popup = {
     g.dialog({class:'overlay', body:html, type:'modal', id:'blocks_popup'})
 
       
-//      g_tinymce_options.height = 110;
-//      transformClassComponents()
+    g_tinymce_options.height = 110;
+    transformClassComponents()
   }
 }

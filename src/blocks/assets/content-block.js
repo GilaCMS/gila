@@ -62,19 +62,21 @@ function block_edit_close() {
 
 function block_create(content,type,pos) {
   href='blocks/edit?id=new&type='+type;
+  _type = type.toUpperCase().replace('_',' ');
   cblock_content=content
   cblock_type=type
   cblock_pos=pos
-  g.get(href, function(data){
-    g.dialog({class:'lightscreen large',id:'widget-popup',body:data,type:'modal',buttons:'create_widget'})
+  g.get(href, function(data) {
+    g.dialog({class:'lightscreen large',id:'widget-popup',title:_type,body:data,type:'modal',buttons:'create_widget'})
     block_edit_open()
   });
 }
 
 function block_edit(id,type) {
   href='blocks/edit?id='+id+"&type="+type;
-  g.get(href, function(data){
-    g.dialog({class:'lightscreen large',id:'widget-popup',body:data,type:'modal',buttons:'update_widget delete_widget'})
+  _type = type.toUpperCase().replace('_',' ');
+  g.get(href, function(data) {
+    g.dialog({class:'lightscreen large',id:'widget-popup',title:_type,body:data,type:'modal',buttons:'update_widget delete_widget'})
     block_edit_open()
   });
 };
