@@ -31,7 +31,7 @@ gtableCommand.edit_widget = {
 
             g_tinymce_options.height = 160;
             g_tinymce_options.menubar = false
-            g_tinymce_options.toolbar = 'format bold italic superscript subscript| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table link image charmap code'
+            g_tinymce_options.toolbar = 'formatselect bold italic | bullist numlist outdent indent | link image media code table | alignleft aligncenter alignright alignjustify'
             transformClassComponents();
         });
     }

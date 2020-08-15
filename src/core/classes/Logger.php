@@ -2,13 +2,9 @@
 
 namespace Gila;
 
-/**
- * Describes a logger instance
- * See https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
- * for the full interface specification.
- */
 class Logger
 {
+  static private $savedStat = false;
   private $handlers = [];
   private $file = null;
 
@@ -112,5 +108,15 @@ class Logger
   public function pushHandler(LogHandler $handler)
   {
     array_unshift($this->handlers, $handler);
+  }
+
+  static public function stat($value = null)
+  {
+    if($value===null) {
+      if(self::$savedStat) return;
+      self::$savedStat = true;
+    }
+    $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.log');
+    $stat_log->log($value ?? Router::$url, $_SERVER['REMOTE_ADDR']);
   }
 }

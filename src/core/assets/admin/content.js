@@ -726,7 +726,7 @@ g_tinymce_options = {
   document_base_url: ".",
   verify_html: false,
   cleanup: true,
-  plugins: ['code codesample table charmap image media lists link format'],
+  plugins: ['code codesample table charmap image media lists link'],
   menubar: true,
   entity_encoding: 'raw',
   toolbar: 'formatselect bold italic | bullist numlist outdent indent | link image table | alignleft aligncenter alignright alignjustify',

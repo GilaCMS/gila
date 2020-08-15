@@ -5,7 +5,7 @@
 <?=View::script('lib/CodeMirror/javascript.js')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 <style>.CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}</style>
-<?=View::script("lib/tinymce/tinymce.min.js")?>
+<?=View::script("lib/tinymce5/tinymce.min.js")?>
 
 <?php
 View::script('core/admin/media.js');

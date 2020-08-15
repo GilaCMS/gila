@@ -4,7 +4,7 @@
 <?=View::script('lib/vue/vue.min.js');?>
 <?=View::script('blocks/vue-draggable.min.js');?>
 
-<?=View::script("lib/tinymce/tinymce.min.js")?>
+<?=View::script("lib/tinymce5/tinymce.min.js")?>
 <?=View::script('core/admin/vue-components.js');?>
 <?=View::script('core/admin/vue-editor.js');?>
 <?=View::script('core/admin/media.js')?>
