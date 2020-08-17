@@ -90,6 +90,16 @@ return [
   ],
   'events'=>[
     ['change',function (&$row) {
+      if (isset($row['userrole'])) {
+        $roles = is_array($row['userrole'])? $row['userrole']: explode(',',$row['userrole']);
+        $level = Gila\User::level(Gila\Session::userId());
+        foreach($roles as $roleId) {
+          if($level<Gila\User::roleLevel($roleId)) {
+            http_response_code(500);
+            exit;
+          }
+        }
+      }
       if (isset($row['pass'])) {
         if (substr($row['pass'], 0, 7) != "$2y$10$") {
           $row['pass'] = Config::hash($row['pass']);

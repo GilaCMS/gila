@@ -58,7 +58,9 @@
     class="btn btn-primary"><?=__('Change Password')?></button>
     </fieldset>
     </form>
-
+<?php
+if (Gila\User::level(Gila\Session::userId())>=Gila\Config::config('utk_level')) {
+  ?>
     <form method="post" action="admin/profile" class="g-form">
     <fieldset>
     <br><div class="gm-12 row">
@@ -75,6 +77,9 @@
 
     </fieldset>
     </form>
+<?php
+} 
+?>
 </div>
 
   <?php
