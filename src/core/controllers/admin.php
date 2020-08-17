@@ -270,8 +270,7 @@ class admin extends Gila\Controller
   {
     Config::addLang('core/lang/myprofile/');
     $user_id = Session::key('user_id');
-//    Gila\Profile::postUpdate($user_id);
-    View::set('page_title', __('My Sessions'));
+    View::set('page_title', __('Sessions'));
     View::renderAdmin('admin/mysessions.php');
   }
 
