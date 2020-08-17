@@ -9,6 +9,7 @@ include_once __DIR__.'/../../src/core/classes/Db.php';
 include_once __DIR__.'/../../src/core/classes/Session.php';
 include_once __DIR__.'/../../src/core/classes/View.php';
 include_once __DIR__.'/../../src/core/classes/Event.php';
+include_once __DIR__.'/../../src/core/models/User.php';
 define('SITE_PATH', '');
 define('LOG_PATH', 'log');
 define('CONFIG_PHP', 'config.php');
