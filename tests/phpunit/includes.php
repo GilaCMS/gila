@@ -25,3 +25,4 @@ function __($key, $alt = null) {
 
 class_alias('Gila\\Config', 'Config');
 class_alias('Gila\\View', 'View');
+class_alias('Gila\\User', 'User');
