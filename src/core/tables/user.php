@@ -49,7 +49,7 @@ return [
       'edit'=>true,
       'meta_key'=>'role',
       'options'=>[],
-      'qoptions'=>'SELECT `id`,`userrole` FROM userrole;'
+      'qoptions'=>"SELECT `id`,`userrole` FROM userrole WHERE `level`<=".Gila\User::level(Gila\Session::userId())
     ],
     'active'=> [
       'type'=>'checkbox',

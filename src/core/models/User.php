@@ -185,4 +185,11 @@ class User
     @unlink(LOG_PATH.'/sessions/'.$sessions[$n]);
     return true;
   }
+
+  public static function level($id)
+  {
+    global $db;
+    $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
+    return $db->value("SELECT MAX(userrole.level) FROM userrole,usermeta WHERE userrole.id=usermeta.value AND usermeta.user_id=?", $id) ?? 0;
+  }
 }
