@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 :root {
   --sidebar-width: 120px;
   ---sidebar-width: -120px;
   --main-dark-color:#101621;
   --main-a-color: #8B04B9;
+}
+*,.g-form label, .g-label{
+  font-family: 'Roboto', sans-serif;
 }
 #sidebar-wrapper .g-nav{
   text-align:center;
