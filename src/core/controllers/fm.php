@@ -93,7 +93,7 @@ class fm extends Gila\Controller
     if (!FileManager::allowedPath($this->relativePath)) {
       die("Permission denied.");
     }
-    $contents = HtmlInput::purify($_POST['contents'], true);
+    $contents = $_POST['contents'];
     if (!file_put_contents($this->path, $contents)) {
       ob_clean();
       die("Permission denied.");

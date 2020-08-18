@@ -1,7 +1,8 @@
 <head>
   <base href="<?=Gila\Config::base_url()?>">
   <title>Install Gila CMS</title>
-	<style><?=file_get_contents("src/core/assets/gila.min.css")?></style>
+  <meta name="robots" content="noindex">
+  <style><?=file_get_contents("src/core/assets/gila.min.css")?></style>
 </head>
 <body class="bg-lightgrey">
   <div class="gm-6 centered row" style="">

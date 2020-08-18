@@ -321,4 +321,9 @@ class admin extends Gila\Controller
     View::set('menu', ($menu?:'mainmenu'));
     View::renderAdmin('admin/menu_editor.php');
   }
+
+  public function speedAction()
+  {
+    timeDebug('here');
+  }
 }
