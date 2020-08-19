@@ -386,10 +386,11 @@ class View
         $b = (object)$b;
       }
       if ($anchors) {
-        $html .= "<span id='w$key'></span>";
+        $html .= "<span id='w$key' class='block-head' data-pos='$key' data-type='{$b->_type}'></span>";
       }
       $html .= View::getWidgetBody($b->_type, $b);
     }
+    $html .= "<span id='w$key' class='block-end' data-pos='$key'></span>";
     return $html;
   }
 

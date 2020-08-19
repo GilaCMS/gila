@@ -40,8 +40,11 @@ class blocks extends Gila\Controller
     View::set('id', $id);
     View::set('isDraft', self::$draft);
     View::set('widgets', $widgets);
+    echo '<!DOCTYPE html><html>';
     View::head();
+    echo '<body>';
     View::renderFile("content-block.php", "blocks");
+    echo '</body></html>';
   }
 
   public function editAction()
@@ -75,7 +78,6 @@ class blocks extends Gila\Controller
 
       foreach ($widget_data as $key=>$value) {
         $allowed = $fields[$key]['allow_tags'] ?? false;
-        $widget_data[$key] = utf8_decode($widget_data[$key]);
         $widget_data[$key] = Gila\HtmlInput::purify($widget_data[$key], $allowed);
       }
       $widget_data['_type'] = $type;
@@ -179,6 +181,7 @@ class blocks extends Gila\Controller
         View::renderFile('page--'.$r['template'].'.php');
       }
       echo '<style>html{scroll-behavior: smooth;}</style>';
+      include __DIR__.'/../views/content-block-edit.php';
     } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
       View::set('title', $r['title']);
       View::set('text', $r['post'].View::blocks($blocks, true));

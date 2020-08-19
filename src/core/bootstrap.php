@@ -38,7 +38,6 @@ $classMap = include __DIR__.'/classmap.php';
 
 spl_autoload_register(function ($class) {
   global $classMap;
-
   if (isset($classMap[$class])) {
     require_once $classMap[$class];
     return true;
@@ -69,20 +68,10 @@ if (file_exists('vendor/autoload.php')) {
 $GLOBALS['config'] = [];
 @include_once CONFIG_PHP;
 if ($GLOBALS['config'] === []) {
-  if (isset($_GET['install'])) {
-    include 'src/core/install/index.php';
-  } else {
-    echo "Gila CMS is not installed.<meta http-equiv=\"refresh\" content=\"2;url=".Config::base_url()."?install\" />";
-  }
+  include 'src/core/install/index.php';
   exit;
 }
 
-
-$GLOBALS['lang'] = [];
-function __($key, $alt = null)
-{
-  return Config::tr($key, $alt);
-}
 
 if (is_array(Config::config('trusted_domains')) &&
     isset($_SERVER['HTTP_HOST']) &&
@@ -108,6 +97,11 @@ if ($GLOBALS['config']['env'] == 'dev') {
 }
 
 Event::fire('load');
+
+function __($key, $alt = null)
+{
+  return Config::tr($key, $alt);
+}
 
 $theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if (file_exists("themes/$theme/load.php")) {

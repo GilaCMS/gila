@@ -7,11 +7,11 @@
   --main-input-color:#e6e6e6;
   --main-border-color:#ccc;
   --main-dark-color:#000609;
-  --main-primary-color:steelblue;
+  --main-primary-color:#207ab7;
   --main-success-color:forestgreen;
   --main-warning-color:darkorange;
   --main-error-color:firebrick;
-  --main-radius:0.3em;
+  --main-radius:0.2em;
   --main-padding:0.7em;
 }
 
@@ -222,9 +222,11 @@ button:hover{
   display:inline-block;
   cursor:pointer;
   text-align:center;
+  opacity:0.95;
 }
 .btn:hover, .g-btn:hover{
   color:white;
+  opacity:1;
 }
 .error{background-color:var(--main-error-color)!important}
 .success{background-color:var(--main-success-color)!important}
@@ -368,7 +370,7 @@ textare.g-input, .g-input[type=text] {
   top:0;
   bottom:0;
   right:0;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .gila-popup-s, .gila-popup, .gila-popup-m, .gila-popup-l{
@@ -416,14 +418,17 @@ textare.g-input, .g-input[type=text] {
     width:33%;
   }
   .gila-popup.large, .gila-popup.overlay{
+    animation-name: none;
+    max-height:90%;
+    top:auto;
+    width:900px;
     margin-left:10%;
-    width:80%;
   }
   .gila-popup.overlay{
     top:0;
     height:100%;
-    max-height: inherit;
-    animation-name: none;
+    max-height:100%;
+    width:1180px;
   }
 }
 
@@ -443,6 +448,11 @@ textare.g-input, .g-input[type=text] {
   .g-nav.hover li:hover>ul{display:block;}
 }
 
+.gila-popup.large>.foot, .gila-popup.overlay>.foot,
+.gila-popup.large>.footer, .gila-popup.overlay>.footer{
+    display: flex;
+  flex-direction: row-reverse;
+}
 .gila-popup>*{
   padding:12px;
   margin:0;

@@ -470,11 +470,11 @@ function transformClassComponents() {
   
   textareas=g('.tinymce').all
   mce_editor=[]
-  tinymce.remove() //remove all tinymce editors
+  if(tinymce) tinymce.remove() //remove all tinymce editors
   for(i=0;i<textareas.length;i++) {
     mce_editor[i] = {id: textareas[i].id, name: textareas[i].name};
     mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));
-    mce_editor[i].settings.selector = '[name='+textareas[i].name+']'
+    mce_editor[i].settings.selector = '[name='+textareas[i].name.replace('[','\\[').replace(']','\\]')+']'
     mce_editor[i].settings.file_picker_callback = function(cb, value, meta) {
       input_filename = cb;
       open_gallery_post();
@@ -537,7 +537,6 @@ gtableCommand['edit_popup'] = {
         el: formId,
         data: {id:irow}
       })
-      g_tinymce_options.height = 110;
       transformClassComponents()
       console.log(formId+' input')
       g(formId+' input').all[1].focus()
@@ -660,7 +659,6 @@ gtableTool['add_popup'] = {
         el: formId,
         data: {id:0}
       })
-      g_tinymce_options.height = 110;
       transformClassComponents()
       g(formId+' input').all[1].focus()
     })
@@ -723,16 +721,15 @@ g_tinymce_options = {
   selector: '',
   relative_urls: false,
   remove_script_host: false,
-  height: 250,
-  theme: 'modern',
-  extended_valid_elements: 'script,div[v-for|v-if|v-model|style|class|id|data-load]',
-  plugins: [
-    'lists link image hr anchor pagebreak',
-    'searchreplace wordcount visualchars code',
-    'insertdatetime media nonbreaking table contextmenu ',
-    'template paste textcolor textpattern codesample'
-  ],
-  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
+  height: 300,
+  remove_linebreaks : false,
+  document_base_url: ".",
+  verify_html: false,
+  cleanup: true,
+  plugins: ['code codesample table charmap image media lists link'],
+  menubar: true,
+  entity_encoding: 'raw',
+  toolbar: 'formatselect bold italic | bullist numlist outdent indent | link image table | alignleft aligncenter alignright alignjustify',
   file_picker_callback: function(cb, value, meta) {
     input_filename = cb;
     open_gallery_post();
@@ -752,7 +749,6 @@ g.dialog.buttons.select_path = {
   title:'Select',fn: function(){
     let v = g('#selected-path').attr('value')
     if(v!=null) g('[name=p_img]').attr('value', base_url+v)
-    g('#media_dialog').parent().remove();
     g.closeModal();
   }
 }
@@ -760,7 +756,6 @@ g.dialog.buttons.select_path_post = {
   title:'Select', fn: function() {
     let v = g('#selected-path').attr('value')
     if(v!=null) input_filename(base_url+v);
-    g('#media_dialog').parent().remove();
     g.closeModal();
   }
 }

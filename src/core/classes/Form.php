@@ -212,18 +212,18 @@ class Form
         </span></span></div>';
       },
       "textarea"=> function ($name, $field, $ov) {
-        return '<textarea class="g-input fullwidth" name="'.$name.'" style="resize:vertical;">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth" name="'.$name.'" style="resize:vertical;">'.htmlspecialchars($ov).'</textarea>';
       },
       "codemirror"=> function ($name, $field, $ov) {
-        return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
       "tinymce"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
-        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
       "paragraph"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
-        return '<vue-editor id="'.$id.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
+        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
       "language"=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';

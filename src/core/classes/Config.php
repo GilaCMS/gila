@@ -14,6 +14,7 @@ class Config
   public static $mt;
   public static $base_url;
   public static $langPaths = [];
+  public static $langWords = [];
   public static $langLoaded = false;
 
   /**
@@ -106,8 +107,8 @@ class Config
   {
     $filepath = 'src/'.$path.self::config('language').'.json';
     if (file_exists($filepath)) {
-      $GLOBALS['lang'] = @array_merge(
-        @$GLOBALS['lang'],
+      self::$langWords = @array_merge(
+        self::$langWords,
         json_decode(file_get_contents($filepath), true)
       );
     }
@@ -269,6 +270,7 @@ class Config
   */
   public static function updateConfigFile()
   {
+    $GLOBALS['config']['updated'] = time();
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents(CONFIG_PHP, $filedata);
   }
@@ -543,12 +545,12 @@ class Config
       }
       self::$langLoaded = true;
     }
-    if (@isset($GLOBALS['lang'][$key])) {
-      if ($GLOBALS['lang'][$key] != '') {
-        return $GLOBALS['lang'][$key];
+    if (isset(self::$langWords[$key])) {
+      if (!empty(self::$langWords[$key])) {
+        return self::$langWords[$key];
       }
     }
-    if ($alt!=null) {
+    if ($alt!==null) {
       return $alt;
     }
     return $key;
