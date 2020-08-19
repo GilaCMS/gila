@@ -45,11 +45,11 @@ return [
     'userrole'=> [
       'title'=>'Roles',
       'type'=>'meta',
-      'input_type'=>'select2',
+      'input_type'=>'role',
       'edit'=>true,
       'meta_key'=>'role',
       'options'=>[],
-      'qoptions'=>"SELECT `id`,`userrole` FROM userrole WHERE `level`<=".Gila\User::level(Gila\Session::userId())
+      'qoptions'=>"SELECT `id`,`userrole` FROM userrole"
     ],
     'active'=> [
       'type'=>'checkbox',
