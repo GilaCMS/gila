@@ -3,7 +3,7 @@
 Router::controller('blocks', 'blocks/controllers/blocks', 'blocks');
 
 Config::contentInit('page', function (&$table) {
-  $table['commands'][]='blocks';
+  $table['commands'][]='blocks_popup';
   $table['js'][]='src/blocks/assets/blocks_btn.js';
   $table['command']['blocks'] = ['link'=>'blocks/page/'];
 });

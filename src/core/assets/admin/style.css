@@ -9,7 +9,7 @@ body { overflow-x: hidden; }
 #wrapper.toggled { position: absolute; margin-right: var(---sidebar-width); }
 
 #sidebar-wrapper {
-  z-index: 1000;
+  z-index: 10;
   position: fixed;
   left: var(--sidebar-width);
   width: 0;

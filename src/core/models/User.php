@@ -144,6 +144,10 @@ class User
       }
     }
 
+    if($response = Cache::get('user-perm-'.$id, 3600, Config::config('updated'))) {
+      return json_decode($response, true);
+    }
+
     $response = User::metaList($id, 'privilege'); // DEPRECATED since 1.9.0
     $roles = User::metaList($id, 'role');
     $rp = Config::config('permissions');
@@ -168,6 +172,7 @@ class User
       }
       Session::key('permissions', $response);
     }
+    Cache::set('user-perm-'.$id, json_encode($response), [Config::config('updated')]);
     return $response;
   }
 
