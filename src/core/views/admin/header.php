@@ -54,6 +54,7 @@
           <ul class="text-align-left dropdown-menu" style="right:0">
             <div class="g-screen" onclick="g('.dropdown').removeClass('open')"></div>
             <li style="position:sticky"><a href="admin/profile"><?=__("My Profile")?></a></li>
+            <li style="position:sticky"><a href="admin/sessions"><?=__("Sessions")?></a></li>
             <li style="position:sticky"><a href="admin/logout"><?=__("Logout")?></a></li>
           </ul>
         </li>

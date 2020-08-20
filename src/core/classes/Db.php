@@ -209,7 +209,10 @@ class Db
   public function value($q, $p = null)
   {
     $res = $this->query($q, $p);
-    return mysqli_fetch_row($res)[0] ?? null;
+    if($res) {
+      return mysqli_fetch_row($res)[0];
+    }
+    return null;
   }
 
   public function read()
