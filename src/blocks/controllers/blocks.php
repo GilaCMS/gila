@@ -181,6 +181,7 @@ class blocks extends Gila\Controller
         View::renderFile('page--'.$r['template'].'.php');
       }
       echo '<style>html{scroll-behavior: smooth;}</style>';
+      $isDraft = self::$draft;
       include __DIR__.'/../views/content-block-edit.php';
     } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
       View::set('title', $r['title']);
@@ -192,7 +193,7 @@ class blocks extends Gila\Controller
       Event::fire('body');
       echo View::blocks($blocks, true);
       echo '</article></body>';
-      Event::fire('foot');
+      Event::fire('footer');
     }
   }
 

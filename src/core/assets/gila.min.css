@@ -450,8 +450,9 @@ textare.g-input, .g-input[type=text] {
 
 .gila-popup.large>.foot, .gila-popup.overlay>.foot,
 .gila-popup.large>.footer, .gila-popup.overlay>.footer{
-    display: flex;
+  display: flex;
   flex-direction: row-reverse;
+  gap: 0.5em;
 }
 .gila-popup>*{
   padding:12px;

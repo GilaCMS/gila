@@ -13,7 +13,7 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
   g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
     g.loader(false)
     blocks_preview_reload(data)
-    //content_blocks_app.draft = true
+    content_blocks_app.draft = true
   }})
 }}
 
@@ -32,7 +32,7 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
     g.ajax({url:'blocks/update?g_response=content',method:'POST',data:fm,fn:function(data){
       g.loader(false)
       blocks_preview_reload(data)
-      //content_blocks_app.draft = true
+      content_blocks_app.draft = true
     }})
   })
 }}
@@ -87,7 +87,7 @@ function block_pos(id,pos) {
   g.post('blocks/pos', 'id='+id+'&pos='+pos, function(data) {
     g.loader(false)
     blocks_preview_reload(data)
-    //content_blocks_app.draft = true
+    content_blocks_app.draft = true
   });
 }
 
@@ -97,9 +97,18 @@ function block_del(id) {
     g.post('blocks/delete', 'id='+id, function(data) {
       g.loader(false)
       blocks_preview_reload(data)
-      //content_blocks_app.draft = true
+      content_blocks_app.draft = true
     });
   }
+}
+
+function fast_block_del(id) {
+  g.loader()
+  g.post('blocks/delete', 'id='+id, function(data) {
+    g.loader(false)
+    blocks_preview_reload(data)
+    content_blocks_app.draft = true
+  });
 }
 
 function block_add(pos) {
@@ -129,10 +138,5 @@ function open_gallery_post() {
 }
 
 blocks_preview_reload = function(data) {
-  if(typeof content_blocks_app!='undefined') {
-    content_blocks_app.blocks = JSON.parse(data)
-    document.getElementById('blocks_preview').contentWindow.location.reload();
-  } else {
-    window.location.reload();
-  }
+  window.location.reload();
 }
