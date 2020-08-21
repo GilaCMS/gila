@@ -95,11 +95,12 @@ class Table
     }
 
     if ($ext = $this->table['extends']??null) {
-      $extTable = include 'src/'.$ext;
-      // TODO extend table the right way
-      $title = $this->table['title'];
-      $this->table = array_merge_recursive($extTable, $this->table);
-      $this->table['title'] = $title;
+      $this->table = self::extend_recursive($extTable, $this->table);
+      //$extTable = include 'src/'.$ext;
+      //// TODO extend table the right way
+      //$title = $this->table['title'];
+      //$this->table = array_merge_recursive($extTable, $this->table);
+      //$this->table['title'] = $title;
     }
 
     if ($user_id = $this->table['filter_owner']??null) {
@@ -111,6 +112,18 @@ class Table
         $this->table['fields'][$user_id][$key] = false;
       }
     }
+  }
+
+  static public function extend_recursive($extTable, $table)
+  {
+    foreach($extTable as $key=>$el) if(is_array($el)) {
+      $table[$key] = self::extend_recursive($el, $table[$key]);//array_unique(array_merge($el, $table[$key]));
+    } else if(is_numeric($key)){
+      if(!in_array($el, $table)) $table[] = $el;
+    } else {
+      $table[$key] = $el;
+    }
+    return $table;
   }
 
   public function name()

@@ -14,7 +14,7 @@ class InstallSqlTest extends TestCase
 		include 'src/core/install/install.sql.php';
 
 		$tables = $db->get('SHOW TABLES');
-		$this->assertEquals(9, count($tables));
+		$this->assertEquals(10, count($tables));
 
 		$tableColumn = [
 			'post'=>['id','title','slug','description','user_id','publish','post','updated','created'],
