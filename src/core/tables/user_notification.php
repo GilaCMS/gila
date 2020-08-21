@@ -21,7 +21,7 @@ return [
       'qtype'=>'INT(1) DEFAULT 1'
     ],
     'created'=>[
-      'qtype'=>'TIMESTAMP'
+      'qtype'=>'TIMESTAMP DEFAULT CURRENT_TIMESTAMP()'
     ]
   ]
 ];
