@@ -417,7 +417,7 @@ class Table
       if (!is_numeric($key)) {
         if (array_key_exists($key, $this->table['fields'])) {
           if (is_array($value)) {
-            $key = $this->getColumnKey($key);
+            $key = $this->getColumnKey($key, false);
             foreach ($value as $subkey=>$subvalue) {
               $subvalue = $this->db->res($subvalue);
               if (isset(self::$basicOps[$subkey])) {
@@ -448,10 +448,9 @@ class Table
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {
             $key = $this->getColumnKey($key, false);
-            //die("FIND_IN_SET($value, $key)>0");
             $filters[] = "FIND_IN_SET($value, $key)>0";
           } else {
-            $key = $this->getColumnKey($key);
+            $key = $this->getColumnKey($key, false);
             $filters[] = "$key='$value'";
           }
         }

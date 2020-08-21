@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::config('use_webp', $_POST['gila_webp']);
   Config::config('maxImgWidth', $_POST['gila_maxImgWidth']);
   Config::config('maxImgHeight', $_POST['gila_maxImgHeight']);
+  Config::config('utk_level', $_POST['gila_utk_level']);
   Config::updateConfigFile();
   echo '{"success":true}';
   return;
@@ -148,6 +149,9 @@ foreach ($config_list as $key=>$value) {
   &times;
   <input name="gila_maxImgHeight" value="<?=Config::config('maxImgHeight')?>" type="number" class="gm-2" style="width:120px" />
   </div>
+
+  <br>
+  <?php echo Form::input('gila_utk_level', ["type"=>"select","options"=>[0=>'0',1=>'1',2=>'2',3=>'3',4=>'4',5=>'5',6=>'6',7=>'7',8=>'8',9=>'9',10=>'10']], 10, __("Unique Token Key")) ?>
 
   <br>
   <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>

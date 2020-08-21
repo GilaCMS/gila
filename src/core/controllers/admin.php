@@ -266,6 +266,14 @@ class admin extends Gila\Controller
     View::renderAdmin('admin/myprofile.php');
   }
 
+  public function sessionsAction()
+  {
+    Config::addLang('core/lang/myprofile/');
+    $user_id = Session::key('user_id');
+    View::set('page_title', __('Sessions'));
+    View::renderAdmin('admin/mysessions.php');
+  }
+
   public function deviceLogoutAction()
   {
     $device = Router::request('device');

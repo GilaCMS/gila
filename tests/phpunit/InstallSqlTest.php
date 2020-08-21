@@ -1,5 +1,6 @@
 <?php
 include __DIR__.'/includes.php';
+include_once __DIR__.'/../../src/core/models/User.php';
 use PHPUnit\Framework\TestCase;
 
 class InstallSqlTest extends TestCase
@@ -21,7 +22,7 @@ class InstallSqlTest extends TestCase
 			'page'=>['id','title','slug','publish','template','content','updated'],
 			'user'=>['id','username','email','pass','active','reset_code','created','updated'],
 			'usermeta'=>['id','user_id','vartype','value'],
-			'userrole'=>['id','userrole'],
+			'userrole'=>['id','userrole','level','description'],
 			'widget'=>['id','widget','title','area','active','pos','data'],
 			'option'=>['option','value'],
 			'postcategory'=>['id','title','slug','description']	
