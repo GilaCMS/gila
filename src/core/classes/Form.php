@@ -179,6 +179,10 @@ class Form
         }
         return $html . '</select>';
       },
+      "comments"=> function($name, $field, $ov) {
+        $form = isset($field['content'])? ' form="'.$field['content'].'-edit-item-form"': '';
+        return '<input-comments name="'.$name.'" fieldname="'.$field['fieldname'].'" username="'.Session::key('user_name').'" value="'.htmlspecialchars($ov??'[]').'"'.$form.'>';
+      },
       "media2"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);

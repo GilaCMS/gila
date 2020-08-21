@@ -46,3 +46,5 @@ if (version_compare(Package::version('core'), '1.12.2') < 0) {
 if (version_compare(Package::version('core'), '1.13.0') < 0) {
   FileManager::copy('lib', 'assets/lib');
 }
+
+TableSchema::update(include 'src/core/tables/user_notification.php');

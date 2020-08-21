@@ -96,7 +96,10 @@ class Table
 
     if ($ext = $this->table['extends']??null) {
       $extTable = include 'src/'.$ext;
+      // TODO extend table the right way
+      $title = $this->table['title'];
       $this->table = array_merge_recursive($extTable, $this->table);
+      $this->table['title'] = $title;
     }
 
     if ($user_id = $this->table['filter_owner']??null) {
