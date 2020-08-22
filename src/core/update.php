@@ -47,6 +47,8 @@ if (version_compare(Package::version('core'), '1.13.0') < 0) {
   FileManager::copy('lib', 'assets/lib');
 }
 
+TableSchema::update(include 'src/core/tables/user_notification.php');
+
 if (version_compare(Package::version('core'), '1.15.3') < 0) {
   $db->query("UPDATE userrole TABLE SET `level`=10 WHERE id=1;");
 }

@@ -25,7 +25,7 @@ function menu_item($mi, $tag='')
 {
   global $db;
 
-  $url = isset($mi['url'])?$mi['url']:(Router::url().'#');
+  $url = isset($mi['url'])?$mi['url']:(Router::path().'#');
   $name = isset($mi['name'])?$mi['name']:'';
 
   if ($mi['type']=='page') {
@@ -55,7 +55,7 @@ function menu_item($mi, $tag='')
     list($url, $name) = $res;
   }
 
-  if (Router::url()==$url) {
+  if (Router::path()==$url) {
     return "<li class=\"active\"><a href=\"$url\">$name</a>";
   }
   return "<li><a href=\"$url\" >$name</a>";

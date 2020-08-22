@@ -73,4 +73,10 @@ class lzld extends Gila\Controller
   {
     echo Menu::getHtml(Config::$amenu, $_GET['base'] ?? 'admin');
   }
+
+  public function notificationSetReadAction()
+  {
+    UserNotification::setRead($_POST['id']);
+  }
+
 }

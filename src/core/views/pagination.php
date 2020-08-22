@@ -1,6 +1,6 @@
 <ul class="g-nav pagination">
 <?php
-  $url = htmlspecialchars(Router::url());
+  $url = htmlspecialchars(Router::path());
   if (!isset($page)) {
     $page=1;
   }

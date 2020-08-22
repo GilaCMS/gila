@@ -23,7 +23,7 @@ class Config
   * @param $file (string) Controller's filepath without the php extension
   * @param $name (string) Controller's class name, $c is used by default
   * @code
-  * Config::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
+  * self::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
   * @endcode
   */
   public static function controller($c, $path, $name=null) // DEPRECATED
@@ -36,7 +36,7 @@ class Config
   * @param $r (string) The path
   * @param $fn (function) Callback for the route
   * @code
-  * Config::route('some.txt', function(){ echo 'Some text.'; });
+  * self::route('some.txt', function(){ echo 'Some text.'; });
   * @endcode
   */
   public static function route($r, $fn) // DEPRECATED
@@ -49,7 +49,7 @@ class Config
   * @param $c (string) The controller's class name
   * @param $fn (function) Callback
   * @code
-  * Config::onController('blog', function(){ BlogController::ppp = 24; });
+  * self::onController('blog', function(){ BlogController::ppp = 24; });
   * @endcode
   */
   public static function onController($c, $fn) // DEPRECATED
@@ -63,7 +63,7 @@ class Config
   * @param $action (string) The action
   * @param $fn (function) Callback
   * @code
-  * Config::action('blog', 'topics', function(){ ... });
+  * self::action('blog', 'topics', function(){ ... });
   * @endcode
   */
   public static function action($c, $action, $fn) // DEPRECATED -> Router::action()
@@ -127,7 +127,7 @@ class Config
   /**
   * Registers new widgets
   * @param $list (Assoc Array) Widgets to register
-  * @code Config::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
+  * @code self::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
   */
   public static function widgets($list)
   {
@@ -140,7 +140,7 @@ class Config
   * Registers new content type
   * @param $key (string) Name of content type
   * @param $path (string) Path to the table file
-  * @code Config::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
+  * @code self::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
   */
   public static function content($key, $path)
   {
@@ -152,7 +152,7 @@ class Config
   * @param $key (string) Name of content type
   * @param $field (string) Index of the field
   * @param $table (Assoc array) Value of the field
-  * DEPRECATED @see Config::contentInit()
+  * DEPRECATED @see self::contentInit()
   */
   public static function contentField($key, $field, $table)
   {
@@ -166,7 +166,7 @@ class Config
   * Make changes in a content type when it is initialized
   * @param $key (string) Name of content type
   * @param $init (function) Funtion to run
-  * @code Config::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
+  * @code self::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
   */
   public static function contentInit($key, $init)
   {
@@ -190,7 +190,7 @@ class Config
   * @param $key (string) Index name
   * @param $item (assoc array) Array with data
   * Indices 0 for Display name, 1 for action link
-  * @code Config::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code self::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu($key, $item=[])
   {
@@ -213,7 +213,7 @@ class Config
   * Add a child element on administration menu item
   * @param $key (string) Index of parent item
   * @param $item (assoc array) Array with data
-  * @code Config::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code self::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu_child($key, $item)
   {
@@ -381,7 +381,7 @@ class Config
 
   public static function canonical($str)
   {
-    View::$canonical = self::config('base').Config::url($str);
+    View::$canonical = self::config('base').self::url($str);
   }
 
   public static function base($str = null)
@@ -393,15 +393,16 @@ class Config
   {
     if (!isset(self::$base_url)) {
       if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
-        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(Config::config('base'), 0, 5)=='https'?'https':'http');
+        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(self::config('base'), 0, 5)=='https'?'https':'http');
         self::$base_url = $scheme.'://'.$_SERVER['HTTP_HOST'];
         self::$base_url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/')).'/';
       } else {
         self::$base_url = self::config('base');
       }
+      self::$base_url = htmlentities(self::$base_url);
     }
     if ($str!==null) {
-      return self::$base_url.Config::url($str);
+      return self::$base_url.self::url($str);
     }
     return self::$base_url;
   }
@@ -409,12 +410,13 @@ class Config
   public static function url($url)
   {
     if ($url==='#'||$url==='') {
-      return Router::url().$url;
+      return htmlentities(Router::path()).$url;
     }
+    $url = htmlentities($url);
 
     if (self::config('rewrite')) {
       $var = explode('/', $url);
-      if (Config::config('default-controller') === $var[0]) {
+      if (self::config('default-controller') === $var[0]) {
         if ($var[0]!='admin') {
           return substr($url, strlen($var[0])+1);
         }

@@ -14,7 +14,7 @@ class InstallSqlTest extends TestCase
 		include 'src/core/install/install.sql.php';
 
 		$tables = $db->get('SHOW TABLES');
-		$this->assertEquals(9, count($tables));
+		$this->assertEquals(10, count($tables));
 
 		$tableColumn = [
 			'post'=>['id','title','slug','description','user_id','publish','post','updated','created'],
@@ -25,7 +25,8 @@ class InstallSqlTest extends TestCase
 			'userrole'=>['id','userrole','level','description'],
 			'widget'=>['id','widget','title','area','active','pos','data'],
 			'option'=>['option','value'],
-			'postcategory'=>['id','title','slug','description']	
+			'postcategory'=>['id','title','slug','description']	,
+			'user_notification'=>['id','user_id','type','details','url','unread','created']
 		];		
 		foreach($tables as $table) {
 			$tableName = $table[0];
