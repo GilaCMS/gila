@@ -60,7 +60,7 @@ View::alerts();
 <div class="row">
   <ul class="g-nav g-tabs gs-12" id="theme-tabs"><?php
   foreach ($links as $link) {
-    $active = (Router::url()==$link[1]?'active':'');
+    $active = (Router::path()==$link[1]?'active':'');
     echo '<li class="'.$active.'"><a href="'.Config::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
