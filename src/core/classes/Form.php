@@ -159,6 +159,18 @@ class Form
         }
         return $html . '</select>';
       },
+      "role"=> function ($name, $field, $ov) {
+        global $db;
+        if (is_string($ov)) {
+          $ov = explode(',', $ov);
+        }
+        $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
+        $options = $db->get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
+        foreach ($options as $op) {
+          $html .= '<option value="'.$op[0].'"'.(in_array($op[0], $ov)?' selected':'').'>'.$op[1].'</option>';
+        }
+        return $html . '</select>';
+      },
       "radio"=> function ($name, $field, $ov) {
         $html = '<div class="g-radio g-input" style="padding-left: 0;padding-right: 0; width: min-content;">';
         foreach ($field['options'] as $value=>$display) {
@@ -178,6 +190,10 @@ class Form
           $html .= '<option value="'.$r[0].'"'.($r[0]==$ov?' selected':'').'>'.$r[1].'</option>';
         }
         return $html . '</select>';
+      },
+      "comments"=> function($name, $field, $ov) {
+        $form = isset($field['content'])? ' form="'.$field['content'].'-edit-item-form"': '';
+        return '<input-comments name="'.$name.'" fieldname="'.$field['fieldname'].'" username="'.Session::key('user_name').'" value="'.htmlspecialchars($ov??'[]').'"'.$form.'>';
       },
       "media2"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);

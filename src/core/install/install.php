@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $GLOBALS['config']['rewrite'] = 1;
     $GLOBALS['config']['page-blocks'] = true;
     $GLOBALS['config']['use_webp'] = function_exists("imagewebp") ? 1 : 0;
+    $GLOBALS['config']['utk_level'] = 10;
     if (function_exists("apache_get_modules") && !in_array('mod_rewrite', apache_get_modules())) {
       $GLOBALS['config']['rewrite'] = 0;
     }

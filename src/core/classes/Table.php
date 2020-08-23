@@ -95,8 +95,8 @@ class Table
     }
 
     if ($ext = $this->table['extends']??null) {
-      $extTable = include 'src/'.$ext;
-      $this->table = array_merge_recursive($extTable, $this->table);
+      $baseTable = include 'src/'.$ext;
+      $this->table = self::extend_recursive($baseTable, $this->table);
     }
 
     if ($user_id = $this->table['filter_owner']??null) {
@@ -108,6 +108,18 @@ class Table
         $this->table['fields'][$user_id][$key] = false;
       }
     }
+  }
+
+  static public function extend_recursive($table, $extTable)
+  {
+    foreach($extTable as $key=>$el) if(is_array($el)) {
+      $table[$key] = self::extend_recursive($table[$key], $el);
+    } else if(is_numeric($key)){
+      if(!in_array($el, $table)) $table[] = $el;
+    } else {
+      $table[$key] = $el;
+    }
+    return $table;
   }
 
   public function name()
@@ -414,7 +426,7 @@ class Table
       if (!is_numeric($key)) {
         if (array_key_exists($key, $this->table['fields'])) {
           if (is_array($value)) {
-            $key = $this->getColumnKey($key);
+            $key = $this->getColumnKey($key, false);
             foreach ($value as $subkey=>$subvalue) {
               $subvalue = $this->db->res($subvalue);
               if (isset(self::$basicOps[$subkey])) {
@@ -445,10 +457,9 @@ class Table
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {
             $key = $this->getColumnKey($key, false);
-            //die("FIND_IN_SET($value, $key)>0");
             $filters[] = "FIND_IN_SET($value, $key)>0";
           } else {
-            $key = $this->getColumnKey($key);
+            $key = $this->getColumnKey($key, false);
             $filters[] = "$key='$value'";
           }
         }

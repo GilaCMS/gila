@@ -13,6 +13,8 @@ TableSchema::update(include 'src/core/tables/page.php');
 
 TableSchema::update(include 'src/core/tables/user.php');
 
+TableSchema::update(include 'src/core/tables/user_notification.php');
+
 $db->query('CREATE TABLE IF NOT EXISTS `widget` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `widget` varchar(80) DEFAULT NULL,
@@ -38,7 +40,7 @@ $_user = $_POST['adm_user'];
 $_email = $_POST['adm_email'];
 $_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
 
-$db->query("INSERT INTO userrole(id,userrole) VALUES(1,'Admin');");
+$db->query("REPLACE INTO userrole(id,userrole,`level`) VALUES(1,'Admin',10);");
 $db->query("INSERT INTO user(id,username,email,pass,active,reset_code)
   VALUES(1,?,?,?,1,'');", [$_user,$_email,$_pass]);
 $db->query("INSERT INTO usermeta VALUES(1,1,'role',1);");
