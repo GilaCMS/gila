@@ -27,7 +27,8 @@ return [
     ],
     'slug'=> [
       'title'=>'Path',
-      'qtype'=>'varchar(80) DEFAULT NULL'
+      'qtype'=>'varchar(80) DEFAULT NULL',
+      'alt'=>'('.Gila\Config::tr('Home').')'
     ],
     'publish'=> [
       'title'=>'Public',

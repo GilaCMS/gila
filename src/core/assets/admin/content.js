@@ -289,7 +289,12 @@ Vue.component('g-table', {
       rv = this.data.rows[irow]
       cv = this.data.rows[irow][ifield]
       field = this.table.fields[fkey]
-      dv = cv // display value
+      displayValue = cv
+
+      if(field.alt) if(!cv) {
+        cv = field.alt
+        displayValue = '<span style="opacity:0.66">'+cv+'</span>'
+      }
       if (typeof this.table.fields[fkey].display != "undefined") {
         return eval(this.table.fields[fkey].display)
       }
@@ -329,7 +334,17 @@ Vue.component('g-table', {
       }
 
       if(displayType=='number') {
-        return '<div style="text-align:right">'+dv+'</div>';
+        return '<div style="text-align:right">'+displayValue+'</div>';
+      }
+
+      if(displayType=='radial-bar') {
+        pcValue = parseInt(displayValue*100)
+        return '<div style="text-align:center;width:100%"><svg viewBox="0 0 40 40" style="width:28px;vertical-align: middle;">\
+        <circle stroke="lightgrey" stroke-width="8" fill="transparent" r="15" cx="20" cy="20"/>\
+        <path d="M21 4 a 15 15 0 0 1 0 30 a 15 15 0 0 1 0 -30"\
+          fill="none"\ stroke="var(--main-a-color)";\ stroke-width="8";\
+          stroke-dasharray="'+pcValue+', 100" />\
+      </svg> <span style="vertical-align: middle;">'+pcValue+'%</span></div>'
       }
 
       if(displayType=='text') if (rv.text.length>100) {
@@ -353,9 +368,9 @@ Vue.component('g-table', {
       }
 
       if(field.inline_edit) {
-        return '<div contenteditable="true" data-field="'+fkey+'">'+dv+'</div>';
+        return '<div contenteditable="true" data-field="'+fkey+'">'+displayValue+'</div>';
       }
-      return dv;
+      return displayValue;
     },
     showField: function(field) {
       if(typeof this.table.fields[field].show=='undefined') return true
