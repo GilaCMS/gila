@@ -250,6 +250,10 @@ class Table
 
   public function groupby($group)
   {
+    if($group===null) {
+      if ($group = $this->table['groupby']) return " GROUP BY $group";
+      return '';
+    }
     return " GROUP BY $group";
   }
 
@@ -593,10 +597,11 @@ class Table
 
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
+    $groupby = $this->groupby($args['groupby']??null);
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
     $res = $db->read()->getAssoc("SELECT $select
-      FROM {$this->name()}$where$orderby$limit;");
+      FROM {$this->name()}$where$groupby$orderby$limit;");
     return $res;
   }
 

@@ -338,13 +338,16 @@ Vue.component('g-table', {
       }
 
       if(displayType=='radial-bar') {
+        displayValue=parseFloat(displayValue).toFixed(2)
+        if (isNaN(displayValue)) return
         pcValue = parseInt(displayValue*100)
+        if(field.display_percentage) displayValue=pcValue+'%'
         return '<div style="text-align:center;width:100%"><svg viewBox="0 0 40 40" style="width:28px;vertical-align: middle;">\
         <circle stroke="lightgrey" stroke-width="8" fill="transparent" r="15" cx="20" cy="20"/>\
         <path d="M21 4 a 15 15 0 0 1 0 30 a 15 15 0 0 1 0 -30"\
           fill="none"\ stroke="var(--main-a-color)";\ stroke-width="8";\
           stroke-dasharray="'+pcValue+', 100" />\
-      </svg> <span style="vertical-align: middle;">'+pcValue+'%</span></div>'
+      </svg> <span style="vertical-align: middle;">'+displayValue+'</span></div>'
       }
 
       if(displayType=='text') if (rv.text.length>100) {

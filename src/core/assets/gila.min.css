@@ -403,7 +403,6 @@ textare.g-input, .g-input[type=text] {
     bottom:unset;
     left:inherit;
     right:inherit;
-    top:10%;
     margin-left:20%;
     width:60%;
     animation-name:gilapopupanimation;
@@ -418,11 +417,11 @@ textare.g-input, .g-input[type=text] {
     width:33%;
   }
   .gila-popup.large, .gila-popup.overlay{
+    top:5%;
     animation-name: none;
-    max-height:90%;
-    top:auto;
+    max-height:95%;
     width:900px;
-    margin-left:10%;
+    margin-left:auto;
   }
   .gila-popup.overlay{
     top:0;
@@ -434,7 +433,6 @@ textare.g-input, .g-input[type=text] {
 
 @media only screen and (min-width:1024px){
   .gila-popup.large, .gila-popup.overlay{
-    top:10%;
     left:50%;
     margin-left:-450px;
     width:900px;
