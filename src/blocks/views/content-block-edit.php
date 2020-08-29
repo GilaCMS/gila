@@ -12,6 +12,7 @@
 <?=View::css('blocks/blocks.css')?>
 <?=View::cssAsync('core/gila.min.css')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
+<?=View::script("core/admin/content.js")?>
 
 <?php
 $cid = $content.'_'.$id.'_';
@@ -27,8 +28,11 @@ $cid = $content.'_'.$id.'_';
 </div>
 
 <style>
-.block-head:hover + *, .block-head + *:hover {
-  border:1px dashed grey;
+.block-head {
+  border:1px dashed lightgrey;
+}
+.block-head:hover {
+  border:1px dashed cornflowerblue;
 }
 .block-edit-btn,.block-add-btn,.block-switch-btn,.block-del-btn{
   padding:6px;
@@ -55,12 +59,32 @@ $cid = $content.'_'.$id.'_';
 </style>
 
 <script>
-g('.block-head').html("<div style='position:relative;width:100%;z-index:1'>\
+g('.block-head').prepend("<div style='position:relative;width:100%;z-index:1'>\
 <span style='position:absolute;left:0;top:0.5em'><button class='block-edit-btn'>EDIT</button></span>\
 <span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
 <span style='position:absolute;right:58%;top:-1em'><button class='block-switch-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
 <span style='position:absolute;right:0;top:0.5em'><button class='block-del-btn'><i class='fa fa-trash'></i></button></span>\
 </div>");
+
+let inlineTinies=g('.inline-tinymce').all
+let inlineTexts=g('[data-inline]').all
+let inlineTextValues=new Array(inlineTexts.length)
+for(i=0; i<inlineTexts.length; i++) {
+  inlineTextValues[i] = inlineTexts[i].innerHTML
+}
+
+document.addEventListener("click", function(e){
+  e.preventDefault();
+});
+document.addEventListener("keyup", function(e){
+  args=[]
+  for(i=0; i<inlineTexts.length; i++) if(inlineTextValues[i]!=inlineTexts[i].innerHTML){
+    inlineTextValues[i]=inlineTexts[i].innerHTML
+    key = inlineTexts[i].getAttribute('data-inline')
+    args[key] = inlineTexts[i].innerHTML
+  }
+  console.log(args)
+});
 
 g.click('.block-edit-btn', function(){
   pos = this.parentNode.parentNode.parentNode.getAttribute('data-pos')
@@ -112,8 +136,46 @@ function getElementIndex (element) {
   return Array.from(element.parentNode.children).indexOf(element);
 }
 
+/*********
+g_tinymce_options = {
+  selector: '',
+  relative_urls: false,
+  remove_script_host: false,
+  height: 300,
+  remove_linebreaks : false,
+  document_base_url: ".",
+  verify_html: false,
+  cleanup: true,
+  plugins: ['code codesample table charmap image media lists link'],
+  menubar: true,
+  entity_encoding: 'raw',
+  toolbar: 'formatselect bold italic | bullist numlist outdent indent | link image table | alignleft aligncenter alignright alignjustify',
+  file_picker_callback: function(cb, value, meta) {
+    input_filename = cb;
+    open_gallery_post();
+  },
+  inline:true
+}
+
+let inlinetinies
+inlinetinies=g('.inline-tinymce').all
+mce_editor=[]
+if(tinymce) tinymce.remove() //remove all tinymce editors
+for(i=0;i<inlinetinies.length;i++) {
+  mce_editor[i] = {id: inlinetinies[i].id};
+  mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));
+  mce_editor[i].settings.selector = '[id='+inlinetinies[i].id.replace('[','\\[').replace(']','\\]')+']'
+  mce_editor[i].settings.file_picker_callback = function(cb, value, meta) {
+    input_filename = cb;
+    open_gallery_post();
+  }
+  tinymce.init(mce_editor[i].settings)
+}
+********/
+
+
 content_blocks_app = new Vue({
-  el: "#content_blocks_list",
+  el: "body",
   data: {
     blocks: <?=json_encode($widgets??[])?>,
     draft: <?=($isDraft?'true':'false')?>
@@ -138,7 +200,7 @@ content_blocks_app = new Vue({
       });
     }
   }
-})
+});
 
 </script>
 
@@ -158,5 +220,4 @@ content_blocks_app = new Vue({
   </div>
 </div>
 
-<?=View::script("core/admin/content.js")?>
 <?=View::script("blocks/content-block-v5.js")?>
