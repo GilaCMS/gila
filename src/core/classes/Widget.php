@@ -48,4 +48,5 @@ class widget
       'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],
       'totalRows'=>1]);
   }
+
 }

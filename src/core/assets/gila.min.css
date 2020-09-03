@@ -279,6 +279,7 @@ textare.g-input, .g-input[type=text] {
   padding:0.3em 0;
   font:14px Arial;
   font-weight:bold;
+  display:initial;
 }
 
 .g-form input[type=color], .g-input[type=color]{
@@ -371,6 +372,7 @@ textare.g-input, .g-input[type=text] {
   bottom:0;
   right:0;
   z-index: 999;
+  animation: fade-in 0.2s;
 }
 
 .gila-popup-s, .gila-popup, .gila-popup-m, .gila-popup-l{

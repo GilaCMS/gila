@@ -56,7 +56,7 @@
 </style>
 
 <?php
-use core\models\Page;
+use Gila\Page;
 
 global $db;
 

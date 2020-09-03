@@ -19,7 +19,7 @@ class Post
     if ($row = mysqli_fetch_array($res)) {
       if ($blocks = $db->read()->value("SELECT blocks FROM post WHERE (id=? OR slug=?);", [$id,$id])) {
         $blocks = json_decode($blocks);
-        $row['post'] .= View::blocks($blocks);
+        $row['post'] .= View::blocks($blocks, 'post'.$row['id']);
       }
       $row['url'] = Config::make_url('blog', '', ['p'=>$row['id'],'slug'=>$row['slug']]);
       return $row;

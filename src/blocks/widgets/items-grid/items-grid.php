@@ -11,7 +11,7 @@
       <h3><?=htmlentities($item[1])?></h3>
       <p><?=htmlentities($item[2])?></p>
       <?php if ($item[3] != '') {
-  echo '<a href="'._url($item[3]).'">Learn More</a>';
+  echo '<a href="'.htmlentities($item[3]).'">Learn More</a>';
 } ?>
     </div>
   </div>

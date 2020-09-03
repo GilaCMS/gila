@@ -18,11 +18,11 @@
 $cid = $content.'_'.$id.'_';
 ?>
 
-<div id="content_blocks_list" style="position:absolute;right:1em;top:1em;padding:0;">
+<div id="content_blocks_list" style="position:absolute;right:1em;top:1em;padding:0;" :class="{opacity05:load==true}">
   <div v-if="draft" style="margin-left:2em">
-    <button class='g-btn success' @click='block_save()'><?='<i class="fa fa-save"></i> '.__('Save')?></button>
+    <button class='g-btn success content_blocks_btn' @click='block_save()'><?='<i class="fa fa-save"></i> '.__('Save')?></button>
     <?=(isset($title)?'&nbsp;':'')?>
-    <button class='g-btn-white' @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
+    <button class='g-btn-white content_blocks_btn' @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
     <br>
   </div>
 </div>
@@ -34,7 +34,10 @@ $cid = $content.'_'.$id.'_';
 .block-head:hover {
   border:1px dashed cornflowerblue;
 }
-.block-edit-btn,.block-add-btn,.block-switch-btn,.block-del-btn{
+.opacity05{
+  opacity:0.5;
+}
+.block-edit-btn,.block-add-btn,.block-swap-btn,.block-del-btn{
   padding:6px;
   border-radius:12px;
   font:14px Arial;
@@ -43,16 +46,19 @@ $cid = $content.'_'.$id.'_';
   opacity:0.66;
   color:#000;
 }
-.block-edit-btn:hover,.block-add-btn:hover,.block-switch-btn:hover,.block-del-btn:hover{
+.block-head:nth-child(1) .block-swap-btn{
+  display:none;
+}
+.block-edit-btn:hover,.block-add-btn:hover,.block-swap-btn:hover,.block-del-btn:hover{
   opacity:1;
 }
-#content_blocks_list button{
+.content_blocks_btn{
   border-radius:3em;
   box-shadow:0 0 2px grey;
   opacity:0.9;
   font-family:Arial;
 }
-#content_blocks_list button:hover{
+.content_blocks_btn:hover{
   opacity:1;
   box-shadow:0 0 3px grey;
 }
@@ -60,10 +66,10 @@ $cid = $content.'_'.$id.'_';
 
 <script>
 g('.block-head').prepend("<div style='position:relative;width:100%;z-index:1'>\
-<span style='position:absolute;left:0;top:0.5em'><button class='block-edit-btn'>EDIT</button></span>\
+<span style='position:absolute;left:4px;top:0.5em'><button class='block-edit-btn'>EDIT</button></span>\
 <span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
-<span style='position:absolute;right:58%;top:-1em'><button class='block-switch-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
-<span style='position:absolute;right:0;top:0.5em'><button class='block-del-btn'><i class='fa fa-trash'></i></button></span>\
+<span style='position:absolute;right:58%;top:-1em'><button class='block-swap-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
+<span style='position:absolute;right:4px;top:0.5em'><button class='block-del-btn'><i class='fa fa-trash'></i></button></span>\
 </div>");
 
 let inlineTinies=g('.inline-tinymce').all
@@ -74,7 +80,9 @@ for(i=0; i<inlineTexts.length; i++) {
 }
 
 document.addEventListener("click", function(e){
-  e.preventDefault();
+  if(g(e.target).findUp('#widget_options_form').all.length==0) {
+    e.preventDefault();
+  }
 });
 document.addEventListener("keyup", function(e){
   args=[]
@@ -98,18 +106,36 @@ g.click('.block-add-btn', function(){
   blocks_app.selected_pos = pos;
 })
 
-g.click('.block-switch-btn', function(){
-  pos = this.parentNode.parentNode.parentNode.getAttribute('data-pos')
-  block_pos("<?=$cid?>"+pos,pos-1)
+g.click('.block-swap-btn', function(){
+  _block = this.parentNode.parentNode.parentNode
+  pos = _block.getAttribute('data-pos')-1
+  id = "<?=$cid?>"+(pos+1)
+  content_blocks_app.loader()
+  g.post('blocks/pos', 'id='+id+'&pos='+pos, function(data) {
+    content_blocks_app.loader(false)
+    if (_block.previousSibling) {
+      _block.parentNode.insertBefore(_block, _block.previousSibling);
+    }
+    content_blocks_app.draft = true
+    _block.scrollIntoView(); 
+  });
+
 })
 
 g.click('.block-del-btn', function(){
-  pos = this.parentNode.parentNode.parentNode.getAttribute('data-pos')
-  fast_block_del("<?=$cid?>"+pos)
+  _block = this.parentNode.parentNode.parentNode
+  pos = _block.getAttribute('data-pos')
+  id = "<?=$cid?>"+pos
+  content_blocks_app.loader()
+  g.post('blocks/delete', 'id='+id, function(data) {
+    content_blocks_app.loader(false)
+    _block.parentNode.removeChild(_block)
+    content_blocks_app.draft = true
+  });
 })
 
 g('.block-end').html("<div style='position:relative;width:100%;'>\
-<span style='position:absolute;left:51%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
+<span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
 </div>");
 
 
@@ -175,10 +201,11 @@ for(i=0;i<inlinetinies.length;i++) {
 
 
 content_blocks_app = new Vue({
-  el: "body",
+  el: "#content_blocks_list",
   data: {
     blocks: <?=json_encode($widgets??[])?>,
-    draft: <?=($isDraft?'true':'false')?>
+    draft: <?=($isDraft?'true':'false')?>,
+    load: false
   },
   methods: {
     block_save: function() {
@@ -198,6 +225,10 @@ content_blocks_app = new Vue({
         _this.draft = false;
         blocks_preview_reload(data)
       });
+    },
+    loader: function(x=true) {
+      g.loader(x)
+      this.load = x
     }
   }
 });

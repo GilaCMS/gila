@@ -378,7 +378,7 @@ class View
     @include $block_file;
   }
 
-  public static function blocks(&$blocks, $anchors=false)
+  public static function blocks(&$blocks, $prefixId, $anchors=false)
   {
     $html = "";
     foreach ($blocks as $key=>$b) {
@@ -388,12 +388,14 @@ class View
       if ($anchors) {
         $html .= "<div id='w$key' class='block-head' data-pos='$key' data-type='{$b->_type}'>";
       }
+      $b->widget_id = $prefixId.'_'.$key;
       $html .= View::getWidgetBody($b->_type, $b);
       if ($anchors) {
         $html .= "</div>";
       }
     }
-    $html .= "<span id='w$key' class='block-end' data-pos='$key'></span>";
+    $key = count($blocks);
+    $html .= "<span class='block-end' data-pos='$key'></span>";
     return $html;
   }
 

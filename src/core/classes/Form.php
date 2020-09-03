@@ -216,7 +216,7 @@ class Form
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
-          <span class="btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
+          <span class="g-btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
           <span class="g-group-item"><input class="g-input fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },

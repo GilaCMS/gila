@@ -174,7 +174,7 @@ class blocks extends Gila\Controller
     $blocks = self::readBlocks($content, $id);
     if ($content=="page" && $r = Page::getByIdSlug($id, false)) {
       View::set('title', $r['title']);
-      View::set('text', View::blocks($blocks, true));
+      View::set('text', View::blocks($blocks, 'page'.$r['id'], true));
       if ($r['template']===''||$r['template']===null) {
         View::render('page.php');
       } else {
@@ -185,13 +185,13 @@ class blocks extends Gila\Controller
       include __DIR__.'/../views/content-block-edit.php';
     } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
       View::set('title', $r['title']);
-      View::set('text', $r['post'].View::blocks($blocks, true));
+      View::set('text', $r['post'].View::blocks($blocks, 'post'.$r['id'], true));
       View::render('single-post.php');
       echo '<style>html{scroll-behavior: smooth;}</style>';
     } else {
       View::renderFile('blocks-display-head.php', 'blocks');
       Event::fire('body');
-      echo View::blocks($blocks, true);
+      echo View::blocks($blocks, 'page'.$id, true);
       echo '</article></body>';
       Event::fire('footer');
     }

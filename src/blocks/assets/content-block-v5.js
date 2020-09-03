@@ -102,15 +102,6 @@ function block_del(id) {
   }
 }
 
-function fast_block_del(id) {
-  g.loader()
-  g.post('blocks/delete', 'id='+id, function(data) {
-    g.loader(false)
-    blocks_preview_reload(data)
-    content_blocks_app.draft = true
-  });
-}
-
 function block_add(pos) {
   blocks_app.add_block = true;
   blocks_app.selected_pos = pos;
