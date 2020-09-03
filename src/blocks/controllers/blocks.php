@@ -72,8 +72,7 @@ class blocks extends Gila\Controller
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id);
     if ($type = $widgets[$pos]['_type']) {
-      $widget_folder = 'src/'.Config::$widget[$type];
-      $fields = include $widget_folder.'/widget.php';
+      $fields = Gila\Widget::getFields($type);
       $widget_data = $_POST['option'] ?? [];
 
       foreach ($widget_data as $key=>$value) {
@@ -141,8 +140,8 @@ class blocks extends Gila\Controller
     $pos = (int)$idArray[2];
     $widgets = self::readBlocks($content, $id)??[];
     $new = ['_type'=>$_POST['type']];
-    $widget_folder = 'src/'.Config::$widget[$_POST['type']];
-    $fields = include $widget_folder.'/widget.php';
+    $type = strtr($_POST['type'], ['/'=>'','\\'=>'','.'=>'']);
+    $fields = Gila\Widget::getFields($type);
     foreach ($fields as $key=>$field) {
       if (isset($field['default'])) {
         $new[$key] = $field['default'];

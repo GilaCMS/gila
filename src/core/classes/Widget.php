@@ -27,8 +27,7 @@ class widget
   {
     global $db;
     $widget = self::getById($data['widget_id']);
-    $widget_folder = 'src/'.Config::$widget[$widget->widget];
-    $fields = include $widget_folder.'/widget.php';
+    $fields = self::getFields($widget->widget);
 
     foreach ($data['option'] as $key=>$value) {
       $allowed = $fields[$key]['allow_tags'] ?? false;
@@ -47,6 +46,12 @@ class widget
     return json_encode(['fields'=>['id','title','widget','area','pos','active'],
       'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],
       'totalRows'=>1]);
+  }
+
+  public static function getFields($widget)
+  {
+    $widgetData = include 'src/'.Config::$widget[$widget].'/widget.php';
+    return $widgetData['fields'] ?? $widgetData;
   }
 
 }

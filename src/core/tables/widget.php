@@ -47,7 +47,7 @@ return [
           if (!isset($row['data']) || $row['data']!==null) {
             return;
           }
-          $wdgt_options = include 'src/'.Config::$widget[$row['widget']].'/widget.php';
+          $wdgt_options = Gila\Widget::getFields($row['widget']);
           if (isset($options)) {
             $wdgt_options = $options;
           }

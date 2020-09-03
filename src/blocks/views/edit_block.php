@@ -4,8 +4,7 @@
 <?php
 global $db;
 $widget_data = [];
-$widget_folder = 'src/'.Gila\Config::$widget[$type];
-$fields = include $widget_folder.'/widget.php';
+$fields = Gila\Widget::getFields($type);
 if (isset($options)) {
   $fields = $options;
 }
