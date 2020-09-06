@@ -51,7 +51,13 @@ class widget
   public static function getFields($widget)
   {
     $widgetData = include 'src/'.Config::$widget[$widget].'/widget.php';
+    if(isset($options)) return $options; //DEPRACIATED
     return $widgetData['fields'] ?? $widgetData;
+  }
+
+  public static function getList($term=null)
+  {
+
   }
 
 }

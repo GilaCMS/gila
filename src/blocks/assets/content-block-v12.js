@@ -112,13 +112,33 @@ var blocks_app = new Vue({
   data: {
     add_block: false,
     selected_pos: 0,
-    blocks: content_blocks
+    blocks: content_blocks,
+    filter: ''
   },
   methods:{
     createBlock: function(content, type, pos) {
+      this.$refs.blocks_app.style.width='0px'
       this.add_block = false
       block_create(content,type,pos)
+    },
+    openList: function() {
+      this.add_block = true
     }
+  },
+  watch:{
+    filter: function(value) {
+      keys = Object.keys(this.blocks)
+      for(i of keys) {
+        console.log(i)
+        this.blocks[i].visible = false
+        if(this.blocks[i].name.includes(value)) this.blocks[i].visible = true
+      }
+    }
+  },
+  updated: function() {
+    if(this.add_block==false) return
+    this.$refs.filter.focus()
+    this.$refs.blocks_app.style.width='260px'
   }
 });
 

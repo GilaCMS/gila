@@ -35,6 +35,7 @@ class BlogController extends Gila\Controller
   */
   public function indexAction()
   {
+    Logger::stat();
     if ($id = Router::path()) {
       if ($id !== "blog" && $id !== "blog/") {
         $this->postShow($id);

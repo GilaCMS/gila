@@ -48,9 +48,7 @@ return [
             return;
           }
           $wdgt_options = Gila\Widget::getFields($row['widget']);
-          if (isset($options)) {
-            $wdgt_options = $options;
-          }
+
           $default_data=[];
           foreach ($wdgt_options as $key=>$op) {
             if (isset($op['default'])) {

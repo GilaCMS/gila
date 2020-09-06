@@ -46,11 +46,7 @@
 <?php
 global $db;
 $widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 1;", $widget->id));
-
 $fields = Gila\Widget::getFields($widget->widget);
-if (isset($options)) {
-  $fields = $options;
-}
 
 if (isset($fields)) {
   foreach ($fields as $key=>$op) {

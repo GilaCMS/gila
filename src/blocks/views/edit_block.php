@@ -5,9 +5,6 @@
 global $db;
 $widget_data = [];
 $fields = Gila\Widget::getFields($type);
-if (isset($options)) {
-  $fields = $options;
-}
 
 if ($id!=='new') {
   $widget_data = $widgets[$pos];

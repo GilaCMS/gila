@@ -21,7 +21,7 @@ class Logger
   /**
    * System is unusable.
    */
-  public function emergency($message, array $context = array())
+  public function emergency($message, array $context = [])
   {
     $this->log('emergency', $message, $context);
   }
@@ -29,14 +29,14 @@ class Logger
   /**
    * Action must be taken immediately.
    */
-  public function alert($message, array $context = array())
+  public function alert($message, array $context = [])
   {
     $this->log('alert', $message, $context);
   }
   /**
    * Critical conditions.
    */
-  public function critical($message, array $context = array())
+  public function critical($message, array $context = [])
   {
     $this->log('critical', $message, $context);
   }
@@ -45,7 +45,7 @@ class Logger
    * Runtime errors that do not require immediate action but should typically
    * be logged and monitored.
    */
-  public function error($message, array $context = array())
+  public function error($message, array $context = [])
   {
     $this->log('error', $message, $context);
   }
@@ -56,7 +56,7 @@ class Logger
    * Example: Use of deprecated APIs, poor use of an API, undesirable things
    * that are not necessarily wrong.
    */
-  public function warning($message, array $context = array())
+  public function warning($message, array $context = [])
   {
     $this->log('warning', $message, $context);
   }
@@ -64,7 +64,7 @@ class Logger
   /**
    * Normal but significant events.
    */
-  public function notice($message, array $context = array())
+  public function notice($message, array $context = [])
   {
     $this->log('notice', $message, $context);
   }
@@ -74,7 +74,7 @@ class Logger
    *
    * Example: User logs in, SQL logs.
    */
-  public function info($message, array $context = array())
+  public function info($message, array $context = [])
   {
     $this->log('info', $message, $context);
   }
@@ -82,7 +82,7 @@ class Logger
   /**
    * Detailed debug information.
    */
-  public function debug($message, array $context = array())
+  public function debug($message, array $context = [])
   {
     $this->log('debug', $message, $context);
   }
@@ -90,7 +90,7 @@ class Logger
   /**
    * Logs with an arbitrary level.
    */
-  public function log($level, $message, array $context = array())
+  public function log($level, $message, array $context = [])
   {
     if ($this->file != null) {
       $line = date("Y-m-d H:i:s").','.$level.','.$message.','.json_encode($context, true)."\n";
@@ -98,7 +98,7 @@ class Logger
     }
 
     foreach ($this->handlers as $handler) {
-      $handler->handle($level, $message, $context = array());
+      $handler->handle($level, $message, $context = []);
     }
   }
 
@@ -110,13 +110,45 @@ class Logger
     array_unshift($this->handlers, $handler);
   }
 
-  static public function stat($value = null)
+  static public function stat($type = 'web', $value = null, array $context = [])
   {
     if($value===null) {
       if(self::$savedStat) return;
       self::$savedStat = true;
     }
-    $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.log');
-    $stat_log->log($value ?? Router::$url, $_SERVER['REMOTE_ADDR']);
+    $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.'.$type.'.log');
+    $stat_log->log($value ?? Router::$url, $_SERVER['REMOTE_ADDR'], $context);
   }
+
+  static public function getStat($type = 'web', $date = null)
+  {
+    $result = [];
+    if($date===null) {
+      $date = date("Y-m-d");
+    }
+    if(!is_array($date)) {
+      $date = [$date, $date];
+    }    
+
+    $begin = new \DateTime($date[0]);
+    $end = new \DateTime($date[1]);
+    $end = $end->modify('+1 day');
+
+    $interval = new \DateInterval('P1D');
+    $daterange = new \DatePeriod($begin, $interval ,$end);
+
+    foreach($daterange as $date){
+      $filePath = LOG_PATH.'/stats/'.$date->format("Y-m-d").'.'.$type.'.log';
+      if (($handle = fopen($filePath, "r")) !== FALSE) {
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+          $result[] = $data;
+        }
+        fclose($handle);
+      }
+    }
+
+    return $result;
+  }
+
+
 }

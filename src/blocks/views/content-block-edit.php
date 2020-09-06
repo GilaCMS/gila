@@ -29,7 +29,7 @@ $cid = $content.'_'.$id.'_';
 
 <style>
 .block-head {
-  border:1px dashed lightgrey;
+  border:1px dashed #d8d8dd;
 }
 .block-head:hover {
   border:1px dashed cornflowerblue;
@@ -80,7 +80,7 @@ for(i=0; i<inlineTexts.length; i++) {
 }
 
 document.addEventListener("click", function(e){
-  if(g(e.target).findUp('#widget_options_form').all.length==0) {
+  if(g(e.target).findUp('#widget_options_form').all==null) {
     e.preventDefault();
   }
 });
@@ -91,7 +91,6 @@ document.addEventListener("keyup", function(e){
     key = inlineTexts[i].getAttribute('data-inline')
     args[key] = inlineTexts[i].innerHTML
   }
-  console.log(args)
 });
 
 g.click('.block-edit-btn', function(){
@@ -102,7 +101,7 @@ g.click('.block-edit-btn', function(){
 
 g.click('.block-add-btn', function(){
   pos = this.parentNode.parentNode.parentNode.getAttribute('data-pos')
-  blocks_app.add_block = true;
+  blocks_app.openList();
   blocks_app.selected_pos = pos;
 })
 
@@ -236,11 +235,15 @@ content_blocks_app = new Vue({
 </script>
 
 <div id='blocks_app'>
-  <div v-if="add_block" id="add_block">
-    <img src="assets/core/admin/close.svg" class="add-block-x" @click="add_block=false">
-    <div class="add-block-grid centered">
-      <div class="add-block-btn" v-for="b in blocks" @click="createBlock('<?=$content.'/'.$id?>', b.name, selected_pos)">
-        <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview">
+  <div id="add_block" v-if="add_block" ref="blocks_app">
+    <div style="position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.5);z-index:-100" @click="add_block=false"></div>
+    <div style="text-align:center;background:white;display:flex">
+      <input type="text" class="g-input" style="max-width:220px;margin-top:10px" v-model="filter" ref="filter">
+      <img src="assets/core/admin/close.svg" class="add-block-x" @click="add_block=false">
+    </div>
+    <div class="add-block-grid" style="margin:auto;width:100%;grid-gap:0;height:100%;max-height:100%;background:#faebd7;">
+      <div class="add-block-btn" v-for="b in blocks" v-if="b.visible!==false" @click="createBlock('<?=$content.'/'.$id?>', b.name, selected_pos)">
+        <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview" :title="b.name">
         <div v-else class="logo">
           <img v-if="b.logo" :src="'lzld/thumb?src=src/'+b.logo">
           <h4 v-else>{{b.name[0].toUpperCase()}}</h4>
@@ -251,4 +254,4 @@ content_blocks_app = new Vue({
   </div>
 </div>
 
-<?=View::script("blocks/content-block-v5.js")?>
+<?=View::script("blocks/content-block-v12.js")?>
