@@ -734,6 +734,27 @@ gtableTool['addfrom'] = {
     })
   }
 }
+gtableTool['approve'] = {
+  fa: "check", label: _e("Approve"),
+  fn: function(table) {
+    if(typeof table.table.approve=='undefined') {
+      alert('table[approve] is not set')
+      return
+    }
+    let _this = table
+    data = {}
+    data[table.table.approve[0]] = table.table.approve[1]
+    g.ajax({
+      url: "cm/update_rows?t="+_this.name+'&id='+table.selected_rows.join(),
+      data: data,
+      method: 'post',
+      fn: function(data) {
+        _this.selected_rows = []
+        _this.load_page()
+      }
+    });
+  }
+}
 
 g_tinymce_options = {
   selector: '',

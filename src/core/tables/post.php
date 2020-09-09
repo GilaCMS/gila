@@ -6,6 +6,8 @@ return [
   'pagination'=> 15,
   'id'=>'id',
   'tools'=>['add_popup','csv'],
+  'bulk_actions'=>['approve'],
+  'approve'=>['publish','1'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
   'commands'=> ['edit_popup','delete'],
   'lang'=>'core/lang/admin/',

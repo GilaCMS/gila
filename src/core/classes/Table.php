@@ -321,24 +321,13 @@ class Table
           continue;
         }
 
-        if (is_array($value)) {
-          foreach ($value as $subkey=>$subvalue) {
-            if ($subkey === 'fn') {
-              $set[] = "$key=$subvalue";
-            }
-            if ($subkey === 'add') {
-              $set[] = "$key=$key+$subvalue";
-            }
+        if ($value==='') {
+          if ($def = $this->fieldAttr($key, 'default')) {
+            $value = $def;
           }
-        } else {
-          if ($value==='') {
-            if ($def = $this->fieldAttr($key, 'default')) {
-              $value = $def;
-            }
-          }
-          $value = strtr($value, ["'"=>"\'"]);
-          $set[] = "$key='$value'";
         }
+        $value = strtr($value, ["'"=>"\'"]);
+        $set[] = "$key='$value'";
       }
     }
     if ($set != []) {
