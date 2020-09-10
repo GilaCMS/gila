@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::config('maxImgWidth', $_POST['gila_maxImgWidth']);
   Config::config('maxImgHeight', $_POST['gila_maxImgHeight']);
   Config::config('utk_level', $_POST['gila_utk_level']);
+  Config::config('locale', $_POST['gila_locale']);
   Config::updateConfigFile();
   echo '{"success":true}';
   return;
@@ -153,6 +154,9 @@ foreach ($config_list as $key=>$value) {
   <br>
   <?php echo Form::input('gila_utk_level', ["type"=>"select","options"=>[0=>'0',1=>'1',2=>'2',3=>'3',4=>'4',5=>'5',6=>'6',7=>'7',8=>'8',9=>'9',10=>'10']], 10, __("Unique Token Key")) ?>
 
+  <br>
+  <?php echo Form::input('gila_locale', ["type"=>"text","placeholder"=>"en_US.UTF-8"], null, __("Locale")) ?>
+  
   <br>
   <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
 </form>

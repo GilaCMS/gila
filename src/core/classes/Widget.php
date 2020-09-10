@@ -71,15 +71,18 @@ class widget
 
   public static function getList($term=null)
   {
-    $list = [];
+    $primary = [];
+    $secondary = [];
     foreach(Config::$widget as $widget=>$value) {
       $keys = self::getKeys($widget);
-      if($keys==='removed') continue;
-      if($term===null || $keys==="" || in_array($term, explode(',', $keys))) {
-        $list[$widget] = $value;
+      if ($keys==='removed') continue;
+      if (in_array($term, explode(',', $keys))) {
+        $primary[$widget] = $value;
+      } else if($term===null || $keys==="") {
+        $secondary[$widget] = $value;
       }
     }
-    return $list;
+    return array_merge($primary, $secondary);
   }
 
 }

@@ -97,8 +97,9 @@ class Form
         $req = isset($op['required'])? ' required':'';
         $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
       } else {
+        $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$placeholder.$req.'>';
       }
     } else {
       $req = $op['required']? ' required':'';

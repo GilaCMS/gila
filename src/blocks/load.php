@@ -14,13 +14,14 @@ if(Config::config('page-blocks')===null) Config::contentInit('post', function (&
 });
 
 Config::widgets([
-  'side-cto'=>'blocks/widgets/side-cto', // DEPRECATED
+  'paragraph--header'=>'core/widgets/paragraph--header',
+  'paragraph--faq'=>'core/widgets/paragraph--faq',
   'side-image'=>'blocks/widgets/side-image',
+  'side-image--items'=>'blocks/widgets/side-image--items',
+  'side-image--cto'=>'blocks/widgets/side-image--cto',
+  'side-cto'=>'blocks/widgets/side-cto', // DEPRECATED
   'cards'=>'blocks/widgets/cards',
   'items-list'=>'blocks/widgets/items-list', // DEPRECATED
   'faq'=>'blocks/widgets/faq', // DEPRECATED
   'items-grid'=>'blocks/widgets/items-grid',
-  'paragraph--faq'=>'core/widgets/paragraph--faq',
-  'side-image--items'=>'blocks/widgets/side-image--items',
-  'side-image--cto'=>'blocks/widgets/side-image--cto',
 ]);

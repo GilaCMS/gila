@@ -279,7 +279,6 @@ textare.g-input, .g-input[type=text] {
   padding:0.3em 0;
   font:14px Arial;
   font-weight:bold;
-  display:initial;
 }
 
 .g-form input[type=color], .g-input[type=color]{

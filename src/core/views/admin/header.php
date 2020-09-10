@@ -11,8 +11,10 @@
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
-  <style><?=file_get_contents('src/core/assets/admin/themes/'.Config::config('admin_theme').'.css'??'')?>
-  .widget-area-dashboard .widget{background:rgba(255,255,255,0.9)}
+  <style>
+  <?=file_get_contents('src/core/assets/admin/themes/'.Config::config('admin_theme').'.css'??'')?>
+  <?=(Config::config('admin_background')? 'background:url("'.Config::config('admin_background').'")': '')?>
+  .widget-area-dashboard .widget{background:rgba(255,255,255,0.9)}  
 </style>
 </head>
 
@@ -20,7 +22,7 @@
   $_COOKIE['sidebar_toggled']='true';
 } ?>
 
-<body style="background:var(--main-bg-color);background:url('assets/media/1<?=rand(1,5)?>.jpeg');background-size:cover">
+<body style="background:var(--main-bg-color);background-size:cover">
   <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
     <!-- Sidebar g-nav vertical -->
     <div id="sidebar-wrapper">

@@ -31,7 +31,7 @@ $cid = $content.'_'.$id.'_';
 
 <style>
 .block-head {
-  border:1px dashed #d8d8dd;
+  border:1px dashed rgba(0,0,0,0);
 }
 .block-head:hover {
   border:1px dashed cornflowerblue;
