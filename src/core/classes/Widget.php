@@ -50,6 +50,9 @@ class widget
 
   public static function getFields($widget)
   {
+    if(!isset(Config::$widget[$widget])) {
+      $widget = explode('--', $widget)[0];
+    }
     $widgetData = include 'src/'.Config::$widget[$widget].'/widget.php';
     if(isset($options)) return $options; //DEPRACIATED
     return $widgetData['fields'] ?? $widgetData;

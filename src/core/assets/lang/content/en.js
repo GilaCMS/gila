@@ -15,6 +15,7 @@ var lang_array = {
   "Search": "Search",
   "Yes": "Yes",
   "No": "No",
+  "Approve": "Approve",
   "Delete registry?": "Are you sure you want to delete permamently the registry?",
   _gallery:"Media Gallery",
   _new_filepath: "Please enter new file path",

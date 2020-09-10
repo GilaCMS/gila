@@ -19,5 +19,6 @@ Config::widgets([
   'cards'=>'blocks/widgets/cards',
   'items-list'=>'blocks/widgets/items-list',
   'items-grid'=>'blocks/widgets/items-grid',
-  'faq'=>'blocks/widgets/faq'
+  'paragraph--faq'=>'core/widgets/paragraph--faq',
+  'side-image--items'=>'blocks/widgets/side-image--items',
 ]);

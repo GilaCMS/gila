@@ -297,24 +297,33 @@ class View
     global $db,$widget_data;
     if ($res = Widget::getById($id)) {
       $widget_data = json_decode($res[0]->data);
-      $widget_type = $res[0]->widget;
+      $type = $res[0]->widget;
     } else {
       "Widget <b>#".$id."</b> is not found";
       return;
     }
 
-    $widget_file = self::getThemePath().'/widgets/'.$widget_type.'.php';
+    $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
 
     if (file_exists($widget_file) === false) {
-      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       if (!isset(Config::$widget[$type])) {
         if ($type==='text') {
           $widget_file = "src/core/widgets/text/text.php";
         } else {
-          echo "Widget <b>".$type."</b> is not found";
+          $type = explode('--', $type)[0];
+          if (!isset(Config::$widget[$type])) {
+            echo "Widget <b>".$type."</b> is not found";
+            return;
+          }
         }
       }
+      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      if(!file_exists($widget_file)) {
+        $type = explode('--', $type)[0];
+        @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      }
     }
+
 
     $dir = Config::dir(LOG_PATH.'/cache0/widgets/');
     $_file = $dir.$widget_data->widget_id;
@@ -346,9 +355,13 @@ class View
       $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
     }
     if (file_exists($widget_file) === false) {
-      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       if (!isset(Config::$widget[$type])) {
         echo "Widget <b>".$type."</b> is not found";
+      }
+      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      if(!file_exists($widget_file)) {
+        $type = explode('--', $type)[0];
+        @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       }
     }
     if (is_object($widget_data)) {
