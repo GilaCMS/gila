@@ -18,11 +18,13 @@
 $cid = $content.'_'.$id.'_';
 ?>
 
-<div id="content_blocks_list" style="position:fixed;right:1em;top:1em;padding:0;" :class="{opacity05:load==true}">
-  <div v-if="draft" style="margin-left:2em">
-    <button class='g-btn success content_blocks_btn' @click='block_save()'><?='<i class="fa fa-save"></i> '.__('Save')?></button>
+<div id="content_blocks_list" style="position:fixed;right:1em;top:1em;padding:0;z-index:100" :class="{opacity05:load==true}">
+  <div style="margin-left:2em">
+    <button v-if="draft" class='g-btn success content_blocks_btn' @click='block_save()'><?='<i class="fa fa-check"></i> '.__('Save')?></button>
     <?=(isset($title)?'&nbsp;':'')?>
-    <button class='g-btn-white content_blocks_btn' @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
+    <button v-if="draft" class='g-btn-white content_blocks_btn' @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
+    <?=(isset($title)?'&nbsp;':'')?>
+    <button class='g-btn-white content_blocks_btn' @click='switch_edit()'> &nbsp;<i class="fa fa-pencil"></i>&nbsp; </button>
     <br>
   </div>
 </div>
@@ -49,6 +51,12 @@ $cid = $content.'_'.$id.'_';
 .block-head:nth-child(1) .block-swap-btn{
   display:none;
 }
+.block-head>div:nth-child(1){
+  position:relative;width:100%;z-index:1
+}
+.hide{
+  display:none;
+}
 .block-edit-btn:hover,.block-add-btn:hover,.block-swap-btn:hover,.block-del-btn:hover{
   opacity:1;
 }
@@ -65,7 +73,7 @@ $cid = $content.'_'.$id.'_';
 </style>
 
 <script>
-g('.block-head').prepend("<div style='position:relative;width:100%;z-index:1'>\
+g('.block-head').prepend("<div>\
 <span style='position:absolute;left:4px;top:0.5em'><button class='block-edit-btn'>EDIT</button></span>\
 <span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
 <span style='position:absolute;right:58%;top:-1em'><button class='block-swap-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
@@ -155,7 +163,11 @@ foreach (Widget::getList('page') as $k=>$w) {
   $content_blocks[$k] = $c;
 }
 ?>
+
 content_blocks = <?=json_encode($content_blocks)?>;
+base_url = "<?=Config::config('base')?>"
+g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
+
 
 function getElementIndex (element) {
   return Array.from(element.parentNode.children).indexOf(element);
@@ -224,6 +236,9 @@ content_blocks_app = new Vue({
         _this.draft = false;
         blocks_preview_reload(data)
       });
+    },
+    switch_edit: function() {
+      g('.block-head>div:nth-child(1)').toggleClass('hide');
     },
     loader: function(x=true) {
       g.loader(x)

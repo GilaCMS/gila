@@ -788,14 +788,14 @@ g.dialog.buttons.select_path = {
   title:'Select',fn: function(){
     let v = g('#selected-path').attr('value')
     if(v!=null) g('[name=p_img]').attr('value', base_url+v)
-    g.closeModal();
+    g.closeModal('media_dialog');
   }
 }
 g.dialog.buttons.select_path_post = {
   title:'Select', fn: function() {
     let v = g('#selected-path').attr('value')
     if(v!=null) input_filename(base_url+v);
-    g.closeModal();
+    g.closeModal('media_dialog');
   }
 }
 g.dialog.buttons.select_row_source = {
