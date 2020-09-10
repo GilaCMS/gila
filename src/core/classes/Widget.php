@@ -48,19 +48,38 @@ class widget
       'totalRows'=>1]);
   }
 
-  public static function getFields($widget)
+  public static function getWidgetFile($widget)
   {
     if(!isset(Config::$widget[$widget])) {
       $widget = explode('--', $widget)[0];
     }
-    $widgetData = include 'src/'.Config::$widget[$widget].'/widget.php';
+    return 'src/'.Config::$widget[$widget].'/widget.php';
+  }
+
+  public static function getFields($widget)
+  {
+    $widgetData = include self::getWidgetFile($widget);
     if(isset($options)) return $options; //DEPRACIATED
     return $widgetData['fields'] ?? $widgetData;
   }
 
+  public static function getKeys($widget)
+  {
+    $widgetData = include self::getWidgetFile($widget);
+    return $widgetData['keys'] ?? "";
+  }
+
   public static function getList($term=null)
   {
-
+    $list = [];
+    foreach(Config::$widget as $widget=>$value) {
+      $keys = self::getKeys($widget);
+      if($keys==='removed') continue;
+      if($term===null || $keys==="" || in_array($term, explode(',', $keys))) {
+        $list[$widget] = $value;
+      }
+    }
+    return $list;
   }
 
 }

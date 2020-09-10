@@ -141,7 +141,7 @@ g('.block-end').html("<div style='position:relative;width:100%;'>\
 <?php
 $content_blocks = [];
 
-foreach (Config::$widget as $k=>$w) {
+foreach (Widget::getList('page') as $k=>$w) {
   $c = ['name'=>$k];
   if (file_exists('src/'.$w.'/logo.png')) {
     $c['logo'] = $w.'/logo.png';
