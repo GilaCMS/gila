@@ -14,8 +14,8 @@ if(Config::config('page-blocks')===null) Config::contentInit('post', function (&
 });
 
 Config::widgets([
-  'paragraph--header'=>'core/widgets/paragraph--header',
-  'paragraph--faq'=>'core/widgets/paragraph--faq',
+  'paragraph--header'=>'blocks/widgets/paragraph--header',
+  'paragraph--faq'=>'blocks/widgets/paragraph--faq',
   'side-image'=>'blocks/widgets/side-image',
   'side-image--items'=>'blocks/widgets/side-image--items',
   'side-image--cto'=>'blocks/widgets/side-image--cto',

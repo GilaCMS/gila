@@ -118,11 +118,16 @@ var blocks_app = new Vue({
   methods:{
     createBlock: function(content, type, pos) {
       this.$refs.blocks_app.style.width='0px'
-      this.add_block = false
+      this.closeList()
       block_create(content,type,pos)
     },
     openList: function() {
       this.add_block = true
+      document.body.style.overflowY = 'hidden'
+    },
+    closeList: function() {
+      this.add_block = false
+      document.body.style.overflowY = 'auto'
     }
   },
   watch:{
@@ -138,7 +143,7 @@ var blocks_app = new Vue({
   updated: function() {
     if(this.add_block==false) return
     this.$refs.filter.focus()
-    this.$refs.blocks_app.style.width='260px'
+    this.$refs.blocks_app.style.width='280px'
   }
 });
 

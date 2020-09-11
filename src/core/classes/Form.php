@@ -173,7 +173,7 @@ class Form
         return $html . '</select>';
       },
       "radio"=> function ($name, $field, $ov) {
-        $html = '<div class="g-radio g-input" style="padding-left: 0;padding-right: 0; width: max-content;">';
+        $html = '<div class="g-radio g-input" style="padding: 0; width: max-content;">';
         foreach ($field['options'] as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';

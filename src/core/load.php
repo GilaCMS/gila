@@ -42,7 +42,7 @@ Config::widgets([
   'gallery'=>'core/widgets/gallery',
   'gallery-links'=>'core/widgets/gallery-links',
   'social-icons'=>'core/widgets/social-icons',
-  'links'=>'core/widgets/links',
+  'links'=>'core/widgets/links', // DEPRECATED
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
   'category-post'=>'core/widgets/category-post',

@@ -1,8 +1,14 @@
 <?php
 
+$lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+
 return [
+  'fields'=>[
     'text'=>[
-        'type'=>'paragraph',
-        'allow_tags'=>'<a><br><ul><ol><li><h1><h2><h3><h4><del><sub><p><pre><code><img><b><i><blockquote><del><ins><sub><sup><figure>'
+      'type'=>'paragraph',
+      'allow_tags'=>true,
+      'default'=>$lorem.' '.$lorem
     ]
+  ],
+  'keys'=>'page,widget'
 ];

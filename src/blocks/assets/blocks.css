@@ -38,14 +38,14 @@
 .add-block-btn {
   text-align: center;
   cursor: pointer;
-  padding: 8px 2px;
+  padding: 4px;
 }
 
 .add-block-btn .preview{
   border: 1px solid #ccc;
 }
 .add-block-btn .preview:hover{
-  box-shadow: 0 0 6px #999;
+  box-shadow: 0 0 6px #666;
 }
 .add-block-btn .logo{
   padding:8px;

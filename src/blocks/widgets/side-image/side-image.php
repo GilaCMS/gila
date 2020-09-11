@@ -8,6 +8,6 @@ grid-template-columns: repeat(auto-fit, minmax(360px,1fr)); grid-gap: 2em;">
   <img src="<?=$widget_data->image?>" style="max-height:300px;margin:auto">
 <?php } else { ?>
   <img src="<?=$widget_data->image?>" style="max-height:300px;margin:auto">
-  <div contenteditable data-inline="text"><?=$widget_data->text?></div>
+  <div data-inline="text"><?=$widget_data->text?></div>
 <?php } ?>
 </section>

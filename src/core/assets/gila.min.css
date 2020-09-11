@@ -296,7 +296,7 @@ textare.g-input, .g-input[type=text] {
 
 /* Radios */
 .g-radio input{display: none;}
-.g-radio label{background:var(--main-input-color);padding: var(--main-padding);}
+.g-radio label{background:var(--main-input-color);padding: var(--main-padding);display: inline;}
 .g-radio input:checked + label{background: var(--main-primary-color); color:white}
 
 /* Toggle switch */

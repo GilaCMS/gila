@@ -167,7 +167,7 @@ class Router
     return @strip_tags($r);
   }
 
-  public static function url() // DEPRACATED
+  public static function url() // DEPRECATED
   {
     return self::path();
   }

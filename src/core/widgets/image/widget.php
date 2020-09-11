@@ -1,12 +1,15 @@
 <?php
 
 return [
+  'fields'=>[
     'image'=> [
-        "type"=>"media",
-        "default"=>"assets/core/photo.png"
+      "type"=>"media",
+      "default"=>"assets/core/photo.png"
     ],
     'description'=> [],
     'caption'=> [
-        "type"=>"paragraph"
+      "type"=>"paragraph"
     ]
+  ],
+  'keys'=>'page,widget'
 ];

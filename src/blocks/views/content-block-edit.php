@@ -9,7 +9,7 @@
 <?=View::script('core/lang/content/'.Config::config('language').'.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-<?=View::css('blocks/blocks.css')?>
+<?=View::cssAsync('blocks/blocks.css')?>
 <?=View::cssAsync('core/gila.min.css')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 <?=View::script("core/admin/content.js")?>
@@ -250,13 +250,13 @@ content_blocks_app = new Vue({
 </script>
 
 <div id='blocks_app'>
-  <div id="add_block" v-if="add_block" ref="blocks_app">
-    <div style="position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.5);z-index:-100" @click="add_block=false"></div>
+  <div id="add_block" v-if="add_block" ref="blocks_app" style="transition:0.3s">
+    <div style="position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.5);z-index:-100" @click="closeList()"></div>
     <div style="text-align:center;background:white;display:flex">
-      <input type="text" class="g-input" style="max-width:220px;margin-top:10px" v-model="filter" ref="filter">
-      <img src="assets/core/admin/close.svg" class="add-block-x" @click="add_block=false">
+      &nbsp;<input type="text" class="g-input" style="max-width:220px;margin-top:10px" v-model="filter" ref="filter">
+      <img src="assets/core/admin/close.svg" class="add-block-x" @click="closeList()">
     </div>
-    <div class="add-block-grid" style="margin:auto;width:100%;grid-gap:0;height:100%;max-height:100%;background:#faebd7;">
+    <div class="add-block-grid" style="margin:auto;width:100%;grid-gap:0;height:100%;max-height:100%;background:#f4f4ff;">
       <div class="add-block-btn" v-for="b in blocks" v-if="b.visible!==false" @click="createBlock('<?=$content.'/'.$id?>', b.name, selected_pos)">
         <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview" :title="b.name">
         <div v-else class="logo">
@@ -269,4 +269,4 @@ content_blocks_app = new Vue({
   </div>
 </div>
 
-<?=View::script("blocks/content-block-v12.js")?>
+<?=View::script("blocks/content-block.15.js")?>
