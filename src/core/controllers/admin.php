@@ -25,6 +25,7 @@ class admin extends Gila\Controller
 
     if ($id && ($r = Gila\Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
+      Config::canonical('');
       View::set('title', $r['title']);
       View::set('text', $r['page']);
       if ($r['template']==''||$r['template']===null) {

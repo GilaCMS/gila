@@ -13,6 +13,7 @@ class Config
   public static $contentInit = [];
   public static $mt;
   public static $base_url;
+  public static $lang;
   public static $langPaths = [];
   public static $langWords = [];
   public static $langLoaded = false;

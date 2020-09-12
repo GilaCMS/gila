@@ -470,7 +470,7 @@ class View
   public static function img($src, $prefix='', $max=180)
   {
     $pathinfo = pathinfo($src);
-    return '<img src="'.htmlentities(self::thumb($src, $prefix, $max)).'">';
+    return '<img src="'.htmlentities(self::thumb($src, $prefix, $max)).'" alt="">';
   }
 
   public static function thumb($src, $prefix='', $max=180)
