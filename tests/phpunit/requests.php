@@ -118,7 +118,7 @@ class RequestsTest extends TestCase
 
     $_GET = ['id'=>'new', 'type'=>'html'];
     $response = $this->request('blocks/edit');
-    $this->assertContains(' id="m_option_text_"', $response);
+    $this->assertContains(' name="option[text]"', $response);
     $_GET = [];
 
     $_POST = ['id'=>'post_1_0', 'type'=>'html'];
