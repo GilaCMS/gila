@@ -13,7 +13,7 @@ class ClassView extends TestCase
 	{
 		Config::widgets(['paragraph'=>'core/widgets/paragraph']);
 		$html = View::getWidgetBody('paragraph', ['text'=>'Hello world']);
-		$this->assertEquals('<p>Hello world</p>', $html);
+		$this->assertEquals('<section>Hello world</section>', $html);
 	}
 
 	public function test_getThumbName()

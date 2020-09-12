@@ -283,8 +283,11 @@ class View
   */
   public static function menu($menu='mainmenu', $tpl='tpl/menu.php')
   {
+    $fileLN = LOG_PATH.'/menus/'.$menu.'.'.Config::lang().'.json';
     $file = LOG_PATH.'/menus/'.$menu.'.json';
-    if (file_exists($file)) {
+    if (file_exists($fileLN)) {
+      $menu_data = json_decode(file_get_contents($fileLN), true);
+    } else if (file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file), true);
     } else {
       $menu_data = Menu::defaultData();

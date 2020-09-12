@@ -256,6 +256,17 @@ class Config
     $GLOBALS['config'][$key] = $value;
   }
 
+  public static function lang($lang=null)
+  {
+    if ($lang!==null) {
+      self::$lang = $lang;
+    }
+    if(isset(self::$lang)) {
+      return self::$lang;
+    }
+    self::$lang = self::config('language');
+  }
+
   public static function set($key, $value)
   {
     self::setConfig($key, $value);

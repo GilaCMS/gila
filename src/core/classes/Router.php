@@ -217,6 +217,9 @@ class Router
     if ($_url!==false) {
       self::$url = strip_tags($_url);
       self::$args = explode("/", self::$url);
+      if(Config::config('languages') && in_array(self::$args[0],Config::config('languages'))) {
+        Config::lang(self::$args[0]);
+      }
     } else {
       self::$url = false;
       self::$args = [];
