@@ -56,7 +56,7 @@ spl_autoload_register(function ($class) {
   } elseif (file_exists('src/'.$class.'.php')) {
     require_once 'src/'.$class.'.php';
   } elseif (in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
-    require_once 'src/core/models/'.substr($class, 12).'.php';
+    require_once 'src/core/classes/'.substr($class, 12).'.php';
     class_alias('Gila\\'.substr($class, 12), strtr($class, ['/'=>'\\']));
   }
 });

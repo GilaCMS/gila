@@ -35,7 +35,6 @@ class BlogController extends Gila\Controller
   */
   public function indexAction()
   {
-    Logger::stat();
     if ($id = Router::path()) {
       if ($id !== "blog" && $id !== "blog/") {
         $this->postShow($id);
@@ -67,6 +66,9 @@ class BlogController extends Gila\Controller
       View::render('frontpage.php');
     } else {
       View::render('homepage.php');
+    }
+    if(http_response_code()==200) {
+      Logger::stat();
     }
   }
 
