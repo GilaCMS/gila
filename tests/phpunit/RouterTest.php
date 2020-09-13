@@ -13,7 +13,7 @@ class ClassRouter extends TestCase
 		$this->assertEquals('pathx', Gila\Router::$controllers['ctrlx']);
 		$GLOBALS['config']['languages'] = null;
 		Gila\Router::setUrl('el/ctrlx/actionTest/');
-		$this->assertEquals('el', Gila\Router::getController());
+		$this->assertEquals('admin', Gila\Router::getController());
 		$GLOBALS['config']['languages'] = ['el','es'];
 		Gila\Router::setUrl('el/ctrlx/actionTest/');
 		$this->assertEquals('ctrlx', Gila\Router::getController());
