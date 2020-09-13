@@ -50,7 +50,7 @@ class widget
 
   public static function getWidgetFile($widget)
   {
-    if(!isset(Config::$widget[$widget])) {
+    if (!isset(Config::$widget[$widget])) {
       $widget = explode('--', $widget)[0];
     }
     return 'src/'.Config::$widget[$widget].'/widget.php';
@@ -59,7 +59,9 @@ class widget
   public static function getFields($widget)
   {
     $widgetData = include self::getWidgetFile($widget);
-    if(isset($options)) return $options; //DEPRECATED
+    if (isset($options)) {
+      return $options;
+    } //DEPRECATED
     return $widgetData['fields'] ?? $widgetData;
   }
 
@@ -73,16 +75,17 @@ class widget
   {
     $primary = [];
     $secondary = [];
-    foreach(Config::$widget as $widget=>$value) {
+    foreach (Config::$widget as $widget=>$value) {
       $keys = self::getKeys($widget);
-      if ($keys==='removed') continue;
+      if ($keys==='removed') {
+        continue;
+      }
       if (in_array($term, explode(',', $keys))) {
         $primary[$widget] = $value;
-      } else if($term===null || $keys==="") {
+      } elseif ($term===null || $keys==="") {
         $secondary[$widget] = $value;
       }
     }
     return array_merge($primary, $secondary);
   }
-
 }

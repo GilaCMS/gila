@@ -110,14 +110,18 @@ class Table
     }
   }
 
-  static public function extend_recursive($table, $extTable)
+  public static function extend_recursive($table, $extTable)
   {
-    foreach($extTable as $key=>$el) if(is_array($el)) {
-      $table[$key] = self::extend_recursive($table[$key], $el);
-    } else if(is_numeric($key)){
-      if(!in_array($el, $table)) $table[] = $el;
-    } else {
-      $table[$key] = $el;
+    foreach ($extTable as $key=>$el) {
+      if (is_array($el)) {
+        $table[$key] = self::extend_recursive($table[$key], $el);
+      } elseif (is_numeric($key)) {
+        if (!in_array($el, $table)) {
+          $table[] = $el;
+        }
+      } else {
+        $table[$key] = $el;
+      }
     }
     return $table;
   }
@@ -250,8 +254,10 @@ class Table
 
   public function groupby($group)
   {
-    if($group===null) {
-      if ($group = $this->table['groupby']) return " GROUP BY $group";
+    if ($group===null) {
+      if ($group = $this->table['groupby']) {
+        return " GROUP BY $group";
+      }
       return '';
     }
     return " GROUP BY $group";
@@ -299,10 +305,12 @@ class Table
     if ($fields===null) {
       $fields=$_POST;
     }
-    if(isset($this->table['filters'])) foreach ($this->table['filters'] as $k=>$f) {
-      if (isset($fields[$k])) {
-        // should check if $fields[$k] validates the filter restrictions
-        $fields[$k]=$f;
+    if (isset($this->table['filters'])) {
+      foreach ($this->table['filters'] as $k=>$f) {
+        if (isset($fields[$k])) {
+          // should check if $fields[$k] validates the filter restrictions
+          $fields[$k]=$f;
+        }
       }
     }
     $this->event('change', $fields);

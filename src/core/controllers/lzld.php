@@ -78,5 +78,4 @@ class lzld extends Gila\Controller
   {
     UserNotification::setRead($_POST['id']);
   }
-
 }

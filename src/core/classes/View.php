@@ -287,7 +287,7 @@ class View
     $file = LOG_PATH.'/menus/'.$menu.'.json';
     if (file_exists($fileLN)) {
       $menu_data = json_decode(file_get_contents($fileLN), true);
-    } else if (file_exists($file)) {
+    } elseif (file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file), true);
     } else {
       $menu_data = Menu::defaultData();
@@ -321,7 +321,7 @@ class View
         }
       }
       @$widget_file = "src/".Config::$widget[$type]."/$type.php";
-      if(!file_exists($widget_file)) {
+      if (!file_exists($widget_file)) {
         $type = explode('--', $type)[0];
         @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       }
@@ -362,7 +362,7 @@ class View
         echo "Widget <b>".$type."</b> is not found";
       }
       @$widget_file = "src/".Config::$widget[$type]."/$type.php";
-      if(!file_exists($widget_file)) {
+      if (!file_exists($widget_file)) {
         $type = explode('--', $type)[0];
         @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       }

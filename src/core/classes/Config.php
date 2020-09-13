@@ -218,7 +218,9 @@ class Config
   */
   public static function amenu_child($key, $item)
   {
-    if (!isset(self::$amenu[$key])) return;
+    if (!isset(self::$amenu[$key])) {
+      return;
+    }
     if (!isset(self::$amenu[$key]['children'])) {
       self::$amenu[$key]['children']=[];
     }
@@ -262,7 +264,7 @@ class Config
     if ($lang!==null) {
       self::$lang = $lang;
     }
-    if(isset(self::$lang)) {
+    if (isset(self::$lang)) {
       return self::$lang;
     }
     self::$lang = self::config('language');

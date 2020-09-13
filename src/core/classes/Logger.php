@@ -4,7 +4,7 @@ namespace Gila;
 
 class Logger
 {
-  static private $savedStat = false;
+  private static $savedStat = false;
   private $handlers = [];
   private $file = null;
 
@@ -110,37 +110,39 @@ class Logger
     array_unshift($this->handlers, $handler);
   }
 
-  static public function stat($type = 'web', $value = null, array $context = [])
+  public static function stat($type = 'web', $value = null, array $context = [])
   {
-    if($value===null) {
-      if(self::$savedStat) return;
+    if ($value===null) {
+      if (self::$savedStat) {
+        return;
+      }
       self::$savedStat = true;
     }
     $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.'.$type.'.log');
     $stat_log->log($value ?? Router::$url, $_SERVER['REMOTE_ADDR'], $context);
   }
 
-  static public function getStat($type = 'web', $date = null)
+  public static function getStat($type = 'web', $date = null)
   {
     $result = [];
-    if($date===null) {
+    if ($date===null) {
       $date = date("Y-m-d");
     }
-    if(!is_array($date)) {
+    if (!is_array($date)) {
       $date = [$date, $date];
-    }    
+    }
 
     $begin = new \DateTime($date[0]);
     $end = new \DateTime($date[1]);
     $end = $end->modify('+1 day');
 
     $interval = new \DateInterval('P1D');
-    $daterange = new \DatePeriod($begin, $interval ,$end);
+    $daterange = new \DatePeriod($begin, $interval, $end);
 
-    foreach($daterange as $date){
+    foreach ($daterange as $date) {
       $filePath = LOG_PATH.'/stats/'.$date->format("Y-m-d").'.'.$type.'.log';
-      if (($handle = fopen($filePath, "r")) !== FALSE) {
-        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+      if (($handle = fopen($filePath, "r")) !== false) {
+        while (($data = fgetcsv($handle, 1000, ",")) !== false) {
           $result[] = $data;
         }
         fclose($handle);
@@ -149,6 +151,4 @@ class Logger
 
     return $result;
   }
-
-
 }

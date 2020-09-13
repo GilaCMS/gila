@@ -91,10 +91,10 @@ return [
   'events'=>[
     ['change',function (&$row) {
       if (isset($row['userrole'])) {
-        $roles = is_array($row['userrole'])? $row['userrole']: explode(',',$row['userrole']);
+        $roles = is_array($row['userrole'])? $row['userrole']: explode(',', $row['userrole']);
         $level = Gila\User::level(Gila\Session::userId());
-        foreach($roles as $roleId) {
-          if($level<Gila\User::roleLevel($roleId)) {
+        foreach ($roles as $roleId) {
+          if ($level<Gila\User::roleLevel($roleId)) {
             http_response_code(500);
             exit;
           }

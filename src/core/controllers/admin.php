@@ -331,9 +331,9 @@ class admin extends Gila\Controller
     View::renderAdmin('admin/menu_editor.php');
   }
 
-  public function notificationsAction($type = null) {
+  public function notificationsAction($type = null)
+  {
     View::set('type', $type);
     View::renderAdmin('admin/notifications.php');
   }
-
 }

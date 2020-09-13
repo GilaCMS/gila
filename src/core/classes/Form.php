@@ -192,7 +192,7 @@ class Form
         }
         return $html . '</select>';
       },
-      "comments"=> function($name, $field, $ov) {
+      "comments"=> function ($name, $field, $ov) {
         $form = isset($field['content'])? ' form="'.$field['content'].'-edit-item-form"': '';
         return '<input-comments name="'.$name.'" fieldname="'.$field['fieldname'].'" username="'.Session::key('user_name').'" value="'.htmlspecialchars($ov??'[]').'"'.$form.'>';
       },
