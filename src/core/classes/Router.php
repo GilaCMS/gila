@@ -82,7 +82,7 @@ class Router
     }
     $default = Config::config('default-controller');
     self::$controller = self::request('c', $default);
-    if (isset(self::$args[0]) && self::$args[0]==Config::lang()) {
+    if (isset(self::$args[0]) && Config::config('languages') && in_array(self::$args[0], Config::config('languages'))) {
       array_shift(self::$args);
     }
 
