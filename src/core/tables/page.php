@@ -5,11 +5,12 @@ return [
   'title'=> 'Pages',
   'pagination'=> 15,
   'id'=>'id',
-  'tools'=>['add','csv'],
+  'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','updated','publish','page'],
-  'commands'=> ['edit','delete'],
+  'commands'=> ['edit_popup','delete'],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish'],
+  'js'=>['src/core/tables/page.js'],
   'permissions'=>[
     'create'=>['admin', 'editor'],
     'update'=>['admin', 'editor'],
@@ -30,19 +31,24 @@ return [
       'qtype'=>'varchar(80) DEFAULT NULL',
       'alt'=>'('.Gila\Config::tr('Home').')'
     ],
-    'publish'=> [
-      'title'=>'Public',
-      'style'=>'width:8%',
-      'type'=>'checkbox',
-      'edit'=>true,
-      'qtype'=>'INT(1) DEFAULT NULL'
-    ],
     'template'=> [
       'title'=>'Template',
       'template'=>'page',
       'type'=>'template',
       'edit'=>true,
       'qtype'=>'varchar(30) DEFAULT NULL'
+    ],
+    'description'=> [
+      'title'=>'Description',
+      'input-type'=>'textarea',
+      'qtype'=>'varchar(200) DEFAULT NULL'
+    ],
+    'publish'=> [
+      'title'=>'Public',
+      'style'=>'width:8%',
+      'type'=>'checkbox',
+      'edit'=>true,
+      'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'content'=> [
       'title'=>'Content',

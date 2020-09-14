@@ -228,6 +228,7 @@ class BlogController extends Gila\Controller
         View::set('title', $r['title']);
         View::set('text', $r['page']);
         Config::canonical($r['slug']);
+        View::meta('description', $r['description']);
         if ($r['template']==''||$r['template']===null) {
           View::render('page.php');
         } else {
