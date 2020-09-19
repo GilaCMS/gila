@@ -58,9 +58,9 @@ class RequestsTest extends TestCase
     global $db;
     Session::user(0);
     $email = "test_register@email.com";
-    $_POST['email'] = $email;
+    $_REQUEST['email'] = $email;
+    $_REQUEST['name'] = "Register Test";
     $_POST['password'] = "pass";
-    $_POST['name'] = "Register Test";
     $GLOBALS['config']['user_activation'] = 'byadmin';
     $GLOBALS['config']['user_register'] = 0;
     $db->query('DELETE FROM user WHERE email=?;', $email);
