@@ -60,6 +60,8 @@ class RequestsTest extends TestCase
     $email = "test_register@email.com";
     $_REQUEST['email'] = $email;
     $_REQUEST['name'] = "Register Test";
+    $_POST['email'] = $email;
+    $_POST['name'] = "Register Test";
     $_POST['password'] = "pass";
     $GLOBALS['config']['user_activation'] = 'byadmin';
     $GLOBALS['config']['user_register'] = 0;
@@ -75,6 +77,14 @@ class RequestsTest extends TestCase
     $this->assertEquals(0, $active);
     $db->query('DELETE FROM user WHERE email=?;', $email);
 
+    $_REQUEST['name'] = "Register Test<script>alert(0)</script>";
+    $_POST['name'] = "Register Test<script>alert(0)</script>";
+    $this->request('login/register', 'POST');
+    $uid = $db->value('SELECT id from user WHERE email=?;', $email);
+    $this->assertNull($uid);
+
+    $_REQUEST['name'] = "Register Test";
+    $_POST['name'] = "Register Test";
     $GLOBALS['config']['user_activation'] = 'auto';
     $this->request('login/register', 'POST');
     $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
