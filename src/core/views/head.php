@@ -5,7 +5,7 @@
 <meta name="generator" content="Gila CMS">
 <?php
   foreach (View::$meta as $key=>$value) {
-    echo '<meta name="'.$key.'" content="'.$value.'">';
+    echo '<meta name="'.$key.'" content="'.htmlentities($value).'">';
   }
  Event::fire('head.meta');
   foreach (View::$stylesheet as $link) {

@@ -6,6 +6,7 @@ use Gila\View;
 use Gila\Event;
 use Gila\Session;
 use Gila\Sendmail;
+use Gila\Router;
 
 class login extends Gila\Controller
 {
@@ -43,10 +44,12 @@ class login extends Gila\Controller
     View::set('title', __('Register'));
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && Event::get('recaptcha', true)) {
-      $email = $_POST['email'];
+      $email = Router::request('email');
+      $name = Router::request('name');
       $password = $_POST['password'];
-      $name = $_POST['name'];
-      if (User::getByEmail($email)) {
+      if ($name != $_POST['name']) {
+        View::alert('error', __('register_error2'));
+      } else if (User::getByEmail($email) || $email != $_POST['email']) {
         View::alert('error', __('register_error1'));
       } else {
         // register the user
@@ -176,5 +179,13 @@ class login extends Gila\Controller
     }
     http_response_code(401);
     echo '{"error":"Credencials are not valid"}';
+  }
+
+  public function logoutAction()
+  {
+    global $db;
+    User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+    Session::destroy();
+    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
   }
 }
