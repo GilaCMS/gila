@@ -18,7 +18,7 @@ if (Session::waitForLogin()==0) { ?>
       <input class="form-control fullwidth" placeholder="Password" name="password" id="pass" type="password" value="">
     </div>
     <input type="submit" class="btn btn-primary btn-block" value="<?=__('Login')?>">
-    <?phpEvent::fire('login.btn'); ?>
+    <?php Event::fire('login.btn'); ?>
   </form>
   <label class="helptext"><input type="checkbox" oninput="if(this.checked) pass.type='text'; else pass.type='password';"> <?=__('Show password')?></label>
 <?php } ?>
