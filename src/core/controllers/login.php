@@ -45,7 +45,7 @@ class login extends Gila\Controller
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && Event::get('recaptcha', true)) {
       $email = $_POST['email'];
       $password = $_POST['password'];
-      $name = $_POST['name'];
+      $name = strip_tags($_POST['name']);
       if (User::getByEmail($email)) {
         View::alert('error', __('register_error1'));
       } else {
@@ -176,5 +176,14 @@ class login extends Gila\Controller
     }
     http_response_code(401);
     echo '{"error":"Credencials are not valid"}';
+  }
+
+  // use this until user controller is created
+  public function logoutAction()
+  {
+    global $db;
+    User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+    Session::destroy();
+    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
   }
 }
