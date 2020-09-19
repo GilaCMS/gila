@@ -60,6 +60,8 @@ class RequestsTest extends TestCase
     $email = "test_register@email.com";
     $_REQUEST['email'] = $email;
     $_REQUEST['name'] = "Register Test";
+    $_POST['email'] = $email;
+    $_POST['name'] = "Register Test";
     $_POST['password'] = "pass";
     $GLOBALS['config']['user_activation'] = 'byadmin';
     $GLOBALS['config']['user_register'] = 0;
