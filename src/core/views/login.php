@@ -18,14 +18,14 @@ if (Session::waitForLogin()==0) { ?>
       <input class="form-control fullwidth" placeholder="Password" name="password" id="pass" type="password" value="">
     </div>
     <input type="submit" class="btn btn-primary btn-block" value="<?=__('Login')?>">
-    <?php Event::fire('login.btn'); ?>
+    <?php Gila\Event::fire('login.btn'); ?>
   </form>
   <label class="helptext"><input type="checkbox" oninput="if(this.checked) pass.type='text'; else pass.type='password';"> <?=__('Show password')?></label>
 <?php } ?>
     <p>
-      <a href="login/password_reset"><?=__('forgot_pass')?></a>
+      <a href="user/password_reset"><?=__('forgot_pass')?></a>
       <?php if (Config::config('user_register')==1) {
-  echo '| <a href="login/register">'.__('Register').'</a>';
+  echo '| <a href="user/register">'.__('Register').'</a>';
 }?>
     </p>
   </div>

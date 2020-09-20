@@ -24,4 +24,4 @@ Before you make a pull request create an issue describing the changes you want t
 
 Can start with [good first issues](https://github.com/gilacms/gila/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
-If you need any help to get started reach us at [Gitter](https://gitter.im/GilaCMS/Lobby)
+If you need any help to get started reach us at [Discord](https://discord.gg/BGYFfx6)

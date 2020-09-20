@@ -49,7 +49,7 @@ class RequestsTest extends TestCase
     $_POST['email'] = "test_login_auth@email.com";
     $_POST['password'] = "password";
     Config::controller('login', 'core/controllers/login');
-    $response = $this->request('login/auth', 'POST');
+    $response = $this->request('user/auth', 'POST');
     $this->assertEquals('{"token":"ABC"}', $response);
   }
 
@@ -58,43 +58,53 @@ class RequestsTest extends TestCase
     global $db;
     Session::user(0);
     $email = "test_register@email.com";
+    $_REQUEST['email'] = $email;
+    $_REQUEST['name'] = "Register Test";
     $_POST['email'] = $email;
-    $_POST['password'] = "pass";
     $_POST['name'] = "Register Test";
+    $_POST['password'] = "pass";
     $GLOBALS['config']['user_activation'] = 'byadmin';
     $GLOBALS['config']['user_register'] = 0;
     $db->query('DELETE FROM user WHERE email=?;', $email);
 
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $uid = $db->value('SELECT id from user WHERE email=?;', $email);
     $this->assertNull($uid);
 
     $GLOBALS['config']['user_register'] = 1;
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
     $this->assertEquals(0, $active);
     $db->query('DELETE FROM user WHERE email=?;', $email);
 
+    $_REQUEST['name'] = "Register Test<script>alert(0)</script>";
+    $_POST['name'] = "Register Test<script>alert(0)</script>";
+    $this->request('user/register', 'POST');
+    $uid = $db->value('SELECT id from user WHERE email=?;', $email);
+    $this->assertNull($uid);
+
+    $_REQUEST['name'] = "Register Test";
+    $_POST['name'] = "Register Test";
     $GLOBALS['config']['user_activation'] = 'auto';
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
     $this->assertEquals(1, $active);
     $db->query('DELETE FROM user WHERE email=?;', $email);
 
     $GLOBALS['config']['user_activation'] = 'byemail';
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $uid = $db->value('SELECT id FROM user WHERE email=?;', $email);
     $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(0, $active);
 
     $_GET['ap'] = 'wrongcode';
-    $this->request('login/activate', 'GET');
+    $this->request('user/activate', 'GET');
     $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(0, $active);
 
     $_GET['ap'] = $db->value('SELECT `value` FROM usermeta WHERE 
       vartype="activate_code" AND user_id=?;', $uid);
-    $this->request('login/activate', 'GET');
+    $this->request('user/activate', 'GET');
     $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(1, $active);
   }
