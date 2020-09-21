@@ -1,5 +1,5 @@
+<section class="features-grid">
 <?=View::css('core/widgets.css')?>
-<div class="features-grid">
 <?php foreach (json_decode(@$widget_data->features) as $feature) { ?>
     <div>
         <?=View::img($feature[0], 300)?>
@@ -10,4 +10,4 @@
 } ?>
     </div>
 <?php } ?>
-</div>
+</section>

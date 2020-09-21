@@ -183,7 +183,7 @@ g_tinymce_options = {
   document_base_url: ".",
   verify_html: false,
   cleanup: true,
-  plugins: ['code codesample table charmap image media lists link'],
+  plugins: ['code codesample table charmap image media lists link emoticons'],
   menubar: true,
   entity_encoding: 'raw',
   toolbar: 'formatselect bold italic | bullist numlist outdent indent | link image table | alignleft aligncenter alignright alignjustify',
@@ -261,8 +261,8 @@ content_blocks_app = new Vue({
         <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview" :title="b.name">
         <div v-else class="logo">
           <img v-if="b.logo" :src="'lzld/thumb?src=src/'+b.logo">
-          <h4 v-else>{{b.name[0].toUpperCase()}}</h4>
-          <div>{{b.name}}<div>
+          <b v-else>{{b.name[0].toUpperCase()}} </b>
+          <span>{{b.name}}<span>
         </div>
       </div>
     </div>

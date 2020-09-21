@@ -1,3 +1,4 @@
+<section>
 <style>.widget-items{grid-column: 1/span 4;text-align: center;}
 .items-list>div{text-align:left;padding:1em;display:grid;grid-template-columns:1fr 2fr;}
 .items-list img,.items-list svg{max-width:100%;height:auto;}</style>
@@ -22,3 +23,4 @@
     <?=View::img($widget_data->image, 600)?>
   </div>
 </div>
+</section>

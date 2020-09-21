@@ -1,6 +1,8 @@
+<section>
 <style>.widget-items{grid-column: 1/span 4;text-align: center;}
 .items-grid>div{text-align:left;padding:1em;display:grid;grid-template-columns:1fr 2fr;grid-gap: 0.5em;}
-.items-grid img,.items-grid svg{max-width:100%;height:auto;}</style>
+.items-grid img,.items-grid svg{max-width:100%;height:auto;min-width:70px}
+.items-grid h3{margin-top:0}</style>
 <div class="items-grid" style="display: grid; grid-gap:20px;padding:20px;justify-content: center; grid-template-columns: repeat(auto-fit, minmax(240px,320px)); width:100%">
 <?php foreach (json_decode(@$widget_data->items) as $item) { ?>
   <div>
@@ -17,3 +19,4 @@
   </div>
 <?php } ?>
 </div>
+</section>

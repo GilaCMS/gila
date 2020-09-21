@@ -24,4 +24,6 @@ Config::widgets([
   'items-list'=>'blocks/widgets/items-list', // DEPRECATED
   'faq'=>'blocks/widgets/faq', // DEPRECATED
   'items-grid'=>'blocks/widgets/items-grid',
+  'image-overlay'=>'blocks/widgets/image-overlay',
+  'image-slider'=>'blocks/widgets/image-slider',
 ]);

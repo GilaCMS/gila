@@ -1,3 +1,4 @@
+<section>
 <?=View::css('core/widgets.css')?>
 <ul class="g-nav vertical five-post">
 <?php
@@ -35,3 +36,4 @@ foreach (Gila\Post::getPosts(
 
 ?>
 </ul>
+</section>

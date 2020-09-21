@@ -36,31 +36,39 @@
   overflow:auto;
 }
 .add-block-btn {
-  text-align: center;
+  /*text-align: center;*/
   cursor: pointer;
-  padding: 4px;
+  padding: 0;
+  margin:4px;
 }
 
-.add-block-btn .preview{
+.add-block-btn{
   border: 1px solid #ccc;
+  background:white;
 }
-.add-block-btn .preview:hover{
+.add-block-btn:hover{
   box-shadow: 0 0 6px #666;
 }
 .add-block-btn .logo{
-  padding:8px;
-  border-radius:6px;
+  padding:16px 0;
+  padding-left:16px;
+  background: lightblue;
+  text-align: left;
+  /*border-radius:6px;
   background: #395ffc;
-  color:white;
+  color:white;*/
+}
+.add-block-btn .logo>img {
+  vertical-align: middle;
 }
 .add-block-btn .logo:hover {
-  background: #3059ff;
+  /*background: #3059ff;*/
 }
 .add-block-btn .logo img {
-  width:2.2em;
+  /*width:2.2em;
   height:2.2em;
   margin: auto;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);*/
 }
 .add-block-btn h4 {
   line-height:0.8em;

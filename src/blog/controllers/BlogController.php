@@ -91,10 +91,16 @@ class BlogController extends Gila\Controller
   {
     $tag = htmlentities($tag);
     Config::canonical('tag/'.$tag);
+    self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
+    $posts = Post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]);
+    if(self::$page<1 || self::$page>self::totalPages()) {
+      View::render('404.php');
+      return;
+    }
     View::set('page_title', '#'.$tag.' | '.Config::config('title'));
     View::set('tag', $tag);
     View::set('page', self::$page);
-    View::set('posts', Post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]));
+    View::set('posts', $posts);
     View::render('blog-tag.php');
   }
 
@@ -120,12 +126,18 @@ class BlogController extends Gila\Controller
     }
     $name = $db->value("SELECT title from postcategory WHERE id=?", $category);
     Config::canonical('blog/category/'.$category.'/'.$name.'/');
-    self::$totalPosts = Post::total(['category'=>$category]);
+    self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
+    $posts = Post::getPosts(['posts'=>self::$ppp,'category'=>$category,'publish'=>1,'page'=>self::$page]);
+    if(self::$page<1 || self::$page>self::totalPages()) {
+      View::render('404.php');
+      return;
+    }
     View::set('categoryName', $name);
     View::set('page_title', $name);
     View::set('page', self::$page);
-    View::set('posts', Post::getPosts(['posts'=>self::$ppp,'category'=>$category,'page'=>self::$page]));
+    View::set('posts', $posts);
     View::render('blog-category.php');
+    echo self::$totalPosts.'/'.self::$ppp. '!'.count($posts).' '.self::$page;
   }
 
   /**
@@ -287,7 +299,7 @@ class BlogController extends Gila\Controller
   public static function totalpages($args = [])
   {
     $totalPosts = self::totalposts($args);
-    self::$totalPages = floor(($totalPosts+self::$ppp)/self::$ppp);
+    self::$totalPages = ceil(($totalPosts)/self::$ppp);
     return self::$totalPages;
   }
 

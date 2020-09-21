@@ -9,9 +9,9 @@ $loremData = <<<EOT
 EOT;
 
 return [
-    'text'=>[
-        'type'=>'paragraph',
-        'allow_tags'=>true,
-        'default'=>$loremData
-    ]
+  'text'=>[
+    'type'=>'paragraph',
+    'allow_tags'=>true,
+    'default'=>$loremData
+  ]
 ];
