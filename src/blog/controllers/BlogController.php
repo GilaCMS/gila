@@ -50,6 +50,9 @@ class BlogController extends Gila\Controller
       View::set('search', $s);
       View::set('posts', Post::search($s));
       View::render('blog-search.php');
+      if(http_response_code()==200) {
+        Logger::stat();
+      }
       return;
     }
 
@@ -250,6 +253,9 @@ class BlogController extends Gila\Controller
         http_response_code(404);
         View::render('404.php');
       }
+    }
+    if(http_response_code()==200) {
+      Logger::stat();
     }
   }
 

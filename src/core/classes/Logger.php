@@ -119,7 +119,7 @@ class Logger
       self::$savedStat = true;
     }
     $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.'.$type.'.log');
-    $stat_log->log($value ?? Router::$url, $_SERVER['REMOTE_ADDR'], $context);
+    $stat_log->log($value ?? Router::$url, $_SERVER['HTTP_USER_AGENT'], $context);
   }
 
   public static function getStat($type = 'web', $date = null)

@@ -3,7 +3,7 @@
 include __DIR__.'/includes.php';
 include __DIR__.'/../../src/core/classes/Controller.php';
 include __DIR__.'/../../src/core/classes/Package.php';
-include __DIR__.'/../../src/core/models/User.php';
+include __DIR__.'/../../src/core/classes/User.php';
 include __DIR__.'/../../src/core/classes/Table.php';
 include __DIR__.'/../../src/core/classes/TableSchema.php';
 include __DIR__.'/../../src/core/classes/Form.php';
