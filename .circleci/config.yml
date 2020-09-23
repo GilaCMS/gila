@@ -48,6 +48,7 @@ jobs:
       - run: ./vendor/bin/phpunit tests/phpunit/ConfigTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-Table.php
       - run: ./vendor/bin/phpunit tests/phpunit/TableSchemaTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/UserAgentTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/ViewTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/class-FileManager.php
       - run: ./vendor/bin/phpunit tests/phpunit/RouterTest.php
