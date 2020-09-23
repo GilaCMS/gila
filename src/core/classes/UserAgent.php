@@ -70,4 +70,14 @@ class UserAgent
 
     return ['os'=>$os, 'device'=>$device, 'browser'=>$browser];
   }
+
+  public function isBot($user_agent) {
+    $good_bots = ['SemrushBot','YandexBot','AhrefsBot','PetalBot','SaaSHub','bingbot','MJ12bot','Twitterbot',
+    'Googlebot','newspaper/0.2.8','NetcraftSurveyAgent'];
+
+    foreach($good_bots as $bot) {
+      if(strpos($user_agent, $bot) !== false) return true;
+    }
+    return false;
+  }
 }
