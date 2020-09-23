@@ -31,4 +31,5 @@ return [
   'Gila\\Profile'=> 'src/core/classes/Profile.php',
   'Gila\\Post'=> 'src/core/classes/Post.php',
   'Gila\\Config'=> 'src/core/classes/Config.php',
+  'Gila\\UserAgent'=> 'src/core/classes/UserAgent.php',
 ];
