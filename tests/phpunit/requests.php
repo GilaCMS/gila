@@ -17,27 +17,32 @@ use Gila\Controller;
 use Gila\Session;
 use Gila\Package;
 use Gila\Table;
+
 $GLOBALS['config']['db']['name'] = 'g_db';
-Event::listen('sendmail', function($x){ return true; });
+Event::listen('sendmail', function ($x) {
+  return true;
+});
 
 class RequestsTest extends TestCase
 {
-  static protected $userId;
+  protected static $userId;
 
-  static public function setUpBeforeClass()
+  public static function setUpBeforeClass()
   {
     global $db;
     self::createUserTable();
     $pass = Config::hash("password");
-    $db->query("INSERT INTO user SET email=?, pass=?, active=1;",
-      ["test_login_auth@email.com", Config::hash("password")]);
+    $db->query(
+      "INSERT INTO user SET email=?, pass=?, active=1;",
+      ["test_login_auth@email.com", Config::hash("password")]
+    );
     $uid = $db->insert_id;
     $db->query("INSERT INTO usermeta SET `value`='ABC', user_id=?, `vartype`='token';", [$uid]);
     $db->query("INSERT INTO usermeta SET `value`=1, user_id=?, `vartype`='role';", [$uid]);
     self::$userId = $uid;
   }
 
-  static public function tearDownAfterClass()
+  public static function tearDownAfterClass()
   {
     global $db;
     $db->query("DELETE FROM user WHERE email='test_login_auth@email.com';");
@@ -117,7 +122,7 @@ class RequestsTest extends TestCase
       'html'=>'core/widgets/html',
       'image'=>'core/widgets/image']);
     Package::update('blocks');
-    Config::content('post','core/tables/post.php');
+    Config::content('post', 'core/tables/post.php');
     $gtable = new Table('post');
     $gtable->update();
     Session::user(self::$userId, 'Test', 'test@mail.com');
@@ -165,7 +170,7 @@ class RequestsTest extends TestCase
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"}]', $blocks);
   }
 
-  static function createUserTable()
+  public static function createUserTable()
   {
     global $db;
     $db->query('CREATE TABLE IF NOT EXISTS `user` (
@@ -192,7 +197,7 @@ class RequestsTest extends TestCase
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
   }
 
-  function request($url, $method='GET')
+  public function request($url, $method='GET')
   {
     $_SERVER['REQUEST_METHOD'] = $method;
     [$c, $a] = explode('/', $url);

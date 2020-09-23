@@ -119,7 +119,7 @@ class Logger
       self::$savedStat = true;
     }
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
-    if(UserAgent::isBot($user_agent)) {
+    if (UserAgent::isBot($user_agent)) {
       return;
     }
     $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.'.$type.'.log');

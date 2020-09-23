@@ -4,17 +4,19 @@ include __DIR__.'/includes.php';
 use PHPUnit\Framework\TestCase;
 use Gila\Config;
 use Gila\FileManager;
+
 FileManager::$sitepath = realpath(__DIR__.'/../../');
 
 class ClassFileManager extends TestCase
 {
-
   public function test_allowedFiletype()
   {
     $list = ['csv'=>true, 'php'=>false, 'svg'=>false, 'twig'=>true];
     foreach ($list as $type=>$response) {
-      $this->assertEquals($response,
-        FileManager::allowedFileType('path/to/file.of.'.$type));
+      $this->assertEquals(
+        $response,
+        FileManager::allowedFileType('path/to/file.of.'.$type)
+      );
     }
   }
 
@@ -47,5 +49,4 @@ class ClassFileManager extends TestCase
     $this->assertFalse(file_exists($p1.'folder/file2'));
     FileManager::delete($p);
   }
-
 }

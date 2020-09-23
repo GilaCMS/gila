@@ -7,11 +7,13 @@ Config::contentInit('page', function (&$table) {
   $table['js'][]='src/blocks/assets/blocks_btn.js';
   $table['command']['blocks'] = ['link'=>'blocks/page/'];
 });
-if(Config::config('page-blocks')===null) Config::contentInit('post', function (&$table) {
-  $table['commands'][]='blocks';
-  $table['js'][]='src/blocks/assets/blocks_btn.js';
-  $table['command']['blocks'] = ['link'=>'blocks/post/'];
-});
+if (Config::config('page-blocks')===null) {
+  Config::contentInit('post', function (&$table) {
+    $table['commands'][]='blocks';
+    $table['js'][]='src/blocks/assets/blocks_btn.js';
+    $table['command']['blocks'] = ['link'=>'blocks/post/'];
+  });
+}
 
 Config::widgets([
   'paragraph--header'=>'blocks/widgets/paragraph--header',

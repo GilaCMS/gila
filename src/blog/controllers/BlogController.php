@@ -50,7 +50,7 @@ class BlogController extends Gila\Controller
       View::set('search', $s);
       View::set('posts', Post::search($s));
       View::render('blog-search.php');
-      if(http_response_code()==200) {
+      if (http_response_code()==200) {
         Logger::stat();
       }
       return;
@@ -70,7 +70,7 @@ class BlogController extends Gila\Controller
     } else {
       View::render('homepage.php');
     }
-    if(http_response_code()==200) {
+    if (http_response_code()==200) {
       Logger::stat();
     }
   }
@@ -96,7 +96,7 @@ class BlogController extends Gila\Controller
     Config::canonical('tag/'.$tag);
     self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
     $posts = Post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]);
-    if(self::$page<1 || self::$page>self::totalPages()) {
+    if (self::$page<1 || self::$page>self::totalPages()) {
       View::render('404.php');
       return;
     }
@@ -131,7 +131,7 @@ class BlogController extends Gila\Controller
     Config::canonical('blog/category/'.$category.'/'.$name.'/');
     self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
     $posts = Post::getPosts(['posts'=>self::$ppp,'category'=>$category,'publish'=>1,'page'=>self::$page]);
-    if(self::$page<1 || self::$page>self::totalPages()) {
+    if (self::$page<1 || self::$page>self::totalPages()) {
       View::render('404.php');
       return;
     }
@@ -254,7 +254,7 @@ class BlogController extends Gila\Controller
         View::render('404.php');
       }
     }
-    if(http_response_code()==200) {
+    if (http_response_code()==200) {
       Logger::stat();
     }
   }

@@ -50,7 +50,7 @@ class UserController extends Gila\Controller
 
       if ($name != $_POST['name']) {
         View::alert('error', __('register_error2'));
-      } else if (User::getByEmail($email) || $email != $_POST['email']) {
+      } elseif (User::getByEmail($email) || $email != $_POST['email']) {
         View::alert('error', __('register_error1'));
       } else {
         // register the user
