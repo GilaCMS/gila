@@ -48,7 +48,7 @@ class RequestsTest extends TestCase
   {
     $_POST['email'] = "test_login_auth@email.com";
     $_POST['password'] = "password";
-    Config::controller('user', 'core/controllers/login');
+    Config::controller('user', 'core/controllers/UserController');
     $response = $this->request('user/auth', 'POST');
     $this->assertEquals('{"token":"ABC"}', $response);
   }
