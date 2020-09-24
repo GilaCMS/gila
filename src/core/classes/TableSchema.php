@@ -6,6 +6,7 @@ class TableSchema
 {
   public function __construct($name, $initRows = [])
   {
+    global $db;
     $gtable = new Table($name);
     $table = $gtable->getTable();
     // IF TABLE EXISTS
