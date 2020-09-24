@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Gila\Cache;
 use Gila\FileManager;
 
-class ClassCache extends TestCase
+class CacheTest extends TestCase
 {
   public function test_remember()
   {

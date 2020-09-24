@@ -122,8 +122,14 @@ class Logger
     if (UserAgent::isBot($user_agent)) {
       return;
     }
+    if($type==='web') {
+      $ref_server = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
+      if(!empty($ref_server) && $_SERVER['SERVER_NAME']!==$ref_server) {
+        $context['src'] = $ref_server;
+      }
+    }
     $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.'.$type.'.log');
-    $stat_log->log($value ?? Router::$url, $_SERVER['HTTP_REFERER']??'', $context);
+    $stat_log->log($value ?? Router::$url, $_SERVER['REMOTE_ADDR']??'', $context);
   }
 
   public static function getStat($type = 'web', $date = null)

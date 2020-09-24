@@ -4,11 +4,19 @@ namespace Gila;
 
 class TableSchema
 {
-  public function __construct($name)
+  public function __construct($name, $initRows = [])
   {
     $gtable = new Table($name);
     $table = $gtable->getTable();
+    // IF TABLE EXISTS
+    $tables = $db->getList("SHOW TABLES;");
+    $tableExists = in_array($tname, $tables);
+    // UPDATE/CREATE TABLE
     self::update($table);
+    // INITIAL ROWS
+    if($tableExists === false) {
+      foreach($initRows as $row) $gtable->createRow($row);
+    }
   }
 
   public static function update($table)

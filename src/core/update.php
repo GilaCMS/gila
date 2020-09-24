@@ -1,20 +1,16 @@
 <?php
 
 Config::content('post', 'core/tables/post.php');
-$postTable = new Table('post');
-$postTable->update();
+new TableSchema('post');
 
 Config::content('page', 'core/tables/page.php');
-$pageTable = new Table('page');
-$pageTable->update();
+new TableSchema('page');
 
 Config::content('user', 'core/tables/user.php');
-$userTable = new Table('user');
-$userTable->update();
+new TableSchema('user');
 
 Config::content('userrole', 'core/tables/userrole.php');
-$userroleTable = new Table('userrole');
-$userroleTable->update();
+new TableSchema('userrole');
 
 if (version_compare(Package::version('core'), '1.8.0') < 0) {
   global $db;

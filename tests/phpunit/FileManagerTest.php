@@ -7,7 +7,7 @@ use Gila\FileManager;
 
 FileManager::$sitepath = realpath(__DIR__.'/../../');
 
-class ClassFileManager extends TestCase
+class FileManagerTest extends TestCase
 {
   public function test_allowedFiletype()
   {

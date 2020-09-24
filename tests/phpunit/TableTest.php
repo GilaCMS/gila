@@ -6,7 +6,7 @@ include __DIR__.'/../../src/core/classes/Table.php';
 include __DIR__.'/../../src/core/classes/TableSchema.php';
 use PHPUnit\Framework\TestCase;
 
-class ClassTable extends TestCase
+class TableTest extends TestCase
 {
   public function test_Table()
   {

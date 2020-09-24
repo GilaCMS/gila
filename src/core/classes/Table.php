@@ -461,6 +461,7 @@ class Table
             $filters[] = "FIND_IN_SET($value, $key)>0";
           } else {
             $key = $this->getColumnKey($key, false);
+            $value = $this->db->res($value);
             $filters[] = "$key='$value'";
           }
         }

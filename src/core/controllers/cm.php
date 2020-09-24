@@ -396,7 +396,6 @@ class cm extends Gila\Controller
     echo 'justify-content: space-around;gap:0.8em">';
     echo Form::hiddenInput();
     if ($id) {
-      $w = ['id'=>$id];
       $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)};";
       $res = $db->get($ql)[0];
       echo Form::html($pnk->getFields('edit'), $res);

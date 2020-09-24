@@ -5,7 +5,7 @@ include __DIR__.'/../../src/core/classes/Slugify.php';
 
 use PHPUnit\Framework\TestCase;
 
-class ClassSlugify extends TestCase
+class SlugifyTest extends TestCase
 {
   public function test_slugify()
   {

@@ -123,8 +123,7 @@ class RequestsTest extends TestCase
       'image'=>'core/widgets/image']);
     Package::update('blocks');
     Config::content('post', 'core/tables/post.php');
-    $gtable = new Table('post');
-    $gtable->update();
+    new TableSchema('post');
     Session::user(self::$userId, 'Test', 'test@mail.com');
     $_POST = ['id'=>'post_1'];
     $response = $this->request('blocks/discard');
