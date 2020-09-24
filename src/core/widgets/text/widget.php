@@ -10,5 +10,5 @@ return [
       'default'=>$lorem.' '.$lorem
     ]
   ],
-  'keys'=>'removed'
+  'keys'=>'page,widget'
 ];

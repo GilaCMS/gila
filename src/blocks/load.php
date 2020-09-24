@@ -16,11 +16,10 @@ if (Config::config('page-blocks')===null) {
 }
 
 Config::widgets([
-  'paragraph--header'=>'blocks/widgets/paragraph--header',
-  'paragraph--faq'=>'blocks/widgets/paragraph--faq',
+  'text--header'=>'blocks/widgets/text--header',
+  'text--faq'=>'blocks/widgets/text--faq',
   'side-image'=>'blocks/widgets/side-image',
   'side-image--items'=>'blocks/widgets/side-image--items',
-  'side-image--cto'=>'blocks/widgets/side-image--cto',
   'side-cto'=>'blocks/widgets/side-cto', // DEPRECATED
   'cards'=>'blocks/widgets/cards',
   'items-list'=>'blocks/widgets/items-list', // DEPRECATED
@@ -28,4 +27,5 @@ Config::widgets([
   'items-grid'=>'blocks/widgets/items-grid',
   'image-overlay'=>'blocks/widgets/image-overlay',
   'image-slider'=>'blocks/widgets/image-slider',
+  'hero-slider'=>'blocks/widgets/hero-slider',
 ]);

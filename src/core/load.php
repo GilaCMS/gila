@@ -38,7 +38,8 @@ if (FS_ACCESS) {
 }
 
 Config::widgets([
-  'paragraph'=>'core/widgets/paragraph',
+  'paragraph'=>'core/widgets/paragraph', // DEPRECATED
+  'text'=>'core/widgets/text',
   'image'=>'core/widgets/image',
   'gallery'=>'core/widgets/gallery',
   'gallery-links'=>'core/widgets/gallery-links',

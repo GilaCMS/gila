@@ -1,4 +1,4 @@
-<?=Gila\View::cssAsync('lib/glider/glider.min.css')?>
+<?=Gila\View::css('lib/glider/glider.min.css')?>
 <?=Gila\View::script('lib/glider/glider.min.js')?>
 <div class="myglider">
   <div> 1 </div>
@@ -8,9 +8,9 @@
   <div> 5 </div>
   <div> 6 </div>
 </div>
+<button role="button" aria-label="Previous" class="glider-prev" id="glider-prev"><i class="fa fa-chevron-left"></i></i></button>
+<button role="button" aria-label="Next" class="glider-next" id="glider-next"><i class="fa fa-chevron-right"></i></i></button>
 <div id="dots"></div>
-<div class="glider-prev"></div>
-<div class="glider-next"></div>
 <script>new Glider(document.querySelector('.myglider'), {
   slidesToShow: 1,
   dots: '#dots',

@@ -9,20 +9,21 @@ EOT;
 
 return [
   'fields'=>[
+    'image'=>[
+      'type'=>'media',
+      'default'=>'assets/core/photo.png'
+    ],
     'text'=>[
       'type'=>'paragraph',
       'allow_tags'=>true,
       'default'=>$defaultData
     ],
-    'image'=>[
-      'type'=>'media',
-      'default'=>'assets/core/photo.png'
-    ],
     'height'=>[
       'default'=>'400px'
     ],
-    'text_color'=>[
-      'type'=>'color'
+    'text_size'=>[
+      'type'=>'select',
+      'options'=>['100%'=>'100%','120%'=>'120%','140%'=>'140%'],
     ],
     'align'=>[
       'type'=>'radio',

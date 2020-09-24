@@ -90,11 +90,14 @@ class Form
     if ($type) {
       if (isset(self::$input_type[$type])) {
         $html .= self::$input_type[$type]($name, $op, $ov);
-      } elseif (in_array($type, ['hidden','number','date','datetime-local','time','color','password','email'])) {
-        if ($type=='datetime-local' && $ov) {
+      } elseif (in_array($type, ['hidden','number','date','datetime-local','time','color','password','email','range'])) {
+        $req = isset($op['required'])? ' required':'';
+        if ($type==='datetime-local' && $ov) {
           $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
         }
-        $req = isset($op['required'])? ' required':'';
+        if ($type==='range') {
+          $req = ' min='.($op['min']??0).' max='.($op['max']??10).' step='.($op['step']??1);
+        }
         $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';

@@ -2,15 +2,15 @@
 
 return [
   'fields'=>[
+    "image"=>[
+      "type"=>"media",
+      "default"=>"assets/core/photo.png"
+    ],
     "heading"=>[
       "default"=>"Heading Text"
     ],
     "text"=>[
       "default"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
-    ],
-    "image"=>[
-      "type"=>"media",
-      "default"=>"assets/core/photo.png"
     ],
     "primary_link"=>[
       "default"=>"#"
@@ -23,6 +23,10 @@ return [
     ],
     "secondary_text"=>[
       "default"=>"Learn more"
+    ],
+    'side'=>[
+      'type'=>'radio',
+      'options'=>['Left', 'Right']
     ]
   ],
   'keys'=>'removed'
