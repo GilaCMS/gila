@@ -49,5 +49,10 @@ if (version_compare(Package::version('core'), '1.15.3') < 0) {
   $db->query("UPDATE userrole TABLE SET `level`=10 WHERE id=1;");
 }
 
+if (!Config::config('set_utf8mb4')) {
+  $db->query("ALTER DATABASE {$GLOBALS['db']['name']} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  Config::config('set_utf8mb4', true);
+}
+
 Config::dir(LOG_PATH.'/stats');
 Config::dir(LOG_PATH.'/cacheItem');

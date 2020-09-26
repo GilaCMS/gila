@@ -28,7 +28,7 @@ class TableSchema
 
     // CREATE TABLE
     $qtype = @$table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
-    $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+    $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
     $db->query($q);
 
     // DESCRIBE
@@ -80,7 +80,7 @@ class TableSchema
         `{$m[1]}` int(11) DEFAULT NULL,
         `{$m[2]}` varchar(80) DEFAULT NULL,
         `{$m[3]}` varchar(255) DEFAULT NULL,
-        PRIMARY KEY (`id`),  KEY `{$m[1]}` (`{$m[1]}`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        PRIMARY KEY (`id`),  KEY `{$m[1]}` (`{$m[1]}`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
       $db->query($q);
     }
   }
