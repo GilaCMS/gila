@@ -1,4 +1,4 @@
-<section>
+<section class="block-items-grid">
 <style>.widget-items{grid-column: 1/span 4;text-align: center;}
 .items-grid>div{text-align:left;padding:1em;display:grid;grid-template-columns:1fr 2fr;grid-gap: 0.5em;}
 .items-grid img,.items-grid svg{max-width:100%;height:auto;min-width:70px}

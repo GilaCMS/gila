@@ -51,7 +51,8 @@ Config::widgets([
   'post-categories'=>'core/widgets/post-categories',
   'tag'=>'core/widgets/tag',
   'contact-form'=>'core/widgets/contact-form',
-  'core-counters'=>'core/widgets/core-counters'
+  'core-counters'=>'core/widgets/core-counters',
+  'search'=>'core/widgets/search',
 ]);
 Config::$widget_area=['dashboard'];
 

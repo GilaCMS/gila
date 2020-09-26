@@ -93,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     Gila\Package::copyAssets('core');
     Gila\Theme::copyAssets('gila-blog');
     Gila\Config::dir(LOG_PATH.'/stats');
+    Gila\Config::dir(LOG_PATH.'/cacheItem');
     @unlink(LOG_PATH.'/load.php');
     include __DIR__."/installed.php";
     exit;

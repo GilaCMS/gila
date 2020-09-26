@@ -3,9 +3,9 @@
 return [
   'fields'=>[
     'text'=>[
-      'type'=>'codemirror',
+      'type'=>'paragraph',
       'allow_tags'=>true
     ]
   ],
-  'keys'=>'page'
+  'keys'=>'widget'
 ];

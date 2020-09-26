@@ -17,8 +17,10 @@ class HtmlInput
     if ($response = Event::get('HtmlInput::purify', null, $value)) {
       return $response;
     }
-
-    if (class_exists("DomDocument")) {
+    
+    if(empty(trim($value))) {
+      $value = '';
+    } else if (class_exists("DomDocument")) {
       $value = self::DOMSanitize($value);
     }
 

@@ -7,8 +7,8 @@
   $db->close();
   $packagesC = count($GLOBALS['config']['packages']);
 ?>
-<?=View::css('core/widgets.css')?>
 <div class='core-counters-grid'>
+<?=View::css('core/widgets.css')?>
 <?php if (Session::hasPrivilege('admin')) { ?>
   <div>
     <a href="admin/content/post">

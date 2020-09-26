@@ -48,3 +48,6 @@ TableSchema::update(include 'src/core/tables/user_notification.php');
 if (version_compare(Package::version('core'), '1.15.3') < 0) {
   $db->query("UPDATE userrole TABLE SET `level`=10 WHERE id=1;");
 }
+
+Config::dir(LOG_PATH.'/stats');
+Config::dir(LOG_PATH.'/cacheItem');

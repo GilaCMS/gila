@@ -26,6 +26,6 @@ Config::widgets([
   'faq'=>'blocks/widgets/faq', // DEPRECATED
   'items-grid'=>'blocks/widgets/items-grid',
   'image-overlay'=>'blocks/widgets/image-overlay',
-  'image-slider'=>'blocks/widgets/image-slider',
-  'hero-slider'=>'blocks/widgets/hero-slider',
+  //'image-slider'=>'blocks/widgets/image-slider',
+  //'hero-slider'=>'blocks/widgets/hero-slider',
 ]);

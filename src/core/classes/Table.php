@@ -460,9 +460,12 @@ class Table
             $key = $this->getColumnKey($key, false);
             $filters[] = "FIND_IN_SET($value, $key)>0";
           } else {
-            $key = $this->getColumnKey($key, false);
+            $ckey = $this->getColumnKey($key, false);
+            if(@$this->table['fields'][$key]['type']=='date') {
+              $ckey = "SUBSTRING($key,1,10)";
+            }
             $value = $this->db->res($value);
-            $filters[] = "$key='$value'";
+            $filters[] = "$ckey='$value'";
           }
         }
       }

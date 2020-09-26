@@ -1,5 +1,6 @@
 <?=Gila\View::css('lib/glider/glider.min.css')?>
 <?=Gila\View::script('lib/glider/glider.min.js')?>
+<section>
 <div class="myglider">
   <div> 1 </div>
   <div> 2 </div>
@@ -20,3 +21,4 @@
     next: '.glider-next'
   }
 });</script>
+</section>
