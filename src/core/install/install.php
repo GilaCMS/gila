@@ -82,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $GLOBALS['config']['admin_theme'] = 'default';
     $GLOBALS['config']['admin_logo'] = 'assets/gila-logo.png';
     $GLOBALS['config']['favicon'] = 'assets/favicon.png';
-    $GLOBALS['config']['page-blocks'] = true;
 
     if (function_exists("apache_get_modules") && !in_array('mod_rewrite', apache_get_modules())) {
       $GLOBALS['config']['rewrite'] = 0;

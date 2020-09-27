@@ -1,16 +1,18 @@
 <?php
 
-Router::controller('blocks', 'blocks/controllers/blocks', 'blocks');
-
-Config::contentInit('page', function (&$table) {
-  $table['commands'][]='blocks_popup';
-  $table['js'][]='src/blocks/assets/blocks_btn.js';
-  $table['command']['blocks'] = ['link'=>'blocks/page/'];
-});
+// Remove this on next version
 if (Config::config('page-blocks')===null) {
+  Router::controller('blocks', 'blocks/controllers/blocks', 'blocks');
+
+  Config::contentInit('page', function (&$table) {
+    $table['commands'][]='blocks_popup';
+    $table['js'][]='src/blocks/assets/admin/blocks_btn.js';
+    $table['command']['blocks'] = ['link'=>'blocks/page/'];
+  });
+  
   Config::contentInit('post', function (&$table) {
     $table['commands'][]='blocks';
-    $table['js'][]='src/blocks/assets/blocks_btn.js';
+    $table['js'][]='src/core/assets/admin/blocks_btn.js';
     $table['command']['blocks'] = ['link'=>'blocks/post/'];
   });
 }

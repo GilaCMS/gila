@@ -46,11 +46,23 @@ if (version_compare(Package::version('core'), '1.13.0') < 0) {
 TableSchema::update(include 'src/core/tables/user_notification.php');
 
 if (version_compare(Package::version('core'), '1.15.3') < 0) {
+  global $db;
   $db->query("UPDATE userrole TABLE SET `level`=10 WHERE id=1;");
 }
 
 if (!Config::config('set_utf8mb4')) {
-  $db->query("ALTER DATABASE {$GLOBALS['db']['name']} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  global $db;
+  $db->query("ALTER DATABASE {$GLOBALS['config']['db']['name']} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $tables = ['page','post','user','usermeta','userrole','postcategory','postmeta','user_notification','widget'];
+  foreach($tables as $table) {
+    $db->query("ALTER TABLE `$table` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  }
+  $db->query("ALTER TABLE `page` CHANGE blocks TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `post` CHANGE post TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `post` CHANGE `description` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `postcategory` CHANGE `description` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `user_notification` CHANGE `details` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+
   Config::config('set_utf8mb4', true);
 }
 

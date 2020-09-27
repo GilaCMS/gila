@@ -186,4 +186,4 @@ content_blocks_app = new Vue({
 </div>
 
 <?=View::script("core/admin/content.js")?>
-<?=View::script("blocks/content-block.js")?>
+<?=View::script("core/admin/content-block.js")?>
