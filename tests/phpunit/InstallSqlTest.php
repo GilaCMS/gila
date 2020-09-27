@@ -19,7 +19,7 @@ class InstallSqlTest extends TestCase
     $tableColumn = [
             'post'=>['id','title','slug','description','user_id','publish','post','updated','created'],
             'postmeta'=>['id','post_id','vartype','value'],
-            'page'=>['id','title','slug','template','description','publish','content','updated','blocks'],
+            'page'=>['id','title','slug','template','description','publish','content','updated','blocks2'],
             'user'=>['id','username','email','pass','active','reset_code','created','updated'],
             'usermeta'=>['id','user_id','vartype','value'],
             'userrole'=>['id','userrole','level','description'],
@@ -39,5 +39,7 @@ class InstallSqlTest extends TestCase
     $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM user'));
     $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM userrole'));
     $this->assertEquals(4, $db->value('SELECT COUNT(*) FROM widget'));
+    $json = $db->value('SELECT blocks FROM `page` WHERE id=1');
+    $this->assertEquals(json_decode($json, true)[0]['_type'], 'text');
   }
 }
