@@ -52,7 +52,7 @@ return [
     ],
     'content'=> [
       'title'=>'Content',
-      'helptext'=>'This field is depracated, move the content in text blocks with page builder',
+      'helptext'=>'This field is deprecated, move the content in text blocks with page builder',
       'list'=>false,
       'edit'=>true,
       'type'=>'textarea',
