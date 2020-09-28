@@ -10,7 +10,7 @@ g.dialog.buttons.update_widget = {title:'Update',fn:function(){
   let _app=app
 
   g.ajax({url:'admin/update_widget?g_response=content',method:'POST',data:fm,fn:function(data){
-	  g.closeModal();
+	g.closeModal();
     data = JSON.parse(data)
     widget_dialog_edit_table.update_row(data.rows[0])
     widget_dialog_edit_table.$forceUpdate()
@@ -31,7 +31,7 @@ gtableCommand.edit_widget = {
 
             g_tinymce_options.height = 160;
             g_tinymce_options.menubar = false
-            g_tinymce_options.toolbar = 'formatselect bold italic | bullist numlist outdent indent | link image media code table | alignleft aligncenter alignright alignjustify'
+            g_tinymce_options.toolbar = 'formatselect bold italic | bullist numlist outdent indent | link image media emoticons code table | alignleft aligncenter alignright alignjustify'
             transformClassComponents();
         });
     }

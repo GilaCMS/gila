@@ -110,14 +110,18 @@ class Table
     }
   }
 
-  static public function extend_recursive($table, $extTable)
+  public static function extend_recursive($table, $extTable)
   {
-    foreach($extTable as $key=>$el) if(is_array($el)) {
-      $table[$key] = self::extend_recursive($table[$key], $el);
-    } else if(is_numeric($key)){
-      if(!in_array($el, $table)) $table[] = $el;
-    } else {
-      $table[$key] = $el;
+    foreach ($extTable as $key=>$el) {
+      if (is_array($el)) {
+        $table[$key] = self::extend_recursive($table[$key], $el);
+      } elseif (is_numeric($key)) {
+        if (!in_array($el, $table)) {
+          $table[] = $el;
+        }
+      } else {
+        $table[$key] = $el;
+      }
     }
     return $table;
   }
@@ -250,6 +254,12 @@ class Table
 
   public function groupby($group)
   {
+    if ($group===null) {
+      if ($group = $this->table['groupby']) {
+        return " GROUP BY $group";
+      }
+      return '';
+    }
     return " GROUP BY $group";
   }
 
@@ -295,10 +305,12 @@ class Table
     if ($fields===null) {
       $fields=$_POST;
     }
-    if(isset($this->table['filters'])) foreach ($this->table['filters'] as $k=>$f) {
-      if (isset($fields[$k])) {
-        // should check if $fields[$k] validates the filter restrictions
-        $fields[$k]=$f;
+    if (isset($this->table['filters'])) {
+      foreach ($this->table['filters'] as $k=>$f) {
+        if (isset($fields[$k])) {
+          // should check if $fields[$k] validates the filter restrictions
+          $fields[$k]=$f;
+        }
       }
     }
     $this->event('change', $fields);
@@ -317,24 +329,13 @@ class Table
           continue;
         }
 
-        if (is_array($value)) {
-          foreach ($value as $subkey=>$subvalue) {
-            if ($subkey === 'fn') {
-              $set[] = "$key=$subvalue";
-            }
-            if ($subkey === 'add') {
-              $set[] = "$key=$key+$subvalue";
-            }
+        if ($value==='') {
+          if ($def = $this->fieldAttr($key, 'default')) {
+            $value = $def;
           }
-        } else {
-          if ($value==='') {
-            if ($def = $this->fieldAttr($key, 'default')) {
-              $value = $def;
-            }
-          }
-          $value = strtr($value, ["'"=>"\'"]);
-          $set[] = "$key='$value'";
         }
+        $value = strtr($value, ["'"=>"\'"]);
+        $set[] = "$key='$value'";
       }
     }
     if ($set != []) {
@@ -459,8 +460,12 @@ class Table
             $key = $this->getColumnKey($key, false);
             $filters[] = "FIND_IN_SET($value, $key)>0";
           } else {
-            $key = $this->getColumnKey($key, false);
-            $filters[] = "$key='$value'";
+            $ckey = $this->getColumnKey($key, false);
+            if(@$this->table['fields'][$key]['type']=='date') {
+              $ckey = "SUBSTRING($key,1,10)";
+            }
+            $value = $this->db->res($value);
+            $filters[] = "$ckey='$value'";
           }
         }
       }
@@ -593,10 +598,11 @@ class Table
 
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
+    $groupby = $this->groupby($args['groupby']??null);
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
     $res = $db->read()->getAssoc("SELECT $select
-      FROM {$this->name()}$where$orderby$limit;");
+      FROM {$this->name()}$where$groupby$orderby$limit;");
     return $res;
   }
 

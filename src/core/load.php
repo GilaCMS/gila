@@ -8,7 +8,8 @@ global $db;
 
 Router::controller('admin', 'core/controllers/admin');
 Router::controller('cm', 'core/controllers/cm');
-Router::controller('login', 'core/controllers/login');
+Router::controller('login', 'core/controllers/UserController'); // DEPRECATED
+Router::controller('user', 'core/controllers/UserController');
 Router::controller('webhook', 'core/controllers/webhook');
 Router::controller('lzld', 'core/controllers/lzld');
 Router::controller('fm', 'core/controllers/fm');
@@ -37,19 +38,21 @@ if (FS_ACCESS) {
 }
 
 Config::widgets([
-  'paragraph'=>'core/widgets/paragraph',
+  'paragraph'=>'core/widgets/paragraph', // DEPRECATED
+  'text'=>'core/widgets/text',
   'image'=>'core/widgets/image',
   'gallery'=>'core/widgets/gallery',
   'gallery-links'=>'core/widgets/gallery-links',
   'social-icons'=>'core/widgets/social-icons',
-  'links'=>'core/widgets/links',
+  'links'=>'core/widgets/links', // DEPRECATED
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
   'category-post'=>'core/widgets/category-post',
   'post-categories'=>'core/widgets/post-categories',
   'tag'=>'core/widgets/tag',
   'contact-form'=>'core/widgets/contact-form',
-  'core-counters'=>'core/widgets/core-counters'
+  'core-counters'=>'core/widgets/core-counters',
+  'search'=>'core/widgets/search',
 ]);
 Config::$widget_area=['dashboard'];
 

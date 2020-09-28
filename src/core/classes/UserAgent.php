@@ -4,7 +4,7 @@ namespace Gila;
 
 class UserAgent
 {
-  public function info($user_agent = null)
+  public static function info($user_agent = null)
   {
     if ($user_agent==null) {
       return null;
@@ -69,5 +69,19 @@ class UserAgent
     }
 
     return ['os'=>$os, 'device'=>$device, 'browser'=>$browser];
+  }
+
+  public static function isBot($user_agent)
+  {
+    $good_bots = ['SemrushBot','YandexBot','AhrefsBot','PetalBot','SaaSHub','bingbot','BingPreview','MJ12bot','Twitterbot',
+    'Googlebot','newspaper/0.2.8','NetcraftSurveyAgent','panscient.com','python-requests/2.22.0','SeznamBot',
+    'facebookexternalhit','Baiduspider'];
+
+    foreach ($good_bots as $bot) {
+      if (strpos($user_agent, $bot) !== false) {
+        return true;
+      }
+    }
+    return false;
   }
 }

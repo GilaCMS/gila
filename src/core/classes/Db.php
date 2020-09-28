@@ -39,7 +39,7 @@ class Db
       return;
     }
     $this->link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
-    $this->link->set_charset("utf8");
+    //$this->link->set_charset("utf8");
     if ($this->profiling) {
       $this->link->query('SET profiling=1;');
     }
@@ -209,7 +209,7 @@ class Db
   public function value($q, $p = null)
   {
     $res = $this->query($q, $p);
-    if($res) {
+    if ($res) {
       return mysqli_fetch_row($res)[0];
     }
     return null;

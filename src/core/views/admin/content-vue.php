@@ -38,7 +38,7 @@ View::css('lib/select2/select2.min.css');
     grid-template-columns: 2fr 1fr!important;
     min-height:60vh;
   }
-  .gila-popup .type-tinymce{grid-column:1/1;grid-row:1/20}
+  .gila-popup #post-edit-item-form .type-tinymce{grid-column:1/1;grid-row:1/20}
   .gila-popup .type-textarea{grid-column: span 1}
 }
 .tox .tox-menubar,.tox .tox-toolbar, .tox .tox-toolbar__overflow, .tox .tox-toolbar__primary{

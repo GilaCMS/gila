@@ -3,7 +3,7 @@
 include __DIR__.'/includes.php';
 include __DIR__.'/../../src/core/classes/Controller.php';
 include __DIR__.'/../../src/core/classes/Package.php';
-include __DIR__.'/../../src/core/models/User.php';
+include __DIR__.'/../../src/core/classes/User.php';
 include __DIR__.'/../../src/core/classes/Table.php';
 include __DIR__.'/../../src/core/classes/TableSchema.php';
 include __DIR__.'/../../src/core/classes/Form.php';
@@ -17,27 +17,33 @@ use Gila\Controller;
 use Gila\Session;
 use Gila\Package;
 use Gila\Table;
+use Gila\TableSchema;
+
 $GLOBALS['config']['db']['name'] = 'g_db';
-Event::listen('sendmail', function($x){ return true; });
+Event::listen('sendmail', function ($x) {
+  return true;
+});
 
 class RequestsTest extends TestCase
 {
-  static protected $userId;
+  protected static $userId;
 
-  static public function setUpBeforeClass()
+  public static function setUpBeforeClass()
   {
     global $db;
     self::createUserTable();
     $pass = Config::hash("password");
-    $db->query("INSERT INTO user SET email=?, pass=?, active=1;",
-      ["test_login_auth@email.com", Config::hash("password")]);
+    $db->query(
+      "INSERT INTO user SET email=?, pass=?, active=1;",
+      ["test_login_auth@email.com", Config::hash("password")]
+    );
     $uid = $db->insert_id;
     $db->query("INSERT INTO usermeta SET `value`='ABC', user_id=?, `vartype`='token';", [$uid]);
     $db->query("INSERT INTO usermeta SET `value`=1, user_id=?, `vartype`='role';", [$uid]);
     self::$userId = $uid;
   }
 
-  static public function tearDownAfterClass()
+  public static function tearDownAfterClass()
   {
     global $db;
     $db->query("DELETE FROM user WHERE email='test_login_auth@email.com';");
@@ -48,8 +54,8 @@ class RequestsTest extends TestCase
   {
     $_POST['email'] = "test_login_auth@email.com";
     $_POST['password'] = "password";
-    Config::controller('login', 'core/controllers/login');
-    $response = $this->request('login/auth', 'POST');
+    Config::controller('user', 'core/controllers/UserController');
+    $response = $this->request('user/auth', 'POST');
     $this->assertEquals('{"token":"ABC"}', $response);
   }
 
@@ -67,44 +73,44 @@ class RequestsTest extends TestCase
     $GLOBALS['config']['user_register'] = 0;
     $db->query('DELETE FROM user WHERE email=?;', $email);
 
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $uid = $db->value('SELECT id from user WHERE email=?;', $email);
     $this->assertNull($uid);
 
     $GLOBALS['config']['user_register'] = 1;
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
     $this->assertEquals(0, $active);
     $db->query('DELETE FROM user WHERE email=?;', $email);
 
     $_REQUEST['name'] = "Register Test<script>alert(0)</script>";
     $_POST['name'] = "Register Test<script>alert(0)</script>";
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $uid = $db->value('SELECT id from user WHERE email=?;', $email);
     $this->assertNull($uid);
 
     $_REQUEST['name'] = "Register Test";
     $_POST['name'] = "Register Test";
     $GLOBALS['config']['user_activation'] = 'auto';
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
     $this->assertEquals(1, $active);
     $db->query('DELETE FROM user WHERE email=?;', $email);
 
     $GLOBALS['config']['user_activation'] = 'byemail';
-    $this->request('login/register', 'POST');
+    $this->request('user/register', 'POST');
     $uid = $db->value('SELECT id FROM user WHERE email=?;', $email);
     $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(0, $active);
 
     $_GET['ap'] = 'wrongcode';
-    $this->request('login/activate', 'GET');
+    $this->request('user/activate', 'GET');
     $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(0, $active);
 
     $_GET['ap'] = $db->value('SELECT `value` FROM usermeta WHERE 
       vartype="activate_code" AND user_id=?;', $uid);
-    $this->request('login/activate', 'GET');
+    $this->request('user/activate', 'GET');
     $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(1, $active);
   }
@@ -114,58 +120,57 @@ class RequestsTest extends TestCase
     global $db;
     Config::controller('blocks', 'blocks/controllers/blocks');
     Config::widgets([
-      'paragraph'=>'core/widgets/paragraph',
+      'html'=>'core/widgets/html',
       'image'=>'core/widgets/image']);
     Package::update('blocks');
-    Config::content('post','core/tables/post.php');
-    $gtable = new Table('post');
-    $gtable->update();
+    Config::content('post', 'core/tables/post.php');
+    new TableSchema('post');
     Session::user(self::$userId, 'Test', 'test@mail.com');
     $_POST = ['id'=>'post_1'];
     $response = $this->request('blocks/discard');
     $db->query('REPLACE INTO post SET id=1;');
     $db->query('UPDATE post SET blocks=\'\' WHERE id=1;');
 
-    $_GET = ['id'=>'new', 'type'=>'paragraph'];
+    $_GET = ['id'=>'new', 'type'=>'html'];
     $response = $this->request('blocks/edit');
-    $this->assertContains(' id="m_option_text_"', $response);
+    $this->assertContains(' name="option[text]"', $response);
     $_GET = [];
 
-    $_POST = ['id'=>'post_1_0', 'type'=>'paragraph'];
+    $_POST = ['id'=>'post_1_0', 'type'=>'html'];
     $response = $this->request('blocks/create', 'POST');
-    $this->assertEquals('[{"_type":"paragraph"}]', $response);
+    $this->assertEquals('[{"_type":"html"}]', $response);
     $_POST = ['id'=>'post_1_1', 'type'=>'image'];
     $response = $this->request('blocks/create', 'POST');
     $image = '{"_type":"image","image":"assets\/core\/photo.png"}';
-    $this->assertEquals('[{"_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"_type":"html"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p  onclick="alert(0)">Something</p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<script >alert(0)</script>Something</p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"<p>alert(0)Something<\/p>","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"<p><a href=\"alert(0)\">Something<\/a><\/p>","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p><a href=\"alert(0)\">Something<\/a><\/p>","_type":"html"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p>Something</p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"},'.$image.']', $response);
 
     $_POST = ['id'=>'post_1_1'];
     $response = $this->request('blocks/delete', 'POST');
-    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $response);
+    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"}]', $response);
 
     $_POST = ['id'=>'post_1'];
     $response = $this->request('blocks/save', 'POST');
     $blocks = $db->value('SELECT blocks from post WHERE id=1;');
-    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"paragraph"}]', $blocks);
+    $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"}]', $blocks);
   }
 
-  static function createUserTable()
+  public static function createUserTable()
   {
     global $db;
     $db->query('CREATE TABLE IF NOT EXISTS `user` (
@@ -192,7 +197,7 @@ class RequestsTest extends TestCase
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
   }
 
-  function request($url, $method='GET')
+  public function request($url, $method='GET')
   {
     $_SERVER['REQUEST_METHOD'] = $method;
     [$c, $a] = explode('/', $url);

@@ -5,11 +5,12 @@ return [
   'title'=> 'Pages',
   'pagination'=> 15,
   'id'=>'id',
-  'tools'=>['add','csv'],
+  'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','updated','publish','page'],
-  'commands'=> ['edit','delete'],
+  'commands'=> ['edit_popup','blocks_popup','delete'],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish'],
+  'js'=>['src/core/tables/page.js','src/core/assets/admin/blocks_btn.js'],
   'permissions'=>[
     'create'=>['admin', 'editor'],
     'update'=>['admin', 'editor'],
@@ -27,14 +28,8 @@ return [
     ],
     'slug'=> [
       'title'=>'Path',
-      'qtype'=>'varchar(80) DEFAULT NULL'
-    ],
-    'publish'=> [
-      'title'=>'Public',
-      'style'=>'width:8%',
-      'type'=>'checkbox',
-      'edit'=>true,
-      'qtype'=>'INT(1) DEFAULT NULL'
+      'qtype'=>'varchar(80) DEFAULT NULL',
+      'alt'=>'('.Gila\Config::tr('Home').')'
     ],
     'template'=> [
       'title'=>'Template',
@@ -43,10 +38,22 @@ return [
       'edit'=>true,
       'qtype'=>'varchar(30) DEFAULT NULL'
     ],
+    'description'=> [
+      'title'=>'Description',
+      'input-type'=>'textarea',
+      'qtype'=>'varchar(200) DEFAULT NULL'
+    ],
+    'publish'=> [
+      'title'=>'Public',
+      'style'=>'width:8%',
+      'type'=>'checkbox',
+      'edit'=>true,
+      'qtype'=>'INT(1) DEFAULT NULL'
+    ],
     'content'=> [
       'title'=>'Content',
       'list'=>false,
-      'edit'=>true,
+      'edit'=>(Gila\Config::config('page-blocks')===null),
       'type'=>'textarea',
       'input_type'=>'tinymce',
       'allow_tags'=>true,
@@ -60,6 +67,10 @@ return [
       'list'=>false,
       'create'=>false,
       'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+    ],
+    'blocks'=> [
+      'list'=> false,
+      'qtype'=> 'TEXT'
     ]
   ]
 ];

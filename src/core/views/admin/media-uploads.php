@@ -59,7 +59,7 @@ foreach ($files as $file) {
       $type='folder';
     } else {
       $type='file';
-      $imgx = ['jpg','jpeg','png','gif','svg'];
+      $imgx = ['jpg','jpeg','png','gif','svg','webp'];
       if ($pinf = pathinfo(SITE_PATH.$file)) {
         if ($ext = @$pinf['extension']) {
           if (in_array(strtolower($ext), $imgx)) {

@@ -8,7 +8,7 @@ use Gila\Session;
 use Gila\Sendmail;
 use Gila\Router;
 
-class login extends Gila\Controller
+class UserController extends Gila\Controller
 {
   public function __construct()
   {
@@ -47,9 +47,10 @@ class login extends Gila\Controller
       $email = Router::request('email');
       $name = Router::request('name');
       $password = $_POST['password'];
+
       if ($name != $_POST['name']) {
         View::alert('error', __('register_error2'));
-      } else if (User::getByEmail($email) || $email != $_POST['email']) {
+      } elseif (User::getByEmail($email) || $email != $_POST['email']) {
         View::alert('error', __('register_error1'));
       } else {
         // register the user
@@ -62,7 +63,7 @@ class login extends Gila\Controller
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
             $msg .= __('activatemsg_ln3')." $baseurl\n\n";
-            $msg .= $baseurl."login/activate?ap=$activate_code\n\n";
+            $msg .= $baseurl."user/activate?ap=$activate_code\n\n";
             $msg .= __('reset_msg_ln4');
             $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
             User::meta($user_Id, 'activate_code', $activate_code);
@@ -151,7 +152,7 @@ class login extends Gila\Controller
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
       $msg .= __('reset_msg_ln3')." $baseurl\n\n";
-      $msg .= $baseurl."login/password_reset?rp=$reset_code\n\n";
+      $msg .= $baseurl."user/password_reset?rp=$reset_code\n\n";
       $msg .= __('reset_msg_ln4');
       $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
       User::meta($r['id'], 'reset_code', $reset_code);
@@ -181,6 +182,7 @@ class login extends Gila\Controller
     echo '{"error":"Credencials are not valid"}';
   }
 
+  // use this until user controller is created
   public function logoutAction()
   {
     global $db;

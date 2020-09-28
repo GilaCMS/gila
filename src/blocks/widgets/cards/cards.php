@@ -1,15 +1,17 @@
 <?=View::css('core/gila.min.css')?>
+<section>
 <div style="text-align:center">
   <h2><?=$data['heading']?></h2>
   <p><?=$data['text']?></p>
 </div>
-<div class="gm-grid" style="display:grid; grid-gap:1em; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));justify-items:center;margin-bottom:1em">
+<div class="gm-grid" style="display:grid; grid-gap:1em; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+justify-items:center;margin-bottom:1em;overflow: auto;padding: 2em 0;">
 <?php
   foreach (json_decode($data['cards'], true) as $key=>$card) {
-    echo '<div class="g-card wrapper bg-white" style="text-align:center;max-width:300px">';
+    echo '<div class="g-card wrapper bg-white" style="box-shadow: 0 0 4px #aaa;max-width:300px;text-align:'.htmlentities($data['align']??'center').'">';
     if ($card[0]) {
-      echo '<div class="g-card-image" style="padding:0 25%">';
-      echo View::img($card[0], 'c_', 400);
+      echo '<div class="g-card-image" style="display:inline-block;max-width:50%">';
+      echo View::img($card[0], 'c_', 200);
       echo '</div>';
     }
     echo '<h4 style="margin:2px"><b>'.$card[1].'</b></h4><p>'.$card[2].'</p>';
@@ -20,4 +22,4 @@
   }
 ?>
 </div>
-
+</section>

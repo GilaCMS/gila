@@ -11,14 +11,18 @@
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
-  <style><?=file_get_contents('src/core/assets/admin/themes/'.Config::config('admin_theme').'.css'??'')?></style>
+  <style>
+  <?=file_get_contents('src/core/assets/admin/themes/'.Config::config('admin_theme').'.css'??'')?>
+  <?=(Config::config('admin_background')? 'background:url("'.Config::config('admin_background').'")': '')?>
+  .widget-area-dashboard .widget{background:rgba(255,255,255,0.9)}  
+</style>
 </head>
 
 <?php if (!isset($_COOKIE['sidebar_toggled'])) {
   $_COOKIE['sidebar_toggled']='true';
 } ?>
 
-<body style="background:var(--main-bg-color)">
+<body style="background:var(--main-bg-color);background-size:cover">
   <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
     <!-- Sidebar g-nav vertical -->
     <div id="sidebar-wrapper">
@@ -34,7 +38,7 @@
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
-    <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:white;">
+    <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:rgba(255,255,255,0.8);">
       &nbsp;<a href="#menu-toggle" class="g-icon-btn g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
       <?php if ('admin'!=Config::config('default-controller')) {?>
       &nbsp;<a href="<?=Config::base_url()?>" class="g-icon-btn g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>

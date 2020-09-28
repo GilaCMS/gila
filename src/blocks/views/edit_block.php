@@ -4,11 +4,7 @@
 <?php
 global $db;
 $widget_data = [];
-$widget_folder = 'src/'.Gila\Config::$widget[$type];
-$fields = include $widget_folder.'/widget.php';
-if (isset($options)) {
-  $fields = $options;
-}
+$fields = Gila\Widget::getFields($type);
 
 if ($id!=='new') {
   $widget_data = $widgets[$pos];

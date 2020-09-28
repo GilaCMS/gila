@@ -13,6 +13,7 @@ class Config
   public static $contentInit = [];
   public static $mt;
   public static $base_url;
+  public static $lang;
   public static $langPaths = [];
   public static $langWords = [];
   public static $langLoaded = false;
@@ -217,6 +218,9 @@ class Config
   */
   public static function amenu_child($key, $item)
   {
+    if (!isset(self::$amenu[$key])) {
+      return;
+    }
     if (!isset(self::$amenu[$key]['children'])) {
       self::$amenu[$key]['children']=[];
     }
@@ -253,6 +257,17 @@ class Config
       return;
     }
     $GLOBALS['config'][$key] = $value;
+  }
+
+  public static function lang($lang=null)
+  {
+    if ($lang!==null) {
+      self::$lang = $lang;
+    }
+    if (isset(self::$lang)) {
+      return self::$lang;
+    }
+    self::$lang = self::config('language');
   }
 
   public static function set($key, $value)

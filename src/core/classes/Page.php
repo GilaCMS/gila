@@ -6,7 +6,7 @@ class Page
   public static function getById($id)
   {
     global $db;
-    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug,template FROM `page` WHERE id=?;", [$id]);
+    $res = $db->query("SELECT id,title,description,content as `page`,updated,publish,slug,template FROM `page` WHERE id=?;", [$id]);
     if ($res) {
       return $r = mysqli_fetch_array($res);
     }
@@ -18,11 +18,11 @@ class Page
   {
     global $db;
     $publish = $published? 'publish=1 AND': '';
-    $res = $db->query("SELECT id,title,content as `page`,updated,publish,slug,template FROM `page` WHERE $publish (id=? OR slug=?);", [$id,$id]);
+    $res = $db->query("SELECT id,title,description,content as `page`,updated,publish,slug,template FROM `page` WHERE $publish (id=? OR slug=?);", [$id,$id]);
     if ($row = mysqli_fetch_array($res)) {
       if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
-        $row['page'] .= View::blocks($blocks);
+        $row['page'] .= View::blocks($blocks, 'page'.$row['id']);
       }
       return $row;
     }

@@ -4,7 +4,6 @@ namespace Gila;
 
 class UserNotification
 {
-
   public function send(int $user_id, $type, $details = '', $url = '')
   {
     global $db;
@@ -15,7 +14,7 @@ class UserNotification
   {
     global $db;
     $user_id = Session::userId();
-    if(empty($type)) {
+    if (empty($type)) {
       return $db->get("SELECT * FROM user_notification WHERE user_id=? AND unread=1 ORDER BY created DESC", [$user_id]);
     }
     return $db->get("SELECT * FROM user_notification WHERE user_id=? AND unread=1 AND type=? ORDER BY created DESC", [$user_id, $type]);
@@ -25,7 +24,7 @@ class UserNotification
   {
     global $db;
     $user_id = Session::userId();
-    if(empty($type)) {
+    if (empty($type)) {
       return $db->value("SELECT COUNT(*) FROM user_notification WHERE user_id=? AND unread=1 ORDER BY created DESC", [$user_id]);
     }
     return $db->value("SELECT COUNT(*) FROM user_notification WHERE user_id=? AND unread=1 AND type=? ORDER BY created DESC", [$user_id, $type]);

@@ -1,11 +1,14 @@
 <?php
 
 return [
-  'items'=>[
-    'type'=>'list',
-    'fields'=>[
-      'question'=>[],
-      'answer'=>[]
+  'fields'=>[
+    'items'=>[
+      'type'=>'list',
+      'fields'=>[
+        'question'=>[],
+        'answer'=>[]
+      ]
     ]
-  ]
+  ],
+  'keys'=>'removed'
 ];

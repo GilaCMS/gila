@@ -47,10 +47,8 @@ return [
           if (!isset($row['data']) || $row['data']!==null) {
             return;
           }
-          $wdgt_options = include 'src/'.Config::$widget[$row['widget']].'/widget.php';
-          if (isset($options)) {
-            $wdgt_options = $options;
-          }
+          $wdgt_options = Gila\Widget::getFields($row['widget']);
+
           $default_data=[];
           foreach ($wdgt_options as $key=>$op) {
             if (isset($op['default'])) {

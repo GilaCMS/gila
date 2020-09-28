@@ -1,7 +1,15 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("assets/core/fonts/Roboto-Regular.ttf");
+}
+
 :root {
   --sidebar-width: 120px;
   ---sidebar-width: -120px;
   --main-dark-color: #101621;
+}
+*,.g-form label, .g-label{
+  font-family: 'Roboto', sans-serif;
 }
 #sidebar-wrapper .g-nav{
   text-align:center;

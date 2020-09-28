@@ -1,3 +1,3 @@
 <?php
 
-array_push(Config::$widget_area,'head','body','foot','sidebar','post.after','dashboard');
+array_push(Config::$widget_area,'body','footer','sidebar','post.after','dashboard');

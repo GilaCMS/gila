@@ -17,7 +17,7 @@ class Controller
       View::renderFile('login.php');
       exit;
     }
-    if(User::level(Session::userId())===0) {
+    if (User::level(Session::userId())===0) {
       http_response_code(403);
       exit;
     }

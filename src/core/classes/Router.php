@@ -83,7 +83,7 @@ class Router
     $default = Config::config('default-controller');
     self::$controller = self::request('c', $default);
 
-    if (isset(self::$args[0]) && isset(self::$controllers[self::$args[0]])) {
+    if (isset(self::$controllers[self::$args[0]])) {
       self::$controller = self::$args[0];
       array_shift(self::$args);
     }
@@ -167,7 +167,7 @@ class Router
     return @strip_tags($r);
   }
 
-  public static function url() // DEPRACATED
+  public static function url() // DEPRECATED
   {
     return self::path();
   }
@@ -217,6 +217,9 @@ class Router
     if ($_url!==false) {
       self::$url = strip_tags($_url);
       self::$args = explode("/", self::$url);
+      if (isset(self::$args[0]) && Config::config('languages') && in_array(self::$args[0], Config::config('languages'))) {
+        Config::lang(self::$args[0]);
+      }
     } else {
       self::$url = false;
       self::$args = [];

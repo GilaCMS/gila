@@ -17,13 +17,15 @@ class HtmlInput
     if ($response = Event::get('HtmlInput::purify', null, $value)) {
       return $response;
     }
-
-    if (class_exists("DomDocument")) {
+    
+    if(empty(trim($value))) {
+      $value = '';
+    } else if (class_exists("DomDocument")) {
       $value = self::DOMSanitize($value);
     }
 
     $value = strtr($value, ['="javascript:'=>'="', '=\'javascript:'=>'=\'']);
-    $value = utf8_decode($value);
+    //$value = utf8_decode($value);
     return $value;
   }
 

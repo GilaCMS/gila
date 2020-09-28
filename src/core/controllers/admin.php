@@ -25,6 +25,7 @@ class admin extends Gila\Controller
 
     if ($id && ($r = Gila\Page::getByIdSlug($id)) && ($r['publish']==1)
         && ($id!='' && Router::controller()=='admin')) {
+      Config::canonical('');
       View::set('title', $r['title']);
       View::set('text', $r['page']);
       if ($r['template']==''||$r['template']===null) {
@@ -51,6 +52,9 @@ class admin extends Gila\Controller
       if (is_writable($wf)==false) {
         View::alert('warning', $wf.' folder is not writable. Permissions may have to be adjusted.');
       }
+    }
+    if (!file_exists('assets/lib/tinymce5')) {
+      View::alert('alert', 'You have to download tinymce5 and add it to assets/lib/tinymce5 <a href="https://gilacms.com/gila-cms-1-16-0-release>See more</a>');
     }
     if (Session::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
       View::alert('warning', '<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
@@ -216,7 +220,7 @@ class admin extends Gila\Controller
       }
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
-      if (in_array(pathinfo($name, PATHINFO_EXTENSION), ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"])) {
+      if (in_array(pathinfo($name, PATHINFO_EXTENSION), ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF","webp","WEBP"])) {
         $path = SITE_PATH.$path.'/'.$name;
         if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
@@ -330,9 +334,9 @@ class admin extends Gila\Controller
     View::renderAdmin('admin/menu_editor.php');
   }
 
-  public function notificationsAction($type = null) {
+  public function notificationsAction($type = null)
+  {
     View::set('type', $type);
     View::renderAdmin('admin/notifications.php');
   }
-
 }

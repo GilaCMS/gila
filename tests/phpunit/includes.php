@@ -18,7 +18,8 @@ $GLOBALS['user_privileges'] = ['admin'];
 $db = new Gila\Db("127.0.0.1", "g_user", "password", "g_db");
 
 $GLOBALS['lang'] = [];
-function __($key, $alt = null) {
+function __($key, $alt = null)
+{
   return Gila\Config::tr($key, $alt);
 }
 

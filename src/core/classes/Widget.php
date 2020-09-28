@@ -27,8 +27,7 @@ class widget
   {
     global $db;
     $widget = self::getById($data['widget_id']);
-    $widget_folder = 'src/'.Config::$widget[$widget->widget];
-    $fields = include $widget_folder.'/widget.php';
+    $fields = self::getFields($widget->widget);
 
     foreach ($data['option'] as $key=>$value) {
       $allowed = $fields[$key]['allow_tags'] ?? false;
@@ -47,5 +46,46 @@ class widget
     return json_encode(['fields'=>['id','title','widget','area','pos','active'],
       'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],
       'totalRows'=>1]);
+  }
+
+  public static function getWidgetFile($widget)
+  {
+    if (!isset(Config::$widget[$widget])) {
+      $widget = explode('--', $widget)[0];
+    }
+    return 'src/'.Config::$widget[$widget].'/widget.php';
+  }
+
+  public static function getFields($widget)
+  {
+    $widgetData = include self::getWidgetFile($widget);
+    if (isset($options)) {
+      return $options;
+    } //DEPRECATED
+    return $widgetData['fields'] ?? $widgetData;
+  }
+
+  public static function getKeys($widget)
+  {
+    $widgetData = include self::getWidgetFile($widget);
+    return $widgetData['keys'] ?? "";
+  }
+
+  public static function getList($term=null)
+  {
+    $primary = [];
+    $secondary = [];
+    foreach (Config::$widget as $widget=>$value) {
+      $keys = self::getKeys($widget);
+      if ($keys==='removed') {
+        continue;
+      }
+      if (in_array($term, explode(',', $keys))) {
+        $primary[$widget] = $value;
+      } elseif ($term===null || $keys==="") {
+        $secondary[$widget] = $value;
+      }
+    }
+    return array_merge($primary, $secondary);
   }
 }

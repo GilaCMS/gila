@@ -49,7 +49,7 @@ if (isset($title)) {
         <i class='fa fa-arrows-v'></i>
       </button>
       <div class="block-div" @mouseover="blocks_preview.src='blocks/display?t=<?=$contentType?>&id=<?=$id?>#w'+pos" <?=$clickToEdit?>>
-        <div v-html="blockIcon(w._type)" class="first-div"></div>
+        <div v-html="blockIcon(w._type)" class="first-div" :title="w._type"></div>
         <div :class="blockTitleClass(w)" v-if="<?=(isset($title)?'true':'false')?>"> {{blockTitle(w)}}</div>
         <button v-if="<?=(isset($title)?'true':'false')?>" class='btn-edit' @click='block_edit("<?=$cid?>"+pos ,w._type)'>
           <i class='fa fa-pencil'></i>
@@ -170,7 +170,7 @@ content_blocks_app = new Vue({
 </script>
 
 <div id='blocks_app'>
-  <div v-if="add_block" id="add_block">
+  <div v-if="add_block" id="add_block" style="transition:0.5s;">
     <img src="assets/core/admin/close.svg" class="add-block-x" @click="add_block=false">
     <div class="add-block-grid centered">
       <div class="add-block-btn" v-for="b in blocks" @click="createBlock('<?=$contentType.'/'.$id?>', b.name, selected_pos)">
@@ -186,4 +186,4 @@ content_blocks_app = new Vue({
 </div>
 
 <?=View::script("core/admin/content.js")?>
-<?=View::script("blocks/content-block.js")?>
+<?=View::script("core/admin/content-block.js")?>

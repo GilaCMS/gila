@@ -1,3 +1,6 @@
 <?php
 
-return [];
+return [
+  'fields'=>[],
+  'keys'=>'widget'
+];

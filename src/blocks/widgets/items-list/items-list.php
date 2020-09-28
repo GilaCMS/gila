@@ -1,3 +1,4 @@
+<section>
 <style>.widget-items{grid-column: 1/span 4;text-align: center;}
 .items-list>div{text-align:left;padding:1em;display:grid;grid-template-columns:1fr 2fr;}
 .items-list img,.items-list svg{max-width:100%;height:auto;}</style>
@@ -12,7 +13,7 @@
       <h3><?=htmlentities($item[1])?></h3>
       <p><?=htmlentities($item[2])?></p>
       <?php if ($item[3] != '') {
-  echo '<a href="'._url($item[3]).'">Learn More</a>';
+  echo '<a href="'.htmlentities($item[3]).'">Learn More</a>';
 } ?>
     </div>
   </div>
@@ -22,3 +23,4 @@
     <?=View::img($widget_data->image, 600)?>
   </div>
 </div>
+</section>

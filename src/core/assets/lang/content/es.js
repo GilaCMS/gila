@@ -15,6 +15,7 @@ var lang_array={
   "Search": "Buscar",
   "Yes": "Si",
   "No": "No",
+  "Approve": "Aprovar",
   "Delete registry?": "Eliminar registro?",
   _gallery:'Galleria',
   _new_filepath: 'Porfavor inscribe una nueva ruta',

@@ -427,7 +427,12 @@ class Package
       }
       foreach ($installed_packages as $ipac=>$pac) {
         if (isset($versions[$ipac]) && version_compare($versions[$ipac], $pac->version) == 1) {
-          $packages2update[$ipac] = $versions[$ipac];
+          if($pac==='core' && Config::config('autoupdate')==1) {
+            self::updateAfterDownload($pac);
+            View::alert('info', 'System updated successfully to v'.$versions[$ipac]);
+          } else {
+            $packages2update[$ipac] = $versions[$ipac];
+          }
         }
       }
       if ($packages2update != []) {

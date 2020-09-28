@@ -1,3 +1,4 @@
+<section>
 <?=View::css('core/gila.min.css')?>
 <div class="gallery">
   <?php if (isset($widget_data->images)) {
@@ -6,3 +7,4 @@
   <?php }
 } ?>
 </div>
+</section>

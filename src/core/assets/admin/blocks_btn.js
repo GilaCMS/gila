@@ -11,11 +11,10 @@ gtableCommand.blocks_popup = {
   fa: "bars",
   label: "Blocks",
   fn: function(table,irow) {
-    href = 'blocks/popup?t='+table.name+'&id='+irow;
+    href = 'blocks/display?t='+table.name+'&id='+irow;
     html = '<iframe src="'+href+'" style="width:100%; border:none; height:90vh;margin:0">'
     g.dialog({class:'overlay', body:html, type:'modal', id:'blocks_popup'})
 
-      
     g_tinymce_options.height = 160;
     transformClassComponents()
   }

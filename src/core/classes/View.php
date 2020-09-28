@@ -283,8 +283,11 @@ class View
   */
   public static function menu($menu='mainmenu', $tpl='tpl/menu.php')
   {
+    $fileLN = LOG_PATH.'/menus/'.$menu.'.'.Config::lang().'.json';
     $file = LOG_PATH.'/menus/'.$menu.'.json';
-    if (file_exists($file)) {
+    if (file_exists($fileLN)) {
+      $menu_data = json_decode(file_get_contents($fileLN), true);
+    } elseif (file_exists($file)) {
       $menu_data = json_decode(file_get_contents($file), true);
     } else {
       $menu_data = Menu::defaultData();
@@ -297,24 +300,33 @@ class View
     global $db,$widget_data;
     if ($res = Widget::getById($id)) {
       $widget_data = json_decode($res[0]->data);
-      $widget_type = $res[0]->widget;
+      $type = $res[0]->widget;
     } else {
       "Widget <b>#".$id."</b> is not found";
       return;
     }
 
-    $widget_file = self::getThemePath().'/widgets/'.$widget_type.'.php';
+    $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
 
     if (file_exists($widget_file) === false) {
-      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       if (!isset(Config::$widget[$type])) {
         if ($type==='text') {
           $widget_file = "src/core/widgets/text/text.php";
         } else {
-          echo "Widget <b>".$type."</b> is not found";
+          $type = explode('--', $type)[0];
+          if (!isset(Config::$widget[$type])) {
+            echo "Widget <b>".$type."</b> is not found";
+            return;
+          }
         }
       }
+      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      if (!file_exists($widget_file)) {
+        $type = explode('--', $type)[0];
+        @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      }
     }
+
 
     $dir = Config::dir(LOG_PATH.'/cache0/widgets/');
     $_file = $dir.$widget_data->widget_id;
@@ -346,9 +358,13 @@ class View
       $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
     }
     if (file_exists($widget_file) === false) {
-      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       if (!isset(Config::$widget[$type])) {
         echo "Widget <b>".$type."</b> is not found";
+      }
+      @$widget_file = "src/".Config::$widget[$type]."/$type.php";
+      if (!file_exists($widget_file)) {
+        $type = explode('--', $type)[0];
+        @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       }
     }
     if (is_object($widget_data)) {
@@ -378,7 +394,7 @@ class View
     @include $block_file;
   }
 
-  public static function blocks(&$blocks, $anchors=false)
+  public static function blocks(&$blocks, $prefixId, $anchors=false)
   {
     $html = "";
     foreach ($blocks as $key=>$b) {
@@ -386,10 +402,16 @@ class View
         $b = (object)$b;
       }
       if ($anchors) {
-        $html .= "<span id='w$key'></span>";
+        $html .= "<div id='w$key' class='block-head' data-pos='$key' data-type='{$b->_type}'>";
       }
+      $b->widget_id = $prefixId.'_'.$key;
       $html .= View::getWidgetBody($b->_type, $b);
+      if ($anchors) {
+        $html .= "</div>";
+      }
     }
+    $key = count($blocks);
+    $html .= "<span class='block-end' data-pos='$key'></span>";
     return $html;
   }
 
@@ -448,7 +470,7 @@ class View
   public static function img($src, $prefix='', $max=180)
   {
     $pathinfo = pathinfo($src);
-    return '<img src="'.htmlentities(self::thumb($src, $prefix, $max)).'">';
+    return '<img src="'.htmlentities(self::thumb($src, $prefix, $max)).'" alt="">';
   }
 
   public static function thumb($src, $prefix='', $max=180)
