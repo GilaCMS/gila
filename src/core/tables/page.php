@@ -52,8 +52,9 @@ return [
     ],
     'content'=> [
       'title'=>'Content',
+      'helptext'=>'This field is depracated, move the content in text blocks with page builder',
       'list'=>false,
-      //'edit'=>(Gila\Config::config('page-blocks')===null),
+      'edit'=>true,
       'type'=>'textarea',
       'input_type'=>'tinymce',
       'allow_tags'=>true,
@@ -70,6 +71,7 @@ return [
     ],
     'blocks'=> [
       'list'=> false,
+      'edit'=> false,
       'qtype'=> 'TEXT'
     ]
   ]
