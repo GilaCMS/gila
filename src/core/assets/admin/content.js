@@ -53,7 +53,7 @@ Vue.component('g-table', {
                 </div>\
               </div>\
             </div>\
-          </div>aaa\
+          </div>\
           <div>\
             <span v-if="table.bulk_actions && selected_rows.length>0">\
               <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
