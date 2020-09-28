@@ -24,41 +24,45 @@ Vue.component('g-table', {
     <thead>\
       <tr><td colspan=100>\
         <div v-if="edititem==0" class="g-table-head">\
-          <div><div class="g-table-title" v-html="table.title"></div>\
-          <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
-            <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-            @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
-            @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text" style="padding-left:28px">\
-            <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
-          </div>\
-          <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
-            <select v-model="group" class="g-input" @change="runsearch()">\
-            <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
-            </select>\
-          </div>\
-          <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
-            <label>&nbsp;{{field_label(sb)}}</label>\
-            <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
-              <option value="" selected>-</option>\
-              <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
-            </select>\
-            <div v-else-if="table.fields[sb].type==\'date\'" style="position:relative;display:inline-block">\
-              <input class="g-input" v-model="filter[sb]" @change="runsearch()" type="date">\
+          <div>\
+            <div class="g-table-title" v-html="table.title"></div>\
+            <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
+              <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
+              @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+              @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text" style="padding-left:28px">\
+              <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
             </div>\
-            <div v-else style="position:relative;display:inline-block">\
-              <input class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\            <div v-else style="position:relative;display:inline-block">\
-              <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+            <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
+              <select v-model="group" class="g-input" @change="runsearch()">\
+                <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
+              </select>\
             </div>\
+            <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
+              <label>&nbsp;{{field_label(sb)}}</label>\
+              <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
+                <option value="" selected>-</option>\
+                <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
+              </select>\
+              <div v-else-if="table.fields[sb].type==\'date\'" style="position:relative;display:inline-block">\
+                <input class="g-input" v-model="filter[sb]" @change="runsearch()" type="date">\
+              </div>\
+              <div v-else style="position:relative;display:inline-block">\
+                <input class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
+                <div v-else style="position:relative;display:inline-block">\
+                  <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+                </div>\
+              </div>\
+            </div>\
+          </div>aaa\
+          <div>\
+            <span v-if="table.bulk_actions && selected_rows.length>0">\
+              <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
+            </span>\
+            <span v-if="table.tools">\
+              <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
+            </span>\
           </div>\
-        </div>\
-        <div>\
-          <span v-if="table.bulk_actions && selected_rows.length>0">\
-            <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
-          </span>\
-          <span v-if="table.tools">\
-            <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
-          </span>\
-        </div></div></td>\
+        </div></td>\
       </tr>\
       <tr>\
         <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\

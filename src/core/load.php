@@ -13,6 +13,7 @@ Router::controller('user', 'core/controllers/UserController');
 Router::controller('webhook', 'core/controllers/webhook');
 Router::controller('lzld', 'core/controllers/lzld');
 Router::controller('fm', 'core/controllers/fm');
+Router::controller('blocks', 'core/controllers/BlocksController');
 
 Config::$amenu = [
   ['Dashboard','admin','icon'=>'dashboard'],

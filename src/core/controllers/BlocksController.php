@@ -6,7 +6,7 @@ use Gila\View;
 use Gila\Event;
 use Gila\Router;
 
-class blocks extends Gila\Controller
+class BlocksController extends Gila\Controller
 {
   private static $draft = false;
 
@@ -22,13 +22,17 @@ class blocks extends Gila\Controller
     $table = Router::request('t');
     $id = Router::get('id', 2);
     $widgets = self::readBlocks($table, $id);
+    if(!$table || !$id) {
+      View::renderAdmin('404.php');
+      return;
+    }
     $title = $db->value("SELECT title FROM $table WHERE id=?;", [$id]);
     View::set('contentType', $table);
     View::set('id', $id);
     View::set('isDraft', self::$draft);
     View::set('widgets', $widgets);
     View::set('title', $title);
-    View::renderAdmin("content-block.php", "blocks");
+    View::renderAdmin('content-block.php', 'blocks');
   }
 
   public function popupAction()
@@ -43,7 +47,7 @@ class blocks extends Gila\Controller
     echo '<!DOCTYPE html><html>';
     View::head();
     echo '<body>';
-    View::renderFile("content-block.php", "blocks");
+    View::renderFile('content-block.php', 'blocks');
     echo '</body></html>';
   }
 
@@ -181,18 +185,14 @@ class blocks extends Gila\Controller
       }
       echo '<style>html{scroll-behavior: smooth;}</style>';
       $isDraft = self::$draft;
-      include __DIR__.'/../views/content-block-edit.php';
+      include __DIR__.'/../views/admin/content-block-edit.php';
     } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
       View::set('title', $r['title']);
       View::set('text', $r['post'].View::blocks($blocks, 'post'.$r['id'], true));
       View::render('single-post.php');
       echo '<style>html{scroll-behavior: smooth;}</style>';
     } else {
-      View::renderFile('blocks-display-head.php', 'blocks');
-      Event::fire('body');
-      echo View::blocks($blocks, 'page'.$id, true);
-      echo '</article></body>';
-      Event::fire('footer');
+      View::renderFile('404.php');
     }
   }
 

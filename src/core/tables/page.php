@@ -53,7 +53,7 @@ return [
     'content'=> [
       'title'=>'Content',
       'list'=>false,
-      'edit'=>(Gila\Config::config('page-blocks')===null),
+      //'edit'=>(Gila\Config::config('page-blocks')===null),
       'type'=>'textarea',
       'input_type'=>'tinymce',
       'allow_tags'=>true,
