@@ -9,7 +9,7 @@
 <?=View::script('core/lang/content/'.Config::config('language').'.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-<?=View::cssAsync('blocks/blocks.css')?>
+<?=View::cssAsync('core/admin/blocks.css')?>
 <?=View::cssAsync('core/gila.min.css')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 <?=View::script("core/admin/content.js")?>

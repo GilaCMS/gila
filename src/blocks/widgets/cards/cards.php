@@ -8,7 +8,7 @@
 justify-items:center;margin-bottom:1em;overflow: auto;padding: 2em 0;">
 <?php
   foreach (json_decode($data['cards'], true) as $key=>$card) {
-    echo '<div class="g-card wrapper bg-white" style="box-shadow: 0 0 4px #aaa;max-width:300px;text-align:'.htmlentities($data['align']??'center').'">';
+    echo '<div class="g-card wrapper bg-white" style="box-shadow: 0 2px 5px 0 rgba(0,0,0,0.15);max-width:300px;text-align:'.htmlentities($data['align']??'center').'">';
     if ($card[0]) {
       echo '<div class="g-card-image" style="display:inline-block;max-width:50%">';
       echo View::img($card[0], 'c_', 200);

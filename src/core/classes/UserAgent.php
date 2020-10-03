@@ -74,9 +74,10 @@ class UserAgent
   public static function isBot($user_agent)
   {
     $good_bots = ['SemrushBot','YandexBot','AhrefsBot','PetalBot','SaaSHub','bingbot','BingPreview','MJ12bot','Twitterbot',
-    'Googlebot','newspaper/0.2.8','NetcraftSurveyAgent','panscient.com','python-requests/2.22.0','SeznamBot',
-    'facebookexternalhit','Baiduspider'];
+    'Googlebot','newspaper/0.2.8','NetcraftSurveyAgent','panscient.com','python-requests','SeznamBot',
+    'facebookexternalhit','Baiduspider','Nimbostratus-Bot','DotBot','DuckDuckBot','Slackbot-Link-Expanding','bitlybot'];
 
+    if ($user_agent === null) return true;
     foreach ($good_bots as $bot) {
       if (strpos($user_agent, $bot) !== false) {
         return true;

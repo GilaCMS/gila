@@ -11,7 +11,7 @@
 <?=View::script('core/lang/content/'.Config::config('language').'.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-<?=View::css('blocks/blocks.css')?>
+<?=View::css('core/admin/blocks.css')?>
 <?=View::cssAsync('core/gila.min.css')?>
 <?=View::cssAsync('core/admin/vue-editor.css')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
