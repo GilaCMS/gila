@@ -168,12 +168,12 @@ class Form
         if (is_string($ov)) {
           $ov = explode(',', $ov);
         }
-        $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
-        $options = $db->get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
-        foreach ($options as $op) {
-          $html .= '<option value="'.$op[0].'"'.(in_array($op[0], $ov)?' selected':'').'>'.$op[1].'</option>';
+        $getOptions = $db->get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
+        foreach ($getOptions as $op) {
+          $options[$op[0]] = $op[1];
         }
-        return $html . '</select>';
+        $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
+        return $html.= 'options="'.htmlspecialchars(json_encode($options)).'" name="'.$name.'">';
       },
       "radio"=> function ($name, $field, $ov) {
         $html = '<div class="g-radio g-input" style="padding: var(--main-padding) 0; width: max-content;">';

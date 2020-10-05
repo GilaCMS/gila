@@ -4,8 +4,8 @@ return [
   'name'=> 'user',
   'title'=> 'Users',
   'pagination'=> 15,
-  'tools'=>['add','csv'],
-  'commands'=>['edit','delete'],
+  'tools'=>['add_popup','csv'],
+  'commands'=>['edit_popup','delete'],
   'id'=>'id',
   'lang'=>'core/lang/admin/',
   'meta_table'=>['usermeta', 'user_id', 'vartype', 'value'],
@@ -81,7 +81,6 @@ return [
     'manager'=> [
       'type'=>'meta',
       'title'=>'Manager',
-      'input_type'=>'select2',
       'list'=>false,
       'meta_key'=>'manager_id',
       'options'=>[''=>'-'],

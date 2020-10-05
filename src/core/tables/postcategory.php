@@ -28,6 +28,7 @@ return [
       'description'=> [
         'title'=>'Description',
         'list'=>false,
+        'input_type'=>'textarea',
         'qtype'=>'varchar(200) DEFAULT NULL'
         ]
   ],
