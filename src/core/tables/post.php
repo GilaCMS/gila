@@ -59,7 +59,6 @@ return [
     "categories"=>[
       'edit'=>true,
       'type'=>'meta',
-      //'input_type'=>'select2',
       'meta_key'=>'category',
       "title"=>"Categories",
       "qoptions"=>"SELECT id,title FROM postcategory;"
@@ -68,7 +67,6 @@ return [
       'list'=>false,
       'edit'=>true,
       'type'=>'meta',
-      'input_type'=>'keywords',
       'meta_csv'=>true,
       'meta_key'=>'tag',
       "title"=>"Tags"

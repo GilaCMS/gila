@@ -63,4 +63,38 @@ class Profile
     }
     return substr($token, 0, 160);
   }
+
+  public static function getPermissions($user_id)
+  {
+    $allPermissions = self::getAllPermissions();
+    $userPermissions = User::permissions($user_id);
+    $permissions = [];
+    foreach ($allPermissions as $key=>$txt) {
+      if(in_array($key, $userPermissions)) {
+        $permissions[$key] = $txt;
+      }
+    }
+    return $permissions;
+  }
+
+  public static function getAllPermissions()
+  {
+    $permissions = [];
+    $packages = array_merge(Config::config('packages'), ["core"]);
+    foreach ($packages as $package) {
+      $pjson = 'src/'.$package.'/package.json';
+      $perjson = 'src/'.$package.'/package/en.json';
+      if (file_exists($pjson)) {
+        $parray = json_decode(file_get_contents($pjson), true);
+        if (isset($parray['permissions'])) {
+          $permissions = array_merge($permissions, $parray['permissions']);
+          if (isset($parray['lang'])) {
+            Config::addLang($parray['lang']);
+          }
+          Config::addLang($package.'/lang/permissions/');
+        }
+      }
+    }
+    return $permissions;
+  }
 }

@@ -2,22 +2,7 @@
 global $db;
 
 // load all permissions
-$permissions = [];
-$packages = array_merge(Config::config('packages'), ["core"]);
-foreach ($packages as $package) {
-  $pjson = 'src/'.$package.'/package.json';
-  $perjson = 'src/'.$package.'/package/en.json';
-  if (file_exists($pjson)) {
-    $parray = json_decode(file_get_contents($pjson), true);
-    if (isset($parray['permissions'])) {
-      $permissions = array_merge($permissions, $parray['permissions']);
-      if (isset($parray['lang'])) {
-        Config::addLang($parray['lang']);
-      }
-      Config::addLang($package.'/lang/permissions/');
-    }
-  }
-}
+$permissions = Gila\Profile::getAllPermissions();
 
 // load all user groups
 $roles = array_merge([['member','Member']], $db->get("SELECT id,userrole FROM userrole;")); //[0,'Anonymous<br>User'],

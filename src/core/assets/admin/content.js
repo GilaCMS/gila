@@ -87,7 +87,7 @@ Vue.component('g-table', {
         @keydown="inlineDataUpdate(irow, field)">\
         </td>\
         <td v-if="table.commands" class="td-com">\
-          <span v-for="(com,icom) in table.commands" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
+          <span v-for="(com,icom) in table.commands" v-if="canUse(com)" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
         </td>\
       </tr>\
       <tr v-if="data.rows.length==0">\
@@ -106,10 +106,15 @@ Vue.component('g-table', {
   </table>\
   </div>\
   ',
-  props: ['gtype','gtable','gfields','gfilters','gchild','grows','gtotalrows'],
-  data: function(){ return {
+  props: ['gtype','gtable','gfields','gfilters','gchild','grows','gtotalrows','permissions'],
+  data: function(){ 
+    if(!this.permissions) {
+      this.permissions=null
+    }
+    return {
     name: this.gtype,
     table: JSON.parse(this.gtable),
+    permissions: JSON.parse(this.permissions),
     data:{
       fields: JSON.parse(this.gfields),
       rows:[],
@@ -228,10 +233,18 @@ Vue.component('g-table', {
     command_label: function(com) {
       if(this.table.action_display=='label' ||
         typeof gtableCommand[com]=='undefined') {
-          return '<a>'+gtableCommand[com].label+'</a>';
-        }
-        
+        return '<a>'+gtableCommand[com].label+'</a>';
+      }
       return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'"></i>'
+    },
+    canUse: function(com) {
+      if(gtableCommand[com] && gtableCommand[com].permission && this.permissions) {
+        for(p in this.table.permissions[gtableCommand[com].permission]) {
+          if(this.permissions.includes(p)) return true
+        }
+        return false
+      }
+      return true
     },
     runsearch: function() {
       this.load_page()
@@ -615,6 +628,7 @@ function g_form_popup_update() {
 gtableCommand['clone'] = {
   fa: "copy",
   label: "Clone",
+  permission: 'create',
   fn: function(table,id) {
     let _this
     _this = table
@@ -629,6 +643,7 @@ gtableCommand['clone'] = {
 gtableCommand['delete'] = {
   fa: "trash-o",
   label: "Delete",
+  permission: 'delete',
   fn: function(table,id) {
     let _this = table
     let _id = id
@@ -650,6 +665,7 @@ gtableCommand['delete'] = {
 
 gtableTool['add'] = {
   fa: "plus", label: _e("New"),
+  permission: 'create',
   fn: function(table) {
     let _this = table
     _this.edititem = 'new'
@@ -660,7 +676,9 @@ gtableTool['add'] = {
   }
 }
 gtableTool['add_row'] = {
-  fa: "plus", label: _e("New"),
+  fa: "plus",
+  label: _e("New"),
+  permission: 'create',
   fn: function(table) {
     let _this
     _this = table
@@ -674,7 +692,9 @@ gtableTool['add_row'] = {
   }
 }
 gtableTool['add_popup'] = {
-  fa: "plus", label: _e("New"),
+  fa: "plus",
+  label: _e("New"),
+  permission: 'create',
   fn: function(table) {
     href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
     g.get(href,function(data){
@@ -702,7 +722,9 @@ gtableTool['log_selected'] = {
   }
 }
 gtableTool['delete'] = {
-  fa: "arrow-down", label: _e("Delete"),
+  fa: "arrow-down",
+  label: _e("Delete"),
+  permission: 'delete',
   fn: function(table) {
     let _this = table
     if(confirm(_e("Delete registries?"))) g.ajax({
@@ -717,7 +739,9 @@ gtableTool['delete'] = {
   }
 }
 gtableTool['uploadcsv'] = {
-  fa: "arrow-up", label: _e("Upload")+" CSV",
+  fa: "arrow-up",
+  permission: 'create',
+  label: _e("Upload")+" CSV",
   fn: function(table) {
     bodyMsg = "<h3>1. "+_e('_uploadcsv_step1')+'</h3>'
     bodyMsg += " <a href='cm/get_empty_csv/"+table.name+"'>"+_e('Download')+"</a>"

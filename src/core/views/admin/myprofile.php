@@ -34,8 +34,17 @@
 
     <br><button type="submit" name="submit-btn" onclick="this.value='submited'"
     class="btn btn-primary"><?=__('Update Profile')?></button>
+
+    <p><?=__('Permissions')?>:
+    <ul><?php
+    foreach(Gila\Profile::getPermissions(Session::userId()) as $per) {
+      echo '<li>'.$per;
+    }
+    ?></ul></p>
+
     </fieldset>
     </form>
+
 </div>
 
 <div id="profile-forms">

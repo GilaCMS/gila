@@ -144,7 +144,7 @@ class User
       }
     }
 
-    if ($response = Cache::get('user-perm-'.$id, 3600, Config::config('updated'))) {
+    if ($response = Cache::get('user-perm-'.$id, 120, Config::config('updated'))) {
       return json_decode($response, true);
     }
 

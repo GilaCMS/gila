@@ -50,5 +50,6 @@
     "Save": "Αποθήκευση",
     "_not_found": "δεν βρέθηκε",
     "_changes_updated": "Οι αλλαγές αποθηκεύτηκαν επιτυχώς!",
-    "Use WEBP":"Χρήση WEBP"
+    "Use WEBP":"Χρήση WEBP",
+    "Permissions":"Άδειες"
 }

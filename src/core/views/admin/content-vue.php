@@ -82,6 +82,7 @@ foreach ($pages_path as $path) {
   gtable="<?=htmlspecialchars(json_encode($t))?>"
   gfields="<?=htmlspecialchars(json_encode($gtable->fields('list')))?>"
   grows="<?=htmlspecialchars(json_encode($gtable->getRowsIndexed($t['filters'], ['page'=>1])))?>"
+  permissions="<?=htmlspecialchars(json_encode(Gila\User::permissions(Session::userId())))?>"
   gtotalrows="<?=$gtable->totalRows($t['filters'])?>"></g-table>
 </div>
 

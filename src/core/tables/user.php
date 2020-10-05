@@ -5,7 +5,7 @@ return [
   'title'=> 'Users',
   'pagination'=> 15,
   'tools'=>['add','csv'],
-  'commands'=>['edit'],
+  'commands'=>['edit','delete'],
   'id'=>'id',
   'lang'=>'core/lang/admin/',
   'meta_table'=>['usermeta', 'user_id', 'vartype', 'value'],
@@ -14,7 +14,7 @@ return [
     'read'=>['admin','admin_user'],
     'create'=>['admin','admin_user'],
     'update'=>['admin','admin_user'],
-    'delete'=>false
+    'delete'=>['admin']
   ],
   'csv'=> ['id','username','email'],
   'fields'=> [
