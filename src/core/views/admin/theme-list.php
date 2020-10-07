@@ -28,6 +28,8 @@ foreach ($packages as $pkey=>$p) {
   if (file_exists('themes/'.$p->package)) {
     if ($p->package!=Config::config('theme')) {
       $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>".__('Select')."</a> ";
+    } elseif (Config::config('env')=='dev') {
+      $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a> ";
     }
     if (isset($p->options)) {
       $table .= "<a onclick='theme_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;</a> ";

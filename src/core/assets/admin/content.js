@@ -239,7 +239,7 @@ Vue.component('g-table', {
     },
     canUse: function(com) {
       if(gtableCommand[com] && gtableCommand[com].permission && this.permissions) {
-        for(p in this.table.permissions[gtableCommand[com].permission]) {
+        for(p of this.table.permissions[gtableCommand[com].permission]) {
           if(this.permissions.includes(p)) return true
         }
         return false

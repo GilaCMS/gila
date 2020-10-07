@@ -31,7 +31,8 @@ class Theme
   public static function activate($activate)
   {
     if (in_array($activate, scandir('themes/'))) {
-      if ($activate != $GLOBALS['config']['theme']) {
+      if ($activate != $GLOBALS['config']['theme'] ||
+          Config::config('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
         if (isset($pac['require'])) {
