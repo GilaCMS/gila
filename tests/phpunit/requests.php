@@ -127,7 +127,7 @@ class RequestsTest extends TestCase
     Session::user(self::$userId, 'Test', 'test@mail.com');
     $_POST = ['id'=>'page_1'];
     $response = $this->request('blocks/discard');
-    $db->query('REPLACE INTO page SET id=1;');
+    $db->query('REPLACE INTO `page` SET id=1;');
     $db->query('UPDATE `page` SET blocks=\'\' WHERE id=1;');
 
     $_GET = ['id'=>'new', 'type'=>'html'];

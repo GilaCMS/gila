@@ -32,7 +32,7 @@ class BlocksController extends Gila\Controller
     View::set('isDraft', self::$draft);
     View::set('widgets', $widgets);
     View::set('title', $title);
-    View::renderAdmin('content-block.php', 'blocks');
+    View::renderAdmin('admin/content-block.php', 'core');
   }
 
   public function popupAction()
@@ -47,7 +47,7 @@ class BlocksController extends Gila\Controller
     echo '<!DOCTYPE html><html>';
     View::head();
     echo '<body>';
-    View::renderFile('content-block.php', 'blocks');
+    View::renderFile('admin/content-block.php', 'core');
     echo '</body></html>';
   }
 
@@ -62,7 +62,7 @@ class BlocksController extends Gila\Controller
       View::set('type', $_GET['type']);
       View::set('pos', $idArray[2]);
       View::set('widgets', self::readBlocks($idArray[0], $idArray[1]));
-      View::renderFile('edit_block.php', 'blocks');
+      View::renderFile('admin/edit_block.php', 'core');
     }
   }
 
@@ -186,11 +186,6 @@ class BlocksController extends Gila\Controller
       echo '<style>html{scroll-behavior: smooth;}</style>';
       $isDraft = self::$draft;
       include __DIR__.'/../views/admin/content-block-edit.php';
-    } elseif ($content=="post" && $r = Post::getByIdSlug($id)) {
-      View::set('title', $r['title']);
-      View::set('text', $r['post'].View::blocks($blocks, 'post'.$r['id'], true));
-      View::render('single-post.php');
-      echo '<style>html{scroll-behavior: smooth;}</style>';
     } else {
       View::renderFile('404.php');
     }
