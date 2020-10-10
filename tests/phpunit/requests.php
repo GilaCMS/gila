@@ -122,51 +122,50 @@ class RequestsTest extends TestCase
     Config::widgets([
       'html'=>'core/widgets/html',
       'image'=>'core/widgets/image']);
-    Package::update('blocks');
-    Config::content('post', 'core/tables/post.php');
-    new TableSchema('post');
+    Config::content('page', 'core/tables/page.php');
+    new TableSchema('page');
     Session::user(self::$userId, 'Test', 'test@mail.com');
-    $_POST = ['id'=>'post_1'];
+    $_POST = ['id'=>'page_1'];
     $response = $this->request('blocks/discard');
-    $db->query('REPLACE INTO post SET id=1;');
-    $db->query('UPDATE post SET blocks=\'\' WHERE id=1;');
+    $db->query('REPLACE INTO page SET id=1;');
+    $db->query('UPDATE `page` SET blocks=\'\' WHERE id=1;');
 
     $_GET = ['id'=>'new', 'type'=>'html'];
     $response = $this->request('blocks/edit');
     $this->assertContains(' name="option[text]"', $response);
     $_GET = [];
 
-    $_POST = ['id'=>'post_1_0', 'type'=>'html'];
+    $_POST = ['id'=>'page_1_0', 'type'=>'html'];
     $response = $this->request('blocks/create', 'POST');
     $this->assertEquals('[{"_type":"html"}]', $response);
-    $_POST = ['id'=>'post_1_1', 'type'=>'image'];
+    $_POST = ['id'=>'page_1_1', 'type'=>'image'];
     $response = $this->request('blocks/create', 'POST');
     $image = '{"_type":"image","image":"assets\/core\/photo.png"}';
     $this->assertEquals('[{"_type":"html"},'.$image.']', $response);
 
-    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p  onclick="alert(0)">Something</p>']];
+    $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<p  onclick="alert(0)">Something</p>']];
     $response = $this->request('blocks/update', 'POST');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"},'.$image.']', $response);
 
-    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<script >alert(0)</script>Something</p>']];
+    $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<script >alert(0)</script>Something</p>']];
     $response = $this->request('blocks/update', 'POST');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"},'.$image.']', $response);
 
-    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
+    $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
     $response = $this->request('blocks/update', 'POST');
     $this->assertEquals('[{"text":"<p><a href=\"alert(0)\">Something<\/a><\/p>","_type":"html"},'.$image.']', $response);
 
-    $_POST = ['widget_id'=>'post_1_0', 'option'=>['text'=>'<p>Something</p>']];
+    $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<p>Something</p>']];
     $response = $this->request('blocks/update', 'POST');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"},'.$image.']', $response);
 
-    $_POST = ['id'=>'post_1_1'];
+    $_POST = ['id'=>'page_1_1'];
     $response = $this->request('blocks/delete', 'POST');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"}]', $response);
 
-    $_POST = ['id'=>'post_1'];
+    $_POST = ['id'=>'page_1'];
     $response = $this->request('blocks/save', 'POST');
-    $blocks = $db->value('SELECT blocks from post WHERE id=1;');
+    $blocks = $db->value('SELECT blocks FROM page WHERE id=1;');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"}]', $blocks);
   }
 
