@@ -42,6 +42,7 @@ Config::widgets([
   'paragraph'=>'core/widgets/paragraph', // DEPRECATED
   'text'=>'core/widgets/text',
   'image'=>'core/widgets/image',
+  'side-image'=>'core/widgets/side-image',
   'gallery'=>'core/widgets/gallery',
   'gallery-links'=>'core/widgets/gallery-links',
   'social-icons'=>'core/widgets/social-icons',

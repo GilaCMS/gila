@@ -1,8 +1,0 @@
-{
-  "name":"Blocks",
-  "description":"More blocks for the page builder.",
-  "version":"1.3.0",
-  "require": {
-    "core": "1.16.0"
-  }
-}
