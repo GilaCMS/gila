@@ -118,7 +118,7 @@ class RequestsTest extends TestCase
   public function test_blocks()
   {
     global $db;
-    Config::controller('blocks', 'blocks/controllers/blocks');
+    Config::controller('blocks', 'core/controllers/BlocksController');
     Config::widgets([
       'html'=>'core/widgets/html',
       'image'=>'core/widgets/image']);
