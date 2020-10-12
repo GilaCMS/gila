@@ -12,4 +12,5 @@
 .gitignore export-ignore
 .gitattributes export-ignore
 .circleci export-ignore
+.php_cs.dist export-ignore
 Dockerfile export-ignore

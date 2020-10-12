@@ -58,7 +58,10 @@ class FileManager
 
   public static function allowedPath($path)
   {
-    $allowedPaths = ['tmp','log','data/public'];
+    $allowedPaths = ['data/public'];
+    if(Session::hasPrivilege('admin')) {
+      $allowedPaths[] = 'log';
+    }
     $allowedPaths[] = Config::config('media_uploads') ?? 'assets';
     if (FS_ACCESS) {
       $allowedPaths = array_merge($allowedPaths, ['src','themes']);

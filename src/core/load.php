@@ -42,18 +42,20 @@ Config::widgets([
   'paragraph'=>'core/widgets/paragraph', // DEPRECATED
   'text'=>'core/widgets/text',
   'image'=>'core/widgets/image',
-  'gallery'=>'core/widgets/gallery',
-  'gallery-links'=>'core/widgets/gallery-links',
-  'social-icons'=>'core/widgets/social-icons',
-  'links'=>'core/widgets/links', // DEPRECATED
+  'side-image'=>'core/widgets/side-image',
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
   'category-post'=>'core/widgets/category-post',
   'post-categories'=>'core/widgets/post-categories',
-  'tag'=>'core/widgets/tag',
+  'gallery'=>'core/widgets/gallery',
+  'gallery-links'=>'core/widgets/gallery-links',
+  'social-icons'=>'core/widgets/social-icons',
+  'links'=>'core/widgets/links', // DEPRECATED
   'contact-form'=>'core/widgets/contact-form',
   'core-counters'=>'core/widgets/core-counters',
   'search'=>'core/widgets/search',
+  'tag'=>'core/widgets/tag',
+  'html'=>'core/widgets/html',
 ]);
 Config::$widget_area=['dashboard'];
 

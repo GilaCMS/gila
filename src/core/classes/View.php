@@ -292,7 +292,9 @@ class View
     } else {
       $menu_data = Menu::defaultData();
     }
-    include self::getViewFile($tpl);
+    $items = Menu::convert($menu_data);
+    echo Menu::getHtml($items);
+    //include self::getViewFile($tpl);
   }
 
   public static function widget($id, $widget_exp=null)

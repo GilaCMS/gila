@@ -7,5 +7,5 @@ return [
       'allow_tags'=>true
     ]
   ],
-  'keys'=>'page'
+  'keys'=>'removed'
 ];

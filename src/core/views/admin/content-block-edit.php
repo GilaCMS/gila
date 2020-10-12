@@ -9,7 +9,7 @@
 <?=View::script('core/lang/content/'.Config::config('language').'.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
-<?=View::cssAsync('blocks/blocks.css')?>
+<?=View::cssAsync('core/admin/blocks.css')?>
 <?=View::cssAsync('core/gila.min.css')?>
 <?=View::cssAsync('lib/CodeMirror/codemirror.css')?>
 <?=View::script("core/admin/content.js")?>
@@ -32,6 +32,7 @@ $cid = $content.'_'.$id.'_';
 <style>
 .block-head {
   border:1px dashed rgba(0,0,0,0);
+  min-height:2em;
 }
 .block-head:hover {
   border:1px dashed cornflowerblue;
@@ -239,6 +240,7 @@ content_blocks_app = new Vue({
     },
     switch_edit: function() {
       g('.block-head>div:nth-child(1)').toggleClass('hide');
+      g('.block-end>div:nth-child(1)').toggleClass('hide');
     },
     loader: function(x=true) {
       g.loader(x)

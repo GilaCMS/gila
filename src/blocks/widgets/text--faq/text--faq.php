@@ -1,1 +1,0 @@
-<section><?=$data['text']?></section>
