@@ -55,6 +55,7 @@ Config::widgets([
   'core-counters'=>'core/widgets/core-counters',
   'search'=>'core/widgets/search',
   'tag'=>'core/widgets/tag',
+  'html'=>'core/widgets/html',
 ]);
 Config::$widget_area=['dashboard'];
 
