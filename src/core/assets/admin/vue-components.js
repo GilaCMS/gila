@@ -3,10 +3,10 @@
 Vue.component('input-list', {
     template: '<div>\
 <div v-for="(row,key) in pos">\
-<span v-if="key>0" style="cursor:pointer;padding:0.4em 0.6em;color:black" @click="swap(key,key-1)">&uarr;</span>\
-<span v-else style="padding:0.4em 0.6em;opacity:0">&uarr;</span>\
-<span v-if="key<pos.length-1" style="cursor:pointer;padding:0.4em 0.6em;color:black" @click="swap(key,key+1)">&darr;</span>\
-<span v-else style="padding:0.4em 0.6em;opacity:0">&darr;</span>\
+<span v-if="key>0" style="cursor:pointer;padding:0.5em 0.5em;color:black" @click="swap(key,key-1)">&uarr;</span>\
+<span v-else style="padding:0.5em 0.5em;opacity:0">&uarr;</span>\
+<span v-if="key<pos.length-1" style="cursor:pointer;padding:0.5em 0.5em;color:black" @click="swap(key,key+1)">&darr;</span>\
+<span v-else style="padding:0.5em 0.5em;opacity:0">&darr;</span>\
 <span v-for="(field,fkey) in fields">\
 	<span v-if="isMedia(field)" style="width:50px" >\
 		<img :src="imgSrc(pos[key][fkey])"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
@@ -15,9 +15,9 @@ Vue.component('input-list', {
   <input v-else v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update"\
   :placeholder="field.toUpperCase()" class="g-input">\
 </span>\
-<span @click="removeEl(key)" style="cursor:pointer;padding:0.4em 0.6em;color:black">&times;</span>\
+<span @click="removeEl(key)" style="cursor:pointer;padding:0.5em 0.5em;color:black">&times;</span>\
 </div>\
-<span @click="add()" style="cursor:pointer;padding:0.4em 0.6em;color:black">+ Add</span>\
+<span @click="add()" style="cursor:pointer;padding:0.5em 0.5em;color:black">+ Add</span>\
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
