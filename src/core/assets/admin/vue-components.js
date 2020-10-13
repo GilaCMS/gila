@@ -3,6 +3,10 @@
 Vue.component('input-list', {
     template: '<div>\
 <div v-for="(row,key) in pos">\
+<span v-if="key>0" style="cursor:pointer;padding:0.4em 0.6em;color:black" @click="swap(key,key-1)">&uarr;</span>\
+<span v-else style="padding:0.4em 0.6em;opacity:0">&uarr;</span>\
+<span v-if="key<pos.length-1" style="cursor:pointer;padding:0.4em 0.6em;color:black" @click="swap(key,key+1)">&darr;</span>\
+<span v-else style="padding:0.4em 0.6em;opacity:0">&darr;</span>\
 <span v-for="(field,fkey) in fields">\
 	<span v-if="isMedia(field)" style="width:50px" >\
 		<img :src="imgSrc(pos[key][fkey])"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
@@ -11,9 +15,9 @@ Vue.component('input-list', {
   <input v-else v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update"\
   :placeholder="field.toUpperCase()" class="g-input">\
 </span>\
-&nbsp;<span @click="removeEl(key)" class="btn btn-error btn-small">-</span>\
+<span @click="removeEl(key)" style="cursor:pointer;padding:0.4em 0.6em;color:black">&times;</span>\
 </div>\
-<a @click="add()" class="btn btn-success btn-small">+</a>\
+<span @click="add()" style="cursor:pointer;padding:0.4em 0.6em;color:black">+ Add</span>\
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
@@ -47,6 +51,12 @@ Vue.component('input-list', {
       if(field=='image') return true
       if(typeof this.fieldset[field]=='undefined') return false
       return this.fieldset[field].type=='media'
+    },
+    swap: function(x, y) {
+      tmp = this.pos[x]
+      this.pos[x] = this.pos[y]
+      this.pos[y] = tmp
+      this.update()
     },
     update: function(){
       this.ivalue = JSON.stringify(this.pos)
