@@ -370,7 +370,7 @@ Vue.component('g-table', {
       </svg> <span style="vertical-align: middle;">'+displayValue+'</span></div>'
       }
 
-      if(displayType=='text') if (rv.text.length>100) {
+      if(displayType=='text') if (rv.text) if (rv.text.length>100) {
         return rv.text.substring(0, 97)+"...";
       }
 

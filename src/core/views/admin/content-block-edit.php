@@ -53,7 +53,7 @@ $cid = $content.'_'.$id.'_';
   display:none;
 }
 .block-head>div:nth-child(1){
-  position:relative;width:100%;z-index:999999
+  position:relative;width:100%;z-index:999
 }
 .hide{
   display:none;

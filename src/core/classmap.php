@@ -16,6 +16,7 @@ return [
   'Gila\\Image'=> 'src/core/classes/Image.php',
   'Gila\\Logger'=> 'src/core/classes/Logger.php',
   'Gila\\Menu'=> 'src/core/classes/Menu.php',
+  'Gila\\MenuItemTypes'=> 'src/core/classes/MenuItemTypes.php',
   'Gila\\Package'=> 'src/core/classes/Package.php',
   'Gila\\Router'=> 'src/core/classes/Router.php',
   'Gila\\Session'=> 'src/core/classes/Session.php',
