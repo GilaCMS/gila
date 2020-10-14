@@ -214,7 +214,7 @@ button:hover{
   cursor:pointer;
   color:var(--main-color);
 }
-.btn,.g-btn{
+.btn,.g-btn,.gila-popup .g-btn{
   color:white;
   background:var(--main-primary-color);
   padding:var(--main-padding);
@@ -226,7 +226,7 @@ button:hover{
   text-align:center;
   opacity:0.95;
 }
-.btn:hover, .g-btn:hover{
+.btn:hover, .g-btn:hover,.gila-popup .g-btn:hover{
   color:white;
   opacity:1;
 }
@@ -458,6 +458,7 @@ textare.g-input, .g-input[type=text] {
 .gila-popup>*{
   padding:12px;
   margin:0;
+  font-family: Arial, sans-serif;
 }
 .gila-popup>.title{
   border-bottom:1px solid var(--main-border-color);

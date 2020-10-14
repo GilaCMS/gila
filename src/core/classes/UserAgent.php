@@ -77,7 +77,8 @@ class UserAgent
     'Googlebot','newspaper/0.2.8','NetcraftSurveyAgent','panscient.com','python-requests','SeznamBot','zgrab',
     'facebookexternalhit','Baiduspider','Nimbostratus-Bot','DotBot','DuckDuckBot','Slackbot-Link-Expanding',
     'Applebot','Python-urllib','bitlybot','TelegramBot', 'YandexMetrika', 'Go-http-client', 'DuckDuckGo-Favicons-Bot',
-    'CensysInspect','Siteimprove','aiohttp','Barkrowler','AdsBot','Mediapartners-Google','aiHitBot'];
+    'CensysInspect','Siteimprove','aiohttp','Barkrowler','AdsBot','Mediapartners-Google','aiHitBot','evc-batch',
+    'Scrapy'];
 
     if ($user_agent === null) return true;
     foreach ($good_bots as $bot) {
