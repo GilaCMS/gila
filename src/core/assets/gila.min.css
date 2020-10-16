@@ -616,6 +616,7 @@ textare.g-input, .g-input[type=text] {
     display:inline-block;
     position: initial;
     width:initial;
+    background: none;
   }
 }
 .g-nav li a{

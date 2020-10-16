@@ -5,7 +5,7 @@ foreach (Config::$widget_area as $value) {
   $widget_areas[$value] = $value;
 }
 $widgets = [];
-foreach (Config::$widget as $k=>$value) {
+foreach (Widget::getList('widget') as $k=>$value) {
   $widgets[$k] = $k;
 }
 
