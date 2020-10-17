@@ -4,7 +4,7 @@ if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptch
   View::alert('success', htmlentities($widget_data->success_msg));
 }
 ?>
-
+<section class="container">
 <form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form">
   <?=Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php View::alerts() ?>
@@ -17,3 +17,4 @@ if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptch
   <?php Event::fire('recaptcha.form')?>
   <input type="submit" class="btn btn-primary btn-block" value="<?=__('Send')?>">
 </form>
+</section>

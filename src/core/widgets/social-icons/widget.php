@@ -8,6 +8,7 @@ return [
     'pinterest'=>[],
     'youtube'=>[],
     'instagram'=>[],
+    'newsletter'=>[],
     'google'=>[],
     'medium'=>[],
     'github'=>[],
