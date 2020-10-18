@@ -58,7 +58,7 @@ class BlogController extends Gila\Controller
 
     if ($_GET['url']!='' || View::getViewFile('homepage.php')==false) {
       Config::canonical('');
-      if ($r = Page::getByIdSlug('')) {
+      if ($_GET['url']!='blog' && $r = Page::getByIdSlug('')) { // DEPRECATED
         View::set('title', $r['title']);
         View::set('text', $r['page']);
         View::render('blog-homepage.php', 'blog');
@@ -68,6 +68,10 @@ class BlogController extends Gila\Controller
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
       View::render('frontpage.php');
     } else {
+       if ($_GET['url']=='' && $r = Page::getByIdSlug('')) {
+        $this->postShow('');
+        return;
+      }
       View::render('homepage.php');
     }
     if (http_response_code()==200) {

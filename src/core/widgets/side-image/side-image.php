@@ -1,13 +1,13 @@
-<?php
-$flex = explode(' ', $widget_data->flex) ?? ['auto','auto'];
-?>
-<section style="align-items: center;display:grid; padding:1em;
-grid-template-columns: repeat(auto-fit, minmax(360px,1fr)); grid-gap: 2em;">
-<?php if ($widget_data->side) { ?>
-  <div><?=$widget_data->text?></div>
-  <img src="<?=$widget_data->image?>" style="max-height:300px;margin:auto">
-<?php } else { ?>
-  <img src="<?=$widget_data->image?>" style="max-height:300px;margin:auto">
-  <div data-inline="text"><?=$widget_data->text?></div>
-<?php } ?>
+<section class="container side-image">
+<style>
+.side-image{align-items: center;display:grid; padding:1em;
+grid-template-columns: repeat(auto-fit, minmax(360px,1fr)); grid-gap: 2em;}
+@media (min-width:801px){
+  .side-image{margin:auto}
+  .side-image>.col1{grid-row:1;grid-column:1;}
+  .side-image>.col2{grid-row:1;grid-column:2;<?=($widget_data->side==0?'2':'1')?>}
+}
+</style>
+  <img src="<?=$widget_data->image?>" style="max-height:300px;margin:auto;" class="<?=($widget_data->side==0?'col1':'col2')?>">
+  <div data-inline="text" class="<?=($widget_data->side==0?'col2':'col1')?>"><?=$widget_data->text?></div>
 </section>

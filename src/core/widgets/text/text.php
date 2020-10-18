@@ -1,1 +1,1 @@
-<section class="text-block"><?=$data['text']?></section>
+<section class="text-block container"><?=$data['text']?></section>

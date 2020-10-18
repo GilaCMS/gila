@@ -18,7 +18,7 @@
 $cid = $content.'_'.$id.'_';
 ?>
 
-<div id="content_blocks_list" style="position:fixed;right:1em;top:1em;padding:0;z-index:99999999" :class="{opacity05:load==true}">
+<div id="content_blocks_list" style="position:fixed;right:1em;top:1em;padding:0;z-index:999" :class="{opacity05:load==true}">
   <div style="margin-left:2em">
     <button v-if="draft" class='g-btn success content_blocks_btn' @click='block_save()'><?='<i class="fa fa-check"></i> '.__('Save')?></button>
     <?=(isset($title)?'&nbsp;':'')?>
