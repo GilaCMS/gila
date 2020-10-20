@@ -8,7 +8,7 @@ use Gila\Router;
 use Gila\Package;
 use Gila\Widget;
 
-class admin extends Gila\Controller
+class AdminController extends Gila\Controller
 {
   public function __construct()
   {

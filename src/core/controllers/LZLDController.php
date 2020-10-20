@@ -4,7 +4,7 @@ use Gila\View;
 use Gila\Menu;
 use Gila\Widget;
 
-class lzld extends Gila\Controller
+class LZLDController extends Gila\Controller
 {
   public function indexAction()
   {

@@ -8,7 +8,7 @@ use Gila\Router;
 /**
 * Lists content types and shows grid content data
 */
-class cm extends Gila\Controller
+class CMController extends Gila\Controller
 {
   private $contenttype;
   private $table;

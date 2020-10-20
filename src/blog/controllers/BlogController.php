@@ -236,7 +236,11 @@ class BlogController extends Gila\Controller
         View::set('author', __('unknown'));
       }
 
-      View::render('single-post.php');
+      if(View::getViewFile('blog-post.php')) {
+        View::render('blog-post.php');
+      } else {
+        View::render('single-post.php');
+      }
     } else {
       if ($category = $db->value('SELECT id FROM postcategory WHERE slug=?', $id)) {
         $this->categoryAction($category);
@@ -278,7 +282,11 @@ class BlogController extends Gila\Controller
     }
     View::set('page', self::$page);
     View::set('posts', self::post(['posts'=>(self::$ppp)]));
-    View::render('frontpage.php');
+    if(View::getViewFile('blog.php')) {
+      View::render('blog.php');
+    } else {
+      View::render('frontpage.php');
+    }
   }
 
   public static function post($args = [])

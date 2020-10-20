@@ -3,7 +3,7 @@ use Gila\Session;
 use Gila\FileManager;
 use Gila\HtmlInput;
 
-class fm extends Gila\Controller
+class FMController extends Gila\Controller
 {
   public $path;
   private $relativePath;
