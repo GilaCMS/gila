@@ -580,30 +580,28 @@ textare.g-input, .g-input[type=text] {
 }
 .g-nav-mobile{
   display:none;
-  position:absolute;
+  position:fixed;
   left:0;
   right:0;
   bottom:0;
-  top:68px;
+  top: 10vh;
   text-align:center;
   background:#fff;
 }
 .g-nav-mobile li{
   text-align:center;
 }
-.g-nav-mobile.display, .g-nav-mobile.display ul{
-  border-width:0;
-  width: 100%;
+
+@media only screen and (max-width:601px) {
+  .g-nav-mobile.display, .g-nav-mobile.display ul{
+    border-width:0;
+    width: 100%;
+    display:block;
+    opacity:0.9;
+  }
 }
 
-.g-nav-mobile.display {
-  display:block;
-  opacity:0.9;
-}/*
-.g-nav-mobile.display li.dropdown > a::after{
-  content: '';
-}*/
-@media (min-width:600px) {
+@media only screen and (min-width:600px) {
   .g-nav li{
     display:inline-block;
     padding:0;
