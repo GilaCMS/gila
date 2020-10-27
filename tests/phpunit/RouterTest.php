@@ -18,7 +18,7 @@ class RouterTest extends TestCase
     Gila\Config::action('test', 'actionTest', function () {
       echo 'action test';
     });
-    Gila\Router::setUrl('test/actionTest/');
+    Gila\Router::setPath('test/actionTest/');
     $this->assertEquals('test', Gila\Router::getController());
     $this->assertEquals('actionTest', Gila\Router::getAction());
   }
@@ -47,7 +47,7 @@ class RouterTest extends TestCase
     Gila\Router::$controllers = [];
     Gila\Router::$actions = [];
     $_GET['qx'] = 5;
-    Gila\Router::setUrl('test/action/p1/p2/p3/p4');
+    Gila\Router::setPath('test/action/p1/p2/p3/p4');
     Gila\Router::$controller = null;
     Gila\Router::$action = null;
 

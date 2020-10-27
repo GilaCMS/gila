@@ -24,12 +24,14 @@ return [
     ],
     'title'=> [
       'title'=>'Title',
-      'qtype'=>'varchar(80) DEFAULT NULL'
+      'qtype'=>'varchar(80) DEFAULT NULL',
+      'group'=>'title'
     ],
     'slug'=> [
       'title'=>'Path',
       'qtype'=>'varchar(80) DEFAULT NULL',
-      'alt'=>'('.Gila\Config::tr('Home').')'
+      'alt'=>'('.Gila\Config::tr('Home').')',
+      'group'=>'title'
     ],
     'template'=> [
       'title'=>'Template',
@@ -41,7 +43,8 @@ return [
     'description'=> [
       'title'=>'Description',
       'input-type'=>'textarea',
-      'qtype'=>'varchar(200) DEFAULT NULL'
+      'qtype'=>'varchar(200) DEFAULT NULL',
+      'group'=>'title'
     ],
     'publish'=> [
       'title'=>'Public',

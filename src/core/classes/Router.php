@@ -20,15 +20,15 @@ class Router
 
   public function __construct()
   {
-    self::run($_GET['url'] ?? false);
+    self::run($_GET['p'] ?? ($_GET['url'] ?? false));
   }
 
-  public static function run($_url = false)
+  public static function run($_p = false)
   {
     global $c;
 
     self::$method = $_SERVER['REQUEST_METHOD'];
-    self::setUrl($_url);
+    self::setPath($_p);
     if (self::matchRoutes(self::$route)==true) {
       return;
     }
@@ -212,10 +212,10 @@ class Router
     self::$onaction[$c][$action][] = $fn;
   }
 
-  public static function setUrl($_url)
+  public static function setPath($_p)
   {
-    if ($_url!==false) {
-      self::$url = strip_tags($_url);
+    if ($_p!==false) {
+      self::$url = strip_tags($_p);
       self::$args = explode("/", self::$url);
       if (isset(self::$args[0]) && Config::config('languages') && in_array(self::$args[0], Config::config('languages'))) {
         Config::lang(self::$args[0]);
@@ -224,6 +224,10 @@ class Router
       self::$url = false;
       self::$args = [];
     }
+  }
+  public static function setUrl($_p)
+  {
+    self::setPath($_p);
   }
 
   public static function cache($time = 3600, $args = null, $uniques = null)

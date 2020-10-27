@@ -95,7 +95,7 @@ class Menu
         $childrenHtml = "<ul class=\"dropdown-menu\">";
         $childrenHtml .= Menu::getHtml($item['children'], $base);
         $childrenHtml .= "</ul>";
-        //$childrenHtml .= "</ul>";
+
         if (self::$active===true) {
           self::$active = false;
           $liClass .= ' active';

@@ -1,5 +1,5 @@
 <head>
-  <base href="<?=Gila\Config::base_url()?>">
+  <base href="<?=Gila\Config::base()?>">
   <title>Install Gila CMS</title>
   <meta name="robots" content="noindex">
   <style><?=file_get_contents("src/core/assets/gila.min.css")?></style>

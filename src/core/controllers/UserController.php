@@ -18,7 +18,7 @@ class UserController extends Gila\Controller
   public function indexAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
       exit;
     }
     if (Session::waitForLogin()>0) {
@@ -58,7 +58,7 @@ class UserController extends Gila\Controller
         if ($user_Id = User::create($email, $password, $name, $active)) {
           // success
           if (Config::config('user_activation')=='byemail') {
-            $baseurl = Config::base_url();
+            $baseurl = Config::base();
             $subject = __('activate_msg_ln1').' '.$r['username'];
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
@@ -69,7 +69,7 @@ class UserController extends Gila\Controller
             User::meta($user_Id, 'activate_code', $activate_code);
             new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
           }
-          View::includeFile('login-register-success.php');
+          View::includeFile('user-register-success.php');
           return;
         } else {
           View::alert('error', __('register_error2'));
@@ -82,7 +82,7 @@ class UserController extends Gila\Controller
   public function activateAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
       return;
     }
 
@@ -93,7 +93,7 @@ class UserController extends Gila\Controller
       } else {
         User::updateActive($ids[0], 1);
         User::metaDelete($ids[0], 'activate_code');
-        View::includeFile('login-activate-success.php');
+        View::includeFile('user-activate-success.php');
       }
       return;
     }
@@ -103,7 +103,7 @@ class UserController extends Gila\Controller
   public function password_resetAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
       return;
     }
     $rpa = 'reset-password-attempt';
@@ -117,16 +117,16 @@ class UserController extends Gila\Controller
       } elseif (isset($_POST['pass'])) {
         $idUser=$r[0];
         User::updatePassword($idUser, $_POST['pass']);
-        View::includeFile('login-change-success.php');
+        View::includeFile('user-change-success.php');
       } else {
         Session::key($rpa, 0);
-        View::includeFile('login-change-new.php');
+        View::includeFile('user-change-new.php');
       }
       exit;
     }
 
     if (!isset($_POST['email'])) {
-      View::includeFile('login-change-password.php');
+      View::includeFile('user-change-password.php');
       return;
     }
 
@@ -134,7 +134,7 @@ class UserController extends Gila\Controller
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       View::alert('error', __('reset_error2'));
-      View::includeFile('login-change-password.php');
+      View::includeFile('user-change-password.php');
       return;
     }
 
@@ -147,7 +147,7 @@ class UserController extends Gila\Controller
       Session::key($rpa, $tries+1);
       Session::key($rpt, time());
 
-      $baseurl = Config::base_url();
+      $baseurl = Config::base();
       $subject = __('reset_msg_ln1').' '.$r['username'];
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
@@ -159,7 +159,7 @@ class UserController extends Gila\Controller
       new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
 
-    View::includeFile('login-change-emailed.php');
+    View::includeFile('user-change-emailed.php');
   }
 
   public function authAction()

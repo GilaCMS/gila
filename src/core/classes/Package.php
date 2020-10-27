@@ -34,7 +34,7 @@ class Package
     if ($download && FS_ACCESS) {
       if (self::download($download)===true) {
         if (!$_REQUEST['g_response']) {
-          echo '<meta http-equiv="refresh" content="2;url='.Config::base_url().'/admin/packages" />';
+          echo '<meta http-equiv="refresh" content="2;url='.Config::base().'/admin/packages" />';
           echo __('_package_downloaded').'. Redirecting...';
           exit;
         } else {

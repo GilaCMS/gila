@@ -207,10 +207,10 @@ class BlogController extends Gila\Controller
       if ($r['img']) {
         View::set('img', $r['img']);
         View::meta('og:image', $r['img']);
-        View::meta('twitter:image:src', Config::base_url($r['img']));
+        View::meta('twitter:image:src', Config::base($r['img']));
       } elseif (Config::config('og-image')) {
         View::meta('og:image', Config::config('og-image'));
-        View::meta('twitter:image:src', Config::base_url(Config::config('og-image')));
+        View::meta('twitter:image:src', Config::base(Config::config('og-image')));
       } else {
         View::set('img', '');
       }

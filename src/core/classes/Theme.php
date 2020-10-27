@@ -134,7 +134,7 @@ class Theme
         unlink($localfile);
         echo 'ok';
         if (!$_REQUEST['g_response']) {
-          echo '<meta http-equiv="refresh" content="2;url='.Config::base_url().'/admin/themes" />';
+          echo '<meta http-equiv="refresh" content="2;url='.Config::base().'/admin/themes" />';
         }
       } else {
         echo __('_theme_not_downloaded');

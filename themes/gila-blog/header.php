@@ -59,7 +59,7 @@ footer{background:#464a49;margin-top:10px;color:white}
     <div style="max-width:1100px; margin:auto;">
         <?php View::widgetArea('body'); ?>
         <div class="gl-9" style="height:200px;text-shadow:0 0 6px black">
-          <h1><a href="<?=Config::base_url()?>" style="color:#f5f5f5;"><?=Config::config('title')?></a></h1>
+          <h1><a href="<?=Config::base()?>" style="color:#f5f5f5;"><?=Config::config('title')?></a></h1>
           <div style="color:#f5f5f5;margin-bottom:6px"><?=Config::config('slogan')?></div>
         </div>
         <!-- Navigation -->

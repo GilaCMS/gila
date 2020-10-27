@@ -28,8 +28,8 @@ if (file_exists($site_folder)) {
   define('FS_ACCESS', true);
 }
 
-if (!isset($_GET['url'])) {
-  $_GET['url'] = substr($_SERVER['REQUEST_URI'], 1);
+if (!isset($_GET['p'])) {
+  $_GET['p'] = substr($_SERVER['REQUEST_URI'], 1);
 }
 
 ini_set("error_log", "log/error.log");
@@ -113,4 +113,4 @@ if (is_array(Config::config('cors'))) {
   }
 }
 
-Router::run($_GET['url'] ?? '');
+Router::run($_GET['p'] ?? '');

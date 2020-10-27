@@ -74,13 +74,16 @@ class UserAgent
   public static function isBot($user_agent)
   {
     $good_bots = ['SemrushBot','YandexBot','AhrefsBot','PetalBot','SaaSHub','bingbot','BingPreview','MJ12bot','Twitterbot',
-    'Googlebot','newspaper/0.2.8','NetcraftSurveyAgent','panscient.com','python-requests','SeznamBot','zgrab',
-    'facebookexternalhit','Baiduspider','Nimbostratus-Bot','DotBot','DuckDuckBot','Slackbot-Link-Expanding',
+    'Googlebot','newspaper','NetcraftSurveyAgent','panscient.com','python-requests','SeznamBot','zgrab',
+    'facebookexternalhit','Baiduspider','Nimbostratus-Bot','DotBot','DuckDuckBot','Slackbot',
     'Applebot','Python-urllib','bitlybot','TelegramBot', 'YandexMetrika', 'Go-http-client', 'DuckDuckGo-Favicons-Bot',
     'CensysInspect','Siteimprove','aiohttp','Barkrowler','AdsBot','Mediapartners-Google','aiHitBot','evc-batch',
-    'Scrapy'];
+    'Scrapy','CCBot','MojeekBot','Discordbot','article-parser','HackerNews','node-superagent','RandomSurfer',
+    'CheckMarkNetwork','Dataprovider.com'];
 
-    if ($user_agent === null) return true;
+    if ($user_agent === null || strlen($user_agent)<20) {
+      return true;
+    }
     foreach ($good_bots as $bot) {
       if (strpos($user_agent, $bot) !== false) {
         return true;

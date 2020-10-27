@@ -11,7 +11,7 @@
 </div>
 
 <div class="gm-3 sidebar">
-  <form method="get" class="inline-flex" action="<?=Config::base_url('blog')?>">
+  <form method="get" class="inline-flex" action="<?=Config::base('blog')?>">
     <input name='search' class="g-input fullwidth" value="">
     <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
   </form>

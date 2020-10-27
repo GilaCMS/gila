@@ -2,7 +2,7 @@
 <html lang="<?=Config::config('language')?>">
 
 <head>
-  <base href="<?=Config::base_url()?>">
+  <base href="<?=Config::base()?>">
   <title><?=((Config::config('title')??'Gila CMS').' - '.($page_title??__('Administration')))?></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1">
@@ -41,7 +41,7 @@
     <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:rgba(255,255,255,0.8);">
       &nbsp;<a href="#menu-toggle" class="g-icon-btn g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
       <?php if ('admin'!=Config::config('default-controller')) {?>
-      &nbsp;<a href="<?=Config::base_url()?>" class="g-icon-btn g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
+      &nbsp;<a href="<?=Config::base()?>" class="g-icon-btn g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
       <?php } ?>
 
       <span class="g-group-item fullwidth text-align-right" id="topbar">

@@ -399,12 +399,12 @@ class Config
     View::$canonical = self::config('base').self::url($str);
   }
 
-  public static function base($str = null)
+  public static function base_url($str = null) // DEPRECATED
   {
-    return self::base_url($str);
+    return self::base($str);
   }
 
-  public static function base_url($str = null)
+  public static function base($str = null)
   {
     if (!isset(self::$base_url)) {
       if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
@@ -416,10 +416,14 @@ class Config
       }
       self::$base_url = htmlentities(self::$base_url);
     }
-    if ($str!==null) {
-      return self::$base_url.self::url($str);
+    if ($str===null) {
+      return self::$base_url;
     }
-    return self::$base_url;
+    if (self::config('rewrite')) {
+      return self::$base_url.self::url($str);
+    } else {
+      return '?p='.$str;
+    }
   }
 
   public static function url($url)
@@ -438,26 +442,7 @@ class Config
       }
       return $url;
     }
-    $burl = explode('?', $url);
-    $burl1 = explode('/', $burl[0]);
-    if (isset($burl1[1])) {
-      $burl1[1]='&action='.$burl1[1];
-    } else {
-      $burl1[1]='';
-    }
-    if (isset($burl[1])) {
-      $burl[1]='&'.$burl[1];
-    } else {
-      $burl[1]='';
-    }
-
-    for ($i=2; $i<count($burl1); $i++) {
-      if ($burl1[$i]!='') {
-        $burl[1]='&var'.($i-1).'='.$burl1[$i].$burl[1];
-      }
-    }
-
-    return '?c='.$burl1[0].$burl1[1].$burl[1];
+    return '?p='.$url;
   }
 
   /**

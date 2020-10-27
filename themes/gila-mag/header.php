@@ -37,7 +37,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
     <div class="header">
         <?php View::widgetArea('body'); ?>
         <div class="inline-block">
-          <a href="<?=Config::base_url()?>" style="color:#333;">
+          <a href="<?=Config::base()?>" style="color:#333;">
           <?php
           $lgimg = Config::option('theme.header-logo');
           $_title = Config::config('title');

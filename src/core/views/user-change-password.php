@@ -1,4 +1,4 @@
-<?php View::includeFile('login-header.php');?>
+<?php View::includeFile('user-login-header.php');?>
 
   <?=View::alerts()?>
   <div class="gl-4 centered wrapper g-card bg-white">
@@ -9,7 +9,7 @@
       <h3><?=__('reset_pass')?></h3>
     </div>
 
-    <form role="form" method="post" action="<?=Config::base_url()?>user/password_reset" class="g-form">
+    <form role="form" method="post" action="<?=Config::base()?>user/password_reset" class="g-form">
       <p><?=__('reset_pass_msg')?><p>
       <div class="form-group">
         <input class="form-control fullwidth" name="email" type="email" autofocus required>
