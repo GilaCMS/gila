@@ -35,7 +35,7 @@ class ClassGila extends TestCase
     Config::setConfig('default-controller', 'blog');
     Config::setConfig('rewrite', 0);
     $link = Config::url('blog/post/1/post1');
-    $this->assertEquals('?c=blog&action=post&var2=post1&var1=1', $link);
+    $this->assertEquals('?p=blog/post/1/post1', $link);
     Config::setConfig('rewrite', 1);
     $link = Config::url('blog/post/1/post1');
     $this->assertEquals('post/1/post1', $link);
@@ -46,7 +46,7 @@ class ClassGila extends TestCase
     Config::setConfig('default-controller', 'blog');
     Config::setConfig('rewrite', 0);
     $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
-    $this->assertEquals('?c=blog&action=post&id=1&slug=post_1', $link);
+    $this->assertEquals('?p=blog/post&id=1&slug=post_1', $link);
     Config::setConfig('rewrite', 1);
     $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
     $this->assertEquals('post/1/post_1', $link);

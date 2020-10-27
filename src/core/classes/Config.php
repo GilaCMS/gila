@@ -482,7 +482,7 @@ class Config
       if ($gpt = Router::request('g_preview_theme')) {
         $params.='&g_preview_theme='.$gpt;
       }
-      return "?c=$c&action=$action$params";
+      return "?p=$c/$action$params";
     }
   }
 
