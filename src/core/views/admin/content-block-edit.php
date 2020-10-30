@@ -18,7 +18,7 @@
 $cid = $content.'_'.$id.'_';
 ?>
 
-<div id="content_blocks_list" style="position:fixed;right:1em;top:1em;padding:0;z-index:999" :class="{opacity05:load==true}">
+<div id="content_blocks_list" style="position:fixed;right:2em;top:0.5em;padding:0;z-index:999" :class="{opacity05:load==true}">
   <div style="margin-left:2em">
     <button v-if="draft" class='g-btn success content_blocks_btn' @click='block_save()'><?='<i class="fa fa-check"></i> '.__('Save')?></button>
     <?=(isset($title)?'&nbsp;':'')?>
@@ -35,31 +35,40 @@ $cid = $content.'_'.$id.'_';
   min-height:2em;
 }
 .block-head:hover {
-  border:1px dashed cornflowerblue;
+  border:1px dashed steelblue;
 }
 .opacity05{
   opacity:0.5;
 }
 .block-edit-btn,.block-add-btn,.block-swap-btn,.block-del-btn{
   padding:6px;
-  border-radius:12px;
+  border-radius:14px;
   font:14px Arial;
   font-weight:bold;
-  background:#ccc;
-  opacity:0.66;
-  color:#000;
+  background:steelblue;
+  opacity:0.8;
+  color:white;
+  border:1px solid steelblue;
+  min-width:28px;
 }
 .block-head:nth-child(1) .block-swap-btn{
   display:none;
 }
 .block-head>div:nth-child(1){
-  position:relative;width:100%;z-index:10;
+  position:relative;width:100%;
+}
+.block-head:nth-child(1) .span-add-btn{
+  top:0;
+}
+.block-head>div,.block-end>div{
+  z-index:11;
 }
 .hide{
   display:none;
 }
 .block-edit-btn:hover,.block-add-btn:hover,.block-swap-btn:hover,.block-del-btn:hover{
   opacity:1;
+  color:white;
 }
 .content_blocks_btn{
   border-radius:3em;
@@ -71,14 +80,26 @@ $cid = $content.'_'.$id.'_';
   opacity:1;
   box-shadow:0 0 3px grey;
 }
+.span-add-btn{
+  position:absolute;left:45%;top:-1em
+}
+.span-edit-btn{
+  position:absolute;left:4px;top:0.5em
+}
+.span-swap-btn{
+  position:absolute;right:58%;top:-1em
+}
+.span-del-btn{
+  position:absolute;right:4px;top:0.5em
+}
 </style>
 
 <script>
 g('.block-head').prepend("<div>\
-<span style='position:absolute;left:4px;top:0.5em'><button class='block-edit-btn'>EDIT</button></span>\
-<span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
-<span style='position:absolute;right:58%;top:-1em'><button class='block-swap-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
-<span style='position:absolute;right:4px;top:0.5em'><button class='block-del-btn'><i class='fa fa-trash'></i></button></span>\
+<span class='span-edit-btn'><button class='block-edit-btn'>EDIT</button></span>\
+<span class='span-add-btn'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
+<span class='span-swap-btn'><button class='block-swap-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
+<span class='span-del-btn'><button class='block-del-btn'><i class='fa fa-trash'></i></button></span>\
 </div>");
 
 let inlineTinies=g('.inline-tinymce').all
@@ -143,7 +164,7 @@ g.click('.block-del-btn', function(){
 })
 
 g('.block-end').html("<div style='position:relative;width:100%;'>\
-<span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
+<span style='position:absolute;left:45%;'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
 </div>");
 
 

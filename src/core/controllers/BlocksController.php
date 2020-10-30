@@ -191,6 +191,12 @@ class BlocksController extends Gila\Controller
     }
   }
 
+  public function pageAction($id)
+  {
+    View::set('id', $id);
+    View::renderFile('admin/blocks-page.php');
+  }
+
   public function saveAction()
   {
     $rid = $_POST['id'];
