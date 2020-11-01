@@ -54,7 +54,7 @@ class RequestsTest extends TestCase
   {
     $_POST['email'] = "test_login_auth@email.com";
     $_POST['password'] = "password";
-    Config::controller('user', 'core/controllers/UserController');
+    Router::controller('user', 'core/controllers/UserController');
     $response = $this->request('user/auth', 'POST');
     $this->assertEquals('{"token":"ABC"}', $response);
   }
@@ -119,7 +119,7 @@ class RequestsTest extends TestCase
   public function test_blocks()
   {
     global $db;
-    Config::controller('blocks', 'core/controllers/BlocksController');
+    Router::controller('blocks', 'core/controllers/BlocksController');
     Config::widgets([
       'html'=>'core/widgets/html',
       'image'=>'core/widgets/image']);
