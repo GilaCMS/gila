@@ -62,6 +62,7 @@ class RequestsTest extends TestCase
   public function test_register()
   {
     global $db;
+    Router::controller('user', 'core/controllers/UserController');
     Session::user(0);
     $email = "test_register@email.com";
     $_REQUEST['email'] = $email;
