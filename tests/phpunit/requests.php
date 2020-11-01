@@ -196,14 +196,14 @@ class RequestsTest extends TestCase
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
   }
 
-  public function request($url, $method='GET')
+  public function request($path, $method='GET')
   {
     $_SERVER['REQUEST_METHOD'] = $method;
-    [$c, $a] = explode('/', $url);
+    [$c, $a] = explode('/', $path);
     Router::$controller = $c;
     Router::$action = $a;
     ob_start();
-    Router::run($url);
+    Router::run($path);
     $response = ob_get_contents();
     ob_end_clean();
     return $response;
