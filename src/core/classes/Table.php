@@ -400,12 +400,6 @@ class Table
       $mt = $this->table['fields'][$key]['meta_table'];
     } elseif (isset($this->table['meta_table'])) {
       $mt = $this->table['meta_table'];
-    } else {
-      // DEPRECATED remove 'mt','metatype' attributes at v2.x
-      $mt = $this->table['fields'][$key]["mt"];
-      $tmp = $mt[2];
-      $mt[2] = $vt[0];
-      $mt[3] = $tmp;
     }
     $vt = is_array($vt)? $vt[1]: $vt;
     return [$mt, $vt];

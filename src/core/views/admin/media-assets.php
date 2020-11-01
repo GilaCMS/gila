@@ -39,9 +39,6 @@ if ($path=='src') {
         foreach ($package->assets as $asset) {
           if (file_exists('assets/'.$v.'/'.$asset)) {
             $files[] = 'assets/'.$v.'/'.$asset;
-          } else {
-            // DEPRECATED
-            $files[] = 'src/'.$v.'/'.$asset;
           }
         }
       }

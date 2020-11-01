@@ -56,19 +56,14 @@ class BlogController extends Gila\Controller
       return;
     }
 
-    if ($_GET['url']!='' || View::getViewFile('homepage.php')==false) {
-      Config::canonical('');
-      if ($_GET['url']!='blog' && $r = Page::getByIdSlug('')) { // DEPRECATED
-        View::set('title', $r['title']);
-        View::set('text', $r['page']);
-        View::render('blog-homepage.php', 'blog');
-        return;
-      }
+    $path = Router::getPath();
+    Config::canonical('');
+    if ($path!='' || View::getViewFile('homepage.php')==false) {
       View::set('page', self::$page);
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
       View::render('frontpage.php');
     } else {
-       if ($_GET['url']=='' && $r = Page::getByIdSlug('')) {
+       if ($path=='' && $r = Page::getByIdSlug('')) {
         $this->postShow('');
         return;
       }
@@ -247,7 +242,7 @@ class BlogController extends Gila\Controller
         return;
       }
   
-      if (($r = Page::getByIdSlug($id)) && ($r['publish']==1)) {
+      if ($r = Page::getByIdSlug($id)) {
         View::set('title', $r['title']);
         View::set('text', $r['page']);
         Config::canonical($r['slug']);
@@ -321,19 +316,4 @@ class BlogController extends Gila\Controller
     return self::$totalPages;
   }
 
-  public static function get_url($id, $slug=null) // DEPRECATED
-  {
-    if ($slug==null) {
-      return Config::make_url('blog', '', ['p'=>$id]);
-    }
-    return Config::make_url('blog', '', ['p'=>$id,'slug'=>$slug]);
-  }
-
-  public static function thumb_sm($img, $id) // DEPRECATED
-  {
-    $target = 'post_sm/'.str_replace(["://",":\\\\","\\","/",":"], "_", $img);
-    return View::thumb_sm($img, $target);
-  }
 }
-
-class_alias('BlogController', 'blog'); // DEPRECATED

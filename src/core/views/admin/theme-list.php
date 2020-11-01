@@ -20,7 +20,7 @@ foreach ($packages as $pkey=>$p) {
   } elseif (file_exists($dir.$p->package."/screenshot.png")) {
     $table .= '<img src="'."lzld/thumb?size=360&src=themes/{$p->package}/screenshot.png".'"  />';
   } elseif (isset($p->screenshot)) {
-    $table .= '<img src="'.$p->screenshot.'"  />';
+    $table .= '<img src="'.$p->screenshot.'" />';
   }
 
   $table.="</div><br>";

@@ -17,7 +17,7 @@ class ClassGila extends TestCase
   {
     $value = rand(1, 100);
     include_once __DIR__.'/../../config.default.php';
-    Config::setConfig('test_config_key', $value);
+    Config::set('test_config_key', $value);
     Config::updateConfigFile();
     include_once __DIR__.'/../../config.php';
     $this->assertEquals($value, $GLOBALS['config']['test_config_key']);
@@ -32,22 +32,22 @@ class ClassGila extends TestCase
 
   public function test_url()
   {
-    Config::setConfig('default-controller', 'blog');
-    Config::setConfig('rewrite', 0);
+    Config::set('default-controller', 'blog');
+    Config::set('rewrite', 0);
     $link = Config::url('blog/post/1/post1');
     $this->assertEquals('?p=blog/post/1/post1', $link);
-    Config::setConfig('rewrite', 1);
+    Config::set('rewrite', 1);
     $link = Config::url('blog/post/1/post1');
     $this->assertEquals('post/1/post1', $link);
   }
 
   public function test_make_url()
   {
-    Config::setConfig('default-controller', 'blog');
-    Config::setConfig('rewrite', 0);
+    Config::set('default-controller', 'blog');
+    Config::set('rewrite', 0);
     $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
     $this->assertEquals('?p=blog/post&id=1&slug=post_1', $link);
-    Config::setConfig('rewrite', 1);
+    Config::set('rewrite', 1);
     $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
     $this->assertEquals('post/1/post_1', $link);
   }

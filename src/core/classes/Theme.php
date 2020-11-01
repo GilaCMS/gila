@@ -14,7 +14,7 @@ class Theme
     if ($download) {
       self::download($download);
     }
-    $save_options = Router::get('save_options');
+    $save_options = Router::param('save_options');
     if ($save_options) {
       self::saveOptions($save_options);
     }

@@ -20,7 +20,7 @@ class BlocksController extends Gila\Controller
   {
     global $db;
     $table = Router::request('t');
-    $id = Router::get('id', 2);
+    $id = Router::param('id', 2);
     $widgets = self::readBlocks($table, $id);
     if(!$table || !$id) {
       View::renderAdmin('404.php');
@@ -38,7 +38,7 @@ class BlocksController extends Gila\Controller
   public function popupAction()
   {
     $table = Router::request('t');
-    $id = Router::get('id', 2);
+    $id = Router::param('id', 2);
     $widgets = self::readBlocks($table, $id);
     View::set('contentType', $table);
     View::set('id', $id);
@@ -54,7 +54,7 @@ class BlocksController extends Gila\Controller
   public function editAction()
   {
     global $db;
-    if ($id = Router::get('id', 2)) {
+    if ($id = Router::param('id', 2)) {
       $idArray = explode('_', $id);
       View::set('widget_id', $id);
       View::set('contentType', $idArray[0]);
@@ -172,8 +172,8 @@ class BlocksController extends Gila\Controller
 
   public function displayAction()
   {
-    $content = Router::get('t', 1);
-    $id = Router::get('id', 2);
+    $content = Router::param('t', 1);
+    $id = Router::param('id', 2);
     $blocks = self::readBlocks($content, $id);
     if ($content=="page" && $r = Page::getByIdSlug($id, false)) {
       View::set('title', $r['title']);

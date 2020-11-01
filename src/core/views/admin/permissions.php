@@ -15,7 +15,7 @@ if (isset($_POST['submit']) && isset($_POST['role'])) {
       $checked[$role] = array_keys($list);
     }
   }
-  Config::setConfig('permissions', $checked);
+  Config::set('permissions', $checked);
   Config::updateConfigFile();
   View::alert('success', __('_changes_updated'));
 }

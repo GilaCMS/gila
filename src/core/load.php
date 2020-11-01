@@ -8,7 +8,6 @@ global $db;
 
 Router::controller('admin', 'core/controllers/AdminController');
 Router::controller('cm', 'core/controllers/CMController');
-Router::controller('login', 'core/controllers/UserController'); // DEPRECATED
 Router::controller('user', 'core/controllers/UserController');
 Router::controller('webhook', 'core/controllers/WebhookController');
 Router::controller('lzld', 'core/controllers/LZLDController');

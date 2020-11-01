@@ -31,11 +31,10 @@ $cid = $content.'_'.$id.'_';
 
 <style>
 .block-head {
-  border:1px dashed rgba(0,0,0,0);
   min-height:2em;
 }
 .block-head:hover {
-  border:1px dashed steelblue;
+  /*border:1px dashed steelblue;*/
 }
 .opacity05{
   opacity:0.5;
@@ -91,6 +90,11 @@ $cid = $content.'_'.$id.'_';
 }
 .span-del-btn{
   position:absolute;right:4px;top:0.5em
+}
+@media only screen and (max-width:400px){
+  #content_blocks_list, .block-head>div:nth-child(1), .block-end {
+    display:none;
+  }
 }
 </style>
 

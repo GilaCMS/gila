@@ -6,23 +6,21 @@ class Cache
 {
   public static $page_name;
   public static $uniques;
-  public static $cachePath = LOG_PATH.'/cacheItem';
+  public static $cachePath = LOG_PATH.'/cacheItem/';
 
   public static function set($name, $data, $uniques = [])
   {
-    $dir = Config::dir(self::$cachePath); // DEPRECATED
-    $name = $dir.str_replace('/', '-', $name);
+    $name = self::$cachePath.str_replace('/', '-', $name);
     $caching_file = $name.'|'.implode('|', $uniques);
     return file_put_contents($caching_file, $data);
   }
 
   public static function get($name, $time = 3600, $uniques = [])
   {
-    $dir = Config::dir(self::$cachePath); // DEPRECATED
     if (!is_array($uniques)) {
       $uniques = [$uniques];
     }
-    $name = $dir.str_replace('/', '-', $name);
+    $name = self::$cachePath.str_replace('/', '-', $name);
     $caching_file = $name.'|'.implode('|', $uniques);
 
     if (file_exists($caching_file) && filemtime($caching_file)+$time>time()) {

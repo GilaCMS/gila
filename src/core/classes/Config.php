@@ -18,75 +18,6 @@ class Config
   public static $langWords = [];
   public static $langLoaded = false;
 
-  /**
-  * Registers new a controller
-  * @param $c (string) Controller name as given in url path
-  * @param $file (string) Controller's filepath without the php extension
-  * @param $name (string) Controller's class name, $c is used by default
-  * @code
-  * self::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
-  * @endcode
-  */
-  public static function controller($c, $path, $name=null) // DEPRECATED
-  {
-    Router::controller($c, $path);
-  }
-
-  /**
-  * Registers a function call on a specific path
-  * @param $r (string) The path
-  * @param $fn (function) Callback for the route
-  * @code
-  * self::route('some.txt', function(){ echo 'Some text.'; });
-  * @endcode
-  */
-  public static function route($r, $fn) // DEPRECATED
-  {
-    Router::add($r, $fn);
-  }
-
-  /**
-  * Registers a function to run right after the controller class construction
-  * @param $c (string) The controller's class name
-  * @param $fn (function) Callback
-  * @code
-  * self::onController('blog', function(){ BlogController::ppp = 24; });
-  * @endcode
-  */
-  public static function onController($c, $fn) // DEPRECATED
-  {
-    Router::$on_controller[$c][] = $fn;
-  }
-
-  /**
-  * Registers a new action or replaces an existing for a controller
-  * @param $c (string) The controller
-  * @param $action (string) The action
-  * @param $fn (function) Callback
-  * @code
-  * self::action('blog', 'topics', function(){ ... });
-  * @endcode
-  */
-  public static function action($c, $action, $fn) // DEPRECATED -> Router::action()
-  {
-    Router::action($c, $action, $fn);
-  }
-
-  /**
-  * Registers a function to run before the function of a specific action
-  * @param $c (string) The controller
-  * @param $action (string) The action
-  * @param $fn (function) Callback
-  */
-  public static function before($c, $action, $fn) // DEPRECATED -> Router::before()
-  {
-    Router::before($c, $action, $fn);
-  }
-
-  public static function onAction($c, $action, $fn) // DEPRECATED -> Router::onAction()
-  {
-    Router::onAction($c, $action, $fn);
-  }
 
   /**
   * Adds language translations from a json file
@@ -202,11 +133,7 @@ class Config
       $list = $key;
     }
     foreach ($list as $k=>$i) {
-      if (is_numeric($k)) {
-        self::$amenu[]=$i; // DEPRECATED
-      } else {
-        self::$amenu[$k]=$i;
-      }
+      self::$amenu[$k]=$i;
     }
   }
 
@@ -227,36 +154,13 @@ class Config
     self::$amenu[$key]['children'][]=$item;
   }
 
-  /**
-  * Sets or gets the value of configuration attribute
-  * @param $key (string) Name of the attribute
-  * @param $value (optional) The value to set @see setConfig()
-  * @return The value if parameter $value is not sent
-  */
-  public static function config($key, $value = null)
+  public static function config($key, $value = null) // DEPRECATED
   {
-    if ($value === null) { // DEPRECATED should use setConfig()
-      if (isset($GLOBALS['config'][$key])) {
-        return $GLOBALS['config'][$key];
-      } else {
-        return null;
-      }
-    } else {
-      $GLOBALS['config'][$key] = $value;
-    }
+    return self::get($key);
   }
-
-  /**
-  * Sets the value of configuration attribute
-  * @param $key (string) Name of the attribute
-  * @param $value (optional) The value to set
-  */
-  public static function setConfig($key, $value)
+  public static function setConfig($key, $value) // DEPRECATED
   {
-    if (!is_string($key)) {
-      return;
-    }
-    $GLOBALS['config'][$key] = $value;
+    self::set($key, $value);
   }
 
   public static function lang($lang=null)
@@ -270,11 +174,24 @@ class Config
     self::$lang = self::config('language');
   }
 
+  /**
+  * Sets the value of configuration attribute
+  * @param $key (string) Name of the attribute
+  * @param $value (optional) The value to set
+  */
   public static function set($key, $value)
   {
-    self::setConfig($key, $value);
+    if (!is_string($key)) {
+      return;
+    }
+    $GLOBALS['config'][$key] = $value;
   }
 
+  /**
+  * Gets the value of configuration attribute
+  * @param $key (string) Name of the attribute
+  * @return The configuration value
+  */
   public static function get($key)
   {
     return $GLOBALS['config'][$key] ?? null;
@@ -399,11 +316,6 @@ class Config
     View::$canonical = self::config('base').self::url($str);
   }
 
-  public static function base_url($str = null) // DEPRECATED
-  {
-    return self::base($str);
-  }
-
   public static function base($str = null)
   {
     if (!isset(self::$base_url)) {
@@ -505,16 +417,6 @@ class Config
       self::$option[$r[0]] = $r[1];
     }
     $db->close();
-  }
-
-  /**
-  * Checks if logged in user has at least one of the required privileges
-  * @param $pri (string/array) The privilege(s) to check
-  * @return Boolean
-  */
-  public static function hasPrivilege($pri) // DEPRECATED
-  {
-    return Session::hasPrivilege($pri);
   }
 
   /**

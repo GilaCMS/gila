@@ -24,7 +24,7 @@ class AdminController extends Gila\Controller
     $id = Router::path() ?? null;
 
     if ($id && ($r = Gila\Page::getByIdSlug($id)) && ($r['publish']==1)
-        && ($id!='' && Router::controller()=='admin')) {
+        && ($id!='' && Router::getController()=='admin')) {
       Config::canonical('');
       View::set('title', $r['title']);
       View::set('text', $r['page']);
@@ -36,7 +36,7 @@ class AdminController extends Gila\Controller
       return;
     }
 
-    if (Router::get('action', 1)) {
+    if (Router::param('action', 1)) {
       http_response_code(404);
       View::renderAdmin('404.php');
       return;
@@ -68,7 +68,7 @@ class AdminController extends Gila\Controller
   */
   public function widgetsAction()
   {
-    if ($id = Router::get('id', 1)) {
+    if ($id = Router::param('id', 1)) {
       View::set('widget', Widget::getById($id));
       View::renderFile('admin/edit_widget.php');
       return;
@@ -111,7 +111,7 @@ class AdminController extends Gila\Controller
   public function package_optionsAction()
   {
     self::access('admin');
-    $package = Router::get('package', 1);
+    $package = Router::param('package', 1);
     View::renderFile('admin/header.php');
     Package::options($package);
     View::renderFile('admin/footer.php');
@@ -128,8 +128,8 @@ class AdminController extends Gila\Controller
       new Package();
       return;
     }
-    $search = htmlentities(Router::get('search', 2));
-    $tab = Router::get('tab', 1);
+    $search = htmlentities(Router::param('search', 2));
+    $tab = Router::param('tab', 1);
     $packages = [];
 
     if ($tab == 'new') {
@@ -156,7 +156,7 @@ class AdminController extends Gila\Controller
   {
     self::access('admin');
     $packages = [];
-    $search = htmlentities(Router::get('search', 2));
+    $search = htmlentities(Router::param('search', 2));
     if (!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
       View::alert('error', "Could not connect to themes list. Please try later.");
     } else {
@@ -312,7 +312,7 @@ class AdminController extends Gila\Controller
 
   public function menuAction()
   {
-    $menu = Router::get('menu', 1);
+    $menu = Router::param('menu', 1);
     if ($menu != null) {
       if (Session::hasPrivilege('admin')) {
         $folder = Config::dir(LOG_PATH.'/menus/');

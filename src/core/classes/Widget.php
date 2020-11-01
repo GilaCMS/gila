@@ -59,9 +59,6 @@ class widget
   public static function getFields($widget)
   {
     $widgetData = include self::getWidgetFile($widget);
-    if (isset($options)) {
-      return $options;
-    } //DEPRECATED
     return $widgetData['fields'] ?? $widgetData;
   }
 

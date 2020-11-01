@@ -458,6 +458,8 @@ textare.g-input, .g-input[type=text] {
 .gila-popup>*{
   padding:12px;
   margin:0;
+}
+.gila-popup .title, .gila-popup .body, .gila-popup .foot{
   font-family: Arial, sans-serif;
 }
 .gila-popup>.title{
@@ -634,7 +636,7 @@ textare.g-input, .g-input[type=text] {
   padding:inherit;
   width:auto;
   min-width:120px;
-  z-index:999999;
+  z-index:10;
 }
 .g-nav li>ul li, .dropdown-menu li{
   width:100%;

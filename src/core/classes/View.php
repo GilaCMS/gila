@@ -19,10 +19,7 @@ class View
 
   public static function set($param, $value)
   {
-    global $g,$c; // DEPRECATED since 1.13.0
     self::$part[$param]=$value;
-    @$g->$param = $value;
-    @$c->$param = $value;
   }
 
   /**
@@ -209,8 +206,6 @@ class View
 
   public static function includeFile($filename, $package='core')
   {
-    global $c;
-
     if (isset(self::$renderer)) {
       $renderer = self::$renderer;
       if ($renderer($filename, $package, View::$part)) {
@@ -377,12 +372,6 @@ class View
     @include $widget_file;
   }
 
-  public static function widget_body($type, $widget_data=null, $widget_file=null) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    self::widgetBody($type, $widget_data, $widget_file);
-  }
-
   public static function getWidgetBody($type, $widget_data=null, $widget_file=null)
   {
     ob_start();
@@ -452,12 +441,6 @@ class View
       }
     }
     Event::fire($area);
-  }
-
-  public static function widget_area($area, $div=true, $type=null, $widget_file=null) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    self::widgetArea($area, $div, $type, $widget_file);
   }
 
   public static function getWidgetArea($area)
@@ -571,33 +554,6 @@ class View
     return [$file.'?'.$stack[0], $stack[1]];
   }
 
-  public static function thumb_stack($src_array, $file, $max=180) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    self::thumbStack($src_array, $file, $max);
-  }
-
-  public static function thumb_xs($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'xs/', 80);
-  }
-  public static function thumb_sm($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'sm/', 200);
-  }
-  public static function thumb_md($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'md/', 400);
-  }
-  public static function thumb_lg($src, $id=null) // DEPRECATED
-  {
-    return self::thumb($src, 'lg/', 800);
-  }
-  public static function thumb_xl($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'xl/', 1200);
-  }
-
   public static function getTemplates($template)
   {
     $options = [];
@@ -638,9 +594,4 @@ class View
     return $r;
   }
 
-  public static function thumb_srcset($src, $sizes = [1200,320]) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    return self::thumbSrcset($src, $sizes);
-  }
 }

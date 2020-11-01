@@ -798,7 +798,7 @@ g_tinymce_options = {
   cleanup: true,
   plugins: ['code codesample table charmap image media lists link emoticons'],
   menubar: true,
-  entity_encoding: 'raw',
+  //entity_encoding: 'raw',
   toolbar: 'formatselect bold italic | bullist numlist outdent indent | link image table | alignleft aligncenter alignright alignjustify',
   file_picker_callback: function(cb, value, meta) {
     input_filename = cb;

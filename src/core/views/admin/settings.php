@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_POST['gila_base'].='/';
   }
   foreach ($config_list as $key => $value) {
-    Config::setConfig($key, $_POST['gila_'.$key]);
+    Config::set($key, $_POST['gila_'.$key]);
   }
   Config::config('default-controller', $_POST['gila_dc']);
   Config::config('timezone', $_POST['gila_timezone']);

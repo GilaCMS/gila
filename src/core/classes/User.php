@@ -148,7 +148,6 @@ class User
       return json_decode($response, true);
     }
 
-    $response = User::metaList($id, 'privilege'); // DEPRECATED since 1.9.0
     $roles = User::metaList($id, 'role');
     $rp = Config::config('permissions');
     if ($id != 0) {

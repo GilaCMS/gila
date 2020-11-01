@@ -17,7 +17,7 @@ class CMController extends Gila\Controller
   public function __construct()
   {
     $this->permissions = User::permissions(Session::userId());
-    $this->table = Router::get("t", 1);
+    $this->table = Router::param("t", 1);
     if (!isset(Config::$content[$this->table])) {
       http_response_code(404);
       exit;
@@ -99,7 +99,7 @@ class CMController extends Gila\Controller
     if (!$table->can('read')) {
       return;
     }
-    if ($id = Router::get("id", 2)) {
+    if ($id = Router::param("id", 2)) {
       $filter = [$table->id()=>$id];
       $row = $table->getRow($filter);
     } else {
@@ -388,7 +388,7 @@ class CMController extends Gila\Controller
     $callback = Router::param("callback") ?? $t.'_action';
 
     $fields = $pnk->fields('edit');
-    $id = Router::get("id", 2);
+    $id = Router::param("id", 2);
     $id = (int)$id;
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
     echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button>';
