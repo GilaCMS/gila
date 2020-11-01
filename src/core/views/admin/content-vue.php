@@ -13,7 +13,7 @@ View::script('core/admin/content.js');
 if (file_exists('src/'.$tablesrc.'.js') && !in_array('src/'.$tablesrc.'.js', $t['js'])) {
   echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>"; // DEPRECATED
 }
-View::scriptAsync('core/lang/content/'.Config::config('language').'.js');
+View::scriptAsync('core/lang/content/'.Config::get('language').'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
 View::script('lib/CodeMirror/codemirror.js');
@@ -97,8 +97,8 @@ var app = new Vue({
 
 g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templates:[])); ?>;
 
-base_url = "<?=Config::config('base')?>"
-g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
+base_url = "<?=Config::get('base')?>"
+g_tinymce_options.document_base_url = "<?=Config::get('base')?>"
 g_tinymce_options.height = '100%'
 
 </script>

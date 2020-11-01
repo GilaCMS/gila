@@ -1,6 +1,6 @@
 <h1>Theme options</h1>
 <?php
-$pack = Config::config('theme');
+$pack = Config::get('theme');
 echo '<form id="theme_options_form" class="g-form">';
 echo '<input id="theme_id" value="'.$pack.'" type="hidden">';
 
@@ -23,7 +23,7 @@ echo "</form>";
 
 <?=View::script('core/admin/media.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('core/lang/content/'.Config::config('language').'.js');?>
+<?=View::script('core/lang/content/'.Config::get('language').'.js');?>
 <?=View::script('core/admin/vue-components.js');?>
 <script>
 

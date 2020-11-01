@@ -32,7 +32,7 @@ class Theme
   {
     if (in_array($activate, scandir('themes/'))) {
       if ($activate != $GLOBALS['config']['theme'] ||
-          Config::config('env')=='dev') {
+          Config::get('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
         if (isset($pac['require'])) {
@@ -198,7 +198,7 @@ class Theme
           $db->query($ql, ['theme.'.$key, $value,$value]);
         }
       }
-      if (Config::config('env')=='pro') {
+      if (Config::get('env')=='pro') {
         unlink(LOG_PATH.'/load.php');
       }
       exit;

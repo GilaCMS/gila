@@ -142,7 +142,7 @@ class View
     if ($gpt = Router::request('g_preview_theme')) {
       return 'themes/'.$gpt;
     }
-    return 'themes/'.Config::config('theme');
+    return 'themes/'.Config::get('theme');
   }
 
   public static function renderAdmin($file, $package = 'core')
@@ -464,7 +464,7 @@ class View
       return false;
     }
 
-    if (Config::config('use_webp')) {
+    if (Config::get('use_webp')) {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;

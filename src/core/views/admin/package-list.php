@@ -40,7 +40,7 @@ if (Package::check4updates()) {
 
 
 foreach ($packages as $pkey=>$p) {
-  if ($p->package!='core' || Config::config('env')=='dev') {
+  if ($p->package!='core' || Config::get('env')=='dev') {
     if (isset($p->lang)) {
       Config::addLang($p->lang);
     }
@@ -96,7 +96,7 @@ foreach ($packages as $pkey=>$p) {
     // Buttons
     if (file_exists('src/'.$p->package)) {
       if (in_array($p->package, $GLOBALS['config']['packages']) || $p->package=='core') {
-        if (Config::config('env')=='dev') {
+        if (Config::get('env')=='dev') {
           $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
         }
         if ($p->package!='core') {

@@ -187,7 +187,7 @@ class Image
   public static function localPath($src)
   {
     if (parse_url($src, PHP_URL_HOST) != null) {
-      if (strpos($src, Config::config('base')) !== 0) {
+      if (strpos($src, Config::get('base')) !== 0) {
         $_src = SITE_PATH.'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
         if (!file_exists($_src)) {
           $_file = LOG_PATH.'/cannot_copy.json';

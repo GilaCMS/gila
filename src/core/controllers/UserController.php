@@ -37,8 +37,8 @@ class UserController extends Gila\Controller
 
   public function registerAction()
   {
-    if (Session::key('user_id')>0 || Config::config('user_register')!=1) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
+    if (Session::key('user_id')>0 || Config::get('user_register')!=1) {
+      echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
       return;
     }
     View::set('title', __('Register'));
@@ -54,10 +54,10 @@ class UserController extends Gila\Controller
         View::alert('error', __('register_error1'));
       } else {
         // register the user
-        $active = Config::config('user_activation')=='auto'? 1: 0;
+        $active = Config::get('user_activation')=='auto'? 1: 0;
         if ($user_Id = User::create($email, $password, $name, $active)) {
           // success
-          if (Config::config('user_activation')=='byemail') {
+          if (Config::get('user_activation')=='byemail') {
             $baseurl = Config::base();
             $subject = __('activate_msg_ln1').' '.$r['username'];
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
@@ -65,7 +65,7 @@ class UserController extends Gila\Controller
             $msg .= __('activatemsg_ln3')." $baseurl\n\n";
             $msg .= $baseurl."user/activate?ap=$activate_code\n\n";
             $msg .= __('reset_msg_ln4');
-            $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+            $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
             User::meta($user_Id, 'activate_code', $activate_code);
             new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
           }
@@ -154,7 +154,7 @@ class UserController extends Gila\Controller
       $msg .= __('reset_msg_ln3')." $baseurl\n\n";
       $msg .= $baseurl."user/password_reset?rp=$reset_code\n\n";
       $msg .= __('reset_msg_ln4');
-      $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+      $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
       User::meta($r['id'], 'reset_code', $reset_code);
       new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
@@ -188,6 +188,6 @@ class UserController extends Gila\Controller
     global $db;
     User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
+    echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
   }
 }

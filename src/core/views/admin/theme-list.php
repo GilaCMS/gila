@@ -4,7 +4,7 @@ $table = '<br><div style="display:grid;grid-gap:15px;grid-template-columns:repea
 $pn = 0;
 
 foreach ($packages as $pkey=>$p) {
-  if ($p->package == Config::config('theme')) {
+  if ($p->package == Config::get('theme')) {
     $border="border: 2px solid green;";
   } else {
     $border="";
@@ -26,9 +26,9 @@ foreach ($packages as $pkey=>$p) {
   $table.="</div><br>";
 
   if (file_exists('themes/'.$p->package)) {
-    if ($p->package!=Config::config('theme')) {
+    if ($p->package!=Config::get('theme')) {
       $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>".__('Select')."</a> ";
-    } elseif (Config::config('env')=='dev') {
+    } elseif (Config::get('env')=='dev') {
       $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a> ";
     }
     if (isset($p->options)) {
@@ -81,7 +81,7 @@ View::alerts();
 
 <?=View::script('core/admin/media.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('core/lang/content/'.Config::config('language').'.js');?>
+<?=View::script('core/lang/content/'.Config::get('language').'.js');?>
 <?=View::script('core/admin/vue-components.js');?>
 <script>
 function theme_activate(p) {

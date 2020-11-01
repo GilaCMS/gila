@@ -4,7 +4,7 @@
   <?=View::script('core/gila.min.js')?>
   <?=View::script('core/admin/media.js')?>
   <?=View::script('lib/vue/vue.min.js');?>
-  <?=View::script('core/lang/content/'.Config::config('language').'.js');?>
+  <?=View::script('core/lang/content/'.Config::get('language').'.js');?>
   <?=View::script("lib/tinymce5/tinymce.min.js")?>
   <?=View::script('core/admin/vue-components.js');?>
   <?=View::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
@@ -19,7 +19,7 @@ align-items: center;padding:0 1em">
     <i class="fa fa-2x fa-tablet" onclick="tabletView()"></i>
     <i class="fa fa-2x fa-mobile" onclick="mobileView()"></i>
   </div>
-  <div><button type="button" onclick="theme_options('<?=Config::config('theme')?>')">Theme Options</button></div>
+  <div><button type="button" onclick="theme_options('<?=Config::get('theme')?>')">Theme Options</button></div>
   <script>
   function desktopView() {
     pageFrame.style.width = '100%'

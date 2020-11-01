@@ -50,7 +50,7 @@ if (version_compare(Package::version('core'), '1.15.3') < 0) {
   $db->query("UPDATE userrole TABLE SET `level`=10 WHERE id=1;");
 }
 
-if (!Config::config('set_utf8mb4')) {
+if (!Config::get('set_utf8mb4')) {
   global $db;
   $db->query("ALTER DATABASE {$GLOBALS['config']['db']['name']} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
   $tables = ['page','post','user','usermeta','userrole','postcategory','postmeta','user_notification','widget'];
@@ -63,7 +63,7 @@ if (!Config::config('set_utf8mb4')) {
   $db->query("ALTER TABLE `postcategory` CHANGE `description` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
   $db->query("ALTER TABLE `user_notification` CHANGE `details` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
 
-  Config::config('set_utf8mb4', true);
+  Config::get('set_utf8mb4', true);
 }
 
 Config::dir(LOG_PATH.'/stats');

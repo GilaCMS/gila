@@ -6,7 +6,7 @@
 <?=View::script("lib/tinymce5/tinymce.min.js")?>
 <?=View::script('core/admin/vue-components.js');?>
 <?=View::script('core/admin/media.js')?>
-<?=View::script('core/lang/content/'.Config::config('language').'.js')?>
+<?=View::script('core/lang/content/'.Config::get('language').'.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
 <?=View::cssAsync('core/admin/blocks.css')?>
@@ -191,8 +191,8 @@ foreach (Widget::getList('page') as $k=>$w) {
 ?>
 
 content_blocks = <?=json_encode($content_blocks)?>;
-base_url = "<?=Config::config('base')?>"
-g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
+base_url = "<?=Config::get('base')?>"
+g_tinymce_options.document_base_url = "<?=Config::get('base')?>"
 
 
 function getElementIndex (element) {

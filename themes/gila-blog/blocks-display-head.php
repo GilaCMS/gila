@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?=Config::config('language')?>">
+<html lang="<?=Config::get('language')?>">
 <?php
 View::stylesheet('core/gila.min.css');
 View::stylesheet('lib/font-awesome/css/font-awesome.min.css');

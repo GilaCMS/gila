@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?=Config::config('language')?>">
+<html lang="<?=Config::get('language')?>">
 <?php
 View::stylesheet('core/gila.min.css');
 View::head()?>
@@ -40,7 +40,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
           <a href="<?=Config::base()?>" style="color:#333;">
           <?php
           $lgimg = Config::option('theme.header-logo');
-          $_title = Config::config('title');
+          $_title = Config::get('title');
           echo ($lgimg?'<img class="header-logo" src="'.$lgimg.'" alt="'.$_title.'">':'<h1>'.$_title.'</h1>');
           ?>
           </a>

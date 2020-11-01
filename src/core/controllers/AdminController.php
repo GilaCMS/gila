@@ -202,7 +202,7 @@ class AdminController extends Gila\Controller
     global $db;
     User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
+    echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
   }
 
   public function media_uploadAction()
@@ -213,7 +213,7 @@ class AdminController extends Gila\Controller
           echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
         }
       }
-      $upload_folder = Config::config('media_uploads') ?? 'assets';
+      $upload_folder = Config::get('media_uploads') ?? 'assets';
       $path = Router::post('path', $upload_folder);
       if ($path[0]=='.') {
         $path=$upload_folder;
@@ -225,8 +225,8 @@ class AdminController extends Gila\Controller
         if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
         }
-        $maxWidth = Config::config('maxImgWidth') ?? 0;
-        $maxHeight = Config::config('maxImgHeight') ?? 0;
+        $maxWidth = Config::get('maxImgWidth') ?? 0;
+        $maxHeight = Config::get('maxImgHeight') ?? 0;
         if ($maxWidth>0 && $maxHeight>0) {
           Image::makeThumb($path, $path, $maxWidth, $maxHeight);
         }

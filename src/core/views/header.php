@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="<?=Config::config('language')?>">
+<html lang="<?=Config::get('language')?>">
 <?php View::head()?>
-<a href="<?=Config::base()?>"><h1><?=Config::config('title')?></h1></a>
-<h3><?=Config::config('slogan')?><h3>
+<a href="<?=Config::base()?>"><h1><?=Config::get('title')?></h1></a>
+<h3><?=Config::get('slogan')?><h3>
 <div>

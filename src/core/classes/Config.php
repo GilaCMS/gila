@@ -156,7 +156,11 @@ class Config
 
   public static function config($key, $value = null) // DEPRECATED
   {
-    return self::get($key);
+    if($value!==null) {
+      self::set($key, $value);
+    } else {
+      return self::get($key);
+    }
   }
   public static function setConfig($key, $value) // DEPRECATED
   {
@@ -226,23 +230,23 @@ class Config
     return password_hash($pass, PASSWORD_BCRYPT);
   }
 
+  public static function option($option, $default='')  //DEPRECATED
+  {
+    return self::getOption($option, $default);
+  }
+
   /**
   * Returns an option value
   * @param $option (string) Option name
   * @param $default (optional) The value to return if this option has not saved value
   * @return The option value
   */
-  public static function option($option, $default='')
+  public static function getOption($option, $default='')
   {
     if (isset(self::$option[$option]) && self::$option[$option]!='') {
       return self::$option[$option];
     }
     return $default;
-  }
-
-  public static function getOption($option, $default='')
-  {
-    return self::option($option, $default);
   }
 
   /**

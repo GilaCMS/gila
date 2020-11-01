@@ -80,7 +80,7 @@ class Profile
   public static function getAllPermissions()
   {
     $permissions = [];
-    $packages = array_merge(Config::config('packages'), ["core"]);
+    $packages = array_merge(Config::get('packages'), ["core"]);
     foreach ($packages as $package) {
       $pjson = 'src/'.$package.'/package.json';
       $perjson = 'src/'.$package.'/package/en.json';

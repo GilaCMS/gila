@@ -15,7 +15,7 @@
   if (isset(View::$canonical)) {
     echo '<link rel="canonical" href="'.View::$canonical.'" />';
   }
-  if (Config::config('favicon')) {
-    echo '<link rel="icon" type="image/png" href="'.Config::config('favicon').'">';
+  if (Config::get('favicon')) {
+    echo '<link rel="icon" type="image/png" href="'.Config::get('favicon').'">';
   }
 ?>

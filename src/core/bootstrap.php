@@ -73,13 +73,13 @@ if ($GLOBALS['config'] === []) {
 }
 
 
-if (is_array(Config::config('trusted_domains')) &&
+if (is_array(Config::get('trusted_domains')) &&
     isset($_SERVER['HTTP_HOST']) &&
-    !in_array($_SERVER['HTTP_HOST'], Config::config('trusted_domains'))) {
+    !in_array($_SERVER['HTTP_HOST'], Config::get('trusted_domains'))) {
   die($_SERVER['HTTP_HOST'].' is not a trusted domain. It can be added in configuration file.');
 }
 
-$db = new Db(Config::config('db'));
+$db = new Db(Config::get('db'));
 
 if ($GLOBALS['config']['env'] == 'dev') {
   error_reporting(E_ALL);
@@ -107,8 +107,8 @@ $theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
 if (file_exists("themes/$theme/load.php")) {
   include "themes/$theme/load.php";
 }
-if (is_array(Config::config('cors'))) {
-  foreach (Config::config('cors') as $url) {
+if (is_array(Config::get('cors'))) {
+  foreach (Config::get('cors') as $url) {
     @header('Access-Control-Allow-Origin: '.$url);
   }
 }

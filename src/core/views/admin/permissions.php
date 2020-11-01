@@ -20,7 +20,7 @@ if (isset($_POST['submit']) && isset($_POST['role'])) {
   View::alert('success', __('_changes_updated'));
 }
 
-$checked = Config::config('permissions');
+$checked = Config::get('permissions');
 
 
 View::alerts();

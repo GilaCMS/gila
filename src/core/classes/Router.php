@@ -77,7 +77,7 @@ class Router
     if (isset(self::$controller)) {
       return self::$controller;
     }
-    $default = Config::config('default-controller');
+    $default = Config::get('default-controller');
     self::$controller = self::request('c', $default);
 
     if (isset(self::$controllers[self::$args[0]])) {
@@ -206,7 +206,7 @@ class Router
     if ($_p!==false) {
       self::$url = strip_tags($_p);
       self::$args = explode("/", self::$url);
-      if (isset(self::$args[0]) && Config::config('languages') && in_array(self::$args[0], Config::config('languages'))) {
+      if (isset(self::$args[0]) && Config::get('languages') && in_array(self::$args[0], Config::get('languages'))) {
         Config::lang(self::$args[0]);
       }
     } else {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?=Gila\Config::config('language')?>">
+<html lang="<?=Gila\Config::get('language')?>">
 
 <head>
   <base href="<?=Gila\Config::base()?>">
@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title><?=Gila\Config::config('title')?> - <?=($title??'')?></title>
+  <title><?=Gila\Config::get('title')?> - <?=($title??'')?></title>
 
   <?=Gila\View::css('core/gila.min.css')?>
   <?=Gila\View::css('lib/font-awesome/css/font-awesome.min.css')?>
