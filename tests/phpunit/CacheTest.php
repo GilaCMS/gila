@@ -10,6 +10,7 @@ class CacheTest extends TestCase
 {
   public function test_remember()
   {
+    Gila\Config::dir(LOG_PATH.'/cacheItem');
     FileManager::delete(LOG_PATH.'/cacheItem/itemTest1|');
     FileManager::delete(LOG_PATH.'/cacheItem/itemTest2|');
     $data = Cache::get('itemTest1');
