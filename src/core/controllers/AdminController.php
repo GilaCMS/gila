@@ -134,7 +134,7 @@ class AdminController extends Gila\Controller
 
     if ($tab == 'new') {
       $url = 'https://gilacms.com/packages/?search='.$search;
-      $url .= Config::config('test')=='1' ? '&test=1' : '';
+      $url .= Config::get('test')=='1' ? '&test=1' : '';
       if (!$contents = file_get_contents($url)) {
         View::alert('error', "Could not connect to packages list. Please try later.");
       } else {

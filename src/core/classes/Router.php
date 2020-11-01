@@ -44,6 +44,9 @@ class Router
       return;
     }
 
+    if ($ctrlClass==='blog') {
+      $ctrlClass='Blog';
+    } // DEPRECATED
     $c = new $ctrlClass();
 
     // find function to run after controller construction
