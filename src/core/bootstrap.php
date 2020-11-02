@@ -44,16 +44,8 @@ spl_autoload_register(function ($class) {
   }
 
   $class = strtr($class, ['\\'=>'/', '__'=>'-']);
-  $Class = ucfirst($class);
 
-  if (file_exists('src/core/classes/'.$class.'.php')) {
-    require_once 'src/core/classes/'.$class.'.php';
-    class_alias('Gila\\'.$class, $class);
-  } elseif (file_exists('src/core/classes/'.$Class.'.php')) {
-    trigger_error("Class name $Class is capitalized", E_USER_WARNING);
-    require_once 'src/core/classes/'.$Class.'.php';
-    class_alias('Gila\\'.$Class, $class);
-  } elseif (file_exists('src/'.$class.'.php')) {
+  if (file_exists('src/'.$class.'.php')) {
     require_once 'src/'.$class.'.php';
   } elseif (in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
     require_once 'src/core/classes/'.substr($class, 12).'.php';

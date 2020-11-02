@@ -1,7 +1,10 @@
 
 gtableFieldDisplay.photo = function(rv) {
   if(rv.photo==null || rv.photo.length==0) {
-    let letter = rv.username.toUpperCase()[0];
+    let letter = ""
+    if(rv.username) {
+      letter = rv.username.toUpperCase()[0];
+    }
     let color = ['red', 'lightseagreen', 'green', 'hotpink', 'darkorange', 'brown', 'blueviolet'][rv.id%7]
     return '<div style="box-shadow:0 0 3px grey; margin:6px; border-radius:50%;'+
     'width:40px;height:40px;background:'+color+'; color: white;\
