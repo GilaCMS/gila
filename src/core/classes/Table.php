@@ -24,9 +24,6 @@ class Table
     }
     $this->loadSchema($content);
 
-    if ($patch = @Config::$contentField[$this->table['name']]) { // DEPRECATED since 1.8.0
-      $this->table['fields'] = array_merge($this->table['fields'], $patch);
-    }
     if (isset(Config::$contentInit[$this->table['name']])) {
       foreach (@Config::$contentInit[$this->table['name']] as $init) {
         $init($this->table);

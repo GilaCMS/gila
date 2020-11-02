@@ -116,9 +116,9 @@ class Router
     return self::$action;
   }
 
-  public static function get($string, $fn = null)
+  public static function get($string, $fn = null) // DEPRECATED
   {
-    return self::param($string, $fn); // DEPRECATED
+    return self::param($string, $fn);
   }
 
   public static function add($string, $fn, $method = 'GET', $permission = null)
@@ -171,7 +171,7 @@ class Router
   * $file:string Controller’s filepath without the php extension
   * $name:string Optional. Controller’s class name, $c is used by default
   */
-  public static function controller($name = null, $path = null)
+  public static function controller($name, $path)
   {
     self::$controllers[$name] = $path;
   }
@@ -179,16 +179,9 @@ class Router
   /**
   * Registers a new action
   */
-  public static function action($c=null, $action=null, $fn=null)
+  public static function action($c, $action, $fn)
   {
-    if ($fn!==null) {
-      self::$actions[$c][$action] = $fn;
-      return;
-    }
-    if ($action===null && $set!==null) {
-      self::$action = $set;
-    } // DEPRECATED
-    return @self::getAction(self::getController(), self::$args); // DEPRECATED
+    self::$actions[$c][$action] = $fn;
   }
 
   public static function before($c, $action, $fn)

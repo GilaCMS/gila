@@ -212,17 +212,6 @@ class Config
   }
 
   /**
-  * DEPRECATED @see View::alert()
-  */
-  public static function alert($type, $msg)
-  {
-    if ($type === 'alert') {
-      $type = '';
-    }
-    return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
-  }
-
-  /**
   * @return Password hash
   */
   public static function hash($pass)

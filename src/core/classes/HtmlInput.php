@@ -25,7 +25,7 @@ class HtmlInput
     }
 
     $value = strtr($value, ['="javascript:'=>'="', '=\'javascript:'=>'=\'']);
-    //$value = utf8_decode($value);
+    if(Config::get('utf8_decode')==true) $value = utf8_decode($value); // mysql utf8 support
     return $value;
   }
 

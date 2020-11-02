@@ -53,16 +53,6 @@ return [
       'edit'=>true,
       'qtype'=>'INT(1) DEFAULT NULL'
     ],
-    'content'=> [
-      'title'=>'Content',
-      'helptext'=>'This field is deprecated, move the content in text blocks with page builder',
-      'list'=>false,
-      'edit'=>true,
-      'type'=>'textarea',
-      'input_type'=>'tinymce',
-      'allow_tags'=>true,
-      'qtype'=>'TEXT'
-    ],
     'updated'=> [
       'title'=>'Updated',
       'type'=>'date',
