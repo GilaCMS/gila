@@ -28,8 +28,8 @@ Vue.component('g-table', {
             <div class="g-table-title" v-html="table.title"></div>\
             <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
               <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-              @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
-              @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text" style="padding-left:28px">\
+              @keyup="if($event.which == \'8\' || $event.keyCode) runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+              @keypress="if($event.which == \'13\') runsearch(true)" value="" type="text" style="padding-left:28px">\
               <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
             </div>\
             <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
@@ -39,15 +39,16 @@ Vue.component('g-table', {
             </div>\
             <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
               <label>&nbsp;{{field_label(sb)}}</label>\
-              <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
+              <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch(true)">\
                 <option value="" selected>-</option>\
                 <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
               </select>\
               <div v-else-if="table.fields[sb].type==\'date\'" style="position:relative;display:inline-block">\
-                <input class="g-input" v-model="filter[sb]" @change="runsearch()" type="date">\
+                <input class="g-input" v-model="filter[sb]" @change="runsearch(true)" type="date">\
               </div>\
               <div v-else style="position:relative;display:inline-block">\
-                <input class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
+                <input class="g-input" v-model="filter[sb]" @keyup="if($event.which == \'8\' || $event.keyCode) runsearch()"\
+                @keypress="if($event.which == \'13\') runsearch(true)" value="" type="text">\
                 <div v-else style="position:relative;display:inline-block">\
                   <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
                 </div>\
@@ -106,7 +107,7 @@ Vue.component('g-table', {
   </table>\
   </div>\
   ',
-  props: ['gtype','gtable','gfields','gfilters','gchild','grows','gtotalrows','permissions'],
+  props: ['gtype','gtable','gfields','gfilters','gchild','grows','gtotalrows','permissions','base'],
   data: function(){ 
     if(!this.permissions) {
       this.permissions=null
@@ -136,7 +137,8 @@ Vue.component('g-table', {
     updateRows: [],
     inlineEdit: false,
     intervalUpdate: null,
-    irowSelected: null
+    irowSelected: null,
+    basePath: this.base ?? null
   }},
   updated: function() {
     if(this.edititem==0) return;
@@ -246,7 +248,18 @@ Vue.component('g-table', {
       }
       return true
     },
-    runsearch: function() {
+    runsearch: function(pushState = false) {
+      if(pushState==true && this.basePath) {
+        window.onpopstate = function(event) {
+          console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+          location.reload()
+        }
+        search = this.search ? '&search='+this.search: '';
+        for(fkey in this.filter) {
+          if(this.filter[fkey]!=='') search += '&'+fkey+'='+this.filter[fkey]
+        }
+        history.pushState({path:this.basePath,search:search}, _e('Content'), this.basePath+'?page='+this.page+search)
+      }
       this.load_page()
     },
     update: function(){
