@@ -1,6 +1,6 @@
 <?php
 
-Event::listen('post.after', function () {
+Gila\Event::listen('post.after', function () {
   $language = Config::option('gila_fb_comments.language');
   $appID = Config::option('gila_fb_comments.appID');
   $href = Config::get('base').Router::$url; ?>

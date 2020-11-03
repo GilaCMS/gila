@@ -18,23 +18,26 @@
 $cid = $content.'_'.$id.'_';
 ?>
 
-<div id="content_blocks_list" style="position:fixed;right:2em;top:0.5em;padding:0;z-index:999" :class="{opacity05:load==true}">
+<div id="content_blocks_list" style="position:fixed;right:2em;top:0.5em;padding:0;z-index:999;visibility:hidden" :class="{opacity05:load==true}">
   <div style="margin-left:2em">
-    <button v-if="draft" class='g-btn success content_blocks_btn' @click='block_save()'><?='<i class="fa fa-check"></i> '.__('Save')?></button>
+    <button v-if="draft" class='g-btn success content_blocks_btn' id="saveChanges" @click='block_save()'><?='<i class="fa fa-check"></i> '.__('Save')?></button>
     <?=(isset($title)?'&nbsp;':'')?>
-    <button v-if="draft" class='g-btn-white content_blocks_btn' @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
+    <button v-if="draft" class='g-btn-white content_blocks_btn' id="discardChanges" @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
     <?=(isset($title)?'&nbsp;':'')?>
-    <button class='g-btn-white content_blocks_btn' @click='switch_edit()'> &nbsp;<i class="fa fa-pencil"></i>&nbsp; </button>
+    <button class='g-btn-white content_blocks_btn' id="swapEdit" @click='switch_edit()'> &nbsp;<i class="fa fa-pencil"></i>&nbsp; </button>
     <br>
   </div>
+  <input type="hidden" id="draftValue" v-model="draft">
+  <input type="hidden" id="editValue" v-model="edit">
 </div>
 
 <style>
 .block-head {
   min-height:2em;
+  border:1px dashed rgba(0,0,0,0);
 }
 .block-head:hover {
-  /*border:1px dashed steelblue;*/
+  border:1px dashed steelblue;
 }
 .opacity05{
   opacity:0.5;
@@ -242,30 +245,34 @@ content_blocks_app = new Vue({
   data: {
     blocks: <?=json_encode($widgets??[])?>,
     draft: <?=($isDraft?'true':'false')?>,
-    load: false
+    load: false,
+    edit:true
   },
   methods: {
     block_save: function() {
-      _this = this
       g.loader()
       g.post('blocks/save', 'id=<?=$content.'_'.$id?>', function(data) {
         g.loader(false)
-        _this.draft = false;
+        content_blocks_app.draft = false;
         g.alert("Saved", "success");
       });
     },
     block_discard: function() {
-      _this = this
       g.loader()
       g.post('blocks/discard', 'id=<?=$content.'_'.$id?>', function(data) {
         g.loader(false)
-        _this.draft = false;
+        content_blocks_app.draft = false;
         blocks_preview_reload(data)
       });
     },
     switch_edit: function() {
       g('.block-head>div:nth-child(1)').toggleClass('hide');
       g('.block-end>div:nth-child(1)').toggleClass('hide');
+      if(this.edit===true) {
+        this.edit=false
+      } else {
+        this.edit=true
+      }
     },
     loader: function(x=true) {
       g.loader(x)

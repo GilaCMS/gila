@@ -107,10 +107,13 @@ Vue.component('g-table', {
   </table>\
   </div>\
   ',
-  props: ['gtype','gtable','gfields','gfilters','gchild','grows','gtotalrows','permissions','base'],
+  props: ['gtype','gtable','gfields','gfilters','gfilter','gchild','grows','gtotalrows','permissions','base'],
   data: function(){ 
     if(!this.permissions) {
       this.permissions=null
+    }
+    if(!this.gfilter) {
+      this.gfilter='[]'
     }
     return {
     name: this.gtype,
@@ -122,7 +125,7 @@ Vue.component('g-table', {
       totalRows:0
     },
     filters: this.gfilters,
-    filter: [],
+    filter: JSON.parse(this.gfilter),
     query: '',
     selected_rows: [],
     order: [],
@@ -250,10 +253,6 @@ Vue.component('g-table', {
     },
     runsearch: function(pushState = false) {
       if(pushState==true && this.basePath) {
-        window.onpopstate = function(event) {
-          console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
-          location.reload()
-        }
         search = this.search ? '&search='+this.search: '';
         for(fkey in this.filter) {
           if(this.filter[fkey]!=='') search += '&'+fkey+'='+this.filter[fkey]

@@ -45,9 +45,15 @@ spl_autoload_register(function ($class) {
 
   $class = strtr($class, ['\\'=>'/', '__'=>'-']);
 
-  if (file_exists('src/'.$class.'.php')) {
+  if (file_exists('src/core/classes/'.$class.'.php')) {
+    require_once 'src/core/classes/'.$class.'.php';
+    class_alias('Gila\\'.$class, $class);
+  } elseif (file_exists('src/'.$class.'.php')) {
     require_once 'src/'.$class.'.php';
   } elseif (in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
+    // DEPRECATED
+    $d = debug_backtrace()[1];
+    trigger_error("Use namespace: Gila\\$class (".$d['file'].' line '.$d['line'].')', E_USER_WARNING);
     require_once 'src/core/classes/'.substr($class, 12).'.php';
     class_alias('Gila\\'.substr($class, 12), strtr($class, ['/'=>'\\']));
   }
