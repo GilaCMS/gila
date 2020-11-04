@@ -7,6 +7,7 @@
 </style>
 <?=View::script('lib/vue/vue.min.js')?>
 <?=View::script('core/admin/vue-components.js')?>
+<?=View::script('core/vue-upload-media.js')?>
 <?=View::script('core/admin/media.js')?>
 
 <?php View::alerts(); ?>
@@ -14,12 +15,12 @@
 <div class="gm-grid">
 
 <div>
-  <div id="profile-forms" class="g-card" style="padding:0 16px">
+  <div id="profile-forms" class="g-card" style="padding:0 16px;background:white">
     <form method="post" action="admin/profile" class="g-form">
     <h2 class="text-align-center"><?=__('Personal Information')?></h2>
     <br>
     <div id="profile-photo" class="text-align-center">
-      <input-media name="gila_photo" value="<?=$user_photo?>"/>
+      <input-upload-media name="gila_photo" value="<?=$user_photo?>"/>
     </div>
 
     <br><div>
@@ -54,7 +55,7 @@
 </div>
 
 <div>
-  <div id="profile-forms" class="g-card" style="padding:0 16px">
+  <div id="profile-forms" class="g-card" style="padding:0 16px;background:white">
     <form method="post" action="admin/profile" class="g-form">
     <h2 class="text-align-center"><?=__('Security')?></h2>
     <br><div>

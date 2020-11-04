@@ -164,10 +164,11 @@ appEditMenu = new Vue({
     selectPreviewTheme: function() {
       // select theme
       g.loader()
-      g.post('admin/themes?g_response=content', 'activate='+this.previewedTheme,function(x){
-        g.loader(false)
-        g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
-      })
+      alert('still not working!')
+      //g.post('admin/themes?g_response=content', 'activate='+this.previewedTheme,function(x){
+      //  g.loader(false)
+      //  g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
+      //})
       this.previewedTheme = null
     },
     previewLayout: function(i) {

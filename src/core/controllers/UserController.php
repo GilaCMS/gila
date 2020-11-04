@@ -190,4 +190,46 @@ class UserController extends Gila\Controller
     Session::destroy();
     echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
   }
+
+  public function uploadImageAction()
+  {
+    if(Session::userId()===0) {
+      http_response_code(403);
+      return;
+    }
+    if (isset($_FILES['uploadfiles'])) {
+      if (isset($_FILES['uploadfiles']["error"])) {
+        if ($_FILES['uploadfiles']["error"] > 0) {
+          echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
+        }
+      }
+
+      $path = Config::dir('assets/img/');
+      $tmp_file = $_FILES['uploadfiles']['tmp_name'];
+      $name = htmlentities($_FILES['uploadfiles']['name']);
+      $ext = strtolower(pathinfo($name)['extension']);
+
+      if (in_array(pathinfo($name, PATHINFO_EXTENSION), ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF","webp","WEBP"])) {
+        do {
+          $code = '';
+          while (strlen($code) < 120) {
+            $code .= hash('sha512', uniqid(true));
+          }
+          $target = $path.substr($code, 0, 120).'.'.$ext;
+        } while(file_exists($target));
+
+        if (!move_uploaded_file($tmp_file, $target)) {
+          echo "Error: could not upload file!<br>";
+        }
+        $maxWidth = Config::get('maxImgWidth') ?? 0;
+        $maxHeight = Config::get('maxImgHeight') ?? 0;
+        if ($maxWidth>0 && $maxHeight>0) {
+          Image::makeThumb($path, $path, $maxWidth, $maxHeight);
+        }
+        echo '{"success":true,"image":"'.htmlentities($target).'"}';
+      } else {
+        echo '{"success":false,"msg":"Not a media file"}';
+      }
+    }
+  }
 }
