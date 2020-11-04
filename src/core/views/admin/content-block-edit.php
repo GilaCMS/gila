@@ -119,6 +119,7 @@ for(i=0; i<inlineTexts.length; i++) {
 document.addEventListener("click", function(e){
   if(g(e.target).findUp('#widget_options_form').all==null) {
     e.preventDefault();
+    return false;
   }
 });
 document.addEventListener("keyup", function(e){

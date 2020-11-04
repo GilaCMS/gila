@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <head>
   <base href="<?=Config::base()?>">
   <?=View::script('core/gila.min.js')?>
@@ -9,24 +9,58 @@
   <?=View::script('core/admin/vue-components.js');?>
   <?=View::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::cssAsync('core/gila.min.css')?>
+  <?php
+  global $db;
+  $templates = View::getTemplates('page');
+  $pageTemplates = [''=>'[Default]'];
+  foreach ($templates as $template) {
+    $pageTemplates[$template] = ucwords($template);
+  }
+  $pages = [];
+  $res = $db->get("SELECT id,title,slug,publish FROM `page`;");
+  foreach ($res as $r) {
+    $pages[$r['id']] = $r['title'];
+  }
+  ?>
+  <style>body{padding:0;margin:0;}.fa-d{font-size:120%;margin:auto 5px}</style>
 </head>
-<style>body{padding:0;margin:0;}</style>
 <div style="height:5vh;display:flex;border-bottom:1px solid grey;justify-content: space-between;
 align-items: center;padding:0 1em;background:#555;color:white" id="editMenu">
-  <span><img src="assets/gila-logo.png" style="filter:contrast(0) brightness(2);width:42px"></span>
-  <div style="text-align:center">
-    <i class="fa fa-2x fa-desktop" onclick="desktopView()"></i>
-    <i class="fa fa-2x fa-tablet" onclick="tabletView()"></i>
-    <i class="fa fa-2x fa-mobile" onclick="mobileView()"></i>
+  <div style="display:flex">
+    <div><img src="assets/gila-logo.png" style="filter:contrast(0) brightness(2);width:42px;margin:auto 2em"></div>
+    <ul class="g-nav g-navbar" style="background:inherit">
+    <li class="dropdown" id="pagesDropdown"><a>Page</a>
+      <ul class="dropdown-menu"><li v-for="(page,i) in pages" @click="selectPage(i)"><a>{{page}}</a></li></ul>
+    <li class="dropdown" id="layoutsDropdown"><a>Layout</a>
+      <ul class="dropdown-menu"><li v-for="(layout,i) in layouts" @click="previewLayout(i)"><a>{{layout}}</a></li></ul>
+    <li class=""><a onclick="alert('still not working!')"><i class="fa fa-pencil"></i> Edit</a>
+    <li class="dropdown" id="themesDropdown"><a>Theme</a>
+      <ul class="dropdown-menu"><li v-for="(theme,i) in themes" @click="previewTheme(i)">
+        <a>{{theme}}<span v-if="i==currentTheme"> &check;</span></a>
+      </li></ul>
+    <li class=""><a onclick="theme_options('<?=Config::get('theme')?>')"><i class="fa fa-cog"></i> Options</a>
+    <li class=""><a @click="toggleEdit()">
+      <span v-if="edit=='false'"><i class="fa fa-check-square-o"></i> Preview</span>
+      <span v-else><i class="fa fa-square-o"></i> Preview</span>
+    </a>
+    <li><i class="fa fa-d fa-desktop" onclick="desktopView()"></i>
+    <li><i class="fa fa-d fa-tablet" onclick="tabletView()"></i>
+    <li><i class="fa fa-d fa-mobile" onclick="mobileView()"></i>
+  </ul>
+  </div>
+  <div v-if="previewedTheme">
+    Keep Theme?
+    <button type="button" class="g-btn success" @click="selectPreviewTheme()"><?=__('Yes')?></button>
+    <button type="button" class="g-btn warning" @click="removePreviewTheme()"><?=__('No')?></button>
+  </div>
+  <div v-if="previewedLayout!==null">
+    Keep Layout?
+    <button type="button" class="g-btn success" @click="selectPreviewLayout()"><?=__('Yes')?></button>
+    <button type="button" class="g-btn warning" @click="removePreviewLayout()"><?=__('No')?></button>
   </div>
   <div>
-    <button type="button" class="g-btn btn-white" @click="toggleEdit()">
-      <span v-if="edit=='false'"><i class="fa fa-pencil"></i></span>
-      <span v-else><i class="fa fa-eye"></i></span>
-    </button>
     <button v-if="draft=='true'" type="button" class="g-btn btn-white" @click="discardChanges()">Delete Draft</button>
     <button v-if="draft=='true'" type="button" class="g-btn success" @click="saveChanges()">Publish</button>
-    <button type="button" class="g-btn" onclick="theme_options('<?=Config::get('theme')?>')"><i class="fa fa-cogs"></i> Options</button>
   </div>
   
   <script>
@@ -78,7 +112,8 @@ function theme_options(p) {
 </div>
 
 <div style="background:#eee;display:flex;justify-content:center;height:95vh">
-  <iframe style="width:100%;height:95vh;border:0;transition:0.3s;box-shadow:black 0px 0px 5px" id=pageFrame onload="readFrame()" src='<?=Config::base()?>blocks/display?t=page&id=<?=htmlentities($id)?>'></iframe>
+  <iframe style="width:100%;height:95vh;border:0;transition:0.3s;box-shadow:black 0px 0px 5px" id=pageFrame onload="readFrame()"
+  src='<?=Config::base()?>blocks/display?t=page&id=<?=htmlentities($id)?>'></iframe>
 </div>
 
 <script>
@@ -87,7 +122,14 @@ appEditMenu = new Vue({
   el:"#editMenu",
   data: {
     draft: false,
-    edit: false
+    edit: false,
+    pageId: <?=$id?>,
+    currentTheme: '<?=Config::get('theme')?>',
+    previewedTheme: null,
+    previewedLayout: null,
+    pages: <?=json_encode($pages)?>,
+    layouts: <?=json_encode($pageTemplates)?>,
+    themes: {'gila-mag':'Theme1','gila-blog':'Blog','unique':'Unique'}
   },
   methods: {
     discardChanges: function(){
@@ -98,6 +140,50 @@ appEditMenu = new Vue({
     },
     toggleEdit: function(){
       pageDocument.getElementById('swapEdit').click()
+    },
+    selectPage: function(i) {
+      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+i
+      this.pageId = i
+      pagesDropdown.classList.toggle('open')
+    },
+    previewTheme: function(i) {
+      this.previewedLayout = null
+      if(this.currentTheme==i) {
+        this.previewedTheme = null
+        pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_theme='+i
+      } else {
+        this.previewedTheme = i
+        pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_theme='+i
+      }
+      themesDropdown.classList.toggle('open')
+    },
+    removePreviewTheme: function() {
+      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId
+      this.previewedTheme = null
+    },
+    selectPreviewTheme: function() {
+      // select theme
+      g.loader()
+      g.post('admin/themes?g_response=content', 'activate='+this.previewedTheme,function(x){
+        g.loader(false)
+        g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
+      })
+      this.previewedTheme = null
+    },
+    previewLayout: function(i) {
+      this.previewedTheme = null
+      this.previewedLayout = i
+      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_template='+i
+      layoutsDropdown.classList.toggle('open')
+    },
+    removePreviewLayout: function() {
+      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId
+      this.previewedLayout = null
+    },
+    selectPreviewLayout: function() {
+      // select layout
+      alert('still not working!')
+      this.previewedLayout = null
     }
   }
 })

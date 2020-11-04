@@ -178,10 +178,11 @@ class BlocksController extends Gila\Controller
     if ($content=="page" && $r = Page::getByIdSlug($id, false)) {
       View::set('title', $r['title']);
       View::set('text', View::blocks($blocks, 'page'.$r['id'], true));
-      if ($r['template']===''||$r['template']===null) {
+      $template = Router::request('g_preview_template') ?? $r['template'];
+      if (empty($template)) {
         View::render('page.php');
       } else {
-        View::renderFile('page--'.$r['template'].'.php');
+        View::renderFile('page--'.$template.'.php');
       }
       echo '<style>html{scroll-behavior: smooth;}</style>';
       $isDraft = self::$draft;

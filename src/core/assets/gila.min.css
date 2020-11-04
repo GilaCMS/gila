@@ -595,7 +595,7 @@ textare.g-input, .g-input[type=text] {
 }
 
 @media only screen and (max-width:601px) {
-  .g-nav-mobile.display, .g-nav-mobile.display ul{
+  .g-nav-mobile.display, .g-nav-mobile.display>ul{
     border-width:0;
     width: 100%;
     display:block;
@@ -612,7 +612,7 @@ textare.g-input, .g-input[type=text] {
   .g-nav-toggler{
     display:none;
   }
-  .g-nav-mobile{
+  .g-nav-mobile, .g-nav-mobile.display{
     display:inline-block;
     position: initial;
     width:initial;
@@ -664,7 +664,7 @@ textare.g-input, .g-input[type=text] {
 .g-navbar{ background:var(--main-dark-color); }
 .g-navbar li{ color:#fff; }
 .g-navbar li a{ color:#ddd; }
-.g-navbar li>ul li a{ color:#444; }
+.g-navbar li>ul li, .g-navbar li>ul li a{ color:#444; }
 .g-navbar li a:hover{ background:#000;color:white }
 
 

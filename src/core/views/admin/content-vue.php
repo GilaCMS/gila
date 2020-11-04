@@ -76,7 +76,7 @@ foreach ($pages_path as $path) {
   }
 }
 // read the url query and add it in filters
-$tableFilters = is_array($t['filters']) ? merge_array($t['filters'],$_GET) : $_GET;
+$tableFilters = is_array($t['filters']) ? array_merge($t['filters'],$_GET) : $_GET;
 unset($tableFilters['p']);
 unset($tableFilters['page']);
 ?>

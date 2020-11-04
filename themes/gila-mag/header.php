@@ -46,8 +46,8 @@ li.active{background-color:var(--main-primary-color); color:white;}
           </a>
         </div>
         <!-- Navigation -->
-        <nav class="inline-flex fullwidth g-navbar">
-            <span class="fullwidth" style="border-top: 4px solid <?=$theme_color?>"><?php View::menu(); ?></span>
+        <nav class="inline-flex fullwidth g-nav g-navbar">
+            <span class="fullwidth g-nav" style="border-top: 4px solid <?=$theme_color?>"><?php View::menu(); ?></span>
       </nav>
     </div>
     <div class="wrapper">

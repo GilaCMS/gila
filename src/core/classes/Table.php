@@ -267,10 +267,12 @@ class Table
       if (isset($this->table['pagination'])) {
         $limit .= ','.$this->table['pagination'];
       } else {
-        return "";
+        return '';
       }
     } elseif (is_array($limit)) {
       $limit = implode(',', $limit);
+    } elseif ($limit===false) {
+      return '';
     }
     return $this->db->res(" LIMIT $limit");
   }

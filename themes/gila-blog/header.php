@@ -64,7 +64,7 @@ footer{background:#464a49;margin-top:10px;color:white}
         </div>
         <!-- Navigation -->
         <div class="gl-9">
-        <nav class="inline-flex g-navbar">
+        <nav class="inline-flex g-nav g-navbar">
             <span style=""><?php View::menu('mainmenu'); ?></span>
         </nav>
         </div>
