@@ -148,6 +148,7 @@ class User
       return json_decode($response, true);
     }
 
+    $response = [];
     $roles = User::metaList($id, 'role');
     $rp = Config::get('permissions');
     if ($id != 0) {

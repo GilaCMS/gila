@@ -31,8 +31,8 @@ align-items: center;padding:0 1em;background:#555;color:white" id="editMenu">
     <ul class="g-nav g-navbar" style="background:inherit">
     <li class="dropdown" id="pagesDropdown"><a>Page</a>
       <ul class="dropdown-menu"><li v-for="(page,i) in pages" @click="selectPage(i)"><a>{{page}}</a></li></ul>
-    <li class="dropdown" id="layoutsDropdown"><a>Layout</a>
-      <ul class="dropdown-menu"><li v-for="(layout,i) in layouts" @click="previewLayout(i)"><a>{{layout}}</a></li></ul>
+    <!--li class="dropdown" id="layoutsDropdown"><a>Layout</a>
+      <ul class="dropdown-menu"><li v-for="(layout,i) in layouts" @click="previewLayout(i)"><a>{{layout}}</a></li></ul-->
     <li class=""><a onclick="alert('still not working!')"><i class="fa fa-pencil"></i> Edit</a>
     <li class="dropdown" id="themesDropdown"><a>Theme</a>
       <ul class="dropdown-menu"><li v-for="(theme,i) in themes" @click="previewTheme(i)">
@@ -164,28 +164,27 @@ appEditMenu = new Vue({
     selectPreviewTheme: function() {
       // select theme
       g.loader()
-      alert('still not working!')
-      //g.post('admin/themes?g_response=content', 'activate='+this.previewedTheme,function(x){
-      //  g.loader(false)
-      //  g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
-      //})
+      g.post('admin/themes?g_response=content', 'activate='+this.previewedTheme,function(x){
+        g.loader(false)
+        g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
+      })
       this.previewedTheme = null
     },
-    previewLayout: function(i) {
-      this.previewedTheme = null
-      this.previewedLayout = i
-      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_template='+i
-      layoutsDropdown.classList.toggle('open')
-    },
-    removePreviewLayout: function() {
-      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId
-      this.previewedLayout = null
-    },
-    selectPreviewLayout: function() {
-      // select layout
-      alert('still not working!')
-      this.previewedLayout = null
-    }
+    //previewLayout: function(i) {
+    //  this.previewedTheme = null
+    //  this.previewedLayout = i
+    //  pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_template='+i
+    //  layoutsDropdown.classList.toggle('open')
+    //},
+    //removePreviewLayout: function() {
+    //  pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId
+    //  this.previewedLayout = null
+    //},
+    //selectPreviewLayout: function() {
+    //  // select layout
+    //  alert('still not working!')
+    //  this.previewedLayout = null
+    //}
   }
 })
 
@@ -200,7 +199,5 @@ function readFrame() {
       appEditMenu.edit = pageDocument.getElementById('editValue').value
     }, 100);
 }
-
-
 
 </script>
