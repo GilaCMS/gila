@@ -5,7 +5,7 @@
     <?php foreach ($posts as $r) { ?>
     <div class="row gap-8px post-review">
             <?php
-            if($img=View::thumb($r['img'],$r['id'].'__sm.jpg', 200)){
+            if($img=View::thumb($r['img'], 200)){
 		       $title_gl='gs-9';
 		       echo '<div class="gs-3">';
                echo '<img class="lazy" data-src="'.$img.'" style="width:100%; height:auto">';

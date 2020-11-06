@@ -11,6 +11,6 @@ grid-template-columns: repeat(auto-fit, minmax(360px,1fr)); grid-gap: 2em;}
   .side-image{grid-template-columns: 1fr}
 }
 </style>
-  <img src="<?=$widget_data->image?>" style="max-height:300px;margin:auto;" class="<?=($widget_data->side==0?'col1':'col2')?>">
+  <img src="<?=View::thumb($widget_data->image,600)?>" style="max-height:600px;margin:auto;" class="<?=($widget_data->side==0?'col1':'col2')?>">
   <div data-inline="text" class="<?=($widget_data->side==0?'col2':'col1')?>"><?=$widget_data->text?></div>
 </section>

@@ -571,7 +571,7 @@ textare.g-input, .g-input[type=text] {
   display:block;
   padding:0;
   margin:auto;
-  z-index:999999;
+  z-index:100;
   font:15px Arial;
 }
 .g-nav li{

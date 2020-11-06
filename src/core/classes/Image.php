@@ -214,4 +214,40 @@ class Image
     }
     return false;
   }
+
+  public static function readfile($file)
+  {
+    if (file_exists($file)) {
+      ob_end_clean();
+      header('Content-Length: '.filesize($file));
+      $ext = explode('.', $file);
+      $ext = $ext[count($ext)-1];
+      $imageInfo = getimagesize($file);
+      switch ($imageInfo[2]) {
+        case IMAGETYPE_JPEG:
+          header("Content-Type: image/jpeg");
+          break;
+        case IMAGETYPE_WEBP:
+          header("Content-Type: image/webp");
+          break;
+        case IMAGETYPE_GIF:
+          header("Content-Type: image/gif");
+          break;
+        case IMAGETYPE_PNG:
+          header("Content-Type: image/png");
+          break;
+        default:
+          if ($ext=='svg' &&
+              (substr($file, 0, 7) == 'assets/' || substr($file, 0, 4) == 'src/')) {
+            header("Content-Type: image/svg+xml");
+            echo file_get_contents($file);
+          }
+          return;
+          break;
+      }
+      readfile($file);
+    } else {
+      http_response_code(404);
+    }
+  }
 }

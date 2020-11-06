@@ -112,3 +112,19 @@
     gap:5px;
   }
 }
+
+.gallery-section{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:1em;
+}
+
+section.container{
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
+.colors-invert, .colors-invert p{
+  background: #444;
+  color:white;
+}

@@ -1,4 +1,4 @@
-<section class="features-grid">
+<section class="features-grid colors-<?=Config::option('colors')?>">
 <?=View::css('core/widgets.css')?>
 <?php foreach (json_decode(@$widget_data->features) as $feature) { ?>
     <div style="text-align:<?=htmlentities($data['align']??'center')?>">

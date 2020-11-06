@@ -21,10 +21,10 @@ foreach (Gila\Post::getPosts(
   echo "<li>";
   echo "<a href='$href'>";
   if ($key==0) {
-    if ($img=View::thumb_lg($r['img'])) {
+    if ($img=View::thumb($r['img'], 600)) {
       echo "<img src='$img'>";
     }
-  } elseif ($img=View::thumb_md($r['img'])) {
+  } elseif ($img=View::thumb($r['img'], 400)) {
     echo "<img src='$img'>";
   }
   echo "</a><div><a href='$href' class='post-title'>{$r['title']}</a>";

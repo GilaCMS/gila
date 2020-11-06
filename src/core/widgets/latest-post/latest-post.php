@@ -33,7 +33,7 @@ foreach ($posts as $key=>$r) {
   echo "<a href='".Config::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']])."'>";
   if ($widget_data->show_thumbnails == 1) {
     if ($stacked[$key]!==false) {
-      if ($img=View::thumb_xs($r['img'])) {
+      if ($img=View::thumb($r['img'], 100)) {
         echo "<img src='$img' style='float:left;margin-right:6px'> ";
       } else {
         echo "<div style='width:80px;height:40px;float:left;margin-right:6px'></div> ";

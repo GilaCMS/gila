@@ -21,8 +21,16 @@
   foreach ($res as $r) {
     $pages[$r['id']] = $r['title'];
   }
+  $themes = [];
+  $folders = scandir('themes');
+  foreach ($folders as $folder) if(file_exists('themes/'.$folder.'/package.json')){
+    $data = json_decode(file_get_contents('themes/'.$folder.'/package.json'), true);
+    $themes[$folder] = $data['name'] ?? $folder;
+  }
   ?>
-  <style>body{padding:0;margin:0;}.fa-d{font-size:120%;margin:auto 5px}</style>
+  <style>body{padding:0;margin:0;}.fa-d{font-size:120%;margin:auto 5px}
+  .g-nav>li>a:hover{background:inherit}
+  </style>
 </head>
 <div style="height:5vh;display:flex;border-bottom:1px solid grey;justify-content: space-between;
 align-items: center;padding:0 1em;background:#555;color:white" id="editMenu">
@@ -129,7 +137,7 @@ appEditMenu = new Vue({
     previewedLayout: null,
     pages: <?=json_encode($pages)?>,
     layouts: <?=json_encode($pageTemplates)?>,
-    themes: {'gila-mag':'Theme1','gila-blog':'Blog','unique':'Unique'}
+    themes: <?=json_encode($themes)?>,
   },
   methods: {
     discardChanges: function(){

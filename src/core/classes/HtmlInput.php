@@ -34,7 +34,7 @@ class HtmlInput
   public function DOMSanitize($value)
   {
     $dom = new \DOMDocument;
-    $dom->loadHTML($value);
+    $dom->loadHTML('<?xml encoding="utf-8"?>'.$value);
 
     $tags = $dom->getElementsByTagName('script');
     foreach (iterator_to_array($tags) as $tag) {

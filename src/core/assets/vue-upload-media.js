@@ -13,7 +13,7 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
   <line x1="9" y1="18" x2="18" y2="9" style="stroke:#fff;stroke-width:3"></line>\
 </svg>\
 <input v-model="value" type="hidden" :id="\'imd\'+idByName()" :name="name">\
-<input type="file" ref="uploader" accept="image/*" multiple style="visibility:hidden" @change="uploadPhoto()">\
+<input type="file" ref="uploader" accept="image/*" multiple style="display:none" @change="uploadPhoto()">\
 </div>\
 ',
   props: ['name','value','fieldset'],

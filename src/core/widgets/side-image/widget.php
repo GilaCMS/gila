@@ -9,7 +9,7 @@ return [
     ],
     'image'=>[
       'type'=>'media',
-      'default'=>'assets/core/photo.png'
+      'default'=>'$p=s1.jpg'
     ],
     'side'=>[
       'type'=>'radio',

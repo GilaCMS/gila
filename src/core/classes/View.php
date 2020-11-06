@@ -452,10 +452,9 @@ class View
     return $html;
   }
 
-  public static function img($src, $prefix='', $max=180)
+  public static function img($src, $max=180, $alt='')
   {
-    $pathinfo = pathinfo($src);
-    return '<img src="'.htmlentities(self::thumb($src, $prefix, $max)).'" alt="">';
+    return '<img src="'.htmlentities(self::thumb($src, $max)).'" alt="'.htmlentities($alt).'">';
   }
 
   public static function thumb($src, $prefix='', $max=180)
@@ -496,10 +495,21 @@ class View
   public static function getThumbName($src, $max, $prefix = '')
   {
     $pathinfo = pathinfo($src);
-    $ext = strtolower($pathinfo['extension']);
-    if (in_array($ext, ['svg','webm'])) {
+    $ext = $pathinfo['extension'] ?? null;
+    if($ext===null || strpos($src, '?')!==false || in_array($ext, ['svg','webm'])) {
       return $src;
     }
+
+    if($src[0]==='$') {
+      if(substr($src,1,2)=='p=') {
+        $file = 'assets/themes/'.($_GET['g_preview_theme']??Config::get('theme')).'/'.substr($src,3);
+        if(!file_exists($file)) {
+          $file='assets/core/photo.png';
+        }
+        return $file;
+      }
+    }
+    $ext = strtolower($ext);
     $file = null;
     $thumbs = [];
     $key = $pathinfo['filename'].$ext.$max;

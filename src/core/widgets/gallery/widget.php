@@ -10,7 +10,7 @@ return [
         ],
         'caption'=>[]
       ],
-      'default'=>'[]'
+      'default'=>'[["$p=l1.jpg"],["$p=l2.jpg"],["$p=l3.jpg"],["$p=p1.jpg"]]'
     ]
   ],
   'keys'=>'page,widget'
