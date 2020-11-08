@@ -178,7 +178,7 @@ class BlocksController extends Gila\Controller
     if ($content=="page" && $r = Page::getByIdSlug($id, false)) {
       View::set('title', $r['title']);
       View::set('text', View::blocks($blocks, 'page'.$r['id'], true));
-      $template = Router::request('g_preview_template') ?? $r['template'];
+      $template = Router::request('g_preview_template', $r['template']);
       if (empty($template)) {
         View::render('page.php');
       } else {

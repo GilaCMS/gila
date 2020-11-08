@@ -1,6 +1,6 @@
 
 gtableCommand.blocks = {
-  fa: "bars",
+  fa: "pencil",
   title: "Blocks",
   fn: function(table,id){
     window.location.href = 'blocks/page/'+id

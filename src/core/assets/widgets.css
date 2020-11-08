@@ -119,12 +119,18 @@
   gap:1em;
 }
 
-section.container{
-  padding-top: 3em;
-  padding-bottom: 3em;
+section>.container{
+  padding-top: 4em;
+  padding-bottom: 4em;
 }
 
-.colors-invert, .colors-invert p{
+.widget section>.container{
+  padding:0;  
+}
+
+.colors-invert {
   background: #444;
+}
+.colors-invert, .colors-invert *{
   color:white;
 }

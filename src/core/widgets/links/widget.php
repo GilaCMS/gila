@@ -11,5 +11,5 @@ return [
       'default'=>'[["",""]]'
     ]
   ],
-  'keys'=>'removed'
+  'keys'=>'widget'
 ];

@@ -1,4 +1,5 @@
-<section class="container side-image">
+<section>
+<div class="container side-image">
 <style>
 .side-image{align-items: center;display:grid; padding:1em;
 grid-template-columns: repeat(auto-fit, minmax(360px,1fr)); grid-gap: 2em;}
@@ -13,4 +14,5 @@ grid-template-columns: repeat(auto-fit, minmax(360px,1fr)); grid-gap: 2em;}
 </style>
   <img src="<?=View::thumb($widget_data->image,600)?>" style="max-height:600px;margin:auto;" class="<?=($widget_data->side==0?'col1':'col2')?>">
   <div data-inline="text" class="<?=($widget_data->side==0?'col2':'col1')?>"><?=$widget_data->text?></div>
+</div>
 </section>

@@ -579,7 +579,7 @@ gtableCommand['edit_popup'] = {
   fa: "pencil",
   label: "Edit",
   fn: function(table,irow) {
-  href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
+    href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       formId = '#'+table.name+'-edit-item-form'

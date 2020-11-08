@@ -4,7 +4,7 @@ return [
   'fields'=>[
     'image'=> [
       "type"=>"media",
-      "default"=>"assets/core/photo.png"
+      "default"=>'$p=l1.jpg'
     ],
     'description'=> [],
     'caption'=> [

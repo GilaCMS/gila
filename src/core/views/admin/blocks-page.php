@@ -4,6 +4,7 @@
   <?=View::script('core/gila.min.js')?>
   <?=View::script('core/admin/media.js')?>
   <?=View::script('lib/vue/vue.min.js');?>
+  <?=View::script('core/admin/content.js')?>
   <?=View::script('core/lang/content/'.Config::get('language').'.js');?>
   <?=View::script("lib/tinymce5/tinymce.min.js")?>
   <?=View::script('core/admin/vue-components.js');?>
@@ -25,26 +26,31 @@
   $folders = scandir('themes');
   foreach ($folders as $folder) if(file_exists('themes/'.$folder.'/package.json')){
     $data = json_decode(file_get_contents('themes/'.$folder.'/package.json'), true);
-    $themes[$folder] = $data['name'] ?? $folder;
+    if(!isset($data['selectable']) || $data['selectable']==true) {
+      $themes[$folder] = $data['name'] ?? $folder;
+    }
   }
   ?>
   <style>body{padding:0;margin:0;}.fa-d{font-size:120%;margin:auto 5px}
-  .g-nav>li>a:hover{background:inherit}
+  .g-nav>li>a:hover{background:inherit}.g-nav li a{padding:16px 8px}
+  :root{--main-padding:0.5em}
   </style>
 </head>
 <div style="height:5vh;display:flex;border-bottom:1px solid grey;justify-content: space-between;
-align-items: center;padding:0 1em;background:#555;color:white" id="editMenu">
-  <div style="display:flex">
-    <div><img src="assets/gila-logo.png" style="filter:contrast(0) brightness(2);width:42px;margin:auto 2em"></div>
+align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
+  <div style="display:flex;">
     <ul class="g-nav g-navbar" style="background:inherit">
-    <li class="dropdown" id="pagesDropdown"><a>Page</a>
-      <ul class="dropdown-menu"><li v-for="(page,i) in pages" @click="selectPage(i)"><a>{{page}}</a></li></ul>
+    <li><a href="admin/content/page" style="font-size:180%">
+    &lsaquo; <img src="assets/gila-logo.png" style="filter:contrast(0) brightness(2);height:36px;margin:auto;margin-right:24px;margin-left:-8px;vertical-align: middle;">
+      </a></li>
+    <!--li class="dropdown" id="pagesDropdown"><a>{{pages[pageId]}}</a>
+      <ul class="dropdown-menu"><li v-for="(page,i) in pages" v-if="i!=pageId" @click="selectPage(i)"><a>{{page}}</a></li></ul-->
     <!--li class="dropdown" id="layoutsDropdown"><a>Layout</a>
       <ul class="dropdown-menu"><li v-for="(layout,i) in layouts" @click="previewLayout(i)"><a>{{layout}}</a></li></ul-->
-    <li class=""><a onclick="alert('still not working!')"><i class="fa fa-pencil"></i> Edit</a>
-    <li class="dropdown" id="themesDropdown"><a>Theme</a>
-      <ul class="dropdown-menu"><li v-for="(theme,i) in themes" @click="previewTheme(i)">
-        <a>{{theme}}<span v-if="i==currentTheme"> &check;</span></a>
+    <li class=""><a @click="editPageData()"><i class="fa fa-pencil"></i> {{pages[pageId]}}</a>
+    <li class="dropdown" id="themesDropdown"><a><i class="fa fa-paint-brush"></i> {{themes[currentTheme]}}</a>
+      <ul class="dropdown-menu"><li v-for="(theme,i) in themes" v-if="i!=currentTheme" @click="previewTheme(i)">
+        <a>{{theme}}</a>
       </li></ul>
     <li class=""><a onclick="theme_options('<?=Config::get('theme')?>')"><i class="fa fa-cog"></i> Options</a>
     <li class=""><a @click="toggleEdit()">
@@ -57,9 +63,9 @@ align-items: center;padding:0 1em;background:#555;color:white" id="editMenu">
   </ul>
   </div>
   <div v-if="previewedTheme">
-    Keep Theme?
-    <button type="button" class="g-btn success" @click="selectPreviewTheme()"><?=__('Yes')?></button>
-    <button type="button" class="g-btn warning" @click="removePreviewTheme()"><?=__('No')?></button>
+    Keep '{{themes[previewedTheme]}}'?
+    &nbsp;<button type="button" class="g-btn success" @click="selectPreviewTheme()"><?=__('Yes')?></button>
+    &nbsp;<button type="button" class="g-btn warning" @click="removePreviewTheme()"><?=__('No')?></button>
   </div>
   <div v-if="previewedLayout!==null">
     Keep Layout?
@@ -154,6 +160,21 @@ appEditMenu = new Vue({
       this.pageId = i
       pagesDropdown.classList.toggle('open')
     },
+    editPageData: function() {
+      irow = this.pageId
+      href='cm/edit_form/page?id='+irow+'&callback=g_page_popup_update';
+      g.get(href,function(data){
+        g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+        formId = '#page-edit-item-form'
+        edit_popup_app = new Vue({
+          el: formId,
+          data: {id:irow}
+        })
+        transformClassComponents()
+        //console.log(formId+' input')
+        g(formId+' input').all[1].focus()
+      })
+    },
     previewTheme: function(i) {
       this.previewedLayout = null
       if(this.currentTheme==i) {
@@ -196,6 +217,26 @@ appEditMenu = new Vue({
   }
 })
 
+
+function g_page_popup_update() {
+  form = g('.gila-popup form').last()
+  data = new FormData(form);
+  t = form.getAttribute('data-table')
+  id = form.getAttribute('data-id')
+  for(i=0; i<rootVueGTables.length; i++) if(rootVueGTables[i].name == t) {
+    _this = rootVueGTables[i]
+  }
+
+  url = 'cm/update_rows/'+t+'?id='+id
+  g.ajax({method:'post',url:url,data:data,fn:function(data) {
+    data = JSON.parse(data)
+    appEditMenu.pages[appEditMenu.pageId] = data.rows[0].title
+    pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+appEditMenu.pageId
+  }})
+
+  g.closeModal();
+}
+
 var pageDocument=null;
 
 function readFrame() {
@@ -203,9 +244,11 @@ function readFrame() {
     pageDocument = (x.contentWindow || x.contentDocument);
     if (pageDocument.document)pageDocument = pageDocument.document;
     const intervalPageRead = setInterval(function() {
-      appEditMenu.draft = pageDocument.getElementById('draftValue').value
-      appEditMenu.edit = pageDocument.getElementById('editValue').value
-    }, 100);
+      if(pageDocument.getElementById('draftValue')!==null) {
+        appEditMenu.draft = pageDocument.getElementById('draftValue').value
+        appEditMenu.edit = pageDocument.getElementById('editValue').value
+      }
+    }, 200);
 }
 
 </script>

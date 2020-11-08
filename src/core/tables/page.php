@@ -7,7 +7,7 @@ return [
   'id'=>'id',
   'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','updated','publish','page'],
-  'commands'=> ['edit_popup','blocks_popup','delete'],
+  'commands'=> ['blocks','delete'],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish'],
   'js'=>['src/core/tables/page.js','src/core/assets/admin/blocks_btn.js'],
