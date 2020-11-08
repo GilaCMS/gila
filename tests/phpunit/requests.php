@@ -141,7 +141,7 @@ class RequestsTest extends TestCase
     $this->assertEquals('[{"_type":"html"}]', $response);
     $_POST = ['id'=>'page_1_1', 'type'=>'image'];
     $response = $this->request('blocks/create', 'POST');
-    $image = '{"_type":"image","image":"assets\/core\/photo.png"}';
+    $image = '{"_type":"image","image":"$l1.jpg"}';
     $this->assertEquals('[{"_type":"html"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<p  onclick="alert(0)">Something</p>']];
