@@ -45,7 +45,7 @@
 
     <p><?=__('Permissions')?>:
     <ul><?php
-    foreach(Gila\Profile::getPermissions(Session::userId()) as $per) {
+    foreach (Gila\Profile::getPermissions(Session::userId()) as $per) {
       echo '<li>'.$per;
     }
     ?></ul></p>

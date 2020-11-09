@@ -15,8 +15,10 @@ class TableSchema
     // UPDATE/CREATE TABLE
     self::update($table);
     // INITIAL ROWS
-    if($tableExists === false) {
-      foreach($initRows as $row) $gtable->createRow($row);
+    if ($tableExists === false) {
+      foreach ($initRows as $row) {
+        $gtable->createRow($row);
+      }
     }
   }
 

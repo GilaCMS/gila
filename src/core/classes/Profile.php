@@ -70,7 +70,7 @@ class Profile
     $userPermissions = User::permissions($user_id);
     $permissions = [];
     foreach ($allPermissions as $key=>$txt) {
-      if(in_array($key, $userPermissions)) {
+      if (in_array($key, $userPermissions)) {
         $permissions[$key] = $txt;
       }
     }

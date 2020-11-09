@@ -223,7 +223,7 @@ class Image
       $ext = explode('.', $file);
       $ext = strtolower($ext[count($ext)-1]);
       $imageInfo = getimagesize($file);
-      if(in_array($ext, ['jpeg','jpg','png','gif'])) {
+      if (in_array($ext, ['jpeg','jpg','png','gif'])) {
         header("Content-Type: image/".$ext);
         readfile($file);
       } elseif ($ext=='svg' &&

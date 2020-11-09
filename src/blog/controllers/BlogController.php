@@ -60,7 +60,7 @@ class BlogController extends Gila\Controller
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
       View::render('frontpage.php');
     } else {
-       if ($path=='' && $r = Page::getByIdSlug('')) {
+      if ($path=='' && $r = Page::getByIdSlug('')) {
         $this->postShow('');
         return;
       }
@@ -228,7 +228,7 @@ class BlogController extends Gila\Controller
         View::set('author', __('unknown'));
       }
 
-      if(View::getViewFile('blog-post.php')) {
+      if (View::getViewFile('blog-post.php')) {
         View::render('blog-post.php');
       } else {
         View::render('single-post.php');
@@ -274,7 +274,7 @@ class BlogController extends Gila\Controller
     }
     View::set('page', self::$page);
     View::set('posts', self::post(['posts'=>(self::$ppp)]));
-    if(View::getViewFile('blog.php')) {
+    if (View::getViewFile('blog.php')) {
       View::render('blog.php');
     } else {
       View::render('frontpage.php');
@@ -312,5 +312,4 @@ class BlogController extends Gila\Controller
     self::$totalPages = ceil(($totalPosts)/self::$ppp);
     return self::$totalPages;
   }
-
 }

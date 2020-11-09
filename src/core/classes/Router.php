@@ -207,7 +207,8 @@ class Router
       self::$args = [];
     }
   }
-  public static function getPath() {
+  public static function getPath()
+  {
     return self::$url??'';
   }
   public static function setUrl($_p)

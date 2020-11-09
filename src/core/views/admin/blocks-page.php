@@ -26,10 +26,12 @@
   }
   $themes = [];
   $folders = scandir('themes');
-  foreach ($folders as $folder) if(file_exists('themes/'.$folder.'/package.json')){
-    $data = json_decode(file_get_contents('themes/'.$folder.'/package.json'), true);
-    if(!isset($data['selectable']) || $data['selectable']==true) {
-      $themes[$folder] = $data['name'] ?? $folder;
+  foreach ($folders as $folder) {
+    if (file_exists('themes/'.$folder.'/package.json')) {
+      $data = json_decode(file_get_contents('themes/'.$folder.'/package.json'), true);
+      if (!isset($data['selectable']) || $data['selectable']==true) {
+        $themes[$folder] = $data['name'] ?? $folder;
+      }
     }
   }
   ?>

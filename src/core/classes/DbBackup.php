@@ -89,7 +89,7 @@ class DbBackup
               if (isset($row[$j])) {
                 if (ctype_digit($row[$j])) {
                   $fline .= $row[$j];
-                } else if ($row[$j]==null) {
+                } elseif ($row[$j]==null) {
                   $fline .= 'NULL';
                 } else {
                   $fline .= '"'.$row[$j].'"';

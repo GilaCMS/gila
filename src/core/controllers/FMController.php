@@ -113,8 +113,8 @@ class FMController extends Gila\Controller
   public function newfileAction()
   {
     if (!FileManager::allowedFileType($_POST['path'])) {
-       die("File type is not permited");
-     }
+      die("File type is not permited");
+    }
     if (!FileManager::allowedPath($this->path)) {
       die("Permission denied.".$this->path);
     }

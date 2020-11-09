@@ -11,6 +11,7 @@ include_once __DIR__.'/../../src/core/classes/View.php';
 include_once __DIR__.'/../../src/core/classes/Event.php';
 define('SITE_PATH', '');
 define('LOG_PATH', 'log');
+define('TMP_PATH', 'tmp');
 define('CONFIG_PHP', 'config.php');
 define('FS_ACCESS', true);
 

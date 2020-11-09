@@ -193,7 +193,7 @@ class UserController extends Gila\Controller
 
   public function uploadImageAction()
   {
-    if(Session::userId()===0) {
+    if (Session::userId()===0) {
       http_response_code(403);
       return;
     }
@@ -216,7 +216,7 @@ class UserController extends Gila\Controller
             $code .= hash('sha512', uniqid(true));
           }
           $target = $path.substr($code, 0, 120).'.'.$ext;
-        } while(file_exists($target));
+        } while (file_exists($target));
 
         if (!move_uploaded_file($tmp_file, $target)) {
           echo "Error: could not upload file!<br>";

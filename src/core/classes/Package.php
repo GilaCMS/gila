@@ -427,7 +427,7 @@ class Package
       }
       foreach ($installed_packages as $ipac=>$pac) {
         if (isset($versions[$ipac]) && version_compare($versions[$ipac], $pac->version) == 1) {
-          if($pac==='core' && Config::get('autoupdate')==1) {
+          if ($pac==='core' && Config::get('autoupdate')==1) {
             self::updateAfterDownload($pac);
             View::alert('info', 'System updated successfully to v'.$versions[$ipac]);
           } else {

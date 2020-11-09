@@ -374,17 +374,19 @@ class Table
         if (is_string($value)) {
           if (@$this->table['fields'][$key]['values'] === 1) {
             $arrv = [$value];
-          } else if ($value!==null) {
+          } elseif ($value!==null) {
             $arrv = explode(",", $value);
           }
         } else {
           $arrv = $value;
         }
         $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$mt[2]}`='{$vt}';");
-        if ($arrv) foreach ($arrv as $arrv_k=>$arrv_v) {
-          if ($arrv_v!='' && $arrv_v!=null) {
-            $arrv_v = strip_tags($arrv_v);
-            $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`) VALUES('$id','$arrv_v','{$vt}');");
+        if ($arrv) {
+          foreach ($arrv as $arrv_k=>$arrv_v) {
+            if ($arrv_v!='' && $arrv_v!=null) {
+              $arrv_v = strip_tags($arrv_v);
+              $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`) VALUES('$id','$arrv_v','{$vt}');");
+            }
           }
         }
         continue;
@@ -451,7 +453,7 @@ class Table
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {
             $key = $this->getColumnKey($key, false);
-            if($value==null) {
+            if ($value==null) {
               $filters[] = "$key IS NULL";
             } else {
               $value = $this->db->res($value);
@@ -459,14 +461,14 @@ class Table
             }
           } else {
             $ckey = $this->getColumnKey($key, false);
-            if(@$this->table['fields'][$key]['type']=='date') {
+            if (@$this->table['fields'][$key]['type']=='date') {
               $ckey = "SUBSTRING($key,1,10)";
             }
-            if($value==null) {
+            if ($value==null) {
               $filters[] = "$ckey IS NULL";
             } else {
               $value = $this->db->res($value);
-              $filters[] = "$ckey='$value'";  
+              $filters[] = "$ckey='$value'";
             }
           }
         }

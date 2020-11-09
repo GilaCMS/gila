@@ -18,16 +18,18 @@ class HtmlInput
       return $response;
     }
     
-    if(empty(trim($value))) {
+    if (empty(trim($value))) {
       $value = '';
-    } else if (class_exists("DomDocument")) {
+    } elseif (class_exists("DomDocument")) {
       $value = self::DOMSanitize($value);
     }
 
     $tD = 'javascript&#8282;';
     $value = strtr($value, ['javascript&#x3a;'=>$tD,'javascript&#58;'=>$tD,'javascript&colon;'=>$tD,'javascript:'=>$tD]);
 
-    if(Config::get('utf8_decode')==true) $value = utf8_decode($value); // mysql utf8 support
+    if (Config::get('utf8_decode')==true) {
+      $value = utf8_decode($value);
+    } // mysql utf8 support
     return $value;
   }
 

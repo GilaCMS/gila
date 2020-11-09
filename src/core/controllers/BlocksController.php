@@ -22,7 +22,7 @@ class BlocksController extends Gila\Controller
     $table = Router::request('t');
     $id = Router::param('id', 2);
     $widgets = self::readBlocks($table, $id);
-    if(!$table || !$id) {
+    if (!$table || !$id) {
       View::renderAdmin('404.php');
       return;
     }

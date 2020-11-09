@@ -54,7 +54,7 @@ if (!Config::get('set_utf8mb4')) {
   global $db;
   $db->query("ALTER DATABASE {$GLOBALS['config']['db']['name']} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
   $tables = ['page','post','user','usermeta','userrole','postcategory','postmeta','user_notification','widget'];
-  foreach($tables as $table) {
+  foreach ($tables as $table) {
     $db->query("ALTER TABLE `$table` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
   }
   $db->query("ALTER TABLE `page` CHANGE blocks TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");

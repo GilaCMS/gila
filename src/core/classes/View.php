@@ -103,7 +103,7 @@ class View
   */
   public static function script($script, $uri=false, $prop='')
   {
-    if(ob_get_level()===0) {
+    if (ob_get_level()===0) {
       if (in_array($script, self::$script)) {
         return;
       }
@@ -493,14 +493,14 @@ class View
   {
     $pathinfo = pathinfo($src);
     $ext = $pathinfo['extension'] ?? null;
-    if($ext===null || strpos($src, '?')!==false || in_array($ext, ['svg','webm'])) {
+    if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['svg','webm'])) {
       return $src;
     }
 
-    if($src[0]==='$') {
-      if(substr($src,1,2)=='p=') {
-        $file = 'assets/themes/'.($_GET['g_preview_theme']??Config::get('theme')).'/'.substr($src,3);
-        if(!file_exists($file)) {
+    if ($src[0]==='$') {
+      if (substr($src, 1, 2)=='p=') {
+        $file = 'assets/themes/'.($_GET['g_preview_theme']??Config::get('theme')).'/'.substr($src, 3);
+        if (!file_exists($file)) {
           $file='assets/core/photo.png';
         }
         return $file;
@@ -600,5 +600,4 @@ class View
     }
     return $r;
   }
-
 }

@@ -156,7 +156,7 @@ class Config
 
   public static function config($key, $value = null) // DEPRECATED
   {
-    if($value!==null) {
+    if ($value!==null) {
       self::set($key, $value);
     } else {
       return self::get($key);
