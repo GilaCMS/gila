@@ -245,6 +245,10 @@ class Form
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
       },
+      "vue-editor"=> function ($name, $field, $ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        return '<vue-editor id="'.$id.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
+      },
       "language"=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';
         $res = include 'src/core/lang/languages.php';

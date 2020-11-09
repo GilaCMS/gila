@@ -35,16 +35,13 @@ class BlogController extends Gila\Controller
   */
   public function indexAction()
   {
-    if ($id = Router::path()) {
+    if ($id = Router::path() ?? Router::param('p')) {
       if ($id !== "blog" && $id !== "blog/") {
         $this->postShow($id);
         return;
       }
     }
-    if ($id=Router::param('p')) {
-      $this->postShow($id);
-      return;
-    }
+
     if ($s=Router::param('search')) {
       $s = strip_tags($s);
       View::set('search', $s);

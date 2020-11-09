@@ -48,11 +48,6 @@ class View
     }
   }
 
-  public static function scripts()
-  {
-    //foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
-  }
-
   /**
   * Set an alert message
   */
@@ -108,10 +103,12 @@ class View
   */
   public static function script($script, $uri=false, $prop='')
   {
-    if (in_array($script, self::$script)) {
-      return;
+    if(ob_get_level()===0) {
+      if (in_array($script, self::$script)) {
+        return;
+      }
+      self::$script[]=$script;
     }
-    self::$script[]=$script;
     if (isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
     } elseif (file_exists('assets/'.$script)) {

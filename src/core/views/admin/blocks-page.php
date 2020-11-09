@@ -8,8 +8,10 @@
   <?=View::script('core/lang/content/'.Config::get('language').'.js');?>
   <?=View::script("lib/tinymce5/tinymce.min.js")?>
   <?=View::script('core/admin/vue-components.js');?>
+  <?=View::script('core/admin/vue-editor.js');?>
   <?=View::cssAsync('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::cssAsync('core/gila.min.css')?>
+  <?=View::cssAsync('core/admin/vue-editor.css');?>
   <?php
   global $db;
   $templates = View::getTemplates('page');

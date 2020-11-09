@@ -11,6 +11,8 @@
     </footer>
 
   </div>
+  <?=View::script('core/gila.min.js');?>
+  <?=View::scriptAsync("core/lazyImgLoad.js")?>
 </body>
 
 </html>
