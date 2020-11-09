@@ -15,16 +15,18 @@ class Image
   public static function makeThumb($src, $file, $max_width, $max_height, $img_type=null)
   {
     $src = self::localPath($src);
+    $src_width = 0;
+    $src_height = 0;
     if ($src === false) {
       return false;
     }
     Config::dir(substr($file, 0, strrpos($file, '/')));
 
-    if (!$image = @getimagesize($src)) {
-      return false;
+    if ($image = getimagesize($src)) {
+      list($src_width, $src_height)=$image;
+      $img_type = $image[2];
     }
 
-    list($src_width, $src_height)=$image;
     $newwidth=$max_width;
     $newheight=$max_height;
 
@@ -32,16 +34,12 @@ class Image
       $newheight=($src_height/$src_width)*$newwidth;
     } elseif ($src_height>$max_height) {
       $newwidth=($src_width/$src_height)*$newheight;
-    } elseif ($image[2] != 2) {
+    } elseif ($img_type != 2) {
       copy($src, $file);
       return true;
     } else {
       $newwidth=$src_width;
       $newheight=$src_height;
-    }
-
-    if ($img_type===null) {
-      $img_type = $image[2];
     }
 
     $tmp = self::createTmp($newwidth, $newheight, $image[2]);
@@ -222,11 +220,14 @@ class Image
       header('Content-Length: '.filesize($file));
       $ext = explode('.', $file);
       $ext = strtolower($ext[count($ext)-1]);
-      $imageInfo = getimagesize($file);
-      if (in_array($ext, ['jpeg','jpg','png','gif'])) {
+      if( $imageInfo = getimagesize($file)) {
+        $extType = [2=>'jpeg',32=>'webp',3=>'png',1=>'gif'];
+        $ext = $extType[$imageInfo[2]] ?? $ext;
+      }
+      if (in_array($ext, ['jpeg','jpg','png','gif','webp'])) {
         header("Content-Type: image/".$ext);
         readfile($file);
-      } elseif ($ext=='svg' &&
+      } elseif ($ext==='svg' &&
           (substr($file, 0, 7) == 'assets/' || substr($file, 0, 4) == 'src/')) {
         header("Content-Type: image/svg+xml");
         echo file_get_contents($file);
