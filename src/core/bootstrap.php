@@ -19,11 +19,13 @@ $site_folder = 'sites/'.$_SERVER['HTTP_HOST'];
 if (file_exists($site_folder)) {
   define('SITE_PATH', $site_folder.'/');
   define('LOG_PATH', $site_folder.'/log');
+  define('TMP_PATH', $site_folder.'/tmp');
   define('CONFIG_PHP', $site_folder.'/config.php');
   define('FS_ACCESS', false);
 } else {
   define('SITE_PATH', '');
   define('LOG_PATH', 'log');
+  define('TMP_PATH', 'tmp');
   define('CONFIG_PHP', 'config.php');
   define('FS_ACCESS', true);
 }

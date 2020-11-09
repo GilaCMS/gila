@@ -188,7 +188,7 @@ class Image
   {
     if (parse_url($src, PHP_URL_HOST) != null) {
       if (strpos($src, Config::get('base')) !== 0) {
-        $_src = SITE_PATH.'tmp/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+        $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
         if (!file_exists($_src)) {
           $_file = LOG_PATH.'/cannot_copy.json';
           $cannot_copy = json_decode(file_get_contents($_file), true);
@@ -221,31 +221,16 @@ class Image
       ob_end_clean();
       header('Content-Length: '.filesize($file));
       $ext = explode('.', $file);
-      $ext = $ext[count($ext)-1];
+      $ext = strtolower($ext[count($ext)-1]);
       $imageInfo = getimagesize($file);
-      switch ($imageInfo[2]) {
-        case IMAGETYPE_JPEG:
-          header("Content-Type: image/jpeg");
-          break;
-        case IMAGETYPE_WEBP:
-          header("Content-Type: image/webp");
-          break;
-        case IMAGETYPE_GIF:
-          header("Content-Type: image/gif");
-          break;
-        case IMAGETYPE_PNG:
-          header("Content-Type: image/png");
-          break;
-        default:
-          if ($ext=='svg' &&
-              (substr($file, 0, 7) == 'assets/' || substr($file, 0, 4) == 'src/')) {
-            header("Content-Type: image/svg+xml");
-            echo file_get_contents($file);
-          }
-          return;
-          break;
+      if(in_array($ext, ['jpeg','jpg','png','gif'])) {
+        header("Content-Type: image/".$ext);
+        readfile($file);
+      } elseif ($ext=='svg' &&
+          (substr($file, 0, 7) == 'assets/' || substr($file, 0, 4) == 'src/')) {
+        header("Content-Type: image/svg+xml");
+        echo file_get_contents($file);
       }
-      readfile($file);
     } else {
       http_response_code(404);
     }

@@ -514,7 +514,7 @@ class View
 
     if (substr($src, 0, 5) !== 'data/') {
       // dont create new thumbs for existing websites
-      return SITE_PATH.'tmp/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
+      return TMP_PATH.'/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     }
 
 
@@ -528,7 +528,7 @@ class View
       }
       do {
         $basename = substr(hash('sha1', uniqid(true)), 0, 30);
-        $file = SITE_PATH.'tmp/'.$basename.'-'.$max.'.'.$ext;
+        $file = TMP_PATH.'/'.$basename.'-'.$max.'.'.$ext;
         $thumbs[$key] = $file;
       } while (strlen($basename) < 30 || file_exists($file));
       file_put_contents($thumbsjson, json_encode($thumbs));

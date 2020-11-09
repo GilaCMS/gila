@@ -113,19 +113,19 @@ class BlocksController extends Gila\Controller
       $widgets[$i] = $widgets[$nexti];
       $widgets[$nexti] = $tmp;
       $nextrid = $content.'_'.$id.'_'.$nexti;
-      $wfile = SITE_PATH.'tmp/stacked-wdgt'.$rid.'.jpg';
-      $nextwfile = SITE_PATH.'tmp/stacked-wdgt'.$nextrid.'.jpg';
+      $wfile = TMP_PATH.'/stacked-wdgt'.$rid.'.jpg';
+      $nextwfile = TMP_PATH.'/stacked-wdgt'.$nextrid.'.jpg';
       if (file_exists($wfile)) {
-        rename($wfile.'.json', SITE_PATH.'tmp/tmp_wgtjpgjson');
-        rename($wfile, SITE_PATH.'tmp/tmp_wgtjpg');
+        rename($wfile.'.json', TMP_PATH.'/tmp_wgtjpgjson');
+        rename($wfile, TMP_PATH.'/tmp_wgtjpg');
       }
       if (file_exists($nextwfile)) {
         rename($nextwfile.'.json', $wfile.'.json');
         rename($nextwfile, $wfile);
       }
-      if (file_exists(SITE_PATH.'tmp/tmp_wgtjpg')) {
-        rename(SITE_PATH.'tmp/tmp_wgtjpgjson', $nextwfile.'.json');
-        rename(SITE_PATH.'tmp/tmp_wgtjpg', $nextwfile);
+      if (file_exists(TMP_PATH.'/tmp_wgtjpg')) {
+        rename(TMP_PATH.'/tmp_wgtjpgjson', $nextwfile.'.json');
+        rename(TMP_PATH.'/tmp_wgtjpg', $nextwfile);
       }
     }
 

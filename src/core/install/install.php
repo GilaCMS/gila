@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $GLOBALS['config']['check4updates'] = 1;
     $GLOBALS['config']['language'] = 'en';
     $GLOBALS['config']['admin_email'] = $_POST['adm_email'];
-    $GLOBALS['config']['media_uploads'] = 'assets/uploads';
+    $GLOBALS['config']['media_uploads'] = 'data/uploads';
     $GLOBALS['config']['rewrite'] = 1;
     $GLOBALS['config']['page-blocks'] = true;
     $GLOBALS['config']['use_webp'] = function_exists("imagewebp") ? 1 : 0;
@@ -91,7 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     file_put_contents($configfile, $filedata);
     Gila\Package::copyAssets('core');
     Gila\Theme::copyAssets('gila-blog');
+    Gila\Theme::copyAssets('gila-mag');
     Gila\Config::dir(LOG_PATH.'/stats');
+    Gila\Config::dir(LOG_PATH.'/sessions');
     Gila\Config::dir(LOG_PATH.'/cacheItem');
     @unlink(LOG_PATH.'/load.php');
     include __DIR__."/installed.php";

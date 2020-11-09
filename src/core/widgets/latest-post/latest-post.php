@@ -11,7 +11,7 @@ if (!@class_exists('blog')) {
 }
 
 if ($widget_data->show_thumbnails == 1) {
-  $stacked_file = SITE_PATH.'tmp/stacked-wdgt'.$widget_data->widget_id.'.jpg';
+  $stacked_file = TMP_PATH.'/stacked-wdgt'.$widget_data->widget_id.'.jpg';
   $posts = [];
   $img = [];
   $widget_data->n_post = @$widget_data->n_post?:5;
