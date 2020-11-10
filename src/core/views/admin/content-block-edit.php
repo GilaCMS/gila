@@ -294,7 +294,7 @@ content_blocks_app = new Vue({
       &nbsp;<input type="text" class="g-input" style="max-width:220px;margin-top:10px" v-model="filter" ref="filter">
       <img src="assets/core/admin/close.svg" class="add-block-x" @click="closeList()">
     </div>
-    <div class="add-block-grid" style="margin:auto;width:100%;grid-gap:0;height:100%;max-height:100%;background:#f4f4ff;">
+    <div class="add-block-grid" style="margin:auto;width:100%;overflow:scroll;height:100%;max-height:100%;background:#f4f4ff;">
       <div class="add-block-btn" v-for="b in blocks" v-if="b.visible!==false" @click="createBlock('<?=$content.'/'.$id?>', b.name, selected_pos)">
         <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview" :title="b.name">
         <div v-else class="logo">

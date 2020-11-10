@@ -66,7 +66,7 @@ View::alerts();
     echo '<li class="'.$active.'"><a href="'.Config::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
-    <form method="get" class="inline-flex" style="float:right" action="<?=Config::url('admin/newthemes')?>">
+    <form method="get" class="inline-flex" style="float:right" action="<?=Config::base('admin/newthemes')?>">
       <input name='search' class="g-input fullwidth" value="<?=($search??'')?>">
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>

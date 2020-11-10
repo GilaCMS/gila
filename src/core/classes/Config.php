@@ -324,11 +324,7 @@ class Config
     if ($str===null) {
       return self::$base_url;
     }
-    if (self::config('rewrite')) {
-      return self::$base_url.self::url($str);
-    } else {
-      return '?p='.$str;
-    }
+    return self::$base_url.self::url($str);
   }
 
   public static function url($url)
@@ -337,17 +333,13 @@ class Config
       return htmlentities(Router::path()).$url;
     }
     $url = htmlentities($url);
-
-    if (self::config('rewrite')) {
-      $var = explode('/', $url);
-      if (self::config('default-controller') === $var[0]) {
-        if ($var[0]!='admin') {
-          return substr($url, strlen($var[0])+1);
-        }
+    $var = explode('/', $url);
+    if (self::config('default-controller') === $var[0]) {
+      if ($var[0]!='admin') {
+        return substr($url, strlen($var[0])+1);
       }
-      return $url;
     }
-    return '?p='.$url;
+    return $url;
   }
 
   /**

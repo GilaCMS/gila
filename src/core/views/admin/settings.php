@@ -40,7 +40,7 @@ View::script('core/lang/content/'.Config::get('language').'.js');
 
 <div class="gm-12">
 <?php View::alerts(); ?>
-<form id="settings-form" method="post" action="<?=Config::make_url('admin', 'settings')?>" class="g-form">
+<form id="settings-form" method="post" action="<?=Config::base('admin/settings')?>" class="g-form">
   <input type="hidden" name="submit-btn">
   <h2><?=__("Basic Settings")?></h2><hr>
 
