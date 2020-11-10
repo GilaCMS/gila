@@ -184,7 +184,6 @@ class BlocksController extends Gila\Controller
       } else {
         View::renderFile('page--'.$template.'.php');
       }
-      echo '<style>html{scroll-behavior: smooth;}</style>';
       $isDraft = self::$draft;
       include __DIR__.'/../views/admin/content-block-edit.php';
     } else {

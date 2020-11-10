@@ -39,8 +39,12 @@ if ($path=='src') {
       if (isset($package->assets)) {
         foreach ($package->assets as $asset) {
           $a = $asset;
-          if ($a == 'assets') $a = '';
-          if (substr($a, 0, 7) == 'assets/') $a = substr($a, 7);
+          if ($a == 'assets') {
+            $a = '';
+          }
+          if (substr($a, 0, 7) == 'assets/') {
+            $a = substr($a, 7);
+          }
           if (file_exists('assets/'.$v.'/'.$a)) {
             $files[] = 'src/'.$v.'/'.$asset;
           }
@@ -99,7 +103,7 @@ foreach ($files as $filepath) {
     $basename = substr($filepath, strrpos($filepath, '/', -1)+1);
     if ($path=='src') {
       $folders = explode('/', $filepath);
-      if($basename!='assets') {
+      if ($basename!='assets') {
         $basename = $folders[1].':'.$basename;
       } else {
         $basename = $folders[1];

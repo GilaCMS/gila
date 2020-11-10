@@ -220,7 +220,7 @@ class Image
       header('Content-Length: '.filesize($file));
       $ext = explode('.', $file);
       $ext = strtolower($ext[count($ext)-1]);
-      if( $imageInfo = getimagesize($file)) {
+      if ($imageInfo = getimagesize($file)) {
         $extType = [2=>'jpeg',32=>'webp',3=>'png',1=>'gif'];
         $ext = $extType[$imageInfo[2]] ?? $ext;
       }

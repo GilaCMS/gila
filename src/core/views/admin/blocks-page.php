@@ -14,26 +14,7 @@
   <?=View::cssAsync('core/admin/vue-editor.css');?>
   <?php
   global $db;
-  $templates = View::getTemplates('page');
-  $pageTemplates = [''=>'[Default]'];
-  foreach ($templates as $template) {
-    $pageTemplates[$template] = ucwords($template);
-  }
-  $pages = [];
-  $res = $db->get("SELECT id,title,slug,publish FROM `page`;");
-  foreach ($res as $r) {
-    $pages[$r['id']] = $r['title'];
-  }
-  $themes = [];
-  $folders = scandir('themes');
-  foreach ($folders as $folder) {
-    if (file_exists('themes/'.$folder.'/package.json')) {
-      $data = json_decode(file_get_contents('themes/'.$folder.'/package.json'), true);
-      if (!isset($data['selectable']) || $data['selectable']==true) {
-        $themes[$folder] = $data['name'] ?? $folder;
-      }
-    }
-  }
+  $pageTitle = $db->value("SELECT title FROM `page` WHERE id=?;", $id);
   ?>
   <style>body{padding:0;margin:0;}.fa-d{font-size:120%;margin:auto 5px}
   .g-nav>li>a:hover{background:inherit}.g-nav li a{padding:16px 8px}
@@ -47,12 +28,7 @@ align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
     <li><a href="admin/content/page" style="font-size:180%">
     &lsaquo; <img src="assets/gila-logo.png" style="filter:contrast(0) brightness(2);height:36px;margin:auto;margin-right:24px;margin-left:-8px;vertical-align: middle;">
       </a></li>
-    <li class=""><a @click="editPageData()"><i class="fa fa-pencil"></i> {{pages[pageId]}}</a>
-    <li class="dropdown" id="themesDropdown"><a><i class="fa fa-paint-brush"></i> {{themes[currentTheme]}}</a>
-      <ul class="dropdown-menu"><li v-for="(theme,i) in themes" v-if="i!=currentTheme" @click="previewTheme(i)">
-        <a>{{theme}}</a>
-      </li></ul>
-    <li class=""><a onclick="theme_options('<?=Config::get('theme')?>')"><i class="fa fa-cog"></i> Options</a>
+    <li class=""><a @click="editPageData()"><i class="fa fa-pencil"></i> {{pageTitle}}</a>
     <li class=""><a @click="toggleEdit()">
       <span v-if="edit=='false'"><i class="fa fa-check-square-o"></i> Preview</span>
       <span v-else><i class="fa fa-square-o"></i> Preview</span>
@@ -62,22 +38,20 @@ align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
     <li><i class="fa fa-d fa-mobile" onclick="mobileView()"></i>
   </ul>
   </div>
-  <div v-if="previewedTheme">
-    Keep theme '{{themes[previewedTheme]}}'?
-    &nbsp;<button type="button" class="g-btn success" @click="selectPreviewTheme()"><?=__('Yes')?></button>
-    &nbsp;<button type="button" class="g-btn warning" @click="removePreviewTheme()"><?=__('No')?></button>
-  </div>
-  <div v-if="previewedLayout!==null">
-    Keep Layout?
-    <button type="button" class="g-btn success" @click="selectPreviewLayout()"><?=__('Yes')?></button>
-    <button type="button" class="g-btn warning" @click="removePreviewLayout()"><?=__('No')?></button>
-  </div>
+
   <div>
     <button v-if="draft=='true'" type="button" class="g-btn btn-white" @click="discardChanges()">Delete Draft</button>
     <button v-if="draft=='true'" type="button" class="g-btn success" @click="saveChanges()">Publish</button>
   </div>
-  
-  <script>
+
+</div>
+
+<div style="background:#eee;display:flex;justify-content:center;height:95vh">
+  <iframe style="width:100%;height:95vh;border:0;transition:0.3s;box-shadow:black 0px 0px 5px" id=pageFrame onload="readFrame()"
+  src='<?=Config::base()?>blocks/display?t=page&id=<?=htmlentities($id)?>'></iframe>
+</div>
+
+<script>
   function desktopView() {
     pageFrame.style.width = '100%'
     pageFrame.style.height = '95vh'
@@ -99,38 +73,7 @@ align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
     pageFrame.style.borderRadius = '1.5em'
     pageFrame.style.border = '1.5em solid #555';
   }
-g.dialog.buttons.save_options = {
-  title:'<?=__('Save')?>', fn:function() {
-    let p = g.el('theme_id').value;
-    let fm=new FormData(g.el('theme_options_form'))
-    g.loader()
-    g.ajax({url:'admin/themes?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
-      g.loader(false)
-      g('.gila-darkscreen').remove();
-      pageFrame.contentWindow.location.reload(true);
-    }})
-  }
-}
-
-function theme_options(p) {
-  g.loader()
-  g.post("admin/themes?g_response=content", 'options='+p,function(x){
-    g.loader(false)
-    g.modal({title:"<?=__('Options')?>",body:x,buttons:'save_options',type:'modal'})
-    app = new Vue({
-      el: '#theme_options_form'
-    })
-  })
-}
-  </script>
-</div>
-
-<div style="background:#eee;display:flex;justify-content:center;height:95vh">
-  <iframe style="width:100%;height:95vh;border:0;transition:0.3s;box-shadow:black 0px 0px 5px" id=pageFrame onload="readFrame()"
-  src='<?=Config::base()?>blocks/display?t=page&id=<?=htmlentities($id)?>'></iframe>
-</div>
-
-<script>
+  
 var basePageIdUrl = '<?=Config::base()?>blocks/display?t=page&id='+<?=$id?>+'&ts='+Date.now()
 appEditMenu = new Vue({
   el:"#editMenu",
@@ -138,12 +81,7 @@ appEditMenu = new Vue({
     draft: false,
     edit: false,
     pageId: <?=$id?>,
-    currentTheme: '<?=Config::get('theme')?>',
-    previewedTheme: null,
-    previewedLayout: null,
-    pages: <?=json_encode($pages)?>,
-    layouts: <?=json_encode($pageTemplates)?>,
-    themes: <?=json_encode($themes)?>,
+    pageTitle: '<?=$pageTitle?>'
   },
   methods: {
     discardChanges: function(){
@@ -154,11 +92,6 @@ appEditMenu = new Vue({
     },
     toggleEdit: function(){
       pageDocument.getElementById('swapEdit').click()
-    },
-    selectPage: function(i) {
-      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+i
-      this.pageId = i
-      pagesDropdown.classList.toggle('open')
     },
     editPageData: function() {
       irow = this.pageId
@@ -173,30 +106,6 @@ appEditMenu = new Vue({
         transformClassComponents()
         g(formId+' input').all[1].focus()
       })
-    },
-    previewTheme: function(i) {
-      this.previewedLayout = null
-      if(this.currentTheme==i) {
-        this.previewedTheme = null
-        pageFrame.src = basePageIdUrl+'&g_preview_theme='+i
-      } else {
-        this.previewedTheme = i
-        pageFrame.src = basePageIdUrl+'&g_preview_theme='+i
-      }
-      themesDropdown.classList.toggle('open')
-    },
-    removePreviewTheme: function() {
-      pageFrame.src = basePageIdUrl
-      this.previewedTheme = null
-    },
-    selectPreviewTheme: function() {
-      // select theme
-      g.loader()
-      g.post('admin/themes?g_response=content', 'activate='+this.previewedTheme,function(x){
-        g.loader(false)
-        g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
-      })
-      this.previewedTheme = null
     }
   }
 })
@@ -214,7 +123,7 @@ function g_page_popup_update() {
   url = 'cm/update_rows/'+t+'?id='+id
   g.ajax({method:'post',url:url,data:data,fn:function(data) {
     data = JSON.parse(data)
-    appEditMenu.pages[appEditMenu.pageId] = data.rows[0].title
+    appEditMenu.pageTitle = data.rows[0].title
     pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+appEditMenu.pageId
   }})
 
