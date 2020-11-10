@@ -21,7 +21,7 @@ class Post
         $blocks = json_decode($blocks);
         $row['post'] .= View::blocks($blocks, 'post'.$row['id']);
       }
-      $row['url'] = Config::make_url('blog', '', ['p'=>$row['id'],'slug'=>$row['slug']]);
+      $row['url'] = Config::url('blog', ['p'=>$row['id'],'slug'=>$row['slug']]);
       return $row;
     }
     return false;
@@ -83,7 +83,7 @@ class Post
     $res = $db->read()->query($ql);
     if ($res) {
       while ($r = mysqli_fetch_assoc($res)) {
-        $r['url'] = Config::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']]);
+        $r['url'] = Config::url('blog/'.$r['id'].'/'.$r['slug']);
         yield $r;
       }
     }

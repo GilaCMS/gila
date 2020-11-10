@@ -30,7 +30,7 @@ if ($widget_data->show_thumbnails == 1) {
 
 foreach ($posts as $key=>$r) {
   echo "<li>";
-  echo "<a href='".Config::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']])."'>";
+  echo "<a href='".Config::url('blog', ['p'=>$r['id'],'slug'=>$r['slug']])."'>";
   if ($widget_data->show_thumbnails == 1) {
     if ($stacked[$key]!==false) {
       if ($img=View::thumb($r['img'], 100)) {

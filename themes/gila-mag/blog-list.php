@@ -15,7 +15,7 @@
             ?>
 
         <div class="<?=$title_gl?>">
-            <a href="<?=Config::make_url('blog','',['p'=>$r['id'],'slug'=>$r['slug']])?>">
+            <a href="<?=Config::url('blog/'.$r['id'].'/'.$r['slug'])?>">
                 <h2 class="post-title" style="margin-top:0"><?=$r['title']?></h2>
             </a>
             <?=$r['description']?>

@@ -310,9 +310,8 @@ class AdminController extends Gila\Controller
     View::includeFile('admin/footer.php');
   }
 
-  public function menuAction()
+  public function menuAction($menu = null)
   {
-    $menu = Router::param('menu', 1);
     if ($menu != null) {
       if (Session::hasPrivilege('admin')) {
         $folder = Config::dir(LOG_PATH.'/menus/');
@@ -330,7 +329,7 @@ class AdminController extends Gila\Controller
         }
       }
     }
-    View::set('menu', ($menu?:'mainmenu'));
+    View::set('menu', ($menu??'mainmenu'));
     View::renderAdmin('admin/menu_editor.php');
   }
 

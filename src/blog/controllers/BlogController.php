@@ -136,7 +136,6 @@ class BlogController extends Gila\Controller
     View::set('page', self::$page);
     View::set('posts', $posts);
     View::render('blog-category.php');
-    echo self::$totalPosts.'/'.self::$ppp. '!'.count($posts).' '.self::$page;
   }
 
   /**

@@ -327,7 +327,7 @@ class Config
     return self::$base_url.self::url($str);
   }
 
-  public static function url($url)
+  public static function url($url, $params=[])
   {
     if ($url==='#'||$url==='') {
       return htmlentities(Router::path()).$url;
@@ -338,6 +338,14 @@ class Config
       if ($var[0]!='admin') {
         return substr($url, strlen($var[0])+1);
       }
+    }
+
+    if ($gpt = Router::request('g_preview_theme') && Session::hasPrivilege('admin')) {
+      $params['g_preview_theme'] = $gpt;
+    }
+    $q = http_build_query($params);
+    if(!empty($q)) {
+      $url .= strpos($url, '?')? '&'.$q: '?'.$q;
     }
     return $url;
   }
@@ -351,6 +359,7 @@ class Config
   */
   public static function make_url($c, $action='', $args=[])
   {
+    return self::url($c.'/'.$action, $args);
     $params='';
     if (self::config('rewrite')) {
       foreach ($args as $key=>$value) {

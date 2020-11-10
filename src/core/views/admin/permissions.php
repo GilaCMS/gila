@@ -26,7 +26,7 @@ $checked = Config::get('permissions');
 View::alerts();
 ?>
 <br>
-<form action="<?=Config::url('admin/users?tab=2')?>" method="POST">
+<form action="<?=Config::url('admin/users', ['tab'=>2])?>" method="POST">
 <button class="g-btn" name="submit" value="true">
   <i class="fa fa-save"></i> <?=__('Submit')?>
 </button>
