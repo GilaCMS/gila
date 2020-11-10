@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="<?=Config::get('language')?>">
 <?php
-View::stylesheet('core/gila.min.css');
-View::stylesheet('lib/font-awesome/css/font-awesome.min.css');
 View::head()?>
 
 <body>
@@ -51,7 +49,7 @@ footer{background:#464a49;margin-top:10px;color:white}
   background: #060608;
 }
 .widget-social-icons li a i:hover:before{background: <?=$theme_color?>;}
-.g-navbar li ul li a{color:inherit}
+.g-navbar li ul li a{color:#ddd}
 .g-nav li ul{border-width:0; background: #181818; margin-top:-2px}
 </style>
 
@@ -64,8 +62,8 @@ footer{background:#464a49;margin-top:10px;color:white}
         </div>
         <!-- Navigation -->
         <div class="gl-9">
-        <nav class="inline-flex g-nav g-navbar">
-            <span style=""><?php View::menu('mainmenu'); ?></span>
+        <nav class="inline-flex g-navbar">
+            <ul class="g-nav"><?php View::menu('mainmenu'); ?></ul>
         </nav>
         </div>
     </div>

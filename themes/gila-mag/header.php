@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="<?=Config::get('language')?>">
-<?php
-View::stylesheet('core/gila.min.css');
-View::head()?>
+<?php View::head()?>
 
 <body>
 
@@ -27,7 +25,7 @@ body{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
 footer{background:#464a49;margin-top:10px;color:white}
 .footer-text,footer a,footer a:hover{color:#ccc; }
 .widget-social-icons li a i:hover:before{background: <?=$theme_color?>;}
-.g-navbar li ul li a{color:inherit}
+.g-navbar li ul li a{color:#ddd}
 .g-nav li ul{border-width:0; background: #181818; margin-top:-2px}
 .g-nav .active{background: <?=$theme_color?>}
 li.active{background-color:var(--main-primary-color); color:white;}
@@ -47,7 +45,7 @@ li.active{background-color:var(--main-primary-color); color:white;}
         </div>
         <!-- Navigation -->
         <nav class="inline-flex fullwidth g-nav g-navbar">
-            <span class="fullwidth g-nav" style="border-top: 4px solid <?=$theme_color?>"><?php View::menu(); ?></span>
+            <ul class="fullwidth g-nav" style="border-top: 4px solid <?=$theme_color?>"><?php View::menu(); ?></ul>
       </nav>
     </div>
     <div class="wrapper">

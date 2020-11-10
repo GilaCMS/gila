@@ -71,17 +71,18 @@ class View
   */
   public static function css($css, $prop='')
   {
-    if (in_array($css, self::$css)) {
-      return;
-    }
-    self::$css[]=$css;
     if (file_exists('assets/'.$css)) {
       $css = 'assets/'.$css;
     }
 
-    if (ob_get_level()) {
-      self::$stylesheet[]=$css;
+    if (in_array($css, self::$css)) {
+      return;
     }
+    if (ob_get_level()>1 && in_array($css, self::$stylesheet)) {
+      return;
+    }
+
+    self::$css[]=$css;
     echo '<link rel="stylesheet" href="'.$css.'" '.$prop.'>';
   }
 
