@@ -1,11 +1,11 @@
 
 Vue.component('input-upload-media', {
   template: '<div class="pointer:hover shadow:hover;" \
-  style="background:var(--main-input-color);width:160px;height:160px;max-width:100%;max-height:100%;display: grid;\
+  style="background:var(--main-input-color);width:120px;height:120px;max-width:100%;max-height:100%;display: grid;\
   justify-content:center; align-content:center; position:relative;min-width:50px;overflow: hidden;" \
   @click="selectPhoto()">\
 <img v-if="!value" src="assets/core/camera.svg" style="width:50px;margin:auto">\
-<img v-if="value" :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%;margin:auto">\
+<img v-if="value" :src="\'lzld/thumb?media_thumb=120&src=\'+value" style="max-width:100%;margin:auto">\
 <svg v-if="value" height="28" width="28" @click.stop="value=null;return false;"\
 style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
   <circle cx="14" cy="14" r="10" stroke-width="0" fill="#666"></circle>\
@@ -44,7 +44,7 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
       g.ajax({url:"user/uploadImage",method:'POST',data:fm, fn: function (data){
         g.loader(false)
         data = JSON.parse(data)
-        _iUploadMedia.value = 'lzld/thumb?media_thumb=160&src='+data.image
+        _iUploadMedia.value = 'lzld/thumb?media_thumb=120&src='+data.image
       }})
     }
   }

@@ -135,7 +135,7 @@ function theme_options(p) {
 </div>
 
 <script>
-
+var basePageIdUrl = '<?=Config::base()?>blocks/display?t=page&id='+<?=$id?>+'&ts='+Date.now()
 appEditMenu = new Vue({
   el:"#editMenu",
   data: {
@@ -183,15 +183,15 @@ appEditMenu = new Vue({
       this.previewedLayout = null
       if(this.currentTheme==i) {
         this.previewedTheme = null
-        pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_theme='+i
+        pageFrame.src = basePageIdUrl+'&g_preview_theme='+i
       } else {
         this.previewedTheme = i
-        pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_theme='+i
+        pageFrame.src = basePageIdUrl+'&g_preview_theme='+i
       }
       themesDropdown.classList.toggle('open')
     },
     removePreviewTheme: function() {
-      pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId
+      pageFrame.src = 
       this.previewedTheme = null
     },
     selectPreviewTheme: function() {
@@ -206,11 +206,11 @@ appEditMenu = new Vue({
     //previewLayout: function(i) {
     //  this.previewedTheme = null
     //  this.previewedLayout = i
-    //  pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId+'&g_preview_template='+i
+    //  pageFrame.src = basePageIdUrl+'&g_preview_template='+i
     //  layoutsDropdown.classList.toggle('open')
     //},
     //removePreviewLayout: function() {
-    //  pageFrame.src = '<?=Config::base()?>blocks/display?t=page&id='+this.pageId
+    //  pageFrame.src = basePageIdUrl
     //  this.previewedLayout = null
     //},
     //selectPreviewLayout: function() {
