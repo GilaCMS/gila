@@ -331,10 +331,9 @@ class Config
   {
     if ($url==='#'||$url==='') {
       $url = Router::path().$url;
-    }
-    $var = explode('/', $url);
-    if (self::config('default-controller') === $var[0]) {
-      if ($var[0]!='admin') {
+    } else {
+      $var = explode('/', $url);
+      if ($var[0]!='admin' && self::get('default-controller') === $var[0]) {
         $url = substr($url, strlen($var[0])+1);
       }
     }
@@ -359,36 +358,6 @@ class Config
   public static function make_url($c, $action='', $args=[])
   {
     return self::url($c.'/'.$action, $args);
-    $params='';
-    if (self::config('rewrite')) {
-      foreach ($args as $key=>$value) {
-        if ($params!='') {
-          $params.='/';
-        }
-        $params.=$value;
-      }
-
-      if ((self::config('default-controller') === $c) && ($c != 'admin')) {
-        $c='';
-      } else {
-        $c.='/';
-      }
-      if ($action!='') {
-        $action.='/';
-      }
-      if ($gpt = Router::request('g_preview_theme')) {
-        $params.='?g_preview_theme='.$gpt;
-      }
-      return $c.$action.$params;
-    } else {
-      foreach ($args as $key=>$value) {
-        $params.='&'.$key.'='.$value;
-      }
-      if ($gpt = Router::request('g_preview_theme')) {
-        $params.='&g_preview_theme='.$gpt;
-      }
-      return "?p=$c/$action$params";
-    }
   }
 
   /**
