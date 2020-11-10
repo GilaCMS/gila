@@ -33,10 +33,6 @@ class ClassGila extends TestCase
   public function test_url()
   {
     Config::set('default-controller', 'blog');
-    Config::set('rewrite', 0);
-    $link = Config::url('blog/post/1/post1');
-    $this->assertEquals('?p=blog/post/1/post1', $link);
-    Config::set('rewrite', 1);
     $link = Config::url('blog/post/1/post1');
     $this->assertEquals('post/1/post1', $link);
   }
@@ -44,10 +40,6 @@ class ClassGila extends TestCase
   public function test_make_url()
   {
     Config::set('default-controller', 'blog');
-    Config::set('rewrite', 0);
-    $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
-    $this->assertEquals('?p=blog/post&id=1&slug=post_1', $link);
-    Config::set('rewrite', 1);
     $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
     $this->assertEquals('post/1/post_1', $link);
   }
