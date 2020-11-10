@@ -62,7 +62,7 @@ function block_edit_close() {
 }
 
 function block_create(content,type,pos) {
-  href='blocks/edit?id=new&type='+type;
+  href='blocks/edit?id='+content+'_new&type='+type;
   _type = type.toUpperCase().replace('_',' ');
   cblock_content=content
   cblock_type=type
