@@ -40,8 +40,8 @@ class ClassGila extends TestCase
   public function test_make_url()
   {
     Config::set('default-controller', 'blog');
-    $link = Config::url('blog/post', ['id'=>1,'slug'=>'post_1',]);
-    $this->assertEquals('post?id=1&slug=post_1', $link);
+    $link = Config::url('blog/post', ['id'=>1,'slug'=>'post_1']);
+    $this->assertEquals('post?id=1&amp;slug=post_1', $link);
     $link = Config::url('blog/post?null');
     $this->assertEquals('post?null', $link);
   }
