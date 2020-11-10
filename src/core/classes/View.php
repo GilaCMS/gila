@@ -41,13 +41,6 @@ class View
     self::$stylesheet[]=$href;
   }
 
-  public static function links()
-  {
-    foreach (self::$stylesheet as $link) {
-      echo '<link href="'.$link.'" rel="stylesheet">';
-    }
-  }
-
   /**
   * Set an alert message
   */

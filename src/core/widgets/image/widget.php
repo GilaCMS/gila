@@ -3,7 +3,7 @@
 return [
   'fields'=>[
     'image'=> [
-      "type"=>"media1",
+      "type"=>"media2",
       "default"=>'$p=l1.jpg'
     ],
     'description'=> [],

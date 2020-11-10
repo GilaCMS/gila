@@ -278,7 +278,7 @@ textare.g-input, .g-input[type=text] {
   outline:none;
 }
 .g-form label,.g-label{
-  padding:0.3em 0;
+  padding:0.4em 0 0.1em 0;
   font:14px Arial;
   font-weight:bold;
 }
@@ -423,8 +423,9 @@ textare.g-input, .g-input[type=text] {
     top:5%;
     animation-name: none;
     max-height:95%;
-    width:900px;
-    margin-left:auto;
+    left:50%;
+    margin-left:-400px;
+    width:800px;
   }
   .gila-popup.overlay{
     top:0;
@@ -434,17 +435,12 @@ textare.g-input, .g-input[type=text] {
   }
 }
 
-@media only screen and (min-width:1024px){
-  .gila-popup.large, .gila-popup.overlay{
-    left:50%;
-    margin-left:-450px;
-    width:900px;
-  }
+@media only screen and (min-width:1100px){
   .gila-popup.overlay{
     top:0;
     height:100%;
-    margin-left:-590px;
-    width:1180px;
+    margin-left:-512px;
+    width:1024px;
   }
   .g-nav.hover li:hover>ul{display:block;}
 }

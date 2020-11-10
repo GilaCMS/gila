@@ -67,7 +67,7 @@ align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
   </ul>
   </div>
   <div v-if="previewedTheme">
-    Keep '{{themes[previewedTheme]}}'?
+    Keep theme '{{themes[previewedTheme]}}'?
     &nbsp;<button type="button" class="g-btn success" @click="selectPreviewTheme()"><?=__('Yes')?></button>
     &nbsp;<button type="button" class="g-btn warning" @click="removePreviewTheme()"><?=__('No')?></button>
   </div>
@@ -191,7 +191,7 @@ appEditMenu = new Vue({
       themesDropdown.classList.toggle('open')
     },
     removePreviewTheme: function() {
-      pageFrame.src = 
+      pageFrame.src = basePageIdUrl
       this.previewedTheme = null
     },
     selectPreviewTheme: function() {
