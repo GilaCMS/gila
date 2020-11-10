@@ -3,7 +3,7 @@
 return [
   'name'=> 'page',
   'title'=> 'Pages',
-  'pagination'=> 15,
+  'pagination'=> 5,
   'id'=>'id',
   'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','updated','publish','page'],

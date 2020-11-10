@@ -99,7 +99,7 @@ Vue.component('g-table', {
       <tr>\
         <td colspan="100">\
           <ul class="pagination g-pagination">\
-            <li v-for="p in pagination()" :class="(p==page?\'active\':\'\')" @click="load_page({page:p})" v-html="p"></li>\
+            <li v-for="p in pagination()" :class="(p==page?\'active\':\'\')" @click="gotoPage(p)" v-html="p"></li>\
           </ul>\
         </td>\
       </tr>\
@@ -252,14 +252,25 @@ Vue.component('g-table', {
       return true
     },
     runsearch: function(pushState = false) {
-      if(pushState==true && this.basePath) {
+      if(pushState==true) {
+        this.pushState()
+      }
+      this.load_page()
+    },
+    gotoPage: function(p) {
+      this.page = p
+      this.pushState()
+      this.load_page()
+    },
+    pushState: function() {
+      if(this.basePath) {
         search = this.search ? '&search='+this.search: '';
         for(fkey in this.filter) {
           if(this.filter[fkey]!=='') search += '&'+fkey+'='+this.filter[fkey]
         }
-        history.pushState({path:this.basePath,search:search}, _e('Content'), this.basePath+'?page='+this.page+search)
+        order = ''
+        history.pushState({path:this.basePath,search:search}, _e('Content'), this.basePath+'?page='+this.page+order+search)
       }
-      this.load_page()
     },
     update: function(){
       let irow = this.edititem
@@ -429,7 +440,8 @@ Vue.component('g-table', {
       if(this.order[key]=='DESC') order='ASC'; else order='DESC';
       this.order = []
       this.order[key] = order
-      this.load_page({page:1})
+      this.page = 1
+      this.load_page()
     },
     sortiClass: function(key){
       cl=''

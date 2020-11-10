@@ -47,10 +47,6 @@ align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
     <li><a href="admin/content/page" style="font-size:180%">
     &lsaquo; <img src="assets/gila-logo.png" style="filter:contrast(0) brightness(2);height:36px;margin:auto;margin-right:24px;margin-left:-8px;vertical-align: middle;">
       </a></li>
-    <!--li class="dropdown" id="pagesDropdown"><a>{{pages[pageId]}}</a>
-      <ul class="dropdown-menu"><li v-for="(page,i) in pages" v-if="i!=pageId" @click="selectPage(i)"><a>{{page}}</a></li></ul-->
-    <!--li class="dropdown" id="layoutsDropdown"><a>Layout</a>
-      <ul class="dropdown-menu"><li v-for="(layout,i) in layouts" @click="previewLayout(i)"><a>{{layout}}</a></li></ul-->
     <li class=""><a @click="editPageData()"><i class="fa fa-pencil"></i> {{pages[pageId]}}</a>
     <li class="dropdown" id="themesDropdown"><a><i class="fa fa-paint-brush"></i> {{themes[currentTheme]}}</a>
       <ul class="dropdown-menu"><li v-for="(theme,i) in themes" v-if="i!=currentTheme" @click="previewTheme(i)">
@@ -175,7 +171,6 @@ appEditMenu = new Vue({
           data: {id:irow}
         })
         transformClassComponents()
-        //console.log(formId+' input')
         g(formId+' input').all[1].focus()
       })
     },
@@ -202,22 +197,7 @@ appEditMenu = new Vue({
         g.alert("<?=__('_theme_selected')?>",'success','location.reload(true)');
       })
       this.previewedTheme = null
-    },
-    //previewLayout: function(i) {
-    //  this.previewedTheme = null
-    //  this.previewedLayout = i
-    //  pageFrame.src = basePageIdUrl+'&g_preview_template='+i
-    //  layoutsDropdown.classList.toggle('open')
-    //},
-    //removePreviewLayout: function() {
-    //  pageFrame.src = basePageIdUrl
-    //  this.previewedLayout = null
-    //},
-    //selectPreviewLayout: function() {
-    //  // select layout
-    //  alert('still not working!')
-    //  this.previewedLayout = null
-    //}
+    }
   }
 })
 
