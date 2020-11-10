@@ -330,13 +330,12 @@ class Config
   public static function url($url, $params=[])
   {
     if ($url==='#'||$url==='') {
-      return htmlentities(Router::path()).$url;
+      $url = Router::path().$url;
     }
-    $url = htmlentities($url);
     $var = explode('/', $url);
     if (self::config('default-controller') === $var[0]) {
       if ($var[0]!='admin') {
-        return substr($url, strlen($var[0])+1);
+        $url = substr($url, strlen($var[0])+1);
       }
     }
 
@@ -347,7 +346,7 @@ class Config
     if(!empty($q)) {
       $url .= strpos($url, '?')? '&'.$q: '?'.$q;
     }
-    return $url;
+    return htmlentities($url);
   }
 
   /**
