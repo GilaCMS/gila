@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::set('favicon', $_POST['gila_favicon']);
   Config::set('env', $_POST['gila_env']);
   Config::set('check4updates', $_POST['gila_check4updates']);
-  Config::set('rewrite', $_POST['gila_rewrite']);
   Config::set('user_register', $_POST['gila_user_register']);
   Config::set('user_activation', $_POST['gila_user_activation']);
   Config::set('use_cdn', $_POST['gila_use_cdn']);
@@ -114,9 +113,6 @@ foreach ($config_list as $key=>$value) {
 
   <br>
   <?php echo Form::input('gila_use_cdn', ["type"=>"switch"], Config::get('use_cdn'), __("Use CDN")) ?>
-
-  <br>
-  <?php echo Form::input('gila_rewrite', ["type"=>"switch"], Config::get('rewrite'), __("Pretty Urls")) ?>
 
   <br><div class="gm-12">
   <label class="g-label gm-4"><?=__("Default Controller")?></label>

@@ -83,10 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $GLOBALS['config']['admin_logo'] = 'assets/gila-logo.png';
     $GLOBALS['config']['favicon'] = 'assets/favicon.png';
 
-    if (function_exists("apache_get_modules") && !in_array('mod_rewrite', apache_get_modules())) {
-      $GLOBALS['config']['rewrite'] = 0;
-    }
-
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents($configfile, $filedata);
     Gila\Package::copyAssets('core');

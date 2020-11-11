@@ -33,6 +33,7 @@ if (is_writable(realpath(""))==false) {
 if (function_exists("apache_get_modules")) {
   if (!in_array('mod_rewrite', apache_get_modules())) {
     echo "<span class='alert fullwidth'>mod_rewrite is not enabled.</span>";
+    $continue = false;
   }
 }
 ?>
