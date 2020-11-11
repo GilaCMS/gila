@@ -51,8 +51,8 @@ $db->query("INSERT INTO page(id,title,slug,blocks,publish,updated,template)
 
 // preinstall widgets on dashboard
 $wtext1 = '{"text":"<ol><li><a href=\\\"admin\\\/content\\\/postcategory\\\">Create Categories<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/page\\\">Edit About Page<\\\/a><\\\/li><li><a href=\\\"admin\\\/content\\\/post\\\">Add Posts<\\\/a><\\\/li><li><a href=\\\"admin\\\/settings\\\">Set Basic Settings<\\\/a><\\\/li><\\\/ol>"}';
-$wtext2 = '{"text":"<ul><li><a href=\\\\\"https:\\\/\\\/gila-cms.readthedocs.io\\\" target=\\\"_blank\\\">Documentation<\\\/a><\\\/li><li><a href=\\\\\"https:\\\/\\\/www.facebook.com\\\/gilacms\\\/\\\\\" target=\\\\\"_blank\\\\\">Facebook Page<\\\/a><\\\/li><li>Star on <a href=\\\\\"https:\\\/\\\/github.com\\\/GilaCMS\\\/gila\\\\\" target=\\\\\"_blank\\\\\">Github Repo<\\\/a><\\\/li><\\\/ul>"}';
-$wtext3 = '{"text":"<p>We want to hear from you!<br>Send us your questions and thoughts at <strong>contact@gilacms.com<\\\/strong><\\\/p>"}';
+$wtext2 = '{"text":"<ul><li><a href=\\\\\"https:\\\/\\\/gila-cms.readthedocs.io\\\" target=\\\"_blank\\\">Documentation<\\\/a><\\\/li><li><a href=\\\\\"https:\\\/\\\/www.facebook.com\\\/gilacms\\\/\\\\\" target=\\\\\"_blank\\\\\">Facebook Page<\\\/a><\\\/li><li><a href=\\\\\"https:\\\/\\\/github.com\\\/GilaCMS\\\/gila\\\\\" target=\\\\\"_blank\\\\\">Github Repo<\\\/a><\\\/li><li><a href=\\\\\"https:\\\/\\\/tinyletter.com\\\/gilacms\\\\\">Dev Newsletter<\\\/a><\\\/li><\\\/ul>"}';
+$wtext3 = '{"text":"<p>We want to hear from you!<br>Send us your questions and thoughts at <a href=\\\"mailto:contact@gilacms.com\\\">contact@gilacms.com<\\\/a><\\\/p>"}';
 
 $db->query("INSERT INTO widget(id,widget,title,area,active,pos,data)
 VALUES(1,'core-counters','','dashboard',1,1,'[]'),

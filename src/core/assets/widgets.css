@@ -3,9 +3,7 @@
   .widget-core-counters,
   .widget-mysql-chart{grid-column: span 2;}
 }
-@media (min-width:1100px) {
-  .widget-core-counters{grid-column: span 3;}
-}
+.widget-core-counters{grid-column: 1/-1;}
 
 .features-grid{
   display: grid;
