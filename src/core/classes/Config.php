@@ -342,7 +342,7 @@ class Config
       $params['g_preview_theme'] = $gpt;
     }
     $q = http_build_query($params);
-    if(!empty($q)) {
+    if (!empty($q)) {
       $url .= strpos($url, '?')? '&'.$q: '?'.$q;
     }
     return htmlentities($url);

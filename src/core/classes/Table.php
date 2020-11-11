@@ -307,7 +307,6 @@ class Table
     if (isset($this->table['filters'])) {
       foreach ($this->table['filters'] as $k=>$f) {
         if (isset($fields[$k])) {
-          // should check if $fields[$k] validates the filter restrictions
           $fields[$k]=$f;
         }
       }
@@ -353,9 +352,10 @@ class Table
       if (@$this->table['fields'][$key]['type'] === 'joins') {
         $jt = $this->table['fields'][$key]["jt"];
         $arrv = explode(",", $value);
-        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
+        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`=?;", [$id]);
         foreach ($arrv as $arrv_k=>$arrv_v) {
-          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$id','$arrv_v');");
+          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`)
+          VALUES(?,?);", [$id,$arrv_v]);
         }
         continue;
       }
@@ -380,12 +380,13 @@ class Table
         } else {
           $arrv = $value;
         }
-        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$mt[2]}`='{$vt}';");
+        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`=? AND `{$mt[2]}`=?;", [$id,$vt]);
         if ($arrv) {
           foreach ($arrv as $arrv_k=>$arrv_v) {
             if ($arrv_v!='' && $arrv_v!=null) {
               $arrv_v = strip_tags($arrv_v);
-              $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`) VALUES('$id','$arrv_v','{$vt}');");
+              $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`)
+              VALUES(?,?,?);", [$id,$arrv_v,$vt]);
             }
           }
         }
