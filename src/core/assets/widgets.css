@@ -124,6 +124,9 @@
   column-gap: 0;
   margin: auto;
 }
+.gallery-columns>img {
+  display:block;
+}
 .columns-5{
   column-count: 5;
 }

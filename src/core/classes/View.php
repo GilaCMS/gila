@@ -32,11 +32,11 @@ class View
 
   public static function stylesheet($href)
   {
-    if (in_array($href, self::$stylesheet)) {
-      return;
-    }
     if (file_exists('assets/'.$href)) {
       $href = 'assets/'.$href;
+    }
+    if (in_array($href, self::$stylesheet)) {
+      return;
     }
     self::$stylesheet[]=$href;
   }
@@ -71,14 +71,13 @@ class View
   */
   public static function css($css, $prop='')
   {
-    if (file_exists('assets/'.$css)) {
-      $css = 'assets/'.$css;
-    }
-
     if (in_array($css, self::$css)) {
       return;
     }
-    if (ob_get_level()>1 && in_array($css, self::$stylesheet)) {
+    if (file_exists('assets/'.$css)) {
+      $css = 'assets/'.$css;
+    }
+    if (in_array($css, self::$stylesheet)) {
       return;
     }
 
@@ -586,11 +585,11 @@ class View
   * @example background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);
   * @example <img srcset="{$srcset[0]}, {$srcset[0]} 2x" src="{$srcset[0]}"
   */
-  public static function thumbSrcset($src, $sizes = [1200,320])
+  public static function thumbSrcset($src, $sizes = [1200,600])
   {
     $r = [];
     foreach ($sizes as $w) {
-      $r[] = self::thumb($src, $w.'/', $w);
+      $r[] = self::thumb($src, $w);
     }
     return $r;
   }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
   <base href="<?=Config::base()?>">
+  <?php View::$stylesheet = [] ?>
   <?=View::script('core/gila.min.js')?>
   <?=View::script('core/admin/media.js')?>
   <?=View::script('lib/vue/vue.min.js');?>
