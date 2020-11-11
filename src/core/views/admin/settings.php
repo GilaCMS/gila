@@ -112,7 +112,7 @@ foreach ($config_list as $key=>$value) {
   <h2><?=__("Advanced Settings")?></h2><hr>
 
   <br>
-  <?php echo Form::input('gila_use_cdn', ["type"=>"switch"], Config::get('use_cdn'), __("Use CDN")) ?>
+  <?php echo Form::input('gila_use_cdn', ["type"=>"switch"], Config::get('use_cdn'), __("CDN")) ?>
 
   <br><div class="gm-12">
   <label class="g-label gm-4"><?=__("Default Controller")?></label>
