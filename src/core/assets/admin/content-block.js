@@ -21,7 +21,6 @@ g.dialog.buttons.create_widget = {title:'Create',fn:function(){
   g.loader()
   widget_id = cblock_content.replace('/','_')+'_'+cblock_pos;
   g.post('blocks/create', 'id='+widget_id+'&type='+cblock_type, function(data){
-    //content_blocks_app.blocks = JSON.parse(data)
     fm = new FormData(widget_options_form)
     values = readFromClassComponents()
     for(x in values) {
@@ -143,7 +142,6 @@ var blocks_app = new Vue({
   updated: function() {
     if(this.add_block==false) return
     this.$refs.filter.focus()
-    this.$refs.blocks_app.style.width='280px'
   }
 });
 

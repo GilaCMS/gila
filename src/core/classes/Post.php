@@ -11,7 +11,7 @@ class Post
   public static function getByIdSlug($id)
   {
     global $db;
-    $ql="SELECT id,description,title,post,publish,slug,updated,user_id,
+    $ql="SELECT id,description,title,post,publish,slug,created,updated,user_id,
       (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
       (SELECT GROUP_CONCAT(b.value SEPARATOR ',') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
       FROM post WHERE (id=? OR slug=?)";
@@ -73,7 +73,7 @@ class Post
       $start_from = ($args['page']-1)*$ppp;
     }
 
-    $ql = "SELECT id,title,description,slug,SUBSTRING(post,1,300) as post,updated,user_id,
+    $ql = "SELECT id,title,description,slug,SUBSTRING(post,1,300) as post,created,updated,user_id,
       (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img,
       (SELECT GROUP_CONCAT('{', CONCAT('\"',value,'\":\"',title,'\"'), '}' SEPARATOR ',') FROM postmeta,postcategory p WHERE post_id=post.id AND vartype='category' AND value=p.id) as categories,
       (SELECT username FROM user WHERE post.user_id=id) as author

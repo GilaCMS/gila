@@ -12,6 +12,7 @@ return [
   'qkeys'=>['slug','publish'],
   'js'=>['src/core/tables/page.js','src/core/assets/admin/blocks_btn.js'],
   'permissions'=>[
+    'read'=>['admin', 'editor'],
     'create'=>['admin', 'editor'],
     'update'=>['admin', 'editor'],
     'delete'=>['admin', 'editor']

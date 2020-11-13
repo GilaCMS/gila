@@ -37,6 +37,7 @@ align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
     <li><i class="fa fa-d fa-desktop" onclick="desktopView()"></i>
     <li><i class="fa fa-d fa-tablet" onclick="tabletView()"></i>
     <li><i class="fa fa-d fa-mobile" onclick="mobileView()"></i>
+    <li><a @click="askFeedback()" style="margin-left:20px"><i class="fa fa-info-circle"></i> Feedback</a></i>
   </ul>
   </div>
 
@@ -107,6 +108,9 @@ appEditMenu = new Vue({
         transformClassComponents()
         g(formId+' input').all[1].focus()
       })
+    },
+    askFeedback: function() {
+      g.modal({body:'We need your feedback about the page builder so we can make it better for you.<br>Send your questions and thoughts at <strong>contact@gilacms.com</strong>',class:'small'})
     }
   }
 })
