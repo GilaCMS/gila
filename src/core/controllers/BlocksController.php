@@ -13,7 +13,7 @@ class BlocksController extends Gila\Controller
   public function __construct()
   {
     self::admin();
-    if (!Session::hasPrivilege('admin editor')) {
+    if (!Gila\Session::hasPrivilege('admin editor')) {
       http_response_code(403);
       exit;
     }
