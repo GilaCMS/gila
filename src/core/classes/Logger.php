@@ -122,12 +122,12 @@ class Logger
     if (UserAgent::isBot($user_agent)) {
       return;
     }
-    if($type==='web') {
+    if ($type==='web') {
       $ref_server = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
-      if(!empty($ref_server) && $_SERVER['SERVER_NAME']!==$ref_server) {
+      if (!empty($ref_server) && $_SERVER['SERVER_NAME']!==$ref_server) {
         $context['src'] = $ref_server;
       }
-      if(@$geo = @\geoplugin\geoplugin::get()) {
+      if (@$geo = @\geoplugin\geoplugin::get()) {
         $context['country'] = $geo->geoplugin_countryName;
       }
     }

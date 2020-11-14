@@ -12,7 +12,10 @@ if ($id!=='new') {
 
 if (isset($fields)) {
   foreach ($fields as $key=>$op) {
-    $values[$key] = $widget_data[$key]?? $op[$key]['default']?? '';
+    if ($id!=='new') {
+      unset($fields[$key]['default']);
+    }
+    $values[$key] = $widget_data[$key] ?? '';
   }
 }
 

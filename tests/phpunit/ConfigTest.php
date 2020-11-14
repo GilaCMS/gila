@@ -8,7 +8,7 @@ class ClassGila extends TestCase
 {
   public function test_addLang()
   {
-    Config::config('language', 'es');
+    Config::set('language', 'es');
     Config::addLang('core/lang/');
     $this->assertEquals('Inicio', __('Home'));
   }
@@ -17,7 +17,7 @@ class ClassGila extends TestCase
   {
     $value = rand(1, 100);
     include_once __DIR__.'/../../config.default.php';
-    Config::setConfig('test_config_key', $value);
+    Config::set('test_config_key', $value);
     Config::updateConfigFile();
     include_once __DIR__.'/../../config.php';
     $this->assertEquals($value, $GLOBALS['config']['test_config_key']);
@@ -32,23 +32,13 @@ class ClassGila extends TestCase
 
   public function test_url()
   {
-    Config::setConfig('default-controller', 'blog');
-    Config::setConfig('rewrite', 0);
-    $link = Config::url('blog/post/1/post1');
-    $this->assertEquals('?c=blog&action=post&var2=post1&var1=1', $link);
-    Config::setConfig('rewrite', 1);
+    Config::set('default-controller', 'blog');
     $link = Config::url('blog/post/1/post1');
     $this->assertEquals('post/1/post1', $link);
+    $link = Config::url('blog/post', ['id'=>1,'slug'=>'post_1']);
+    $this->assertEquals('post?id=1&amp;slug=post_1', $link);
+    $link = Config::url('blog/post?null');
+    $this->assertEquals('post?null', $link);
   }
 
-  public function test_make_url()
-  {
-    Config::setConfig('default-controller', 'blog');
-    Config::setConfig('rewrite', 0);
-    $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
-    $this->assertEquals('?c=blog&action=post&id=1&slug=post_1', $link);
-    Config::setConfig('rewrite', 1);
-    $link = Config::make_url('blog', 'post', ['id'=>1,'slug'=>'post_1',]);
-    $this->assertEquals('post/1/post_1', $link);
-  }
 }

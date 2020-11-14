@@ -11,7 +11,7 @@ if (!@class_exists('blog')) {
 }
 
 if ($widget_data->show_thumbnails == 1) {
-  $stacked_file = SITE_PATH.'tmp/stacked-wdgt'.$widget_data->widget_id.'.jpg';
+  $stacked_file = TMP_PATH.'/stacked-wdgt'.$widget_data->widget_id.'.jpg';
   $posts = [];
   $img = [];
   $widget_data->n_post = @$widget_data->n_post?:5;
@@ -30,10 +30,10 @@ if ($widget_data->show_thumbnails == 1) {
 
 foreach ($posts as $key=>$r) {
   echo "<li>";
-  echo "<a href='".Config::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']])."'>";
+  echo "<a href='".Config::url('blog', ['p'=>$r['id'],'slug'=>$r['slug']])."'>";
   if ($widget_data->show_thumbnails == 1) {
     if ($stacked[$key]!==false) {
-      if ($img=View::thumb_xs($r['img'])) {
+      if ($img=View::thumb($r['img'], 100)) {
         echo "<img src='$img' style='float:left;margin-right:6px'> ";
       } else {
         echo "<div style='width:80px;height:40px;float:left;margin-right:6px'></div> ";

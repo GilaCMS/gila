@@ -24,9 +24,6 @@ class Table
     }
     $this->loadSchema($content);
 
-    if ($patch = @Config::$contentField[$this->table['name']]) { // DEPRECATED since 1.8.0
-      $this->table['fields'] = array_merge($this->table['fields'], $patch);
-    }
     if (isset(Config::$contentInit[$this->table['name']])) {
       foreach (@Config::$contentInit[$this->table['name']] as $init) {
         $init($this->table);
@@ -270,10 +267,12 @@ class Table
       if (isset($this->table['pagination'])) {
         $limit .= ','.$this->table['pagination'];
       } else {
-        return "";
+        return '';
       }
     } elseif (is_array($limit)) {
       $limit = implode(',', $limit);
+    } elseif ($limit===false) {
+      return '';
     }
     return $this->db->res(" LIMIT $limit");
   }
@@ -308,7 +307,6 @@ class Table
     if (isset($this->table['filters'])) {
       foreach ($this->table['filters'] as $k=>$f) {
         if (isset($fields[$k])) {
-          // should check if $fields[$k] validates the filter restrictions
           $fields[$k]=$f;
         }
       }
@@ -354,9 +352,10 @@ class Table
       if (@$this->table['fields'][$key]['type'] === 'joins') {
         $jt = $this->table['fields'][$key]["jt"];
         $arrv = explode(",", $value);
-        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
+        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`=?;", [$id]);
         foreach ($arrv as $arrv_k=>$arrv_v) {
-          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$id','$arrv_v');");
+          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`)
+          VALUES(?,?);", [$id,$arrv_v]);
         }
         continue;
       }
@@ -375,17 +374,20 @@ class Table
         if (is_string($value)) {
           if (@$this->table['fields'][$key]['values'] === 1) {
             $arrv = [$value];
-          } else if ($value!==null) {
+          } elseif ($value!==null) {
             $arrv = explode(",", $value);
           }
         } else {
           $arrv = $value;
         }
-        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$mt[2]}`='{$vt}';");
-        if ($arrv) foreach ($arrv as $arrv_k=>$arrv_v) {
-          if ($arrv_v!='' && $arrv_v!=null) {
-            $arrv_v = strip_tags($arrv_v);
-            $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`) VALUES('$id','$arrv_v','{$vt}');");
+        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`=? AND `{$mt[2]}`=?;", [$id,$vt]);
+        if ($arrv) {
+          foreach ($arrv as $arrv_k=>$arrv_v) {
+            if ($arrv_v!='' && $arrv_v!=null) {
+              $arrv_v = strip_tags($arrv_v);
+              $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`)
+              VALUES(?,?,?);", [$id,$arrv_v,$vt]);
+            }
           }
         }
         continue;
@@ -400,12 +402,6 @@ class Table
       $mt = $this->table['fields'][$key]['meta_table'];
     } elseif (isset($this->table['meta_table'])) {
       $mt = $this->table['meta_table'];
-    } else {
-      // DEPRECATED remove 'mt','metatype' attributes at v2.x
-      $mt = $this->table['fields'][$key]["mt"];
-      $tmp = $mt[2];
-      $mt[2] = $vt[0];
-      $mt[3] = $tmp;
     }
     $vt = is_array($vt)? $vt[1]: $vt;
     return [$mt, $vt];
@@ -458,7 +454,7 @@ class Table
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {
             $key = $this->getColumnKey($key, false);
-            if($value==null) {
+            if ($value==null) {
               $filters[] = "$key IS NULL";
             } else {
               $value = $this->db->res($value);
@@ -466,14 +462,14 @@ class Table
             }
           } else {
             $ckey = $this->getColumnKey($key, false);
-            if(@$this->table['fields'][$key]['type']=='date') {
+            if (@$this->table['fields'][$key]['type']=='date') {
               $ckey = "SUBSTRING($key,1,10)";
             }
-            if($value==null) {
+            if ($value==null) {
               $filters[] = "$ckey IS NULL";
             } else {
               $value = $this->db->res($value);
-              $filters[] = "$ckey='$value'";  
+              $filters[] = "$ckey='$value'";
             }
           }
         }

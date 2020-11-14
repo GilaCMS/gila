@@ -9,12 +9,12 @@ return [
     'features'=>[
       'type'=>'list',
       'fields'=>[
-        'image'=>['type'=>'media','default'=>'assets/core/photo.png'],
+        'image'=>['type'=>'media','default'=>'$p=l1.jpg'],
         'name'=>[],
         'text'=>[],
         'url'=>[],
       ],
-      'default'=>'[["assets/core/photo.png", "Feature"],["assets/core/photo.png", "Feature"],["assets/core/photo.png", "Feature"]]'
+      'default'=>'[["$p=l1.jpg", "Feature"],["$p=l1.jpg", "Feature"],["$p=l1.jpg", "Feature"]]'
     ]
   ],
   'keys'=>'page'

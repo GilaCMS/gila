@@ -8,7 +8,7 @@ use Gila\Router;
 use Gila\Package;
 use Gila\Widget;
 
-class admin extends Gila\Controller
+class AdminController extends Gila\Controller
 {
   public function __construct()
   {
@@ -24,7 +24,7 @@ class admin extends Gila\Controller
     $id = Router::path() ?? null;
 
     if ($id && ($r = Gila\Page::getByIdSlug($id)) && ($r['publish']==1)
-        && ($id!='' && Router::controller()=='admin')) {
+        && ($id!='' && Router::getController()=='admin')) {
       Config::canonical('');
       View::set('title', $r['title']);
       View::set('text', $r['page']);
@@ -36,7 +36,7 @@ class admin extends Gila\Controller
       return;
     }
 
-    if (Router::get('action', 1)) {
+    if (Router::param('action', 1)) {
       http_response_code(404);
       View::renderAdmin('404.php');
       return;
@@ -68,7 +68,7 @@ class admin extends Gila\Controller
   */
   public function widgetsAction()
   {
-    if ($id = Router::get('id', 1)) {
+    if ($id = Router::param('id', 1)) {
       View::set('widget', Widget::getById($id));
       View::renderFile('admin/edit_widget.php');
       return;
@@ -111,7 +111,7 @@ class admin extends Gila\Controller
   public function package_optionsAction()
   {
     self::access('admin');
-    $package = Router::get('package', 1);
+    $package = Router::param('package', 1);
     View::renderFile('admin/header.php');
     Package::options($package);
     View::renderFile('admin/footer.php');
@@ -128,13 +128,13 @@ class admin extends Gila\Controller
       new Package();
       return;
     }
-    $search = htmlentities(Router::get('search', 2));
-    $tab = Router::get('tab', 1);
+    $search = htmlentities(Router::param('search', 2));
+    $tab = Router::param('tab', 1);
     $packages = [];
 
     if ($tab == 'new') {
       $url = 'https://gilacms.com/packages/?search='.$search;
-      $url .= Config::config('test')=='1' ? '&test=1' : '';
+      $url .= Config::get('test')=='1' ? '&test=1' : '';
       if (!$contents = file_get_contents($url)) {
         View::alert('error', "Could not connect to packages list. Please try later.");
       } else {
@@ -156,7 +156,7 @@ class admin extends Gila\Controller
   {
     self::access('admin');
     $packages = [];
-    $search = htmlentities(Router::get('search', 2));
+    $search = htmlentities(Router::param('search', 2));
     if (!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
       View::alert('error', "Could not connect to themes list. Please try later.");
     } else {
@@ -202,7 +202,7 @@ class admin extends Gila\Controller
     global $db;
     User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
+    echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
   }
 
   public function media_uploadAction()
@@ -213,7 +213,7 @@ class admin extends Gila\Controller
           echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
         }
       }
-      $upload_folder = Config::config('media_uploads') ?? 'assets';
+      $upload_folder = Config::get('media_uploads') ?? 'assets';
       $path = Router::post('path', $upload_folder);
       if ($path[0]=='.') {
         $path=$upload_folder;
@@ -225,8 +225,8 @@ class admin extends Gila\Controller
         if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
         }
-        $maxWidth = Config::config('maxImgWidth') ?? 0;
-        $maxHeight = Config::config('maxImgHeight') ?? 0;
+        $maxWidth = Config::get('maxImgWidth') ?? 0;
+        $maxHeight = Config::get('maxImgHeight') ?? 0;
         if ($maxWidth>0 && $maxHeight>0) {
           Image::makeThumb($path, $path, $maxWidth, $maxHeight);
         }
@@ -310,9 +310,8 @@ class admin extends Gila\Controller
     View::includeFile('admin/footer.php');
   }
 
-  public function menuAction()
+  public function menuAction($menu = null)
   {
-    $menu = Router::get('menu', 1);
     if ($menu != null) {
       if (Session::hasPrivilege('admin')) {
         $folder = Config::dir(LOG_PATH.'/menus/');
@@ -330,7 +329,7 @@ class admin extends Gila\Controller
         }
       }
     }
-    View::set('menu', ($menu?:'mainmenu'));
+    View::set('menu', ($menu??'mainmenu'));
     View::renderAdmin('admin/menu_editor.php');
   }
 

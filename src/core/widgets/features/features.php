@@ -1,4 +1,5 @@
-<section class="features-grid">
+<section>
+<div class="features-grid">
 <?=View::css('core/widgets.css')?>
 <?php foreach (json_decode(@$widget_data->features) as $feature) { ?>
     <div style="text-align:<?=htmlentities($data['align']??'center')?>">
@@ -10,4 +11,5 @@
 } ?>
     </div>
 <?php } ?>
+</div>
 </section>

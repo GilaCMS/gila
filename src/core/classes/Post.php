@@ -11,7 +11,7 @@ class Post
   public static function getByIdSlug($id)
   {
     global $db;
-    $ql="SELECT id,description,title,post,publish,slug,updated,user_id,
+    $ql="SELECT id,description,title,post,publish,slug,created,updated,user_id,
       (SELECT a.value FROM postmeta a WHERE a.post_id=post.id AND vartype='thumbnail') as img,
       (SELECT GROUP_CONCAT(b.value SEPARATOR ',') FROM postmeta b WHERE b.post_id=post.id AND vartype='tag') as tags
       FROM post WHERE (id=? OR slug=?)";
@@ -21,7 +21,7 @@ class Post
         $blocks = json_decode($blocks);
         $row['post'] .= View::blocks($blocks, 'post'.$row['id']);
       }
-      $row['url'] = Config::make_url('blog', '', ['p'=>$row['id'],'slug'=>$row['slug']]);
+      $row['url'] = Config::url('blog', ['p'=>$row['id'],'slug'=>$row['slug']]);
       return $row;
     }
     return false;
@@ -73,7 +73,7 @@ class Post
       $start_from = ($args['page']-1)*$ppp;
     }
 
-    $ql = "SELECT id,title,description,slug,SUBSTRING(post,1,300) as post,updated,user_id,
+    $ql = "SELECT id,title,description,slug,SUBSTRING(post,1,300) as post,created,updated,user_id,
       (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img,
       (SELECT GROUP_CONCAT('{', CONCAT('\"',value,'\":\"',title,'\"'), '}' SEPARATOR ',') FROM postmeta,postcategory p WHERE post_id=post.id AND vartype='category' AND value=p.id) as categories,
       (SELECT username FROM user WHERE post.user_id=id) as author
@@ -83,7 +83,7 @@ class Post
     $res = $db->read()->query($ql);
     if ($res) {
       while ($r = mysqli_fetch_assoc($res)) {
-        $r['url'] = Config::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']]);
+        $r['url'] = Config::url('blog/'.$r['id'].'/'.$r['slug']);
         yield $r;
       }
     }

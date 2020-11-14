@@ -8,14 +8,13 @@ if (!$gtable->can('read')) {
   return;
 }
 View::css('core/admin/content.css');
+View::css('core/admin/vue-editor.css');
 View::script('lib/vue/vue.min.js');
 View::script('core/admin/content.js');
-if (file_exists('src/'.$tablesrc.'.js') && !in_array('src/'.$tablesrc.'.js', $t['js'])) {
-  echo "<script>".file_get_contents('src/'.$tablesrc.'.js')."</script>"; // DEPRECATED
-}
-View::scriptAsync('core/lang/content/'.Config::config('language').'.js');
+View::scriptAsync('core/lang/content/'.Config::get('language').'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
+View::scriptAsync('core/admin/vue-editor.js');
 View::script('lib/CodeMirror/codemirror.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
 View::cssAsync('lib/CodeMirror/codemirror.css');
@@ -75,15 +74,20 @@ foreach ($pages_path as $path) {
     }
   }
 }
+// read the url query and add it in filters
+$tableFilters = is_array($t['filters']) ? array_merge($t['filters'], $_GET) : $_GET;
+unset($tableFilters['p']);
+unset($tableFilters['page']);
 ?>
-
 <div id="vue-table">
   <g-table gtype="<?=$table?>" ref="gtable"
   gtable="<?=htmlspecialchars(json_encode($t))?>"
+  gfilter="<?=htmlspecialchars(json_encode($tableFilters))?>"
   gfields="<?=htmlspecialchars(json_encode($gtable->fields('list')))?>"
-  grows="<?=htmlspecialchars(json_encode($gtable->getRowsIndexed($t['filters'], ['page'=>1])))?>"
+  grows="<?=htmlspecialchars(json_encode($gtable->getRowsIndexed($tableFilters, ['page'=>1])))?>"
   permissions="<?=htmlspecialchars(json_encode(Gila\User::permissions(Session::userId())))?>"
-  gtotalrows="<?=$gtable->totalRows($t['filters'])?>"></g-table>
+  gtotalrows="<?=$gtable->totalRows($tableFilters)?>"
+  base="<?=Config::base()?>admin/content/<?=$table?>"></g-table>
 </div>
 
 <script>
@@ -97,9 +101,14 @@ var app = new Vue({
 
 g_tinymce_options.templates = <?php echo json_encode((isset($templates)?$templates:[])); ?>;
 
-base_url = "<?=Config::config('base')?>"
-g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
+base_url = "<?=Config::get('base')?>"
+g_tinymce_options.document_base_url = "<?=Config::get('base')?>"
 g_tinymce_options.height = '100%'
+
+window.onpopstate = function(event) {
+  console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+  location.reload()
+}
 
 </script>
 

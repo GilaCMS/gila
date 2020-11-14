@@ -1,9 +1,9 @@
-<?php View::includeFile('login-header.php');?>
+<?php View::includeFile('user-login-header.php');?>
 
   <div class="gl-4 centered wrapper g-card bg-white">
     <div class="border-buttom-main_ text-align-center">
       <div>
-        <img src="<?=Config::config('admin_logo')?:'assets/gila-logo.png'?>" style="max-height:4em">
+        <img src="<?=Config::get('admin_logo')?:'assets/gila-logo.png'?>" style="max-height:4em">
       </div>
       <h3><?=__('reset_pass')?></h3>
     </div>

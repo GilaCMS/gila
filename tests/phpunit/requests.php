@@ -54,7 +54,7 @@ class RequestsTest extends TestCase
   {
     $_POST['email'] = "test_login_auth@email.com";
     $_POST['password'] = "password";
-    Config::controller('user', 'core/controllers/UserController');
+    Router::controller('user', 'core/controllers/UserController');
     $response = $this->request('user/auth', 'POST');
     $this->assertEquals('{"token":"ABC"}', $response);
   }
@@ -62,6 +62,7 @@ class RequestsTest extends TestCase
   public function test_register()
   {
     global $db;
+    Router::controller('user', 'core/controllers/UserController');
     Session::user(0);
     $email = "test_register@email.com";
     $_REQUEST['email'] = $email;
@@ -118,7 +119,7 @@ class RequestsTest extends TestCase
   public function test_blocks()
   {
     global $db;
-    Config::controller('blocks', 'core/controllers/BlocksController');
+    Router::controller('blocks', 'core/controllers/BlocksController');
     Config::widgets([
       'html'=>'core/widgets/html',
       'image'=>'core/widgets/image']);
@@ -140,7 +141,7 @@ class RequestsTest extends TestCase
     $this->assertEquals('[{"_type":"html"}]', $response);
     $_POST = ['id'=>'page_1_1', 'type'=>'image'];
     $response = $this->request('blocks/create', 'POST');
-    $image = '{"_type":"image","image":"assets\/core\/photo.png"}';
+    $image = '{"_type":"image","image":"$p=l1.jpg"}';
     $this->assertEquals('[{"_type":"html"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<p  onclick="alert(0)">Something</p>']];
@@ -153,7 +154,11 @@ class RequestsTest extends TestCase
 
     $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<p><a href="javascript:alert(0)">Something</a></p>']];
     $response = $this->request('blocks/update', 'POST');
-    $this->assertEquals('[{"text":"<p><a href=\"alert(0)\">Something<\/a><\/p>","_type":"html"},'.$image.']', $response);
+    $this->assertEquals('[{"text":"<p><a href=\"javascript&#8282;alert(0)\">Something<\/a><\/p>","_type":"html"},'.$image.']', $response);
+
+    $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<form><button href="javascript:alert(0)">xx</button></form>']];
+    $response = $this->request('blocks/update', 'POST');
+    $this->assertEquals('[{"text":"<form><button href=\"javascript&#8282;alert(0)\">xx<\/button><\/form>","_type":"html"},'.$image.']', $response);
 
     $_POST = ['widget_id'=>'page_1_0', 'option'=>['text'=>'<p>Something</p>']];
     $response = $this->request('blocks/update', 'POST');
@@ -196,14 +201,14 @@ class RequestsTest extends TestCase
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
   }
 
-  public function request($url, $method='GET')
+  public function request($path, $method='GET')
   {
     $_SERVER['REQUEST_METHOD'] = $method;
-    [$c, $a] = explode('/', $url);
+    [$c, $a] = explode('/', $path);
     Router::$controller = $c;
     Router::$action = $a;
     ob_start();
-    Router::run($url);
+    Router::run($path);
     $response = ob_get_contents();
     ob_end_clean();
     return $response;

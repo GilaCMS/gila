@@ -70,7 +70,7 @@ class Profile
     $userPermissions = User::permissions($user_id);
     $permissions = [];
     foreach ($allPermissions as $key=>$txt) {
-      if(in_array($key, $userPermissions)) {
+      if (in_array($key, $userPermissions)) {
         $permissions[$key] = $txt;
       }
     }
@@ -80,7 +80,7 @@ class Profile
   public static function getAllPermissions()
   {
     $permissions = [];
-    $packages = array_merge(Config::config('packages'), ["core"]);
+    $packages = array_merge(Config::get('packages'), ["core"]);
     foreach ($packages as $package) {
       $pjson = 'src/'.$package.'/package.json';
       $perjson = 'src/'.$package.'/package/en.json';

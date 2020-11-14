@@ -40,7 +40,7 @@ if (Package::check4updates()) {
 
 
 foreach ($packages as $pkey=>$p) {
-  if ($p->package!='core' || Config::config('env')=='dev') {
+  if ($p->package!='core' || Config::get('env')=='dev') {
     if (isset($p->lang)) {
       Config::addLang($p->lang);
     }
@@ -96,7 +96,7 @@ foreach ($packages as $pkey=>$p) {
     // Buttons
     if (file_exists('src/'.$p->package)) {
       if (in_array($p->package, $GLOBALS['config']['packages']) || $p->package=='core') {
-        if (Config::config('env')=='dev') {
+        if (Config::get('env')=='dev') {
           $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
         }
         if ($p->package!='core') {
@@ -144,9 +144,9 @@ View::alerts();
     echo '<li class="'.$active.'"><a href="'.Config::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
-    <form method="get" class="inline-flex" style="float:right" action="<?=Config::url('admin/packages/new')?>">
+    <form method="get" class="inline-flex" style="float:right" action="<?=Config::base('admin/packages/new')?>">
       <input name='search' class="g-input fullwidth" value="<?=(isset($search)?$search:'')?>">
-      <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
+      <button class="g-btn g-group-item" type='submit'><?=__('Search')?></button>
     </form>
   </ul>
   <div class="tab-content gs-12">

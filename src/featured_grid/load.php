@@ -1,10 +1,10 @@
 <?php
 
-View::stylesheet('src/featured_grid/assets/style.css');
+Gila\View::stylesheet('src/featured_grid/assets/style.css');
 
 
-Event::listen('slide', function () {
-  if (Router::controller()=='blog') {
+Gila\Event::listen('slide', function () {
+  if (Gila\Router::controller()=='blog') {
     $align = Config::option('featured_grid.align', 'center');
     echo '<style>.featured-posts .img { background-position: center ';
     echo $align.';}</style>';
@@ -13,7 +13,7 @@ Event::listen('slide', function () {
     if (Config::option('featured_grid.category')!='') {
       $params['category']=Config::option('featured_grid.category');
     }
-    foreach (blog::posts($params) as $p) {
+    foreach (BlogController::posts($params) as $p) {
       $srcset = View::thumbSrcset($p['img'], [800,300]);
       echo "<div>";
       echo "<a href=\"".Config::url('blog/'.$p['id'].'/'.$p['slug'])."\">";

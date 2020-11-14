@@ -6,13 +6,12 @@ use Gila\View;
 
 global $db;
 
-Router::controller('admin', 'core/controllers/admin');
-Router::controller('cm', 'core/controllers/cm');
-Router::controller('login', 'core/controllers/UserController'); // DEPRECATED
+Router::controller('admin', 'core/controllers/AdminController');
+Router::controller('cm', 'core/controllers/CMController');
 Router::controller('user', 'core/controllers/UserController');
-Router::controller('webhook', 'core/controllers/webhook');
-Router::controller('lzld', 'core/controllers/lzld');
-Router::controller('fm', 'core/controllers/fm');
+Router::controller('webhook', 'core/controllers/WebhookController');
+Router::controller('lzld', 'core/controllers/LZLDController');
+Router::controller('fm', 'core/controllers/FMController');
 Router::controller('blocks', 'core/controllers/BlocksController');
 
 Config::$amenu = [
@@ -69,6 +68,6 @@ Config::content('widget', 'core/tables/widget.php');
 
 Config::addLang('core/lang/');
 
-if (Config::config('use_cdn')==='1') {
+if (Config::get('use_cdn')==='1') {
   View::$cdn_paths = include 'src/core/cdn_paths.php';
 }

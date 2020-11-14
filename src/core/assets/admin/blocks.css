@@ -17,7 +17,6 @@
 #add_block {
   position:fixed;
   top:0;left:0;right:0;bottom:0;
-  background:rgba(255,255,255,0.95);
   z-index:100000;
   text-align:center;
   transition:0.3s;
@@ -25,50 +24,43 @@
   box-shadow:0 0 20px grey;
   display:grid;
   grid-template-rows:auto 1fr;
+  width:280px;
 }
 .gila-darkscreen {
   z-index: 999;
 }
-.add-block-grid{
-  display:grid;grid-gap:1em;grid-template-columns:repeat(auto-fill, minmax(240px,1fr));
-  width:80%;
-  max-height:80%;
-  overflow:auto;
-}
+
 .add-block-btn {
   /*text-align: center;*/
   cursor: pointer;
   padding: 0;
   margin:4px;
-}
-
-.add-block-btn{
   border: 1px solid #ccc;
   background:white;
 }
+
 .add-block-btn:hover{
   box-shadow: 0 0 6px #666;
 }
 .add-block-btn .logo{
   padding:16px 0;
   padding-left:16px;
-  background: lightblue;
   text-align: left;
-  /*border-radius:6px;
-  background: #395ffc;
-  color:white;*/
+  background: steelblue/*#395ffc*/;
+  color:white;
+  margin:0;
 }
 .add-block-btn .logo>img {
   vertical-align: middle;
 }
 .add-block-btn .logo:hover {
-  /*background: #3059ff;*/
+  opacity: 0.9;
 }
 .add-block-btn .logo img {
-  /*width:2.2em;
-  height:2.2em;
+  width: 1em;
+  height: 1em;
   margin: auto;
-  filter: brightness(0) invert(1);*/
+  filter: brightness(0) invert(1);
 }
 .add-block-btn h4 {
   line-height:0.8em;

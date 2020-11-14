@@ -14,7 +14,7 @@ class Theme
     if ($download) {
       self::download($download);
     }
-    $save_options = Router::get('save_options');
+    $save_options = Router::param('save_options');
     if ($save_options) {
       self::saveOptions($save_options);
     }
@@ -32,7 +32,7 @@ class Theme
   {
     if (in_array($activate, scandir('themes/'))) {
       if ($activate != $GLOBALS['config']['theme'] ||
-          Config::config('env')=='dev') {
+          Config::get('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
         if (isset($pac['require'])) {
@@ -134,7 +134,7 @@ class Theme
         unlink($localfile);
         echo 'ok';
         if (!$_REQUEST['g_response']) {
-          echo '<meta http-equiv="refresh" content="2;url='.Config::base_url().'/admin/themes" />';
+          echo '<meta http-equiv="refresh" content="2;url='.Config::base().'/admin/themes" />';
         }
       } else {
         echo __('_theme_not_downloaded');
@@ -198,7 +198,7 @@ class Theme
           $db->query($ql, ['theme.'.$key, $value,$value]);
         }
       }
-      if (Config::config('env')=='pro') {
+      if (Config::get('env')=='pro') {
         unlink(LOG_PATH.'/load.php');
       }
       exit;

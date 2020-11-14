@@ -52,23 +52,24 @@ var mydata = {
 Vue.component('vue-editor', {
   template: '<div class="ve-editor">\
   <div class="ve-editor-bar">\
-    <span class="ve-editor-btn" v-for="btn in buttons_i" v-on:mousedown="btnAction(btn)"\
+    <span class="ve-editor-btn" v-for="btn in buttons_i" @mousedown="btnAction(btn)"\
      :index="btn" v-html="buttons_def[btn].label"></span>\
-     <div v-if="node2edit!=false" class="ve-editor-edit">\
-      <{{node2edit.nodeName}}>\
-      <span class="ve-editor-btn" v-on:click="unsetEditNode">Unset</span>\
-      <span class="ve-editor-btn" v-on:click="deleteEditNode">Delete</span>\
-      <span v-for="(value,key) in nodeobj">\
-        &nbsp;<input v-model="nodeobj[key]" v-on:input="updateEditNode"\
-        :placeholder="key">\
-      </span>\
-    </div>\
   </div>\
   <input v-model="content" type="hidden" :name="name" >\
   <div style="position:relative">\
-    <div contenteditable="true" ref="text" :id="areaID" v-on:click="onclick"\
-      v-on:keydown="keydown" class="ve-editor-area" @input="update" v-html="text"></div>\
+    <div contenteditable="true" ref="text" :id="areaID" @click="onclick($event)"\
+      @keydown="keydown($event)" class="ve-editor-area" @input="update" v-html="text">\
     </div>\
+  </div>\
+  <div v-if="node2edit!=false" class="ve-editor-edit">\
+    <{{node2edit.nodeName}}>\
+    <span class="ve-editor-btn" @click="unsetEditNode">Unset</span>\
+    <span class="ve-editor-btn" @click="deleteEditNode">Delete</span>\
+    <span v-for="(value,key) in nodeobj">\
+      &nbsp;<input v-model="nodeobj[key]" @input="updateEditNode"\
+      :placeholder="key">\
+    </span>\
+  </div>\
   </div>',
 
   data: function(){ mydata.content=this.text; return mydata; },
@@ -284,12 +285,12 @@ Vue.component('vue-editor', {
       }
       return false;
     },
-    onclick: function() {
+    onclick: function(event) {
       if(!this.onEditor()) return
       this.node2edit=false;
       if(event.target.id!=this.areaID) this.editNode(event.target)
     },
-    keydown: function() {
+    keydown: function(event) {
       if(!this.onEditor()) return
       if(event.keyCode==13) {
         nodeName = this.sel.anchorNode.parentNode.nodeName;

@@ -18,7 +18,7 @@ class UserController extends Gila\Controller
   public function indexAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
       exit;
     }
     if (Session::waitForLogin()>0) {
@@ -37,8 +37,8 @@ class UserController extends Gila\Controller
 
   public function registerAction()
   {
-    if (Session::key('user_id')>0 || Config::config('user_register')!=1) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
+    if (Session::key('user_id')>0 || Config::get('user_register')!=1) {
+      echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
       return;
     }
     View::set('title', __('Register'));
@@ -54,22 +54,22 @@ class UserController extends Gila\Controller
         View::alert('error', __('register_error1'));
       } else {
         // register the user
-        $active = Config::config('user_activation')=='auto'? 1: 0;
+        $active = Config::get('user_activation')=='auto'? 1: 0;
         if ($user_Id = User::create($email, $password, $name, $active)) {
           // success
-          if (Config::config('user_activation')=='byemail') {
-            $baseurl = Config::base_url();
+          if (Config::get('user_activation')=='byemail') {
+            $baseurl = Config::base();
             $subject = __('activate_msg_ln1').' '.$r['username'];
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
             $msg .= __('activatemsg_ln3')." $baseurl\n\n";
             $msg .= $baseurl."user/activate?ap=$activate_code\n\n";
             $msg .= __('reset_msg_ln4');
-            $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+            $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
             User::meta($user_Id, 'activate_code', $activate_code);
             new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
           }
-          View::includeFile('login-register-success.php');
+          View::includeFile('user-register-success.php');
           return;
         } else {
           View::alert('error', __('register_error2'));
@@ -82,7 +82,7 @@ class UserController extends Gila\Controller
   public function activateAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
       return;
     }
 
@@ -93,7 +93,7 @@ class UserController extends Gila\Controller
       } else {
         User::updateActive($ids[0], 1);
         User::metaDelete($ids[0], 'activate_code');
-        View::includeFile('login-activate-success.php');
+        View::includeFile('user-activate-success.php');
       }
       return;
     }
@@ -103,7 +103,7 @@ class UserController extends Gila\Controller
   public function password_resetAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base_url()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
       return;
     }
     $rpa = 'reset-password-attempt';
@@ -117,16 +117,16 @@ class UserController extends Gila\Controller
       } elseif (isset($_POST['pass'])) {
         $idUser=$r[0];
         User::updatePassword($idUser, $_POST['pass']);
-        View::includeFile('login-change-success.php');
+        View::includeFile('user-change-success.php');
       } else {
         Session::key($rpa, 0);
-        View::includeFile('login-change-new.php');
+        View::includeFile('user-change-new.php');
       }
       exit;
     }
 
     if (!isset($_POST['email'])) {
-      View::includeFile('login-change-password.php');
+      View::includeFile('user-change-password.php');
       return;
     }
 
@@ -134,7 +134,7 @@ class UserController extends Gila\Controller
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
       View::alert('error', __('reset_error2'));
-      View::includeFile('login-change-password.php');
+      View::includeFile('user-change-password.php');
       return;
     }
 
@@ -147,19 +147,19 @@ class UserController extends Gila\Controller
       Session::key($rpa, $tries+1);
       Session::key($rpt, time());
 
-      $baseurl = Config::base_url();
+      $baseurl = Config::base();
       $subject = __('reset_msg_ln1').' '.$r['username'];
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
       $msg .= __('reset_msg_ln3')." $baseurl\n\n";
       $msg .= $baseurl."user/password_reset?rp=$reset_code\n\n";
       $msg .= __('reset_msg_ln4');
-      $headers = "From: ".Config::config('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+      $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
       User::meta($r['id'], 'reset_code', $reset_code);
       new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
 
-    View::includeFile('login-change-emailed.php');
+    View::includeFile('user-change-emailed.php');
   }
 
   public function authAction()
@@ -188,6 +188,48 @@ class UserController extends Gila\Controller
     global $db;
     User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".Config::config('base')."' />";
+    echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
+  }
+
+  public function uploadImageAction()
+  {
+    if (Session::userId()===0) {
+      http_response_code(403);
+      return;
+    }
+    if (isset($_FILES['uploadfiles'])) {
+      if (isset($_FILES['uploadfiles']["error"])) {
+        if ($_FILES['uploadfiles']["error"] > 0) {
+          echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
+        }
+      }
+
+      $path = Config::dir('assets/img/');
+      $tmp_file = $_FILES['uploadfiles']['tmp_name'];
+      $name = htmlentities($_FILES['uploadfiles']['name']);
+      $ext = strtolower(pathinfo($name)['extension']);
+
+      if (in_array(pathinfo($name, PATHINFO_EXTENSION), ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF","webp","WEBP"])) {
+        do {
+          $code = '';
+          while (strlen($code) < 120) {
+            $code .= hash('sha512', uniqid(true));
+          }
+          $target = $path.substr($code, 0, 120).'.'.$ext;
+        } while (file_exists($target));
+
+        if (!move_uploaded_file($tmp_file, $target)) {
+          echo "Error: could not upload file!<br>";
+        }
+        $maxWidth = Config::get('maxImgWidth') ?? 0;
+        $maxHeight = Config::get('maxImgHeight') ?? 0;
+        if ($maxWidth>0 && $maxHeight>0) {
+          Image::makeThumb($path, $path, $maxWidth, $maxHeight);
+        }
+        echo '{"success":true,"image":"'.htmlentities($target).'"}';
+      } else {
+        echo '{"success":false,"msg":"Not a media file"}';
+      }
+    }
   }
 }

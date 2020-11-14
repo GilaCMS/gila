@@ -8,8 +8,8 @@ return [
         'text'=>[],
         'url'=>[],
       ],
-      'default'=>'[["",""]]'
+      'default'=>'[["Lorem Ipsum","#"],["Lorem Ipsum","#"],["Lorem Ipsum","#"]]'
     ]
   ],
-  'keys'=>'removed'
+  'keys'=>'widget'
 ];

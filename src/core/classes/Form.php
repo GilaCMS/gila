@@ -98,7 +98,7 @@ class Form
         if ($type==='range') {
           $req = ' min='.($op['min']??0).' max='.($op['max']??10).' step='.($op['step']??1);
         }
-        $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'" type="'.$type.'"'.$req.'>';
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
@@ -244,6 +244,10 @@ class Form
       "paragraph"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+      },
+      "vue-editor"=> function ($name, $field, $ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        return '<vue-editor id="'.$id.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
       },
       "language"=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';

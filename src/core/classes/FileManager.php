@@ -46,8 +46,8 @@ class FileManager
     if (is_dir($path)) {
       return true;
     }
-    if (Config::config('allow_filetypes') && Session::hasPrivilege('admin')) {
-      $filetypes = merge_array($filetypes, Config::config('allow_filetypes'));
+    if (Config::get('allow_filetypes') && Session::hasPrivilege('admin')) {
+      $filetypes = merge_array($filetypes, Config::get('allow_filetypes'));
     }
     $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
     if (in_array($ext, $filetypes)) {
@@ -59,10 +59,10 @@ class FileManager
   public static function allowedPath($path)
   {
     $allowedPaths = ['data/public'];
-    if(Session::hasPrivilege('admin')) {
+    if (Session::hasPrivilege('admin')) {
       $allowedPaths[] = 'log';
     }
-    $allowedPaths[] = Config::config('media_uploads') ?? 'assets';
+    $allowedPaths[] = Config::get('media_uploads') ?? 'assets';
     if (FS_ACCESS) {
       $allowedPaths = array_merge($allowedPaths, ['src','themes']);
     }

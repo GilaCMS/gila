@@ -13,6 +13,10 @@ class BlocksController extends Gila\Controller
   public function __construct()
   {
     self::admin();
+    if (!Gila\Session::hasPrivilege('admin editor')) {
+      http_response_code(403);
+      exit;
+    }
     Config::addLang('core/lang/admin/');
   }
 
@@ -20,9 +24,9 @@ class BlocksController extends Gila\Controller
   {
     global $db;
     $table = Router::request('t');
-    $id = Router::get('id', 2);
+    $id = Router::param('id', 2);
     $widgets = self::readBlocks($table, $id);
-    if(!$table || !$id) {
+    if (!$table || !$id) {
       View::renderAdmin('404.php');
       return;
     }
@@ -38,7 +42,7 @@ class BlocksController extends Gila\Controller
   public function popupAction()
   {
     $table = Router::request('t');
-    $id = Router::get('id', 2);
+    $id = Router::param('id', 2);
     $widgets = self::readBlocks($table, $id);
     View::set('contentType', $table);
     View::set('id', $id);
@@ -54,7 +58,7 @@ class BlocksController extends Gila\Controller
   public function editAction()
   {
     global $db;
-    if ($id = Router::get('id', 2)) {
+    if ($id = Router::param('id', 2)) {
       $idArray = explode('_', $id);
       View::set('widget_id', $id);
       View::set('contentType', $idArray[0]);
@@ -113,19 +117,19 @@ class BlocksController extends Gila\Controller
       $widgets[$i] = $widgets[$nexti];
       $widgets[$nexti] = $tmp;
       $nextrid = $content.'_'.$id.'_'.$nexti;
-      $wfile = SITE_PATH.'tmp/stacked-wdgt'.$rid.'.jpg';
-      $nextwfile = SITE_PATH.'tmp/stacked-wdgt'.$nextrid.'.jpg';
+      $wfile = TMP_PATH.'/stacked-wdgt'.$rid.'.jpg';
+      $nextwfile = TMP_PATH.'/stacked-wdgt'.$nextrid.'.jpg';
       if (file_exists($wfile)) {
-        rename($wfile.'.json', SITE_PATH.'tmp/tmp_wgtjpgjson');
-        rename($wfile, SITE_PATH.'tmp/tmp_wgtjpg');
+        rename($wfile.'.json', TMP_PATH.'/tmp_wgtjpgjson');
+        rename($wfile, TMP_PATH.'/tmp_wgtjpg');
       }
       if (file_exists($nextwfile)) {
         rename($nextwfile.'.json', $wfile.'.json');
         rename($nextwfile, $wfile);
       }
-      if (file_exists(SITE_PATH.'tmp/tmp_wgtjpg')) {
-        rename(SITE_PATH.'tmp/tmp_wgtjpgjson', $nextwfile.'.json');
-        rename(SITE_PATH.'tmp/tmp_wgtjpg', $nextwfile);
+      if (file_exists(TMP_PATH.'/tmp_wgtjpg')) {
+        rename(TMP_PATH.'/tmp_wgtjpgjson', $nextwfile.'.json');
+        rename(TMP_PATH.'/tmp_wgtjpg', $nextwfile);
       }
     }
 
@@ -172,23 +176,29 @@ class BlocksController extends Gila\Controller
 
   public function displayAction()
   {
-    $content = Router::get('t', 1);
-    $id = Router::get('id', 2);
+    $content = Router::param('t', 1);
+    $id = Router::param('id', 2);
     $blocks = self::readBlocks($content, $id);
     if ($content=="page" && $r = Page::getByIdSlug($id, false)) {
       View::set('title', $r['title']);
       View::set('text', View::blocks($blocks, 'page'.$r['id'], true));
-      if ($r['template']===''||$r['template']===null) {
+      $template = Router::request('g_preview_template', $r['template']);
+      if (empty($template)) {
         View::render('page.php');
       } else {
-        View::renderFile('page--'.$r['template'].'.php');
+        View::renderFile('page--'.$template.'.php');
       }
-      echo '<style>html{scroll-behavior: smooth;}</style>';
       $isDraft = self::$draft;
       include __DIR__.'/../views/admin/content-block-edit.php';
     } else {
       View::renderFile('404.php');
     }
+  }
+
+  public function pageAction($id)
+  {
+    View::set('id', $id);
+    View::renderFile('admin/blocks-page.php');
   }
 
   public function saveAction()

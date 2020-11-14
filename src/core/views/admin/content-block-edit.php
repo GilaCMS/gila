@@ -6,7 +6,7 @@
 <?=View::script("lib/tinymce5/tinymce.min.js")?>
 <?=View::script('core/admin/vue-components.js');?>
 <?=View::script('core/admin/media.js')?>
-<?=View::script('core/lang/content/'.Config::config('language').'.js')?>
+<?=View::script('core/lang/content/'.Config::get('language').'.js')?>
 
 <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
 <?=View::cssAsync('core/admin/blocks.css')?>
@@ -18,48 +18,59 @@
 $cid = $content.'_'.$id.'_';
 ?>
 
-<div id="content_blocks_list" style="position:fixed;right:1em;top:1em;padding:0;z-index:100" :class="{opacity05:load==true}">
+<div id="content_blocks_list" style="position:fixed;right:2em;top:0.5em;padding:0;z-index:999;visibility:hidden" :class="{opacity05:load==true}">
   <div style="margin-left:2em">
-    <button v-if="draft" class='g-btn success content_blocks_btn' @click='block_save()'><?='<i class="fa fa-check"></i> '.__('Save')?></button>
+    <button v-if="draft" class='g-btn success content_blocks_btn' id="saveChanges" @click='block_save()'><?='<i class="fa fa-check"></i> '.__('Save')?></button>
     <?=(isset($title)?'&nbsp;':'')?>
-    <button v-if="draft" class='g-btn-white content_blocks_btn' @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
+    <button v-if="draft" class='g-btn-white content_blocks_btn' id="discardChanges" @click='block_discard()'><?='<i class="fa fa-trash"></i> '.__('Discard Draft')?> </button>
     <?=(isset($title)?'&nbsp;':'')?>
-    <button class='g-btn-white content_blocks_btn' @click='switch_edit()'> &nbsp;<i class="fa fa-pencil"></i>&nbsp; </button>
+    <button class='g-btn-white content_blocks_btn' id="swapEdit" @click='switch_edit()'> &nbsp;<i class="fa fa-pencil"></i>&nbsp; </button>
     <br>
   </div>
+  <input type="hidden" id="draftValue" v-model="draft">
+  <input type="hidden" id="editValue" v-model="edit">
 </div>
 
 <style>
 .block-head {
-  border:1px dashed rgba(0,0,0,0);
   min-height:2em;
+  /*border:1px dashed rgba(0,0,0,0);*/
 }
 .block-head:hover {
-  border:1px dashed cornflowerblue;
+  border:1px dashed steelblue;
 }
 .opacity05{
   opacity:0.5;
 }
 .block-edit-btn,.block-add-btn,.block-swap-btn,.block-del-btn{
   padding:6px;
-  border-radius:12px;
+  border-radius:14px;
   font:14px Arial;
   font-weight:bold;
-  background:#ccc;
-  opacity:0.66;
-  color:#000;
+  background:steelblue;
+  opacity:0.8;
+  color:white;
+  border:1px solid steelblue;
+  min-width:28px;
 }
 .block-head:nth-child(1) .block-swap-btn{
   display:none;
 }
 .block-head>div:nth-child(1){
-  position:relative;width:100%;z-index:1
+  position:relative;width:100%;
+}
+.block-head:nth-child(1) .span-add-btn{
+  top:0;
+}
+.block-head>div,.block-end>div{
+  z-index:11;
 }
 .hide{
   display:none;
 }
 .block-edit-btn:hover,.block-add-btn:hover,.block-swap-btn:hover,.block-del-btn:hover{
   opacity:1;
+  color:white;
 }
 .content_blocks_btn{
   border-radius:3em;
@@ -71,14 +82,31 @@ $cid = $content.'_'.$id.'_';
   opacity:1;
   box-shadow:0 0 3px grey;
 }
+.span-add-btn{
+  position:absolute;left:45%;top:-1em
+}
+.span-edit-btn{
+  position:absolute;left:4px;top:0.5em
+}
+.span-swap-btn{
+  position:absolute;right:58%;top:-1em
+}
+.span-del-btn{
+  position:absolute;right:4px;top:0.5em
+}
+@media only screen and (max-width:400px){
+  #content_blocks_list, .block-head>div:nth-child(1), .block-end {
+    display:none;
+  }
+}
 </style>
 
 <script>
 g('.block-head').prepend("<div>\
-<span style='position:absolute;left:4px;top:0.5em'><button class='block-edit-btn'>EDIT</button></span>\
-<span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
-<span style='position:absolute;right:58%;top:-1em'><button class='block-swap-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
-<span style='position:absolute;right:4px;top:0.5em'><button class='block-del-btn'><i class='fa fa-trash'></i></button></span>\
+<span class='span-edit-btn'><button class='block-edit-btn'>EDIT</button></span>\
+<span class='span-add-btn'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
+<span class='span-swap-btn'><button class='block-swap-btn'>&nbsp;<i class='fa fa-arrows-v'></i>&nbsp;</button></span>\
+<span class='span-del-btn'><button class='block-del-btn'><i class='fa fa-trash'></i></button></span>\
 </div>");
 
 let inlineTinies=g('.inline-tinymce').all
@@ -91,6 +119,7 @@ for(i=0; i<inlineTexts.length; i++) {
 document.addEventListener("click", function(e){
   if(g(e.target).findUp('#widget_options_form').all==null) {
     e.preventDefault();
+    return false;
   }
 });
 document.addEventListener("keyup", function(e){
@@ -143,7 +172,7 @@ g.click('.block-del-btn', function(){
 })
 
 g('.block-end').html("<div style='position:relative;width:100%;'>\
-<span style='position:absolute;left:45%;top:-1em'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
+<span style='position:absolute;left:45%;'><button class='block-add-btn'>+ ADD BLOCK</button></span>\
 </div>");
 
 
@@ -166,8 +195,11 @@ foreach (Widget::getList('page') as $k=>$w) {
 ?>
 
 content_blocks = <?=json_encode($content_blocks)?>;
-base_url = "<?=Config::config('base')?>"
-g_tinymce_options.document_base_url = "<?=Config::config('base')?>"
+base_url = "<?=Config::get('base')?>"
+g_tinymce_options.document_base_url = "<?=Config::get('base')?>"
+g_tinymce_options.height = 210;
+//g_tinymce_options.menubar = false
+//g_tinymce_options.toolbar = 'formatselect bold italic | bullist numlist outdent indent | link image media emoticons code table | alignleft aligncenter alignright alignjustify'
 
 
 function getElementIndex (element) {
@@ -217,30 +249,34 @@ content_blocks_app = new Vue({
   data: {
     blocks: <?=json_encode($widgets??[])?>,
     draft: <?=($isDraft?'true':'false')?>,
-    load: false
+    load: false,
+    edit:true
   },
   methods: {
     block_save: function() {
-      _this = this
       g.loader()
       g.post('blocks/save', 'id=<?=$content.'_'.$id?>', function(data) {
         g.loader(false)
-        _this.draft = false;
+        content_blocks_app.draft = false;
         g.alert("Saved", "success");
       });
     },
     block_discard: function() {
-      _this = this
       g.loader()
       g.post('blocks/discard', 'id=<?=$content.'_'.$id?>', function(data) {
         g.loader(false)
-        _this.draft = false;
+        content_blocks_app.draft = false;
         blocks_preview_reload(data)
       });
     },
     switch_edit: function() {
       g('.block-head>div:nth-child(1)').toggleClass('hide');
       g('.block-end>div:nth-child(1)').toggleClass('hide');
+      if(this.edit===true) {
+        this.edit=false
+      } else {
+        this.edit=true
+      }
     },
     loader: function(x=true) {
       g.loader(x)
@@ -258,7 +294,7 @@ content_blocks_app = new Vue({
       &nbsp;<input type="text" class="g-input" style="max-width:220px;margin-top:10px" v-model="filter" ref="filter">
       <img src="assets/core/admin/close.svg" class="add-block-x" @click="closeList()">
     </div>
-    <div class="add-block-grid" style="margin:auto;width:100%;grid-gap:0;height:100%;max-height:100%;background:#f4f4ff;">
+    <div class="add-block-grid" style="margin:auto;width:100%;overflow:scroll;height:100%;max-height:100%;background:#f4f4ff;">
       <div class="add-block-btn" v-for="b in blocks" v-if="b.visible!==false" @click="createBlock('<?=$content.'/'.$id?>', b.name, selected_pos)">
         <img v-if="b.preview" :src="'lzld/thumb?media_thumb=300&src=src/'+b.preview" class="preview" :title="b.name">
         <div v-else class="logo">

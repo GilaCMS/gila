@@ -18,21 +18,25 @@ class HtmlInput
       return $response;
     }
     
-    if(empty(trim($value))) {
+    if (empty(trim($value))) {
       $value = '';
-    } else if (class_exists("DomDocument")) {
+    } elseif (class_exists("DomDocument")) {
       $value = self::DOMSanitize($value);
     }
 
-    $value = strtr($value, ['="javascript:'=>'="', '=\'javascript:'=>'=\'']);
-    //$value = utf8_decode($value);
+    $tD = 'javascript&#8282;';
+    $value = strtr($value, ['javascript&#x3a;'=>$tD,'javascript&#58;'=>$tD,'javascript&colon;'=>$tD,'javascript:'=>$tD]);
+
+    if (Config::get('utf8_decode')==true) {
+      $value = utf8_decode($value);
+    } // mysql utf8 support
     return $value;
   }
 
   public function DOMSanitize($value)
   {
     $dom = new \DOMDocument;
-    $dom->loadHTML($value);
+    $dom->loadHTML('<?xml encoding="utf-8"?>'.$value);
 
     $tags = $dom->getElementsByTagName('script');
     foreach (iterator_to_array($tags) as $tag) {

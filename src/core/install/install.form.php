@@ -1,5 +1,5 @@
 <head>
-  <base href="<?=Gila\Config::base_url()?>">
+  <base href="<?=Gila\Config::base()?>">
   <title>Install Gila CMS</title>
   <style><?=file_get_contents("src/core/assets/gila.min.css")?></style>
 </head>
@@ -28,7 +28,7 @@
     <label class="gs-12">Admin Password</label>
     <input name="adm_pass" type="password" placeholder="Choose A Password" required>
     <label class="gs-12">Base URL</label>
-    <input name="base_url" value="<?=htmlentities($_POST['base_url']??Gila\Config::base_url())?>" placeholder="https://www.mysite.com/" required>
+    <input name="base_url" value="<?=htmlentities($_POST['base_url']??Gila\Config::base())?>" placeholder="https://www.mysite.com/" required>
     </div>
     <div class="gl-12"><input class="btn success" type="submit" value="Install"></div>
   </form>

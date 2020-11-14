@@ -3,12 +3,14 @@
 return [
   'fields'=>[
     'image'=> [
-      "type"=>"media",
-      "default"=>"assets/core/photo.png"
+      'type'=>'media2',
+      'default'=>'$p=l1.jpg'
     ],
-    'description'=> [],
+    'alt_text'=> [
+      'type'=>'textarea'
+    ],
     'caption'=> [
-      "type"=>"paragraph"
+      'type'=>'textarea'
     ]
   ],
   'keys'=>'page,widget'

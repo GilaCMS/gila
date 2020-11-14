@@ -18,75 +18,6 @@ class Config
   public static $langWords = [];
   public static $langLoaded = false;
 
-  /**
-  * Registers new a controller
-  * @param $c (string) Controller name as given in url path
-  * @param $file (string) Controller's filepath without the php extension
-  * @param $name (string) Controller's class name, $c is used by default
-  * @code
-  * self::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
-  * @endcode
-  */
-  public static function controller($c, $path, $name=null) // DEPRECATED
-  {
-    Router::controller($c, $path);
-  }
-
-  /**
-  * Registers a function call on a specific path
-  * @param $r (string) The path
-  * @param $fn (function) Callback for the route
-  * @code
-  * self::route('some.txt', function(){ echo 'Some text.'; });
-  * @endcode
-  */
-  public static function route($r, $fn) // DEPRECATED
-  {
-    Router::add($r, $fn);
-  }
-
-  /**
-  * Registers a function to run right after the controller class construction
-  * @param $c (string) The controller's class name
-  * @param $fn (function) Callback
-  * @code
-  * self::onController('blog', function(){ BlogController::ppp = 24; });
-  * @endcode
-  */
-  public static function onController($c, $fn) // DEPRECATED
-  {
-    Router::$on_controller[$c][] = $fn;
-  }
-
-  /**
-  * Registers a new action or replaces an existing for a controller
-  * @param $c (string) The controller
-  * @param $action (string) The action
-  * @param $fn (function) Callback
-  * @code
-  * self::action('blog', 'topics', function(){ ... });
-  * @endcode
-  */
-  public static function action($c, $action, $fn) // DEPRECATED -> Router::action()
-  {
-    Router::action($c, $action, $fn);
-  }
-
-  /**
-  * Registers a function to run before the function of a specific action
-  * @param $c (string) The controller
-  * @param $action (string) The action
-  * @param $fn (function) Callback
-  */
-  public static function before($c, $action, $fn) // DEPRECATED -> Router::before()
-  {
-    Router::before($c, $action, $fn);
-  }
-
-  public static function onAction($c, $action, $fn) // DEPRECATED -> Router::onAction()
-  {
-    Router::onAction($c, $action, $fn);
-  }
 
   /**
   * Adds language translations from a json file
@@ -202,11 +133,7 @@ class Config
       $list = $key;
     }
     foreach ($list as $k=>$i) {
-      if (is_numeric($k)) {
-        self::$amenu[]=$i; // DEPRECATED
-      } else {
-        self::$amenu[$k]=$i;
-      }
+      self::$amenu[$k]=$i;
     }
   }
 
@@ -227,36 +154,17 @@ class Config
     self::$amenu[$key]['children'][]=$item;
   }
 
-  /**
-  * Sets or gets the value of configuration attribute
-  * @param $key (string) Name of the attribute
-  * @param $value (optional) The value to set @see setConfig()
-  * @return The value if parameter $value is not sent
-  */
-  public static function config($key, $value = null)
+  public static function config($key, $value = null) // DEPRECATED
   {
-    if ($value === null) { // DEPRECATED should use setConfig()
-      if (isset($GLOBALS['config'][$key])) {
-        return $GLOBALS['config'][$key];
-      } else {
-        return null;
-      }
+    if ($value!==null) {
+      self::set($key, $value);
     } else {
-      $GLOBALS['config'][$key] = $value;
+      return self::get($key);
     }
   }
-
-  /**
-  * Sets the value of configuration attribute
-  * @param $key (string) Name of the attribute
-  * @param $value (optional) The value to set
-  */
-  public static function setConfig($key, $value)
+  public static function setConfig($key, $value) // DEPRECATED
   {
-    if (!is_string($key)) {
-      return;
-    }
-    $GLOBALS['config'][$key] = $value;
+    self::set($key, $value);
   }
 
   public static function lang($lang=null)
@@ -270,11 +178,24 @@ class Config
     self::$lang = self::config('language');
   }
 
+  /**
+  * Sets the value of configuration attribute
+  * @param $key (string) Name of the attribute
+  * @param $value (optional) The value to set
+  */
   public static function set($key, $value)
   {
-    self::setConfig($key, $value);
+    if (!is_string($key)) {
+      return;
+    }
+    $GLOBALS['config'][$key] = $value;
   }
 
+  /**
+  * Gets the value of configuration attribute
+  * @param $key (string) Name of the attribute
+  * @return The configuration value
+  */
   public static function get($key)
   {
     return $GLOBALS['config'][$key] ?? null;
@@ -291,22 +212,16 @@ class Config
   }
 
   /**
-  * DEPRECATED @see View::alert()
-  */
-  public static function alert($type, $msg)
-  {
-    if ($type === 'alert') {
-      $type = '';
-    }
-    return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
-  }
-
-  /**
   * @return Password hash
   */
   public static function hash($pass)
   {
     return password_hash($pass, PASSWORD_BCRYPT);
+  }
+
+  public static function option($option, $default='')  //DEPRECATED
+  {
+    return self::getOption($option, $default);
   }
 
   /**
@@ -315,17 +230,12 @@ class Config
   * @param $default (optional) The value to return if this option has not saved value
   * @return The option value
   */
-  public static function option($option, $default='')
+  public static function getOption($option, $default='')
   {
     if (isset(self::$option[$option]) && self::$option[$option]!='') {
       return self::$option[$option];
     }
     return $default;
-  }
-
-  public static function getOption($option, $default='')
-  {
-    return self::option($option, $default);
   }
 
   /**
@@ -401,11 +311,6 @@ class Config
 
   public static function base($str = null)
   {
-    return self::base_url($str);
-  }
-
-  public static function base_url($str = null)
-  {
     if (!isset(self::$base_url)) {
       if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
         $scheme = $_SERVER['REQUEST_SCHEME']??(substr(self::config('base'), 0, 5)=='https'?'https':'http');
@@ -416,48 +321,31 @@ class Config
       }
       self::$base_url = htmlentities(self::$base_url);
     }
-    if ($str!==null) {
-      return self::$base_url.self::url($str);
+    if ($str===null) {
+      return self::$base_url;
     }
-    return self::$base_url;
+    return self::$base_url.self::url($str);
   }
 
-  public static function url($url)
+  public static function url($url, $params=[])
   {
     if ($url==='#'||$url==='') {
-      return htmlentities(Router::path()).$url;
-    }
-    $url = htmlentities($url);
-
-    if (self::config('rewrite')) {
+      $url = Router::path().$url;
+    } else {
       $var = explode('/', $url);
-      if (self::config('default-controller') === $var[0]) {
-        if ($var[0]!='admin') {
-          return substr($url, strlen($var[0])+1);
-        }
-      }
-      return $url;
-    }
-    $burl = explode('?', $url);
-    $burl1 = explode('/', $burl[0]);
-    if (isset($burl1[1])) {
-      $burl1[1]='&action='.$burl1[1];
-    } else {
-      $burl1[1]='';
-    }
-    if (isset($burl[1])) {
-      $burl[1]='&'.$burl[1];
-    } else {
-      $burl[1]='';
-    }
-
-    for ($i=2; $i<count($burl1); $i++) {
-      if ($burl1[$i]!='') {
-        $burl[1]='&var'.($i-1).'='.$burl1[$i].$burl[1];
+      if ($var[0]!='admin' && self::get('default-controller') === $var[0]) {
+        $url = substr($url, strlen($var[0])+1);
       }
     }
 
-    return '?c='.$burl1[0].$burl1[1].$burl[1];
+    if ($gpt = Router::request('g_preview_theme') && Session::hasPrivilege('admin')) {
+      $params['g_preview_theme'] = $gpt;
+    }
+    $q = http_build_query($params);
+    if (!empty($q)) {
+      $url .= strpos($url, '?')? '&'.$q: '?'.$q;
+    }
+    return htmlentities($url);
   }
 
   /**
@@ -469,36 +357,7 @@ class Config
   */
   public static function make_url($c, $action='', $args=[])
   {
-    $params='';
-    if (self::config('rewrite')) {
-      foreach ($args as $key=>$value) {
-        if ($params!='') {
-          $params.='/';
-        }
-        $params.=$value;
-      }
-
-      if ((self::config('default-controller') === $c) && ($c != 'admin')) {
-        $c='';
-      } else {
-        $c.='/';
-      }
-      if ($action!='') {
-        $action.='/';
-      }
-      if ($gpt = Router::request('g_preview_theme')) {
-        $params.='?g_preview_theme='.$gpt;
-      }
-      return $c.$action.$params;
-    } else {
-      foreach ($args as $key=>$value) {
-        $params.='&'.$key.'='.$value;
-      }
-      if ($gpt = Router::request('g_preview_theme')) {
-        $params.='&g_preview_theme='.$gpt;
-      }
-      return "?c=$c&action=$action$params";
-    }
+    return self::url($c.'/'.$action, $args);
   }
 
   /**
@@ -520,16 +379,6 @@ class Config
       self::$option[$r[0]] = $r[1];
     }
     $db->close();
-  }
-
-  /**
-  * Checks if logged in user has at least one of the required privileges
-  * @param $pri (string/array) The privilege(s) to check
-  * @return Boolean
-  */
-  public static function hasPrivilege($pri) // DEPRECATED
-  {
-    return Session::hasPrivilege($pri);
   }
 
   /**

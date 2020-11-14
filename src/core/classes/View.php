@@ -19,10 +19,7 @@ class View
 
   public static function set($param, $value)
   {
-    global $g,$c; // DEPRECATED since 1.13.0
     self::$part[$param]=$value;
-    @$g->$param = $value;
-    @$c->$param = $value;
   }
 
   /**
@@ -35,25 +32,13 @@ class View
 
   public static function stylesheet($href)
   {
-    if (in_array($href, self::$stylesheet)) {
-      return;
-    }
     if (file_exists('assets/'.$href)) {
       $href = 'assets/'.$href;
     }
-    self::$stylesheet[]=$href;
-  }
-
-  public static function links()
-  {
-    foreach (self::$stylesheet as $link) {
-      echo '<link href="'.$link.'" rel="stylesheet">';
+    if (in_array($href, self::$stylesheet)) {
+      return;
     }
-  }
-
-  public static function scripts()
-  {
-    //foreach(self::$script as $src) echo '<script src="'.$src.'"></script>';
+    self::$stylesheet[]=$href;
   }
 
   /**
@@ -89,14 +74,14 @@ class View
     if (in_array($css, self::$css)) {
       return;
     }
-    self::$css[]=$css;
     if (file_exists('assets/'.$css)) {
       $css = 'assets/'.$css;
     }
-
-    if (ob_get_level()) {
-      self::$stylesheet[]=$css;
+    if (in_array($css, self::$stylesheet)) {
+      return;
     }
+
+    self::$css[]=$css;
     echo '<link rel="stylesheet" href="'.$css.'" '.$prop.'>';
   }
 
@@ -111,10 +96,12 @@ class View
   */
   public static function script($script, $uri=false, $prop='')
   {
-    if (in_array($script, self::$script)) {
-      return;
+    if (ob_get_level()===0) {
+      if (in_array($script, self::$script)) {
+        return;
+      }
+      self::$script[]=$script;
     }
-    self::$script[]=$script;
     if (isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
     } elseif (file_exists('assets/'.$script)) {
@@ -145,7 +132,7 @@ class View
     if ($gpt = Router::request('g_preview_theme')) {
       return 'themes/'.$gpt;
     }
-    return 'themes/'.Config::config('theme');
+    return 'themes/'.Config::get('theme');
   }
 
   public static function renderAdmin($file, $package = 'core')
@@ -209,8 +196,6 @@ class View
 
   public static function includeFile($filename, $package='core')
   {
-    global $c;
-
     if (isset(self::$renderer)) {
       $renderer = self::$renderer;
       if ($renderer($filename, $package, View::$part)) {
@@ -377,12 +362,6 @@ class View
     @include $widget_file;
   }
 
-  public static function widget_body($type, $widget_data=null, $widget_file=null) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    self::widgetBody($type, $widget_data, $widget_file);
-  }
-
   public static function getWidgetBody($type, $widget_data=null, $widget_file=null)
   {
     ob_start();
@@ -454,12 +433,6 @@ class View
     Event::fire($area);
   }
 
-  public static function widget_area($area, $div=true, $type=null, $widget_file=null) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    self::widgetArea($area, $div, $type, $widget_file);
-  }
-
   public static function getWidgetArea($area)
   {
     ob_start();
@@ -469,10 +442,9 @@ class View
     return $html;
   }
 
-  public static function img($src, $prefix='', $max=180)
+  public static function img($src, $max=180, $alt='')
   {
-    $pathinfo = pathinfo($src);
-    return '<img src="'.htmlentities(self::thumb($src, $prefix, $max)).'" alt="">';
+    return '<img src="'.htmlentities(self::thumb($src, $max)).'" alt="'.htmlentities($alt).'">';
   }
 
   public static function thumb($src, $prefix='', $max=180)
@@ -481,7 +453,7 @@ class View
       return false;
     }
 
-    if (Config::config('use_webp')) {
+    if (Config::get('use_webp')) {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;
@@ -513,10 +485,21 @@ class View
   public static function getThumbName($src, $max, $prefix = '')
   {
     $pathinfo = pathinfo($src);
-    $ext = strtolower($pathinfo['extension']);
-    if (in_array($ext, ['svg','webm'])) {
+    $ext = $pathinfo['extension'] ?? null;
+    if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['svg','webm'])) {
       return $src;
     }
+
+    if ($src[0]==='$') {
+      if (substr($src, 1, 2)=='p=') {
+        $file = 'assets/themes/'.($_GET['g_preview_theme']??Config::get('theme')).'/'.substr($src, 3);
+        if (!file_exists($file)) {
+          $file='assets/core/photo.png';
+        }
+        return $file;
+      }
+    }
+    $ext = strtolower($ext);
     $file = null;
     $thumbs = [];
     $key = $pathinfo['filename'].$ext.$max;
@@ -524,7 +507,7 @@ class View
 
     if (substr($src, 0, 5) !== 'data/') {
       // dont create new thumbs for existing websites
-      return SITE_PATH.'tmp/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
+      return TMP_PATH.'/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     }
 
 
@@ -538,7 +521,7 @@ class View
       }
       do {
         $basename = substr(hash('sha1', uniqid(true)), 0, 30);
-        $file = SITE_PATH.'tmp/'.$basename.'-'.$max.'.'.$ext;
+        $file = TMP_PATH.'/'.$basename.'-'.$max.'.'.$ext;
         $thumbs[$key] = $file;
       } while (strlen($basename) < 30 || file_exists($file));
       file_put_contents($thumbsjson, json_encode($thumbs));
@@ -569,33 +552,6 @@ class View
     }
     Event::fire('View::thumbStack', [$src_array,$file]);
     return [$file.'?'.$stack[0], $stack[1]];
-  }
-
-  public static function thumb_stack($src_array, $file, $max=180) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    self::thumbStack($src_array, $file, $max);
-  }
-
-  public static function thumb_xs($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'xs/', 80);
-  }
-  public static function thumb_sm($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'sm/', 200);
-  }
-  public static function thumb_md($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'md/', 400);
-  }
-  public static function thumb_lg($src, $id=null) // DEPRECATED
-  {
-    return self::thumb($src, 'lg/', 800);
-  }
-  public static function thumb_xl($src, $id=null) // DEPRECATED
-  {
-    return View::thumb($src, 'xl/', 1200);
   }
 
   public static function getTemplates($template)
@@ -629,18 +585,12 @@ class View
   * @example background-image: -webkit-image-set(url({$srcset[0]}) 1x, url({$srcset[1]}) 2x);
   * @example <img srcset="{$srcset[0]}, {$srcset[0]} 2x" src="{$srcset[0]}"
   */
-  public static function thumbSrcset($src, $sizes = [1200,320])
+  public static function thumbSrcset($src, $sizes = [1200,600])
   {
     $r = [];
     foreach ($sizes as $w) {
-      $r[] = self::thumb($src, $w.'/', $w);
+      $r[] = self::thumb($src, $w);
     }
     return $r;
-  }
-
-  public static function thumb_srcset($src, $sizes = [1200,320]) // DEPRECATED
-  {
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    return self::thumbSrcset($src, $sizes);
   }
 }

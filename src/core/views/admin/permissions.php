@@ -15,18 +15,18 @@ if (isset($_POST['submit']) && isset($_POST['role'])) {
       $checked[$role] = array_keys($list);
     }
   }
-  Config::setConfig('permissions', $checked);
+  Config::set('permissions', $checked);
   Config::updateConfigFile();
   View::alert('success', __('_changes_updated'));
 }
 
-$checked = Config::config('permissions');
+$checked = Config::get('permissions');
 
 
 View::alerts();
 ?>
 <br>
-<form action="<?=Config::url('admin/users?tab=2')?>" method="POST">
+<form action="<?=Config::url('admin/users', ['tab'=>2])?>" method="POST">
 <button class="g-btn" name="submit" value="true">
   <i class="fa fa-save"></i> <?=__('Submit')?>
 </button>

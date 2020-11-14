@@ -144,13 +144,13 @@ class User
       }
     }
 
-    if ($response = Cache::get('user-perm-'.$id, 120, Config::config('updated'))) {
+    if ($response = Cache::get('user-perm-'.$id, 120, Config::get('updated'))) {
       return json_decode($response, true);
     }
 
-    $response = User::metaList($id, 'privilege'); // DEPRECATED since 1.9.0
+    $response = [];
     $roles = User::metaList($id, 'role');
-    $rp = Config::config('permissions');
+    $rp = Config::get('permissions');
     if ($id != 0) {
       foreach ($roles as $role) {
         if (isset($rp[$role])) {
@@ -172,7 +172,7 @@ class User
       }
       Session::key('permissions', $response);
     }
-    Cache::set('user-perm-'.$id, json_encode($response), [Config::config('updated')]);
+    Cache::set('user-perm-'.$id, json_encode($response), [Config::get('updated')]);
     return $response;
   }
 
