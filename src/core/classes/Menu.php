@@ -64,7 +64,7 @@ class Menu
     return ['name'=>$data['name'], 'url'=>$data['url']];
   }
 
-  public static function getHtml($items, $base="")
+  public static function getHtml($items, $base='')
   {
     $html = "";
     self::$active = false;
@@ -93,7 +93,7 @@ class Menu
       if (isset($item['children'])) {
         $liClass .= 'dropdown';
         $childrenHtml = "<ul class=\"dropdown-menu\">";
-        $childrenHtml .= Menu::getHtml($item['children'], $base);
+        $childrenHtml .= self::getHtml($item['children'], $base);
         $childrenHtml .= "</ul>";
 
         if (self::$active===true) {
@@ -109,7 +109,7 @@ class Menu
       }
       $liClass = $liClass!==''? ' class="'.$liClass.'"': '';
       $html .= "<li$liClass><a href='".$url."'><i class='fa {$icon}'></i>";
-      $html .= " <span>".Config::tr("$label")."</span>$badge</a>";
+      $html .= " <span>".Config::tr($label)."</span>$badge</a>";
       $html .= $childrenHtml."</li>";
     }
     return $html;

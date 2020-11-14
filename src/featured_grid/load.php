@@ -4,7 +4,7 @@ Gila\View::stylesheet('src/featured_grid/assets/style.css');
 
 
 Gila\Event::listen('slide', function () {
-  if (Gila\Router::controller()=='blog') {
+  if (Gila\Router::getController()=='blog') {
     $align = Config::option('featured_grid.align', 'center');
     echo '<style>.featured-posts .img { background-position: center ';
     echo $align.';}</style>';
