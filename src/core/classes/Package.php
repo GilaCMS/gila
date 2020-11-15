@@ -407,11 +407,11 @@ class Package
       return;
     }
     $now = new DateTime("now");
-    if (Config::option('checked4updates')===null) {
+    if (Config::getOption('checked4updates',null)===null) {
       Config::setOption('checked4updates', $now->format('Y-m-d'));
       $diff = 1000;
     } else {
-      $diff = date_diff(new DateTime(Config::option('checked4updates')), new DateTime("now"))->format('%a');
+      $diff = date_diff(new DateTime(Config::getOption('checked4updates')), new DateTime("now"))->format('%a');
     }
 
     // check once a day

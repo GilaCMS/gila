@@ -79,7 +79,9 @@ class UserAgent
     'Applebot','Python-urllib','bitlybot','TelegramBot', 'YandexMetrika', 'Go-http-client', 'DuckDuckGo-Favicons-Bot',
     'CensysInspect','Siteimprove','aiohttp','Barkrowler','AdsBot','Mediapartners-Google','aiHitBot','evc-batch',
     'Scrapy','CCBot','MojeekBot','Discordbot','article-parser','HackerNews','node-superagent','RandomSurfer',
-    'CheckMarkNetwork','Dataprovider.com','BLEXBot','Apache-HttpClient','MegaIndex'];
+    'CheckMarkNetwork','Dataprovider.com','BLEXBot','Apache-HttpClient','MegaIndex','LinkedInBot','Infosecbot',
+    ' bot','github.com'
+    ];
 
     if ($user_agent === null || strlen($user_agent)<20) {
       return true;
