@@ -5,7 +5,7 @@ return [
   'title'=> 'Users',
   'pagination'=> 15,
   'tools'=>['add_popup','csv'],
-  'commands'=>['edit_popup','delete'],
+  'commands'=>['edit','delete'],
   'id'=>'id',
   'lang'=>'core/lang/admin/',
   'meta_table'=>['usermeta', 'user_id', 'vartype', 'value'],
@@ -30,11 +30,13 @@ return [
     ],
     'username'=> [
       'title'=>'Name',
-      'qtype'=>'varchar(80)'
+      'qtype'=>'varchar(80)',
+      'required'=>true
     ],
     'email'=> [
       'title'=>'Email',
-      'qtype'=>'varchar(80) UNIQUE'
+      'qtype'=>'varchar(80) UNIQUE',
+      'required'=>true
     ],
     'pass'=> [
       'list'=>false,

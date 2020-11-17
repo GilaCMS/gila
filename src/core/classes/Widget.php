@@ -1,7 +1,7 @@
 <?php
 namespace Gila;
 
-class widget
+class Widget
 {
   public static function getById($id)
   {
