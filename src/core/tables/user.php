@@ -5,7 +5,7 @@ return [
   'title'=> 'Users',
   'pagination'=> 15,
   'tools'=>['add_popup','csv'],
-  'commands'=>['edit','delete'],
+  'commands'=>['edit_popup','delete'],
   'id'=>'id',
   'lang'=>'core/lang/admin/',
   'meta_table'=>['usermeta', 'user_id', 'vartype', 'value'],

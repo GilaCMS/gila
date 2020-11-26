@@ -223,3 +223,44 @@ Vue.component('input-keywords', {
     }
   }
 })
+
+Vue.component('color-palette', {
+  template: '<div style="">\
+  <input type="color" v-for="(color,i) in colors" :value="color" v-model="colors[i]" @change="custom()" :title="labelList[i]">\
+  <br><span v-for="(palette,i) in paletteList" @click="changePalette(i)" style="border:1px solid lightgrey;cursor:pointer;padding:2px 6px;" :class="{\'g-selected\':i==selected}">\
+  <span v-if="i<paletteList.length-1">{{i+1}}</span><span v-else>★</span></span>\
+  <input v-model="value" type="hidden" :id="\'imd\'+idByName()" :name="name">\
+</div>',
+  props: ['name','value','palettes','labels'],
+  data: function() {
+    labels = ['','','','','','','','','']
+    palettes = null
+    if(this.palettes) palettes = JSON.parse(this.palettes)
+    console.log(palettes)
+    console.log(this.palettes)
+    if(this.labels) labels = JSON.parse(this.labels)
+    return {
+      colors: JSON.parse(this.value),
+      paletteList: palettes,
+      labelList: labels,
+      selected: palettes.length-1
+    }
+  },
+  methods:{
+    idByName: function() {
+      id = this.name.replace("[", "_");
+      return id.replace("]", "_")
+    },
+    changePalette: function(i) {
+      this.selected=i
+      this.colors = this.paletteList[this.selected].map((x) => x);
+    },
+    custom: function() {
+      this.selected = this.paletteList.length-1
+      this.paletteList[this.selected] = this.colors.map((x) => x);
+    }
+  },
+  updated: function() {
+    this.value = JSON.stringify(this.colors)
+  }
+})

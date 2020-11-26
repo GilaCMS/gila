@@ -6,36 +6,44 @@
   <title><?=((Config::get('title')??'Gila CMS').' - '.($page_title??__('Administration')))?></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1">
-  <link rel="icon" type="image/png" href="<?=Config::get('admin_logo')?:'assets/gila-logo.png'?>">
+  <link rel="icon" type="image/png" href="<?=View::thumb(Config::get('admin_logo')??'assets/gila-logo.png',200)?>">
   <?php View::$stylesheet=[]?>
   <?=View::css('core/gila.min.css')?>
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
   <style>
-  <?=file_get_contents('src/core/assets/admin/themes/'.Config::get('admin_theme').'.css'??'')?>
+  <?=file_get_contents('src/core/assets/admin/themes/'.Config::get('admin_theme').'.css')??''?>
   <?=(Config::get('admin_background')? 'background:url("'.Config::get('admin_background').'")': '')?>
   .widget-area-dashboard .widget{background:rgba(255,255,255,0.9)}  
-</style>
-</head>
-
 <?php if (!isset($_COOKIE['sidebar_toggled'])) {
   $_COOKIE['sidebar_toggled']='true';
-} ?>
+}
+if ($palette=Config::get('admin_palette')) {
+  $p = json_decode($palette,true);
+  echo ':root{';
+  foreach($p as $k=>$c) echo '--main-palette-'.$k.':'.$c.';';
+  echo '--main-a-color:'.$p[0].';';
+  echo '--main-primary-color:'.$p[0].';';
+  echo '}';
+}
+?>
+  </style>
+</head>
 
 <body style="background:var(--main-bg-color);background-size:cover">
   <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
     <!-- Sidebar g-nav vertical -->
-    <div id="sidebar-wrapper">
+    <div id="sidebar-wrapper"><div>
       <div style="position: relative;height: 100px;">
         <a href="admin">
-          <img style="max-width:180px;max-height:60px" src="<?=Config::get('admin_logo')?:'assets/gila-logo.png'?>" class="centered">
+          <img style="max-width:180px;max-height:60px" src="<?=View::thumb(Config::get('admin_logo')??'assets/gila-logo.png')?>" class="centered">
         </a>
       </div>
       <ul class="g-nav vertical lazy" data-load="lzld/amenu?base=<?=Config::url('')?>">
       ...
       </ul>
-    </div>
+    </div></div>
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->

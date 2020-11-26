@@ -28,14 +28,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::set('maxImgHeight', $_POST['gila_maxImgHeight']);
   Config::set('utk_level', $_POST['gila_utk_level']);
   Config::set('locale', $_POST['gila_locale']);
+  if (isset($_POST['gila_admin_palette'])) {
+    Config::set('admin_palette', $_POST['gila_admin_palette']);
+  }
   Config::updateConfigFile();
+  usleep(3000);
   echo '{"success":true}';
   return;
 }
-View::script('core/admin/media.js');
+View::script('lib/vue/vue.min.js');
 View::script('core/lang/content/'.Config::get('language').'.js');
+View::script('core/admin/media.js');
+View::script('core/admin/vue-components.js');
 ?>
-<style>.g-switch{z-index:1}#settings-form>div>*{width:33%;display:inline-block}</style>
+<style>.g-switch{z-index:1;vertical-align: middle;}
+#settings-form>div>*{min-width:33%;display:inline-block}</style>
 
 <div class="gm-12">
 <?php View::alerts(); ?>
@@ -60,8 +67,7 @@ foreach ($config_list as $key=>$value) {
   <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Config::get('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Timezone")?></label>
-    <select name="gila_timezone" value="<?=Config::get('timezone')?>" class="gm-4">
+    <label class="g-label gm-4"><?=__("Timezone")?></label><select name="gila_timezone" value="<?=Config::get('timezone')?>" class="gm-4">
     <?php
     foreach (DateTimeZone::listIdentifiers() as $value) {
       $sel = (Config::get('timezone')==$value?'selected':'');
@@ -72,8 +78,7 @@ foreach ($config_list as $key=>$value) {
   </div>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Language")?></label>
-    <select name="gila_language" value="<?=Config::get('language')?>" class="gm-4">
+    <label class="g-label gm-4"><?=__("Language")?></label><select name="gila_language" value="<?=Config::get('language')?>" class="gm-4">
     <?php
     $languages = include 'src/core/lang/languages.php';
     foreach ($languages as $k=>$value) {
@@ -85,16 +90,16 @@ foreach ($config_list as $key=>$value) {
   </div>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Admin Logo")?></label>
-    <div class="gm-4" style="display:inline-flex"><span class="g-group">
+    <label class="g-label gm-4"><?=__("Admin Logo")?></label><div class="gm-4" style="display:inline-flex">
+    <span class="g-group">
       <span class="btn g-group-item" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
       <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::get('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
     </span></div>
   </div>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Favicon")?></label>
-    <div class="gm-4" style="display:inline-flex"><span class="g-group">
+    <label class="g-label gm-4"><?=__("Favicon")?></label><div class="gm-4" style="display:inline-flex">
+    <span class="g-group">
       <span class="btn g-group-item" onclick="open_media_gallery('#m_favicon')"><i class="fa fa-image"></i></span>
       <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::get('favicon')?>" id="m_favicon" name="gila_favicon"></span>
     </span></div>
@@ -102,12 +107,23 @@ foreach ($config_list as $key=>$value) {
 
   <br>
   <?php
-  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
+  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'icons'=>'Icons', 'icons2'=>'Icons2', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
   echo Form::input('gila_admin_theme', ["type"=>"select","options"=>$options], Config::get('admin_theme'), __("Admin Theme"));
   ?>
 
+  <?php
+  Config::addList('admin-palettes',['#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF']);
+  if(Config::get('admin_palette') || Config::getList('admin-palettes')) {
+    $palettes=Config::getList('admin-palettes');
+    echo '<br>';
+    echo Form::input('gila_admin_palette', ["type"=>"palette","palettes"=>$palettes], Config::get('admin_palette'), __("Admin Palette"));
+  }
+  ?>
+
   <br>
-  <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
+  <div>
+    <a class="g-btn" style="min-width:unset" onclick="save_settings()"><?=__("Submit")?></a>
+  </div>
 
   <h2><?=__("Advanced Settings")?></h2><hr>
 
@@ -115,12 +131,11 @@ foreach ($config_list as $key=>$value) {
   <?php echo Form::input('gila_use_cdn', ["type"=>"switch"], Config::get('use_cdn'), __("CDN")) ?>
 
   <br><div class="gm-12">
-  <label class="g-label gm-4"><?=__("Default Controller")?></label>
-  <select name="gila_dc" value="<?=Config::get('default-controller')?>" class="gm-4">
+  <label class="g-label gm-4"><?=__("Default Controller")?></label><select name="gila_dc" value="<?=Config::get('default-controller')?>" class="gm-4">
   <?php
   foreach (Router::$controllers as $k=>$value) {
     if ($value[0] != '.') {
-      if (!in_array($k, ['cm','login','webhook','fm','lzld','blocks'])) {
+      if (!in_array($k, ['cm','user','webhook','fm','lzld','blocks'])) {
         $sel = (Config::get('default-controller')==$k?'selected':'');
         echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
       }
@@ -140,11 +155,12 @@ foreach ($config_list as $key=>$value) {
   <?php echo Form::input('gila_webp', ["type"=>"switch"], Config::get('use_webp'), __("Use WEBP")) ?>
 
   <br>
-  <div class="gm-12">
-  <label class="g-label gm-4"><?=__("Max Media Upload")?> (px)</label>
+  <div class="">
+  <label class="g-label gm-4"><?=__("Max Media Upload")?> (px)</label><div>
   <input name="gila_maxImgWidth" value="<?=Config::get('maxImgWidth')?>" type="number" class="gm-2" style="width:120px"/>
   &times;
   <input name="gila_maxImgHeight" value="<?=Config::get('maxImgHeight')?>" type="number" class="gm-2" style="width:120px" />
+  </div>
   </div>
 
   <br>
@@ -154,11 +170,17 @@ foreach ($config_list as $key=>$value) {
   <?php echo Form::input('gila_locale', ["type"=>"text","placeholder"=>"en_US.UTF-8"], null, __("Locale")) ?>
   
   <br>
-  <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
+  <div>
+    <a class="g-btn" style="min-width:unset" onclick="save_settings()"><?=__("Submit")?></a>
+  </div>
 </form>
 </div>
 
 <script>
+var settingsApp = new Vue({
+  el: '#settings-form'
+})
+
 function save_settings() {
   g.postForm('settings-form', function() {
     g.alert('<?=__('_changes_updated')?>', 'success')

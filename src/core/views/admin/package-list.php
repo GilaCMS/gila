@@ -97,18 +97,18 @@ foreach ($packages as $pkey=>$p) {
     if (file_exists('src/'.$p->package)) {
       if (in_array($p->package, $GLOBALS['config']['packages']) || $p->package=='core') {
         if (Config::get('env')=='dev') {
-          $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a>";
+          $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn primary'><i class='fa fa-refresh'></i></a>";
         }
         if ($p->package!='core') {
-          $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn error'>".__('Deactivate')."</a>";
+          $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn btn-white'>".__('Deactivate')."</a>";
         }
       } else {
         if ($p->package!='core') {
-          $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn success'>".__('Activate')."</a>";
+          $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn primary'>".__('Activate')."</a>";
         }
       }
       if (isset($p->options)) {
-        $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i></a>";
+        $table .= " <a onclick='addon_options(\"{$p->package}\")' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-gears'></i></a>";
       }
       if (FS_ACCESS) {
         @$current_version = json_decode(file_get_contents('src/'.$p->package.'/package.json'))->version;

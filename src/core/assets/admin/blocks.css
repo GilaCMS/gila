@@ -42,6 +42,9 @@
 .add-block-btn:hover{
   box-shadow: 0 0 6px #666;
 }
+.add-block-btn .preview{
+  vertical-align:bottom;
+}
 .add-block-btn .logo{
   padding:16px 0;
   padding-left:16px;

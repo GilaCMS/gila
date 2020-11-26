@@ -127,8 +127,8 @@ class Logger
       if (!empty($ref_server) && $_SERVER['SERVER_NAME']!==$ref_server) {
         $context['src'] = $ref_server;
       }
-      if (@$geo = @\geoplugin\geoplugin::get()) {
-        $context['country'] = $geo->geoplugin_countryName;
+      if ($country = Event::get('stat.country')) {
+        $context['country'] = $country;
       }
     }
     $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.'.$type.'.log');

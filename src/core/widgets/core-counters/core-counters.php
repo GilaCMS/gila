@@ -6,6 +6,9 @@
   $usersC = $db->value('SELECT count(*) from user;');
   $db->close();
   $packagesC = count($GLOBALS['config']['packages']);
+  $palette = Config::get('admin_palette')? json_decode(Config::get('admin_palette'),true): [
+    'forestgreen','cornflowerblue','coral','orchid'
+  ];
 ?>
 <div class='core-counters-grid'>
 <?=View::css('core/widgets.css')?>
@@ -13,7 +16,7 @@
   <div>
     <a href="admin/content/post">
       <div>
-        <i class="fa fa-3x fa-pencil" style="color:forestgreen"></i>
+        <i class="fa fa-3x fa-pencil" style="color:<?=$palette[0]?>"></i>
         <span>Posts</span>
         <div style="font-size:200%"><?=$postsC?></div>
       </div>
@@ -22,7 +25,7 @@
   <div>
     <a href="admin/users">
       <div>
-        <i class="fa fa-3x fa-users" style="color:cornflowerblue"></i>
+        <i class="fa fa-3x fa-users" style="color:<?=$palette[1]?>"></i>
         <span>Users</span>
         <div style="font-size:200%"><?=$usersC?></div>
       </div>
@@ -31,7 +34,7 @@
   <div>
     <a href="admin/content/page">
       <div>
-        <i class="fa fa-3x fa-file" style="color:coral"></i>
+        <i class="fa fa-3x fa-file" style="color:<?=$palette[2]?>"></i>
         <span>Pages</span>
         <div style="font-size:200%"><?=$pagesC?></div>
       </div>
@@ -40,7 +43,7 @@
   <div>
     <a href="admin/packages">
       <div>
-        <i class="fa fa-3x fa-dropbox" style="color:orchid"></i>
+        <i class="fa fa-3x fa-dropbox" style="color:<?=$palette[3]?>"></i>
         <span>Packages</span>
         <div style="font-size:200%"><?=$packagesC?></div>
       </div>
@@ -51,7 +54,7 @@
     <a href="admin/content/post">
       <div>
         <span>Posts</span>
-        <div style="font-size:200%" style="color:forestgreen"><?=$postsC?></div>
+        <div style="font-size:200%" style="color:<?=$palette[0]?>"><?=$postsC?></div>
       </div>
     </a>
   </div>
@@ -59,7 +62,7 @@
     <a href="admin/content/page">
       <div>
         <span>Pages</span>
-        <div style="font-size:200%" style="color:coral"><?=$pagesC?></div>
+        <div style="font-size:200%" style="color:<?=$palette[2]?>"><?=$pagesC?></div>
       </div>
     </a>
   </div>

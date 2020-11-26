@@ -59,8 +59,8 @@ Vue.component('g-table', {
             <span v-if="table.bulk_actions && selected_rows.length>0">\
               <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
             </span>\
-            <span v-if="table.tools">\
-              <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
+            <span v-if="table.tools" style="flex-flow: row-reverse;display: flex;">\
+              <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" :class="{\'btn-white\':itool>0}" style="margin-right:6px;" v-html="tool_label(tool)"></span>\
             </span>\
           </div>\
         </div></td>\

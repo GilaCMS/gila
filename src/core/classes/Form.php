@@ -204,6 +204,20 @@ class Form
         $ov = htmlspecialchars($ov);
         return '<input-media name="'.$name.'" value="'.$ov.'">';
       },
+      "tree-select"=> function ($name, $field, $ov) {
+        return '<tree-select name="'.$name.'" value="'.$ov.'">';
+      },
+      "palette"=> function ($name, $field, $ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        if(empty($ov)) {
+          $ov = json_encode(end($field['palettes']));
+        }
+        $field['palettes'][] = json_decode($ov,true);
+        $ov = htmlspecialchars($ov);
+        $pal = $field['palettes']? htmlspecialchars(json_encode($field['palettes'])): '';
+        $labels = $field['labels']? htmlspecialchars(json_encode($field['labels'])): '';
+        return '<color-palette name="'.$name.'" value="'.$ov.'" palettes="'.$pal.'" labels="'.$labels.'">';
+      },
       "media-gallery"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         if (!is_array(json_decode($ov))) {

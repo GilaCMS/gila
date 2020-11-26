@@ -12,7 +12,7 @@
   --main-warning-color:darkorange;
   --main-error-color:firebrick;
   --main-radius:0.2em;
-  --main-padding:0.7em;
+  --main-padding:0.6em;
 }
 
 
@@ -224,11 +224,11 @@ button:hover{
   display:inline-block;
   cursor:pointer;
   text-align:center;
-  opacity:0.95;
+  opacity:1;
 }
 .btn:hover, .g-btn:hover,.gila-popup .g-btn:hover{
   color:white;
-  opacity:1;
+  opacity:0.9;
 }
 .error{background-color:var(--main-error-color)!important}
 .success{background-color:var(--main-success-color)!important}
@@ -253,6 +253,7 @@ button:hover{
   transition:0s;
   margin:4px 0;
   background:var(--main-input-color);
+  color: var(--main-color);
 }
 .g-form input:focus, .g-form select:focus, .g-input:focus{
   border-bottom:2px solid var(--main-a-color);
@@ -269,8 +270,13 @@ input:focus + .helptext{
   transition:.5s;
   z-index:0;
 }
-textare.g-input, .g-input[type=text] {
+textarea.g-input, .g-input[type=text] {
   width:100%;
+  color: var(--main-color);
+}
+input.btn {
+  border:inherit;
+  color:inherit;
 }
 
 
@@ -306,7 +312,7 @@ textare.g-input, .g-input[type=text] {
 .g-switch input{position:absolute;opacity:0;width: 51px;height: 26px;top:-2px;left:-2px;cursor:pointer;}
 .g-switch .g-slider{position:absolute;z-index: -100}
 .g-switch input[value="1"]:checked + .g-slider{
-  background-color:var(--main-success-color);
+  background-color:var(--main-a-color);
 }
 .g-switch input:checked{ display:none}
 .g-switch input:checked + .g-slider:before{
@@ -817,7 +823,7 @@ textare.g-input, .g-input[type=text] {
 }
 .g-gal img{
   min-width: 60%;
-  max-height:160px;
+  max-height:90px;
 }
 .g-gal>*{
   text-align:center;
