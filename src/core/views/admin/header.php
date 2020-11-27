@@ -6,23 +6,25 @@
   <title><?=((Config::get('title')??'Gila CMS').' - '.($page_title??__('Administration')))?></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1">
-  <link rel="icon" type="image/png" href="<?=View::thumb(Config::get('admin_logo')??'assets/gila-logo.png',200)?>">
+  <link rel="icon" type="image/png" href="<?=View::thumb(Config::get('admin_logo')??'assets/gila-logo.png', 200)?>">
   <?php View::$stylesheet=[]?>
   <?=View::css('core/gila.min.css')?>
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
   <style>
-  <?=file_get_contents('src/core/assets/admin/themes/'.Config::get('admin_theme').'.css')??''?>
+  <?=file_get_contents(View::getAdminThemePath())??''?>
   <?=(Config::get('admin_background')? 'background:url("'.Config::get('admin_background').'")': '')?>
   .widget-area-dashboard .widget{background:rgba(255,255,255,0.9)}  
 <?php if (!isset($_COOKIE['sidebar_toggled'])) {
   $_COOKIE['sidebar_toggled']='true';
 }
 if ($palette=Config::get('admin_palette')) {
-  $p = json_decode($palette,true);
+  $p = json_decode($palette, true);
   echo ':root{';
-  foreach($p as $k=>$c) echo '--main-palette-'.$k.':'.$c.';';
+  foreach ($p as $k=>$c) {
+    echo '--main-palette-'.$k.':'.$c.';';
+  }
   echo '--main-a-color:'.$p[0].';';
   echo '--main-primary-color:'.$p[0].';';
   echo '}';

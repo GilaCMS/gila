@@ -107,13 +107,15 @@ foreach ($config_list as $key=>$value) {
 
   <br>
   <?php
-  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'icons'=>'Icons', 'icons2'=>'Icons2', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
+  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
+  foreach (Config::getList('admin-themes') as $theme) {
+    $options[$theme[0]] = $theme[1];
+  }
   echo Form::input('gila_admin_theme', ["type"=>"select","options"=>$options], Config::get('admin_theme'), __("Admin Theme"));
   ?>
 
   <?php
-  Config::addList('admin-palettes',['#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF']);
-  if(Config::get('admin_palette') || Config::getList('admin-palettes')) {
+  if (Config::get('admin_palette') || Config::getList('admin-palettes')) {
     $palettes=Config::getList('admin-palettes');
     echo '<br>';
     echo Form::input('gila_admin_palette', ["type"=>"palette","palettes"=>$palettes], Config::get('admin_palette'), __("Admin Palette"));

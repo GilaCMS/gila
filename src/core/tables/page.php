@@ -29,7 +29,7 @@ return [
       'group'=>'title'
     ],
     'slug'=> [
-      'title'=>'Path',
+      'title'=>'Route',
       'qtype'=>'varchar(80) DEFAULT NULL',
       'alt'=>'('.Gila\Config::tr('Home').')',
       'group'=>'title'

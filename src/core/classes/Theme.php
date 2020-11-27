@@ -84,7 +84,7 @@ class Theme
       $pinfo = json_decode(file_get_contents($request), true)[0];
 
       if (!$pinfo) {
-        echo __('_theme_not_downloaded');
+        echo '{"error":"'.__('_theme_not_downloaded').'"}';
         exit;
       }
       $file = 'https://gilacms.com/assets/themes/'.$download.'.zip';
@@ -98,25 +98,19 @@ class Theme
       $localfile = 'themes/'.$download.'.zip';
 
       if (!copy($file, $localfile)) {
-        echo __('_theme_not_downloaded');
+        echo '{"error":"'.__('_theme_not_downloaded').'"}';
         exit;
       }
       if ($zip->open($localfile) === true) {
         $previousFolder = LOG_PATH.'/previous-themes/';
         $month_in_seconds = 2592000;
-        if (!file_exists($target)) {
-          mkdir($target);
+        if (file_exists($tmp_name)) {
+          rmdir($tmp_name);
         }
         $zip->extractTo($tmp_name);
         $zip->close();
         if (file_exists($target)) {
-          rename($target, Config::dir($previousFolder.date("Y-m-d H:i:s").' '.$download));
-        }
-        $previousPackages = scandir($previousFolder);
-        foreach ($previousPackages as $folder) {
-          if (filemtime($previousFolder.$folder) < time()-$month_in_seconds) {
-            FileManager::delete($previousFolder.$folder);
-          }
+          rename($target, $previousFolder.date("Y-m-d H:i:s").' '.$download);
         }
         $unzipped = scandir($tmp_name);
         if (count(scandir($tmp_name))===3) {
@@ -125,19 +119,23 @@ class Theme
           }
         }
         rename($tmp_name, $target);
-        if (file_exists($target.'__tmp__')) {
-          rmdir($target.'__tmp__');
-        }
         self::copyAssets($download);
+
+        $previousPackages = scandir($previousFolder);
+        foreach ($previousPackages as $folder) {
+          if (filemtime($previousFolder.$folder) < time()-$month_in_seconds) {
+            FileManager::delete($previousFolder.$folder);
+          }
+        }
 
         unlink(LOG_PATH.'/load.php');
         unlink($localfile);
-        echo 'ok';
+        echo '{"success":true}';
         if (!$_REQUEST['g_response']) {
           echo '<meta http-equiv="refresh" content="2;url='.Config::base().'/admin/themes" />';
         }
       } else {
-        echo __('_theme_not_downloaded');
+        echo '{"error":"'.__('_theme_not_downloaded').'"}';
       }
       exit;
     }

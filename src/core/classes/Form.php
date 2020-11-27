@@ -209,10 +209,10 @@ class Form
       },
       "palette"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
-        if(empty($ov)) {
+        if (empty($ov)) {
           $ov = json_encode(end($field['palettes']));
         }
-        $field['palettes'][] = json_decode($ov,true);
+        $field['palettes'][] = json_decode($ov, true);
         $ov = htmlspecialchars($ov);
         $pal = $field['palettes']? htmlspecialchars(json_encode($field['palettes'])): '';
         $labels = $field['labels']? htmlspecialchars(json_encode($field['labels'])): '';

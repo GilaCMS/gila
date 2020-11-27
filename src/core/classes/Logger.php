@@ -127,7 +127,7 @@ class Logger
       if (!empty($ref_server) && $_SERVER['SERVER_NAME']!==$ref_server) {
         $context['src'] = $ref_server;
       }
-      if ($country = Event::get('stat.country')) {
+      if ($country = Event::get('stat.country', null)) {
         $context['country'] = $country;
       }
     }

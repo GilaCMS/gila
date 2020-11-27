@@ -94,10 +94,12 @@ function theme_download(p){
   g.loader()
   g.post('admin/themes?g_response=content', 'download='+p, function(x) {
     g.loader(false)
-    if(x=='ok')
+    data =JSON.parse(x)
+    if(data.success==true) {
       g.alert("<?=__('_theme_downloaded')?>",'success');
-    else
-      g.alert(x,'warning');
+    } else {
+      g.alert(data.error,'warning');
+    }
   }
 )};
 

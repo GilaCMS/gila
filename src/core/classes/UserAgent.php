@@ -80,7 +80,7 @@ class UserAgent
     'CensysInspect','Siteimprove','aiohttp','Barkrowler','AdsBot','Mediapartners-Google','aiHitBot','evc-batch',
     'Scrapy','CCBot','MojeekBot','Discordbot','article-parser','HackerNews','node-superagent','RandomSurfer',
     'CheckMarkNetwork','Dataprovider.com','BLEXBot','Apache-HttpClient','MegaIndex','LinkedInBot','Infosecbot',
-    ' bot','github.com','RestSharp','KomodiaBot','RU_Bot'
+    ' bot','github.com','RestSharp','KomodiaBot','RU_Bot','compatible;'
     ];
 
     if ($user_agent === null || strlen($user_agent)<40) {

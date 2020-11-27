@@ -135,6 +135,12 @@ class View
     return 'themes/'.Config::get('theme');
   }
 
+  public static function getAdminThemePath()
+  {
+    $e = explode('@', Config::get('admin_theme'));
+    return 'src/'.($e[1]??'core').'/assets/admin/themes/'.$e[0].'.css';
+  }
+
   public static function renderAdmin($file, $package = 'core')
   {
     if (Router::request('g_response')==='content') {
@@ -279,7 +285,7 @@ class View
     }
     $items = Menu::convert($menu_data);
     echo Menu::getHtml($items);
- }
+  }
 
   public static function widget($id, $widget_exp=null)
   {
