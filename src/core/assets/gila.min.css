@@ -225,6 +225,7 @@ button:hover{
   cursor:pointer;
   text-align:center;
   opacity:1;
+  vertical-align: middle;
 }
 .btn:hover, .g-btn:hover,.gila-popup .g-btn:hover{
   color:white;

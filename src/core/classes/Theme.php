@@ -121,6 +121,9 @@ class Theme
         rename($tmp_name, $target);
         self::copyAssets($download);
 
+        if (file_exists($target.'__tmp__')) {
+          rmdir($target.'__tmp__');
+        }
         $previousPackages = scandir($previousFolder);
         foreach ($previousPackages as $folder) {
           if (filemtime($previousFolder.$folder) < time()-$month_in_seconds) {

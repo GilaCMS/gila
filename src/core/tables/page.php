@@ -52,6 +52,7 @@ return [
       'style'=>'width:8%',
       'type'=>'checkbox',
       'edit'=>true,
+      'create'=>false,
       'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'updated'=> [
@@ -68,5 +69,12 @@ return [
       'edit'=> false,
       'qtype'=> 'TEXT'
     ]
-  ]
+  ],
+  'events'=>[
+    ['create',function (&$row) {
+      if ($row['slug']=='') {
+        $row['slug'] = Slugify::text($row['title']);
+      }
+    }]
+  ]  
 ];

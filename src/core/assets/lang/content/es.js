@@ -15,6 +15,7 @@ var lang_array={
   "Search": "Buscar",
   "Yes": "Si",
   "No": "No",
+  "Add": "Añadir",
   "Approve": "Aprovar",
   "Delete registry?": "Eliminar registro?",
   _gallery:'Galleria',

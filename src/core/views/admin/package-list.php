@@ -100,7 +100,7 @@ foreach ($packages as $pkey=>$p) {
           $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn primary'><i class='fa fa-refresh'></i></a>";
         }
         if ($p->package!='core') {
-          $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn btn-white'>".__('Deactivate')."</a>";
+          $table .= " <a onclick='addon_deactivate(\"{$p->package}\")' class='g-btn warning'>".__('Deactivate')."</a>";
         }
       } else {
         if ($p->package!='core') {

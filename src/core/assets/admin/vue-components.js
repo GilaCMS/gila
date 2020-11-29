@@ -24,7 +24,7 @@ Vue.component('input-list', {
 </td>\
 </tr>\
 </tbody></table>\
-<span @click="add()" style="cursor:pointer;padding:0.5em 0.5em;color:black">+ Add</span>\
+<span @click="add()" style="cursor:pointer;padding:0.5em 0.5em;color:black">+ {{addTxt()}}</span>\
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
@@ -49,7 +49,7 @@ Vue.component('input-list', {
       	this.update()
     },
     imgSrc: function(src) {
-      if(src.split('.').pop()=='svg') {
+      if(src.split('.').pop()=='svg' || src.startsWith('http:') || src.startsWith('https:')) {
         return src;
       }
       return 'lzld/thumb?src='+src;
@@ -72,6 +72,9 @@ Vue.component('input-list', {
       this.pos=JSON.parse(this.value)
       this.fields=JSON.parse(this.fieldset)
       this.ivalue = this.value
+    },
+    addTxt: function() {
+      return g.tr('Add') ?? 'Add'
     }
   }
 })

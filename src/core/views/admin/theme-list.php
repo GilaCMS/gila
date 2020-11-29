@@ -36,7 +36,7 @@ foreach ($packages as $pkey=>$p) {
     }
     if (@$current_version = json_decode(file_get_contents('themes/'.$p->package.'/package.json'))->version) {
       if (version_compare($p->version, $current_version)>0) {
-        $table .= " <a onclick='theme_download(\"{$p->package}\")' class='g-btn primary'>".__('Upgrade')."</a>";
+        $table .= " <a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Upgrade')."</a> ";
       }
     }
     $table .= "<a href='".Config::base()."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;</a> ";
@@ -44,7 +44,7 @@ foreach ($packages as $pkey=>$p) {
       $table .= "<a href='admin/fm/?f=themes/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
     }
   } else {
-    $table .= "<a onclick='theme_download(\"{$p->package}\")' class='g-btn primary'>".__('Download')."</a>";
+    $table .= "<a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Download')."</a>";
   }
   if (isset($p->parent)) {
     $table .= "<br>Parent: ".$p->parent;

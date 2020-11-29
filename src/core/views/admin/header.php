@@ -13,9 +13,9 @@
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
   <style>
-  <?=file_get_contents(View::getAdminThemePath())??''?>
   <?=(Config::get('admin_background')? 'background:url("'.Config::get('admin_background').'")': '')?>
   .widget-area-dashboard .widget{background:rgba(255,255,255,0.9)}  
+  <?=file_get_contents(View::getAdminThemePath())??''?>
 <?php if (!isset($_COOKIE['sidebar_toggled'])) {
   $_COOKIE['sidebar_toggled']='true';
 }
@@ -33,7 +33,7 @@ if ($palette=Config::get('admin_palette')) {
   </style>
 </head>
 
-<body style="background:var(--main-bg-color);background-size:cover">
+<body>
   <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
     <!-- Sidebar g-nav vertical -->
     <div id="sidebar-wrapper"><div>
@@ -49,7 +49,7 @@ if ($palette=Config::get('admin_palette')) {
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
-    <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:rgba(255,255,255,0.8);">
+    <div id="top-wrapper" class="g-group fullwidth">
       &nbsp;<a href="#menu-toggle" class="g-icon-btn g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
       <?php if ('admin'!=Config::get('default-controller')) {?>
       &nbsp;<a href="<?=Config::base()?>" class="g-icon-btn g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
@@ -78,4 +78,4 @@ if ($palette=Config::get('admin_palette')) {
     </div>
     <div class="md-12" id="main-wrapper">
 
-      <div class="wrapper bordered" style="background:white;margin:10px">
+      <div class="wrapper" style="margin:10px">

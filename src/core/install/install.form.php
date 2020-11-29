@@ -30,7 +30,7 @@
     <label class="gs-12">Base URL</label>
     <input name="base_url" value="<?=htmlentities($_POST['base_url']??Gila\Config::base())?>" placeholder="https://www.mysite.com/" required>
     </div>
-    <div class="gl-12"><input class="btn success" type="submit" value="Install"></div>
+    <div class="gl-12"><input class="btn g-btn success" type="submit" value="Install"></div>
   </form>
   <p>
     Checkout the <a href="https://gila-cms.readthedocs.io/en/latest/install.html#errors" target="_blank">documentation</a>.<br>
