@@ -90,5 +90,11 @@
     "Header Position": "Posición de encabezado",
     "Header Image": "Imagen de encabezado",
     "Menu Color": "Color de menú",
-    "Footer Text": "Texto de pie de página" 
+    "Footer Text": "Texto de pie de página",
+    "Background position": "Posición de fondo",
+    "Top": "Superior",
+    "Middle": "Medio",
+    "Bottom": "Inferior",
+    "Level": "Nivel",
+    "Password": "Contraseña"
 }

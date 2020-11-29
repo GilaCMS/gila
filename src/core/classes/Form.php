@@ -83,7 +83,8 @@ class Form
 
     $html .= '<div class="g-label">'.$label;
     if (isset($op['helptext'])) {
-      $html .= '<br><span style="font-weight:400;font-size:90%">'.__($op['helptext']).'</span>';
+      $helptext = $op['helptext_'.Config::lang()] ?? Config::tr($op['helptext']);
+      $html .= '<br><span style="font-weight:400;font-size:90%">'.$helptext.'</span>';
     }
     $html .= '</div>';
 

@@ -16,6 +16,8 @@ var lang_array={
   "Yes": "Si",
   "No": "No",
   "Add": "Añadir",
+  "Create": "Crear",
+  "Delete": "Eliminar",
   "Approve": "Aprovar",
   "Delete registry?": "Eliminar registro?",
   _gallery:'Galleria',

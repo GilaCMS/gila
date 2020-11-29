@@ -117,7 +117,7 @@ foreach ($packages as $pkey=>$p) {
         }
       }
       $table .= "<td>";
-      if (FS_ACCESS) {
+      if (FS_ACCESS && Config::get('env')=='dev') {
         $table .= "<a href='admin/fm/?f=src/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
       }
     } else {

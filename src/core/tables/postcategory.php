@@ -3,7 +3,7 @@
 return [
   'name'=> 'postcategory',
   'title'=> 'Categories',
-  'tools'=>['add','csv'],
+  'tools'=>['add_popup','csv'],
   'commands'=>['edit_popup','delete'],
   'id'=>'id',
   'csv'=> ['id','title'],

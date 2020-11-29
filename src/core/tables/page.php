@@ -8,6 +8,7 @@ return [
   'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','updated','publish','page'],
   'commands'=> ['blocks','delete'],
+  'qactions'=> ['title'=>['edit_popup','blocks','delete']],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish'],
   'js'=>['src/core/tables/page.js','src/core/assets/admin/blocks_btn.js'],
@@ -21,7 +22,8 @@ return [
     'id'=> [
       'title'=>'ID',
       'style'=>'width:5%',
-      'edit'=>false
+      'edit'=>false,
+      'create'=>false
     ],
     'title'=> [
       'title'=>'Title',
@@ -45,6 +47,7 @@ return [
       'title'=>'Description',
       'input-type'=>'textarea',
       'qtype'=>'varchar(200) DEFAULT NULL',
+      'list'=>false,
       'group'=>'title'
     ],
     'publish'=> [
@@ -67,6 +70,7 @@ return [
     'blocks'=> [
       'list'=> false,
       'edit'=> false,
+      'create'=> false,
       'qtype'=> 'TEXT'
     ]
   ],

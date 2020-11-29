@@ -172,10 +172,10 @@ class Config
     if ($lang!==null) {
       self::$lang = $lang;
     }
-    if (isset(self::$lang)) {
-      return self::$lang;
+    if (!isset(self::$lang)) {
+      self::$lang = self::config('language');
     }
-    self::$lang = self::config('language');
+    return self::$lang;
   }
 
   /**
