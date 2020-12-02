@@ -36,6 +36,7 @@ return [
     ],
     'email'=> [
       'title'=>'Email',
+      'type'=>'email',
       'qtype'=>'varchar(80) UNIQUE',
       'required'=>true
     ],

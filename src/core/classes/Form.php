@@ -99,7 +99,7 @@ class Form
         if ($type==='range') {
           $req = ' min='.($op['min']??0).' max='.($op['max']??10).' step='.($op['step']??1);
         }
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'" type="'.$type.'"'.$req.'>';
+        $html .= '<input class="g-input" name="'.$name.'" type="'.$type.'"'.$req.' value='.htmlentities($ov).'>';
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
@@ -206,7 +206,7 @@ class Form
         return '<input-media name="'.$name.'" value="'.$ov.'">';
       },
       "tree-select"=> function ($name, $field, $ov) {
-        return '<tree-select name="'.$name.'" value="'.$ov.'">';
+        return '<tree-select name="'.$name.'" value="'.$ov.'" data='.json_encode($field['data']).'>';
       },
       "palette"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
