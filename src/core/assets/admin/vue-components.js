@@ -274,25 +274,26 @@ Vue.component('color-palette', {
 
 Vue.component('tree-select', {
   template: '<div>\
-  <select  @change="selected()">\
-  <option v-if="level>0" value"..">←</option>\
-  <option v-for="op in opList" :value"op.id">{{op.label}}</option>\
+  <select v-model="selectValue" @change="selected()">\
+    <option v-if="level>0" value".." key="-1">←</option>\
+    <option v-for="(op,i) in options" :value"op.id" :key="i">{{op.label}}</option>\
   </select>\
   <input v-model="value" type="hidden" :name="name">\
 </div>',
   props: ['name','value','data'],
   data: function() {
-    selected = ['null']
+    selected = [null]
     if(this.value) {
       selected = JSON.parse(this.value)
     }
     //if(this.labels) labels = JSON.parse(this.labels)
-    console.log(JSON.parse(this.data))
+    console.log([{id:2,label:35}])
     return {
       level: selected.length,
       treeData: JSON.parse(this.data),
-      opList: JSON.parse(this.data),
-      selected: selected
+      options: JSON.parse(this.data),
+      selected: selected,
+      selectValue: null
     }
   },
   methods:{
