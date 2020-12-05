@@ -20,7 +20,8 @@ return [
   'fields'=> [
     'id'=> [
       'title'=>'ID',
-      'edit'=>false
+      'edit'=>false,
+      'create'=>false
     ],
     'photo'=> [
       'type'=>'meta',
@@ -35,6 +36,7 @@ return [
     ],
     'email'=> [
       'title'=>'Email',
+      'type'=>'email',
       'qtype'=>'varchar(80) UNIQUE',
       'required'=>true
     ],

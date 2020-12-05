@@ -59,11 +59,11 @@ class CMController extends Gila\Controller
 
   public function describe($table)
   {
-    $pnk = new Table($table, $this->permissions);
-    if (!$pnk->can('read')) {
+    $gtable = new Table($table, $this->permissions);
+    if (!$gtable->can('read')) {
       return;
     }
-    $table = $pnk->getTable();
+    $table = $gtable->getTable();
     foreach ($table['fields'] as &$field) {
       unset($field['qtype']);
       unset($field['qoptions']);
@@ -126,30 +126,30 @@ class CMController extends Gila\Controller
       $this->group_rowsAction();
       return;
     }
-    $pnk = new Table($table, $this->permissions);
-    if (!$pnk->can('read')) {
+    $gtable = new Table($table, $this->permissions);
+    if (!$gtable->can('read')) {
       return;
     }
     $result = [];
 
     $fieldlist = isset($args['id']) ? 'edit' : 'list';
-    $result['fields'] = $pnk->fields($fieldlist);
+    $result['fields'] = $gtable->fields($fieldlist);
     $result['rows'] = [];
-    $res = $pnk->getRows($filters, array_merge($args, ['select'=>$result['fields']]));
+    $res = $gtable->getRows($filters, array_merge($args, ['select'=>$result['fields']]));
     foreach ($res as $r) {
       $result['rows'][] = array_values($r);
     }
-    $result['startIndex'] = $pnk->startIndex($args);
-    $result['totalRows'] = $pnk->totalRows($filters);
+    $result['startIndex'] = $gtable->startIndex($args);
+    $result['totalRows'] = $gtable->totalRows($filters);
     return $result;
   }
 
   public function csvAction()
   {
     global $db;
-    $pnk = new Table($this->table, $this->permissions);
+    $gtable = new Table($this->table, $this->permissions);
     $orderby = Router::request('orderby', []);
-    if (!$pnk->can('read')) {
+    if (!$gtable->can('read')) {
       return;
     }
     $result = [];
@@ -157,10 +157,10 @@ class CMController extends Gila\Controller
     // filename to be downloaded
     $filename = $this->table. date('Y-m-d') . ".csv";
     header("Content-Disposition: attachment; filename=\"$filename\"");
-    $fields = $pnk->fields('csv');
+    $fields = $gtable->fields('csv');
     echo implode(',', $fields)."\n";
-    $ql = "SELECT {$pnk->select($fields)}
-      FROM {$pnk->name()}{$pnk->where($_GET)}{$pnk->orderby($orderby)};";
+    $ql = "SELECT {$gtable->select($fields)}
+      FROM {$gtable->name()}{$gtable->where($_GET)}{$gtable->orderby($orderby)};";
     $res = $db->query($ql);
     while ($r = mysqli_fetch_row($res)) {
       foreach ($r as &$str) {
@@ -179,26 +179,26 @@ class CMController extends Gila\Controller
 
   public function get_empty_csvAction()
   {
-    $pnk = new Table($this->table, $this->permissions);
-    if (!$pnk->can('create')) {
+    $gtable = new Table($this->table, $this->permissions);
+    if (!$gtable->can('create')) {
       return;
     }
     $filename = $this->table . "-example.csv";
     header("Content-Disposition: attachment; filename=\"$filename\"");
-    $fields = $pnk->fields('upload_csv');
+    $fields = $gtable->fields('upload_csv');
     echo implode(',', $fields);
   }
 
   public function upload_csvAction()
   {
     global $db;
-    $pnk = new Table($this->table, $this->permissions);
-    if (!$pnk->can('create')) {
+    $gtable = new Table($this->table, $this->permissions);
+    if (!$gtable->can('create')) {
       return;
     }
     $lines = 0;
     $filename = $_FILES["file"]["tmp_name"];
-    $fields = $pnk->fields('upload_csv');
+    $fields = $gtable->fields('upload_csv');
     $quest = "";
     $nfields = count($fields);
     $fields = implode(',', $fields);
@@ -218,7 +218,7 @@ class CMController extends Gila\Controller
         if (count($row)<$nfields) {
           continue;
         }
-        $ql = "REPLACE INTO {$pnk->name()} ($fields) VALUES($quest);";
+        $ql = "REPLACE INTO {$gtable->name()} ($fields) VALUES($quest);";
         echo $ql.'\n';
         echo implode(',', $row);
         if ($db->query($ql, $row)) {
@@ -233,8 +233,8 @@ class CMController extends Gila\Controller
   {
     global $db;
     header('Content-Type: application/json');
-    $pnk = new Table($this->table, $this->permissions);
-    if (!$pnk->can('read')) {
+    $gtable = new Table($this->table, $this->permissions);
+    if (!$gtable->can('read')) {
       return;
     }
     $result = [];
@@ -242,9 +242,9 @@ class CMController extends Gila\Controller
     $orderby = Router::request('orderby', []);
     $counter = isset($_GET['counter']) ? ',COUNT(*) AS '.$_GET['counter'] : '';
 
-    $result['fields'] = $pnk->fields();
-    $res = $db->query("SELECT {$pnk->selectsum($groupby)}$counter FROM {$pnk->name()}
-      {$pnk->where($_GET)}{$pnk->groupby($groupby)}{$pnk->orderby($orderby)};");
+    $result['fields'] = $gtable->fields();
+    $res = $db->query("SELECT {$gtable->selectsum($groupby)}$counter FROM {$gtable->name()}
+      {$gtable->where($_GET)}{$gtable->groupby($groupby)}{$gtable->orderby($orderby)};");
     while ($r = mysqli_fetch_row($res)) {
       $result['rows'][] = $r;
     }
@@ -261,12 +261,12 @@ class CMController extends Gila\Controller
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
       return;
     }
-    $pnk = new Table($this->table, $this->permissions);
+    $gtable = new Table($this->table, $this->permissions);
 
-    if (isset($_GET['id']) && $_GET['id']>0 && $pnk->can('update')) {
+    if (isset($_GET['id']) && $_GET['id']>0 && $gtable->can('update')) {
       $id = $_GET['id'];
     } else {
-      $id = $pnk->createRow($_GET);
+      $id = $gtable->createRow($_GET);
       if ($id===0) {
         return;
       }
@@ -274,37 +274,37 @@ class CMController extends Gila\Controller
 
     $result = [];
     $ids = explode(',', $id);
-    $result['fields'] = $pnk->fields();
+    $result['fields'] = $gtable->fields();
 
     foreach ($ids as $id) {
       $data = $_POST;
       if (isset($_GET['id']) && $_GET['id']>0) {
-        $pnk->event('update', $data);
+        $gtable->event('update', $data);
       } else {
-        $pnk->event('create', $data);
+        $gtable->event('create', $data);
       }
-      $pnk->updateMeta($id);
-      $pnk->updateJoins($id);
-      $res = $db->query("UPDATE {$pnk->name()}{$pnk->set($data)} WHERE {$pnk->id()}=?;", $id);
+      $gtable->updateMeta($id);
+      $gtable->updateJoins($id);
+      $res = $db->query("UPDATE {$gtable->name()}{$gtable->set($data)} WHERE {$gtable->id()}=?;", $id);
       if ($db->error()) {
         @$result['error'][] = $db->error();
       }
-      $gen = $db->gen("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;", $id);
+      $gen = $db->gen("SELECT {$gtable->select()} FROM {$gtable->name()} WHERE {$gtable->id()}=?;", $id);
 
       foreach ($gen as $r) {
         @$result['rows'][] = $r;
       }
     }
-    Config::setMt($pnk->name());
+    Config::setMt($gtable->name());
     echo json_encode($result, JSON_PRETTY_PRINT);
   }
 
   public function empty_rowAction()
   {
     header('Content-Type: application/json');
-    $pnk = new Table($this->table, $this->permissions);
-    $result['fields'] = $pnk->fields('create');
-    $result['rows'][0] = $pnk->getEmpty();
+    $gtable = new Table($this->table, $this->permissions);
+    $result['fields'] = $gtable->fields('create');
+    $result['rows'][0] = $gtable->getEmpty();
     echo json_encode($result, JSON_PRETTY_PRINT);
   }
 
@@ -315,37 +315,37 @@ class CMController extends Gila\Controller
   {
     global $db;
     header('Content-Type: application/json');
-    $pnk = new Table($this->table, $this->permissions);
-    if (!$pnk->can('create')) {
+    $gtable = new Table($this->table, $this->permissions);
+    if (!$gtable->can('create')) {
       return;
     }
     $result = [];
     $data = $_POST;
 
     if (isset($_POST['id'])) {
-      $pnk->event('create', $data);
-      $fields = $pnk->fields('clone');
-      if (($idkey = array_search($pnk->id(), $fields)) !== false) {
+      $gtable->event('create', $data);
+      $fields = $gtable->fields('clone');
+      if (($idkey = array_search($gtable->id(), $fields)) !== false) {
         unset($fields[$idkey]);
       }
       $fields =  implode(',', $fields);
-      $q = "INSERT INTO {$pnk->name()}($fields) SELECT $fields FROM {$pnk->name()} WHERE {$pnk->id()}=?;";
+      $q = "INSERT INTO {$gtable->name()}($fields) SELECT $fields FROM {$gtable->name()} WHERE {$gtable->id()}=?;";
       $res = $db->query($q, $_POST['id']);
       $id = $db->insert_id;
     // TODO copy meta values and links
     } else {
-      $id = $pnk->createRow($data);
+      $id = $gtable->createRow($data);
       if ($id===0) {
         echo "Row was not created. Does this table exist?";
         exit;
       } else {
-        $q = "UPDATE {$pnk->name()} {$pnk->set($data)} WHERE {$pnk->id()}=?;";
+        $q = "UPDATE {$gtable->name()} {$gtable->set($data)} WHERE {$gtable->id()}=?;";
         $db->query($q, $id);
       }
     }
 
-    $result['fields'] = $pnk->fields();
-    $res = $db->query("SELECT {$pnk->select()} FROM {$pnk->name()} WHERE {$pnk->id()}=?;", $id);
+    $result['fields'] = $gtable->fields();
+    $res = $db->query("SELECT {$gtable->select()} FROM {$gtable->name()} WHERE {$gtable->id()}=?;", $id);
     while ($r = mysqli_fetch_row($res)) {
       foreach ($r as &$el) {
         if ($el==null) {
@@ -381,13 +381,12 @@ class CMController extends Gila\Controller
   {
     global $db;
     $t = htmlentities($this->table);
-    $pnk = new Table($t, $this->permissions);
-    if (!$pnk->can('update')) {
+    $gtable = new Table($t, $this->permissions);
+    if (!$gtable->can('update')) {
       return;
     }
     $callback = Router::param("callback") ?? $t.'_action';
 
-    $fields = $pnk->fields('edit');
     $id = Router::param("id", 2);
     $id = (int)$id;
     echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
@@ -395,16 +394,17 @@ class CMController extends Gila\Controller
     echo '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
     echo 'justify-content: space-around;gap:0.8em">';
     echo Form::hiddenInput();
-    if ($id) {
-      $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()}{$pnk->where($_GET)};";
+    if ($id>0) {
+      $fields = $gtable->fields('edit');
+      $ql = "SELECT {$gtable->select($fields)} FROM {$gtable->name()}{$gtable->where($_GET)};";
       $res = $db->get($ql)[0];
-      echo Form::html($pnk->getFields('edit'), $res);
+      echo Form::html($gtable->getFields('edit'), $res);
     } else {
-      echo Form::html($pnk->getFields('edit'));
+      echo Form::html($gtable->getFields('create'));
     }
 
     $child_id = '<span id="edit_popup_child"></span>';
-    foreach ($pnk->getTable()['children']??[] as $ckey=>$child) {
+    foreach ($gtable->getTable()['children']??[] as $ckey=>$child) {
       echo $child_id;
       $child_id = "";
       echo '<g-table v-if="id>0" gtype="'.$ckey.'" gchild=1 ';

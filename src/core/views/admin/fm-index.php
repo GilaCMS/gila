@@ -42,8 +42,8 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
   if (FileManager::allowedPath($dirname) && FileManager::allowedFileType($filepath)) {
     if (in_array($ext, $img_ext)) {
       ?>
-      <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
-      <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
+      <span class="g-btn btn-white" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
+      <span class="g-btn error" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
 <?php
       echo '</div><img src="lzld/thumb?size=600&src='.$show_path.'" style="max-width:400px">';
     } elseif (is_dir($filepath) || $filepath=='') {
@@ -51,8 +51,8 @@ $dirname = substr($dirname, 1+strlen(realpath('')));
     } else {
       $value = htmlentities(file_get_contents($filepath)); ?>
     <span class="g-btn" onclick="savefile('<?=$show_path?>')"><?=_('Save')?></span>
-    <span class="g-btn" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
-    <span class="g-btn" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
+    <span class="g-btn btn-white" onclick="movefile('<?=$show_path?>')"><?=_('Rename')?></span>
+    <span class="g-btn error" onclick="deletefile('<?=$show_path?>')"><?=_('Delete')?></span>
     </div>
     <textarea id="textarea"><?=$value?></textarea>
 
@@ -95,9 +95,9 @@ function updateDir(path) {
         html += '<a href="admin/fm?f='+path+'/'+file[i].name+'">'+get_file_icon(file[i].ext)+'&nbsp;'+file[i].name+'</a><br>';
       }
     }
-    html += ' <span class="g-btn" onclick="createDir()"><?=_("+ Dir")?></span>'
-    html += ' <span class="g-btn" onclick="createFile()"><?=_("+ File")?></span>'
-    html += ' <span class="g-btn" onclick="document.getElementById(\'up_files\').click()"><i class="fa fa-upload"></i> <?=_("Upload")?></span>'
+    html += ' <span class="g-btn btn-white" onclick="createDir()"><?=_("+ Dir")?></span>'
+    html += ' <span class="g-btn btn-white" onclick="createFile()"><?=_("+ File")?></span>'
+    html += ' <span class="g-btn btn-white" onclick="document.getElementById(\'up_files\').click()"><i class="fa fa-upload"></i> <?=_("Upload")?></span>'
     html += ' <input type="file" id="up_files" onchange="uploadFile()" style="opacity:0;position:absolute">';
     document.getElementsByClassName('fm_dir')[0].innerHTML=html;
   })

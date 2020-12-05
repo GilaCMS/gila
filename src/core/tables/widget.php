@@ -27,7 +27,7 @@ return [
     'search_box'=> true,
     'search_boxes'=> ['area','widget'],
     'fields'=> [
-        'id'=> ['title'=>'ID', 'edit'=>false],
+        'id'=> ['title'=>'ID', 'edit'=>false, 'create'=>false],
         'widget'=> ['title'=>'Type', 'type'=>'select', 'options'=>$widgets, 'create'=>true],
         'title'=> ['title'=>'Title'],
         'area'=> ['title'=>'Widget Area', 'type'=>'select', 'options'=>$widget_areas],
@@ -37,7 +37,7 @@ return [
           'type'=>'checkbox','edit'=>true,'create'=>false
         ],
         'data'=> [
-          'title'=>'Data', 'list'=>false, 'edit'=>false,
+          'title'=>'Data', 'list'=>false, 'edit'=>false, 'create'=>false,
           'type'=>'text','allow_tags'=>true
         ],
     ],

@@ -2,7 +2,8 @@
   --sidebar-width: 200px;
   ---sidebar-width: -200px;
 }
-body { overflow-x: hidden; }
+body { overflow-x: hidden; background:var(--main-bg-color);background-size:cover}
+#top-wrapper{vertical-align:baseline; background:rgba(255,255,255,0.8);border:1px solid var(--main-border-color)}
 #wrapper { padding-left: 0; transition: all 0.5s ease; width:100%}
 #wrapper.toggled { padding-left: var(--sidebar-width); }
 #wrapper.toggled #sidebar-wrapper { width: var(--sidebar-width); overflow-y: visible; opacity:1 }
@@ -44,6 +45,7 @@ body { overflow-x: hidden; }
   left:0;
   width: 100%;
   max-width: 100%;
+  border:1px solid var(--main-border-color);
 }
 
 @media(min-width:800px) {

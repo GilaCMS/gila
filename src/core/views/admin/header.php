@@ -6,23 +6,25 @@
   <title><?=((Config::get('title')??'Gila CMS').' - '.($page_title??__('Administration')))?></title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1">
-  <link rel="icon" type="image/png" href="<?=View::thumb(Config::get('admin_logo')??'assets/gila-logo.png',200)?>">
+  <link rel="icon" type="image/png" href="<?=View::thumb(Config::get('admin_logo')??'assets/gila-logo.png', 200)?>">
   <?php View::$stylesheet=[]?>
   <?=View::css('core/gila.min.css')?>
   <?=View::css('lib/font-awesome/css/font-awesome.min.css')?>
   <?=View::css('core/admin/style.css')?>
   <?=View::script("core/gila.min.js")?>
   <style>
-  <?=file_get_contents('src/core/assets/admin/themes/'.Config::get('admin_theme').'.css')??''?>
   <?=(Config::get('admin_background')? 'background:url("'.Config::get('admin_background').'")': '')?>
   .widget-area-dashboard .widget{background:rgba(255,255,255,0.9)}  
+  <?=file_get_contents(View::getAdminThemePath())??''?>
 <?php if (!isset($_COOKIE['sidebar_toggled'])) {
   $_COOKIE['sidebar_toggled']='true';
 }
 if ($palette=Config::get('admin_palette')) {
-  $p = json_decode($palette,true);
+  $p = json_decode($palette, true);
   echo ':root{';
-  foreach($p as $k=>$c) echo '--main-palette-'.$k.':'.$c.';';
+  foreach ($p as $k=>$c) {
+    echo '--main-palette-'.$k.':'.$c.';';
+  }
   echo '--main-a-color:'.$p[0].';';
   echo '--main-primary-color:'.$p[0].';';
   echo '}';
@@ -31,7 +33,7 @@ if ($palette=Config::get('admin_palette')) {
   </style>
 </head>
 
-<body style="background:var(--main-bg-color);background-size:cover">
+<body>
   <div id="wrapper"<?=($_COOKIE['sidebar_toggled']=='true'? ' class="toggled"': '')?>>
     <!-- Sidebar g-nav vertical -->
     <div id="sidebar-wrapper"><div>
@@ -47,7 +49,7 @@ if ($palette=Config::get('admin_palette')) {
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
-    <div id="top-wrapper" class="g-group fullwidth bordered" style="vertical-align:baseline; background:rgba(255,255,255,0.8);">
+    <div id="top-wrapper" class="g-group fullwidth">
       &nbsp;<a href="#menu-toggle" class="g-icon-btn g-group-item" id="menu-toggle" title="Toggle Menu"><i class='fa fa-bars'></i></a>
       <?php if ('admin'!=Config::get('default-controller')) {?>
       &nbsp;<a href="<?=Config::base()?>" class="g-icon-btn g-group-item" title="Homepage" target="_blank"><i class='fa fa-home'></i></a>
@@ -76,4 +78,4 @@ if ($palette=Config::get('admin_palette')) {
     </div>
     <div class="md-12" id="main-wrapper">
 
-      <div class="wrapper bordered" style="background:white;margin:10px">
+      <div class="wrapper" style="margin:10px">

@@ -55,9 +55,9 @@ Vue.component('g-table', {
               </div>\
             </div>\
           </div>\
-          <div>\
+          <div style="display:flex">\
             <span v-if="table.bulk_actions && selected_rows.length>0">\
-              <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
+              <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px;" v-html="tool_label(iaction)"></span>\
             </span>\
             <span v-if="table.tools" style="flex-flow: row-reverse;display: flex;">\
               <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" :class="{\'btn-white\':itool>0}" style="margin-right:6px;" v-html="tool_label(tool)"></span>\
@@ -84,8 +84,12 @@ Vue.component('g-table', {
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
         <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
-        :col="ifield" :value="row[ifield]" :class="field" v-html="display_cell(irow,ifield)"\
+        :col="ifield" :value="row[ifield]" :class="field"\
         @keydown="inlineDataUpdate(irow, field)">\
+          <div v-html="display_cell(irow,ifield)"></div>\
+          <div v-if="table.qactions && table.qactions[field]" class="qactions">\
+            <span v-for="(com,icom) in table.qactions[field]" v-if="canUse(com)" @click="command(com,row[0])" v-html="command_label(com,true)"></span>\
+          </div>\
         </td>\
         <td v-if="table.commands" class="td-com">\
           <span v-for="(com,icom) in table.commands" v-if="canUse(com)" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
@@ -235,8 +239,8 @@ Vue.component('g-table', {
       if(typeof this.table.fields[ifield].title=='undefined') return ifield
       return this.table.fields[ifield].title
     },
-    command_label: function(com) {
-      if(this.table.action_display=='label' ||
+    command_label: function(com, label=false) {
+      if(label || this.table.action_display=='label' ||
         typeof gtableCommand[com]=='undefined') {
         return '<a>'+gtableCommand[com].label+'</a>';
       }
@@ -610,6 +614,10 @@ g.dialog.buttons.popup_update = {title:'Update', fn:function(btn){
   form = g('.gila-popup form').last()
   form.getElementsByTagName("BUTTON")[0].click()
 }};
+g.dialog.buttons.popup_add = {title:'Create', fn:function(btn){
+  form = g('.gila-popup form').last()
+  form.getElementsByTagName("BUTTON")[0].click()
+}};
 
 function g_form_popup_update() {
   form = g('.gila-popup form').last()
@@ -722,7 +730,7 @@ gtableTool['add_popup'] = {
   fn: function(table) {
     href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
     g.get(href,function(data){
-      g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+      g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_add'})
       formId = '#'+table.name+'-edit-item-form'
       edit_popup_app = new Vue({
         el: formId,

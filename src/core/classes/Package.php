@@ -407,7 +407,7 @@ class Package
       return;
     }
     $now = new DateTime("now");
-    if (Config::getOption('checked4updates',null)===null) {
+    if (Config::getOption('checked4updates', null)===null) {
       Config::setOption('checked4updates', $now->format('Y-m-d'));
       $diff = 1000;
     } else {
