@@ -1,7 +1,7 @@
 <?php
 
-include _DIR.'/../../vendor/autoload.php';
-include_once _DIR.'/../../src/core/classes/User.php';
+include _DIR_.'/../../vendor/autoload.php';
+include_once _DIR_.'/../../src/core/classes/User.php';
 use PHPUnit\Framework\TestCase;
 use Gila\User;
 
