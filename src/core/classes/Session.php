@@ -183,7 +183,7 @@ class Session
     $data = [
       'user_agent'=>$_SERVER['HTTP_USER_AGENT']
     ];
-    $gsession = replace_str(['/'.'\\','.'], '', $gsession);
+    $gsession = str_replace(['/'.'\\','.'], '', $gsession);
     file_put_contents(LOG_PATH.'/sessions/'.$gsession, json_encode($data));
   }
 
