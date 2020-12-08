@@ -194,6 +194,11 @@ class Router
     self::$onaction[$c][$action][] = $fn;
   }
 
+  public static function onController($c, $fn)
+  {
+    self::$on_controller[$c][] = $fn;
+  }
+
   public static function setPath($_p)
   {
     if ($_p!==false) {

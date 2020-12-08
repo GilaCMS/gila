@@ -847,14 +847,26 @@ textare.g-input, .g-input[type=text] {
 }
 
 @keyframes move-left{
-  from{transform:translateX(6em)}
+  from{transform:translateX(4em)}
   to{transform:translateX(0)}
 }
 @keyframes move-right{
-  from{transform:translateX(-6em)}
+  from{transform:translateX(-4em)}
   to{transform:translateX(0)}
+}
+@keyframes move-up{
+  from{transform:translateY(4em)}
+  to{transform:translateY(0)}
+}
+@keyframes move-down{
+  from{transform:translateY(-4em)}
+  to{transform:translateY(0)}
 }
 @keyframes fade-in{
   from{opacity:0}
   to{opacity:1}
+}
+@keyframes expand{
+  from{transform: scale(0.7);}
+  to{transform: scale(1);}
 }

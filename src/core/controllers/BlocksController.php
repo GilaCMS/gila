@@ -240,7 +240,8 @@ class BlocksController extends Gila\Controller
 
   public static function updateBlocks($content, $id, $blocks)
   {
-    $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
+    $file = replace_str(['/'.'\\','.'], '', $content.$id);
+    $draftFile = LOG_PATH.'/blocks/'.$file.'.json';
     $json = json_encode($blocks);
     Config::dir(LOG_PATH.'/blocks/');
     file_put_contents($draftFile, $json);

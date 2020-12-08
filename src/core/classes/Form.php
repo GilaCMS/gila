@@ -185,6 +185,17 @@ class Form
         }
         return $html . '</div>';
       },
+      "animation"=> function ($name, $field, $ov) {
+        $html = '<div class="g-radio g-input" style="padding: var(--main-padding) 0; width: max-content;">';
+        $options = [''=>'None','fade-in'=>'Fade','expand'=>'Expand','move-left'=>'Left','move-right'=>'Right','move-up'=>'Up','move-down'=>'Down'];
+        foreach ($options as $value=>$display) {
+          $id = 'radio_'.$name.'_'.$value;
+          $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
+          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
+          $html .= '<label for="'.$id.$value.'">'.$display.'</label>';
+        }
+        return $html . '</div>';
+      },
       "postcategory"=> function ($name, $field, $ov) {
         global $db;
         $html = '<select class="g-input" name="'.$name.'">';
