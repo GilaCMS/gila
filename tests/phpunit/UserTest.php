@@ -8,7 +8,7 @@ use Gila\User;
 /**
  * 
  */
-class userTest extends TestCase
+class UserTest extends TestCase
 {
 	public static function test_create(){
 		$result = User::create('test_create@email.com', '123');
