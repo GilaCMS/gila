@@ -1,0 +1,145 @@
+.circle-bar {
+    margin: 50px auto;
+    width: 150px;
+    height: 150px;
+    background: white;
+    border-radius: 50%;
+  }
+  
+  .circle-bar .circle .mask,
+  .circle-bar .circle .fill {
+    position: absolute;
+    border-radius: 50%;
+  }
+  .circle-bar .circle .mask,
+  .circle-bar .circle .fill {
+    width: 150px;
+    height: 150px;
+    transition: transform 1s;
+  }
+  
+  .circle-bar .circle .mask {
+    clip: rect(0px, 150px, 150px, 75px);
+  }
+  
+  .circle-bar .circle .mask .fill {
+    clip: rect(0px, 75px, 150px, 0px);
+    background-color: steelblue;
+  }
+  
+  
+  .circle-bar .inside-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: white;
+    line-height: 120px;
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 15px;
+    position: absolute;
+    font-weight: 700;
+    font-size: 2em;
+  }
+  
+  
+  .r1{transform:rotate(1.8deg)}
+  .r2{transform:rotate(3.6deg)}
+  .r3{transform:rotate(5.4deg)}
+  .r4{transform:rotate(7.2deg)}
+  .r5{transform:rotate(9deg)}
+  .r6{transform:rotate(10.8deg)}
+  .r7{transform:rotate(12.6deg)}
+  .r8{transform:rotate(14.4deg)}
+  .r9{transform:rotate(16.2deg)}
+  .r10{transform:rotate(18deg)}
+  .r11{transform:rotate(20deg)}
+  .r12{transform:rotate(21.6deg)}
+  .r13{transform:rotate(23.4deg)}
+  .r14{transform:rotate(25.2deg)}
+  .r15{transform:rotate(27deg)}
+  .r16{transform:rotate(29deg)}
+  .r17{transform:rotate(30.6deg)}
+  .r18{transform:rotate(32.4deg)}
+  .r19{transform:rotate(34.2deg)}
+  .r20{transform:rotate(36deg)}
+  .r21{transform:rotate(38deg)}
+  .r22{transform:rotate(39.6deg)}
+  .r23{transform:rotate(41.4deg)}
+  .r24{transform:rotate(43.2deg)}
+  .r25{transform:rotate(45deg)}
+  .r26{transform:rotate(47deg)}
+  .r27{transform:rotate(48.6deg)}
+  .r28{transform:rotate(50.4deg)}
+  .r29{transform:rotate(52.2deg)}
+  .r30{transform:rotate(54deg)}
+  .r31{transform:rotate(56deg)}
+  .r32{transform:rotate(57.6deg)}
+  .r33{transform:rotate(59.4deg)}
+  .r34{transform:rotate(61.2deg)}
+  .r35{transform:rotate(63deg)}
+  .r36{transform:rotate(65deg)}
+  .r37{transform:rotate(66.6deg)}
+  .r38{transform:rotate(68.4deg)}
+  .r39{transform:rotate(70.2deg)}
+  .r40{transform:rotate(72deg)}
+  .r41{transform:rotate(74deg)}
+  .r42{transform:rotate(75.6deg)}
+  .r43{transform:rotate(77.4deg)}
+  .r44{transform:rotate(79.2deg)}
+  .r45{transform:rotate(81deg)}
+  .r46{transform:rotate(83deg)}
+  .r47{transform:rotate(84.6deg)}
+  .r48{transform:rotate(86.4deg)}
+  .r49{transform:rotate(88.2deg)}
+  .r50{transform:rotate(90deg)}
+  .r51{transform:rotate(92deg)}
+  .r52{transform:rotate(93.6deg)}
+  .r53{transform:rotate(95.4deg)}
+  .r54{transform:rotate(97.2deg)}
+  .r55{transform:rotate(99deg)}
+  .r56{transform:rotate(101deg)}
+  .r57{transform:rotate(102.6deg)}
+  .r58{transform:rotate(104.4deg)}
+  .r59{transform:rotate(106.2deg)}
+  .r60{transform:rotate(108deg)}
+  .r61{transform:rotate(110deg)}
+  .r62{transform:rotate(111.6deg)}
+  .r63{transform:rotate(113.4deg)}
+  .r64{transform:rotate(115.2deg)}
+  .r65{transform:rotate(117deg)}
+  .r66{transform:rotate(119deg)}
+  .r67{transform:rotate(120.6deg)}
+  .r68{transform:rotate(122.4deg)}
+  .r69{transform:rotate(124.2deg)}
+  .r70{transform:rotate(126deg)}
+  .r71{transform:rotate(128deg)}
+  .r72{transform:rotate(129.6deg)}
+  .r73{transform:rotate(131.4deg)}
+  .r74{transform:rotate(133.2deg)}
+  .r75{transform:rotate(135deg)}
+  .r76{transform:rotate(137deg)}
+  .r77{transform:rotate(138.6deg)}
+  .r78{transform:rotate(140.4deg)}
+  .r79{transform:rotate(142.2deg)}
+  .r80{transform:rotate(144deg)}
+  .r81{transform:rotate(146deg)}
+  .r82{transform:rotate(147.6deg)}
+  .r83{transform:rotate(149.4deg)}
+  .r84{transform:rotate(151.2deg)}
+  .r85{transform:rotate(153deg)}
+  .r86{transform:rotate(155deg)}
+  .r87{transform:rotate(156.6deg)}
+  .r88{transform:rotate(158.4deg)}
+  .r89{transform:rotate(160.2deg)}
+  .r90{transform:rotate(162deg)}
+  .r91{transform:rotate(164deg)}
+  .r92{transform:rotate(165.6deg)}
+  .r93{transform:rotate(167.4deg)}
+  .r94{transform:rotate(169.2deg)}
+  .r95{transform:rotate(171deg)}
+  .r96{transform:rotate(173deg)}
+  .r97{transform:rotate(174.6deg)}
+  .r98{transform:rotate(176.4deg)}
+  .r99{transform:rotate(178.2deg)}
+  .r100{transform:rotate(180deg)}

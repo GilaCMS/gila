@@ -5,7 +5,7 @@ $pn = 0;
 
 foreach ($packages as $pkey=>$p) {
   if ($p->package == Config::get('theme')) {
-    $border="border: 2px solid green;";
+    $border="border: 2px solid var(--main-primary-color);";
   } else {
     $border="";
   }
@@ -29,14 +29,14 @@ foreach ($packages as $pkey=>$p) {
     if ($p->package!=Config::get('theme')) {
       $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>".__('Select')."</a> ";
     } elseif (Config::get('env')=='dev') {
-      $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn btn-white'><i class='fa fa-refresh'></i></a> ";
+      $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn primary'><i class='fa fa-refresh'></i></a> ";
     }
     if (isset($p->options)) {
-      $table .= "<a onclick='theme_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;</a> ";
+      $table .= "<a onclick='theme_options(\"{$p->package}\")' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;</a> ";
     }
     if (@$current_version = json_decode(file_get_contents('themes/'.$p->package.'/package.json'))->version) {
       if (version_compare($p->version, $current_version)>0) {
-        $table .= " <a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Upgrade')."</a>";
+        $table .= " <a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Upgrade')."</a> ";
       }
     }
     $table .= "<a href='".Config::base()."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;</a> ";
@@ -94,10 +94,12 @@ function theme_download(p){
   g.loader()
   g.post('admin/themes?g_response=content', 'download='+p, function(x) {
     g.loader(false)
-    if(x=='ok')
+    data =JSON.parse(x)
+    if(data.success==true) {
       g.alert("<?=__('_theme_downloaded')?>",'success');
-    else
-      g.alert(x,'warning');
+    } else {
+      g.alert(data.error,'warning');
+    }
   }
 )};
 

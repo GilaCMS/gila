@@ -57,7 +57,7 @@ class AdminController extends Gila\Controller
       View::alert('alert', 'You have to download tinymce5 and add it to assets/lib/tinymce5 <a href="https://gilacms.com/gila-cms-1-16-0-release>See more</a>');
     }
     if (Session::hasPrivilege('admin') && FS_ACCESS && Package::check4updates()) {
-      View::alert('warning', '<a class="g-btn" href="?c=admin&action=packages">'.__('_updates_available').'</a>');
+      View::alert('warning', '<a class="g-btn" href="admin/packages">'.__('_updates_available').'</a>');
     }
 
     View::renderAdmin('admin/dashboard.php');

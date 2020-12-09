@@ -1,7 +1,7 @@
 <?php
 namespace Gila;
 
-class widget
+class Widget
 {
   public static function getById($id)
   {
@@ -66,6 +66,12 @@ class widget
   {
     $widgetData = include self::getWidgetFile($widget);
     return $widgetData['keys'] ?? "";
+  }
+
+  public static function getData($widget)
+  {
+    $widgetData = include self::getWidgetFile($widget);
+    return $widgetData ?? [];
   }
 
   public static function getList($term=null)

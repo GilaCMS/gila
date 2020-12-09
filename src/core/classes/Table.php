@@ -252,7 +252,7 @@ class Table
   public function groupby($group)
   {
     if ($group===null) {
-      if ($group = $this->table['groupby']) {
+      if ($group = $this->table['groupby']??null) {
         return " GROUP BY $group";
       }
       return '';

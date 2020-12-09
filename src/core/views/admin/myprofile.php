@@ -15,7 +15,7 @@
 <div class="gm-grid">
 
 <div>
-  <div id="profile-forms" class="g-card" style="padding:0 16px;background:white">
+  <div id="profile-forms" class="g-card" style="padding:0 16px;">
     <form method="post" action="admin/profile" class="g-form">
     <h2 class="text-align-center"><?=__('Personal Information')?></h2>
     <br>
@@ -55,7 +55,7 @@
 </div>
 
 <div>
-  <div id="profile-forms" class="g-card" style="padding:0 16px;background:white">
+  <div id="profile-forms" class="g-card" style="padding:0 16px;">
     <form method="post" action="admin/profile" class="g-form">
     <h2 class="text-align-center"><?=__('Security')?></h2>
     <br><div>

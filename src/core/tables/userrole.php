@@ -18,7 +18,8 @@ return [
   "fields"=>[
     "id"=>[
       'title'=>"ID",
-      'edit'=>false
+      'edit'=>false,
+      'create'=>false
     ],
     "userrole"=>[
       'title'=>"Role",
