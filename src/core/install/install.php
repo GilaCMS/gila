@@ -74,17 +74,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $GLOBALS['config']['check4updates'] = 1;
     $GLOBALS['config']['language'] = 'en';
     $GLOBALS['config']['admin_email'] = $_POST['adm_email'];
-    $GLOBALS['config']['media_uploads'] = 'assets/uploads';
+    $GLOBALS['config']['media_uploads'] = 'data/uploads';
     $GLOBALS['config']['rewrite'] = 1;
+    $GLOBALS['config']['page-blocks'] = true;
     $GLOBALS['config']['use_webp'] = function_exists("imagewebp") ? 1 : 0;
-    if (function_exists("apache_get_modules") && !in_array('mod_rewrite', apache_get_modules())) {
-      $GLOBALS['config']['rewrite'] = 0;
-    }
+    $GLOBALS['config']['utk_level'] = 10;
+    $GLOBALS['config']['admin_theme'] = 'default';
+    $GLOBALS['config']['admin_logo'] = 'assets/gila-logo.png';
+    $GLOBALS['config']['favicon'] = 'assets/favicon.png';
 
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents($configfile, $filedata);
     Gila\Package::copyAssets('core');
     Gila\Theme::copyAssets('gila-blog');
+    Gila\Theme::copyAssets('gila-mag');
+    Gila\Config::dir(LOG_PATH.'/stats');
+    Gila\Config::dir(LOG_PATH.'/sessions');
+    Gila\Config::dir(LOG_PATH.'/cacheItem');
     @unlink(LOG_PATH.'/load.php');
     include __DIR__."/installed.php";
     exit;

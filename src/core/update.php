@@ -1,20 +1,16 @@
 <?php
 
 Config::content('post', 'core/tables/post.php');
-$postTable = new Table('post');
-$postTable->update();
+new TableSchema('post');
 
 Config::content('page', 'core/tables/page.php');
-$pageTable = new Table('page');
-$pageTable->update();
+new TableSchema('page');
 
 Config::content('user', 'core/tables/user.php');
-$userTable = new Table('user');
-$userTable->update();
+new TableSchema('user');
 
 Config::content('userrole', 'core/tables/userrole.php');
-$userroleTable = new Table('userrole');
-$userroleTable->update();
+new TableSchema('userrole');
 
 if (version_compare(Package::version('core'), '1.8.0') < 0) {
   global $db;
@@ -46,3 +42,29 @@ if (version_compare(Package::version('core'), '1.12.2') < 0) {
 if (version_compare(Package::version('core'), '1.13.0') < 0) {
   FileManager::copy('lib', 'assets/lib');
 }
+
+TableSchema::update(include 'src/core/tables/user_notification.php');
+
+if (version_compare(Package::version('core'), '1.15.3') < 0) {
+  global $db;
+  $db->query("UPDATE userrole TABLE SET `level`=10 WHERE id=1;");
+}
+
+if (!Config::get('set_utf8mb4')) {
+  global $db;
+  $db->query("ALTER DATABASE {$GLOBALS['config']['db']['name']} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $tables = ['page','post','user','usermeta','userrole','postcategory','postmeta','user_notification','widget'];
+  foreach ($tables as $table) {
+    $db->query("ALTER TABLE `$table` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  }
+  $db->query("ALTER TABLE `page` CHANGE blocks TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `post` CHANGE post TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `post` CHANGE `description` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `postcategory` CHANGE `description` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+  $db->query("ALTER TABLE `user_notification` CHANGE `details` TEXT CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");
+
+  Config::get('set_utf8mb4', true);
+}
+
+Config::dir(LOG_PATH.'/stats');
+Config::dir(LOG_PATH.'/cacheItem');

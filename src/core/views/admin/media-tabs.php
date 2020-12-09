@@ -8,7 +8,8 @@ align-items: center;padding: 15px 0;}
 </style>
 <div class="media-tabs-side">
 <?php
-$media_tab = Router::request('media_tab', Session::key('media_tab') ?? 'uploads');
+$default_tab =  Session::key('media_tab') ?? (Config::get('default_media_tab') ?? 'uploads');
+$media_tab = Router::request('media_tab', $default_tab);
 Session::key('media_tab', $media_tab);
 
 $media_tab_list = Config::getList('media-tab')??[];

@@ -4,6 +4,8 @@ namespace Gila;
 
 class Menu
 {
+  private static $active = false;
+
   public static function defaultData()
   {
     global $db;
@@ -20,10 +22,55 @@ class Menu
     return (array) $widget_data;
   }
 
-  public static function getHtml($items, $base="")
+  public static function convert($data)
+  {
+    $items = [];
+    if ($type = $data['type']) {
+      if ($data['children']) {
+        $children = [];
+        foreach ($data['children'] as $mi) {
+          $children[] = self::convert($mi);
+        }
+      }
+      if ($type=='menu') {
+        return $children;
+      }
+      if ($type=='dir') {
+        return ['name'=>$data['name']??'', 'url'=>$data['url']??'#',
+        'children'=>$children];
+      }
+      if ($type=='page') {
+        if ($r=Page::getById(@$data['id'])) {
+          $url = $r['slug'];
+          $name = $r['title'];
+          return ['name'=>$name, 'url'=>$url];
+        }
+      }
+      if ($type=='postcategory') {
+        global $db;
+        $ql = "SELECT id,title,slug FROM postcategory WHERE id=?;";
+        $res = $db->query($ql, @$data['id']);
+        while ($r=mysqli_fetch_array($res)) {
+          $url = "category/".$r[0].'/'.$r[2];
+          $name = $r[1];
+        }
+        return ['name'=>$name, 'url'=>$url];
+      }
+      if ($res = MenuItemTypes::get($data)) {
+        list($url, $name) = $res;
+        return ['name'=>$name, 'url'=>$url];
+      }
+    }
+    return ['name'=>$data['name'], 'url'=>$data['url']];
+  }
+
+  public static function getHtml($items, $base='')
   {
     $html = "";
+    self::$active = false;
     foreach ($items as $key => $item) {
+      $url = $item['url'] ?? $item[1];
+      $label = $item['name'] ?? $item[0];
       if (isset($item['access'])) {
         if (!Session::hasPrivilege($item['access'])) {
           continue;
@@ -34,7 +81,7 @@ class Menu
       } else {
         $icon='';
       }
-      $url = $item[1]=='#'? 'javascript:void(0)': htmlentities($item[1]);
+      $url = ($url=='#')? 'javascript:void(0)': htmlentities($url);
       $badge = "";
       if (isset($item['counter'])) {
         $c = is_callable($item['counter'])? $item['counter'](): $item['counter'];
@@ -42,16 +89,28 @@ class Menu
           $badge = " <span class=\"g-badge\">$c</span>";
         }
       }
-      $liClass = isset($item['children'])? ' class="dropdown"': '';
-      $html .= "<li$liClass><a href='".$url."'><i class='fa {$icon}'></i>";
-      $html .= " <span>".Config::tr("$item[0]")."</span>$badge</a>";
+      $liClass = '';
       if (isset($item['children'])) {
-        $html .= "<ul class=\"dropdown-menu\">";
-        $html .= Menu::getHtml($item['children'], $base);
-        $html .= "</ul>";
-        $html .= "</ul>";
+        $liClass .= 'dropdown';
+        $childrenHtml = "<ul class=\"dropdown-menu\">";
+        $childrenHtml .= self::getHtml($item['children'], $base);
+        $childrenHtml .= "</ul>";
+
+        if (self::$active===true) {
+          self::$active = false;
+          $liClass .= ' active';
+        }
+      } else {
+        $childrenHtml = '';
       }
-      $html .="</li>";
+      if ($url==$base) {
+        self::$active = true;
+        $liClass .= ' active';
+      }
+      $liClass = $liClass!==''? ' class="'.$liClass.'"': '';
+      $html .= "<li$liClass><a href='".$url."'><i class='fa {$icon}'></i>";
+      $html .= " <span>".Config::tr($label)."</span>$badge</a>";
+      $html .= $childrenHtml."</li>";
     }
     return $html;
   }

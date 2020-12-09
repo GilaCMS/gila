@@ -1,10 +1,10 @@
 <ul class="g-nav pagination">
 <?php
-  $url = htmlspecialchars(Router::url());
+  $url = htmlspecialchars(Router::path());
   if (!isset($page)) {
     $page=1;
   }
-  $totalpages = blog::totalpages();
+  $totalpages = BlogController::totalpages();
   if ($page>5) {
     echo '<li><a href="'.$url.'?page=1">1</a></li>';
   }

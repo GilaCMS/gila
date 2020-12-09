@@ -1,5 +1,5 @@
 <?php
-$path = Router::request('path', Session::key('asset_path') ?? 'src');
+$path = Gila\Router::request('path', Gila\Session::key('asset_path') ?? 'src');
 if ($path[0]=='.') {
   $path = 'src';
 }
@@ -25,19 +25,29 @@ if ($path!='src') {
     $path = 'src';
   }
 }
-Session::key('asset_path', $path);
-Session::key('media_tab', 'assets');
+Gila\Session::key('asset_path', $path);
+Gila\Session::key('media_tab', 'assets');
 $disabled = ($path=='')?'disabled':'';
 
 $files=[];
 if ($path=='src') {
   $scanned = scandir('src/');
   foreach ($scanned as $i=>$v) {
-    if (is_dir('src/'.$v)) {
-      $package = json_decode(file_get_contents('src/'.$v.'/package.json'));
+    $jsonFile = 'src/'.$v.'/package.json';
+    if ($v[0]!='.' && file_exists($jsonFile)) {
+      $package = json_decode(file_get_contents($jsonFile));
       if (isset($package->assets)) {
         foreach ($package->assets as $asset) {
-          $files[] = 'src/'.$v.'/'.$asset;
+          $a = $asset;
+          if ($a == 'assets') {
+            $a = '';
+          }
+          if (substr($a, 0, 7) == 'assets/') {
+            $a = substr($a, 7);
+          }
+          if (file_exists('assets/'.$v.'/'.$a)) {
+            $files[] = 'src/'.$v.'/'.$asset;
+          }
         }
       }
     }
@@ -66,8 +76,8 @@ if ($path=='src') {
   <?php
 }
 
-View::script('core/admin/media.js');
-View::script('core/lang/content/'.Config::config('language').'.js');
+Gila\View::script('core/admin/media.js');
+Gila\View::script('core/lang/content/'.Config::get('language').'.js');
 ?>
 <div id='admin-media-div'>
 <div class='g-gal wrapper gap-8px' style='background:white;'>
@@ -79,24 +89,29 @@ foreach ($files as $filepath) {
       $type='folder';
     } else {
       $type='file';
-      $imgx = ['jpg','jpeg','png','gif','svg'];
+      $imgx = ['jpg','jpeg','png','gif','svg','webp'];
       if ($pinf = pathinfo($filepath)) {
         if ($ext = @$pinf['extension']) {
           if (in_array(strtolower($ext), $imgx)) {
             $type='image';
           }
         }
+        $filepath = 'assets/'.substr(strtr($filepath, ['/assets/'=>'/']), 4);
       }
     }
 
     $basename = substr($filepath, strrpos($filepath, '/', -1)+1);
     if ($path=='src') {
       $folders = explode('/', $filepath);
-      $basename = $folders[1].':'.$basename;
+      if ($basename!='assets') {
+        $basename = $folders[1].':'.$basename;
+      } else {
+        $basename = $folders[1];
+      }
     }
 
     if ($type=='image') {
-      $img='<img src="'.View::thumb($filepath, 'media_thumb/', 100).'">';
+      $img='<img src="'.Gila\View::thumb($filepath, 'media_thumb/', 100).'">';
       echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$basename.'</div>';
     }
     if ($type=='folder') {

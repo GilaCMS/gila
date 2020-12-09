@@ -35,7 +35,6 @@ function wrapper_toggle() {
 }
 </script>
 <?php View::scriptAsync("core/lazyImgLoad.js")?>
-<?php View::scripts()?>
 
 </body>
 </html>

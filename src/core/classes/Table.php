@@ -24,9 +24,6 @@ class Table
     }
     $this->loadSchema($content);
 
-    if ($patch = @Config::$contentField[$this->table['name']]) { // DEPRECATED since 1.8.0
-      $this->table['fields'] = array_merge($this->table['fields'], $patch);
-    }
     if (isset(Config::$contentInit[$this->table['name']])) {
       foreach (@Config::$contentInit[$this->table['name']] as $init) {
         $init($this->table);
@@ -95,8 +92,8 @@ class Table
     }
 
     if ($ext = $this->table['extends']??null) {
-      $extTable = include 'src/'.$ext;
-      $this->table = array_merge_recursive($extTable, $this->table);
+      $baseTable = include 'src/'.$ext;
+      $this->table = self::extend_recursive($baseTable, $this->table);
     }
 
     if ($user_id = $this->table['filter_owner']??null) {
@@ -108,6 +105,22 @@ class Table
         $this->table['fields'][$user_id][$key] = false;
       }
     }
+  }
+
+  public static function extend_recursive($table, $extTable)
+  {
+    foreach ($extTable as $key=>$el) {
+      if (is_array($el)) {
+        $table[$key] = self::extend_recursive($table[$key], $el);
+      } elseif (is_numeric($key)) {
+        if (!in_array($el, $table)) {
+          $table[] = $el;
+        }
+      } else {
+        $table[$key] = $el;
+      }
+    }
+    return $table;
   }
 
   public function name()
@@ -238,6 +251,12 @@ class Table
 
   public function groupby($group)
   {
+    if ($group===null) {
+      if ($group = $this->table['groupby']??null) {
+        return " GROUP BY $group";
+      }
+      return '';
+    }
     return " GROUP BY $group";
   }
 
@@ -248,10 +267,12 @@ class Table
       if (isset($this->table['pagination'])) {
         $limit .= ','.$this->table['pagination'];
       } else {
-        return "";
+        return '';
       }
     } elseif (is_array($limit)) {
       $limit = implode(',', $limit);
+    } elseif ($limit===false) {
+      return '';
     }
     return $this->db->res(" LIMIT $limit");
   }
@@ -283,10 +304,11 @@ class Table
     if ($fields===null) {
       $fields=$_POST;
     }
-    foreach (@$this->table['filters'] as $k=>$f) {
-      if (isset($fields[$k])) {
-        // should check if $fields[$k] validates the filter restrictions
-        $fields[$k]=$f;
+    if (isset($this->table['filters'])) {
+      foreach ($this->table['filters'] as $k=>$f) {
+        if (isset($fields[$k])) {
+          $fields[$k]=$f;
+        }
       }
     }
     $this->event('change', $fields);
@@ -305,24 +327,13 @@ class Table
           continue;
         }
 
-        if (is_array($value)) {
-          foreach ($value as $subkey=>$subvalue) {
-            if ($subkey === 'fn') {
-              $set[] = "$key=$subvalue";
-            }
-            if ($subkey === 'add') {
-              $set[] = "$key=$key+$subvalue";
-            }
+        if ($value==='') {
+          if ($def = $this->fieldAttr($key, 'default')) {
+            $value = $def;
           }
-        } else {
-          if ($value==='') {
-            if ($def = $this->fieldAttr($key, 'default')) {
-              $value = $def;
-            }
-          }
-          $value = strtr($value, ["'"=>"\'"]);
-          $set[] = "$key='$value'";
         }
+        $value = strtr($value, ["'"=>"\'"]);
+        $set[] = "$key='$value'";
       }
     }
     if ($set != []) {
@@ -341,9 +352,10 @@ class Table
       if (@$this->table['fields'][$key]['type'] === 'joins') {
         $jt = $this->table['fields'][$key]["jt"];
         $arrv = explode(",", $value);
-        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`='$id' AND `{$jt[2]}` NOT IN($value);");
+        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`=?;", [$id]);
         foreach ($arrv as $arrv_k=>$arrv_v) {
-          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`) VALUES('$id','$arrv_v');");
+          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`)
+          VALUES(?,?);", [$id,$arrv_v]);
         }
         continue;
       }
@@ -362,17 +374,20 @@ class Table
         if (is_string($value)) {
           if (@$this->table['fields'][$key]['values'] === 1) {
             $arrv = [$value];
-          } else {
+          } elseif ($value!==null) {
             $arrv = explode(",", $value);
           }
         } else {
           $arrv = $value;
         }
-        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`='$id' AND `{$mt[2]}`='{$vt}';");
-        foreach ($arrv as $arrv_k=>$arrv_v) {
-          if ($arrv_v!='' && $arrv_v!=null) {
-            $arrv_v = strip_tags($arrv_v);
-            $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`) VALUES('$id','$arrv_v','{$vt}');");
+        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`=? AND `{$mt[2]}`=?;", [$id,$vt]);
+        if ($arrv) {
+          foreach ($arrv as $arrv_k=>$arrv_v) {
+            if ($arrv_v!='' && $arrv_v!=null) {
+              $arrv_v = strip_tags($arrv_v);
+              $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`)
+              VALUES(?,?,?);", [$id,$arrv_v,$vt]);
+            }
           }
         }
         continue;
@@ -387,12 +402,6 @@ class Table
       $mt = $this->table['fields'][$key]['meta_table'];
     } elseif (isset($this->table['meta_table'])) {
       $mt = $this->table['meta_table'];
-    } else {
-      // DEPRECATED remove 'mt','metatype' attributes at v2.x
-      $mt = $this->table['fields'][$key]["mt"];
-      $tmp = $mt[2];
-      $mt[2] = $vt[0];
-      $mt[3] = $tmp;
     }
     $vt = is_array($vt)? $vt[1]: $vt;
     return [$mt, $vt];
@@ -414,7 +423,7 @@ class Table
       if (!is_numeric($key)) {
         if (array_key_exists($key, $this->table['fields'])) {
           if (is_array($value)) {
-            $key = $this->getColumnKey($key);
+            $key = $this->getColumnKey($key, false);
             foreach ($value as $subkey=>$subvalue) {
               $subvalue = $this->db->res($subvalue);
               if (isset(self::$basicOps[$subkey])) {
@@ -445,11 +454,23 @@ class Table
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {
             $key = $this->getColumnKey($key, false);
-            //die("FIND_IN_SET($value, $key)>0");
-            $filters[] = "FIND_IN_SET($value, $key)>0";
+            if ($value==null) {
+              $filters[] = "$key IS NULL";
+            } else {
+              $value = $this->db->res($value);
+              $filters[] = "FIND_IN_SET($value, $key)>0";
+            }
           } else {
-            $key = $this->getColumnKey($key);
-            $filters[] = "$key='$value'";
+            $ckey = $this->getColumnKey($key, false);
+            if (@$this->table['fields'][$key]['type']=='date') {
+              $ckey = "SUBSTRING($key,1,10)";
+            }
+            if ($value==null) {
+              $filters[] = "$ckey IS NULL";
+            } else {
+              $value = $this->db->res($value);
+              $filters[] = "$ckey='$value'";
+            }
           }
         }
       }
@@ -459,7 +480,7 @@ class Table
       $value = $this->db->res($fields["search"]);
       $search_filter = [];
       foreach ($this->table['fields'] as $key=>$field) {
-        if (!isset($field['qcolumn']) && !isset($field['metatype'])) {
+        if (!isset($field['qcolumn']) && !isset($field['meta_key']) && !isset($field['metatype'])) {
           $search_filter[] = "$key LIKE '%{$value}%'";
         }
       }
@@ -582,10 +603,11 @@ class Table
 
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
+    $groupby = $this->groupby($args['groupby']??null);
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
     $res = $db->read()->getAssoc("SELECT $select
-      FROM {$this->name()}$where$orderby$limit;");
+      FROM {$this->name()}$where$groupby$orderby$limit;");
     return $res;
   }
 

@@ -1,12 +1,14 @@
 <?php
 
 return [
+  'fields'=>[
     'facebook'=>[],
     'twitter'=>[],
     'linkedin'=>[],
     'pinterest'=>[],
     'youtube'=>[],
     'instagram'=>[],
+    'newsletter'=>[],
     'google'=>[],
     'medium'=>[],
     'github'=>[],
@@ -18,4 +20,6 @@ return [
     'stack-overflow'=>[],
     'soundcloud'=>[],
     'rss'=>[]
+  ],
+  'keys'=>'widget'
 ];

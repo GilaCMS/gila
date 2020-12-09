@@ -1,3 +1,5 @@
 <?php
 
-array_push(Config::$widget_area,'head','body','foot','sidebar','post.after','dashboard','frontpage');
+array_push(Config::$widget_area,'body','footer','sidebar','post.after','dashboard','frontpage');
+
+View::stylesheet('core/gila.min.css');

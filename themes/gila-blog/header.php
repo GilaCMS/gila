@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="<?=Config::config('language')?>">
+<html lang="<?=Config::get('language')?>">
 <?php
-View::stylesheet('core/gila.min.css');
-View::stylesheet('lib/font-awesome/css/font-awesome.min.css');
 View::head()?>
 
 <body>
@@ -51,7 +49,7 @@ footer{background:#464a49;margin-top:10px;color:white}
   background: #060608;
 }
 .widget-social-icons li a i:hover:before{background: <?=$theme_color?>;}
-.g-navbar li ul li a{color:inherit}
+.g-navbar li ul li a{color:#ddd}
 .g-nav li ul{border-width:0; background: #181818; margin-top:-2px}
 </style>
 
@@ -59,13 +57,13 @@ footer{background:#464a49;margin-top:10px;color:white}
     <div style="max-width:1100px; margin:auto;">
         <?php View::widgetArea('body'); ?>
         <div class="gl-9" style="height:200px;text-shadow:0 0 6px black">
-          <h1><a href="<?=Config::base_url()?>" style="color:#f5f5f5;"><?=Config::config('title')?></a></h1>
-          <div style="color:#f5f5f5;margin-bottom:6px"><?=Config::config('slogan')?></div>
+          <h1><a href="<?=Config::base()?>" style="color:#f5f5f5;"><?=Config::get('title')?></a></h1>
+          <div style="color:#f5f5f5;margin-bottom:6px"><?=Config::get('slogan')?></div>
         </div>
         <!-- Navigation -->
         <div class="gl-9">
         <nav class="inline-flex g-navbar">
-            <span style=""><?php View::menu('mainmenu'); ?></span>
+            <ul class="g-nav"><?php View::menu('mainmenu'); ?></ul>
         </nav>
         </div>
     </div>

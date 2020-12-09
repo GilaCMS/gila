@@ -4,7 +4,6 @@ use PHPUnit\Framework\TestCase;
 
 class LoginUser extends TestCase
 {
-
   public function testLogin()
   {
     $email = "admin@mail.com";

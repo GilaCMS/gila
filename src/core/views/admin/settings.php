@@ -10,34 +10,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_POST['gila_base'].='/';
   }
   foreach ($config_list as $key => $value) {
-    Config::setConfig($key, $_POST['gila_'.$key]);
+    Config::set($key, $_POST['gila_'.$key]);
   }
-  Config::config('default-controller', $_POST['gila_dc']);
-  Config::config('timezone', $_POST['gila_timezone']);
-  Config::config('language', $_POST['gila_language']);
-  Config::config('admin_logo', $_POST['gila_admin_logo']);
-  Config::config('favicon', $_POST['gila_favicon']);
-  Config::config('env', $_POST['gila_env']);
-  Config::config('check4updates', $_POST['gila_check4updates']);
-  Config::config('rewrite', $_POST['gila_rewrite']);
-  Config::config('user_register', $_POST['gila_user_register']);
-  Config::config('user_activation', $_POST['gila_user_activation']);
-  Config::config('use_cdn', $_POST['gila_use_cdn']);
-  Config::config('use_webp', $_POST['gila_webp']);
-  Config::config('maxImgWidth', $_POST['gila_maxImgWidth']);
-  Config::config('maxImgHeight', $_POST['gila_maxImgHeight']);
+  Config::set('default-controller', $_POST['gila_dc']);
+  Config::set('timezone', $_POST['gila_timezone']);
+  Config::set('language', $_POST['gila_language']);
+  Config::set('admin_logo', $_POST['gila_admin_logo']);
+  Config::set('admin_theme', $_POST['gila_admin_theme']);
+  Config::set('favicon', $_POST['gila_favicon']);
+  Config::set('env', $_POST['gila_env']);
+  Config::set('check4updates', $_POST['gila_check4updates']);
+  Config::set('user_register', $_POST['gila_user_register']);
+  Config::set('user_activation', $_POST['gila_user_activation']);
+  Config::set('use_cdn', $_POST['gila_use_cdn']);
+  Config::set('use_webp', $_POST['gila_webp']);
+  Config::set('maxImgWidth', $_POST['gila_maxImgWidth']);
+  Config::set('maxImgHeight', $_POST['gila_maxImgHeight']);
+  Config::set('utk_level', $_POST['gila_utk_level']);
+  Config::set('locale', $_POST['gila_locale']);
+  if (isset($_POST['gila_admin_palette'])) {
+    Config::set('admin_palette', $_POST['gila_admin_palette']);
+  }
   Config::updateConfigFile();
+  usleep(3000);
   echo '{"success":true}';
   return;
 }
+View::script('lib/vue/vue.min.js');
+View::script('core/lang/content/'.Config::get('language').'.js');
 View::script('core/admin/media.js');
-View::script('core/lang/content/'.Config::config('language').'.js');
+View::script('core/admin/vue-components.js');
 ?>
-<style>.g-switch{z-index:1}#settings-form>div>*{width:33%;display:inline-block}</style>
+<style>.g-switch{z-index:1;vertical-align: middle;}
+#settings-form>div>*{min-width:33%;display:inline-block}</style>
 
 <div class="gm-12">
 <?php View::alerts(); ?>
-<form id="settings-form" method="post" action="<?=Config::make_url('admin', 'settings')?>" class="g-form">
+<form id="settings-form" method="post" action="<?=Config::base('admin/settings')?>" class="g-form">
   <input type="hidden" name="submit-btn">
   <h2><?=__("Basic Settings")?></h2><hr>
 
@@ -46,23 +55,22 @@ foreach ($config_list as $key=>$value) {
   if ($value[0] != '.') { ?>
   <br><div class="gm-12">
   <label class="g-label gm-4"><?=__($value)?></label>
-  <input class="g-input" name="gila_<?=$key?>" value="<?=Config::config($key)?>" class="gm-4" />
+  <input class="g-input" name="gila_<?=$key?>" value="<?=Config::get($key)?>" class="gm-4" />
   </div>
 <?php }
 } ?>
 
   <br>
-  <?php echo Form::input('gila_user_register', ["type"=>"switch"], Config::config('user_register'), __("New users can register")) ?>
+  <?php echo Form::input('gila_user_register', ["type"=>"switch"], Config::get('user_register'), __("New users can register")) ?>
 
   <br>
-  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Config::config('user_activation'), __("New Users activation")) ?>
+  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Config::get('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Timezone")?></label>
-    <select name="gila_timezone" value="<?=Config::config('timezone')?>" class="gm-4">
+    <label class="g-label gm-4"><?=__("Timezone")?></label><select name="gila_timezone" value="<?=Config::get('timezone')?>" class="gm-4">
     <?php
     foreach (DateTimeZone::listIdentifiers() as $value) {
-      $sel = (Config::config('timezone')==$value?'selected':'');
+      $sel = (Config::get('timezone')==$value?'selected':'');
       echo '<option value="'.$value."\" $sel>".ucwords($value).'</option>';
     }
     ?>
@@ -70,12 +78,11 @@ foreach ($config_list as $key=>$value) {
   </div>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Language")?></label>
-    <select name="gila_language" value="<?=Config::config('language')?>" class="gm-4">
+    <label class="g-label gm-4"><?=__("Language")?></label><select name="gila_language" value="<?=Config::get('language')?>" class="gm-4">
     <?php
     $languages = include 'src/core/lang/languages.php';
     foreach ($languages as $k=>$value) {
-      $sel = (Config::config('language')==$k?'selected':'');
+      $sel = (Config::get('language')==$k?'selected':'');
       echo '<option value="'.$k."\" $sel>".ucwords($value).'</option>';
     }
     ?>
@@ -83,40 +90,55 @@ foreach ($config_list as $key=>$value) {
   </div>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Admin Logo")?></label>
-    <div class="gm-4" style="display:inline-flex"><span class="g-group">
+    <label class="g-label gm-4"><?=__("Admin Logo")?></label><div class="gm-4" style="display:inline-flex">
+    <span class="g-group">
       <span class="btn g-group-item" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
-      <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::config('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
+      <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::get('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
     </span></div>
   </div>
 
   <br><div class="gm-12">
-    <label class="g-label gm-4"><?=__("Favicon")?></label>
-    <div class="gm-4" style="display:inline-flex"><span class="g-group">
+    <label class="g-label gm-4"><?=__("Favicon")?></label><div class="gm-4" style="display:inline-flex">
+    <span class="g-group">
       <span class="btn g-group-item" onclick="open_media_gallery('#m_favicon')"><i class="fa fa-image"></i></span>
-      <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::config('favicon')?>" id="m_favicon" name="gila_favicon"></span>
+      <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::get('favicon')?>" id="m_favicon" name="gila_favicon"></span>
     </span></div>
   </div>
 
   <br>
-  <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
+  <?php
+  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
+  foreach (Config::getList('admin-themes') as $theme) {
+    $options[$theme[0]] = $theme[1];
+  }
+  echo Form::input('gila_admin_theme', ["type"=>"select","options"=>$options], Config::get('admin_theme'), __("Admin Theme"));
+  ?>
+
+  <?php
+  if (Config::get('admin_palette') || Config::getList('admin-palettes')) {
+    $palettes=Config::getList('admin-palettes');
+    echo '<br>';
+    echo Form::input('gila_admin_palette', ["type"=>"palette","palettes"=>$palettes], Config::get('admin_palette'), __("Admin Palette"));
+  }
+  ?>
+
+  <br>
+  <div>
+    <a class="g-btn" style="min-width:unset" onclick="save_settings()"><?=__("Submit")?></a>
+  </div>
 
   <h2><?=__("Advanced Settings")?></h2><hr>
 
   <br>
-  <?php echo Form::input('gila_use_cdn', ["type"=>"switch"], Config::config('use_cdn'), __("Use CDN")) ?>
-
-  <br>
-  <?php echo Form::input('gila_rewrite', ["type"=>"switch"], Config::config('rewrite'), __("Pretty Urls")) ?>
+  <?php echo Form::input('gila_use_cdn', ["type"=>"switch"], Config::get('use_cdn'), __("CDN")) ?>
 
   <br><div class="gm-12">
-  <label class="g-label gm-4"><?=__("Default Controller")?></label>
-  <select name="gila_dc" value="<?=Config::config('default-controller')?>" class="gm-4">
+  <label class="g-label gm-4"><?=__("Default Controller")?></label><select name="gila_dc" value="<?=Config::get('default-controller')?>" class="gm-4">
   <?php
   foreach (Router::$controllers as $k=>$value) {
     if ($value[0] != '.') {
-      if (!in_array($k, ['cm','login','webhook','fm','lzld','blocks'])) {
-        $sel = (Config::config('default-controller')==$k?'selected':'');
+      if (!in_array($k, ['cm','user','webhook','fm','lzld','blocks'])) {
+        $sel = (Config::get('default-controller')==$k?'selected':'');
         echo '<option value="'.$k."\" $sel>".ucwords($k).'</option>';
       }
     }
@@ -126,28 +148,41 @@ foreach ($config_list as $key=>$value) {
   </div>
 
   <br>
-  <?php echo Form::input('gila_env', ["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]], Config::config('env'), __("Environment")) ?>
+  <?php echo Form::input('gila_env', ["type"=>"select","options"=>['pro'=>__('Production'),'dev'=>__('Development')]], Config::get('env'), __("Environment")) ?>
 
   <br>
-  <?php echo Form::input('gila_check4updates', ["type"=>"switch"], Config::config('check4updates'), __("Check For Updates")) ?>
+  <?php echo Form::input('gila_check4updates', ["type"=>"switch"], Config::get('check4updates'), __("Check For Updates")) ?>
 
   <br>
-  <?php echo Form::input('gila_webp', ["type"=>"switch"], Config::config('use_webp'), __("Use WEBP")) ?>
+  <?php echo Form::input('gila_webp', ["type"=>"switch"], Config::get('use_webp'), __("Use WEBP")) ?>
 
   <br>
-  <div class="gm-12">
-  <label class="g-label gm-4"><?=__("Max Media Upload")?> (px)</label>
-  <input name="gila_maxImgWidth" value="<?=Config::config('maxImgWidth')?>" type="number" class="gm-2" style="width:120px"/>
+  <div class="">
+  <label class="g-label gm-4"><?=__("Max Media Upload")?> (px)</label><div>
+  <input name="gila_maxImgWidth" value="<?=Config::get('maxImgWidth')?>" type="number" class="gm-2" style="width:120px"/>
   &times;
-  <input name="gila_maxImgHeight" value="<?=Config::config('maxImgHeight')?>" type="number" class="gm-2" style="width:120px" />
+  <input name="gila_maxImgHeight" value="<?=Config::get('maxImgHeight')?>" type="number" class="gm-2" style="width:120px" />
+  </div>
   </div>
 
   <br>
-  <a class="g-btn" onclick="save_settings()"><?=__("Submit")?></a>
+  <?php echo Form::input('gila_utk_level', ["type"=>"select","options"=>[0=>'0',1=>'1',2=>'2',3=>'3',4=>'4',5=>'5',6=>'6',7=>'7',8=>'8',9=>'9',10=>'10']], 10, __("Unique Token Key")) ?>
+
+  <br>
+  <?php echo Form::input('gila_locale', ["type"=>"text","placeholder"=>"en_US.UTF-8"], null, __("Locale")) ?>
+  
+  <br>
+  <div>
+    <a class="g-btn" style="min-width:unset" onclick="save_settings()"><?=__("Submit")?></a>
+  </div>
 </form>
 </div>
 
 <script>
+var settingsApp = new Vue({
+  el: '#settings-form'
+})
+
 function save_settings() {
   g.postForm('settings-form', function() {
     g.alert('<?=__('_changes_updated')?>', 'success')

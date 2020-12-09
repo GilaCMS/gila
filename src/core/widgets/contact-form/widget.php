@@ -1,7 +1,11 @@
 <?php
 
 return [
-    "success_msg"=> [
-        "default"=> "The email was send succesfully."
+  'fields'=>[
+    'success_msg'=> [
+      'input_type'=>'textarea',
+      'default'=> 'The email was send succesfully.'
     ]
+  ],
+  'keys'=>'page,widget'
 ];

@@ -83,22 +83,27 @@ class Form
 
     $html .= '<div class="g-label">'.$label;
     if (isset($op['helptext'])) {
-      $html .= '<br><span style="font-weight:400;font-size:90%">'.$op['helptext'].'</span>';
+      $helptext = $op['helptext_'.Config::lang()] ?? Config::tr($op['helptext']);
+      $html .= '<br><span style="font-weight:400;font-size:90%">'.$helptext.'</span>';
     }
     $html .= '</div>';
 
     if ($type) {
       if (isset(self::$input_type[$type])) {
         $html .= self::$input_type[$type]($name, $op, $ov);
-      } elseif (in_array($type, ['hidden','number','date','datetime-local','time','color','password','email'])) {
-        if ($type=='datetime-local' && $ov) {
+      } elseif (in_array($type, ['hidden','number','date','datetime-local','time','color','password','email','range'])) {
+        $req = isset($op['required'])? ' required':'';
+        if ($type==='datetime-local' && $ov) {
           $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
         }
-        $req = isset($op['required'])? ' required':'';
-        $html .= '<input class="g-input" name="'.$name.'" value="'.$ov.'" type="'.$type.'"'.$req.'>';
+        if ($type==='range') {
+          $req = ' min='.($op['min']??0).' max='.($op['max']??10).' step='.($op['step']??1);
+        }
+        $html .= '<input class="g-input" name="'.$name.'" type="'.$type.'"'.$req.' value='.htmlentities($ov).'>';
       } else {
+        $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$req.'>';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$placeholder.$req.'>';
       }
     } else {
       $req = $op['required']? ' required':'';
@@ -159,9 +164,32 @@ class Form
         }
         return $html . '</select>';
       },
+      "role"=> function ($name, $field, $ov) {
+        global $db;
+        if (is_string($ov)) {
+          $ov = explode(',', $ov);
+        }
+        $getOptions = $db->get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
+        foreach ($getOptions as $op) {
+          $options[$op[0]] = $op[1];
+        }
+        $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
+        return $html.= 'options="'.htmlspecialchars(json_encode($options)).'" name="'.$name.'">';
+      },
       "radio"=> function ($name, $field, $ov) {
-        $html = '<div class="g-radio g-input" style="padding-left: 0;padding-right: 0; width: min-content;">';
+        $html = '<div class="g-radio g-input" style="padding: var(--main-padding) 0; width: max-content;">';
         foreach ($field['options'] as $value=>$display) {
+          $id = 'radio_'.$name.'_'.$value;
+          $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
+          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
+          $html .= '<label for="'.$id.$value.'">'.__($display).'</label>';
+        }
+        return $html . '</div>';
+      },
+      "animation"=> function ($name, $field, $ov) {
+        $html = '<div class="g-radio g-input" style="padding: var(--main-padding) 0; width: max-content;">';
+        $options = [''=>'None','fade-in'=>'Fade','expand'=>'Expand','move-left'=>'Left','move-right'=>'Right','move-up'=>'Up','move-down'=>'Down'];
+        foreach ($options as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
           $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
@@ -179,10 +207,28 @@ class Form
         }
         return $html . '</select>';
       },
+      "comments"=> function ($name, $field, $ov) {
+        $form = isset($field['content'])? ' form="'.$field['content'].'-edit-item-form"': '';
+        return '<input-comments name="'.$name.'" fieldname="'.$field['fieldname'].'" username="'.Session::key('user_name').'" value="'.htmlspecialchars($ov??'[]').'"'.$form.'>';
+      },
       "media2"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<input-media name="'.$name.'" value="'.$ov.'">';
+      },
+      "tree-select"=> function ($name, $field, $ov) {
+        return '<tree-select name="'.$name.'" value="'.$ov.'" data='.json_encode($field['data']).'>';
+      },
+      "palette"=> function ($name, $field, $ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        if (empty($ov)) {
+          $ov = json_encode(end($field['palettes']));
+        }
+        $field['palettes'][] = json_decode($ov, true);
+        $ov = htmlspecialchars($ov);
+        $pal = $field['palettes']? htmlspecialchars(json_encode($field['palettes'])): '';
+        $labels = $field['labels']? htmlspecialchars(json_encode($field['labels'])): '';
+        return '<color-palette name="'.$name.'" value="'.$ov.'" palettes="'.$pal.'" labels="'.$labels.'">';
       },
       "media-gallery"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
@@ -200,7 +246,7 @@ class Form
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
-          <span class="btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
+          <span class="g-btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
           <span class="g-group-item"><input class="g-input fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
@@ -212,16 +258,20 @@ class Form
         </span></span></div>';
       },
       "textarea"=> function ($name, $field, $ov) {
-        return '<textarea class="g-input fullwidth" name="'.$name.'" style="resize:vertical;">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth" name="'.$name.'" style="resize:vertical;">'.htmlspecialchars($ov).'</textarea>';
       },
       "codemirror"=> function ($name, $field, $ov) {
-        return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
       "tinymce"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
-        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
       "paragraph"=> function ($name, $field, $ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+      },
+      "vue-editor"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<vue-editor id="'.$id.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
       },

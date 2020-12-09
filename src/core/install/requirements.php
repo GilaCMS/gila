@@ -1,7 +1,8 @@
 <head>
-  <base href="<?=Gila\Config::base_url()?>">
+  <base href="<?=Gila\Config::base()?>">
   <title>Install Gila CMS</title>
-	<style><?=file_get_contents("src/core/assets/gila.min.css")?></style>
+  <meta name="robots" content="noindex">
+  <style><?=file_get_contents("src/core/assets/gila.min.css")?></style>
 </head>
 <body class="bg-lightgrey">
   <div class="gm-6 centered row" style="">
@@ -32,6 +33,7 @@ if (is_writable(realpath(""))==false) {
 if (function_exists("apache_get_modules")) {
   if (!in_array('mod_rewrite', apache_get_modules())) {
     echo "<span class='alert fullwidth'>mod_rewrite is not enabled.</span>";
+    $continue = false;
   }
 }
 ?>

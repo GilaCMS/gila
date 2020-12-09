@@ -1,3 +1,4 @@
+<section>
 <?=View::css('core/widgets.css')?>
 <ul class="g-nav vertical five-post">
 <?php
@@ -16,14 +17,14 @@ $widget_data->category = @$widget_data->category?:null;
 foreach (Gila\Post::getPosts(
   ['posts'=>$widget_data->n_post, 'category'=>$widget_data->category]
 ) as $key=>$r) {
-  $href = Config::make_url('blog', '', ['p'=>$r['id'],'slug'=>$r['slug']]);
+  $href = Config::url('blog/'.$r['id'].'/'.$r['slug']);
   echo "<li>";
   echo "<a href='$href'>";
   if ($key==0) {
-    if ($img=View::thumb_lg($r['img'])) {
+    if ($img=View::thumb($r['img'], 600)) {
       echo "<img src='$img'>";
     }
-  } elseif ($img=View::thumb_md($r['img'])) {
+  } elseif ($img=View::thumb($r['img'], 400)) {
     echo "<img src='$img'>";
   }
   echo "</a><div><a href='$href' class='post-title'>{$r['title']}</a>";
@@ -35,3 +36,4 @@ foreach (Gila\Post::getPosts(
 
 ?>
 </ul>
+</section>

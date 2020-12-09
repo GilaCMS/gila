@@ -1,0 +1,42 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("assets/core/fonts/Roboto-Regular.ttf");
+}
+
+:root {
+  --sidebar-width: 120px;
+  ---sidebar-width: -120px;
+  --main-dark-color: #101621;
+}
+*,.g-form label, .g-label{
+  font-family: 'Roboto', sans-serif;
+}
+#sidebar-wrapper .g-nav{
+  text-align:center;
+}
+#sidebar-wrapper .g-nav>li>a{
+  font-size:80%;
+}
+#sidebar-wrapper .g-nav>li a{
+  color: rgba(250,250,250,0.6);
+  font-family: 'Roboto', Arial, sans-serif;
+}
+#sidebar-wrapper .g-nav>li>a>i{
+  font-size:2.6em;
+  display:block;
+  margin: 4px auto;
+  position: relative;
+  color: rgba(250,250,250,0.6);
+}
+#sidebar-wrapper .g-nav li ul{
+  text-align:left;
+  min-width: 200px;
+}
+#sidebar-wrapper .g-nav>li>a:hover, #sidebar-wrapper .g-nav>li>a:hover i{
+  transition-duration: 0.4s;
+  color: rgba(250,250,250,1);
+}
+.g-nav li.dropdown>a:after{content:none;display:none;}
+.g-btn, .g-table table{
+  font-family: 'Roboto', Arial, sans-serif;
+}

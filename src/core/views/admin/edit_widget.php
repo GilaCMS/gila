@@ -3,6 +3,9 @@
 .mce-window.mce-in {
   z-index: 99999 !important;
 }
+.tox-dialog-wrap {
+  z-index: 99999 !important;
+}
 </style>
 <form id="widget_options_form" class="g-form">
 <input type="hidden" value="<?=$widget->id?>" id='widget_id' name='widget_id'>
@@ -43,12 +46,7 @@
 <?php
 global $db;
 $widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 1;", $widget->id));
-$widget_folder = 'src/'.Config::$widget[$widget->widget];
-
-$fields = include $widget_folder.'/widget.php';
-if (isset($options)) {
-  $fields = $options;
-}
+$fields = Gila\Widget::getFields($widget->widget);
 
 if (isset($fields)) {
   foreach ($fields as $key=>$op) {

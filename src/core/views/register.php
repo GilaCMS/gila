@@ -1,10 +1,10 @@
-<?php View::includeFile('login-header.php');?>
+<?php View::includeFile('user-login-header.php');?>
 
   <?php View::alerts()?>
   <div class="gl-4 centered wrapper g-card bg-white">
     <div class="border-buttom-main_ text-align-center">
       <div>
-        <img src="<?=Config::config('admin_logo')?:'assets/gila-logo.png'?>" style="max-height:4em">
+        <img src="<?=Config::get('admin_logo')?:'assets/gila-logo.png'?>" style="max-height:4em">
       </div>
       <h3><?=__('Register')?></h3>
     </div>
@@ -22,7 +22,7 @@
       <div class="form-group ">
         <input class="form-control fullwidth" name="password" type="password" value="" required>
       </div>
-      <?phpEvent::fire('recaptcha.form')?>
+      <?php Gila\Event::fire('recaptcha.form')?>
       <input type="submit" class="btn btn-primary btn-block" value="<?=__('Register')?>">
     </form>
     <p>

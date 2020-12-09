@@ -1,4 +1,12 @@
 .widget-features{grid-column: 1/span 4;text-align: center;}
+.widget-area-dashboard .widget {
+  grid-column:span 1;  
+}
+@media (min-width:650px) {
+  .widget-area-dashboard .widget-core-counters{grid-column: span 2;}
+  .widget-area-dashboard .widget-mysql-chart{grid-column: span 2;}
+}
+.widget-area-dashboard .widget-core-counters{grid-column: 1/span 4;}
 
 .features-grid{
   display: grid;
@@ -8,9 +16,30 @@
   grid-template-columns: repeat(auto-fit, minmax(160px,200px));
   width:100%;
 }
+.core-counters-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+  gap:1em;
+  padding:1em;
+  align-items:center;
+}
+.core-counters-grid a>div>i{
+  float:left;
+  padding-right:8px;
+  margin-right:8px;
+  color:var(--main-a-color);
+  opacity: 0.6;
+}
+.core-counters-grid a{
+  color:inherit;
+  opacity:0.8;
+}
+.core-counters-grid a:hover{
+  opacity:1;
+}
 .features-grid div{
   text-align:center;
-  padding:1em
+  padding:1em;
 }
 .features-grid img,
 .features-grid svg{
@@ -83,4 +112,71 @@
     grid-template-columns: 2fr 3fr;
     gap:5px;
   }
+}
+
+.gallery-section{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:1em;
+}
+
+.gallery-columns {
+  line-height: 0;   
+  column-gap: 0;
+  margin: auto;
+}
+.gallery-columns>img {
+  display:block;
+}
+.columns-5{
+  column-count: 5;
+}
+.columns-4{
+  column-count: 4;
+}
+.columns-3{
+  column-count: 3;
+}
+.columns-2{
+  column-count: 2;
+}
+.columns-1{
+  column-count: 1;
+}
+@media (max-width: 1200px) {
+  .columns-4, .columns-5 {
+  column-count: 4;
+  }
+}
+@media (max-width: 1000px) {
+  .columns-3, .columns-4, .columns-5 {
+  column-count: 3;
+  }
+}
+@media (max-width: 800px) {
+  .columns-2, .columns-3, .columns-4, .columns-5 {
+  column-count: 2;
+  }
+}
+@media (max-width: 400px) {
+  .columns-1, .columns-2, .columns-3, .columns-4, .columns-5 {
+  column-count: 1;
+  }
+}
+
+
+section>.container{
+  padding-top: 3em;
+  padding-bottom: 3em;
+}
+
+.widget section>.container{
+  padding:0;  
+}
+
+.colors-invert {
+  background: #444;
+}
+.colors-invert, .colors-invert *{
+  color:white;
 }

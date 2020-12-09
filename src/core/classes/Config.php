@@ -13,78 +13,11 @@ class Config
   public static $contentInit = [];
   public static $mt;
   public static $base_url;
+  public static $lang;
   public static $langPaths = [];
+  public static $langWords = [];
   public static $langLoaded = false;
 
-  /**
-  * Registers new a controller
-  * @param $c (string) Controller name as given in url path
-  * @param $file (string) Controller's filepath without the php extension
-  * @param $name (string) Controller's class name, $c is used by default
-  * @code
-  * Config::controller('my-ctrl', 'my_package/controllers/ctrl','myctrl');
-  * @endcode
-  */
-  public static function controller($c, $path, $name=null) // DEPRECATED
-  {
-    Router::controller($c, $path);
-  }
-
-  /**
-  * Registers a function call on a specific path
-  * @param $r (string) The path
-  * @param $fn (function) Callback for the route
-  * @code
-  * Config::route('some.txt', function(){ echo 'Some text.'; });
-  * @endcode
-  */
-  public static function route($r, $fn) // DEPRECATED
-  {
-    Router::add($r, $fn);
-  }
-
-  /**
-  * Registers a function to run right after the controller class construction
-  * @param $c (string) The controller's class name
-  * @param $fn (function) Callback
-  * @code
-  * Config::onController('blog', function(){ BlogController::ppp = 24; });
-  * @endcode
-  */
-  public static function onController($c, $fn) // DEPRECATED
-  {
-    Router::$on_controller[$c][] = $fn;
-  }
-
-  /**
-  * Registers a new action or replaces an existing for a controller
-  * @param $c (string) The controller
-  * @param $action (string) The action
-  * @param $fn (function) Callback
-  * @code
-  * Config::action('blog', 'topics', function(){ ... });
-  * @endcode
-  */
-  public static function action($c, $action, $fn) // DEPRECATED -> Router::action()
-  {
-    Router::action($c, $action, $fn);
-  }
-
-  /**
-  * Registers a function to run before the function of a specific action
-  * @param $c (string) The controller
-  * @param $action (string) The action
-  * @param $fn (function) Callback
-  */
-  public static function before($c, $action, $fn) // DEPRECATED -> Router::before()
-  {
-    Router::before($c, $action, $fn);
-  }
-
-  public static function onAction($c, $action, $fn) // DEPRECATED -> Router::onAction()
-  {
-    Router::onAction($c, $action, $fn);
-  }
 
   /**
   * Adds language translations from a json file
@@ -106,8 +39,8 @@ class Config
   {
     $filepath = 'src/'.$path.self::config('language').'.json';
     if (file_exists($filepath)) {
-      $GLOBALS['lang'] = @array_merge(
-        @$GLOBALS['lang'],
+      self::$langWords = @array_merge(
+        self::$langWords,
         json_decode(file_get_contents($filepath), true)
       );
     }
@@ -126,7 +59,7 @@ class Config
   /**
   * Registers new widgets
   * @param $list (Assoc Array) Widgets to register
-  * @code Config::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
+  * @code self::widgets( [‘wdg’=>’my_package/widgets/wdg’] ); @endcode
   */
   public static function widgets($list)
   {
@@ -139,7 +72,7 @@ class Config
   * Registers new content type
   * @param $key (string) Name of content type
   * @param $path (string) Path to the table file
-  * @code Config::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
+  * @code self::content( 'mytable', 'package_name/content/mytable.php' ); @endcode
   */
   public static function content($key, $path)
   {
@@ -151,7 +84,7 @@ class Config
   * @param $key (string) Name of content type
   * @param $field (string) Index of the field
   * @param $table (Assoc array) Value of the field
-  * DEPRECATED @see Config::contentInit()
+  * DEPRECATED @see self::contentInit()
   */
   public static function contentField($key, $field, $table)
   {
@@ -165,7 +98,7 @@ class Config
   * Make changes in a content type when it is initialized
   * @param $key (string) Name of content type
   * @param $init (function) Funtion to run
-  * @code Config::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
+  * @code self::contentInt( 'mytable', function(&$table) { $table['fileds']['new_field']=[];} ); @endcode
   */
   public static function contentInit($key, $init)
   {
@@ -189,7 +122,7 @@ class Config
   * @param $key (string) Index name
   * @param $item (assoc array) Array with data
   * Indices 0 for Display name, 1 for action link
-  * @code Config::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code self::amenu('item', ['Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu($key, $item=[])
   {
@@ -200,11 +133,7 @@ class Config
       $list = $key;
     }
     foreach ($list as $k=>$i) {
-      if (is_numeric($k)) {
-        self::$amenu[]=$i; // DEPRECATED
-      } else {
-        self::$amenu[$k]=$i;
-      }
+      self::$amenu[$k]=$i;
     }
   }
 
@@ -212,33 +141,41 @@ class Config
   * Add a child element on administration menu item
   * @param $key (string) Index of parent item
   * @param $item (assoc array) Array with data
-  * @code Config::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
+  * @code self::amenu_child('item', ['Child Item','controller/action','icon'=>'item-icon']); @endcode
   */
   public static function amenu_child($key, $item)
   {
+    if (!isset(self::$amenu[$key])) {
+      return;
+    }
     if (!isset(self::$amenu[$key]['children'])) {
       self::$amenu[$key]['children']=[];
     }
     self::$amenu[$key]['children'][]=$item;
   }
 
-  /**
-  * Sets or gets the value of configuration attribute
-  * @param $key (string) Name of the attribute
-  * @param $value (optional) The value to set @see setConfig()
-  * @return The value if parameter $value is not sent
-  */
-  public static function config($key, $value = null)
+  public static function config($key, $value = null) // DEPRECATED
   {
-    if ($value === null) { // DEPRECATED should use setConfig()
-      if (isset($GLOBALS['config'][$key])) {
-        return $GLOBALS['config'][$key];
-      } else {
-        return null;
-      }
+    if ($value!==null) {
+      self::set($key, $value);
     } else {
-      $GLOBALS['config'][$key] = $value;
+      return self::get($key);
     }
+  }
+  public static function setConfig($key, $value) // DEPRECATED
+  {
+    self::set($key, $value);
+  }
+
+  public static function lang($lang=null)
+  {
+    if ($lang!==null) {
+      self::$lang = $lang;
+    }
+    if (!isset(self::$lang)) {
+      self::$lang = self::config('language');
+    }
+    return self::$lang;
   }
 
   /**
@@ -246,7 +183,7 @@ class Config
   * @param $key (string) Name of the attribute
   * @param $value (optional) The value to set
   */
-  public static function setConfig($key, $value)
+  public static function set($key, $value)
   {
     if (!is_string($key)) {
       return;
@@ -254,11 +191,11 @@ class Config
     $GLOBALS['config'][$key] = $value;
   }
 
-  public static function set($key, $value)
-  {
-    self::setConfig($key, $value);
-  }
-
+  /**
+  * Gets the value of configuration attribute
+  * @param $key (string) Name of the attribute
+  * @return The configuration value
+  */
   public static function get($key)
   {
     return $GLOBALS['config'][$key] ?? null;
@@ -269,19 +206,9 @@ class Config
   */
   public static function updateConfigFile()
   {
+    $GLOBALS['config']['updated'] = time();
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents(CONFIG_PHP, $filedata);
-  }
-
-  /**
-  * DEPRECATED @see View::alert()
-  */
-  public static function alert($type, $msg)
-  {
-    if ($type === 'alert') {
-      $type = '';
-    }
-    return "<div class='alert $type'><span class='closebtn' onclick='this.parentElement.style.display=\"none\";'>&times;</span>$msg</div>";
   }
 
   /**
@@ -292,23 +219,23 @@ class Config
     return password_hash($pass, PASSWORD_BCRYPT);
   }
 
+  public static function option($option, $default='')  //DEPRECATED
+  {
+    return self::getOption($option, $default);
+  }
+
   /**
   * Returns an option value
   * @param $option (string) Option name
   * @param $default (optional) The value to return if this option has not saved value
   * @return The option value
   */
-  public static function option($option, $default='')
+  public static function getOption($option, $default='')
   {
     if (isset(self::$option[$option]) && self::$option[$option]!='') {
       return self::$option[$option];
     }
     return $default;
-  }
-
-  public static function getOption($option, $default='')
-  {
-    return self::option($option, $default);
   }
 
   /**
@@ -379,65 +306,46 @@ class Config
 
   public static function canonical($str)
   {
-    View::$canonical = self::config('base').Config::url($str);
+    View::$canonical = self::config('base').self::url($str);
   }
 
-  public static function base($str = null) {
-    return self::base_url($str);
-  }
-
-  public static function base_url($str = null)
+  public static function base($str = null)
   {
     if (!isset(self::$base_url)) {
       if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
-        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(Config::config('base'), 0, 5)=='https'?'https':'http');
+        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(self::config('base'), 0, 5)=='https'?'https':'http');
         self::$base_url = $scheme.'://'.$_SERVER['HTTP_HOST'];
         self::$base_url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/')).'/';
       } else {
         self::$base_url = self::config('base');
       }
+      self::$base_url = htmlentities(self::$base_url);
     }
-    if ($str!==null) {
-      return self::$base_url.Config::url($str);
+    if ($str===null) {
+      return self::$base_url;
     }
-    return self::$base_url;
+    return self::$base_url.self::url($str);
   }
 
-  public static function url($url)
+  public static function url($url, $params=[])
   {
-    if ($url==='#') {
-      return Router::url().'#';
-    }
-
-    if (self::config('rewrite')) {
+    if ($url==='#'||$url==='') {
+      $url = Router::path().$url;
+    } else {
       $var = explode('/', $url);
-      if (Config::config('default-controller') === $var[0]) {
-        if ($var[0]!='admin') {
-          return substr($url, strlen($var[0])+1);
-        }
-      }
-      return $url;
-    }
-    $burl = explode('?', $url);
-    $burl1 = explode('/', $burl[0]);
-    if (isset($burl1[1])) {
-      $burl1[1]='&action='.$burl1[1];
-    } else {
-      $burl1[1]='';
-    }
-    if (isset($burl[1])) {
-      $burl[1]='&'.$burl[1];
-    } else {
-      $burl[1]='';
-    }
-
-    for ($i=2; $i<count($burl1); $i++) {
-      if ($burl1[$i]!='') {
-        $burl[1]='&var'.($i-1).'='.$burl1[$i].$burl[1];
+      if ($var[0]!='admin' && self::get('default-controller') === $var[0]) {
+        $url = substr($url, strlen($var[0])+1);
       }
     }
 
-    return '?c='.$burl1[0].$burl1[1].$burl[1];
+    if ($gpt = Router::request('g_preview_theme') && Session::hasPrivilege('admin')) {
+      $params['g_preview_theme'] = $gpt;
+    }
+    $q = http_build_query($params);
+    if (!empty($q)) {
+      $url .= strpos($url, '?')? '&'.$q: '?'.$q;
+    }
+    return htmlentities($url);
   }
 
   /**
@@ -449,36 +357,7 @@ class Config
   */
   public static function make_url($c, $action='', $args=[])
   {
-    $params='';
-    if (self::config('rewrite')) {
-      foreach ($args as $key=>$value) {
-        if ($params!='') {
-          $params.='/';
-        }
-        $params.=$value;
-      }
-
-      if ((self::config('default-controller') === $c) && ($c != 'admin')) {
-        $c='';
-      } else {
-        $c.='/';
-      }
-      if ($action!='') {
-        $action.='/';
-      }
-      if ($gpt = Router::request('g_preview_theme')) {
-        $params.='?g_preview_theme='.$gpt;
-      }
-      return $c.$action.$params;
-    } else {
-      foreach ($args as $key=>$value) {
-        $params.='&'.$key.'='.$value;
-      }
-      if ($gpt = Router::request('g_preview_theme')) {
-        $params.='&g_preview_theme='.$gpt;
-      }
-      return "?c=$c&action=$action$params";
-    }
+    return self::url($c.'/'.$action, $args);
   }
 
   /**
@@ -503,16 +382,6 @@ class Config
   }
 
   /**
-  * Checks if logged in user has at least one of the required privileges
-  * @param $pri (string/array) The privilege(s) to check
-  * @return Boolean
-  */
-  public static function hasPrivilege($pri) // DEPRECATED
-  {
-    return Session::hasPrivilege($pri);
-  }
-
-  /**
   * Creates the folder if does not exist and return the path
   * @param $path (string) Folder path
   */
@@ -534,20 +403,28 @@ class Config
     return $path;
   }
 
-  public static function tr($key, $alt = null) {
-    if(self::$langLoaded===false) {
-      foreach(self::$langPaths as $path) self::loadLang($path);
+  public static function tr($key, $alt = null)
+  {
+    if (self::$langLoaded===false) {
+      foreach (self::$langPaths as $path) {
+        self::loadLang($path);
+      }
       self::$langLoaded = true;
     }
-    if(@isset($GLOBALS['lang'][$key])) {
-      if($GLOBALS['lang'][$key] != '')
-        return $GLOBALS['lang'][$key];
+    if (isset(self::$langWords[$key])) {
+      if (!empty(self::$langWords[$key])) {
+        return self::$langWords[$key];
+      }
     }
-    if($alt!=null) return $alt;
+    if ($alt!==null) {
+      return $alt;
+    }
     return $key;
   }
 }
 
 class_alias('Gila\\Config', 'Gila\\Gila');
 class_alias('Gila\\Config', 'Gila');
-if(!class_exists('gila')) class_alias('Gila\\Config', 'gila');
+if (!class_exists('gila')) {
+  class_alias('Gila\\Config', 'gila');
+}

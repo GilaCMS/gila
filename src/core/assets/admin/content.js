@@ -24,38 +24,46 @@ Vue.component('g-table', {
     <thead>\
       <tr><td colspan=100>\
         <div v-if="edititem==0" class="g-table-head">\
-        <div><div class="g-table-title" v-html="table.title"></div>\
-          <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
-            <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-            @keyup="if($event.which == \'8\') runsearch()" :autofocus="table[\'search_box_autofocus\']"\
-            @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text" style="padding-left:28px">\
-            <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
-          </div>\
-          <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
-            <select v-model="group" class="g-input" @change="runsearch()">\
-            <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
-            </select>\
-          </div>\
-          <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
-            <label>&nbsp;{{field_label(sb)}}</label>\
-            <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch()">\
-              <option value="" selected>-</option>\
-              <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
-            </select>\
-            <div v-else style="position:relative;display:inline-block">\
-              <input v-model="search" class="g-input" v-model="filter[sb]" @keypress="if($event.keyCode || $event.which == \'13\') runsearch()" value="" type="text">\
-              <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+          <div>\
+            <div class="g-table-title" v-html="table.title"></div>\
+            <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
+              <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
+              @keyup="if($event.which == \'8\' || $event.keyCode) runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+              @keypress="if($event.which == \'13\') runsearch(true)" value="" type="text" style="padding-left:28px">\
+              <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+            </div>\
+            <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
+              <select v-model="group" class="g-input" @change="runsearch()">\
+                <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
+              </select>\
+            </div>\
+            <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
+              <label>&nbsp;{{field_label(sb)}}</label>\
+              <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch(true)">\
+                <option value="" selected>-</option>\
+                <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
+              </select>\
+              <div v-else-if="table.fields[sb].type==\'date\'" style="position:relative;display:inline-block">\
+                <input class="g-input" v-model="filter[sb]" @change="runsearch(true)" type="date">\
+              </div>\
+              <div v-else style="position:relative;display:inline-block">\
+                <input class="g-input" v-model="filter[sb]" @keyup="if($event.which == \'8\' || $event.keyCode) runsearch()"\
+                @keypress="if($event.which == \'13\') runsearch(true)" value="" type="text">\
+                <div v-else style="position:relative;display:inline-block">\
+                  <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
+                </div>\
+              </div>\
             </div>\
           </div>\
-        </div>\
-        <div>\
-          <span v-if="table.bulk_actions && selected_rows.length>0">\
-            <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px; font-weight:bold" v-html="tool_label(iaction)"></span>\
-          </span>\
-          <span v-if="table.tools">\
-            <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" style="margin-right:6px; font-weight:bold" v-html="tool_label(tool)"></span>\
-          </span>\
-        </div></div></td>\
+          <div style="display:flex">\
+            <span v-if="table.bulk_actions && selected_rows.length>0">\
+              <span v-for="iaction in table.bulk_actions" @click="runtool(iaction,$event)" class="g-btn btn-white" style="margin-right:6px;" v-html="tool_label(iaction)"></span>\
+            </span>\
+            <span v-if="table.tools" style="flex-flow: row-reverse;display: flex;">\
+              <span v-for="(tool,itool) in table.tools" @click="runtool(tool,$event)" class="g-btn" :class="{\'btn-white\':itool>0}" style="margin-right:6px;" v-html="tool_label(tool)"></span>\
+            </span>\
+          </div>\
+        </div></td>\
       </tr>\
       <tr>\
         <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\
@@ -76,11 +84,15 @@ Vue.component('g-table', {
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
         <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
-        :col="ifield" :value="row[ifield]" :class="field" v-html="display_cell(irow,ifield)"\
+        :col="ifield" :value="row[ifield]" :class="field"\
         @keydown="inlineDataUpdate(irow, field)">\
+          <div v-html="display_cell(irow,ifield)"></div>\
+          <div v-if="table.qactions && table.qactions[field]" class="qactions">\
+            <span v-for="(com,icom) in table.qactions[field]" v-if="canUse(com)" @click="command(com,row[0])" v-html="command_label(com,true)"></span>\
+          </div>\
         </td>\
         <td v-if="table.commands" class="td-com">\
-          <span v-for="(com,icom) in table.commands" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
+          <span v-for="(com,icom) in table.commands" v-if="canUse(com)" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
         </td>\
       </tr>\
       <tr v-if="data.rows.length==0">\
@@ -91,7 +103,7 @@ Vue.component('g-table', {
       <tr>\
         <td colspan="100">\
           <ul class="pagination g-pagination">\
-            <li v-for="p in pagination()" :class="(p==page?\'active\':\'\')" @click="load_page({page:p})" v-html="p"></li>\
+            <li v-for="p in pagination()" :class="(p==page?\'active\':\'\')" @click="gotoPage(p)" v-html="p"></li>\
           </ul>\
         </td>\
       </tr>\
@@ -99,17 +111,25 @@ Vue.component('g-table', {
   </table>\
   </div>\
   ',
-  props: ['gtype','gtable','gfields','gfilters','gchild','grows','gtotalrows'],
-  data: function(){ return {
+  props: ['gtype','gtable','gfields','gfilters','gfilter','gchild','grows','gtotalrows','permissions','base'],
+  data: function(){ 
+    if(!this.permissions) {
+      this.permissions=null
+    }
+    if(!this.gfilter) {
+      this.gfilter='[]'
+    }
+    return {
     name: this.gtype,
     table: JSON.parse(this.gtable),
+    permissions: JSON.parse(this.permissions),
     data:{
       fields: JSON.parse(this.gfields),
       rows:[],
       totalRows:0
     },
     filters: this.gfilters,
-    filter: [],
+    filter: JSON.parse(this.gfilter),
     query: '',
     selected_rows: [],
     order: [],
@@ -124,7 +144,8 @@ Vue.component('g-table', {
     updateRows: [],
     inlineEdit: false,
     intervalUpdate: null,
-    irowSelected: null
+    irowSelected: null,
+    basePath: this.base ?? null
   }},
   updated: function() {
     if(this.edititem==0) return;
@@ -218,16 +239,42 @@ Vue.component('g-table', {
       if(typeof this.table.fields[ifield].title=='undefined') return ifield
       return this.table.fields[ifield].title
     },
-    command_label: function(com) {
-      if(this.table.action_display=='label' ||
+    command_label: function(com, label=false) {
+      if(label || this.table.action_display=='label' ||
         typeof gtableCommand[com]=='undefined') {
-          return '<a>'+gtableCommand[com].label+'</a>';
-        }
-        
+        return '<a>'+gtableCommand[com].label+'</a>';
+      }
       return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'"></i>'
     },
-    runsearch: function() {
+    canUse: function(com) {
+      if(gtableCommand[com] && gtableCommand[com].permission && this.permissions) {
+        for(p of this.table.permissions[gtableCommand[com].permission]) {
+          if(this.permissions.includes(p)) return true
+        }
+        return false
+      }
+      return true
+    },
+    runsearch: function(pushState = false) {
+      if(pushState==true) {
+        this.pushState()
+      }
       this.load_page()
+    },
+    gotoPage: function(p) {
+      this.page = p
+      this.pushState()
+      this.load_page()
+    },
+    pushState: function() {
+      if(this.basePath) {
+        search = this.search ? '&search='+this.search: '';
+        for(fkey in this.filter) {
+          if(this.filter[fkey]!=='') search += '&'+fkey+'='+this.filter[fkey]
+        }
+        order = ''
+        history.pushState({path:this.basePath,search:search}, _e('Content'), this.basePath+'?page='+this.page+order+search)
+      }
     },
     update: function(){
       let irow = this.edititem
@@ -289,7 +336,12 @@ Vue.component('g-table', {
       rv = this.data.rows[irow]
       cv = this.data.rows[irow][ifield]
       field = this.table.fields[fkey]
-      dv = cv // display value
+      displayValue = cv
+
+      if(field.alt) if(!cv) {
+        cv = field.alt
+        displayValue = '<span style="opacity:0.66">'+cv+'</span>'
+      }
       if (typeof this.table.fields[fkey].display != "undefined") {
         return eval(this.table.fields[fkey].display)
       }
@@ -329,10 +381,23 @@ Vue.component('g-table', {
       }
 
       if(displayType=='number') {
-        return '<div style="text-align:right">'+dv+'</div>';
+        return '<div style="text-align:right">'+displayValue+'</div>';
       }
 
-      if(displayType=='text') if (rv.text.length>100) {
+      if(displayType=='radial-bar') {
+        displayValue=parseFloat(displayValue).toFixed(2)
+        if (isNaN(displayValue)) return
+        pcValue = parseInt(displayValue*100)
+        if(field.display_percentage) displayValue=pcValue+'%'
+        return '<div style="text-align:center;width:100%"><svg viewBox="0 0 40 40" style="width:28px;vertical-align: middle;">\
+        <circle stroke="lightgrey" stroke-width="8" fill="transparent" r="15" cx="20" cy="20"/>\
+        <path d="M21 4 a 15 15 0 0 1 0 30 a 15 15 0 0 1 0 -30"\
+          fill="none"\ stroke="var(--main-a-color)";\ stroke-width="8";\
+          stroke-dasharray="'+pcValue+', 100" />\
+      </svg> <span style="vertical-align: middle;">'+displayValue+'</span></div>'
+      }
+
+      if(displayType=='text') if (rv.text) if (rv.text.length>100) {
         return rv.text.substring(0, 97)+"...";
       }
 
@@ -353,9 +418,9 @@ Vue.component('g-table', {
       }
 
       if(field.inline_edit) {
-        return '<div contenteditable="true" data-field="'+fkey+'">'+dv+'</div>';
+        return '<div contenteditable="true" data-field="'+fkey+'">'+displayValue+'</div>';
       }
-      return dv;
+      return displayValue;
     },
     showField: function(field) {
       if(typeof this.table.fields[field].show=='undefined') return true
@@ -379,7 +444,8 @@ Vue.component('g-table', {
       if(this.order[key]=='DESC') order='ASC'; else order='DESC';
       this.order = []
       this.order[key] = order
-      this.load_page({page:1})
+      this.page = 1
+      this.load_page()
     },
     sortiClass: function(key){
       cl=''
@@ -470,11 +536,11 @@ function transformClassComponents() {
   
   textareas=g('.tinymce').all
   mce_editor=[]
-  tinymce.remove() //remove all tinymce editors
+  if(tinymce) tinymce.remove() //remove all tinymce editors
   for(i=0;i<textareas.length;i++) {
     mce_editor[i] = {id: textareas[i].id, name: textareas[i].name};
     mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));
-    mce_editor[i].settings.selector = '[name='+textareas[i].name+']'
+    mce_editor[i].settings.selector = '[name='+textareas[i].name.replace('[','\\[').replace(']','\\]')+']'
     mce_editor[i].settings.file_picker_callback = function(cb, value, meta) {
       input_filename = cb;
       open_gallery_post();
@@ -529,7 +595,7 @@ gtableCommand['edit_popup'] = {
   fa: "pencil",
   label: "Edit",
   fn: function(table,irow) {
-  href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
+    href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       formId = '#'+table.name+'-edit-item-form'
@@ -537,7 +603,6 @@ gtableCommand['edit_popup'] = {
         el: formId,
         data: {id:irow}
       })
-      g_tinymce_options.height = 110;
       transformClassComponents()
       console.log(formId+' input')
       g(formId+' input').all[1].focus()
@@ -546,6 +611,10 @@ gtableCommand['edit_popup'] = {
 }
 
 g.dialog.buttons.popup_update = {title:'Update', fn:function(btn){
+  form = g('.gila-popup form').last()
+  form.getElementsByTagName("BUTTON")[0].click()
+}};
+g.dialog.buttons.popup_add = {title:'Create', fn:function(btn){
   form = g('.gila-popup form').last()
   form.getElementsByTagName("BUTTON")[0].click()
 }};
@@ -591,6 +660,7 @@ function g_form_popup_update() {
 gtableCommand['clone'] = {
   fa: "copy",
   label: "Clone",
+  permission: 'create',
   fn: function(table,id) {
     let _this
     _this = table
@@ -605,6 +675,7 @@ gtableCommand['clone'] = {
 gtableCommand['delete'] = {
   fa: "trash-o",
   label: "Delete",
+  permission: 'delete',
   fn: function(table,id) {
     let _this = table
     let _id = id
@@ -626,6 +697,7 @@ gtableCommand['delete'] = {
 
 gtableTool['add'] = {
   fa: "plus", label: _e("New"),
+  permission: 'create',
   fn: function(table) {
     let _this = table
     _this.edititem = 'new'
@@ -636,7 +708,9 @@ gtableTool['add'] = {
   }
 }
 gtableTool['add_row'] = {
-  fa: "plus", label: _e("New"),
+  fa: "plus",
+  label: _e("New"),
+  permission: 'create',
   fn: function(table) {
     let _this
     _this = table
@@ -650,17 +724,18 @@ gtableTool['add_row'] = {
   }
 }
 gtableTool['add_popup'] = {
-  fa: "plus", label: _e("New"),
+  fa: "plus",
+  label: _e("New"),
+  permission: 'create',
   fn: function(table) {
     href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
     g.get(href,function(data){
-      g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+      g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_add'})
       formId = '#'+table.name+'-edit-item-form'
       edit_popup_app = new Vue({
         el: formId,
         data: {id:0}
       })
-      g_tinymce_options.height = 110;
       transformClassComponents()
       g(formId+' input').all[1].focus()
     })
@@ -679,7 +754,9 @@ gtableTool['log_selected'] = {
   }
 }
 gtableTool['delete'] = {
-  fa: "arrow-down", label: _e("Delete"),
+  fa: "arrow-down",
+  label: _e("Delete"),
+  permission: 'delete',
   fn: function(table) {
     let _this = table
     if(confirm(_e("Delete registries?"))) g.ajax({
@@ -694,7 +771,9 @@ gtableTool['delete'] = {
   }
 }
 gtableTool['uploadcsv'] = {
-  fa: "arrow-up", label: _e("Upload")+" CSV",
+  fa: "arrow-up",
+  permission: 'create',
+  label: _e("Upload")+" CSV",
   fn: function(table) {
     bodyMsg = "<h3>1. "+_e('_uploadcsv_step1')+'</h3>'
     bodyMsg += " <a href='cm/get_empty_csv/"+table.name+"'>"+_e('Download')+"</a>"
@@ -718,21 +797,41 @@ gtableTool['addfrom'] = {
     })
   }
 }
+gtableTool['approve'] = {
+  fa: "check", label: _e("Approve"),
+  fn: function(table) {
+    if(typeof table.table.approve=='undefined') {
+      alert('table[approve] is not set')
+      return
+    }
+    let _this = table
+    data = {}
+    data[table.table.approve[0]] = table.table.approve[1]
+    g.ajax({
+      url: "cm/update_rows?t="+_this.name+'&id='+table.selected_rows.join(),
+      data: data,
+      method: 'post',
+      fn: function(data) {
+        _this.selected_rows = []
+        _this.load_page()
+      }
+    });
+  }
+}
 
 g_tinymce_options = {
   selector: '',
   relative_urls: false,
   remove_script_host: false,
-  height: 250,
-  theme: 'modern',
-  extended_valid_elements: 'script,div[v-for|v-if|v-model|style|class|id|data-load]',
-  plugins: [
-    'lists link image hr anchor pagebreak',
-    'searchreplace wordcount visualchars code',
-    'insertdatetime media nonbreaking table contextmenu ',
-    'template paste textcolor textpattern codesample'
-  ],
-  toolbar1: 'styleselect | forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link media image codesample',
+  height: 300,
+  remove_linebreaks : false,
+  document_base_url: ".",
+  verify_html: false,
+  cleanup: true,
+  plugins: ['code codesample table charmap image media lists link emoticons'],
+  menubar: true,
+  //entity_encoding: 'raw',
+  toolbar: 'formatselect bold italic | bullist numlist outdent indent | link image table | alignleft aligncenter alignright alignjustify',
   file_picker_callback: function(cb, value, meta) {
     input_filename = cb;
     open_gallery_post();
@@ -752,16 +851,14 @@ g.dialog.buttons.select_path = {
   title:'Select',fn: function(){
     let v = g('#selected-path').attr('value')
     if(v!=null) g('[name=p_img]').attr('value', base_url+v)
-    g('#media_dialog').parent().remove();
-    g.closeModal();
+    g.closeModal('media_dialog');
   }
 }
 g.dialog.buttons.select_path_post = {
   title:'Select', fn: function() {
     let v = g('#selected-path').attr('value')
     if(v!=null) input_filename(base_url+v);
-    g('#media_dialog').parent().remove();
-    g.closeModal();
+    g.closeModal('media_dialog');
   }
 }
 g.dialog.buttons.select_row_source = {

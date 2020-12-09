@@ -178,17 +178,12 @@ class Session
     return self::$user_id;
   }
 
-  public static function user_id()
-  { // DEPRECATED
-    trigger_error(__METHOD__.' should be called in camel case', E_USER_WARNING);
-    return self::userId();
-  }
-
   public static function createFile($gsession)
   {
     $data = [
       'user_agent'=>$_SERVER['HTTP_USER_AGENT']
     ];
+    $gsession = str_replace(['/'.'\\','.'], '', $gsession);
     file_put_contents(LOG_PATH.'/sessions/'.$gsession, json_encode($data));
   }
 

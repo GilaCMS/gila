@@ -4,8 +4,8 @@ return [
   'name'=> 'user',
   'title'=> 'Users',
   'pagination'=> 15,
-  'tools'=>['add','csv'],
-  'commands'=>['edit'],
+  'tools'=>['add_popup','csv'],
+  'commands'=>['edit_popup','delete'],
   'id'=>'id',
   'lang'=>'core/lang/admin/',
   'meta_table'=>['usermeta', 'user_id', 'vartype', 'value'],
@@ -14,13 +14,14 @@ return [
     'read'=>['admin','admin_user'],
     'create'=>['admin','admin_user'],
     'update'=>['admin','admin_user'],
-    'delete'=>false
+    'delete'=>['admin']
   ],
   'csv'=> ['id','username','email'],
   'fields'=> [
     'id'=> [
       'title'=>'ID',
-      'edit'=>false
+      'edit'=>false,
+      'create'=>false
     ],
     'photo'=> [
       'type'=>'meta',
@@ -30,11 +31,14 @@ return [
     ],
     'username'=> [
       'title'=>'Name',
-      'qtype'=>'varchar(80)'
+      'qtype'=>'varchar(80)',
+      'required'=>true
     ],
     'email'=> [
       'title'=>'Email',
-      'qtype'=>'varchar(80) UNIQUE'
+      'type'=>'email',
+      'qtype'=>'varchar(80) UNIQUE',
+      'required'=>true
     ],
     'pass'=> [
       'list'=>false,
@@ -45,11 +49,11 @@ return [
     'userrole'=> [
       'title'=>'Roles',
       'type'=>'meta',
-      'input_type'=>'select2',
+      'input_type'=>'role',
       'edit'=>true,
       'meta_key'=>'role',
       'options'=>[],
-      'qoptions'=>'SELECT `id`,`userrole` FROM userrole;'
+      'qoptions'=>"SELECT `id`,`userrole` FROM userrole"
     ],
     'active'=> [
       'type'=>'checkbox',
@@ -81,7 +85,6 @@ return [
     'manager'=> [
       'type'=>'meta',
       'title'=>'Manager',
-      'input_type'=>'select2',
       'list'=>false,
       'meta_key'=>'manager_id',
       'options'=>[''=>'-'],
@@ -90,6 +93,16 @@ return [
   ],
   'events'=>[
     ['change',function (&$row) {
+      if (isset($row['userrole'])) {
+        $roles = is_array($row['userrole'])? $row['userrole']: explode(',', $row['userrole']);
+        $level = Gila\User::level(Gila\Session::userId());
+        foreach ($roles as $roleId) {
+          if ($level<Gila\User::roleLevel($roleId)) {
+            http_response_code(500);
+            exit;
+          }
+        }
+      }
       if (isset($row['pass'])) {
         if (substr($row['pass'], 0, 7) != "$2y$10$") {
           $row['pass'] = Config::hash($row['pass']);

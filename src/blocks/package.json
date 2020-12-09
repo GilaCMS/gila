@@ -1,8 +1,0 @@
-{
-  "name":"Blocks",
-  "description":"Build the page and post content with blocks.",
-  "version":"1.2.0",
-  "require": {
-    "core": "1.15.0"
-  }
-}

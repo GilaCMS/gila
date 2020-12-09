@@ -20,15 +20,15 @@ class Router
 
   public function __construct()
   {
-    self::run($_GET['url'] ?? false);
+    self::run($_GET['p'] ?? ($_GET['url'] ?? false));
   }
 
-  public static function run($_url = false)
+  public static function run($_p = false)
   {
     global $c;
 
     self::$method = $_SERVER['REQUEST_METHOD'];
-    self::setUrl($_url);
+    self::setPath($_p);
     if (self::matchRoutes(self::$route)==true) {
       return;
     }
@@ -44,9 +44,6 @@ class Router
       return;
     }
 
-    if ($ctrlClass==='blog') {
-      $ctrlClass='Blog';
-    } // DEPRECATED
     $c = new $ctrlClass();
 
     // find function to run after controller construction
@@ -80,10 +77,10 @@ class Router
     if (isset(self::$controller)) {
       return self::$controller;
     }
-    $default = Config::config('default-controller');
+    $default = Config::get('default-controller');
     self::$controller = self::request('c', $default);
 
-    if (isset(self::$args[0]) && isset(self::$controllers[self::$args[0]])) {
+    if (isset(self::$controllers[self::$args[0]])) {
       self::$controller = self::$args[0];
       array_shift(self::$args);
     }
@@ -119,19 +116,9 @@ class Router
     return self::$action;
   }
 
-  /**
-  * Returns a get parameter value
-  * @param $key (string) Parameter's name
-  * @param $n optional (int) Parameter's expected position in a pretty url.
-  * @return Parameter's value or null if paremeter is not found.
-  */
-  public static function get($string, $fn = null)
+  public static function get($string, $fn = null) // DEPRECATED
   {
-    if (is_int($fn) || $fn===null) { // DEPRECATED
-      return self::param($string, $fn);
-    } else {
-      self::add($string, $fn);
-    }
+    return self::param($string, $fn);
   }
 
   public static function add($string, $fn, $method = 'GET', $permission = null)
@@ -139,6 +126,12 @@ class Router
     self::$route[] = [$string, $fn, $method, $permission];
   }
 
+  /**
+  * Returns a get parameter value
+  * @param $key (string) Parameter's name
+  * @param $n optional (int) Parameter's expected position in a pretty url.
+  * @return Value or null if paremeter is not found.
+  */
   public static function param($key, $n = null)
   {
     if ($n!==null && isset(self::$args[$n-1]) && self::$args[$n-1]!==null) {
@@ -167,39 +160,28 @@ class Router
     return @strip_tags($r);
   }
 
-  public static function url() // DEPRACATED
-  {
-    return self::path();
-  }
   public static function path()
   {
     return self::$url;
   }
 
   /**
-  * Returns the name of the controller
+  * Registers a new controller
+  * $c:string Controllers name
+  * $file:string Controller’s filepath without the php extension
+  * $name:string Optional. Controller’s class name, $c is used by default
   */
-  public static function controller($name = null, $path = null)
+  public static function controller($name, $path)
   {
-    if ($name===null) {
-      return @self::getController(); // DEPRECATED
-    }
     self::$controllers[$name] = $path;
   }
 
   /**
-  * Returns the name of the action
+  * Registers a new action
   */
-  public static function action($c=null, $action=null, $fn=null)
+  public static function action($c, $action, $fn)
   {
-    if ($fn!==null) {
-      self::$actions[$c][$action] = $fn;
-      return;
-    }
-    if ($action===null && $set!==null) {
-      self::$action = $set;
-    } // DEPRECATED
-    return @self::getAction(self::getController(), self::$args); // DEPRECATED
+    self::$actions[$c][$action] = $fn;
   }
 
   public static function before($c, $action, $fn)
@@ -212,32 +194,31 @@ class Router
     self::$onaction[$c][$action][] = $fn;
   }
 
-  public static function setUrl($_url)
+  public static function onController($c, $fn)
   {
-    if ($_url!==false) {
-      self::$url = strip_tags($_url);
+    self::$on_controller[$c][] = $fn;
+  }
+
+  public static function setPath($_p)
+  {
+    if ($_p!==false) {
+      self::$url = strip_tags($_p);
       self::$args = explode("/", self::$url);
+      if (isset(self::$args[0]) && Config::get('languages') && in_array(self::$args[0], Config::get('languages'))) {
+        Config::lang(self::$args[0]);
+      }
     } else {
       self::$url = false;
       self::$args = [];
     }
   }
-
-  public static function cache($time = 3600, $args = null, $uniques = null)
-  { // DEPRECATED
-    if ($_SERVER['REQUEST_METHOD']!=="GET") {
-      // only for get requests
-      return;
-    }
-    if (isset(View::$canonical)) {
-      $request_uri = View::$canonical;
-    } else {
-      $request_uri = strtok($_SERVER['REQUEST_URI'], '?');
-    }
-    if ($args !== null) {
-      $request_uri .= '|'.implode('|', $args);
-    }
-    Cache::page($request_uri, $time, $uniques);
+  public static function getPath()
+  {
+    return self::$url??'';
+  }
+  public static function setUrl($_p)
+  {
+    self::setPath($_p);
   }
 
   public static function matchRoutes(&$routes)

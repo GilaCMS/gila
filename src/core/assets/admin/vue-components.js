@@ -1,8 +1,15 @@
 
 
 Vue.component('input-list', {
-    template: '<div>\
-<div v-for="(row,key) in pos">\
+    template: '<dir style="padding:0"><table class="g-table"><tbody>\
+<tr v-for="(row,key) in pos">\
+<td>\
+<span v-if="key>0" style="cursor:pointer;padding:0.5em 0.5em;color:black" @click="swap(key,key-1)">&uarr;</span>\
+<span v-else style="padding:0.5em 0.5em;opacity:0">&uarr;</span>\
+<span v-if="key<pos.length-1" style="cursor:pointer;padding:0.5em 0.5em;color:black" @click="swap(key,key+1)">&darr;</span>\
+<span v-else style="padding:0.5em 0.5em;opacity:0">&darr;</span>\
+</td>\
+<td>\
 <span v-for="(field,fkey) in fields">\
 	<span v-if="isMedia(field)" style="width:50px" >\
 		<img :src="imgSrc(pos[key][fkey])"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
@@ -11,9 +18,13 @@ Vue.component('input-list', {
   <input v-else v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update"\
   :placeholder="field.toUpperCase()" class="g-input">\
 </span>\
-&nbsp;<span @click="removeEl(key)" class="btn btn-error btn-small">-</span>\
-</div>\
-<a @click="add()" class="btn btn-success btn-small">+</a>\
+</td>\
+<td>\
+<span @click="removeEl(key)" style="cursor:pointer;padding:0.5em 0.5em;color:black">&times;</span>\
+</td>\
+</tr>\
+</tbody></table>\
+<span @click="add()" style="cursor:pointer;padding:0.5em 0.5em;color:black">+ {{addTxt()}}</span>\
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
@@ -38,7 +49,7 @@ Vue.component('input-list', {
       	this.update()
     },
     imgSrc: function(src) {
-      if(src.split('.').pop()=='svg') {
+      if(src.split('.').pop()=='svg' || src.startsWith('http:') || src.startsWith('https:')) {
         return src;
       }
       return 'lzld/thumb?src='+src;
@@ -48,6 +59,12 @@ Vue.component('input-list', {
       if(typeof this.fieldset[field]=='undefined') return false
       return this.fieldset[field].type=='media'
     },
+    swap: function(x, y) {
+      tmp = this.pos[x]
+      this.pos[x] = this.pos[y]
+      this.pos[y] = tmp
+      this.update()
+    },
     update: function(){
       this.ivalue = JSON.stringify(this.pos)
     },
@@ -55,17 +72,20 @@ Vue.component('input-list', {
       this.pos=JSON.parse(this.value)
       this.fields=JSON.parse(this.fieldset)
       this.ivalue = this.value
+    },
+    addTxt: function() {
+      return g.tr('Add') ?? 'Add'
     }
   }
 })
 
 Vue.component('input-media', {
   template: '<div class="pointer:hover shadow:hover;" \
-  style="background:var(--main-input-color);width:160px;height:160px;max-width:100%;max-height:100%;display: grid;\
-  justify-content:center; align-content:center; position:relative;min-width:50px;" \
+  style="background:var(--main-input-color);width:120px;height:120px;max-width:100%;max-height:100%;display: grid;\
+  justify-content:center; align-content:center; position:relative;min-width:50px;overflow: hidden;" \
   :onclick="\'open_media_gallery(\\\'#imd\'+idByName()+\'\\\')\'">\
 <img v-if="!value" src="assets/core/camera.svg" style="width:50px;margin:auto">\
-<img v-if="value" :src="\'lzld/thumb?media_thumb=160&src=\'+value" style="max-width:100%;margin:auto">\
+<img v-if="value" :src="imgSrc(value)" style="max-width:100%;margin:auto">\
 <svg v-if="value" height="28" width="28" @click.stop="value=null;return false;"\
 style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
   <circle cx="14" cy="14" r="10" stroke-width="0" fill="#666"></circle>\
@@ -82,6 +102,12 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
     }
   },
   methods:{
+    imgSrc: function(src) {
+      if(src.split('.').pop()=='svg' || src.startsWith('http:') || src.startsWith('https:')) {
+        return src;
+      }
+      return 'lzld/thumb?media_thumb=120&src='+src;
+    },
     idByName: function() {
       id = this.name.replace("[", "_");
       return id.replace("]", "_")
@@ -204,5 +230,94 @@ Vue.component('input-keywords', {
     valuesSplit: function() {
       return this.values.split()
     }
+  }
+})
+
+Vue.component('color-palette', {
+  template: '<div style="">\
+  <input type="color" v-for="(color,i) in colors" :value="color" v-model="colors[i]" @change="custom()" :title="labelList[i]">\
+  <br><span v-for="(palette,i) in paletteList" @click="changePalette(i)" style="border:1px solid lightgrey;cursor:pointer;padding:2px 6px;" :class="{\'g-selected\':i==selected}">\
+  <span v-if="i<paletteList.length-1">{{i+1}}</span><span v-else>★</span></span>\
+  <input v-model="value" type="hidden" :id="\'imd\'+idByName()" :name="name">\
+</div>',
+  props: ['name','value','palettes','labels'],
+  data: function() {
+    labels = ['','','','','','','','','']
+    palettes = null
+    if(this.palettes) palettes = JSON.parse(this.palettes)
+    if(this.labels) labels = JSON.parse(this.labels)
+    return {
+      colors: JSON.parse(this.value),
+      paletteList: palettes,
+      labelList: labels,
+      selected: palettes.length-1
+    }
+  },
+  methods:{
+    idByName: function() {
+      id = this.name.replace("[", "_");
+      return id.replace("]", "_")
+    },
+    changePalette: function(i) {
+      this.selected=i
+      this.colors = this.paletteList[this.selected].map((x) => x);
+    },
+    custom: function() {
+      this.selected = this.paletteList.length-1
+      this.paletteList[this.selected] = this.colors.map((x) => x);
+    }
+  },
+  updated: function() {
+    this.value = JSON.stringify(this.colors)
+  }
+})
+
+Vue.component('tree-select', {
+  template: '<div>\
+  <select v-model="selectValue" @change="selected()">\
+    <option v-if="level>0" value".." key="-1">←</option>\
+    <option v-for="(op,i) in options" :value"op.id" :key="i">{{op.label}}</option>\
+  </select>\
+  <input v-model="value" type="hidden" :name="name">\
+</div>',
+  props: ['name','value','data'],
+  data: function() {
+    selected = [null]
+    if(this.value) {
+      selected = JSON.parse(this.value)
+    }
+    //if(this.labels) labels = JSON.parse(this.labels)
+    console.log([{id:2,label:35}])
+    return {
+      level: selected.length,
+      treeData: JSON.parse(this.data),
+      options: JSON.parse(this.data),
+      selected: selected,
+      selectValue: null
+    }
+  },
+  methods:{
+    selected: function() {
+      if(this.selected[this.level-1]=='..') {
+        this.level--
+        this.selected[this.level-1] = null
+      }
+      this.updateOpList()
+    },
+    updateOpList: function () {
+      console.log('df')
+      console.log(this.treeData)
+      options = this.treeData
+      for(i=0; i<level-1; i++) {
+        for(child in options) if(child.id==this.selected[i]) {
+          options = options[i].children
+          break
+        }
+      }
+      return options
+    }
+  },
+  updated: function() {
+    this.value = JSON.stringify(this.selected)
   }
 })

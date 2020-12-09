@@ -1,5 +1,5 @@
 <?php
-$upload_folder = Config::config('media_uploads') ?? 'assets';
+$upload_folder = Config::get('media_uploads') ?? 'assets';
 $path = Router::request('path', Session::key('media_path') ?? $upload_folder);
 if ($path[0]=='.') {
   $path = $upload_folder;
@@ -26,7 +26,7 @@ array_splice($path_array, count($path_array)-1);
 $uppath=implode('/', $path_array);
 $path = rtrim($path, '/');
 View::script('core/admin/media.js');
-View::script('core/lang/content/'.Config::config('language').'.js');
+View::script('core/lang/content/'.Config::get('language').'.js');
 ?>
 
 <div id='admin-media-div'><div class='fullwidth inline-flex' style="gap:0.2em">
@@ -59,7 +59,7 @@ foreach ($files as $file) {
       $type='folder';
     } else {
       $type='file';
-      $imgx = ['jpg','jpeg','png','gif','svg'];
+      $imgx = ['jpg','jpeg','png','gif','svg','webp'];
       if ($pinf = pathinfo(SITE_PATH.$file)) {
         if ($ext = @$pinf['extension']) {
           if (in_array(strtolower($ext), $imgx)) {

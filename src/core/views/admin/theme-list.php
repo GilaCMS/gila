@@ -4,8 +4,8 @@ $table = '<br><div style="display:grid;grid-gap:15px;grid-template-columns:repea
 $pn = 0;
 
 foreach ($packages as $pkey=>$p) {
-  if ($p->package == Config::config('theme')) {
-    $border="border: 2px solid green;";
+  if ($p->package == Config::get('theme')) {
+    $border="border: 2px solid var(--main-primary-color);";
   } else {
     $border="";
   }
@@ -20,24 +20,26 @@ foreach ($packages as $pkey=>$p) {
   } elseif (file_exists($dir.$p->package."/screenshot.png")) {
     $table .= '<img src="'."lzld/thumb?size=360&src=themes/{$p->package}/screenshot.png".'"  />';
   } elseif (isset($p->screenshot)) {
-    $table .= '<img src="'.$p->screenshot.'"  />';
+    $table .= '<img src="'.$p->screenshot.'" />';
   }
 
   $table.="</div><br>";
 
   if (file_exists('themes/'.$p->package)) {
-    if ($p->package!=Config::config('theme')) {
+    if ($p->package!=Config::get('theme')) {
       $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn default'>".__('Select')."</a> ";
+    } elseif (Config::get('env')=='dev') {
+      $table .= "<a onclick='theme_activate(\"{$p->package}\")' class='g-btn primary'><i class='fa fa-refresh'></i></a> ";
     }
     if (isset($p->options)) {
-      $table .= "<a onclick='theme_options(\"{$p->package}\")' class='g-btn' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;</a> ";
+      $table .= "<a onclick='theme_options(\"{$p->package}\")' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-gears'></i>&nbsp;</a> ";
     }
     if (@$current_version = json_decode(file_get_contents('themes/'.$p->package.'/package.json'))->version) {
       if (version_compare($p->version, $current_version)>0) {
-        $table .= " <a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Upgrade')."</a>";
+        $table .= " <a onclick='theme_download(\"{$p->package}\")' class='g-btn success'>".__('Upgrade')."</a> ";
       }
     }
-    $table .= "<a href='".Config::base_url()."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;</a> ";
+    $table .= "<a href='".Config::base()."?g_preview_theme={$p->package}' target='_blank' class='g-btn btn-white' style='display:inline-flex'><i class='fa fa-eye'></i>&nbsp;</a> ";
     if (FS_ACCESS) {
       $table .= "<a href='admin/fm/?f=themes/{$p->package}' target=\"_blank\" class='g-btn btn-white'><i class=\"fa fa-folder\"></i></a>";
     }
@@ -60,11 +62,11 @@ View::alerts();
 <div class="row">
   <ul class="g-nav g-tabs gs-12" id="theme-tabs"><?php
   foreach ($links as $link) {
-    $active = (Router::url()==$link[1]?'active':'');
+    $active = (Router::path()==$link[1]?'active':'');
     echo '<li class="'.$active.'"><a href="'.Config::url($link[1]).'">'.__($link[0]).'</a></li>';
   }
   ?>
-    <form method="get" class="inline-flex" style="float:right" action="<?=Config::url('admin/newthemes')?>">
+    <form method="get" class="inline-flex" style="float:right" action="<?=Config::base('admin/newthemes')?>">
       <input name='search' class="g-input fullwidth" value="<?=($search??'')?>">
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
@@ -79,7 +81,7 @@ View::alerts();
 
 <?=View::script('core/admin/media.js')?>
 <?=View::script('lib/vue/vue.min.js');?>
-<?=View::script('core/lang/content/'.Config::config('language').'.js');?>
+<?=View::script('core/lang/content/'.Config::get('language').'.js');?>
 <?=View::script('core/admin/vue-components.js');?>
 <script>
 function theme_activate(p) {
@@ -92,10 +94,12 @@ function theme_download(p){
   g.loader()
   g.post('admin/themes?g_response=content', 'download='+p, function(x) {
     g.loader(false)
-    if(x=='ok')
+    data =JSON.parse(x)
+    if(data.success==true) {
       g.alert("<?=__('_theme_downloaded')?>",'success');
-    else
-      g.alert(x,'warning');
+    } else {
+      g.alert(data.error,'warning');
+    }
   }
 )};
 

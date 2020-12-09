@@ -5,7 +5,7 @@ foreach (Config::$widget_area as $value) {
   $widget_areas[$value] = $value;
 }
 $widgets = [];
-foreach (Config::$widget as $k=>$value) {
+foreach (Widget::getList('widget') as $k=>$value) {
   $widgets[$k] = $k;
 }
 
@@ -27,7 +27,7 @@ return [
     'search_box'=> true,
     'search_boxes'=> ['area','widget'],
     'fields'=> [
-        'id'=> ['title'=>'ID', 'edit'=>false],
+        'id'=> ['title'=>'ID', 'edit'=>false, 'create'=>false],
         'widget'=> ['title'=>'Type', 'type'=>'select', 'options'=>$widgets, 'create'=>true],
         'title'=> ['title'=>'Title'],
         'area'=> ['title'=>'Widget Area', 'type'=>'select', 'options'=>$widget_areas],
@@ -37,7 +37,7 @@ return [
           'type'=>'checkbox','edit'=>true,'create'=>false
         ],
         'data'=> [
-          'title'=>'Data', 'list'=>false, 'edit'=>false,
+          'title'=>'Data', 'list'=>false, 'edit'=>false, 'create'=>false,
           'type'=>'text','allow_tags'=>true
         ],
     ],
@@ -47,10 +47,8 @@ return [
           if (!isset($row['data']) || $row['data']!==null) {
             return;
           }
-          $wdgt_options = include 'src/'.Config::$widget[$row['widget']].'/widget.php';
-          if (isset($options)) {
-            $wdgt_options = $options;
-          }
+          $wdgt_options = Gila\Widget::getFields($row['widget']);
+
           $default_data=[];
           foreach ($wdgt_options as $key=>$op) {
             if (isset($op['default'])) {

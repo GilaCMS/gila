@@ -17,19 +17,31 @@ class HtmlInput
     if ($response = Event::get('HtmlInput::purify', null, $value)) {
       return $response;
     }
-
-    if (class_exists("DomDocument")) {
+    
+    if (empty(trim($value))) {
+      $value = '';
+    } elseif (class_exists("DomDocument")) {
       $value = self::DOMSanitize($value);
     }
 
-    $value = strtr($value, ['="javascript:'=>'="', '=\'javascript:'=>'=\'']);
+    $tD = 'javascript&#8282;';
+    $value = strtr($value, ['javascript&#x3a;'=>$tD,'javascript&#58;'=>$tD,'javascript&colon;'=>$tD,'javascript:'=>$tD]);
+
+    if (Config::get('utf8_decode')==true) {
+      $value = utf8_decode($value);
+    } // mysql utf8 support
     return $value;
   }
 
   public function DOMSanitize($value)
   {
     $dom = new \DOMDocument;
-    $dom->loadHTML($value);
+    $dom->loadHTML('<?xml encoding="utf-8"?>'.$value);
+
+    $tags = $dom->getElementsByTagName('script');
+    foreach (iterator_to_array($tags) as $tag) {
+      $tag->parentNode->removeChild($tag);
+    }
     $tags = $dom->getElementsByTagName('*');
     foreach ($tags as $tag) {
       foreach (self::$eventAttributes as $attr) {

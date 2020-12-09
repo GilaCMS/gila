@@ -6,12 +6,13 @@ use Gila\View;
 
 global $db;
 
-Router::controller('admin', 'core/controllers/admin');
-Router::controller('cm', 'core/controllers/cm');
-Router::controller('login', 'core/controllers/login');
-Router::controller('webhook', 'core/controllers/webhook');
-Router::controller('lzld', 'core/controllers/lzld');
-Router::controller('fm', 'core/controllers/fm');
+Router::controller('admin', 'core/controllers/AdminController');
+Router::controller('cm', 'core/controllers/CMController');
+Router::controller('user', 'core/controllers/UserController');
+Router::controller('webhook', 'core/controllers/WebhookController');
+Router::controller('lzld', 'core/controllers/LZLDController');
+Router::controller('fm', 'core/controllers/FMController');
+Router::controller('blocks', 'core/controllers/BlocksController');
 
 Config::$amenu = [
   ['Dashboard','admin','icon'=>'dashboard'],
@@ -37,18 +38,23 @@ if (FS_ACCESS) {
 }
 
 Config::widgets([
-  'paragraph'=>'core/widgets/paragraph',
+  'paragraph'=>'core/widgets/paragraph', // DEPRECATED
+  'text'=>'core/widgets/text',
   'image'=>'core/widgets/image',
-  'gallery'=>'core/widgets/gallery',
-  'gallery-links'=>'core/widgets/gallery-links',
-  'social-icons'=>'core/widgets/social-icons',
-  'links'=>'core/widgets/links',
+  'side-image'=>'core/widgets/side-image',
   'features'=>'core/widgets/features',
   'latest-post'=>'core/widgets/latest-post',
   'category-post'=>'core/widgets/category-post',
   'post-categories'=>'core/widgets/post-categories',
+  'gallery'=>'core/widgets/gallery',
+  'gallery-links'=>'core/widgets/gallery-links',
+  'social-icons'=>'core/widgets/social-icons',
+  'links'=>'core/widgets/links', // DEPRECATED
+  'contact-form'=>'core/widgets/contact-form',
+  'core-counters'=>'core/widgets/core-counters',
+  'search'=>'core/widgets/search',
   'tag'=>'core/widgets/tag',
-  'contact-form'=>'core/widgets/contact-form'
+  'html'=>'core/widgets/html',
 ]);
 Config::$widget_area=['dashboard'];
 
@@ -62,6 +68,6 @@ Config::content('widget', 'core/tables/widget.php');
 
 Config::addLang('core/lang/');
 
-if (Config::config('use_cdn')==='1') {
+if (Config::get('use_cdn')==='1') {
   View::$cdn_paths = include 'src/core/cdn_paths.php';
 }

@@ -1,10 +1,11 @@
 <?php
 if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptcha', true)) {
-  new sendmail(["post"=>["name","email","message"]]);
+  new Sendmail(["post"=>["name","email","message"]]);
   View::alert('success', htmlentities($widget_data->success_msg));
 }
 ?>
-
+<section>
+<div class="container">
 <form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form">
   <?=Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php View::alerts() ?>
@@ -15,5 +16,7 @@ if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptch
   <label><?=__("Subject")?></label>
   <textarea name="message" class="form-control g-input" required></textarea>
   <?php Event::fire('recaptcha.form')?>
-  <input type="submit" class="btn btn-primary btn-block" value="<?=__('Send')?>">
+  <input type="submit" class="btn g-btn btn-primary btn-block" value="<?=__('Send')?>">
 </form>
+</div>
+</section>

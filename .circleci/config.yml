@@ -46,11 +46,13 @@ jobs:
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit tests/phpunit/InstallSqlTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/ConfigTest.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-Table.php
+      - run: ./vendor/bin/phpunit tests/phpunit/TableTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/TableSchemaTest.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-View.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-FileManager.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-Router.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-Slugify.php
-      - run: ./vendor/bin/phpunit tests/phpunit/class-Cache.php
+      - run: ./vendor/bin/phpunit tests/phpunit/UserAgentTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/ViewTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/FileManagerTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/RouterTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/SlugifyTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/CacheTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/requests.php
+      - run: ./vendor/bin/phpunit tests/phpunit/UserTest.php

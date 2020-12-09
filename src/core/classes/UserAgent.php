@@ -4,7 +4,7 @@ namespace Gila;
 
 class UserAgent
 {
-  public function info($user_agent = null)
+  public static function info($user_agent = null)
   {
     if ($user_agent==null) {
       return null;
@@ -69,5 +69,28 @@ class UserAgent
     }
 
     return ['os'=>$os, 'device'=>$device, 'browser'=>$browser];
+  }
+
+  public static function isBot($user_agent)
+  {
+    $good_bots = ['SemrushBot','YandexBot','AhrefsBot','PetalBot','SaaSHub','bingbot','BingPreview','MJ12bot','Twitterbot',
+    'Googlebot','newspaper','NetcraftSurveyAgent','panscient.com','python-requests','SeznamBot','zgrab',
+    'facebookexternalhit','Baiduspider','Nimbostratus-Bot','DotBot','DuckDuckBot','Slackbot',
+    'Applebot','Python-urllib','bitlybot','TelegramBot', 'YandexMetrika', 'Go-http-client', 'DuckDuckGo-Favicons-Bot',
+    'CensysInspect','Siteimprove','aiohttp','Barkrowler','AdsBot','Mediapartners-Google','aiHitBot','evc-batch',
+    'Scrapy','CCBot','MojeekBot','Discordbot','article-parser','HackerNews','node-superagent','RandomSurfer',
+    'CheckMarkNetwork','Dataprovider.com','BLEXBot','Apache-HttpClient','MegaIndex','LinkedInBot','Infosecbot',
+    ' bot','github.com','RestSharp','KomodiaBot','RU_Bot','compatible;'
+    ];
+
+    if ($user_agent === null || strlen($user_agent)<40) {
+      return true;
+    }
+    foreach ($good_bots as $bot) {
+      if (strpos($user_agent, $bot) !== false) {
+        return true;
+      }
+    }
+    return false;
   }
 }

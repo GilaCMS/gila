@@ -35,7 +35,7 @@ $fn = function () {
 ?>
 <div class="row">
   <ul class="g-nav g-tabs gs-12" id="theme-tabs"><?php
-  $tab = Router::get('tab', 1);
+  $tab = Router::param('tab', 1);
   foreach ($links as $key=>$link) {
     if ($tab==$key) {
       $active = 'active';
