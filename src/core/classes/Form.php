@@ -83,7 +83,8 @@ class Form
 
     $html .= '<div class="g-label">'.$label;
     if (isset($op['helptext'])) {
-      $html .= '<br><span style="font-weight:400;font-size:90%">'.$op['helptext'].'</span>';
+      $helptext = $op['helptext_'.Config::lang()] ?? Config::tr($op['helptext']);
+      $html .= '<br><span style="font-weight:400;font-size:90%">'.$helptext.'</span>';
     }
     $html .= '</div>';
 
@@ -98,7 +99,7 @@ class Form
         if ($type==='range') {
           $req = ' min='.($op['min']??0).' max='.($op['max']??10).' step='.($op['step']??1);
         }
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'" type="'.$type.'"'.$req.'>';
+        $html .= '<input class="g-input" name="'.$name.'" type="'.$type.'"'.$req.' value='.htmlentities($ov).'>';
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
@@ -181,7 +182,7 @@ class Form
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
           $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
-          $html .= '<label for="'.$id.$value.'">'.$display.'</label>';
+          $html .= '<label for="'.$id.$value.'">'.__($display).'</label>';
         }
         return $html . '</div>';
       },
@@ -214,6 +215,20 @@ class Form
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<input-media name="'.$name.'" value="'.$ov.'">';
+      },
+      "tree-select"=> function ($name, $field, $ov) {
+        return '<tree-select name="'.$name.'" value="'.$ov.'" data='.json_encode($field['data']).'>';
+      },
+      "palette"=> function ($name, $field, $ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        if (empty($ov)) {
+          $ov = json_encode(end($field['palettes']));
+        }
+        $field['palettes'][] = json_decode($ov, true);
+        $ov = htmlspecialchars($ov);
+        $pal = $field['palettes']? htmlspecialchars(json_encode($field['palettes'])): '';
+        $labels = $field['labels']? htmlspecialchars(json_encode($field['labels'])): '';
+        return '<color-palette name="'.$name.'" value="'.$ov.'" palettes="'.$pal.'" labels="'.$labels.'">';
       },
       "media-gallery"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);

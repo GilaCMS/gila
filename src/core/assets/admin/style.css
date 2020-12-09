@@ -2,7 +2,8 @@
   --sidebar-width: 200px;
   ---sidebar-width: -200px;
 }
-body { overflow-x: hidden; }
+body { overflow-x: hidden; background:var(--main-bg-color);background-size:cover}
+#top-wrapper{vertical-align:baseline; background:rgba(255,255,255,0.8);border:1px solid var(--main-border-color)}
 #wrapper { padding-left: 0; transition: all 0.5s ease; width:100%}
 #wrapper.toggled { padding-left: var(--sidebar-width); }
 #wrapper.toggled #sidebar-wrapper { width: var(--sidebar-width); overflow-y: visible; opacity:1 }
@@ -33,7 +34,7 @@ body { overflow-x: hidden; }
 #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
 .g-nav li ul{min-width: var(--sidebar-width)}
 
-.widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); grid-gap: 20px;}
+.widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); grid-gap: 20px;}
 .widget-area-dashboard > * {box-shadow: 0 0 6px rgba(180,190,240,0.3); margin:0}
 .widget-area-dashboard .widget{background:white}
 .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: var(--main-padding); background: var(--main-bg-color); color: var(--main-color); }
@@ -44,6 +45,7 @@ body { overflow-x: hidden; }
   left:0;
   width: 100%;
   max-width: 100%;
+  border:1px solid var(--main-border-color);
 }
 
 @media(min-width:800px) {

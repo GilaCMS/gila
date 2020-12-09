@@ -13,5 +13,5 @@ return [
       'type'=>'textarea'
     ]
   ],
-  'keys'=>'page,widget'
+  'keys'=>'page,widget,media'
 ];

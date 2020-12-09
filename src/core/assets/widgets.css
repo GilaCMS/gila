@@ -1,9 +1,12 @@
 .widget-features{grid-column: 1/span 4;text-align: center;}
-@media (min-width:650px) {
-  .widget-core-counters,
-  .widget-mysql-chart{grid-column: span 2;}
+.widget-area-dashboard .widget {
+  grid-column:span 1;  
 }
-.widget-core-counters{grid-column: 1/-1;}
+@media (min-width:650px) {
+  .widget-area-dashboard .widget-core-counters{grid-column: span 2;}
+  .widget-area-dashboard .widget-mysql-chart{grid-column: span 2;}
+}
+.widget-area-dashboard .widget-core-counters{grid-column: 1/span 4;}
 
 .features-grid{
   display: grid;
@@ -25,7 +28,7 @@
   padding-right:8px;
   margin-right:8px;
   color:var(--main-a-color);
-  opacity: 0.5;
+  opacity: 0.6;
 }
 .core-counters-grid a{
   color:inherit;

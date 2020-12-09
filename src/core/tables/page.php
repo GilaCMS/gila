@@ -3,11 +3,12 @@
 return [
   'name'=> 'page',
   'title'=> 'Pages',
-  'pagination'=> 5,
+  'pagination'=> 25,
   'id'=>'id',
   'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','updated','publish','page'],
   'commands'=> ['blocks','delete'],
+  'qactions'=> ['title'=>['edit_popup','blocks','delete']],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish'],
   'js'=>['src/core/tables/page.js','src/core/assets/admin/blocks_btn.js'],
@@ -21,7 +22,8 @@ return [
     'id'=> [
       'title'=>'ID',
       'style'=>'width:5%',
-      'edit'=>false
+      'edit'=>false,
+      'create'=>false
     ],
     'title'=> [
       'title'=>'Title',
@@ -29,7 +31,7 @@ return [
       'group'=>'title'
     ],
     'slug'=> [
-      'title'=>'Path',
+      'title'=>'Route',
       'qtype'=>'varchar(80) DEFAULT NULL',
       'alt'=>'('.Gila\Config::tr('Home').')',
       'group'=>'title'
@@ -45,6 +47,7 @@ return [
       'title'=>'Description',
       'input-type'=>'textarea',
       'qtype'=>'varchar(200) DEFAULT NULL',
+      'list'=>false,
       'group'=>'title'
     ],
     'publish'=> [
@@ -52,6 +55,7 @@ return [
       'style'=>'width:8%',
       'type'=>'checkbox',
       'edit'=>true,
+      'create'=>false,
       'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'updated'=> [
@@ -66,7 +70,15 @@ return [
     'blocks'=> [
       'list'=> false,
       'edit'=> false,
+      'create'=> false,
       'qtype'=> 'TEXT'
     ]
-  ]
+  ],
+  'events'=>[
+    ['create',function (&$row) {
+      if ($row['slug']=='') {
+        $row['slug'] = Slugify::text($row['title']);
+      }
+    }]
+  ]  
 ];

@@ -206,6 +206,17 @@
 tr.selecting td, tr.selecting td:hover {
   background-color: #d0d0ff;
 }
+.g-table td:hover .qactions{
+  visibility:visible;
+}
+.qactions{
+  visibility:hidden;
+  margin-top:4px;
+}
+.qactions a{
+  cursor: pointer;
+  margin-right: 8px;
+}
 
 tr.selected td {
   background-color: #d0d0ff!important;

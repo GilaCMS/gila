@@ -10,6 +10,7 @@ return [
   'approve'=>['publish','1'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
   'commands'=> ['edit_popup','delete'],
+  'qactions'=> ['title'=>['edit_popup','delete']],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish','user_id'],
   'meta_table'=>['postmeta', 'post_id', 'vartype', 'value'],
