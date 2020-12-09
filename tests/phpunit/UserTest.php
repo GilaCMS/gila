@@ -12,9 +12,9 @@ class UserTest extends TestCase
 {
 	public function test_create(){
 		$result = User::create('test_create@email.com', '123');
-		$this->assertTrue($result);
+		$this->assertTrue($result!==false);
 		$result = User::create('test_create@email.com', '123');
-		$this->assertTrue($result);
+		$this->assertTrue($result!==false);
 	}
 }
 
