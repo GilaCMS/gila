@@ -26,7 +26,7 @@ class Menu
   {
     $items = [];
     if ($type = $data['type']) {
-      if ($data['children']) {
+      if (isset($data['children'])) {
         $children = [];
         foreach ($data['children'] as $mi) {
           $children[] = self::convert($mi);

@@ -127,6 +127,7 @@
 }
 .gallery-columns>img {
   display:block;
+  width: 100%;
 }
 .columns-5{
   column-count: 5;
@@ -174,9 +175,18 @@ section>.container{
   padding:0;  
 }
 
-.colors-invert {
+.colors-invert, .colors-dark {
   background: #444;
 }
-.colors-invert, .colors-invert *{
+.colors-black {
+  background: #000;
+}
+.colors-hcolor {
+  background: var(--hcolor);
+}
+.colors-invert, .colors-invert *,
+.colors-dark, .colors-dark *,
+.colors-black,.colors-black *,
+.colors-hcolor, .colors-hcolor * {
   color:white;
 }

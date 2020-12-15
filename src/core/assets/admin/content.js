@@ -375,7 +375,11 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
-        return '<img src="lzld/thumb?src='+cv+'&media_thumb=80" style="max-width:80px"></img>'
+        src = "lzld/thumb?src='+cv+'&media_thumb=80"
+        if (cv.startsWith('https:') || cv.startsWith('http:')) {
+          src = cv
+        }
+        return '<img src="'+src+'" style="max-width:80px"></img>'
       } else {
         return '';
       }
