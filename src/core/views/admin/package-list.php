@@ -131,13 +131,16 @@ foreach ($packages as $pkey=>$p) {
 }
 ?>
 <?php
-$links=[
-['Downloaded','admin/packages'],
-['Newest','admin/packages/new']
-];
 View::alerts();
 ?>
 <div class="row" id='packages-list'>
+<?php
+if (FS_ACCESS) {
+  $links = [
+    ['Downloaded','admin/packages'],
+    ['Newest','admin/packages/new']
+  ];
+?>
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
   foreach ($links as $link) {
     $active = (Router::path()==$link[1]?'active':'');
@@ -149,6 +152,7 @@ View::alerts();
       <button class="g-btn g-group-item" type='submit'><?=__('Search')?></button>
     </form>
   </ul>
+<?php } ?>
   <div class="tab-content gs-12">
     <div><br><table class='g-table' id="tbl-packages" style="margin-left:5px;display:table"><?=$table?></table></div>
   </div>

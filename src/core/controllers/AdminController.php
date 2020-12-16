@@ -132,7 +132,7 @@ class AdminController extends Gila\Controller
     $tab = Router::param('tab', 1);
     $packages = [];
 
-    if ($tab == 'new') {
+    if ($tab == 'new' && FS_ACCESS) {
       $url = 'https://gilacms.com/packages/?search='.$search;
       $url .= Config::get('test')=='1' ? '&test=1' : '';
       if (!$contents = file_get_contents($url)) {
@@ -155,6 +155,9 @@ class AdminController extends Gila\Controller
   public function newthemesAction()
   {
     self::access('admin');
+    if (!FS_ACCESS) {
+      return;
+    }
     $packages = [];
     $search = htmlentities(Router::param('search', 2));
     if (!$contents = file_get_contents('https://gilacms.com/packages/themes?search='.$search)) {
