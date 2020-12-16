@@ -55,15 +55,15 @@ class BlogController extends Gila\Controller
 
     $path = Router::getPath();
     Config::canonical('');
+    if ($path=='' && $r = Page::getByIdSlug('')) {
+      $this->postShow('');
+      return;
+    }
     if ($path!='' || View::getViewFile('homepage.php')==false) {
       View::set('page', self::$page);
       View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
       View::render('frontpage.php');
     } else {
-      if ($path=='' && $r = Page::getByIdSlug('')) {
-        $this->postShow('');
-        return;
-      }
       View::render('homepage.php');
     }
     if (http_response_code()==200) {
