@@ -13,7 +13,7 @@
   grid-gap:20px;
   padding:20px;
   justify-content: center;
-  grid-template-columns: repeat(auto-fit, minmax(160px,200px));
+  grid-template-columns: repeat(auto-fit, minmax(160px,300px));
   width:100%;
 }
 .core-counters-grid{
