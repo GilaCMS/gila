@@ -48,7 +48,7 @@ align-items: center;padding:0 0.5em;background:#555;color:white" id="editMenu">
 
 </div>
 
-<div style="background:#eee;display:flex;justify-content:center;height:95vh">
+<div style="display:flex;justify-content:center;height:95vh">
   <iframe style="width:100%;height:95vh;border:0;transition:0.3s;box-shadow:black 0px 0px 5px" id=pageFrame onload="readFrame()"
   src='<?=Config::base()?>blocks/display?t=page&id=<?=htmlentities($id)?>'></iframe>
 </div>

@@ -53,13 +53,17 @@ foreach ($packages as $pkey=>$p) {
   $table .= "</div>";
 }
 
-$links=[
-['Downloaded','admin/themes'],
-['Newest','admin/newthemes']
-];
 View::alerts();
+
 ?>
 <div class="row">
+<?php
+if (FS_ACCESS) {
+  $links=[
+  ['Downloaded','admin/themes'],
+  ['Newest','admin/newthemes']
+];
+?>
   <ul class="g-nav g-tabs gs-12" id="theme-tabs"><?php
   foreach ($links as $link) {
     $active = (Router::path()==$link[1]?'active':'');
@@ -71,13 +75,13 @@ View::alerts();
       <button class="g-btn g-group-item" onclick='submit'><?=__('Search')?></button>
     </form>
   </ul>
+<?php } ?>
   <div class="tab-content gs-12">
     <div>
       <?=$table?>
     </div>
   </div>
 </div>
-
 
 <?=View::script('core/admin/media.js')?>
 <?=View::script('lib/vue/vue.min.js');?>

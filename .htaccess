@@ -29,7 +29,9 @@ RewriteRule (.*)$ index.php?p=$1 [QSA,L]
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
 # redirect all sites
-# RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
-# RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+# RewriteEngine On
+# RewriteCond %{REQUEST_URI} !/sites/
+# RewriteCond %{HTTP_HOST} !^example\.com
 # RewriteRule ^assets/uploads/(.*)$ sites/%{HTTP_HOST}/assets/uploads/$1 [NC]
+# RewriteCond %{HTTP_HOST} !^example\.com
 # RewriteRule ^tmp/(.*)$ sites/%{HTTP_HOST}/tmp/$1 [NC]

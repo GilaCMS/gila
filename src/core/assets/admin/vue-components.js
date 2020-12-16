@@ -103,7 +103,7 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
   },
   methods:{
     imgSrc: function(src) {
-      if(src.split('.').pop()=='svg' || src.startsWith('http:') || src.startsWith('https:')) {
+      if(src.startsWith('http:') || src.startsWith('https:') || src.split('.').pop()=='svg') {
         return src;
       }
       return 'lzld/thumb?media_thumb=120&src='+src;

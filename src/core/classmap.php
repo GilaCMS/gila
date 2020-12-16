@@ -18,6 +18,7 @@ return [
   'Gila\\Router'=> 'src/core/classes/Router.php',
   'Gila\\Session'=> 'src/core/classes/Session.php',
   'Gila\\Slugify'=> 'src/core/classes/Slugify.php',
+  'Gila\\Sendmail'=> 'src/core/classes/Sendmail.php',
   'Gila\\Theme'=> 'src/core/classes/Theme.php',
   'Gila\\View'=> 'src/core/classes/View.php',
   'Gila\\HttpPost'=> 'src/core/classes/HttpPost.php',

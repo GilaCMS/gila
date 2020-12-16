@@ -82,6 +82,7 @@ class View
     }
 
     self::$css[]=$css;
+    self::$stylesheet[]=$css;
     echo '<link rel="stylesheet" href="'.$css.'" '.$prop.'>';
   }
 

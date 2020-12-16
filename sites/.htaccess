@@ -1,1 +1,3 @@
-Deny from all
+<FilesMatch ".*\.(php|phtml|phar|md)$">
+deny from all
+</FilesMatch>
