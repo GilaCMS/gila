@@ -126,7 +126,7 @@ $itemTypes = MenuItemTypes::getItemTypes();
     $menus = scandir(LOG_PATH.'/menus');
     foreach ($menus as $name) {
       if ($name[0]!='.') {
-        $lname = substr($name, 0, strpos($name, '.'));
+        $lname = basename($name, '.json');
         echo '<li><a href="'.Config::url('admin/menu/'.$lname).'">'.$lname.'</a>';
       }
     }

@@ -67,7 +67,7 @@ class Form
   public static function input($name, $op, $ov = '', $key = '')
   {
     self::initInputTypes();
-    $type = $op['input_type']??$type;
+    $type = $op['input_type']??($op['type']??'text');
     $html = '<div class="type-'.$type.'">';
     $label = ucwords(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;

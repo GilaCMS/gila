@@ -263,6 +263,7 @@ class Package
               in_array($package, $GLOBALS['config']['packages'])) {
               include $update_file;
             }
+            @unlink('sites/'.$site.'/log/load.php');
           }
         }
       }
