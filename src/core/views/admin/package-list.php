@@ -70,13 +70,13 @@ foreach ($packages as $pkey=>$p) {
     }
 
     // Title & version
-    $title = $p->title?:$p->package;
+    $title = $p->title??$p->package;
     $table .= '<td style="min-width:50%;"><b>'.$title.' '.(isset($p->version)?$p->version:'').'</b>';
 
     // Description
     $desc = __($p->package.':desc');
     if ($desc==$p->package.':desc') {
-      $desc = $p->description?:'No description';
+      $desc = $p->description ?? 'No description';
     }
     $table .= '<br>'.$desc.'<br>';
 

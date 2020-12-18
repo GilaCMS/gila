@@ -11,8 +11,8 @@ if (!@class_exists('blog')) {
   }
 }
 
-$widget_data->n_post = @$widget_data->n_post?:4;
-$widget_data->category = @$widget_data->category?:null;
+$widget_data->n_post = $widget_data->n_post??4;
+$widget_data->category = $widget_data->category??null;
 
 foreach (Gila\Post::getPosts(
   ['posts'=>$widget_data->n_post, 'category'=>$widget_data->category]

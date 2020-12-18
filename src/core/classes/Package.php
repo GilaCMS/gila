@@ -101,7 +101,7 @@ class Package
           foreach ($pac['options'] as $key=>$option) {
             if (@$option['required']==true) {
               if (Config::option($activate.'.'.$key)===null) {
-                $require_op[] = @$option['title']?:$key;
+                $require_op[] = $option['title'] ?? $key;
               }
             }
           }

@@ -28,7 +28,7 @@
     </div>
     <div class="gm-3 sidebar">
       <form method="get" class="inline-flex" action="<?=Config::base('blog')?>">
-        <input name='search' class="g-input fullwidth" value="<?=(isset($search)?:'')?>">
+        <input name='search' class="g-input fullwidth" value="<?=($search??'')?>">
         <button class="g-btn g-group-item" onclick='submit'><?=__("Search")?></button>
     </form>
       <?php View::widgetArea('sidebar'); ?>

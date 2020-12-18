@@ -273,6 +273,10 @@ td[col] .g-input {
   text-align: left;
 }
 
+.g-searchbox .g-input {
+  max-width:250px;
+}
+
 .bg-option {
   border-radius: 2px;
   padding: 3px;

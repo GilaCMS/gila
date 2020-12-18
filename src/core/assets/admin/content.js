@@ -375,7 +375,7 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
-        src = "lzld/thumb?src='+cv+'&media_thumb=80"
+        src = 'lzld/thumb?src='+cv+'&media_thumb=80'
         if (cv.startsWith('https:') || cv.startsWith('http:')) {
           src = cv
         }

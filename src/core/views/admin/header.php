@@ -42,7 +42,7 @@ if ($palette=Config::get('admin_palette')) {
           <img style="max-width:180px;max-height:60px" src="<?=View::thumb(Config::get('admin_logo')??'assets/gila-logo.png')?>" class="centered">
         </a>
       </div>
-      <ul class="g-nav vertical lazy" data-load="lzld/amenu?base=<?=Config::url('')?>">
+      <ul class="g-nav vertical lazy" data-load="lzld/amenu/?base=<?=Config::url('')?>">
       ...
       </ul>
     </div></div>

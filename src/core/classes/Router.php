@@ -96,7 +96,7 @@ class Router
       return self::$action;
     }
     $args = &self::$args;
-    $action = self::request('action', @$args[0]?:'index');
+    $action = $args[0]??'index';
 
     if (!method_exists($ctrClass, $action.'Action') &&
         !isset(self::$actions[self::getController()][$action])) {
@@ -162,7 +162,7 @@ class Router
 
   public static function path()
   {
-    return self::$url;
+    return self::getPath();
   }
 
   /**

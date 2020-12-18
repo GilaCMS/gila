@@ -29,7 +29,7 @@ class TableSchema
     $id = $table['id'] ?? 'id';
 
     // CREATE TABLE
-    $qtype = @$table['fields'][$id]['qtype']?:'INT NOT NULL AUTO_INCREMENT';
+    $qtype = $table['fields'][$id]['qtype'] ?? 'INT NOT NULL AUTO_INCREMENT';
     $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
     $db->query($q);
 
@@ -48,7 +48,7 @@ class TableSchema
     // ADD COLUMNS
     foreach ($table['fields'] as $fkey=>$field) {
       if (isset($field['qtype']) && $fkey!=$id) {
-        $column = @$field['qcolumn']?:$fkey;
+        $column = $field['qcolumn']??$fkey;
         if (strpos($column, '(') !== false) {
           continue;
         }

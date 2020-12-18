@@ -20,10 +20,11 @@ class BlogController extends Gila\Controller
 
   public function __construct()
   {
-    self::$page = intval(@$_GET['page'])?:1;
+    self::$page = (int)($_GET['page']??1);
     self::$ppp = 12;
     self::$totalPosts = null;
     View::set('page_title', Config::get('title'));
+    View::set('page', self::$page);
   }
 
   /**
@@ -36,6 +37,7 @@ class BlogController extends Gila\Controller
   public function indexAction()
   {
     if ($id = Router::path() ?? Router::param('p')) {
+      $id = explode('?', $id)[0];
       if ($id !== "blog" && $id !== "blog/") {
         $this->postShow($id);
         return;

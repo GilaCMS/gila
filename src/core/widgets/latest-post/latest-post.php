@@ -14,8 +14,8 @@ if ($widget_data->show_thumbnails == 1) {
   $stacked_file = TMP_PATH.'/stacked-wdgt'.$widget_data->widget_id.'.jpg';
   $posts = [];
   $img = [];
-  $widget_data->n_post = @$widget_data->n_post?:5;
-  $widget_data->show_thumbnails = @$widget_data->show_thumbnails?:0;
+  $widget_data->n_post = $widget_data->n_post ?? 5;
+  $widget_data->show_thumbnails = $widget_data->show_thumbnails ?? 0;
   foreach (Gila\Post::getLatest($widget_data->n_post) as $r) {
     $posts[] = $r;
     $img[]=$r['img'];
@@ -30,7 +30,7 @@ if ($widget_data->show_thumbnails == 1) {
 
 foreach ($posts as $key=>$r) {
   echo "<li>";
-  echo "<a href='".Config::url('blog', ['p'=>$r['id'],'slug'=>$r['slug']])."'>";
+  echo "<a href='".Config::base('blog/'.$r['id'].'/'.$r['slug'])."'>";
   if ($widget_data->show_thumbnails == 1) {
     if ($stacked[$key]!==false) {
       if ($img=View::thumb($r['img'], 100)) {
