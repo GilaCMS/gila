@@ -79,11 +79,11 @@ class Session
     return $db->read()->get("SELECT * FROM sessions WHERE user_id=?;", [$userId]);
   }
 
-  public static function update($gsessionId){
+  public static function update($gsessionId)
+  {
     global $db;
-    $ql = "UPDATE sessions set updated=curdate() WHERE gsessionid=?;";
-    $res= $db->query($ql, [$gsessionId]);
-    return $res;
+    $ql = "UPDATE sessions SET updated=curdate() WHERE gsessionid=?;";
+    return $db->query($ql, [$gsessionId]);
   }
 
   public static function setCookie($userId)

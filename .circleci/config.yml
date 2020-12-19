@@ -54,5 +54,6 @@ jobs:
       - run: ./vendor/bin/phpunit tests/phpunit/RouterTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/SlugifyTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/CacheTest.php
-      - run: ./vendor/bin/phpunit tests/phpunit/requests.php
       - run: ./vendor/bin/phpunit tests/phpunit/UserTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/SessionTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/requests.php
