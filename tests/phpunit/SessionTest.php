@@ -18,7 +18,7 @@ class SessionTest extends TestCase
         $this->assertEquals('127.0.0.1', $result['ip_address']);
 		$this->assertEquals('User Agent', $result['user_agent']);
 		$this->assertEquals(100, $result['user_id']);
-		$this->assertTrue(Session::find($gsessionid));
+		$this->assertTrue(Session::update($gsessionid));
 		Session::remove($gsessionid);
 		$result = Session::find($gsessionid);
 		$this->assertNull($result);
