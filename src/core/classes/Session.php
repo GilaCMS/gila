@@ -82,7 +82,7 @@ class Session
   public static function update($gsessionId)
   {
     global $db;
-    $ql = "UPDATE sessions SET updated=curdate() WHERE gsessionid=?;";
+    $ql = "UPDATE sessions SET updated=NOW() WHERE gsessionid=?;";
     return $db->query($ql, [$gsessionId]);
   }
 
