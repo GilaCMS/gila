@@ -83,7 +83,7 @@ class Session
   {
     global $db;
     $ql = "UPDATE sessions SET updated=NOW() WHERE gsessionid=?;";
-    return $db->query($ql, [$gsessionId]);
+    $db->query($ql, [$gsessionId]);
   }
 
   public static function setCookie($userId)
