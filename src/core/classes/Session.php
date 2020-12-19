@@ -27,7 +27,7 @@ class Session
       $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']===1 && password_verify($_POST['password'], $usr['pass'])) {
         self::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
-        self::setCookie($usr['id']);
+        self::setCookie($usr['id'])
         unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();
@@ -37,14 +37,14 @@ class Session
     } else {
       if (self::userId()==0) {
         if (isset($_COOKIE['GSESSIONID'])) {
-          $user_ids = User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']);
+          $user_ids = User::getGsession($_COOKIE['GSESSIONID']);
           if (isset($user_ids[0])) {
             $usr = User::getById($user_ids[0]);
             if ($usr['active']===1) {
               self::user($usr['id'], $usr['username'], $usr['email']);
             }
           } else {
-            @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
+            User::updateGsession(null, $_COOKIE['GSESSIONID']);
           }
         }
       } else {
@@ -54,8 +54,8 @@ class Session
       }
 
       if (isset($_COOKIE['GSESSIONID'])) {
-        if (!file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-          User::metaDelete(self::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+        if(!User::validateSession($_COOKIE['GSESSIONID'], $agent)){
+          User::updateGsession(null, $_COOKIE['GSESSIONID']);
           self::destroy();
         }
       }
@@ -83,13 +83,13 @@ class Session
     }
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if (isset($_COOKIE['GSESSIONID'])) {
-      User::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
-      @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
+      User::updateGsession($id, $_COOKIE['GSESSIONID']);
     }
     header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
-    User::meta($id, 'GSESSIONID', $gsession, true);
-    $_COOKIE['GSESSIONID'] = $gsession;
-    self::createFile($gsession);
+    
+    $agent = $_SERVER['HTTP_USER_AGENT'];
+    //$ip = $_SERVER['REMOTE_ADDR'])];
+    User::sessions($id, $_COOKIE['GSESSIONID'], $agent);
   }
 
   /**
@@ -160,7 +160,7 @@ class Session
     $user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
     if ($token && !isset($_COOKIE['GSESSIONID'])) {
-      $usr = User::getByMeta('token', $token);
+      $usr = User::getGsession($token);
       if ($usr) {
         $user_id = $usr['id'];
       }
@@ -170,8 +170,11 @@ class Session
         @$user_id = self::key('user_id') ?? 0;
       }
       if (isset($_COOKIE['GSESSIONID']) &&
-          !file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-        self::createFile($_COOKIE['GSESSIONID']);
+      !User::getGsession($_COOKIE['GSESSIONID'])) {
+        $userId = self::key('user_id');
+        $value = $_COOKIE['GSESSIONID'];
+        $agent = $_SERVER['HTTP_USER_AGENT'];
+        User::sessions($userId, $value, $agent);
       }
     }
     self::$user_id = $user_id;

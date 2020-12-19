@@ -15,6 +15,8 @@ TableSchema::update(include 'src/core/tables/user.php');
 
 TableSchema::update(include 'src/core/tables/user_notification.php');
 
+TableSchema::update(include 'src/core/tables/sessions.php');
+
 $db->query('CREATE TABLE IF NOT EXISTS `widget` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `widget` varchar(80) DEFAULT NULL,
