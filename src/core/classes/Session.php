@@ -199,13 +199,6 @@ class Session
       if (isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
         @$user_id = self::key('user_id') ?? 0;
       }
-      //if (isset($_COOKIE['GSESSIONID']) &&
-      //!User::getGsession($_COOKIE['GSESSIONID'])) {
-      //  $userId = self::key('user_id');
-      //  $value = $_COOKIE['GSESSIONID'];
-      //  $agent = $_SERVER['HTTP_USER_AGENT'];
-      //  User::sessions($userId, $value, $agent);
-      //}
     }
     self::$user_id = $user_id;
     return self::$user_id;

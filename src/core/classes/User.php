@@ -63,13 +63,11 @@ class User
     return true;
   }
 
-
-  public static function validateSession($value, $agent){
+  public static function getIdsByMeta($vartype, $value)
+  {
     global $db;
-    $res = $db->read()->get("SELECT * FROM sessions WHERE gsessionid=? AND user_agent=? LIMIT 1", [$value, $agent, $ip]);
-    return $res;
+    return $db->getList("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';", [$value]);
   }
-
 
   public static function getByMeta($key, $value)
   {
