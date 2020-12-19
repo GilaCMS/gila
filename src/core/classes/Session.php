@@ -37,14 +37,11 @@ class Session
     } else {
       if (self::userId()==0) {
         if (isset($_COOKIE['GSESSIONID'])) {
-          $user_ids = User::getGsession($_COOKIE['GSESSIONID']);
-          if (isset($user_ids[0])) {
-            $usr = User::getById($user_ids[0]);
+          if ($session = self::find($_COOKIE['GSESSIONID'])) {
+            $usr = User::getById($session['user_id']);
             if ($usr['active']===1) {
               self::user($usr['id'], $usr['username'], $usr['email']);
             }
-          } else {
-            User::updateGsession(null, $_COOKIE['GSESSIONID']);
           }
         }
       } else {
@@ -53,12 +50,6 @@ class Session
         }
       }
 
-      if (isset($_COOKIE['GSESSIONID'])) {
-        if(!User::validateSession($_COOKIE['GSESSIONID'], $agent)){
-          User::updateGsession(null, $_COOKIE['GSESSIONID']);
-          self::destroy();
-        }
-      }
     }
   }
 
@@ -74,6 +65,21 @@ class Session
     }
   }
 
+  public static function find($gsessionId)
+  {
+    global $db;
+    $res = $db->read()->get("SELECT * FROM sessions
+    WHERE gsessionid=? LIMIT 1;", [$gsessionId]);
+    return $res[0] ?? null;
+  }
+
+  public static function update($gsessionId){
+    global $db;
+    $ql = "UPDATE sessions set updated=curdate() WHERE gsessionid=?;";
+    $res= $db->query($ql, [$gsessionId]);
+    return $res;
+  }
+
   public static function setCookie($id)
   {
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
@@ -83,14 +89,30 @@ class Session
     }
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if (isset($_COOKIE['GSESSIONID'])) {
-      User::updateGsession($id, $_COOKIE['GSESSIONID']);
+      self::remove($_COOKIE['GSESSIONID']);
     }
     header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
-    
-    $agent = $_SERVER['HTTP_USER_AGENT'];
-    //$ip = $_SERVER['REMOTE_ADDR'])];
-    User::sessions($id, $_COOKIE['GSESSIONID'], $agent);
+
+    $_COOKIE['GSESSIONID'] = $gsession;
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $ip = $_SERVER['REMOTE_ADDR'];
+    self::create($id, $gsession, $ip, $user_agent);
   }
+
+  public static function create($userId, $gsessionId, $ip, $user_agent)
+  {
+    global $db;
+    $ql = "INSERT into sessions (user_id, gsessionid, ip_address, user_agent) VALUES (?,?,?,?);";
+    $db->query($ql, [$userId, $gsessionId, $ip, $user_agent]);
+  }
+
+  public static function remove($gsessionId)
+  {
+    global $db;
+    $ql = "DELETE FROM sessions WHERE gsessionid=?;";
+    $db->query($ql, [$gsessionId]);
+  }
+
 
   /**
   * Define new session variables
@@ -160,7 +182,7 @@ class Session
     $user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
     if ($token && !isset($_COOKIE['GSESSIONID'])) {
-      $usr = User::getGsession($token);
+      User::getByMeta('token', $token);
       if ($usr) {
         $user_id = $usr['id'];
       }
@@ -169,13 +191,13 @@ class Session
       if (isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
         @$user_id = self::key('user_id') ?? 0;
       }
-      if (isset($_COOKIE['GSESSIONID']) &&
-      !User::getGsession($_COOKIE['GSESSIONID'])) {
-        $userId = self::key('user_id');
-        $value = $_COOKIE['GSESSIONID'];
-        $agent = $_SERVER['HTTP_USER_AGENT'];
-        User::sessions($userId, $value, $agent);
-      }
+      //if (isset($_COOKIE['GSESSIONID']) &&
+      //!User::getGsession($_COOKIE['GSESSIONID'])) {
+      //  $userId = self::key('user_id');
+      //  $value = $_COOKIE['GSESSIONID'];
+      //  $agent = $_SERVER['HTTP_USER_AGENT'];
+      //  User::sessions($userId, $value, $agent);
+      //}
     }
     self::$user_id = $user_id;
     return self::$user_id;
@@ -199,7 +221,7 @@ class Session
       $session_log = new Logger(LOG_PATH.'/sessions.log');
       $session_log->info('End', ['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
     }
-    @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
+    self::remove($_COOKIE['GSESSIONID']);
     @$_SESSION = [];
     @session_destroy();
   }

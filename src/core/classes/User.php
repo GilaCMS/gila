@@ -16,17 +16,21 @@ class User
     }
   }
 
-  public static function sessions($id, $agent, $value = null)
+  public static function meta($id, $meta, $value = null, $multi = false)
   {
     global $db;
     if ($value===null) {
-      $ql = "SELECT gsessionid FROM sessions where user_id=? LIMIT 1;";
-      return $db->value($ql, $id);
+      $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=? LIMIT 1;";
+      return $db->value($ql, [$id, $meta]);
     }
-    
-    $active = 1;
-    $ql = "INSERT into sessions (user_id, gsessionid, user_agent) VALUES (?,?,?);";
-    $db->query($ql, [$userId, $value, $agent]);
+    if ($multi==false) {
+      if ($db->value("SELECT COUNT(*) FROM usermeta WHERE user_id=? AND vartype=?;", [$id, $meta])) {
+        $ql = "UPDATE usermeta SET `value`=? WHERE user_id=? AND vartype=?;";
+        return $db->query($ql, [$value, $id, $meta]);
+      }
+    }
+    $ql = "INSERT INTO usermeta(user_id,vartype,`value`) VALUES(?,?,?);";
+    return $db->query($ql, [$id, $meta, $value]);
   }
 
   public static function metaDelete($id, $meta, $value=null)
@@ -59,11 +63,6 @@ class User
     return true;
   }
 
-  public static function getGsession($gsessionId){
-    global $db;
-    $res = $db->read()->get("SELECT * FROM user WHERE id=(SELECT * FROM sessions WHERE gsessionid=? LIMIT 1)", $gsessionId);
-    return $res;
-  }
 
   public static function validateSession($value, $agent){
     global $db;
@@ -71,16 +70,6 @@ class User
     return $res;
   }
 
-  public static function updateGsession($id=null, $value){
-     global $db;
-    if($id == null){
-       $ql = "UPDATE sessions set updated=curdate() WHERE gsessionid=?;";
-       $res= $db->query($ql, $value);
-    }
-    $ql = "UPDATE sessions set created=curdate() WHERE user_id=? AND gsessionid=?;";
-    $res= $db->query($ql, [$id, $value]);
-    return $res;
-  }
 
   public static function getByMeta($key, $value)
   {

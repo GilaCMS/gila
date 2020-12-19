@@ -11,9 +11,9 @@ use Gila\User;
 class UserTest extends TestCase
 {
 	public function test_create(){
-		$result = User::sessions('1', 'Firefox', 'JKSHGSDHGDFIDF123KJCHDC');
+		$result = User::meta('1', 'Firefox', 'JKSHGSDHGDFIDF123KJCHDC');
         $this->assertTrue($result);
-        $result = User::sessions('1', 'Firefox', 'JKSHGSDHGDFIDF123KJCHDC');
+        $result = User::meta('1', 'Firefox', 'JKSHGSDHGDFIDF123KJCHDC');
 		$this->assertTrue($result);
 	}
 }
