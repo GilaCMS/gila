@@ -10,10 +10,10 @@ return [
       'qtype'=>'INT'
     ],
     'gsessionid'=>[
-      'qtype'=>'VARCHAR(200)'
+      'qtype'=>'VARCHAR(120)'
     ],
     'ip_address'=>[
-      'qtype'=>'VARCHAR(200)'
+      'qtype'=>'VARCHAR(45)'
     ],
     'user_agent'=>[
       'qtype'=>'VARCHAR(200)'

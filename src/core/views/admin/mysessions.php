@@ -9,17 +9,13 @@
 
 <div class="row">
   <?php
-  $sessions = Gila\User::metaList(Session::userId(), 'GSESSIONID');
+  $sessions = Gila\Session::findByUserId(Gila\Session::userId());
   $info = [];
   foreach ($sessions as $key=>$session) {
-    if (file_exists(LOG_PATH.'/sessions/'.$session)) {
-      $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
-      $info[$key] = UserAgent::info($user_agent);
-      if ($_COOKIE['GSESSIONID']==$session) {
-        $info[$key]['current'] = true;
-      }
-    } else {
-      Gila\User::metaDelete(Session::userId(), 'GSESSIONID', $session);
+    $user_agent = $session['user_agent'];
+    $info[$key] = Gila\UserAgent::info($user_agent);
+    if ($_COOKIE['GSESSIONID']==$session['gsessionid']) {
+      $info[$key]['current'] = true;
     }
   }
   ?>

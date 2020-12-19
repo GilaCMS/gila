@@ -73,6 +73,12 @@ class Session
     return $res[0] ?? null;
   }
 
+  public static function findByUserId($userId)
+  {
+    global $db;
+    return $db->read()->get("SELECT * FROM sessions WHERE user_id=?;", [$userId]);
+  }
+
   public static function update($gsessionId){
     global $db;
     $ql = "UPDATE sessions set updated=curdate() WHERE gsessionid=?;";
@@ -80,13 +86,15 @@ class Session
     return $res;
   }
 
-  public static function setCookie($id)
+  public static function setCookie($userId)
   {
-    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = (string)$id;
-    for ($p = strlen($gsession); $p < 50; $p++) {
-      $gsession .= $chars[mt_rand(0, 32)];
-    }
+    do {
+      $gsession = '';
+      while (strlen($gsession) < 60) {
+        $gsession .= hash('sha512', uniqid(true));
+      }
+      $gsession = ubstr($gsession, 0, 60);
+    } while (self::find($gsession)!==null);
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if (isset($_COOKIE['GSESSIONID'])) {
       self::remove($_COOKIE['GSESSIONID']);
@@ -96,7 +104,7 @@ class Session
     $_COOKIE['GSESSIONID'] = $gsession;
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
     $ip = $_SERVER['REMOTE_ADDR'];
-    self::create($id, $gsession, $ip, $user_agent);
+    self::create($userId, $gsession, $ip, $user_agent);
   }
 
   public static function create($userId, $gsessionId, $ip, $user_agent)
