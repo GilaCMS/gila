@@ -286,11 +286,11 @@ class AdminController extends Gila\Controller
     $device = Router::request('device');
     if (User::logoutFromDevice($device)) {
       $info = [];
-      $sessions = User::metaList(Session::userId(), 'GSESSIONID');
+      $sessions = Session::findByUserId(Session::userId());
       foreach ($sessions as $key=>$session) {
-        $user_agent = json_decode(file_get_contents(LOG_PATH.'/sessions/'.$session))->user_agent;
-        $info[$key] = UserAgent::info($user_agent);
-        if ($_COOKIE['GSESSIONID']==$session) {
+        $user_agent = $session['user_agent'];
+        $info[$key] = Gila\UserAgent::info($user_agent);
+        if ($_COOKIE['GSESSIONID']==$session['gsessionid']) {
           $info[$key]['current'] = true;
         }
       }

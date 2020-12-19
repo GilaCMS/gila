@@ -204,15 +204,6 @@ class Session
     return self::$user_id;
   }
 
-  public static function createFile($gsession)
-  {
-    $data = [
-      'user_agent'=>$_SERVER['HTTP_USER_AGENT']
-    ];
-    $gsession = str_replace(['/'.'\\','.'], '', $gsession);
-    file_put_contents(LOG_PATH.'/sessions/'.$gsession, json_encode($data));
-  }
-
   /**
   * Destroys the session session
   */
