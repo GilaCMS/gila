@@ -12,6 +12,9 @@ new TableSchema('user');
 Config::content('userrole', 'core/tables/userrole.php');
 new TableSchema('userrole');
 
+Config::content('sessions', 'core/tables/sessions.php');
+new TableSchema('sessions');
+
 if (version_compare(Package::version('core'), '1.8.0') < 0) {
   global $db;
   $db->query("ALTER TABLE `postmeta` CHANGE COLUMN `vartype` `vartype` varchar(80);");

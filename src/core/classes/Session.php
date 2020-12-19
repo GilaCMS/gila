@@ -37,14 +37,11 @@ class Session
     } else {
       if (self::userId()==0) {
         if (isset($_COOKIE['GSESSIONID'])) {
-          $user_ids = User::getIdsByMeta('GSESSIONID', $_COOKIE['GSESSIONID']);
-          if (isset($user_ids[0])) {
-            $usr = User::getById($user_ids[0]);
+          if ($session = self::find($_COOKIE['GSESSIONID'])) {
+            $usr = User::getById($session['user_id']);
             if ($usr['active']===1) {
               self::user($usr['id'], $usr['username'], $usr['email']);
             }
-          } else {
-            @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
           }
         }
       } else {
@@ -53,12 +50,6 @@ class Session
         }
       }
 
-      if (isset($_COOKIE['GSESSIONID'])) {
-        if (!file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-          User::metaDelete(self::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
-          self::destroy();
-        }
-      }
     }
   }
 
@@ -74,23 +65,62 @@ class Session
     }
   }
 
-  public static function setCookie($id)
+  public static function find($gsessionId)
   {
-    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = (string)$id;
-    for ($p = strlen($gsession); $p < 50; $p++) {
-      $gsession .= $chars[mt_rand(0, 32)];
-    }
+    global $db;
+    $res = $db->read()->get("SELECT * FROM sessions
+    WHERE gsessionid=? LIMIT 1;", [$gsessionId]);
+    return $res[0] ?? null;
+  }
+
+  public static function findByUserId($userId)
+  {
+    global $db;
+    return $db->read()->get("SELECT * FROM sessions WHERE user_id=?;", [$userId]);
+  }
+
+  public static function update($gsessionId)
+  {
+    global $db;
+    $ql = "UPDATE sessions SET updated=NOW() WHERE gsessionid=?;";
+    $db->query($ql, [$gsessionId]);
+  }
+
+  public static function setCookie($userId)
+  {
+    do {
+      $gsession = '';
+      while (strlen($gsession) < 60) {
+        $gsession .= hash('sha512', uniqid(true));
+      }
+      $gsession = ubstr($gsession, 0, 60);
+    } while (self::find($gsession)!==null);
     $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
     if (isset($_COOKIE['GSESSIONID'])) {
-      User::metaDelete($id, 'GSESSIONID', $_COOKIE['GSESSIONID']);
-      @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
+      self::remove($_COOKIE['GSESSIONID']);
     }
     header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
-    User::meta($id, 'GSESSIONID', $gsession, true);
+
     $_COOKIE['GSESSIONID'] = $gsession;
-    self::createFile($gsession);
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $ip = $_SERVER['REMOTE_ADDR'];
+    self::create($userId, $gsession, $ip, $user_agent);
   }
+
+  public static function create($userId, $gsessionId, $ip, $user_agent)
+  {
+    global $db;
+    $ql = "INSERT into sessions (user_id, gsessionid, ip_address, user_agent) VALUES (?,?,?,?);";
+    $db->query($ql, [$userId, $gsessionId, $ip, $user_agent]);
+  }
+
+  public static function remove($gsessionId)
+  {
+    global $db;
+    $ql = "DELETE FROM sessions WHERE gsessionid=?;";
+    $db->query($ql, [$gsessionId]);
+  }
+
 
   /**
   * Define new session variables
@@ -160,7 +190,7 @@ class Session
     $user_id = 0;
     $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
     if ($token && !isset($_COOKIE['GSESSIONID'])) {
-      $usr = User::getByMeta('token', $token);
+      User::getByMeta('token', $token);
       if ($usr) {
         $user_id = $usr['id'];
       }
@@ -168,10 +198,6 @@ class Session
       self::start();
       if (isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
         @$user_id = self::key('user_id') ?? 0;
-      }
-      if (isset($_COOKIE['GSESSIONID']) &&
-          !file_exists(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID'])) {
-        self::createFile($_COOKIE['GSESSIONID']);
       }
     }
     self::$user_id = $user_id;
@@ -196,7 +222,7 @@ class Session
       $session_log = new Logger(LOG_PATH.'/sessions.log');
       $session_log->info('End', ['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
     }
-    @unlink(LOG_PATH.'/sessions/'.$_COOKIE['GSESSIONID']);
+    self::remove($_COOKIE['GSESSIONID']);
     @$_SESSION = [];
     @session_destroy();
   }
