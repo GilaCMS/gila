@@ -27,7 +27,7 @@ class Session
       $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']===1 && password_verify($_POST['password'], $usr['pass'])) {
         self::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
-        self::setCookie($usr['id'])
+        self::setCookie($usr['id']);
         unset($_SESSION['failed_attempts']);
       } else {
         @$_SESSION['failed_attempts'][] = time();
