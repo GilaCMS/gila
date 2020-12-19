@@ -13,21 +13,23 @@ class InstallSqlTest extends TestCase
     $_pass='password';
     include 'src/core/install/install.sql.php';
 
-    $tables = $db->get('SHOW TABLES');
-    $this->assertEquals(10, count($tables));
-
     $tableColumn = [
-            'post'=>['id','title','slug','description','user_id','publish','post','updated','created'],
-            'postmeta'=>['id','post_id','vartype','value'],
-            'page'=>['id','title','slug','template','description','publish','updated','blocks'],
-            'user'=>['id','username','email','pass','active','reset_code','created','updated'],
-            'usermeta'=>['id','user_id','vartype','value'],
-            'userrole'=>['id','userrole','level','description'],
-            'widget'=>['id','widget','title','area','active','pos','data'],
-            'option'=>['option','value'],
-            'postcategory'=>['id','title','slug','description']	,
-            'user_notification'=>['id','user_id','type','details','url','unread','created']
-        ];
+      'post'=>['id','title','slug','description','user_id','publish','post','updated','created'],
+      'postmeta'=>['id','post_id','vartype','value'],
+      'page'=>['id','title','slug','template','description','publish','updated','blocks'],
+      'user'=>['id','username','email','pass','active','reset_code','created','updated'],
+      'usermeta'=>['id','user_id','vartype','value'],
+      'userrole'=>['id','userrole','level','description'],
+      'widget'=>['id','widget','title','area','active','pos','data'],
+      'option'=>['option','value'],
+      'postcategory'=>['id','title','slug','description'],
+      'user_notification'=>['id','user_id','type','details','url','unread','created'],
+      'sessions'=>['id','user_id','gsessionid','ip_address','user_agent','updated']
+    ];
+
+    $tables = $db->get('SHOW TABLES');
+    $this->assertEquals(count($tableColumn), count($tables));
+
     foreach ($tables as $table) {
       $tableName = $table[0];
       $columns = $db->get('DESCRIBE '.$tableName);

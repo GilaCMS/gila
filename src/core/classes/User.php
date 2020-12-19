@@ -179,15 +179,11 @@ class User
   public static function logoutFromDevice($n)
   {
     global $db;
-    $sessions = User::metaList(Session::userId(), 'GSESSIONID');
+    $sessions = Session::findByUserId(Session::userId());
     if (!isset($sessions[$n])) {
       return false;
     }
-    $db->query(
-      "DELETE FROM usermeta WHERE `vartype`='GSESSIONID' AND `value`=?;",
-      $sessions[$n]
-    );
-    @unlink(LOG_PATH.'/sessions/'.$sessions[$n]);
+    Session::remove($sessions[$n]['gsessionid']);
     return true;
   }
 
