@@ -24,7 +24,7 @@ class InstallSqlTest extends TestCase
       'option'=>['option','value'],
       'postcategory'=>['id','title','slug','description'],
       'user_notification'=>['id','user_id','type','details','url','unread','created'],
-      'sessions'=>['id','user_id','gsessionid','ip_address','user_agent','updated']
+      'sessions'=>['id','user_id','gsessionid','ip_address','user_agent','updated','data']
     ];
 
     $tables = $db->get('SHOW TABLES');

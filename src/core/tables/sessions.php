@@ -20,6 +20,9 @@ return [
     ],
     'updated'=>[
       'qtype'=>'TIMESTAMP DEFAULT CURRENT_TIMESTAMP()'
+    ],
+    'data'=>[
+      'qtype'=>'TEXT'
     ]
   ]
 ];
