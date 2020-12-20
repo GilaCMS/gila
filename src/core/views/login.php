@@ -17,7 +17,7 @@ if (Session::waitForLogin()==0) { ?>
     <div class="form-group ">
       <input class="form-control fullwidth" placeholder="Password" name="password" id="pass" type="password" value="">
     </div>
-    <input type="submit" class="g-btn btn btn-primary btn-block" value="<?=__('Login')?>">
+    <button type="submit" class="g-btn btn btn-primary btn-block"><?=__('Login')?></button>
     <?php Gila\Event::fire('login.btn'); ?>
   </form>
   <label class="helptext"><input type="checkbox" oninput="if(this.checked) pass.type='text'; else pass.type='password';"> <?=__('Show password')?></label>

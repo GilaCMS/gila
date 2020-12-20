@@ -16,40 +16,67 @@ class Session
     self::$started = true;
     @session_set_cookie_params(86400);
 
-    try {
-      @session_start();
-    } catch (Exception $e) {
-      trigger_error($e->getMessage());
+    // token authentication
+    if (!isset($_COOKIE['GSESSIONID'])) {
+      self::$user_id = 0;
+      $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
+      if ($token) {
+        User::getByMeta('token', $token);
+        if ($usr) {
+          self::$user_id = $usr['id'];
+        }
+      }
+      self::login();
+      return;
     }
-    self::define(['user_id'=>0]);
 
+    // load/create the session file
+    session_name('GSESSIONID');
+    session_start();
+    self::$user_id = self::key('user_id') ?? 0;
+    if (self::$user_id > 0) {
+      // check expiration
+      return;
+    }
+
+    // verify that session is in database
+    if ($session = self::find($_COOKIE['GSESSIONID'])) {
+      $usr = User::getById($session['user_id']);
+      if ($usr['active']===1) {
+        self::user($usr['id'], $usr['username'], $usr['email']);
+        self::update($_COOKIE['GSESSIONID']);
+        return;
+      }
+    } else {
+      @session_destroy();
+    }
+
+    @session_commit();
+    self::login();
+  }
+
+  public static function login()
+  {
     if (isset($_POST['username']) && isset($_POST['password']) && self::waitForLogin()===0) {
+      session_start();
+
       $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']===1 && password_verify($_POST['password'], $usr['pass'])) {
-        self::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
-        self::setCookie($usr['id']);
         unset($_SESSION['failed_attempts']);
+        @session_destroy();
+        @session_commit();
+        @session_name('GSESSIONID');
+        @session_start();
+        self::setCookie($usr['id']);
+        self::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
+        @session_commit();
+        return;
       } else {
         @$_SESSION['failed_attempts'][] = time();
         $session_log = new Logger(LOG_PATH.'/login.failed.log');
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
+        session_commit();
       }
-    } else {
-      if (self::userId()==0) {
-        if (isset($_COOKIE['GSESSIONID'])) {
-          if ($session = self::find($_COOKIE['GSESSIONID'])) {
-            $usr = User::getById($session['user_id']);
-            if ($usr['active']===1) {
-              self::user($usr['id'], $usr['username'], $usr['email']);
-            }
-          }
-        }
-      } else {
-        if (!isset($_COOKIE['GSESSIONID'])) {
-          self::setCookie(self::userId());
-        }
-      }
-
     }
   }
 
@@ -93,15 +120,17 @@ class Session
       while (strlen($gsession) < 60) {
         $gsession .= hash('sha512', uniqid(true));
       }
-      $gsession = ubstr($gsession, 0, 60);
+      $gsession = substr($gsession, 0, 60);
     } while (self::find($gsession)!==null);
-    $expires = date('D, d M Y H:i:s', time() + (86400 * 30));
-    if (isset($_COOKIE['GSESSIONID'])) {
-      self::remove($_COOKIE['GSESSIONID']);
-    }
-    header("Set-cookie: GSESSIONID=$gsession; expires=$expires; path=/; HttpOnly; SameSite=Strict;");
 
-    $_COOKIE['GSESSIONID'] = $gsession;
+    setcookie('GSESSIONID', $gsession, [
+      'expires' => time() + 86400+30,
+      'path' => '/',
+      'secure' => Config::get('secure_cookie')??false,
+      'httponly' => true,
+      'samesite' => 'Strict',
+    ]);
+
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
     $ip = $_SERVER['REMOTE_ADDR'];
     self::create($userId, $gsession, $ip, $user_agent);
@@ -110,6 +139,11 @@ class Session
   public static function create($userId, $gsessionId, $ip, $user_agent)
   {
     global $db;
+    
+    Event::fire('Session::create', [
+      'user_id'=>$userId, 'gsessionid'=>$gsessionId,
+      'ip_address'=>$ip, 'user_agent'=>$user_agent
+    ]);
     $ql = "INSERT into sessions (user_id, gsessionid, ip_address, user_agent) VALUES (?,?,?,?);";
     $db->query($ql, [$userId, $gsessionId, $ip, $user_agent]);
   }
@@ -119,6 +153,16 @@ class Session
     global $db;
     $ql = "DELETE FROM sessions WHERE gsessionid=?;";
     $db->query($ql, [$gsessionId]);
+    @session_commit();
+    // destroy other session
+    @session_id($gsessionId);
+    @session_start();
+    @session_destroy();
+    @session_commit();
+    // restore current session
+    @session_id($_COOKIE['GSESSIONID']);
+    @session_start();
+    @session_commit();
   }
 
 
@@ -184,23 +228,9 @@ class Session
   */
   public static function userId():int
   {
-    if (isset(self::$user_id)) {
-      return self::$user_id;
-    }
-    $user_id = 0;
-    $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
-    if ($token && !isset($_COOKIE['GSESSIONID'])) {
-      User::getByMeta('token', $token);
-      if ($usr) {
-        $user_id = $usr['id'];
-      }
-    } else {
+    if (!isset(self::$user_id)) {
       self::start();
-      if (isset($_COOKIE['GSESSIONID']) || $_SERVER['REQUEST_METHOD']==='GET') {
-        @$user_id = self::key('user_id') ?? 0;
-      }
     }
-    self::$user_id = $user_id;
     return self::$user_id;
   }
 

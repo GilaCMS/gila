@@ -290,6 +290,7 @@ class AdminController extends Gila\Controller
       foreach ($sessions as $key=>$session) {
         $user_agent = $session['user_agent'];
         $info[$key] = Gila\UserAgent::info($user_agent);
+        $info[$key]['ip'] = $session['ip_address'];
         if ($_COOKIE['GSESSIONID']==$session['gsessionid']) {
           $info[$key]['current'] = true;
         }

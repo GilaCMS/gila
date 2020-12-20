@@ -14,6 +14,7 @@
   foreach ($sessions as $key=>$session) {
     $user_agent = $session['user_agent'];
     $info[$key] = Gila\UserAgent::info($user_agent);
+    $info[$key]['ip'] = $session['ip_address'];
     if ($_COOKIE['GSESSIONID']==$session['gsessionid']) {
       $info[$key]['current'] = true;
     }
@@ -22,7 +23,7 @@
 <div class="wrapper" id="currentDevices">
   <h3>You are connected with these devices</h3>
   <div v-for="(s,i) in sessions" v-bind:class="{'device-pill':true,selected:s.current}">
-    <img :src="'src/core/assets/'+iconFile(s.device)">{{s.os}} | {{s.browser}}
+    <img :src="'src/core/assets/'+iconFile(s.device)">{{s.os}} | {{s.browser}} | IP: {{s.ip}}
     <span v-if="s.current">(this)</span>
     <i v-else class="close" @click="removeDevice(i)">&times;</i>
   </div>
