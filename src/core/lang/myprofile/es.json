@@ -2,11 +2,11 @@
   "Name":"Nombre",
   "Email":"Email",
   "Update Profile":"Actualizar Perfil",
-  "Twitter Account":"Cuenta Twitter",
-  "New Password":"Nueva Costrasena",
-  "Confirm Password":"Confirm Password",
-  "Change Password":"Change Password",
-  "New passwords do not match":"New passwords do not match",
-  "New password too small":"New password too small",
-  "Password incorrect":"Password incorrect"
+  "Twitter Account":"Cuenta de Twitter",
+  "New Password":"Nueva Contraseña",
+  "Confirm Password":"Confirmar Contraseña",
+  "Change Password":"Cambiar Contraseña",
+  "New passwords do not match":"Las nuevas contraseñas no coinciden",
+  "New password too small":"La nueva contraseña es muy corta",
+  "Password incorrect":"Incorrecta contraseña"
 }

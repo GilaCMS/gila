@@ -9,7 +9,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <description><?=$description?></description>
 <atom:link href="<?=Config::get('base')?>rss" rel="self" type="application/rss+xml" />
 <image>
-  <url><?=Config::get('base')?><?=Config::get('admin_logo')?:'assets/gila-logo.png'?></url>
+  <url><?=Config::get('base')?><?=Config::get('admin_logo')??'assets/gila-logo.png'?></url>
   <title><?=$title?></title>
   <link><?=Config::get('base')?></link>
 </image>
@@ -26,9 +26,3 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 } ?>
 </channel>
 </rss>
-
-<?php
-//date("D, d M Y H:i:s T", strtotime($item->updated))
-//<description><?=strip_tags($item->post)></description>
-//  <content:encoded><![CDATA[<?=$item->post>]]></content:encoded>
-?>

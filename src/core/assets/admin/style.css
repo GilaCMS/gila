@@ -34,7 +34,12 @@ body { overflow-x: hidden; background:var(--main-bg-color);background-size:cover
 #sidebar-wrapper .g-nav li a:hover{ background:var(--main-dark-color);color:white }
 .g-nav li ul{min-width: var(--sidebar-width)}
 
-.widget-area-dashboard{display: grid; grid-template-columns: auto auto auto; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); grid-gap: 20px;}
+.widget-area-dashboard{
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 20px;
+  max-width: 1300px;
+}
 .widget-area-dashboard > * {box-shadow: 0 0 6px rgba(180,190,240,0.3); margin:0}
 .widget-area-dashboard .widget{background:white}
 .widget-area-dashboard .widget-title {border-bottom: 1px solid #ddd; padding: var(--main-padding); background: var(--main-bg-color); color: var(--main-color); }
@@ -65,4 +70,6 @@ body { overflow-x: hidden; background:var(--main-bg-color);background-size:cover
   background:inherit
 }
 
-.vertical li.active{border-left:3px solid var(--main-a-color)}
+.vertical li.active{
+  border-left:3px solid var(--main-a-color)
+}

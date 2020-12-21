@@ -128,7 +128,9 @@ foreach ($config_list as $key=>$value) {
   </div>
 
   <?php
-    if (FS_ACCESS) include __DIR__.'/settings-advanced.php';
+    if (FS_ACCESS) {
+      include __DIR__.'/settings-advanced.php';
+    }
   ?>
 </form>
 </div>

@@ -70,13 +70,13 @@ foreach ($packages as $pkey=>$p) {
     }
 
     // Title & version
-    $title = $p->title?:$p->package;
+    $title = $p->title??$p->package;
     $table .= '<td style="min-width:50%;"><b>'.$title.' '.(isset($p->version)?$p->version:'').'</b>';
 
     // Description
     $desc = __($p->package.':desc');
     if ($desc==$p->package.':desc') {
-      $desc = $p->description?:'No description';
+      $desc = $p->description ?? 'No description';
     }
     $table .= '<br>'.$desc.'<br>';
 
@@ -139,20 +139,19 @@ if (FS_ACCESS) {
   $links = [
     ['Downloaded','admin/packages'],
     ['Newest','admin/packages/new']
-  ];
-?>
+  ]; ?>
   <ul class="g-nav g-tabs gs-12" id="addon-tabs"><?php
   foreach ($links as $link) {
     $active = (Router::path()==$link[1]?'active':'');
     echo '<li class="'.$active.'"><a href="'.Config::url($link[1]).'">'.__($link[0]).'</a></li>';
-  }
-  ?>
+  } ?>
     <form method="get" class="inline-flex" style="float:right" action="<?=Config::base('admin/packages/new')?>">
       <input name='search' class="g-input fullwidth" value="<?=(isset($search)?$search:'')?>">
       <button class="g-btn g-group-item" type='submit'><?=__('Search')?></button>
     </form>
   </ul>
-<?php } ?>
+<?php
+} ?>
   <div class="tab-content gs-12">
     <div><br><table class='g-table' id="tbl-packages" style="margin-left:5px;display:table"><?=$table?></table></div>
   </div>

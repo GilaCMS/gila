@@ -5,6 +5,7 @@
 @media (min-width:650px) {
   .widget-area-dashboard .widget-core-counters{grid-column: span 2;}
   .widget-area-dashboard .widget-mysql-chart{grid-column: span 2;}
+  .widget-area-dashboard .widget-stats-chart{grid-column: span 2;}
 }
 .widget-area-dashboard .widget-core-counters{grid-column: 1/span 4;}
 

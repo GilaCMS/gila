@@ -101,7 +101,7 @@ class Package
           foreach ($pac['options'] as $key=>$option) {
             if (@$option['required']==true) {
               if (Config::option($activate.'.'.$key)===null) {
-                $require_op[] = @$option['title']?:$key;
+                $require_op[] = $option['title'] ?? $key;
               }
             }
           }
@@ -247,23 +247,20 @@ class Package
   {
     global $db;
     self::copyAssets($package);
-    $update_file = 'src/'.$package.'/update.php';
-    if (file_exists($update_file)) {
-      self::update($package);
+    self::update($package);
 
-      include $update_file;
-      $sites = scandir('sites');
-      foreach ($sites as $site) {
-        if ($site[0]!='.') {
-          $config = 'sites/'.$site.'/config.php';
-          if (file_exists($config)) {
-            include $config;
-            $db = new Db($GLOBALS['config']['db']);
-            if ($package==='core' ||
-              in_array($package, $GLOBALS['config']['packages'])) {
-              include $update_file;
-            }
+    $sites = scandir('sites');
+    foreach ($sites as $site) {
+      if ($site[0]!='.') {
+        $config = 'sites/'.$site.'/config.php';
+        if (file_exists($config)) {
+          include $config;
+          $db = new Db($GLOBALS['config']['db']);
+          if ($package==='core' ||
+            in_array($package, $GLOBALS['config']['packages'])) {
+            self::update($package);
           }
+          @unlink('sites/'.$site.'/log/load.php');
         }
       }
     }
