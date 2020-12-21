@@ -258,7 +258,7 @@ class Package
           $db = new Db($GLOBALS['config']['db']);
           if ($package==='core' ||
             in_array($package, $GLOBALS['config']['packages'])) {
-              self::update($package);
+            self::update($package);
           }
           @unlink('sites/'.$site.'/log/load.php');
         }

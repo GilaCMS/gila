@@ -80,5 +80,5 @@ return [
         $row['slug'] = Slugify::text($row['title']);
       }
     }]
-  ]  
+  ]
 ];

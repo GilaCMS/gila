@@ -16,8 +16,10 @@ class Menu
     foreach ($pages as $p) {
       $widget_data->children[] = ['type'=>"postcategory",'id'=>$p[0]];
     }
-    foreach (Page::genPublished() as $p) if (!empty($p['slug'])) {
-      $widget_data->children[] = ['type'=>'page','id'=>$p[0]];
+    foreach (Page::genPublished() as $p) {
+      if (!empty($p['slug'])) {
+        $widget_data->children[] = ['type'=>'page','id'=>$p[0]];
+      }
     }
     return (array) $widget_data;
   }
