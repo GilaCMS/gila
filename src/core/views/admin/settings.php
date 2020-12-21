@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['gila_admin_palette'])) {
     Config::set('admin_palette', $_POST['gila_admin_palette']);
   }
-  Config::updateConfigFile();
-  usleep(3000);
+  //Config::updateConfigFile();
+  //usleep(3000);
   echo '{"success":true}';
   return;
 }

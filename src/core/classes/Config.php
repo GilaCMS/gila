@@ -185,10 +185,14 @@ class Config
   */
   public static function set($key, $value)
   {
-    if (!is_string($key)) {
-      return;
-    }
+    global $db;
     $GLOBALS['config'][$key] = $value;
+    @self::$option[$option] = $value;
+    $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
+    $db->query($ql);
+    if (self::config('env') === 'pro') {
+      @unlink(LOG_PATH.'/load.php');
+    }
   }
 
   /**
@@ -198,7 +202,7 @@ class Config
   */
   public static function get($key)
   {
-    return $GLOBALS['config'][$key] ?? null;
+    return self::getOption($key, $GLOBALS['config'][$key] ?? null);
   }
 
   /**
@@ -206,6 +210,7 @@ class Config
   */
   public static function updateConfigFile()
   {
+    return;
     $GLOBALS['config']['updated'] = time();
     $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
     file_put_contents(CONFIG_PHP, $filedata);
@@ -243,15 +248,9 @@ class Config
   * @param $option (string) Option name
   * @param $value (optional) The value to set
   */
-  public static function setOption($option, $value='')
+  public static function setOption($option, $value)
   {
-    global $db;
-    @self::$option[$option] = $value;
-    $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
-    $db->query($ql);
-    if (self::config('env') === 'pro') {
-      unlink(LOG_PATH.'/load.php');
-    }
+    self::set($option, $value);
   }
 
   /**
@@ -355,7 +354,7 @@ class Config
   * @param $args (array) Action name
   * @return The full url to print
   */
-  public static function make_url($c, $action='', $args=[])
+  public static function make_url($c, $action='', $args=[]) //DEPRECATED
   {
     return self::url($c.'/'.$action, $args);
   }

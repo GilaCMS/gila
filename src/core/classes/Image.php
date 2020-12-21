@@ -184,23 +184,24 @@ class Image
 
   public static function localPath($src)
   {
-    if (parse_url($src, PHP_URL_HOST) != null) {
-      if (strpos($src, Config::get('base')) !== 0) {
-        $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
-        if (!file_exists($_src)) {
-          $_file = LOG_PATH.'/cannot_copy.json';
-          $cannot_copy = json_decode(file_get_contents($_file), true);
-          if (in_array($src, $cannot_copy)) {
-            return false;
-          }
-          if (!copy($src, $_src)) {
-            $cannot_copy[] = $src;
-            file_put_contents($_file, json_encode($cannot_copy, JSON_PRETTY_PRINT));
-            return false;
-          }
+    if (parse_url($src, PHP_URL_HOST) != null
+    && strpos($src, Config::get('base')) !== 0) {
+      $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+      if (!file_exists($_src)) {
+        $_file = LOG_PATH.'/cannot_copy.json';
+        $cannot_copy = json_decode(file_get_contents($_file), true);
+        if (in_array($src, $cannot_copy)) {
+          return false;
         }
-        return $_src;
+        if (!copy($src, $_src)) {
+          $cannot_copy[] = $src;
+          file_put_contents($_file, json_encode($cannot_copy, JSON_PRETTY_PRINT));
+          return false;
+        }
       }
+      return $_src;
+    } else if (!FileManager::allowedPath($src)) {
+      return false;
     }
     return $src;
   }
@@ -215,6 +216,7 @@ class Image
 
   public static function readfile($file)
   {
+    $file = realpath($file);
     if (file_exists($file)) {
       ob_end_clean();
       header('Content-Length: '.filesize($file));

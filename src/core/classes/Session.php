@@ -31,10 +31,10 @@ class Session
 
     // verify that session is in database
     if ($session = self::find($_COOKIE['GSESSIONID'])) {
-      // refresh every 5 minutes
+      // refresh every minute
       self::$user_id = $session['user_id'];
       self::$data = json_decode($session['data']??'[]', true);
-      if (strtotime($session['updated'])+100>time()) {
+      if (strtotime($session['updated'])+60>time()) {
         $usr = User::getById($session['user_id']);
         if ($usr['active']===1) {
           self::user($usr['id'], $usr['username'], $usr['email']);

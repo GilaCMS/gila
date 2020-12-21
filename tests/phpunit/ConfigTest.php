@@ -13,6 +13,7 @@ class ClassGila extends TestCase
     $this->assertEquals('Inicio', __('Home'));
   }
 
+  /*
   public function test_updateConfigFile()
   {
     $value = rand(1, 100);
@@ -22,6 +23,7 @@ class ClassGila extends TestCase
     include_once __DIR__.'/../../config.php';
     $this->assertEquals($value, $GLOBALS['config']['test_config_key']);
   }
+  */
 
   public function test_mt()
   {
