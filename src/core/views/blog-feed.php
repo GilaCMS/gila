@@ -26,9 +26,3 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 } ?>
 </channel>
 </rss>
-
-<?php
-//date("D, d M Y H:i:s T", strtotime($item->updated))
-//<description><?=strip_tags($item->post)></description>
-//  <content:encoded><![CDATA[<?=$item->post>]]></content:encoded>
-?>

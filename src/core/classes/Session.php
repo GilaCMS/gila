@@ -18,7 +18,7 @@ class Session
     self::$user_id = 0;
 
     // token authentication
-    if (!isset($_COOKIE['GSESSIONID'])) {      
+    if (!isset($_COOKIE['GSESSIONID'])) {
       $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
       if ($token) {
         User::getByMeta('token', $token);
@@ -46,7 +46,7 @@ class Session
         }
       }
     } else {
-      setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time()-1,'/');
+      setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time()-1, '/');
     }
 
     self::login();
@@ -75,7 +75,6 @@ class Session
     self::$data['user_id'] = $id;
     self::$data['user_name'] = $name;
     self::$data['user_email'] = $email;
-    self::commit();
     self::$user_id = $id;
     if ($msg!==null) {
       $session_log = new Logger(LOG_PATH.'/sessions.log');
