@@ -63,7 +63,7 @@ class Menu
         return ['name'=>$name, 'url'=>$url];
       }
     }
-    return ['name'=>$data['name'], 'url'=>$data['url']];
+    return ['name'=>$data['name'], 'url'=>$data['url']??'#'];
   }
 
   public static function getHtml($items, $base='')

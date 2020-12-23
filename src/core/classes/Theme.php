@@ -31,7 +31,7 @@ class Theme
   public static function activate($activate)
   {
     if (in_array($activate, scandir('themes/'))) {
-      if ($activate != $GLOBALS['config']['theme'] ||
+      if ($activate != Gila\Config::get('theme') ||
           Config::get('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
@@ -51,7 +51,6 @@ class Theme
         if ($require===[]) {
           $GLOBALS['config']['theme']=$activate;
           self::copyAssets($activate);
-          Config::updateConfigFile();
           Package::updateLoadFile();
           usleep(300);
           View::alert('success', __('_theme_selected'));

@@ -39,6 +39,7 @@ class Session
         if ($usr['active']===1) {
           self::user($usr['id'], $usr['username'], $usr['email']);
           self::update($_COOKIE['GSESSIONID']);
+          setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time() + 86400*30, '/');
           return;
         } else {
           self::destroy();
@@ -186,7 +187,7 @@ class Session
     self::commit();
   }
 
-  private static function md5($key)
+  private static function md5($key) // DEPRECATED
   {
     return $key;
   }

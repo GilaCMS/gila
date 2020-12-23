@@ -78,7 +78,7 @@ class Package
   public static function activate($activate)
   {
     if (in_array($activate, scandir('src/'))) {
-      if (!in_array($activate, $GLOBALS['config']['packages']) ||
+      if (!in_array($activate, Config::packages()) ||
          Config::get('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
@@ -113,7 +113,6 @@ class Package
           }
           self::copyAssets($activate);
           self::update($activate);
-          Config::updateConfigFile();
           self::updateLoadFile();
           usleep(300);
         } else {
@@ -168,7 +167,6 @@ class Package
           }
         }
       }
-      Config::updateConfigFile();
       self::updateLoadFile();
       usleep(100);
       echo '{"success":true}';

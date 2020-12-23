@@ -14,12 +14,17 @@ class Image
    */
   public static function makeThumb($src, $file, $max_width, $max_height, $img_type=null)
   {
-    $src = self::localPath($src);
     $src_width = 0;
     $src_height = 0;
+    $ext = pathinfo($src)['extension'] ?? null;
+    if(!self::imageExtention($ext)) {
+      return false;
+    }
+    $src = self::localPath($src);
     if ($src === false) {
       return false;
     }
+    
     Config::dir(substr($file, 0, strrpos($file, '/')));
 
     if ($image = getimagesize($src)) {
@@ -128,6 +133,10 @@ class Image
     $total_y = 0;
 
     foreach ($src_array as $key=>$src) {
+      $ext = pathinfo($src)['extension'] ?? null;
+      if(!self::imageExtention($ext)) {
+        continue;
+      }
       $_src = self::localPath($src);
       if ($_src === false) {
         $_src = $src;

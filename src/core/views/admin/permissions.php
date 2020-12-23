@@ -16,11 +16,10 @@ if (isset($_POST['submit']) && isset($_POST['role'])) {
     }
   }
   Config::set('permissions', $checked);
-  Config::updateConfigFile();
   View::alert('success', __('_changes_updated'));
 }
 
-$checked = Config::get('permissions');
+$checked = Config::getArray('permissions');
 
 
 View::alerts();

@@ -114,7 +114,7 @@ class Config
   */
   public static function packages()
   {
-    return $GLOBALS['config']['packages'];
+    return self::getArray('packages');
   }
 
   /**
@@ -188,6 +188,9 @@ class Config
     global $db;
     $GLOBALS['config'][$key] = $value;
     @self::$option[$option] = $value;
+    if(is_array($value)) {
+      $value = json_encode($value);
+    }
     $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
     $db->query($ql);
     if (self::config('env') === 'pro') {
@@ -203,6 +206,15 @@ class Config
   public static function get($key)
   {
     return self::getOption($key, $GLOBALS['config'][$key] ?? null);
+  }
+
+  public static function getArray($key)
+  {
+    $array = self::getOption($key, $GLOBALS['config'][$key] ?? null);
+    if(is_string($array)) {
+      return json_decode($array, true);
+    }
+    return $array;
   }
 
   /**

@@ -81,7 +81,7 @@ if (is_array(Config::get('trusted_domains')) &&
 
 $db = new Db(Config::get('db'));
 
-if ($GLOBALS['config']['env'] == 'dev') {
+if (Config::get('env') == 'dev') {
   error_reporting(E_ALL);
   ini_set('display_errors', '1');
   ini_set('display_startup_errors', '1');
