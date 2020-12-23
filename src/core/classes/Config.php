@@ -7,7 +7,7 @@ class Config
   public static $package;
   public static $amenu;
   public static $widget_area = [];
-  public static $option;
+  public static $option = [];
   public static $content;
   public static $contentField;
   public static $contentInit = [];
@@ -37,7 +37,7 @@ class Config
 
   public static function loadLang($path)
   {
-    $filepath = 'src/'.$path.self::config('language').'.json';
+    $filepath = 'src/'.$path.self::get('language').'.json';
     if (file_exists($filepath)) {
       self::$langWords = @array_merge(
         self::$langWords,
@@ -180,19 +180,19 @@ class Config
 
   /**
   * Sets the value of configuration attribute
-  * @param $key (string) Name of the attribute
+  * @param $option (string) Name of the attribute
   * @param $value (optional) The value to set
   */
-  public static function set($key, $value)
+  public static function set($option, $value)
   {
     global $db;
-    $GLOBALS['config'][$key] = $value;
+    $GLOBALS['config'][$option] = $value;
     @self::$option[$option] = $value;
     if(is_array($value)) {
       $value = json_encode($value);
     }
-    $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
-    $db->query($ql);
+    $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
+    ON DUPLICATE KEY UPDATE `value`=?;", [$option, $value, $value]);
     if (self::config('env') === 'pro') {
       @unlink(LOG_PATH.'/load.php');
     }
@@ -215,17 +215,6 @@ class Config
       return json_decode($array, true);
     }
     return $array;
-  }
-
-  /**
-  * Rewrites the config.php file
-  */
-  public static function updateConfigFile()
-  {
-    return;
-    $GLOBALS['config']['updated'] = time();
-    $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
-    file_put_contents(CONFIG_PHP, $filedata);
   }
 
   /**
@@ -378,7 +367,7 @@ class Config
   {
     global $db;
     include_once "src/core/load.php";
-    foreach ($GLOBALS['config']['packages'] as $package) {
+    foreach (self::packages() as $package) {
       if (file_exists("src/$package/load.php")) {
         include_once "src/$package/load.php";
       }
