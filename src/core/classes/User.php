@@ -150,7 +150,7 @@ class User
 
     $response = [];
     $roles = User::metaList($id, 'role');
-    $rp = Config::get('permissions');
+    $rp = Config::getArray('permissions');
     if ($id != 0) {
       foreach ($roles as $role) {
         if (isset($rp[$role])) {

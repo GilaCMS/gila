@@ -5,7 +5,7 @@ global $db;
 $permissions = Gila\Profile::getAllPermissions();
 
 // load all user groups
-$roles = array_merge([['member','Member']], $db->get("SELECT id,userrole FROM userrole;")); //[0,'Anonymous<br>User'],
+$roles = array_merge([['member','Member']], $db->get("SELECT id,userrole FROM userrole;"));
 
 // update permissions if form submited
 if (isset($_POST['submit']) && isset($_POST['role'])) {
@@ -15,17 +15,17 @@ if (isset($_POST['submit']) && isset($_POST['role'])) {
       $checked[$role] = array_keys($list);
     }
   }
-  Config::set('permissions', $checked);
-  View::alert('success', __('_changes_updated'));
+  Gila\Config::set('permissions', $checked);
+  Gila\View::alert('success', __('_changes_updated'));
 }
 
-$checked = Config::getArray('permissions');
+$checked = Gila\Config::getArray('permissions');
 
 
 View::alerts();
 ?>
 <br>
-<form action="<?=Config::url('admin/users', ['tab'=>2])?>" method="POST">
+<form action="<?=Gila\Config::url('admin/users', ['tab'=>2])?>" method="POST">
 <button class="g-btn" name="submit" value="true">
   <i class="fa fa-save"></i> <?=__('Submit')?>
 </button>
