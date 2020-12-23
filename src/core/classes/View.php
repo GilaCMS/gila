@@ -458,10 +458,6 @@ class View
     if (empty($src)) {
       return false;
     }
-    FileManager::$sitepath = realpath(SITE_PATH);
-    if (!FileManager::allowedPath($src)) {
-      return false;
-    }
 
     if (Config::get('use_webp')) {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
@@ -516,7 +512,10 @@ class View
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
     if (substr($src, 0, 5) !== 'data/') {
-      // dont create new thumbs for existing websites
+      FileManager::$sitepath = realpath(SITE_PATH);
+      if (!FileManager::allowedPath($src)) {
+        return $src;
+      }
       return TMP_PATH.'/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     }
 
