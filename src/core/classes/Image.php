@@ -225,7 +225,8 @@ class Image
 
   public static function readfile($file)
   {
-    $file = realpath($file);
+    FileManager::$sitepath = realpath();
+    FileManager::allowedPath($file);
     if (file_exists($file)) {
       ob_end_clean();
       header('Content-Length: '.filesize($file));
