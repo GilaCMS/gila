@@ -458,6 +458,10 @@ class View
     if (empty($src)) {
       return false;
     }
+    FileManager::$sitepath = realpath(SITE_PATH);
+    if (!FileManager::allowedPath($src)) {
+      return false;
+    }
 
     if (Config::get('use_webp')) {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {

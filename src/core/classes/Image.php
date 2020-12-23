@@ -191,28 +191,27 @@ class Image
     return [$file.'?'.$revision, $response];
   }
 
-  public static function localPath($src)
-  {
-    if (parse_url($src, PHP_URL_HOST) != null
-    && strpos($src, Config::get('base')) !== 0) {
-      $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
-      if (!file_exists($_src)) {
-        $_file = LOG_PATH.'/cannot_copy.json';
-        $cannot_copy = json_decode(file_get_contents($_file), true);
-        if (in_array($src, $cannot_copy)) {
-          return false;
-        }
-        if (!copy($src, $_src)) {
-          $cannot_copy[] = $src;
-          file_put_contents($_file, json_encode($cannot_copy, JSON_PRETTY_PRINT));
-          return false;
-        }
-      }
-      return $_src;
-    } else if (!FileManager::allowedPath($src)) {
-      return false;
+  public static function localPath($src) {
+    if (strpos($src, Config::get('base')) === 0) {
+      return $src;
     }
-    return $src;
+    if (substr($pinfo['download_url'], 0, 8)!=='https://') {
+      return realpath($src);
+    }
+    $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+    if (!file_exists($_src)) {
+      $_file = LOG_PATH.'/cannot_copy.json';
+      $cannot_copy = json_decode(file_get_contents($_file), true);
+      if (in_array($src, $cannot_copy)) {
+        return false;
+      }
+      if (!copy($src, $_src)) {
+        $cannot_copy[] = $src;
+        file_put_contents($_file, json_encode($cannot_copy, JSON_PRETTY_PRINT));
+        return false;
+      }
+    }
+    return $_src;
   }
 
   public static function imageExtention($ext)
@@ -225,8 +224,7 @@ class Image
 
   public static function readfile($file)
   {
-    FileManager::$sitepath = realpath();
-    FileManager::allowedPath($file);
+    $file = strtr($file, ['.'=>'']);
     if (file_exists($file)) {
       ob_end_clean();
       header('Content-Length: '.filesize($file));
@@ -236,7 +234,9 @@ class Image
         $extType = [2=>'jpeg',32=>'webp',3=>'png',1=>'gif'];
         $ext = $extType[$imageInfo[2]] ?? $ext;
       }
-      if (in_array($ext, ['jpeg','jpg','png','gif','webp'])) {
+      FileManager::$sitepath = realpath(SITE_PATH);
+      if (in_array($ext, ['jpeg','jpg','png','gif','webp'])
+      && FileManager::allowedPath($file)) {
         header("Content-Type: image/".$ext);
         readfile($file);
       } elseif ($ext==='svg' &&
