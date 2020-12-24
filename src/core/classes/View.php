@@ -492,7 +492,7 @@ class View
   {
     $pathinfo = pathinfo($src);
     $ext = $pathinfo['extension'] ?? null;
-    if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['svg','webm'])) {
+    if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['webm'])) {
       return $src;
     }
 
@@ -525,7 +525,7 @@ class View
       $file = $thumbs[$key] ?? null;
     }
     if (!$file) {
-      if (Image::imageExtention($ext)===false) {
+      if (Image::imageExtention($ext)===false && $ext!='svg') {
         return false;
       }
       do {

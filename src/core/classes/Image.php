@@ -18,6 +18,10 @@ class Image
     $src_height = 0;
     $ext = pathinfo($src)['extension'] ?? null;
     if(!self::imageExtention($ext)) {
+      if ($ext=='svg') {
+        copy($src, $file);
+        return true;
+      }
       return false;
     }
     $src = self::localPath($src);
@@ -224,7 +228,7 @@ class Image
 
   public static function readfile($file)
   {
-    $file = strtr($file, ['.'=>'']);
+    $file = strtr($file, ['..'=>'']);
     if (file_exists($file)) {
       ob_end_clean();
       header('Content-Length: '.filesize($file));

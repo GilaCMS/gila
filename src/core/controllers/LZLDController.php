@@ -32,7 +32,7 @@ class LZLDController extends Gila\Controller
   public function thumbAction()
   {
     $size = $_GET['media_thumb'] ?? ($_GET['size'] ?? 80);
-    $file = View::thumb($_GET['src'], "thumb$size/", (int)$size);
+    $file = View::thumb($_GET['src'], (int)$size);
     Gila\Image::readfile($file);
   }
 
