@@ -16,7 +16,7 @@ class CMController extends Gila\Controller
 
   public function __construct()
   {
-    $this->permissions = User::permissions(Session::userId());
+    $this->permissions = Session::permissions();
     $this->table = Router::param("t", 1);
     if (!isset(Config::$content[$this->table])) {
       http_response_code(404);

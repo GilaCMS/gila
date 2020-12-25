@@ -5,7 +5,7 @@ global $db;
 $permissions = Gila\Profile::getAllPermissions();
 
 // load all user groups
-$roles = array_merge([['member','Member']], $db->get("SELECT id,userrole FROM userrole;"));
+$roles = array_merge([['member','*']], $db->get("SELECT id,userrole FROM userrole;"));
 
 // update permissions if form submited
 if (isset($_POST['submit']) && isset($_POST['role'])) {
@@ -44,11 +44,15 @@ View::alerts();
       <?=__($index, $permission)?>
     <?php foreach ($roles as $role) {
   echo '<td style="text-align:center">';
-  echo '<input type="checkbox" name="role['.$role[0].']['.$index.']"';
-  if (isset($checked[$role[0]]) && in_array($index, $checked[$role[0]])) {
-    echo ' checked';
+  if($index==='admin' && $role[0]==='member') {
+    echo '';
+  } else {
+    echo '<input type="checkbox" name="role['.$role[0].']['.$index.']"';
+    if (isset($checked[$role[0]]) && in_array($index, $checked[$role[0]])) {
+      echo ' checked';
+    }
+    echo '>';
   }
-  echo '>';
 } ?>
   </tr>
   <?php } ?>

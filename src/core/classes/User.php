@@ -141,29 +141,20 @@ class User
     $response = [];
     $rp = Config::getArray('permissions');
     if ($id === 0) {
-      if (isset($rp[0])) {
-        $response = $rp['0'];
-      } else {
-        $response = [];
-      }
-    } else {
-      if ($response = Cache::get('user-perm-'.$id, 120, Config::get('updated'))) {
-        return json_decode($response, true);
-      }
-      $roles = User::metaList($id, 'role');
-      foreach ($roles as $role) {
-        if (isset($rp[$role])) {
-          foreach ($rp[$role] as $perm) {
-            if (!in_array($perm, $response)) {
-              $response[] = $perm;
-            }
+      return [];
+    }
+    $roles = User::metaList($id, 'role');
+    foreach ($roles as $role) {
+      if (isset($rp[$role])) {
+        foreach ($rp[$role] as $perm) {
+          if (!in_array($perm, $response)) {
+            $response[] = $perm;
           }
         }
       }
-      if (isset($rp['member'])) {
-        $response = array_merge($response, $rp['member']);
-      }
-      Cache::set('user-perm-'.$id, json_encode($response), [Config::get('updated')]);
+    }
+    if (isset($rp['member'])) {
+      $response = array_merge($response, $rp['member']);
     }
     return $response;
   }

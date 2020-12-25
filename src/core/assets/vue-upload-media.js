@@ -4,8 +4,8 @@ Vue.component('input-upload-media', {
   style="background:var(--main-input-color);width:160px;height:160px;max-width:100%;max-height:100%;display: grid;\
   justify-content:center; align-content:center; position:relative;min-width:50px;overflow: hidden;"\
   @click="selectPhoto()">\
-<img v-if="!inisrc" ref="thumb" src="assets/images/default-user.jpg" style="width:auto;max-width:100%;margin:auto">\
-<img v-if="inisrc" :src="imgSrc(inisrc)" style="max-width:100%;margin:auto">\
+<img v-if="!inisrc" ref="thumb" src="assets/core/default-user.png" style="width:auto;max-width:100%;margin:auto">\
+<img v-if="inisrc" ref="thumb2" :src="imgSrc(inisrc)" style="max-width:100%;margin:auto">\
 <svg v-if="value" height="28" width="28" @click.stop="cleanThumb();return false"\
 style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
   <circle cx="14" cy="14" r="10" stroke-width="0" fill="#666"></circle>\
@@ -60,7 +60,7 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
       uploaded = this.$refs['uploader'].files[0]
       fm.append('uploadfiles', uploaded);
       this.value = true
-      var img=this.$refs['thumb']            
+      var img=this.$refs['thumb']??this.$refs['thumb2']            
       img.file = uploaded;    
       var reader = new FileReader();
       reader.onload = (function(aImg) { 
