@@ -6,7 +6,7 @@ class Session
 {
   private static $started = false;
   private static $user_id;
-  private static $data;
+  public static $data;
 
   public static function start()
   {
