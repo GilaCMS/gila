@@ -29,6 +29,7 @@ class FileManagerTest extends TestCase
     ];
     foreach ($list as $path=>$response) {
       $this->assertEquals($response, FileManager::allowedPath($path));
+      echo $path.'.';
     }
   }
 
