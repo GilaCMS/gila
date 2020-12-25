@@ -340,6 +340,9 @@ class Package
   */
   public static function scan()
   {
+    if (!FS_ACCESS && Config::get('available_packages')) {
+      return Config::get('available_packages');
+    }
     $dir = "src/";
     $scanned = scandir($dir);
     $_packages = [];

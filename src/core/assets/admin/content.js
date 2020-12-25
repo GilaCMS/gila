@@ -242,7 +242,8 @@ Vue.component('g-table', {
     command_label: function(com, label=false) {
       if(label || this.table.action_display=='label' ||
         typeof gtableCommand[com]=='undefined') {
-        return '<a>'+gtableCommand[com].label+'</a>';
+        if(typeof gtableCommand[com].label=='undefined') return '<a>'+_e(com)+'</a>'
+        return '<a>'+_e(gtableCommand[com].label)+'</a>';
       }
       return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'"></i>'
     },

@@ -138,20 +138,19 @@ class User
 
   public static function permissions($id)
   {
-    if ($id == 0) {
-      if (Session::key('permissions')) {
-        return Session::key('permissions');
-      }
-    }
-
-    if ($response = Cache::get('user-perm-'.$id, 120, Config::get('updated'))) {
-      return json_decode($response, true);
-    }
-
     $response = [];
-    $roles = User::metaList($id, 'role');
     $rp = Config::getArray('permissions');
-    if ($id != 0) {
+    if ($id === 0) {
+      if (isset($rp[0])) {
+        $response = $rp['0'];
+      } else {
+        $response = [];
+      }
+    } else {
+      if ($response = Cache::get('user-perm-'.$id, 120, Config::get('updated'))) {
+        return json_decode($response, true);
+      }
+      $roles = User::metaList($id, 'role');
       foreach ($roles as $role) {
         if (isset($rp[$role])) {
           foreach ($rp[$role] as $perm) {
@@ -164,15 +163,8 @@ class User
       if (isset($rp['member'])) {
         $response = array_merge($response, $rp['member']);
       }
-    } else {
-      if (isset($rp[0])) {
-        $response = $rp['0'];
-      } else {
-        $response = [];
-      }
-      Session::key('permissions', $response);
+      Cache::set('user-perm-'.$id, json_encode($response), [Config::get('updated')]);
     }
-    Cache::set('user-perm-'.$id, json_encode($response), [Config::get('updated')]);
     return $response;
   }
 

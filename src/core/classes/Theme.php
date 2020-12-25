@@ -210,6 +210,9 @@ class Theme
   */
   public static function scan()
   {
+    if (!FS_ACCESS && Config::get('available_themes')) {
+      return Config::get('available_themes');
+    }
     $dir = "themes/";
     $scanned = scandir($dir);
     $_packages = [];
