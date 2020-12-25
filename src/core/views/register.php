@@ -23,7 +23,7 @@
         <input class="form-control fullwidth" name="password" type="password" value="" required>
       </div>
       <?php Gila\Event::fire('recaptcha.form')?>
-      <input type="submit" class="btn btn-primary btn-block" value="<?=__('Register')?>">
+      <button type="submit" class="btn btn-primary btn-block"><?=__('Register')?></button>
     </form>
     <p>
       <a href="login"><?=__('Log In')?></a>

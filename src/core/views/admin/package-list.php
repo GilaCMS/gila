@@ -47,7 +47,7 @@ foreach ($packages as $pkey=>$p) {
 
     // Border color
     if (file_exists('src/'.$p->package)) {
-      if (in_array($p->package, $GLOBALS['config']['packages'])) {
+      if (in_array($p->package, Config::getArray('packages'))) {
         $border = "border-left:4px solid forestgreen;";
       } else {
         $border = "border-left:4px solid lightgrey";
@@ -95,7 +95,7 @@ foreach ($packages as $pkey=>$p) {
 
     // Buttons
     if (file_exists('src/'.$p->package)) {
-      if (in_array($p->package, $GLOBALS['config']['packages']) || $p->package=='core') {
+      if (in_array($p->package, Config::getArray('packages')) || $p->package=='core') {
         if (Config::get('env')=='dev') {
           $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn primary'><i class='fa fa-refresh'></i></a>";
         }

@@ -14,12 +14,21 @@ class Image
    */
   public static function makeThumb($src, $file, $max_width, $max_height, $img_type=null)
   {
-    $src = self::localPath($src);
     $src_width = 0;
     $src_height = 0;
+    $ext = pathinfo($src)['extension'] ?? null;
+    if(!self::imageExtention($ext)) {
+      if ($ext=='svg') {
+        copy($src, $file);
+        return true;
+      }
+      return false;
+    }
+    $src = self::localPath($src);
     if ($src === false) {
       return false;
     }
+    
     Config::dir(substr($file, 0, strrpos($file, '/')));
 
     if ($image = getimagesize($src)) {
@@ -128,6 +137,10 @@ class Image
     $total_y = 0;
 
     foreach ($src_array as $key=>$src) {
+      $ext = pathinfo($src)['extension'] ?? null;
+      if(!self::imageExtention($ext)) {
+        continue;
+      }
       $_src = self::localPath($src);
       if ($_src === false) {
         $_src = $src;
@@ -182,27 +195,27 @@ class Image
     return [$file.'?'.$revision, $response];
   }
 
-  public static function localPath($src)
-  {
-    if (parse_url($src, PHP_URL_HOST) != null) {
-      if (strpos($src, Config::get('base')) !== 0) {
-        $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
-        if (!file_exists($_src)) {
-          $_file = LOG_PATH.'/cannot_copy.json';
-          $cannot_copy = json_decode(file_get_contents($_file), true);
-          if (in_array($src, $cannot_copy)) {
-            return false;
-          }
-          if (!copy($src, $_src)) {
-            $cannot_copy[] = $src;
-            file_put_contents($_file, json_encode($cannot_copy, JSON_PRETTY_PRINT));
-            return false;
-          }
-        }
-        return $_src;
+  public static function localPath($src) {
+    if (strpos($src, Config::get('base')) === 0) {
+      return $src;
+    }
+    if (substr($pinfo['download_url'], 0, 8)!=='https://') {
+      return realpath($src);
+    }
+    $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);
+    if (!file_exists($_src)) {
+      $_file = LOG_PATH.'/cannot_copy.json';
+      $cannot_copy = json_decode(file_get_contents($_file), true);
+      if (in_array($src, $cannot_copy)) {
+        return false;
+      }
+      if (!copy($src, $_src)) {
+        $cannot_copy[] = $src;
+        file_put_contents($_file, json_encode($cannot_copy, JSON_PRETTY_PRINT));
+        return false;
       }
     }
-    return $src;
+    return $_src;
   }
 
   public static function imageExtention($ext)
@@ -215,6 +228,7 @@ class Image
 
   public static function readfile($file)
   {
+    $file = strtr($file, ['..'=>'']);
     if (file_exists($file)) {
       ob_end_clean();
       header('Content-Length: '.filesize($file));
@@ -224,7 +238,9 @@ class Image
         $extType = [2=>'jpeg',32=>'webp',3=>'png',1=>'gif'];
         $ext = $extType[$imageInfo[2]] ?? $ext;
       }
-      if (in_array($ext, ['jpeg','jpg','png','gif','webp'])) {
+      FileManager::$sitepath = realpath(SITE_PATH);
+      if (in_array($ext, ['jpeg','jpg','png','gif','webp'])
+      && FileManager::allowedPath($file)) {
         header("Content-Type: image/".$ext);
         readfile($file);
       } elseif ($ext==='svg' &&

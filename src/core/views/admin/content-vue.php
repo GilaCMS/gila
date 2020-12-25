@@ -85,7 +85,7 @@ unset($tableFilters['page']);
   gfilter="<?=htmlspecialchars(json_encode($tableFilters))?>"
   gfields="<?=htmlspecialchars(json_encode($gtable->fields('list')))?>"
   grows="<?=htmlspecialchars(json_encode($gtable->getRowsIndexed($tableFilters, ['page'=>1])))?>"
-  permissions="<?=htmlspecialchars(json_encode(Gila\User::permissions(Session::userId())))?>"
+  permissions="<?=htmlspecialchars(json_encode(Gila\Session::permissions()))?>"
   gtotalrows="<?=$gtable->totalRows($tableFilters)?>"
   base="<?=Config::base()?>admin/content/<?=$table?>"></g-table>
 </div>

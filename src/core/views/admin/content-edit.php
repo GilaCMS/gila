@@ -25,7 +25,7 @@ View::script('core/admin/vue-components.js');
 
 <?php
 global $db;
-$pnk = new Table($table, Gila\User::permissions(Session::userId()));
+$pnk = new Table($table, Gila\Session::permissions());
 $t = $pnk->getTable();
 $pages_path = [];
 $templates = [];

@@ -64,7 +64,7 @@ class Profile
     return substr($token, 0, 160);
   }
 
-  public static function getPermissions($user_id)
+  public static function getPermissions($user_id) // DEPRECATED
   {
     $allPermissions = self::getAllPermissions();
     $userPermissions = User::permissions($user_id);
@@ -80,7 +80,7 @@ class Profile
   public static function getAllPermissions()
   {
     $permissions = [];
-    $packages = array_merge(Config::get('packages'), ["core"]);
+    $packages = array_merge(Config::packages(), ["core"]);
     foreach ($packages as $package) {
       $pjson = 'src/'.$package.'/package.json';
       $perjson = 'src/'.$package.'/package/en.json';

@@ -5,7 +5,7 @@
   $pagesC = $db->value('SELECT count(*) from page;');
   $usersC = $db->value('SELECT count(*) from user;');
   $db->close();
-  $packagesC = count($GLOBALS['config']['packages']);
+  $packagesC = count(Config::get('packages'));
   $palette = Config::get('admin_palette')? json_decode(Config::get('admin_palette'), true): [
     'forestgreen','cornflowerblue','coral','orchid'
   ];

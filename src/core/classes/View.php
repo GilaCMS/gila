@@ -492,14 +492,14 @@ class View
   {
     $pathinfo = pathinfo($src);
     $ext = $pathinfo['extension'] ?? null;
-    if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['svg','webm'])) {
+    if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['webm'])) {
       return $src;
     }
 
     if ($src[0]==='$') {
       if (substr($src, 1, 2)=='p=') {
         $file = 'assets/themes/'.($_GET['g_preview_theme']??Config::get('theme')).'/'.substr($src, 3);
-        if (!file_exists($file)) {
+        if (!file_exists(strtr($file,['.'=>'']))) {
           $file='assets/core/photo.png';
         }
         return $file;
@@ -512,7 +512,10 @@ class View
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
     if (substr($src, 0, 5) !== 'data/') {
-      // dont create new thumbs for existing websites
+      FileManager::$sitepath = realpath(SITE_PATH);
+      if (!FileManager::allowedPath($src)) {
+        return $src;
+      }
       return TMP_PATH.'/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
     }
 
@@ -522,7 +525,7 @@ class View
       $file = $thumbs[$key] ?? null;
     }
     if (!$file) {
-      if (Image::imageExtention($ext)===false) {
+      if (Image::imageExtention($ext)===false && $ext!='svg') {
         return false;
       }
       do {

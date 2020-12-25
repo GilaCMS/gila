@@ -7,7 +7,7 @@ class Config
   public static $package;
   public static $amenu;
   public static $widget_area = [];
-  public static $option;
+  public static $option = [];
   public static $content;
   public static $contentField;
   public static $contentInit = [];
@@ -37,7 +37,7 @@ class Config
 
   public static function loadLang($path)
   {
-    $filepath = 'src/'.$path.self::config('language').'.json';
+    $filepath = 'src/'.$path.self::get('language').'.json';
     if (file_exists($filepath)) {
       self::$langWords = @array_merge(
         self::$langWords,
@@ -114,7 +114,7 @@ class Config
   */
   public static function packages()
   {
-    return $GLOBALS['config']['packages'];
+    return self::getArray('packages');
   }
 
   /**
@@ -180,15 +180,22 @@ class Config
 
   /**
   * Sets the value of configuration attribute
-  * @param $key (string) Name of the attribute
+  * @param $option (string) Name of the attribute
   * @param $value (optional) The value to set
   */
-  public static function set($key, $value)
+  public static function set($option, $value)
   {
-    if (!is_string($key)) {
-      return;
+    global $db;
+    $GLOBALS['config'][$option] = $value;
+    @self::$option[$option] = $value;
+    if(is_array($value)) {
+      $value = json_encode($value);
     }
-    $GLOBALS['config'][$key] = $value;
+    $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
+    ON DUPLICATE KEY UPDATE `value`=?;", [$option, $value, $value]);
+    if (self::config('env') === 'pro') {
+      @unlink(LOG_PATH.'/load.php');
+    }
   }
 
   /**
@@ -198,17 +205,16 @@ class Config
   */
   public static function get($key)
   {
-    return $GLOBALS['config'][$key] ?? null;
+    return self::getOption($key, $GLOBALS['config'][$key] ?? null);
   }
 
-  /**
-  * Rewrites the config.php file
-  */
-  public static function updateConfigFile()
+  public static function getArray($key)
   {
-    $GLOBALS['config']['updated'] = time();
-    $filedata = "<?php\n\n\$GLOBALS['config'] = ".var_export($GLOBALS['config'], true).";";
-    file_put_contents(CONFIG_PHP, $filedata);
+    $array = self::getOption($key, $GLOBALS['config'][$key] ?? null);
+    if(is_string($array)) {
+      return json_decode($array, true);
+    }
+    return $array;
   }
 
   /**
@@ -243,15 +249,9 @@ class Config
   * @param $option (string) Option name
   * @param $value (optional) The value to set
   */
-  public static function setOption($option, $value='')
+  public static function setOption($option, $value)
   {
-    global $db;
-    @self::$option[$option] = $value;
-    $ql="INSERT INTO `option`(`option`,`value`) VALUES('$option','$value') ON DUPLICATE KEY UPDATE `value`='$value';";
-    $db->query($ql);
-    if (self::config('env') === 'pro') {
-      unlink(LOG_PATH.'/load.php');
-    }
+    self::set($option, $value);
   }
 
   /**
@@ -355,7 +355,7 @@ class Config
   * @param $args (array) Action name
   * @return The full url to print
   */
-  public static function make_url($c, $action='', $args=[])
+  public static function make_url($c, $action='', $args=[]) //DEPRECATED
   {
     return self::url($c.'/'.$action, $args);
   }
@@ -367,7 +367,7 @@ class Config
   {
     global $db;
     include_once "src/core/load.php";
-    foreach ($GLOBALS['config']['packages'] as $package) {
+    foreach (self::packages() as $package) {
       if (file_exists("src/$package/load.php")) {
         include_once "src/$package/load.php";
       }

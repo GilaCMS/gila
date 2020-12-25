@@ -79,21 +79,21 @@ if (is_array(Config::get('trusted_domains')) &&
   die($_SERVER['HTTP_HOST'].' is not a trusted domain. It can be added in configuration file.');
 }
 
-$db = new Db(Config::get('db'));
+$db = new Db($GLOBALS['config']['db']);
 
-if ($GLOBALS['config']['env'] == 'dev') {
+if (!include LOG_PATH.'/load.php') {
+  Config::load();
+  Package::updateLoadFile();
+}
+
+if (Config::get('env') == 'dev') {
   error_reporting(E_ALL);
   ini_set('display_errors', '1');
   ini_set('display_startup_errors', '1');
-  Config::load();
 } else {
   error_reporting(E_ERROR);
   ini_set('display_errors', 0);
   ini_set('display_startup_errors', 0);
-  if (!include LOG_PATH.'/load.php') {
-    Config::load();
-    Package::updateLoadFile();
-  }
 }
 
 Event::fire('load');
@@ -103,7 +103,7 @@ function __($key, $alt = null)
   return Config::tr($key, $alt);
 }
 
-$theme = Router::request('g_preview_theme', $GLOBALS['config']['theme']);
+$theme = Router::request('g_preview_theme', Config::get('theme'));
 if (file_exists("themes/$theme/load.php")) {
   include "themes/$theme/load.php";
 }

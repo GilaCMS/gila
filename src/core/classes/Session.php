@@ -6,7 +6,7 @@ class Session
 {
   private static $started = false;
   private static $user_id;
-  private static $data;
+  public static $data;
 
   public static function start()
   {
@@ -31,14 +31,14 @@ class Session
 
     // verify that session is in database
     if ($session = self::find($_COOKIE['GSESSIONID'])) {
-      // refresh every 5 minutes
+      // refresh every minute
       self::$user_id = $session['user_id'];
       self::$data = json_decode($session['data']??'[]', true);
-      if (strtotime($session['updated'])+100>time()) {
+      if (strtotime($session['updated'])+60>time()) {
         $usr = User::getById($session['user_id']);
         if ($usr['active']===1) {
           self::user($usr['id'], $usr['username'], $usr['email']);
-          self::update($_COOKIE['GSESSIONID']);
+          setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time() + 86400*30, '/');
           return;
         } else {
           self::destroy();
@@ -74,6 +74,8 @@ class Session
     self::$data['user_id'] = $id;
     self::$data['user_name'] = $name;
     self::$data['user_email'] = $email;
+    self::$data['permissions'] = User::permissions($id);
+    self::commit();
     self::$user_id = $id;
     if ($msg!==null) {
       $session_log = new Logger(LOG_PATH.'/sessions.log');
@@ -93,14 +95,6 @@ class Session
   {
     global $db;
     return $db->read()->get("SELECT * FROM sessions WHERE user_id=?;", [$userId]);
-  }
-
-  public static function update($gsessionId)
-  {
-    global $db;
-    $ql = "UPDATE sessions SET updated=NOW() WHERE gsessionid=?;";
-    $db->query($ql, [$gsessionId]);
-    setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time() + 86400*30, '/');
   }
 
   public static function setCookie($userId)
@@ -175,7 +169,7 @@ class Session
   public static function commit()
   {
     global $db;
-    $ql = "UPDATE sessions SET data=? WHERE gsessionid=?;";
+    $ql = "UPDATE sessions SET data=?, updated=NOW() WHERE gsessionid=?;";
     $db->query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']]);
   }
 
@@ -186,7 +180,7 @@ class Session
     self::commit();
   }
 
-  private static function md5($key)
+  private static function md5($key) // DEPRECATED
   {
     return $key;
   }
@@ -241,15 +235,21 @@ class Session
     if (!is_array($pri)) {
       $pri=explode(' ', $pri);
     }
-    if (!isset($GLOBALS['user_privileges'])) {
-      $GLOBALS['user_privileges'] = User::permissions(Session::userId());
-    }
+    $user_privileges = self::permissions();
 
     foreach ($pri as $p) {
-      if (@in_array($p, $GLOBALS['user_privileges'])) {
+      if (@in_array($p, $user_privileges)) {
         return true;
       }
     }
     return false;
+  }
+
+  public static function permissions()
+  {
+    if(!self::key('permissions')) {
+      self::key('permissions', User::permissions(self::userId()));
+    }
+    return self::key('permissions');
   }
 }

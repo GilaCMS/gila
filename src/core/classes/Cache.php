@@ -11,7 +11,7 @@ class Cache
   public static function set($name, $data, $uniques = [])
   {
     $name = self::$cachePath.str_replace('/', '-', $name);
-    $caching_file = $name.'|'.implode('|', $uniques);
+    $caching_file = $name.'__'.implode('__', $uniques);
     return file_put_contents($caching_file, $data);
   }
 
@@ -21,7 +21,7 @@ class Cache
       $uniques = [$uniques];
     }
     $name = self::$cachePath.str_replace('/', '-', $name);
-    $caching_file = $name.'|'.implode('|', $uniques);
+    $caching_file = $name.'__'.implode('__', $uniques);
 
     if (file_exists($caching_file) && filemtime($caching_file)+$time>time()) {
       return file_get_contents($caching_file);

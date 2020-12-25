@@ -31,13 +31,13 @@ class Theme
   public static function activate($activate)
   {
     if (in_array($activate, scandir('themes/'))) {
-      if ($activate != $GLOBALS['config']['theme'] ||
+      if ($activate != Config::get('theme') ||
           Config::get('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
         $require = [];
         if (isset($pac['require'])) {
           foreach ($pac['require'] as $key => $value) {
-            if (!in_array($key, Config::packages())&&($key!='core')) {
+            if (!in_array($key, Config::packages()) && $key!='core') {
               $require[$key]=$key.' v'.$value;
             } else {
               $pacx=json_decode(file_get_contents('src/'.$key.'/package.json'), true);
@@ -49,13 +49,11 @@ class Theme
         }
 
         if ($require===[]) {
-          $GLOBALS['config']['theme']=$activate;
+          Config::set('theme', $activate);
           self::copyAssets($activate);
-          Config::updateConfigFile();
           Package::updateLoadFile();
-          usleep(300);
           View::alert('success', __('_theme_selected'));
-          echo 'ok';
+          echo '{"success":true}';
         } else {
           echo __('_packages_required').':';
           foreach ($require as $k=>$r) {
@@ -212,6 +210,9 @@ class Theme
   */
   public static function scan()
   {
+    if (!FS_ACCESS && Config::get('available_themes')) {
+      return Config::get('available_themes');
+    }
     $dir = "themes/";
     $scanned = scandir($dir);
     $_packages = [];

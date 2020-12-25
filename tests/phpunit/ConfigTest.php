@@ -13,14 +13,10 @@ class ClassGila extends TestCase
     $this->assertEquals('Inicio', __('Home'));
   }
 
-  public function test_updateConfigFile()
+  public function test_getArray()
   {
-    $value = rand(1, 100);
-    include_once __DIR__.'/../../config.default.php';
-    Config::set('test_config_key', $value);
-    Config::updateConfigFile();
-    include_once __DIR__.'/../../config.php';
-    $this->assertEquals($value, $GLOBALS['config']['test_config_key']);
+    $GLOBALS['config']['test_config_key'] = '["1","2"]';
+    $this->assertEquals([0=>'1',1=>'2'], Config::getArray('test_config_key'));
   }
 
   public function test_mt()

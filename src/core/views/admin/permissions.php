@@ -5,7 +5,7 @@ global $db;
 $permissions = Gila\Profile::getAllPermissions();
 
 // load all user groups
-$roles = array_merge([['member','Member']], $db->get("SELECT id,userrole FROM userrole;")); //[0,'Anonymous<br>User'],
+$roles = array_merge([['member','*']], $db->get("SELECT id,userrole FROM userrole;"));
 
 // update permissions if form submited
 if (isset($_POST['submit']) && isset($_POST['role'])) {
@@ -15,18 +15,17 @@ if (isset($_POST['submit']) && isset($_POST['role'])) {
       $checked[$role] = array_keys($list);
     }
   }
-  Config::set('permissions', $checked);
-  Config::updateConfigFile();
-  View::alert('success', __('_changes_updated'));
+  Gila\Config::set('permissions', $checked);
+  Gila\View::alert('success', __('_changes_updated'));
 }
 
-$checked = Config::get('permissions');
+$checked = Gila\Config::getArray('permissions');
 
 
 View::alerts();
 ?>
 <br>
-<form action="<?=Config::url('admin/users', ['tab'=>2])?>" method="POST">
+<form action="<?=Gila\Config::url('admin/users', ['tab'=>2])?>" method="POST">
 <button class="g-btn" name="submit" value="true">
   <i class="fa fa-save"></i> <?=__('Submit')?>
 </button>
@@ -45,11 +44,15 @@ View::alerts();
       <?=__($index, $permission)?>
     <?php foreach ($roles as $role) {
   echo '<td style="text-align:center">';
-  echo '<input type="checkbox" name="role['.$role[0].']['.$index.']"';
-  if (isset($checked[$role[0]]) && in_array($index, $checked[$role[0]])) {
-    echo ' checked';
+  if($index==='admin' && $role[0]==='member') {
+    echo '';
+  } else {
+    echo '<input type="checkbox" name="role['.$role[0].']['.$index.']"';
+    if (isset($checked[$role[0]]) && in_array($index, $checked[$role[0]])) {
+      echo ' checked';
+    }
+    echo '>';
   }
-  echo '>';
 } ?>
   </tr>
   <?php } ?>
