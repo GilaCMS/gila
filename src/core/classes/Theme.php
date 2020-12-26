@@ -166,10 +166,10 @@ class Theme
       } else {
         include 'themes/'.$options.'/package.php';
       }
-
       if (is_array($options)) {
+        Config::loadOptions();
         foreach ($options as $key=>$op) {
-          $values[$key] = Config::option('theme.'.$key);
+          $values[$key] = Config::get('theme.'.$key);
         }
         echo Form::html($options, $values, 'option[', ']');
       }// else error alert
@@ -197,9 +197,7 @@ class Theme
           $db->query($ql, ['theme.'.$key, $value,$value]);
         }
       }
-      if (Config::get('env')=='pro') {
-        unlink(LOG_PATH.'/load.php');
-      }
+      unlink(LOG_PATH.'/load.php');
       exit;
     }
   }

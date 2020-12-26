@@ -301,6 +301,7 @@ class Package
       }
 
       if (is_array($options)) {
+        Config::loadOptions();
         foreach ($options as $key=>$op) {
           $values[$key] = Config::option($pack.'.'.$key);
         }
@@ -328,9 +329,7 @@ class Package
           $db->query($ql, [$package.'.'.$key, $value, $value]);
         }
       }
-      if (Config::get('env')==='pro') {
-        unlink(LOG_PATH.'/load.php');
-      }
+      unlink(LOG_PATH.'/load.php');
     }
   }
 

@@ -573,7 +573,6 @@ input.btn {
   list-style:none;
   display:block;
   padding:0;
-  margin:auto;
   z-index:100;
   font:15px Arial;
 }

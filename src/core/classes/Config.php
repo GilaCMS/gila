@@ -243,6 +243,14 @@ class Config
     }
     return $default;
   }
+  public static function loadOptions()
+  {
+    global $db;
+    $res = $db->get('SELECT `option`,`value` FROM `option`;');
+    foreach ($res as $r) {
+      self::$option[$r[0]] = $r[1];
+    }
+  }
 
   /**
   * Sets an option value
@@ -365,7 +373,6 @@ class Config
   */
   public static function load()
   {
-    global $db;
     include_once "src/core/load.php";
     foreach (self::packages() as $package) {
       if (file_exists("src/$package/load.php")) {
@@ -374,10 +381,7 @@ class Config
     }
     self::$option=[];
     $db->connect();
-    $res = $db->get('SELECT `option`,`value` FROM `option`;');
-    foreach ($res as $r) {
-      self::$option[$r[0]] = $r[1];
-    }
+    self::loadOptions();
     $db->close();
   }
 
