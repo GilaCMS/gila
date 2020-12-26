@@ -157,6 +157,7 @@ class Theme
   */
   public static function options($options)
   {
+    $group = Router::post('group')??null;
     if (file_exists('themes/'.$options)) {
       echo '<form id="theme_options_form" class="g-form"><input id="theme_id" value="'.$options.'" type="hidden">';
       $pack = $options;
@@ -168,10 +169,12 @@ class Theme
       }
       if (is_array($options)) {
         Config::loadOptions();
-        foreach ($options as $key=>$op) {
+        $optionList = [];
+        foreach ($options as $key=>$op) if ($group===null || $op['group']===$group){
           $values[$key] = Config::get('theme.'.$key);
+          $optionList[$key] = $op;
         }
-        echo Form::html($options, $values, 'option[', ']');
+        echo Form::html($optionList, $values, 'option[', ']');
       }// else error alert
       echo "</form>";
       exit;
