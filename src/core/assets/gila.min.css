@@ -13,6 +13,7 @@
   --main-error-color:firebrick;
   --main-radius:0.2em;
   --main-padding:0.6em;
+  --admin-primary-color:#207ab7;
 }
 
 
@@ -227,6 +228,9 @@ button:hover{
   opacity:1;
   vertical-align: middle;
 }
+.gila-popup .g-btn {
+  background:var(--admin-primary-color);
+}
 .btn:hover, .g-btn:hover,.gila-popup .g-btn:hover{
   color:white;
   opacity:0.9;
@@ -306,14 +310,14 @@ input.btn {
 /* Radios */
 .g-radio input{display: none;}
 .g-radio label{background:var(--main-input-color);padding: var(--main-padding);display: inline;}
-.g-radio input:checked + label{background: var(--main-primary-color); color:white}
+.g-radio input:checked + label{background: var(--admin-primary-color); color:white}
 
 /* Toggle switch */
 .g-switch{position:relative;z-index:1;margin:4px 0;height:26px}
 .g-switch input{position:absolute;opacity:0;width: 51px;height: 26px;top:-2px;left:-2px;cursor:pointer;}
 .g-switch .g-slider{position:absolute;z-index: -100}
 .g-switch input[value="1"]:checked + .g-slider{
-  background-color:var(--main-a-color);
+  background-color:var(--admin-primary-color);
 }
 .g-switch input:checked{ display:none}
 .g-switch input:checked + .g-slider:before{
