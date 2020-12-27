@@ -495,6 +495,9 @@ class View
     if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['webm'])) {
       return $src;
     }
+    if (strpos($src, 'assets/')===0 && in_array($ext, ['svg'])) {
+      return $src;
+    }
 
     if ($src[0]==='$') {
       if (substr($src, 1, 2)=='p=') {

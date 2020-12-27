@@ -22,7 +22,7 @@ return [
     'delete'=>['admin','editor']
   ],
   'search_box'=>true,
-  'search_boxes'=> ['user_id'],
+  'search_boxes'=> ['categories','user_id'],
   'fields'=> [
     'id'=> [
       'title'=>'ID',

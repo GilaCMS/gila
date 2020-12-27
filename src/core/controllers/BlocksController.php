@@ -179,6 +179,7 @@ class BlocksController extends Gila\Controller
     $content = Router::param('t', 1);
     $id = Router::param('id', 2);
     $blocks = self::readBlocks($content, $id);
+    Config::loadOptions();
     if ($content=="page" && $r = Page::getByIdSlug($id, false)) {
       View::set('title', $r['title']);
       View::set('text', View::blocks($blocks, 'page'.$r['id'], true));

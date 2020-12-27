@@ -200,8 +200,7 @@ class Theme
           $db->query($ql, ['theme.'.$key, $value,$value]);
         }
       }
-      unlink(LOG_PATH.'/load.php');
-      exit;
+      @unlink(LOG_PATH.'/load.php');
     }
   }
 

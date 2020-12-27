@@ -79,7 +79,7 @@ foreach ($files as $file) {
     $filepath=$path.'/'.$file;
     $filename=htmlentities($file);
     if ($type=='image') {
-      $img='<img src="'.View::thumb(SITE_PATH.$filepath, 'media_thumb/', 100).'">';
+      $img='<img src="'.View::thumb(SITE_PATH.$filepath, 100).'">';
       echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
     }
     if ($type=='video') {

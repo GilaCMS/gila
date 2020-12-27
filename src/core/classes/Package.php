@@ -330,7 +330,7 @@ class Package
           $db->query($ql, [$package.'.'.$key, $value, $value]);
         }
       }
-      unlink(LOG_PATH.'/load.php');
+      @unlink(LOG_PATH.'/load.php');
     }
   }
 
