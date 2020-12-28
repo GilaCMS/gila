@@ -495,6 +495,10 @@ class View
     if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['webm'])) {
       return $src;
     }
+    if ((strpos($src, 'assets/')===0 || strpos($src, 'src/')===0)
+      && in_array($ext, ['svg'])) {
+      return $src;
+    }
 
     if ($src[0]==='$') {
       if (substr($src, 1, 2)=='p=') {
@@ -511,7 +515,8 @@ class View
     $key = $pathinfo['filename'].$ext.$max;
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
-    if (substr($src, 0, 5) !== 'data/') {
+    if (strpos($src, SITE_PATH.'data/') !== 0 &&
+      strpos($src, 'src/') !== 0  && strpos($src, 'themes/') !== 0) {
       FileManager::$sitepath = realpath(SITE_PATH);
       if (!FileManager::allowedPath($src)) {
         return $src;

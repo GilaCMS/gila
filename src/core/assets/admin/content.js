@@ -69,6 +69,7 @@ Vue.component('g-table', {
         <th v-if="table.bulk_actions" style="width:28px;" @click="toggleSelectAll()">\
           <i :class="checkboxClassBulk()" aria-hidden="true"></i>\
         </th>\
+        <th v-if="table.index_rows">#</th>\
         <th v-for="ifield in data.fields" :col="ifield" class="sorting" @click="orderBy(ifield)"\
           v-if="showField(ifield)" :style="thStyle(ifield)">\
           <i :class="sortiClass(ifield)" :col="ifield""></i>\
@@ -83,6 +84,7 @@ Vue.component('g-table', {
         <td v-if="table.bulk_actions" @click="select_row(row[0], irow, $event)">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
+        <td v-if="table.index_rows">{{irow+1}}</td>\
         <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
         :col="ifield" :value="row[ifield]" :class="field"\
         @keydown="inlineDataUpdate(irow, field)">\
@@ -145,13 +147,18 @@ Vue.component('g-table', {
     inlineEdit: false,
     intervalUpdate: null,
     irowSelected: null,
-    basePath: this.base ?? null
+    basePath: this.base ?? null,
+    indexRow: 0
   }},
   updated: function() {
     if(this.edititem==0) return;
     transformClassComponents()
   },
   methods: {
+    countRow: function() {
+      this.indexRow++
+      return this.indexRow
+    },  
     load_page: function(a={}) {
       let _data = this.data
       if(a.page) this.page=a.page

@@ -19,6 +19,7 @@ class Image
     $ext = pathinfo($src)['extension'] ?? null;
     if(!self::imageExtention($ext)) {
       if ($ext=='svg') {
+        Config::dir(substr($file, 0, strrpos($file, '/')));
         copy($src, $file);
         return true;
       }

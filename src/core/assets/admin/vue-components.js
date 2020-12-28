@@ -52,6 +52,9 @@ Vue.component('input-list', {
       if(src.split('.').pop()=='svg' || src.startsWith('http:') || src.startsWith('https:')) {
         return src;
       }
+      if (src.startsWith('assets/') || src.startsWith('tmp/')) {
+        return src
+      }
       return 'lzld/thumb?src='+src;
     },
     isMedia: function(field) {

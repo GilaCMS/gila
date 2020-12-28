@@ -193,9 +193,7 @@ class Config
     }
     $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
     ON DUPLICATE KEY UPDATE `value`=?;", [$option, $value, $value]);
-    if (self::config('env') === 'pro') {
-      @unlink(LOG_PATH.'/load.php');
-    }
+    @unlink(LOG_PATH.'/load.php');
   }
 
   /**
@@ -242,6 +240,14 @@ class Config
       return self::$option[$option];
     }
     return $default;
+  }
+  public static function loadOptions()
+  {
+    global $db;
+    $res = $db->get('SELECT `option`,`value` FROM `option`;');
+    foreach ($res as $r) {
+      self::$option[$r[0]] = $r[1];
+    }
   }
 
   /**
@@ -365,7 +371,6 @@ class Config
   */
   public static function load()
   {
-    global $db;
     include_once "src/core/load.php";
     foreach (self::packages() as $package) {
       if (file_exists("src/$package/load.php")) {
@@ -374,10 +379,7 @@ class Config
     }
     self::$option=[];
     $db->connect();
-    $res = $db->get('SELECT `option`,`value` FROM `option`;');
-    foreach ($res as $r) {
-      self::$option[$r[0]] = $r[1];
-    }
+    self::loadOptions();
     $db->close();
   }
 

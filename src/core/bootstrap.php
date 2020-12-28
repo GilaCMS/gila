@@ -73,10 +73,11 @@ if ($GLOBALS['config'] === []) {
 }
 
 
-if (is_array(Config::get('trusted_domains')) &&
+if (Config::getArray('trusted_domains') &&
     isset($_SERVER['HTTP_HOST']) &&
-    !in_array($_SERVER['HTTP_HOST'], Config::get('trusted_domains'))) {
-  die($_SERVER['HTTP_HOST'].' is not a trusted domain. It can be added in configuration file.');
+    !in_array($_SERVER['HTTP_HOST'], Config::get('trusted_domains')) &&
+    strpos(Config::get('base'), $_SERVER['HTTP_HOST'])===false) {
+  header('Location: '.Config::get('base').$_SERVER['REQUEST_URI']);
 }
 
 $db = new Db($GLOBALS['config']['db']);
