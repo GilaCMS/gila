@@ -193,9 +193,7 @@ class Config
     }
     $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
     ON DUPLICATE KEY UPDATE `value`=?;", [$option, $value, $value]);
-    if (self::config('env') === 'pro') {
-      @unlink(LOG_PATH.'/load.php');
-    }
+    @unlink(LOG_PATH.'/load.php');
   }
 
   /**
