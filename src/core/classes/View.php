@@ -515,10 +515,10 @@ class View
     $key = $pathinfo['filename'].$ext.$max;
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
-    if (strpos($src, SITE_PATH.'data/') !== 0 &&
-      strpos($src, 'src/') !== 0  && strpos($src, 'themes/') !== 0) {
+    if (strpos($src, SITE_PATH.'data/') !== 0) {
       FileManager::$sitepath = realpath(SITE_PATH);
-      if (!FileManager::allowedPath($src)) {
+      if(strpos($src, 'src/') === 0  || strpos($src, 'themes/') === 0 ||
+        !FileManager::allowedPath($src)) {
         return $src;
       }
       return TMP_PATH.'/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;
