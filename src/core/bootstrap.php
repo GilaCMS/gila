@@ -82,7 +82,7 @@ if (Config::getArray('trusted_domains') &&
 
 $db = new Db($GLOBALS['config']['db']);
 
-if (!include LOG_PATH.'/load.php') {
+if (!@include LOG_PATH.'/load.php') {
   Config::load();
   Package::updateLoadFile();
 }

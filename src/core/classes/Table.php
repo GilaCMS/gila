@@ -111,7 +111,7 @@ class Table
   {
     foreach ($extTable as $key=>$el) {
       if (is_array($el)) {
-        $table[$key] = self::extend_recursive($table[$key], $el);
+        $table[$key] = self::extend_recursive($table[$key]??[], $el);
       } elseif (is_numeric($key)) {
         if (!in_array($el, $table)) {
           $table[] = $el;
