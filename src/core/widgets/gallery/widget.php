@@ -11,7 +11,7 @@ return [
       'type'=>'list',
       'fields'=>[
         'image'=>[
-          'type'=>'media','default'=>'src/core/assets/photo.png'
+          'type'=>'media','default'=>'assets/core/photo.png'
         ],
         'caption'=>[]
       ],
