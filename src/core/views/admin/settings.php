@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::set('timezone', $_POST['gila_timezone']);
   Config::set('language', $_POST['gila_language']);
   Config::set('admin_logo', $_POST['gila_admin_logo']);
-  Config::set('admin_theme', $_POST['gila_admin_theme']);
+  Config::set('admin_theme', $_POST['gila_admin_theme']??'');
   Config::set('favicon', $_POST['gila_favicon']);
   Config::set('env', $_POST['gila_env']);
   Config::set('check4updates', $_POST['gila_check4updates']);
@@ -105,7 +105,7 @@ foreach ($config_list as $key=>$value) {
 
   <br>
   <?php
-  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'liquidcool'=>'Liquid Cool', ''=>'Old'];
+  $options = ['default'=>'Default', 'deepblue'=>'Deep Blue', 'liquidcool'=>'Liquid Cool', '-'=>'Old'];
   foreach (Config::getList('admin-themes') as $theme) {
     $options[$theme[0]] = $theme[1];
   }
