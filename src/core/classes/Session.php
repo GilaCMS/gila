@@ -122,7 +122,7 @@ class Session
       'path' => '/',
       'secure' => Config::get('secure_cookie')??false,
       'httponly' => true,
-      'samesite' => 'Strict',
+      'samesite' => Config::get('samesite_cookie')??'Lax'
     ]);
   }
 
