@@ -196,6 +196,10 @@ class AdminController extends Gila\Controller
 
   public function loginAction()
   {
+    if(Session::userId()>0) {
+      header('Location: '.Config::get('base').'admin');
+      return;
+    }
     View::set('title', __('Log In'));
     View::renderAdmin('login.php');
   }
