@@ -45,8 +45,9 @@
 
     <p><?=__('Permissions')?>:
     <ul><?php
+    $allPermissions = Profile::getAllPermissions();
     foreach (Gila\Session::permissions() as $per) {
-      echo '<li>'.$per;
+      echo '<li>'.Config::tr($per, $allPermissions[$per]);
     }
     ?></ul></p>
 

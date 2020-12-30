@@ -14,6 +14,7 @@ View::script('core/admin/content.js');
 View::scriptAsync('core/lang/content/'.Config::get('language').'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
+View::script('core/vue-upload-media.js');
 View::scriptAsync('core/admin/vue-editor.js');
 View::script('lib/CodeMirror/codemirror.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
@@ -78,6 +79,7 @@ foreach ($pages_path as $path) {
 $tableFilters = is_array($t['filters']) ? array_merge($t['filters'], $_GET) : $_GET;
 unset($tableFilters['p']);
 unset($tableFilters['page']);
+View::widgetArea('content.'.$table);
 ?>
 <div id="vue-table">
   <g-table gtype="<?=$table?>" ref="gtable"

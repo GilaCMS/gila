@@ -1,7 +1,7 @@
 
 Vue.component('input-upload-media', {
   template: '<div class="pointer:hover shadow:hover;" \
-  style="background:var(--main-input-color);width:160px;height:160px;max-width:100%;max-height:100%;display: grid;\
+  style="background:var(--main-input-color);width:120px;height:120px;max-width:100%;max-height:100%;display: grid;\
   justify-content:center; align-content:center; position:relative;min-width:50px;overflow: hidden;"\
   @click="selectPhoto()">\
 <img v-if="!inisrc" ref="thumb" src="assets/core/default-user.png" style="width:auto;max-width:100%;margin:auto">\
@@ -52,7 +52,7 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
       if (src.startsWith('assets/') || src.startsWith('tmp/')) {
         return src
       }
-      return 'lzld/thumb?media_thumb=160&src='+src
+      return 'lzld/thumb?media_thumb=120&src='+src
     },
     uploadPhoto: function() {
       let fm=new FormData()

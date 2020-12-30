@@ -215,6 +215,11 @@ class Form
         $ov = htmlspecialchars($ov);
         return '<input-media name="'.$name.'" value="'.$ov.'">';
       },
+      "upload-media"=> function ($name, $field, $ov) {
+        $id = 'm_'.str_replace(['[',']'], '_', $name);
+        $ov = htmlspecialchars($ov);
+        return '<input-media-upload name="'.$name.'" value="'.$ov.'">';
+      },
       "tree-select"=> function ($name, $field, $ov) {
         return '<tree-select name="'.$name.'" value="'.$ov.'" data='.json_encode($field['data']).'>';
       },
