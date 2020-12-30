@@ -18,7 +18,8 @@ class Image
     $src_height = 0;
     $ext = pathinfo($src)['extension'] ?? null;
     if(!self::imageExtention($ext)) {
-      if ($ext=='svg') {
+      FileManager::$sitepath = realpath(SITE_PATH);
+      if ($ext=='svg' && FileManager::allowedPath($src)) {
         Config::dir(substr($file, 0, strrpos($file, '/')));
         copy($src, $file);
         return true;

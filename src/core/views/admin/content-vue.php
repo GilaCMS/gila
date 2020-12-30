@@ -114,4 +114,4 @@ window.onpopstate = function(event) {
 
 </script>
 
-<?=View::script('core/lazyImgLoad.js');?>
+<?=View::scriptAsync('core/lazyImgLoad.js');?>

@@ -227,7 +227,11 @@ class AdminController extends Gila\Controller
       }
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
-      if (in_array(pathinfo($name, PATHINFO_EXTENSION), ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF","webp","WEBP"])) {
+      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+      if(Config::get('allow_svg')) {
+        $extensions[] = 'svg';
+      }
+      if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $extensions)) {
         $path = SITE_PATH.$path.'/'.$name;
         if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
