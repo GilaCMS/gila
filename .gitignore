@@ -1,6 +1,5 @@
 # Gila ignores
 src/*
-themes/*
 assets/*
 tmp/*
 log/*
