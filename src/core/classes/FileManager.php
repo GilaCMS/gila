@@ -56,20 +56,22 @@ class FileManager
     return false;
   }
 
-  public static function allowedPath($path)
+  public static function allowedPath($path, $read=false)
   {
     $allowedPaths = ['data/public','tmp','assets'];
     if (Session::hasPrivilege('admin')) {
       $allowedPaths[] = 'log';
     }
     $allowedPaths[] = Config::get('media_uploads') ?? 'assets';
-    if (FS_ACCESS) {
-      $allowedPaths = array_merge($allowedPaths, ['src','themes']);
-    }
     if (!is_dir($path)) {
       $path = pathinfo($path)['dirname'];
     }
-    $path = substr(realpath($path), strlen(self::$sitepath)+1);
+    if($read && (strpos($path, 'src/')===0 || strpos($path, 'themes/')===0)) {
+      $path = substr(realpath($path), strlen(realpath('.'))+1);
+      $allowedPaths = ['src', 'themes'];
+    } else {
+      $path = substr(realpath($path), strlen(self::$sitepath)+1);
+    }
 
     foreach ($allowedPaths as $allowed) {
       if (substr($path, 0, strlen($allowed)+1) === $allowed.'/' ||

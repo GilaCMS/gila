@@ -236,7 +236,7 @@ class Package
       if (file_exists($target.'__tmp__')) {
         rmdir($target.'__tmp__');
       }
-      self::updateAfterDownload($package);
+      self::update($package);
       unlink(LOG_PATH.'/load.php');
       unlink($localfile);
       return true;
@@ -244,34 +244,36 @@ class Package
     return false;
   }
 
-  public static function updateAfterDownload($package)
+  public static function update($package)
+  {
+    self::copyAssets($package);
+    $update_file = 'src/'.$package.'/update.php';
+    if (file_exists($update_file)) {
+      include $update_file;
+    }
+    if (FS_ACCESS) {
+      self::updateSites($package);
+    }
+  }
+
+  public static function updateSites($package)
   {
     global $db;
-    self::copyAssets($package);
-    self::update($package);
-
     $sites = scandir('sites');
+    $update_file = 'src/'.$package.'/update.php';
     foreach ($sites as $site) {
       if ($site[0]!='.') {
         $config = 'sites/'.$site.'/config.php';
-        if (file_exists($config)) {
+        if (file_exists($config) && file_exists($update_file)) {
           include $config;
           $db = new Db($GLOBALS['config']['db']);
           if ($package==='core' ||
-            in_array($package, Config::packages())) {
-            self::update($package);
+            in_array($package, $GLOBALS['config']['packages'])) {
+            include $update_file;
           }
           @unlink('sites/'.$site.'/log/load.php');
         }
       }
-    }
-  }
-
-  public static function update($package)
-  {
-    $update_file = 'src/'.$package.'/update.php';
-    if (file_exists($update_file)) {
-      include $update_file;
     }
   }
 
@@ -429,7 +431,7 @@ class Package
       foreach ($installed_packages as $ipac=>$pac) {
         if (isset($versions[$ipac]) && version_compare($versions[$ipac], $pac->version) == 1) {
           if ($pac==='core' && Config::get('autoupdate')==1) {
-            self::updateAfterDownload($pac);
+            self::update($pac);
             View::alert('info', 'System updated successfully to v'.$versions[$ipac]);
           } else {
             $packages2update[$ipac] = $versions[$ipac];
