@@ -31,7 +31,7 @@ class LZLDController extends Gila\Controller
 
   public function thumbAction()
   {
-    if (User::level()===0) {
+    if (User::level(Session::userId())===0) {
       http_response_code(403);
       return;
     }
