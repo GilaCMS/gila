@@ -233,6 +233,10 @@ class AdminController extends Gila\Controller
       }
       if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $extensions)) {
         $path = SITE_PATH.$path.'/'.$name;
+        FileManager::$sitepath = realpath(SITE_PATH);
+        if (!FileManager::allowedPath($path)) {
+          echo "<div class='alert error'>Error: incorrect path!</div>";
+        }
         if (!move_uploaded_file($tmp_file, $path)) {
           echo "Error: could not upload file!<br>";
         }
