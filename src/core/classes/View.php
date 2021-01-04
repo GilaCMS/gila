@@ -139,7 +139,8 @@ class View
   public static function getAdminThemePath()
   {
     $e = explode('@', Config::get('admin_theme'));
-    return 'src/'.($e[1]??'core').'/assets/admin/themes/'.$e[0].'.css';
+    $file = 'src/'.($e[1]??'core').'/assets/admin/themes/'.$e[0].'.css';
+    return file_exists($file)? $file: null;
   }
 
   public static function renderAdmin($file, $package = 'core')
@@ -515,10 +516,10 @@ class View
     $key = $pathinfo['filename'].$ext.$max;
     $thumbsjson = $pathinfo['dirname'].'/.thumbs.json';
 
-    if (strpos($src, SITE_PATH.'data/') !== 0 &&
-      strpos($src, 'src/') !== 0  && strpos($src, 'themes/') !== 0) {
+    if (strpos($src, SITE_PATH.'data/') !== 0) {
       FileManager::$sitepath = realpath(SITE_PATH);
-      if (!FileManager::allowedPath($src)) {
+      if(strpos($src, 'src/') === 0  || strpos($src, 'themes/') === 0 ||
+        !FileManager::allowedPath($src, true)) {
         return $src;
       }
       return TMP_PATH.'/'.$prefix.Slugify::text($pathinfo['dirname'].$pathinfo['filename']).'.'.$ext;

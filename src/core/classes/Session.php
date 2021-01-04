@@ -38,7 +38,7 @@ class Session
         $usr = User::getById($session['user_id']);
         if ($usr['active']===1) {
           self::user($usr['id'], $usr['username'], $usr['email']);
-          setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time() + 86400*30, '/');
+          self::updateCookie();
           return;
         } else {
           self::destroy();
@@ -81,7 +81,7 @@ class Session
       $session_log = new Logger(LOG_PATH.'/sessions.log');
       $session_log->info($msg, ['user_id'=>$id, 'email'=>$email]);
     }
-  }
+  } 
 
   public static function find($gsessionId)
   {
@@ -107,17 +107,23 @@ class Session
       $gsession = substr($gsession, 0, 60);
     } while (self::find($gsession)!==null);
 
-    setcookie('GSESSIONID', $gsession, [
-      'expires' => time() + 86400*30,
-      'path' => '/',
-      'secure' => Config::get('secure_cookie')??false,
-      'httponly' => true,
-      'samesite' => 'Strict',
-    ]);
+    $_COOKIE['GSESSIONID'] = $gsession;
+    self::updateCookie();
 
     $user_agent = $_SERVER['HTTP_USER_AGENT'];
     $ip = $_SERVER['REMOTE_ADDR'];
     self::create($userId, $gsession, $ip, $user_agent);
+  }
+
+  public static function updateCookie()
+  {
+    setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], [
+      'expires' => time() + 86400*30,
+      'path' => '/',
+      'secure' => Config::get('secure_cookie')??false,
+      'httponly' => true,
+      'samesite' => Config::get('samesite_cookie')??'Lax'
+    ]);
   }
 
   public static function create($userId, $gsessionId, $ip, $user_agent)

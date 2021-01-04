@@ -85,7 +85,7 @@ updateDir("<?=$dirname?>");
 
 function updateDir(path) {
   dir_path = path
-  g.get('?c=fm&action=dir&path='+path, function(data){
+  g.get('fm/dir?path='+path, function(data){
     file = JSON.parse(data).files
     html = ''
     for (i=0; i<file.length; i++) {

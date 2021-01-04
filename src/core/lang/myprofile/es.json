@@ -8,5 +8,7 @@
   "Change Password":"Cambiar Contraseña",
   "New passwords do not match":"Las nuevas contraseñas no coinciden",
   "New password too small":"La nueva contraseña es muy corta",
-  "Password incorrect":"Incorrecta contraseña"
+  "Password incorrect":"Incorrecta contraseña",
+  "Personal Information":"Información Personal",
+  "Security":"Seguridad"
 }

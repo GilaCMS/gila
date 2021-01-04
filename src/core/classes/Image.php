@@ -18,7 +18,8 @@ class Image
     $src_height = 0;
     $ext = pathinfo($src)['extension'] ?? null;
     if(!self::imageExtention($ext)) {
-      if ($ext=='svg') {
+      FileManager::$sitepath = realpath(SITE_PATH);
+      if ($ext=='svg' && FileManager::allowedPath($src)) {
         Config::dir(substr($file, 0, strrpos($file, '/')));
         copy($src, $file);
         return true;
@@ -241,13 +242,15 @@ class Image
       }
       FileManager::$sitepath = realpath(SITE_PATH);
       if (in_array($ext, ['jpeg','jpg','png','gif','webp'])
-      && FileManager::allowedPath($file)) {
+      && FileManager::allowedPath($file, true)) {
         header("Content-Type: image/".$ext);
         readfile($file);
       } elseif ($ext==='svg' &&
           (substr($file, 0, 7) == 'assets/' || substr($file, 0, 4) == 'src/')) {
         header("Content-Type: image/svg+xml");
         echo file_get_contents($file);
+      } else {
+        http_response_code(404);
       }
     } else {
       http_response_code(404);

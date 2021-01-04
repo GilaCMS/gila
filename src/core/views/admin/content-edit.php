@@ -115,7 +115,7 @@ function updateRegistry(){
 Save
 </button>
 
-<?=View::script('core/lazyImgLoad.js');?>
+<?=View::scriptAsync('core/lazyImgLoad.js');?>
 <script>
 var app = new Vue({
   el: '#<?=$table?>-edit-item-form'
