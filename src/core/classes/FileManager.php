@@ -74,6 +74,9 @@ class FileManager
       $path = substr(realpath($path), strlen(self::$sitepath)+1);
     }
 
+    if (empty($path)) {
+      return false;
+    }
     foreach ($allowedPaths as $allowed) {
       if (substr($path, 0, strlen($allowed)+1) === $allowed.'/' ||
           $path === $allowed) {
