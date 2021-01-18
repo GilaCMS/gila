@@ -24,11 +24,11 @@ class FileManagerTest extends TestCase
   {
     $list = [
       'src/core/load.php'=>true, 'config.php'=>false, 'themes/gila-blog/'=>true,
-      'assets'=>true, 'log/'=>true, 'assets/..'=>false,
+      'assets'=>true, 'log/'=>false, 'assets/..'=>false,
       '../'=>false, 'other_folder/'=>false
     ];
     foreach ($list as $path=>$response) {
-      echo $path.',';
+      echo Session::userId().',';
       $this->assertEquals($response, FileManager::allowedPath($path, true));
     }
     $this->assertEquals(false, FileManager::allowedPath('src/core/load.php'));
