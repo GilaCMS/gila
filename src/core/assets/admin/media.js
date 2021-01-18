@@ -23,8 +23,12 @@ function select_media_item(item) {
   g('#selected-path').attr('value', item.getAttribute('data-path'))
   g('#selected-image-caption').attr('value', item.getAttribute('data-caption'))
 }
-function refresh_media_body(data) {
-  g.post("admin/media?g_response=content", data, function(gal){
+function refresh_media_body(data, tab=null) {
+  url = "admin/media?g_response=content"
+  if (tab!==null) {
+    url = url + '&media_tab='+tab
+  }
+  g.post(url, data, function(gal){
     g('#admin-media-div').parent().html(gal)
   })
 }

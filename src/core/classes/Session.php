@@ -253,6 +253,9 @@ class Session
 
   public static function permissions()
   {
+    if(self::userId()===0) {
+      return User::permissions(0);
+    }
     if(!self::key('permissions')) {
       self::key('permissions', User::permissions(self::userId()));
     }

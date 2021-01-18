@@ -419,6 +419,9 @@ class Config
       }
     }
     if ($alt!==null) {
+      if(is_array($alt)) {
+        return $alt[Config::lang()] ?? $key;
+      }
       return $alt;
     }
     return $key;

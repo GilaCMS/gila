@@ -504,7 +504,7 @@ class View
     if ($src[0]==='$') {
       if (substr($src, 1, 2)=='p=') {
         $file = 'assets/themes/'.($_GET['g_preview_theme']??Config::get('theme')).'/'.substr($src, 3);
-        if (!file_exists(strtr($file,['.'=>'']))) {
+        if (!file_exists($file)) {
           $file='assets/core/photo.png';
         }
         return $file;

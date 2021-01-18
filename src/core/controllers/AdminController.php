@@ -206,8 +206,6 @@ class AdminController extends Gila\Controller
 
   public function logoutAction()
   {
-    global $db;
-    User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
     Session::destroy();
     echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
   }

@@ -17,8 +17,8 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
   $item = (object)$item; ?>
 <item>
 <title><?=$item->title?></title>
-  <link><?=Config::get('base').'blog/'.$item->id?></link>
-  <guid><?=Config::get('base').'blog/'.$item->slug?></guid>
+  <link><?=Config::get('base').'blog/'.$item->id.'/'.$item->slug?></link>
+  <guid><?=Config::get('base').'blog/'.$item->id?></guid>
   <pubDate><?=date('r', strtotime($item->updated))?></pubDate>
   <description><![CDATA[<?=$item->post?>]]></description>
 </item>

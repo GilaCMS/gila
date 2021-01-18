@@ -110,7 +110,7 @@ class Table
   public static function extend_recursive($table, $extTable)
   {
     foreach ($extTable as $key=>$el) {
-      if (is_array($el)) {
+      if (is_array($el) && !is_numeric($key)) {
         $table[$key] = self::extend_recursive($table[$key]??[], $el);
       } elseif (is_numeric($key)) {
         if (!in_array($el, $table)) {

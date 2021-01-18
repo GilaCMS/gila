@@ -185,8 +185,10 @@ class UserController extends Gila\Controller
   // use this until user controller is created
   public function logoutAction()
   {
-    global $db;
-    User::metaDelete(Session::userId(), 'GSESSIONID', $_COOKIE['GSESSIONID']);
+    if(Session::userId()===0) {
+      http_response_code(403);
+      return;
+    }
     Session::destroy();
     echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
   }
