@@ -28,7 +28,7 @@ class FileManagerTest extends TestCase
       '../'=>false, 'other_folder/'=>false
     ];
     foreach ($list as $path=>$response) {
-      echo Session::userId().',';
+      echo Gila\Session::userId().',';
       $this->assertEquals($response, FileManager::allowedPath($path, true));
     }
     $this->assertEquals(false, FileManager::allowedPath('src/core/load.php'));
