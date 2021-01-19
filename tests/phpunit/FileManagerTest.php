@@ -24,7 +24,7 @@ class FileManagerTest extends TestCase
   {
     $list = [
       'src/core/load.php'=>true, 'config.php'=>false, 'themes/gila-blog/'=>true,
-      'assets'=>true, 'log/'=>true, 'assets/..'=>false,
+      'assets'=>true, 'log/'=>false, 'assets/..'=>false,
       '../'=>false, 'other_folder/'=>false
     ];
     foreach ($list as $path=>$response) {

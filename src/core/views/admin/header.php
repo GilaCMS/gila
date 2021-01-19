@@ -59,7 +59,8 @@ if ($palette=Config::get('admin_palette')) {
         <ul class="g-nav g-navbar" style="background:unset">
           <?php
           foreach (Config::getList('badge') as $b) {
-            echo "<li>{$b['icon']}<span class='badge' data-count='{$b['count']()}'></span></li>";
+            $c = $b['count']? $b['count'](): '';
+            echo "<li>{$b['icon']}<span class='badge' data-count='{$c}'></span></li>";
           }
           ?>
         <li style="color:unset" class="dropdown">

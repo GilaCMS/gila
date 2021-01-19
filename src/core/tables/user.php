@@ -25,7 +25,7 @@ return [
     ],
     'photo'=> [
       'type'=>'meta',
-      'input-type'=>'media',
+      'input_type'=>'media2',
       'title'=>'Photo',
       'meta_key'=>'photo'
     ],

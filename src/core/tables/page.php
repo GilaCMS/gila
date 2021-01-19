@@ -45,7 +45,7 @@ return [
     ],
     'description'=> [
       'title'=>'Description',
-      'input-type'=>'textarea',
+      'input_type'=>'textarea',
       'qtype'=>'varchar(200) DEFAULT NULL',
       'list'=>false,
       'group'=>'title'

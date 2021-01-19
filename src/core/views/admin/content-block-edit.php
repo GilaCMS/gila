@@ -83,13 +83,13 @@ $cid = $content.'_'.$id.'_';
   box-shadow:0 0 3px grey;
 }
 .span-add-btn{
-  position:absolute;left:45%;top:-1em
+  position:absolute;left:47%;top:-1em
 }
 .span-edit-btn{
   position:absolute;left:4px;top:0.5em
 }
 .span-swap-btn{
-  position:absolute;right:58%;top:-1em
+  position:absolute;right:55%;top:-1em
 }
 .span-del-btn{
   position:absolute;right:4px;top:0.5em
