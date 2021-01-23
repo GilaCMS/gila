@@ -30,7 +30,7 @@ View::css('lib/select2/select2.min.css');
 <style>
 .type-textarea label{width:100%}
 .type-tinymce{min-height:250px;margin-bottom:20px}
-.type-tinymce,.type-textarea{grid-column:1/-1}
+.type-tinymce,.type-textarea,.type-media-gallery{grid-column:1/-1}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
 @media only screen and (min-width:700px){
   #user-post-edit-item-form>div,

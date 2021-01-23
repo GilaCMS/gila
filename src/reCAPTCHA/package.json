@@ -1,6 +1,6 @@
 {
   "name":"reCAPTCHA",
-  "version":"2.0.0",
+  "version":"2.0.3",
   "description":"Adds recaptcha in register form.",
   "url":"https://gilacms.com/addons/package/recaptcha",
   "options":{
@@ -12,6 +12,6 @@
     }
   },
   "require": {
-    "core": "2.0.0"
+    "core": "2.0.3"
   }
 }

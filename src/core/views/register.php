@@ -10,6 +10,7 @@
     </div>
 
     <form role="form" method="post" action="" class="g-form">
+      <?=Form::hiddenInput('register')?>
       <label><?=__('Name')?></label>
       <div class="form-group">
         <input class="form-control fullwidth" name="name" autofocus required>

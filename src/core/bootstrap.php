@@ -108,8 +108,8 @@ $theme = Router::request('g_preview_theme', Config::get('theme'));
 if (file_exists("themes/$theme/load.php")) {
   include "themes/$theme/load.php";
 }
-if (is_array(Config::get('cors'))) {
-  foreach (Config::get('cors') as $url) {
+if ($cors = Config::getArray('cors')) {
+  foreach ($corls as $url) {
     @header('Access-Control-Allow-Origin: '.$url);
   }
 }

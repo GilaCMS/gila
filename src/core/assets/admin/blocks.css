@@ -1,6 +1,6 @@
 .CodeMirror{max-height:150px;border:1px solid var(--main-border-color);width:100%}
 .type-textarea label{width:100%}
-.type-tinymce,.type-textarea{grid-column:1/-1}
+.type-tinymce,.type-textarea,.type-media-gallery{grid-column:1/-1}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
 .z9999{z-index:9999}
 .select2-container{z-index:100000}

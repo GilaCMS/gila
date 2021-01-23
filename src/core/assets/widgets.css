@@ -8,6 +8,7 @@
   .widget-area-dashboard .widget-stats-chart{grid-column: span 2;}
 }
 .widget-area-dashboard .widget-core-counters{grid-column: 1/span 4;}
+.widget-area-dashboard .widget-side-chart{grid-column: 1/span 4;}
 
 .features-grid{
   display: grid;
@@ -185,9 +186,17 @@ section>.container{
 .colors-hcolor {
   background: var(--hcolor);
 }
+.colors-primary {
+  background: var(--main-primary-color);
+}
+.colors-acolor {
+  background: var(--main-a-color);
+}
 .colors-invert, .colors-invert *,
 .colors-dark, .colors-dark *,
 .colors-black,.colors-black *,
+.colors-black,.colors-primary *,
+.colors-black,.colors-acolor *,
 .colors-hcolor, .colors-hcolor * {
   color:white;
 }

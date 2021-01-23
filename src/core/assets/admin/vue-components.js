@@ -125,7 +125,7 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
 
 
 Vue.component('input-gallery', {
-  template: '<div style="display: grid; gap: 1em; width: 100%;\
+  template: '<div style="display: grid; gap: 0.5em; width: 100%;\
   grid-template-columns: repeat(auto-fit,minmax(50px,120px));\
   grid-template-rows: repeat(auto-fit, 120px);">\
   <input-media v-for="(src,i) in sources" :value="src" :name="name+\'[\'+i+\']\'">\

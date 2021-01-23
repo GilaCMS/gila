@@ -1,18 +1,15 @@
 <?php
 
 Event::listen('recaptcha.form', function () {
-  $sitekey = Config::option('reCAPTCHA.site_key');
-  if ($sitekey=='') {
-    return;
-  } ?>
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-    <div class="g-recaptcha" data-sitekey="<?=$sitekey?>"></div>
-	<?php
+  if ($sitekey = Config::get('reCAPTCHA.site_key')) {
+    View::script('https://www.google.com/recaptcha/api.js');
+    echo '<div class="g-recaptcha" data-sitekey="'.$sitekey.'"></div>';
+  }
 });
 
 Event::listen('recaptcha', function () {
-  $secret = Config::option('reCAPTCHA.secret_key');
-  if ($secret=='') {
+  $secret = Config::get('reCAPTCHA.secret_key');
+  if ($secret===null) {
     return false;
   }
   if (!isset($_POST['g-recaptcha-response'])) {

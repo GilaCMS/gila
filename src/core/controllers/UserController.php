@@ -43,7 +43,7 @@ class UserController extends Gila\Controller
     }
     View::set('title', __('Register'));
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && Event::get('recaptcha', true)) {
+    if (Form::posted('register') && Event::get('recaptcha', true)) {
       $email = Router::request('email');
       $name = Router::request('name');
       $password = $_POST['password'];
@@ -62,7 +62,7 @@ class UserController extends Gila\Controller
             $subject = __('activate_msg_ln1').' '.$r['username'];
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
-            $msg .= __('activatemsg_ln3')." $baseurl\n\n";
+            $msg .= __('activate_msg_ln3')." $baseurl\n\n";
             $msg .= $baseurl."user/activate?ap=$activate_code\n\n";
             $msg .= __('reset_msg_ln4');
             $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
@@ -114,12 +114,15 @@ class UserController extends Gila\Controller
       $r = User::getByResetCode($_GET['rp']);
       if (!$r) {
         echo  __('reset_error1');
-      } elseif (isset($_POST['pass'])) {
+      } elseif (Form::posted('new_pass') && isset($_POST['pass'])) {
         $idUser=$r[0];
         User::updatePassword($idUser, $_POST['pass']);
+        User::metaDelete($idUser, 'reset_code');
         View::includeFile('user-change-success.php');
       } else {
-        Session::key($rpa, 0);
+        @session_start();
+        $_SESSION['rpa'] = 0;
+        @session_commit();
         View::includeFile('user-change-new.php');
       }
       exit;
@@ -139,13 +142,13 @@ class UserController extends Gila\Controller
     }
 
     $r = User::getByEmail($email);
-    Session::define([$rpa=>0,$rpt=>time()]);
-    $tries = (int)Session::key($rpa);
-    $lastTime = (int)Session::key($rpt);
+    @session_start();
+    $_SESSION['rpa'] = $_SESSION['rpa'] ?? 0;
+    $_SESSION['rpt'] = $_SESSION['rpt'] ?? time();
 
-    if ($r && ($tries<2 || $lastTime+3600<time())) {
-      Session::key($rpa, $tries+1);
-      Session::key($rpt, time());
+    if (Form::posted('reset_pass') && $r && ($_SESSION['rpa']<200 || $_SESSION['rpt']+3600<time())) {
+      $_SESSION['rpa']++;
+      $_SESSION['rpt'] = time();
 
       $baseurl = Config::base();
       $subject = __('reset_msg_ln1').' '.$r['username'];
@@ -158,6 +161,7 @@ class UserController extends Gila\Controller
       User::meta($r['id'], 'reset_code', $reset_code);
       new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
     }
+    @session_commit();
 
     View::includeFile('user-change-emailed.php');
   }

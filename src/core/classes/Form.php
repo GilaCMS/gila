@@ -9,20 +9,25 @@ class Form
 
   public static function posted($name = '*')
   {
-    if ($_SERVER['REQUEST_METHOD']==='POST') {
-      if (Session::key('_t'.$name)===$_POST['formToken']) {
-        if ($name!=='*') {
-          Session::unsetKey('_t'.$name);
-        }
-        return true;
+    @session_start();
+    $value = $_SESSION['_t'.$name] ?? null;
+    if ($_SERVER['REQUEST_METHOD']==='POST' && $value!==null && $value===$_POST['formToken']) {
+      if ($name!=='*') {
+        unset($_SESSION['_t'.$name]);
       }
+      @session_commit();
+      return true;
     }
+    @session_commit();
     return false;
   }
 
   public static function verifyToken($check, $name = '*')
   {
-    if (Session::key('_t'.$name)===$check) {
+    @session_start();
+    $value = $_SESSION['_t'.$name] ?? null;
+    @session_commit();
+    if ($value===$check) {
       return true;
     }
     return false;
@@ -30,21 +35,23 @@ class Form
 
   public static function getToken($name = '*')
   {
-    if ($v = Session::key('_t'.$name)) {
+    @session_start();
+    if ($v = @$_SESSION['_t'.$name]) {
       return $v;
     }
     $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = (string)Session::userId();
+    $gsession = '';
     for ($p = strlen($gsession); $p < 15; $p++) {
       $gsession .= $chars[mt_rand(0, 32)];
     }
-    Session::key('_t'.$name, $gsession);
+    $_SESSION['_t'.$name] = $gsession;
+    @session_commit();
     return $gsession;
   }
 
   public static function hiddenInput($name = '*')
   {
-    return '<input type="hidden" name="formToken" value="'.self::getToken($name).'">';
+    return '<input type="hidden" name="formToken" value="'.self::getToken($name).'"><input style="display:none" name="cpcode"><input type="hidden" name="address">';
   }
 
   public static function html($fields, $values = [], $prefix = '', $suffix = '')

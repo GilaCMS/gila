@@ -8,14 +8,12 @@
       <h3><?=__('reset_pass')?></h3>
     </div>
     <form role="form" method="post" action="" class="g-form">
+      <?=Form::hiddenInput('new_pass')?>
       <p><?=__('reset_submit_pass')?><p>
       <div class="form-group">
         <input class="form-control fullwidth" placeholder="<?=__('New Password')?>" name="pass" type="password" autofocus>
       </div>
-      <div class="form-group">
-        <input class="form-control fullwidth" placeholder="<?=__('Confirm Password')?>" name="pass2" type="password" autofocus>
-      </div>
-      <input type="submit" class="btn btn-primary btn-block" value="<?=__('Change Password')?>">
+      <button type="submit" class="btn btn-primary btn-block"><?=__('Change Password')?></button>
     </form>
   </div>
 

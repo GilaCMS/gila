@@ -53,8 +53,8 @@ class Session
 
   public static function login()
   {
-    if (isset($_POST['username']) && isset($_POST['password']) && self::waitForLogin()===0) {
-      session_start();
+    if (Form::posted('login') && isset($_POST['username']) && isset($_POST['password']) && self::waitForLogin()===0) {
+      @session_start();
       $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']===1 && password_verify($_POST['password'], $usr['pass'])) {
         unset($_SESSION['failed_attempts']);

@@ -869,7 +869,13 @@ g.dialog.buttons.select_path = {
 g.dialog.buttons.select_path_post = {
   title:'Select', fn: function() {
     let v = g('#selected-path').attr('value')
-    if(v!=null) input_filename(base_url+v);
+    if(v!=null) {
+      if (v.startsWith('https:') || v.startsWith('http:')) {
+        input_filename(v);
+      } else {
+        input_filename(base_url+v);
+      }
+    }
     g.closeModal('media_dialog');
   }
 }

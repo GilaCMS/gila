@@ -103,7 +103,6 @@ class User
   {
     global $db;
     $user_id = $db->read()->value("SELECT user_id FROM usermeta where vartype='reset_code' and value=?;", $rp);
-    echo $user_id;
     if (!$user_id) {
       return false;
     }

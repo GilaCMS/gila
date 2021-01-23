@@ -10,6 +10,7 @@
     </div>
 
     <form role="form" method="post" action="<?=Config::base()?>user/password_reset" class="g-form">
+      <?=Form::hiddenInput('reset_pass')?>
       <p><?=__('reset_pass_msg')?><p>
       <div class="form-group">
         <input class="form-control fullwidth" name="email" type="email" autofocus required>

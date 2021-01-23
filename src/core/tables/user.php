@@ -60,7 +60,7 @@ return [
       'title'=>'Active',
       'qtype'=>'INT(1) DEFAULT 1'
     ],
-    'reset_code'=> [
+    'reset_code'=> [ // DEPRECATED
       'list'=>false,
       'edit'=>false,
       'create'=>false,
