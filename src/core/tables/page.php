@@ -3,7 +3,7 @@
 return [
   'name'=> 'page',
   'title'=> 'Pages',
-  'pagination'=> 25,
+  'pagination'=> 15,
   'id'=>'id',
   'tools'=>['add_popup','csv'],
   'csv'=> ['id','title','slug','updated','publish','page'],
@@ -18,6 +18,7 @@ return [
     'update'=>['admin', 'editor'],
     'delete'=>['admin', 'editor']
   ],
+  'search_box'=>true,
   'fields'=> [
     'id'=> [
       'title'=>'ID',
@@ -34,21 +35,8 @@ return [
       'title'=>'Route',
       'qtype'=>'varchar(80) DEFAULT NULL',
       'alt'=>'('.Gila\Config::tr('Home').')',
-      'group'=>'title'
-    ],
-    'template'=> [
-      'title'=>'Template',
-      'template'=>'page',
-      'type'=>'template',
-      'edit'=>true,
-      'qtype'=>'varchar(30) DEFAULT NULL'
-    ],
-    'description'=> [
-      'title'=>'Description',
-      'input_type'=>'textarea',
-      'qtype'=>'varchar(200) DEFAULT NULL',
-      'list'=>false,
-      'group'=>'title'
+      'group'=>'title',
+      'create'=>false
     ],
     'publish'=> [
       'title'=>'Public',
@@ -57,6 +45,22 @@ return [
       'edit'=>true,
       'create'=>false,
       'qtype'=>'INT(1) DEFAULT NULL'
+    ],
+    'description'=> [
+      'title'=>'Description',
+      'input_type'=>'textarea',
+      'qtype'=>'varchar(200) DEFAULT NULL',
+      'list'=>false,
+      'group'=>'title'
+    ],
+    'template'=> [
+      'title'=>'Template',
+      'template'=>'page',
+      'type'=>'template',
+      'edit'=>true,
+      'create'=>false,
+      'list'=>false,
+      'qtype'=>'varchar(30) DEFAULT NULL'
     ],
     'updated'=> [
       'title'=>'Updated',

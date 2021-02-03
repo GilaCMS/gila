@@ -17,6 +17,7 @@ View::scriptAsync('core/admin/vue-components.js');
 View::script('core/vue-upload-media.js');
 View::scriptAsync('core/admin/vue-editor.js');
 View::script('lib/CodeMirror/codemirror.js');
+View::scriptAsync('lib/CodeMirror/htmlmixed.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
 View::cssAsync('lib/CodeMirror/codemirror.css');
 // DEPRECATED the below

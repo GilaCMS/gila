@@ -327,7 +327,10 @@ class Package
       foreach ($_POST['option'] as $key=>$value) {
         if (isset($data['options'][$key])) {
           $allowed = $data['options'][$key]['allow_tags'] ?? false;
-          $value = HtmlInput::purify($value, $allowed);
+          $purify = $data['options'][$key]['purify'] ?? true;
+          if ($purify===true) {
+            $value = HtmlInput::purify($value, $allowed);
+          }
           $ql="INSERT INTO `option`(`option`,`value`) VALUES(?,?) ON DUPLICATE KEY UPDATE `value`=?;";
           $db->query($ql, [$package.'.'.$key, $value, $value]);
         }

@@ -144,11 +144,8 @@ $itemTypes = MenuItemTypes::getItemTypes();
 <script>
 
 <?php
-$data="{type:\"menu\",children:[]}";
-$jsonfile = LOG_PATH."/menus/$menu.json";
-if (file_exists($jsonfile)) {
-  $data = file_get_contents($jsonfile);
-}
+$data = Menu::getContents($menu);
+
 echo "var data = ".$data."\n";
 
 $itemTypesJSON = [];

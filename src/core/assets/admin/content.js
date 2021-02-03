@@ -548,7 +548,7 @@ function transformClassComponents() {
   
   textareas=g('.tinymce').all
   mce_editor=[]
-  if(tinymce) tinymce.remove() //remove all tinymce editors
+  if(tinymce!=='undefined') tinymce.remove() //remove all tinymce editors
   for(i=0;i<textareas.length;i++) {
     mce_editor[i] = {id: textareas[i].id, name: textareas[i].name};
     mce_editor[i].settings = JSON.parse(JSON.stringify(g_tinymce_options));

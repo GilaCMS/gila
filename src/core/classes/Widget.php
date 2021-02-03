@@ -20,7 +20,8 @@ class Widget
   {
     global $db;
     $db->connect();
-    return $db->get("SELECT * FROM widget WHERE active=1 AND area=? ORDER BY pos;", $area);
+    return $db->get("SELECT * FROM widget WHERE active=1 AND area=?
+    AND (`language` IS NULL OR language=?) ORDER BY pos;", [$area, Config::get('language')]);
   }
 
   public static function update($data)
@@ -31,15 +32,18 @@ class Widget
 
     foreach ($data['option'] as $key=>$value) {
       $allowed = $fields[$key]['allow_tags'] ?? false;
-      $data['option'][$key] = HtmlInput::purify($data['option'][$key], $allowed);
+      $purify = $fields[$key]['purify'] ?? true;
+      if ($purify===true) {
+        $data['option'][$key] = HtmlInput::purify($data['option'][$key], $allowed);
+      }
     }
     $widget_data = isset($data['option']) ? json_encode($data['option']) : '[]';
     $title = HtmlInput::purify($data['widget_title']);
 
     $db->query(
-      "UPDATE widget SET data=?,area=?,pos=?,title=?,active=? WHERE id=?",
-      [$widget_data, $data['widget_area'], $data['widget_pos']??0,
-      $title, $data['widget_active']??0, $data['widget_id']]
+      "UPDATE widget SET data=?,area=?,pos=?,title=?,active=?,language=? WHERE id=?",
+      [$widget_data, $data['widget_area'], $data['widget_pos']??0, $title,
+      $data['widget_active']??0, $data['widget_language']??'NULL', $data['widget_id']]
     );
 
     $r = $db->get("SELECT * FROM widget WHERE id=?", [$data['widget_id']])[0];

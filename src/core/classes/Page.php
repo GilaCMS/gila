@@ -22,7 +22,7 @@ class Page
     if ($row = mysqli_fetch_array($res)) {
       if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
-        $row['page'] = View::blocks($blocks, 'page'.$row['id']);
+        $row['page'] = View::blocks($blocks, 'page_'.$row['id']);
       }
       return $row;
     }

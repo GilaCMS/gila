@@ -17,18 +17,7 @@ TableSchema::update(include 'src/core/tables/user_notification.php');
 
 TableSchema::update(include 'src/core/tables/sessions.php');
 
-$db->query('CREATE TABLE IF NOT EXISTS `widget` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `widget` varchar(80) DEFAULT NULL,
-  `title` varchar(80) DEFAULT NULL,
-  `area` varchar(80) DEFAULT NULL,
-  `active` int(1) DEFAULT 1,
-  `pos` int(2) DEFAULT 0,
-  `data` text,
-  PRIMARY KEY (`id`),
-  KEY `area` (`area`),
-  KEY `active` (`active`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
+TableSchema::update(include 'src/core/tables/widget.php');
 
 $db->query('CREATE TABLE IF NOT EXISTS `option` (
   `option` varchar(80) NOT NULL,

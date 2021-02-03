@@ -51,7 +51,7 @@ class Form
 
   public static function hiddenInput($name = '*')
   {
-    return '<input type="hidden" name="formToken" value="'.self::getToken($name).'"><input style="display:none" name="cpcode"><input type="hidden" name="address">';
+    return '<input type="hidden" name="formToken" value="'.self::getToken($name).'">';
   }
 
   public static function html($fields, $values = [], $prefix = '', $suffix = '')

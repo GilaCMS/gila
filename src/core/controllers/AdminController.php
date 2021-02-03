@@ -225,7 +225,7 @@ class AdminController extends Gila\Controller
       }
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
-      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4'];
       if(Config::get('allow_svg')) {
         $extensions[] = 'svg';
       }
@@ -328,16 +328,14 @@ class AdminController extends Gila\Controller
   {
     if ($menu != null) {
       if (Session::hasPrivilege('admin')) {
-        $folder = Config::dir(LOG_PATH.'/menus/');
-        $file = $folder.$menu.'.json';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           if (isset($_POST['menu'])) {
-            file_put_contents($file, strip_tags($_POST['menu']));
+            Gila\Menu::setContents($menu, strip_tags($_POST['menu']));
             echo json_encode(["msg"=>__('_changes_updated')]);
             exit;
           }
         } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-          unlink($file);
+          Gila\Menu::remove($menu);
           echo json_encode(["msg"=>__('_changes_updated')]);
           exit;
         }

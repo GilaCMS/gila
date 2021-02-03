@@ -77,7 +77,7 @@ if (Config::getArray('trusted_domains') &&
     isset($_SERVER['HTTP_HOST']) &&
     !in_array($_SERVER['HTTP_HOST'], Config::get('trusted_domains')) &&
     strpos(Config::get('base'), $_SERVER['HTTP_HOST'])===false) {
-  header('Location: '.Config::get('base').$_SERVER['REQUEST_URI']);
+  header('Location: '.Config::get('base').substr($_SERVER['REQUEST_URI'],1));
 }
 
 $db = new Db($GLOBALS['config']['db']);

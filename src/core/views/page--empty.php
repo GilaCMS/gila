@@ -4,6 +4,6 @@
 <?php View::head()?>
 <body style="margin:0">
 <?=$text?>
-<?php View::scriptAsync("core/lazyImgLoad.js")?>
+<?php View::scriptAsync("core/gila.min.js")?>
 </body>
 </html>

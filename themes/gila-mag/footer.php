@@ -13,7 +13,6 @@ grid-template-columns: repeat(auto-fit,minmax(300px,1fr));">
 
   </div>
   <?=View::script('core/gila.min.js');?>
-  <?=View::scriptAsync("core/lazyImgLoad.js")?>
 </body>
 
 </html>

@@ -31,10 +31,9 @@ g.swipe('#wrapper', 'right', function(){
 function wrapper_toggle() {
   value = document.getElementById("wrapper").classList[0]=='toggled'?true:false
   document.cookie = 'sidebar_toggled='+value+';path=/;SameSite=Lax;';
-  setTimeout(lazyImgLoad, 100);
+  setTimeout(g.lazyLoad, 100);
 }
 </script>
-<?php View::scriptAsync("core/lazyImgLoad.js")?>
 
 </body>
 </html>

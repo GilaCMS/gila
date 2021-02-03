@@ -650,6 +650,9 @@ class Table
     $insert_fields = [];
     $insert_values = [];
     $this->event('create', $data);
+    if($data===false) {
+      return 0;
+    }
     foreach ($this->table['fields'] as $field=>$value) {
       if (isset($data[$field])) {
         $insert_fields[] = $field;

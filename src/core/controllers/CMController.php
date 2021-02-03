@@ -164,12 +164,12 @@ class CMController extends Gila\Controller
     $res = $db->query($ql);
     while ($r = mysqli_fetch_row($res)) {
       foreach ($r as &$str) {
-        $str = preg_replace("/\t/", "", $str);//\\t
-        $str = preg_replace("/\r?\n/", "", $str);//\\n
+        $str = preg_replace("/\t/", "", $str);
+        $str = preg_replace("/\r?\n/", "", $str);
         if ($str=="null") {
           $str="";
         }
-        if (strstr($str, '"') || strstr($str, ',')) {
+        if (!is_numeric($str)) {
           $str = '"' . strtr($str, ['"'=>'""']) . '"';
         }
       }

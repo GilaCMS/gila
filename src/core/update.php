@@ -12,5 +12,7 @@ TableSchema::update(include 'src/core/tables/user_notification.php');
 
 TableSchema::update(include 'src/core/tables/sessions.php');
 
+TableSchema::update(include 'src/core/tables/widget.php');
+
 Config::dir(LOG_PATH.'/stats');
 Config::dir(LOG_PATH.'/cacheItem');

@@ -1,5 +1,12 @@
 <style>.addon-i{opacity:0.2}.logo-3x{min-width:1em}</style>
 <?php
+View::script('lib/vue/vue.min.js');
+View::script('core/admin/content.js');
+View::script('lib/CodeMirror/codemirror.js');
+View::scriptAsync('lib/CodeMirror/htmlmixed.js');
+View::scriptAsync('lib/CodeMirror/javascript.js');
+View::cssAsync('lib/CodeMirror/codemirror.css');
+
 $dir = "src/";
 $table = '';
 $pn = 0;
@@ -200,6 +207,10 @@ g.dialog.buttons.save_options = {
   title: '<?=__('Save')?>',fn:function(){
     let p = g.el('addon_id').value;
     let fm=new FormData(g.el('addon_options_form'))
+    values = readFromClassComponents()
+    for(x in values) {
+      fm.set(x, values[x])
+    }
     g.loader()
     g.ajax({url:'admin/packages?g_response=content&save_options='+p,method:'POST',data:fm,fn:function(x){
       g('.gila-darkscreen').remove();
@@ -216,6 +227,7 @@ function addon_options(p) {
     app = new Vue({
       el: '#addon_options_form'
     })
+    transformClassComponents()
   })
 }
 

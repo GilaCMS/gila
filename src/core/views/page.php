@@ -1,7 +1,8 @@
 <?php View::includeFile('header.php')?>
 <div class="wrapper">
-  <h1><?=$title?></h1>
-
+  <div class="container">
+    <h1><?=$title?></h1>
+  </div>
   <div>
       <?=$text?>
   </div>

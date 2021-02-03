@@ -192,11 +192,26 @@ section>.container{
 .colors-acolor {
   background: var(--main-a-color);
 }
+.fill-invert, .fill-dark {
+  fill: #444;
+}
+.fill-black {
+  fill: #000;
+}
+.fill-hcolor {
+  fill: var(--hcolor);
+}
+.fill-primary {
+  fill: var(--main-primary-color);
+}
+.fill-acolor {
+  fill: var(--main-a-color);
+}
 .colors-invert, .colors-invert *,
 .colors-dark, .colors-dark *,
 .colors-black,.colors-black *,
 .colors-black,.colors-primary *,
 .colors-black,.colors-acolor *,
 .colors-hcolor, .colors-hcolor * {
-  color:white;
+  color:#fff;
 }

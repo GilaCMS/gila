@@ -6,6 +6,42 @@ class Menu
 {
   private static $active = false;
 
+  public static function getContents($menu)
+  {
+    $jsonfile = LOG_PATH."/menus/$menu.json";
+    if (file_exists($jsonfile)) {
+      return file_get_contents($jsonfile);
+    }
+    return "{type:\"menu\",children:[]}";
+  }
+
+  public static function setContents($menu, $data)
+  {
+    $folder = Config::dir(LOG_PATH.'/menus/');
+    $file = $folder.$menu.'.json';
+    file_put_contents($file, $data);
+  }
+
+  public static function getData($menu)
+  {
+    $fileLN = LOG_PATH.'/menus/'.$menu.'.'.Config::lang().'.json';
+    $file = LOG_PATH.'/menus/'.$menu.'.json';
+    if (file_exists($fileLN)) {
+      return json_decode(file_get_contents($fileLN), true);
+    } elseif (file_exists($file)) {
+      return json_decode(file_get_contents($file), true);
+    } else {
+      return self::defaultData();
+    }
+  }
+
+  public static function remove($menu)
+  {
+    $folder = Config::dir(LOG_PATH.'/menus/');
+    $file = $folder.$menu.'.json';
+    @unlink($file);
+  }
+
   public static function defaultData()
   {
     global $db;
