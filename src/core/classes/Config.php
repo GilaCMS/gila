@@ -3,7 +3,7 @@ namespace Gila;
 
 class Config
 {
-  public static $widget;
+  public static $widget = [];
   public static $package;
   public static $amenu;
   public static $widget_area = [];
