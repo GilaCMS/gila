@@ -36,6 +36,7 @@ class LZLDController extends Gila\Controller
       return;
     }
     $size = $_GET['media_thumb'] ?? ($_GET['size'] ?? 80);
+    View::$cdn_host = '';
     $file = View::thumb($_GET['src'], (int)$size);
     Gila\Image::readfile($file);
   }

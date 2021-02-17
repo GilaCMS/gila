@@ -318,6 +318,9 @@ class Table
         if ($this->fieldAttr($key, 'qcolumn')) {
           continue;
         }
+        if ($this->fieldAttr($key, 'type')=='json') {
+          $value = json_encode($value);
+        }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
           $value = HtmlInput::purify($value, $allowed);
         } else {

@@ -10,13 +10,16 @@ Vue.component('input-list', {
 <span v-else style="padding:0.5em 0.5em;opacity:0">&darr;</span>\
 </td>\
 <td>\
-<span v-for="(field,fkey) in fields">\
+<span v-for="(field,fkey,i) in fields">\
 	<span v-if="isMedia(field)" style="width:50px" >\
-		<img :src="imgSrc(pos[key][fkey])"  :onclick="\'open_media_gallery(\\\'#il\'+field+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
-		<input v-model="pos[key][fkey]" type="hidden" :id="\'il\'+field+key" @input="update">\
-	</span>\
-  <input v-else v-model="pos[key][fkey]" :id="\'il\'+field+fkey" @input="update"\
-  :placeholder="field.toUpperCase()" class="g-input">\
+		<img :src="imgSrc(pos[key][i])"  :onclick="\'open_media_gallery(\\\'#il\'+fkey+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
+		<input v-model="pos[key][i]" type="hidden" :id="\'il\'+fkey+key" @input="update">\
+  </span>\
+  <select v-if="isSelect(field)">\
+    <option v-for="(op,i) in field.options" :value="i">{{op}}</option>\
+  </select>\
+  <input v-if="isText(field)" v-model="pos[key][i]" @input="update"\
+  :placeholder="fkey.toUpperCase()" class="g-input">\
 </span>\
 </td>\
 <td>\
@@ -28,19 +31,20 @@ Vue.component('input-list', {
 <input v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
-    props: ['name','value','fieldset'],
-    data: function(){ return {
-    pos: JSON.parse(this.value),
-    fields: JSON.parse(this.fieldset),
-    ivalue: this.value
+  props: ['name','value','fieldlist'],
+  data: function(){ 
+    return {
+      pos: JSON.parse(this.value),
+      fields: JSON.parse(this.fieldlist),
+      ivalue: this.value
     }
   },
   methods:{
     add: function(){
     array = new Array()
-    for(i in this.fields) if(this.fields[i]=='image') {
-      array[i] = 'assets/core/photo.png'
-    } else array[i] = ''
+      for(i in this.fields) if(this.isMedia(this.fields[i])) {
+        array[i] = 'assets/core/photo.png'
+      } else array[i] = ''
         this.pos.push(array)
         this.update()
     },
@@ -49,6 +53,7 @@ Vue.component('input-list', {
       	this.update()
     },
     imgSrc: function(src) {
+      if(typeof src=='undefined') return 'assets/core/photo.png'
       if(src.split('.').pop()=='svg' || src.startsWith('http:') || src.startsWith('https:')) {
         return src;
       }
@@ -59,8 +64,17 @@ Vue.component('input-list', {
     },
     isMedia: function(field) {
       if(field=='image') return true
-      if(typeof this.fieldset[field]=='undefined') return false
-      return this.fieldset[field].type=='media'
+      return field.type=='media'
+    },
+    isText: function(field) {
+      if (this.isMedia(field) || this.isSelect(field)) return false
+      return true
+    },
+    isSelect: function(field) {
+      console.log(this.fields)
+      if(typeof field.options=='undefined') return false
+      console.log(1)
+      return true
     },
     swap: function(x, y) {
       tmp = this.pos[x]
@@ -68,12 +82,11 @@ Vue.component('input-list', {
       this.pos[y] = tmp
       this.update()
     },
-    update: function(){
+    update: function() {
       this.ivalue = JSON.stringify(this.pos)
     },
     beforeCreate: function(){
       this.pos=JSON.parse(this.value)
-      this.fields=JSON.parse(this.fieldset)
       this.ivalue = this.value
     },
     addTxt: function() {
@@ -289,12 +302,13 @@ Vue.component('tree-select', {
     if(this.value) {
       selected = JSON.parse(this.value)
     }
+    data = JSON.parse(this.data)
     //if(this.labels) labels = JSON.parse(this.labels)
     console.log([{id:2,label:35}])
     return {
       level: selected.length,
-      treeData: JSON.parse(this.data),
-      options: JSON.parse(this.data),
+      treeData: data,
+      options: data,
       selected: selected,
       selectValue: null
     }

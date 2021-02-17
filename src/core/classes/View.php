@@ -16,6 +16,7 @@ class View
   public static $parent_theme = false;
   public static $canonical;
   public static $renderer;
+  public static $cdn_host = '';
 
   public static function set($param, $value)
   {
@@ -33,7 +34,7 @@ class View
   public static function stylesheet($href)
   {
     if (file_exists('assets/'.$href)) {
-      $href = 'assets/'.$href;
+      $href = self::$cdn_host.'assets/'.$href;
     }
     if (in_array($href, self::$stylesheet)) {
       return;
@@ -74,8 +75,10 @@ class View
     if (in_array($css, self::$css)) {
       return;
     }
-    if (file_exists('assets/'.$css)) {
-      $css = 'assets/'.$css;
+    if (isset(self::$cdn_paths[$css])) {
+      $css = self::$cdn_paths[$css];
+    } elseif (file_exists('assets/'.$css)) {
+      $css = self::$cdn_host.'assets/'.$css;
     }
     if (in_array($css, self::$stylesheet)) {
       return;
@@ -106,7 +109,7 @@ class View
     if (isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
     } elseif (file_exists('assets/'.$script)) {
-      $script = 'assets/'.$script;
+      $script = self::$cdn_host.'assets/'.$script;
     }
     echo '<script src="'.$script.'" '.$prop.'></script>';
   }
@@ -446,6 +449,11 @@ class View
     return '<img src="'.htmlentities(self::thumb($src, $max)).'" alt="'.htmlentities($alt).'">';
   }
 
+  public static function imgLazy($src, $max=180, $alt='')
+  {
+    return '<img class="lazy" data-src="'.htmlentities(self::thumb($src, $max)).'" alt="'.htmlentities($alt).'">';
+  }
+
   public static function thumb($src, $prefix='', $max=180)
   {
     if (empty($src)) {
@@ -478,7 +486,7 @@ class View
       Image::makeThumb($src, $file, $max_width, $max_height, $type??null);
     }
     Event::fire('View::thumb', [$src,$file]);
-    return $file;
+    return self::$cdn_host.$file;
   }
 
   public static function getThumbName($src, $max, $prefix = '')

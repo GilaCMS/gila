@@ -77,7 +77,7 @@ class Router
     if (isset(self::$controller)) {
       return self::$controller;
     }
-    $default = Config::get('default-controller');
+    $default = Config::get('default-controller')??'admin';
     self::$controller = self::request('c', $default);
 
     if (isset(self::$controllers[self::$args[0]])) {

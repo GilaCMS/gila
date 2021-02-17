@@ -246,7 +246,7 @@ class Image
         header("Content-Type: image/".$ext);
         readfile($file);
       } elseif ($ext==='svg' &&
-          (substr($file, 0, 7) == 'assets/' || substr($file, 0, 4) == 'src/')) {
+          (strpos($file, SITE_PATH.'assets/')==0 || substr($file, 0, 4) == 'src/')) {
         header("Content-Type: image/svg+xml");
         echo file_get_contents($file);
       } else {

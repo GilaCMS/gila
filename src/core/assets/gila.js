@@ -67,6 +67,7 @@ gItem.prototype.last = function() {
   return this.all[this.all.length-1];
 }
 gItem.prototype.first = function() {
+  if(typeof this.all[0]!=='undefined') return null;
   return this.all[0];
 }
 
@@ -472,7 +473,7 @@ g.lazyLoad = function () {
 	      el.removeAttribute('data-bg');
 	    }
       if (el.getAttribute('data-image')) {
-	      el.style.backgroundImage = imgs[i].getAttribute('data-image');
+	      el.style.backgroundImage = 'url('+imgs[i].getAttribute('data-image')+')';
 	      el.removeAttribute('data-image');
 	    }
       if (el.getAttribute('data-animation')) {
@@ -512,6 +513,7 @@ g.click('ul.g-nav>li>a', function(){
     other.classList.remove('open')
   }
   g('ul.g-nav>li>ul>li').removeClass('open')
+  g('.g-nav-mobile').removeClass('display')
 })
 g.click('ul.g-nav>li>ul>li>a', function(){
   this.parentNode.classList.toggle('open')
@@ -519,6 +521,7 @@ g.click('ul.g-nav>li>ul>li>a', function(){
   for(let other of others) if(other.tagName=='LI' && other!==this.parentNode){
     other.classList.remove('open')
   }
+  g('.g-nav-mobile').removeClass('display')
 })
 
 g.lazyLoad();

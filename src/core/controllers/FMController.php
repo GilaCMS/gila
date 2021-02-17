@@ -133,13 +133,13 @@ class FMController extends Gila\Controller
     }
     if (!FileManager::allowedPath($_POST['newpath']) ||
         !FileManager::allowedPath($this->relativePath)) {
-      die("Permission denied1");
+      die("Permission denied");
     }
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("User dont have permision to edit files");
     }
 
-    if (!rename($this->path, $_POST['newpath'])) {
+    if (!rename($this->path, SITE_PATH.$_POST['newpath'])) {
       ob_clean();
       die("File could not be moved");
     }
@@ -206,7 +206,7 @@ class FMController extends Gila\Controller
         $this->path = strtr($_POST['path'], ['\\'=>'/']);
       }
     }
-    $this->path = realpath($this->path);
+    $this->path = realpath(SITE_PATH.$this->path);
     $base = substr($this->path, 0, strlen($this->sitepath));
     if ($base != $this->sitepath) {
       $this->path = $this->sitepath;

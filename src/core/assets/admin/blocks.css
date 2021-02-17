@@ -49,9 +49,10 @@
   padding:16px 0;
   padding-left:16px;
   text-align: left;
-  background: steelblue/*#395ffc*/;
+  background: #355BF3;
   color:white;
   margin:0;
+  font-family:Roboto;
 }
 .add-block-btn .logo>img {
   vertical-align: middle;

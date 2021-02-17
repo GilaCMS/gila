@@ -84,7 +84,7 @@ Vue.component('g-table', {
         <td v-if="table.bulk_actions" @click="select_row(row[0], irow, $event)">\
           <i :class="checkboxClass(row[0])"></i>\
         </td>\
-        <td v-if="table.index_rows">{{irow+1}}</td>\
+        <td v-if="table.index_rows">{{table.pagination*(page-1)+irow+1}}</td>\
         <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
         :col="ifield" :value="row[ifield]" :class="field"\
         @keydown="inlineDataUpdate(irow, field)">\

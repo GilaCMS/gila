@@ -173,7 +173,7 @@ class Config
       self::$lang = $lang;
     }
     if (!isset(self::$lang)) {
-      self::$lang = self::config('language');
+      self::$lang = self::get('language');
     }
     return self::$lang;
   }
@@ -312,18 +312,18 @@ class Config
 
   public static function canonical($str)
   {
-    View::$canonical = self::config('base').self::url($str);
+    View::$canonical = self::get('base').self::url($str);
   }
 
   public static function base($str = null)
   {
     if (!isset(self::$base_url)) {
       if (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])) {
-        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(self::config('base'), 0, 5)=='https'?'https':'http');
+        $scheme = $_SERVER['REQUEST_SCHEME']??(substr(self::get('base'), 0, 5)=='https'?'https':'http');
         self::$base_url = $scheme.'://'.$_SERVER['HTTP_HOST'];
         self::$base_url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/')).'/';
       } else {
-        self::$base_url = self::config('base');
+        self::$base_url = self::get('base');
       }
       self::$base_url = htmlentities(self::$base_url);
     }
@@ -420,7 +420,7 @@ class Config
     }
     if ($alt!==null) {
       if(is_array($alt)) {
-        return $alt[Config::lang()] ?? $key;
+        return $alt[self::lang()] ?? $key;
       }
       return $alt;
     }

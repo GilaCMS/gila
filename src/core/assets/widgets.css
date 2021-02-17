@@ -215,3 +215,6 @@ section>.container{
 .colors-hcolor, .colors-hcolor * {
   color:#fff;
 }
+.section-subheading{
+  margin:0;
+}

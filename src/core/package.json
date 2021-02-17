@@ -15,5 +15,6 @@
     "writer":"Can write posts"
   },
   "lang":"core/lang/admin/",
+  "mainsite":true,
   "assets":["assets"]
 }

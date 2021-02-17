@@ -15,7 +15,7 @@
 <div class="gm-grid">
 
 <div>
-  <div id="profile-forms" class="g-card" style="padding:0 16px;">
+  <div id="profile-forms" class="g-card bg-white" style="padding:0 16px;">
     <form method="post" action="admin/profile" class="g-form">
     <h2 class="text-align-center"><?=__('Personal Information')?></h2>
     <br>
@@ -56,7 +56,7 @@
 </div>
 
 <div>
-  <div id="profile-forms" class="g-card" style="padding:0 16px;">
+  <div id="profile-forms" class="g-card bg-white" style="padding:0 16px;">
     <form method="post" action="admin/profile" class="g-form">
     <h2 class="text-align-center"><?=__('Security')?></h2>
     <br><div>
@@ -83,7 +83,8 @@
     <form method="post" action="admin/profile" class="g-form">
 
     <br><div>
-    <label class="gm-6"><?=__('Unique Token Key')?></label>
+    <label class="gm-6"><?=__('Unique Token Key')?></label> 
+    <div style="font-weight: 400; font-size: 90%;"><?=__('This API key is unique and secret. Do not reveal it or share it.')?></div>
     <input readonly type="text" value="<?=$token?>" class="gm-6" />
     </div>
 

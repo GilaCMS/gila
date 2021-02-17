@@ -243,7 +243,7 @@ class Form
       },
       "media-gallery"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
-        if (!is_array(json_decode($ov))) {
+        if (!is_array(json_decode($ov, true))) {
           $ov = explode(',', $ov);
           for ($i=count($ov);$i<$field['max'];$i++) {
             array_push($ov, '');
@@ -257,7 +257,7 @@ class Form
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
-          <span class="g-btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-image"></i></span>
+          <span class="g-btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-camera"></i></span>
           <span class="g-group-item"><input class="g-input fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
@@ -280,7 +280,7 @@ class Form
       },
       "paragraph"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
-        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlentities($ov).'</textarea>';
+        return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
       "vue-editor"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
@@ -311,9 +311,9 @@ class Form
         ';
       },
       "list"=> function ($name, $field, $ov) {
-        $fieldset = htmlspecialchars(json_encode(array_keys($field['fields'])));
+        $fields = htmlspecialchars(json_encode($field['fields']));
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
-        return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldset="'.$fieldset.'" value="'.$value.'"></input-list>';
+        return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldlist="'.$fields.'" value="'.$value.'"></input-list>';
       },
       "template"=> function ($name, $field, $ov) {
         global $db;

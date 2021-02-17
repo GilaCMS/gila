@@ -5,6 +5,7 @@ namespace Gila;
 class Menu
 {
   private static $active = false;
+  public static $editableLinks = false;
 
   public static function getContents($menu)
   {
@@ -80,6 +81,9 @@ class Menu
       if ($type=='page') {
         if ($r=Page::getById(@$data['id'])) {
           $url = $r['slug'];
+          if (self::$editableLinks) {
+            $url = self::$editableLinks.'/'.$r['id'];
+          }
           $name = $r['title'];
           return ['name'=>$name, 'url'=>$url];
         }
@@ -99,7 +103,11 @@ class Menu
         return ['name'=>$name, 'url'=>$url];
       }
     }
-    return ['name'=>$data['name'], 'url'=>$data['url']??'#'];
+    if (self::$editableLinks && $r=Page::getBySlug($data['url'])) {
+      return ['name'=>$data['name'], 'url'=>self::$editableLinks.'/'.$r['id']];
+    } else {
+      return ['name'=>$data['name'], 'url'=>$data['url']??'#'];
+    }
   }
 
   public static function getHtml($items, $base='')

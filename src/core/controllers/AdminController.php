@@ -21,15 +21,14 @@ class AdminController extends Gila\Controller
   */
   public function indexAction()
   {
-    $id = Router::path() ?? null;
+    $id = Router::getPath() ?? null;
 
-    if ($id && ($r = Gila\Page::getByIdSlug($id)) && ($r['publish']==1)
-        && ($id!='' && Router::getController()=='admin')) {
+    if ($r = Gila\Page::getByIdSlug($id)) {
       Config::canonical('');
       View::set('title', $r['title']);
       View::set('text', $r['page']);
       if ($r['template']==''||$r['template']===null) {
-        View::renderFile('page--admin.php');
+        View::renderFile('page.php');
       } else {
         View::renderFile('page--'.$r['template'].'.php');
       }
