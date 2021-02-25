@@ -268,6 +268,10 @@ class CMController extends Gila\Controller
     } else {
       $id = $gtable->createRow($_GET);
       if ($id===0) {
+        if ($error = Table::$error) {
+          http_response_code(403);
+          echo json_encode(['error'=>$error], JSON_PRETTY_PRINT);
+        }
         return;
       }
     }
@@ -325,14 +329,42 @@ class CMController extends Gila\Controller
     if (isset($_POST['id'])) {
       $gtable->event('create', $data);
       $fields = $gtable->fields('clone');
+      $metaFields = [];
       if (($idkey = array_search($gtable->id(), $fields)) !== false) {
         unset($fields[$idkey]);
       }
-      $fields =  implode(',', $fields);
-      $q = "INSERT INTO {$gtable->name()}($fields) SELECT $fields FROM {$gtable->name()} WHERE {$gtable->id()}=?;";
+      foreach ($fields as $key=>$field) {
+        if ($gtable->fieldAttr($field, 'meta_key')) {
+          unset($fields[$key]);
+          $metaFields[] = $field;
+        }
+        if ($gtable->fieldAttr($field, 'join_table')) {
+          unset($fields[$key]);
+          $joinFields[] = $field;
+        }
+      }
+      $fieldStr =  implode(',', $fields);
+      $q = "INSERT INTO {$gtable->name()}($fieldStr) SELECT $fieldStr FROM {$gtable->name()} x WHERE {$gtable->id()}=?;";
       $res = $db->query($q, $_POST['id']);
       $id = $db->insert_id;
-    // TODO copy meta values and links
+      if ($id===0) {
+        echo '{"error":"Row could not be created"}';
+        exit;
+      }
+
+      foreach ($metaFields as $field) {
+        list($mt, $vt) = $gtable->getMT($field);
+        $q = "INSERT INTO {$mt[0]}({$mt[1]},{$mt[2]},{$mt[3]}) SELECT $id,{$mt[2]},{$mt[3]}
+        FROM {$mt[0]} x WHERE {$mt[1]}=? AND {$mt[2]}=?;";
+        $res = $db->query($q, [$_POST['id'], $vt]);
+      }
+      foreach ($joinFields as $field) {
+        list($jtable, $this_id, $other_id) = $gtable->getTable()['fields'][$field]['join_table'];
+        $post_id = $db->res($_POST['id']);
+        $q = "INSERT INTO {$jtable}({$this_id},{$other_id}) SELECT $id,{$other_id}
+        FROM {$jtable} x WHERE {$other_id}=?;";
+        $res = $db->query($q, [$_POST['id']]);
+      }
     } else {
       $id = $gtable->createRow($data);
       if ($id===0) {

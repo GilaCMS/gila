@@ -71,9 +71,7 @@ Vue.component('input-list', {
       return true
     },
     isSelect: function(field) {
-      console.log(this.fields)
       if(typeof field.options=='undefined') return false
-      console.log(1)
       return true
     },
     swap: function(x, y) {
@@ -212,7 +210,6 @@ Vue.component('input-keywords', {
 </div>',
   props: ['name','value','keywords','placeholder'],
   data: function() {
-    console.log(this.value)
     return {
       values: JSON.parse(this.value)??[],
       placetext: this.placeholder?this.placeholder:' ...',
@@ -303,8 +300,7 @@ Vue.component('tree-select', {
       selected = JSON.parse(this.value)
     }
     data = JSON.parse(this.data)
-    //if(this.labels) labels = JSON.parse(this.labels)
-    console.log([{id:2,label:35}])
+
     return {
       level: selected.length,
       treeData: data,
@@ -322,8 +318,6 @@ Vue.component('tree-select', {
       this.updateOpList()
     },
     updateOpList: function () {
-      console.log('df')
-      console.log(this.treeData)
       options = this.treeData
       for(i=0; i<level-1; i++) {
         for(child in options) if(child.id==this.selected[i]) {

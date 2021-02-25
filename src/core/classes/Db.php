@@ -154,6 +154,11 @@ class Db
     return $arr;
   }
 
+  public function getOne($q, $args = null)
+  {
+    return $this->get($q, $args)[0]??null;
+  }
+
   public function gen($q, $args = null)
   {
     $res = $this->query($q, $args);
@@ -197,6 +202,16 @@ class Db
     $garr=$this->getRows($q, $args);
     foreach ($garr as $key => $value) {
       $arr[]=$value[0];
+    }
+    return $arr;
+  }
+
+  public function getOptions($q, $args = null)
+  {
+    $arr=[];
+    $garr=$this->getRows($q, $args);
+    foreach ($garr as $key => $value) {
+      $arr[$value[0]]=$value[1];
     }
     return $arr;
   }

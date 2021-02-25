@@ -7,6 +7,7 @@ class Table
   private $table;
   private $permissions;
   private $db;
+  public static $error = null;
   public static $tableList = [];
   public static $basicOps = [
     'gt'=>'>', 'ge'=>'>=', 'lt'=>'<', 'le'=>'<='
@@ -353,7 +354,7 @@ class Table
 
     foreach ($fields as $key=>$value) {
       if (@$this->table['fields'][$key]['type'] === 'joins') {
-        $jt = $this->table['fields'][$key]["jt"];
+        $jt = $this->table['fields'][$key]["join_table"]??$this->table['fields'][$key]["jt"];
         $arrv = explode(",", $value);
         $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`=?;", [$id]);
         foreach ($arrv as $arrv_k=>$arrv_v) {

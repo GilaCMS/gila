@@ -73,17 +73,18 @@ class UserAgent
 
   public static function isBot($user_agent)
   {
-    $good_bots = ['SemrushBot','YandexBot','AhrefsBot','PetalBot','SaaSHub','bingbot','BingPreview','MJ12bot','Twitterbot',
-    'Googlebot','newspaper','NetcraftSurveyAgent','panscient.com','python-requests','SeznamBot','zgrab',
-    'facebookexternalhit','Baiduspider','Nimbostratus-Bot','DotBot','DuckDuckBot','Slackbot',
-    'Applebot','Python-urllib','bitlybot','TelegramBot', 'YandexMetrika', 'Go-http-client', 'DuckDuckGo-Favicons-Bot',
-    'CensysInspect','Siteimprove','aiohttp','Barkrowler','AdsBot','Mediapartners-Google','aiHitBot','evc-batch',
-    'Scrapy','CCBot','MojeekBot','Discordbot','article-parser','HackerNews','node-superagent','RandomSurfer',
-    'CheckMarkNetwork','Dataprovider.com','BLEXBot','Apache-HttpClient','MegaIndex','LinkedInBot','Infosecbot',
-    ' bot',' Bot','github.com','RestSharp','KomodiaBot','RU_Bot','compatible;', 'Lighthouse'
+    $good_bots = ['SaaSHub','bingbot','BingPreview','MJ12bot','Twitterbot',
+    'Googlebot','newspaper','NetcraftSurveyAgent','panscient.com','python-requests',
+    'facebookexternalhit','Baiduspider','Slackbot','zgrab','evc-batch',
+    'Applebot','Python-urllib','bitlybot', 'YandexMetrika', 'Go-http-client',
+    'CensysInspect','Siteimprove','aiohttp','Barkrowler','Mediapartners-Google',
+    'Scrapy','compatible;','Discordbot','article-parser','HackerNews',
+    'node-superagent','RandomSurfer', 'CheckMarkNetwork','Dataprovider.com','Apache-HttpClient',
+    'MegaIndex','Infosecbot', 'RestSharp', 'Lighthouse', 'Uptimebot',
+    ' bot','github.com'
     ];
 
-    if ($user_agent === null || strlen($user_agent)<40) {
+    if ($user_agent === null || strlen($user_agent)<40 || strpos($user_agent, 'Bot') !== false) {
       return true;
     }
     foreach ($good_bots as $bot) {

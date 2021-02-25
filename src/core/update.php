@@ -14,5 +14,7 @@ TableSchema::update(include 'src/core/tables/sessions.php');
 
 TableSchema::update(include 'src/core/tables/widget.php');
 
+TableSchema::update(include 'src/core/tables/menu.php');
+
 Config::dir(LOG_PATH.'/stats');
 Config::dir(LOG_PATH.'/cacheItem');

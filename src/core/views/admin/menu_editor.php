@@ -123,7 +123,7 @@ $itemTypes = MenuItemTypes::getItemTypes();
   <div id="menu-list" class="gm-3 wrapper">
     <ul class="g-nav vertical g-card">
     <?php
-    $menus = scandir(LOG_PATH.'/menus');
+    $menus = array_merge(Menu::getList(), scandir(LOG_PATH.'/menus'));
     foreach ($menus as $name) {
       if ($name[0]!='.') {
         $lname = basename($name, '.json');

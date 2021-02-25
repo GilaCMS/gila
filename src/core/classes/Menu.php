@@ -9,22 +9,44 @@ class Menu
 
   public static function getContents($menu)
   {
+    global $db;
     $jsonfile = LOG_PATH."/menus/$menu.json";
-    if (file_exists($jsonfile)) {
-      return file_get_contents($jsonfile);
+    if ($data = Cache::get($menu, 86400, [Config::mt('menu')])) {
+      return $data;
     }
+    if ($data = $db->read()->value("SELECT `data` FROM menu WHERE `menu`=?;", [$menu])) {
+      Cache::set($menu, $data, [Config::mt('menu')]);
+      return $data;
+    }
+    // DEPRECATED
+    if (file_exists($jsonfile)) {
+      $data = file_get_contents($jsonfile);
+      self::setContents($menu, $data);
+      return $data;
+    }
+
     return "{type:\"menu\",children:[]}";
   }
 
   public static function setContents($menu, $data)
   {
+    global $db;
     $folder = Config::dir(LOG_PATH.'/menus/');
     $file = $folder.$menu.'.json';
-    file_put_contents($file, $data);
+    @unlink($file); // DEPRECATED
+    $db->query("REPLACE INTO menu(`menu`,`data`) VALUES(?,?);", [$menu, $data]);
   }
 
   public static function getData($menu)
   {
+    global $db;
+    $menuLN = $menu.'.'.Config::lang();
+    $data = $db->read()->value("SELECT `data` FROM menu WHERE `menu`=? OR `menu`=? LIMIT 1;",
+    [$menuLN, $menu]);
+    if ($data) {
+      return json_decode($data, true);
+    }
+    // DEPRECATED
     $fileLN = LOG_PATH.'/menus/'.$menu.'.'.Config::lang().'.json';
     $file = LOG_PATH.'/menus/'.$menu.'.json';
     if (file_exists($fileLN)) {
@@ -54,7 +76,7 @@ class Menu
       $widget_data->children[] = ['type'=>"postcategory",'id'=>$p[0]];
     }
     foreach (Page::genPublished() as $p) {
-      if (!empty($p['slug'])) {
+      if (count($widget_data->children)<6 && !empty($p['slug'])) {
         $widget_data->children[] = ['type'=>'page','id'=>$p[0]];
       }
     }
@@ -159,5 +181,11 @@ class Menu
       $html .= $childrenHtml."</li>";
     }
     return $html;
+  }
+
+  public static function getList()
+  {
+    global $db;
+    return $db->getList("SELECT `menu` FROM `menu`;");
   }
 }

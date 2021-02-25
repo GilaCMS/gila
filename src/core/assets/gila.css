@@ -104,7 +104,7 @@ script{display:none!important}
 .padding-16px{padding:16px}
 
 .pad{padding:var(--main-padding)}
-.container{padding:0 16px;max-width:1200px;margin:auto}
+.container{padding:0 16px;max-width:1200px;margin:auto;position:relative}
 .fluid{max-width:unset;}
 
 .gap-0px>*{padding:0px}

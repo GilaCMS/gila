@@ -314,10 +314,12 @@ class AdminController extends Gila\Controller
 
   public function phpinfoAction()
   {
-    self::access('admin');
     if (!FS_ACCESS) {
+      http_response_code(404);
+      View::renderAdmin('404.php');
       return;
     }
+    self::access('admin');
     View::includeFile('admin/header.php');
     phpinfo();
     View::includeFile('admin/footer.php');
