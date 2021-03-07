@@ -15,13 +15,13 @@
     "reset_msg_ln1": "Código de Cambio de Contraseña para",
     "reset_msg_ln2": "Hola",
     "reset_msg_ln3": "Este es el enlace para cambiar tu contraseña en",
-    "reset_msg_ln4": "Si no solicitó cambiar la contraseña, ignore este correo electrónico",
+    "reset_msg_ln4": "Si no solicitaste cambiar la contraseña, ignora este correo electrónico",
     "reset_pass": "Restablecer la contraseña",
     "reset_html1": "Código para Restablecer Contraseña enviado por Email",
     "reset_html2": "Se le ha enviado un correo electrónico para cambiar tu contraseña. Verifique tu correo electrónico en unos minutos y siga el enlace. Si no puedes encontrar el correo electrónico en tu bandeja de entrada, mire también en la  carpeta de correo no deseado.",
     "reset_submit_pass": "Elige tu nueva contraseña.",
     "reset_pass_msg": "Ingrese tu dirección de correo electrónico y le enviaremos un enlace para restablecer tu contraseña",
-    "reset_pass_success": "Cambiaste tu contraseña con exito",
+    "reset_pass_success": "¡Cambiaste tu contraseña exitosamente!",
     "forgot_pass": "¿Se te olvidó tu contraseña?",
     "Log In": "Iniciar sesión",
     "Register": "Registrar",
@@ -32,6 +32,7 @@
     "Confirm Password": "Confirmar Contraseña",
     "Change Password": "Cambiar Contraseña",
     "Send Email": "Enviar Correo",
-    "login_error_msg": "Wrong email or password",
-    "login_error_msg2": "Too many failed tries made from this IP. For security reasons, please try again in few minutes. If you dont remember your password follow the instructions how to reset it."
+    "login_error_msg": "Incorrecto correo o contraseña",
+    "login_error_msg2": "Fueron muchos intentos de ese IP. Pore seguridad, intenta otra vez en pocos minutos.",
+    "Show password": "Mostrar contraseña"
 }

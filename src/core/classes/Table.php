@@ -38,9 +38,15 @@ class Table
         if (!isset($field['options'])) {
           $field['options'] = [];
         }
-        $res = $this->db->get($field['qoptions']);
-        foreach ($res as $r) {
-          $field['options'][$r[0]] = $r[1];
+        if (is_array($field['qoptions'])) {
+          $o = $field['qoptions'];
+          $optionTable = new Table($o[2]);
+          $res = $optionTable->getRows($o[3]??[], ['select'=>[$o[0],$o[1]]]);
+          foreach ($res as $r) {
+            $field['options'][$r[$o[0]]] = $r[$o[1]];
+          }
+        } else {
+          $field['options'] = $this->db->getOptions($field['qoptions']);
         }
       }
       if (isset($field['title'])) {
@@ -77,19 +83,39 @@ class Table
     self::$tableList[$content] = $this->table;
   }
 
+  public static function exist($table)
+  {
+    global $db;
+    if (isset(Config::$content[$table])) {
+      return true;
+    }
+    if ($db->read()->value("SELECT id FROM tableschema WHERE `name`=?;", [$table])) {
+      return true;
+    }
+    return false;
+  }
+
   public function loadSchema($content)
   {
+    global $db;
+
     if (isset(Config::$content[$content])) {
       $path = 'src/'.Config::$content[$content];
     } elseif (file_exists($content)) {
       $path = $content;
     } else {
       $path = 'src'.$content;
+      if ($json = $db->read()->value("SELECT `data` FROM tableschema WHERE `name`=?;", [$content])) {
+        $this->table = json_decode($json, true);
+        $path = null;
+      }
     }
     
-    $this->table = include $path;
-    if (isset($table)) {
-      $this->table = $table;
+    if ($path) {
+      $this->table = include $path;
+      if (isset($table)) {
+        $this->table = $table;
+      }
     }
 
     if ($ext = $this->table['extends']??null) {
@@ -323,7 +349,10 @@ class Table
           $value = json_encode($value);
         }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
-          $value = HtmlInput::purify($value, $allowed);
+          $purify = $this->fieldAttr($key, 'purify') ?? true;
+          if ($purify===true) {
+            $value = HtmlInput::purify($value, $allowed);
+          }
         } else {
           $value = strip_tags($value);
         }
@@ -637,7 +666,7 @@ class Table
     }
     $where = $this->where($filters);
     $res = $db->read()->value("SELECT COUNT(*) FROM {$this->name()}$where;");
-    return $res;
+    return (int)$res;
   }
 
   public function deleteRow($id)

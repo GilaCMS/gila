@@ -362,6 +362,9 @@ g.alert = function(html,type,callback) {
 
 var g_requiredGroup = new Array();
 var g_baseUrl = "res/";
+if(typeof requiredRes == 'undefined') {
+  requiredRes = new Array();
+}
 
 g.require = function(res, callback = function(){ return }) {
 

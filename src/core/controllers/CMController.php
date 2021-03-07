@@ -18,7 +18,7 @@ class CMController extends Gila\Controller
   {
     $this->permissions = Session::permissions();
     $this->table = Router::param("t", 1);
-    if (!isset(Config::$content[$this->table])) {
+    if (!Table::exist($this->table)) {
       http_response_code(404);
       exit;
     }
@@ -362,7 +362,7 @@ class CMController extends Gila\Controller
         list($jtable, $this_id, $other_id) = $gtable->getTable()['fields'][$field]['join_table'];
         $post_id = $db->res($_POST['id']);
         $q = "INSERT INTO {$jtable}({$this_id},{$other_id}) SELECT $id,{$other_id}
-        FROM {$jtable} x WHERE {$other_id}=?;";
+        FROM {$jtable} x WHERE {$this_id}=?;";
         $res = $db->query($q, [$_POST['id']]);
       }
     } else {

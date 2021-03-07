@@ -65,6 +65,7 @@ Config::content('user', 'core/tables/user.php');
 Config::content('userrole', 'core/tables/userrole.php');
 Config::content('page', 'core/tables/page.php');
 Config::content('widget', 'core/tables/widget.php');
+Config::content('tableschema', 'core/tables/tableschema.php');
 
 Config::addLang('core/lang/');
 

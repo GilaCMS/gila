@@ -281,3 +281,9 @@ section>.container{
 .section-subheading{
   margin:0;
 }
+
+.columnarea{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+  min-height: 2em;
+}

@@ -186,6 +186,7 @@ class Config
   public static function set($option, $value)
   {
     global $db;
+    if ($value===$GLOBALS['config'][$option]) return;
     $GLOBALS['config'][$option] = $value;
     @self::$option[$option] = $value;
     if(is_array($value)) {

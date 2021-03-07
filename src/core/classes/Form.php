@@ -102,10 +102,13 @@ class Form
         if ($type==='datetime-local' && $ov) {
           $ov=date('Y-m-d\TH:i', is_string($ov)? strtotime($ov): $ov);
         }
+        if ($type==='date' && $ov) {
+          $ov=date('Y-m-d', is_string($ov)? strtotime($ov): $ov);
+        }
         if ($type==='range') {
           $req = ' min='.($op['min']??0).' max='.($op['max']??10).' step='.($op['step']??1);
         }
-        $html .= '<input class="g-input" name="'.$name.'" type="'.$type.'"'.$req.' value='.htmlentities($ov).'>';
+        $html .= '<input class="g-input" name="'.$name.'" type="'.$type.'"'.$req.' value="'.htmlentities($ov).'">';
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';

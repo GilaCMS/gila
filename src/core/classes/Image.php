@@ -115,7 +115,7 @@ class Image
       break;
     case 3:
       imagesavealpha($tmp, true);
-      imagepng($tmp, $file, 9);
+      imagepng($tmp, $file, 6);
       break;
     case 32:
       imagewebp($tmp, $file);

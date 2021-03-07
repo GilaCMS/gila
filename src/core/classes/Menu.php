@@ -34,6 +34,7 @@ class Menu
     $folder = Config::dir(LOG_PATH.'/menus/');
     $file = $folder.$menu.'.json';
     @unlink($file); // DEPRECATED
+    Config::setMt('menu');
     $db->query("REPLACE INTO menu(`menu`,`data`) VALUES(?,?);", [$menu, $data]);
   }
 

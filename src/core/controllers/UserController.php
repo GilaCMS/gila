@@ -59,12 +59,12 @@ class UserController extends Gila\Controller
           // success
           if (Config::get('user_activation')=='byemail') {
             $baseurl = Config::base();
-            $subject = __('activate_msg_ln1').' '.$r['username'];
+            $subject = __('activate_msg_ln1').' '.$name;
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
-            $msg = __('activate_msg_ln2')." {$r['username']}\n\n";
+            $msg = __('activate_msg_ln2')." {$name}\n\n";
             $msg .= __('activate_msg_ln3')." $baseurl\n\n";
             $msg .= $baseurl."user/activate?ap=$activate_code\n\n";
-            $msg .= __('reset_msg_ln4');
+            $msg .= __('activate_msg_ln4');
             $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
             User::meta($user_Id, 'activate_code', $activate_code);
             new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
@@ -106,6 +106,8 @@ class UserController extends Gila\Controller
       echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
       return;
     }
+    Config::addLang('core/lang/');
+    Config::addLang('core/lang/login/');
     $rpa = 'reset-password-attempt';
     $rpt = 'reset-password-time';
     View::set('title', __('reset_pass'));
@@ -180,13 +182,14 @@ class UserController extends Gila\Controller
       if ($token) {
         echo '{"token":"'.$token.'"}';
         return;
+      } else {
+        echo '{"error":"There is not token set for this account"}';
       }
     }
     http_response_code(401);
     echo '{"error":"Credencials are not valid"}';
   }
 
-  // use this until user controller is created
   public function logoutAction()
   {
     if(Session::userId()===0) {

@@ -44,7 +44,6 @@ class TableSchema
       ];
     }
 
-
     // ADD COLUMNS
     foreach ($table['fields'] as $fkey=>$field) {
       if (isset($field['qtype']) && $fkey!=$id) {
