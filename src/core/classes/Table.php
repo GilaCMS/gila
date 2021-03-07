@@ -349,10 +349,7 @@ class Table
           $value = json_encode($value);
         }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
-          $purify = $this->fieldAttr($key, 'purify') ?? true;
-          if ($purify===true) {
-            $value = HtmlInput::purify($value, $allowed);
-          }
+          $value = HtmlInput::purify($value, $allowed);
         } else {
           $value = strip_tags($value);
         }
