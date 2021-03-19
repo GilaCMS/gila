@@ -191,11 +191,15 @@ class BlogController extends Gila\Controller
       View::set('id', $r['id']);
       View::set('updated', $r['updated']);
 
-      Config::canonical('blog/'.$r['id'].'/'.$r['slug']);
       View::meta('og:title', $r['title']);
       View::meta('og:type', 'website');
       View::meta('og:url', View::$canonical);
       View::meta('og:description', $r['description']);
+
+      if(!empty($r['language'])) {
+        Config::lang($r['language']);
+      }
+      Config::canonical('blog/'.$r['id'].'/'.$r['slug']);
 
       if ($r['img']) {
         View::set('img', $r['img']);
@@ -243,8 +247,11 @@ class BlogController extends Gila\Controller
       if ($r = Page::getByIdSlug($id)) {
         View::set('title', $r['title']);
         View::set('text', $r['page']);
-        Config::canonical($r['slug']);
         View::meta('description', $r['description']);
+        if(!empty($r['language'])) {
+          Config::lang($r['language']);
+        }
+        Config::canonical($r['slug']);
         if ($r['template']==''||$r['template']===null) {
           View::render('page.php');
         } else {

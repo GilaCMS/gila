@@ -9,7 +9,7 @@ return [
   'bulk_actions'=>['approve'],
   'approve'=>['publish','1'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
-  'commands'=> ['edit_popup','delete'],
+  'commands'=> ['edit_popup','delete','clone'],
   'qactions'=> ['title'=>['edit_popup','delete']],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish','user_id'],
@@ -55,7 +55,8 @@ return [
       'title'=>'User',
       'type'=>'select',
       'qoptions'=>"SELECT id, username FROM user",
-      'qtype'=>'int(11) unsigned DEFAULT NULL'
+      'qtype'=>'int(11) unsigned DEFAULT NULL',
+      'list'=>false
     ],
     "categories"=>[
       'edit'=>true,
@@ -71,6 +72,10 @@ return [
       'meta_csv'=>true,
       'meta_key'=>'tag',
       "title"=>"Tags"
+    ],
+    'language'=> [
+      'type'=>'language',
+      'qtype'=>'VARCHAR(2) DEFAULT NULL'
     ],
     'publish'=> [
       'title'=>'Public',

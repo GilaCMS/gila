@@ -80,7 +80,7 @@ class Router
     $default = Config::get('default-controller')??'admin';
     self::$controller = self::request('c', $default);
 
-    if (isset(self::$controllers[self::$args[0]])) {
+    if (isset(self::$args[0]) && isset(self::$controllers[self::$args[0]])) {
       self::$controller = self::$args[0];
       array_shift(self::$args);
     }
@@ -207,6 +207,8 @@ class Router
       self::$args = explode("/", self::$url);
       if (isset(self::$args[0]) && Config::get('languages') && in_array(self::$args[0], Config::get('languages'))) {
         Config::lang(self::$args[0]);
+        self::$url = substr(self::$url, 3);
+        array_shift(self::$args);
       }
     } else {
       self::$url = false;

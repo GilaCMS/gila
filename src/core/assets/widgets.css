@@ -286,4 +286,9 @@ section>.container{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
   min-height: 2em;
+  gap:1em;
+}
+
+.componentarea{
+  overflow:hidden;
 }

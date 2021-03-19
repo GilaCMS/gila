@@ -679,20 +679,27 @@ class Table
     }
     $insert_fields = [];
     $insert_values = [];
+    $binded_values = [];
     $this->event('create', $data);
     if($data===false) {
       return 0;
     }
+
     foreach ($this->table['fields'] as $field=>$value) {
       if (isset($data[$field])) {
-        $insert_fields[] = $field;
-        $insert_values[] = (int)$data[$field];
+        $insert_fields[] = '`'.$field.'`';
+        $insert_values[] = $data[$field];
+        $binded_values[] = '?';
       }
     }
     $fnames = implode(',', $insert_fields);
-    $values = implode(',', $insert_values);
-    $q = "INSERT INTO {$this->name()}($fnames) VALUES($values);";
-    $res = $this->db->query($q);
+    $binded = implode(',', $binded_values);
+    $q = "INSERT INTO {$this->name()}($fnames) VALUES($binded);";
+    if (!empty($insert_values)) {
+      $res = $this->db->query($q, $insert_values);
+    } else {
+      $res = $this->db->query($q);
+    }
     $id = $this->db->insert_id;
     return $id;
   }

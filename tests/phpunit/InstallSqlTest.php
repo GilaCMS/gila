@@ -14,9 +14,9 @@ class InstallSqlTest extends TestCase
     include 'src/core/install/install.sql.php';
 
     $tableColumn = [
-      'post'=>['id','title','slug','description','user_id','publish','post','updated','created'],
+      'post'=>['id','title','slug','description','user_id','language','publish','post','updated','created'],
       'postmeta'=>['id','post_id','vartype','value'],
-      'page'=>['id','title','slug','description','template','publish','updated','blocks'],
+      'page'=>['id','title','slug','description','template','language','publish','updated','blocks'],
       'user'=>['id','username','email','pass','active','reset_code','created','updated'],
       'usermeta'=>['id','user_id','vartype','value'],
       'userrole'=>['id','userrole','level','description'],

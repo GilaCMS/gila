@@ -292,6 +292,7 @@ class Form
       "language"=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';
         $res = include 'src/core/lang/languages.php';
+        $ov = $ov??Config::lang();
         foreach ($res as $key=>$r) {
           $html .= '<option value="'.$key.'"'.($key==$ov?' selected':'').'>'.$r.'</option>';
         }
@@ -317,6 +318,10 @@ class Form
         $fields = htmlspecialchars(json_encode($field['fields']));
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldlist="'.$fields.'" value="'.$value.'"></input-list>';
+      },
+      "menu"=> function ($name, $field, $ov) {
+        $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
+        return '<menu-editor style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" value="'.$value.'"></menu-editor>';
       },
       "template"=> function ($name, $field, $ov) {
         global $db;

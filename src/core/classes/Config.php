@@ -186,8 +186,8 @@ class Config
   public static function set($option, $value)
   {
     global $db;
-    if ($value===$GLOBALS['config'][$option]) return;
-    $GLOBALS['config'][$option] = $value;
+    if ($value===self::$option[$option]) return;
+    @$GLOBALS['config'][$option] = $value;
     @self::$option[$option] = $value;
     if(is_array($value)) {
       $value = json_encode($value);
@@ -343,6 +343,9 @@ class Config
       if ($var[0]!='admin' && self::get('default-controller') === $var[0]) {
         $url = substr($url, strlen($var[0])+1);
       }
+    }
+    if(self::lang()!==self::get('language')) {
+      $url = self::lang().'/'.$url;
     }
 
     if ($gpt = Router::request('g_preview_theme') && Session::hasPrivilege('admin')) {

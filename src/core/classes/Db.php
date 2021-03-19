@@ -39,7 +39,10 @@ class Db
       return;
     }
     $this->link = mysqli_connect($this->dbhost, $this->user, $this->pass, $this->dsch);
-    //$this->link->set_charset("utf8");
+    if ($this->link===false) {
+      Event::fire('Db::connect_error');
+      exit;
+    }
     if ($this->profiling) {
       $this->link->query('SET profiling=1;');
     }

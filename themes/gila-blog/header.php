@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?=Config::get('language')?>">
+<html lang="<?=Config::lang()?>">
 <?php
 View::head()?>
 

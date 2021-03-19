@@ -347,9 +347,6 @@ class View
       $widget_file = self::getThemePath().'/widgets/'.$type.'.php';
     }
     if (file_exists($widget_file) === false) {
-      if (!isset(Config::$widget[$type])) {
-        echo "Widget <b>".$type."</b> is not found";
-      }
       @$widget_file = "src/".Config::$widget[$type]."/$type.php";
       if (!file_exists($widget_file)) {
         $type = explode('--', $type)[0];

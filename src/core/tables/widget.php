@@ -14,7 +14,7 @@ return [
     'title'=> 'Widgets',
     'id'=>'id',
     'tools'=>['add_popup'],
-    'commands'=>['edit_widget','delete'],
+    'commands'=>['edit_widget','delete','clone'],
     'list'=> ['id','title','widget','area','pos','active'],
     'csv'=> ['id','title','widget','area','pos','active'],
     'lang'=>'core/lang/admin/',

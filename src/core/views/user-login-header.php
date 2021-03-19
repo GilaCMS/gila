@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?=Gila\Config::get('language')?>">
+<html lang="<?=Gila\Config::lang()?>">
 
 <head>
   <base href="<?=Gila\Config::base()?>">

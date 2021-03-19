@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?=Config::get('language')?>">
+<html lang="<?=Config::lang()?>">
 <?php View::stylesheet('core/gila.min.css') ?>
 <?php View::head()?>
 <body style="margin:0">

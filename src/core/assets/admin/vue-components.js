@@ -41,16 +41,18 @@ Vue.component('input-list', {
   },
   methods:{
     add: function(){
-    array = new Array()
-      for(i in this.fields) if(this.isMedia(this.fields[i])) {
-        array[i] = 'assets/core/photo.png'
-      } else array[i] = ''
-        this.pos.push(array)
-        this.update()
+      array = new Array()
+      for(i in this.fields) {
+        if(this.isMedia(this.fields[i])) {
+          array[i] = 'assets/core/photo.png'
+        } else array[i] = ''
+      }
+      this.pos.push(array)
+      this.update()
     },
     removeEl: function(index){
-      	this.pos.splice(index,1)
-      	this.update()
+      this.pos.splice(index,1)
+      this.update()
     },
     imgSrc: function(src) {
       if(typeof src=='undefined') return 'assets/core/photo.png'

@@ -7,7 +7,7 @@ return [
   'id'=>'id',
   'tools'=>['add_popup'],
   'csv'=> ['id','title','slug','updated','publish'],
-  'commands'=> ['blocks','delete'],
+  'commands'=> ['blocks','delete','clone'],
   'qactions'=> ['title'=>['edit_popup','blocks','delete']],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish'],
@@ -19,6 +19,7 @@ return [
     'delete'=>['admin', 'editor']
   ],
   'search_box'=>true,
+  'search_boxes'=>['language'],
   'fields'=> [
     'id'=> [
       'title'=>'ID',
@@ -54,6 +55,10 @@ return [
       'create'=>false,
       'list'=>false,
       'qtype'=>'varchar(30) DEFAULT NULL'
+    ],
+    'language'=> [
+      'type'=>'language',
+      'qtype'=>'VARCHAR(2) DEFAULT NULL'
     ],
     'publish'=> [
       'title'=>'Public',

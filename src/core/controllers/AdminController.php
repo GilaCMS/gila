@@ -24,9 +24,12 @@ class AdminController extends Gila\Controller
     $id = Router::getPath() ?? null;
 
     if ($r = Gila\Page::getByIdSlug($id)) {
-      Config::canonical('');
       View::set('title', $r['title']);
       View::set('text', $r['page']);
+      if(!empty($r['language'])) {
+        Config::lang($r['language']);
+      }
+      Config::canonical($r['slug']);
       if ($r['template']==''||$r['template']===null) {
         View::renderFile('page.php');
       } else {
