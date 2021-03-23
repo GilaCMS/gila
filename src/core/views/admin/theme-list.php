@@ -87,6 +87,7 @@ if (FS_ACCESS) {
 <?=View::script('core/lang/content/'.Config::get('language').'.js');?>
 <?=View::script('core/admin/vue-components.js');?>
 <?=View::script('core/admin/menu-editor.js');?>
+<?=View::script('core/admin/color-input.js');?>
 <script>
 function theme_activate(p) {
   g.loader()

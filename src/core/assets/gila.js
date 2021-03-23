@@ -231,11 +231,15 @@ g.ajax = function(args) {
   xhttp.open(args.method, args.url, true);
   _fn = args.fn
   xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status > 199 && this.status < 300) {
+    if (this.readyState == 4) {
       if(typeof args.type!='undefined'||args.type=='json') {
         this.responseText = JSON.parse(this.responseText);
       }
-      if(args.fn) args.fn(this.responseText);
+      if (this.status > 199 && this.status < 300) {
+        if(args.fn) args.fn(this.responseText);
+      } else {
+        if(args.error) args.error(this.responseText);
+      }
     }
   };
 

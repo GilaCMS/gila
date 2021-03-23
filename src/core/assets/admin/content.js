@@ -94,7 +94,8 @@ Vue.component('g-table', {
           </div>\
         </td>\
         <td v-if="table.commands" class="td-com">\
-          <span v-for="(com,icom) in table.commands" v-if="canUse(com)" @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
+          <span v-for="(com,icom) in table.commands" v-if="canUse(com)"\
+          @click="command(com,row[0])" class="g-icon-btn com-btn" v-html="command_label(com)"></span>\
         </td>\
       </tr>\
       <tr v-if="data.rows.length==0">\
@@ -306,6 +307,10 @@ Vue.component('g-table', {
       }
       g.ajax({method:'post',url:url,data:data,fn:function(data) {
         data = JSON.parse(data)
+        if (data.error) {
+          alert(data.error)
+          return
+        }
         if(irow=='new') {
           _this.data.rows.unshift(data.rows[0])
           if(typeof _this.table.children!='undefined') {
@@ -650,6 +655,10 @@ function g_form_popup_update() {
   }
   g.ajax({method:'post',url:url,data:data,fn:function(data) {
     data = JSON.parse(data)
+    if (data.error) {
+      g.alert(data.error, 'error')
+      return
+    }
     if(id=='new' || id==0) {
       _this.data.rows.unshift(data.rows[0])
       edit_popup_app.id = _this.data.rows[0][0]

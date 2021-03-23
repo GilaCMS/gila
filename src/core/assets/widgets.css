@@ -47,7 +47,7 @@
   }
 }
 
-.photo-square{width:360;height:360px}.photo-landscape{width:360px;height:270px}.photo-portrait{width:270px;height:360px}
+.photo-square{width:360;height:360px}.photo-landscape{width:360px;height:270px}.photo-wide{width:360px;height:190px}.photo-portrait{width:270px;height:360px}
 .gallery--grid{
   display: grid;
   grid-gap: 1em;
@@ -291,4 +291,7 @@ section>.container{
 
 .componentarea{
   overflow:hidden;
+}
+.componentarea img{
+  display:block;
 }

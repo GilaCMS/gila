@@ -19,7 +19,6 @@ return [
     'delete'=>['admin', 'editor']
   ],
   'search_box'=>true,
-  'search_boxes'=>['language'],
   'fields'=> [
     'id'=> [
       'title'=>'ID',

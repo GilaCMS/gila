@@ -92,6 +92,12 @@ return [
     ]
   ],
   'events'=>[
+    ['create', function(&$row) {
+      if(User::getByEmail($row['email'])) {
+        Table::$error = __('Email already in use');
+        $row = false;
+      }
+    }],
     ['change',function (&$row) {
       if (isset($row['userrole'])) {
         $roles = is_array($row['userrole'])? $row['userrole']: explode(',', $row['userrole']);

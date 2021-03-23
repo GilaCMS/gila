@@ -205,10 +205,13 @@ class Router
       if (substr($_p,-1)=='/') $_p = substr($_p,0,-1);
       self::$url = strip_tags($_p);
       self::$args = explode("/", self::$url);
-      if (isset(self::$args[0]) && Config::get('languages') && in_array(self::$args[0], Config::get('languages'))) {
-        Config::lang(self::$args[0]);
-        self::$url = substr(self::$url, 3);
-        array_shift(self::$args);
+      if (isset(self::$args[0])) {
+        if (self::$args[0]===Config::lang() ||
+        (Config::get('languages') && in_array(self::$args[0], Config::get('languages')))) {
+          Config::lang(self::$args[0]);
+          self::$url = substr(self::$url, 3);
+          array_shift(self::$args);
+        }
       }
     } else {
       self::$url = false;

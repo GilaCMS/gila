@@ -72,7 +72,7 @@ script{display:none!important}
   padding:15px;
 }
 .g-icon-btn, .g-icon-btn:hover,.g-icon-btn:focus{
-  padding:var(--main-radius);
+  padding:var(--main-padding);
   color:inherit;
 }
 .hidden{
@@ -314,6 +314,9 @@ input.btn {
   padding :0;
   border:0;
   margin:auto;
+  width:2em;
+  height:2em;
+  background:none;
 }
 
 

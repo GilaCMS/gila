@@ -329,6 +329,9 @@ class Config
       self::$base_url = htmlentities(self::$base_url);
     }
     if ($str===null) {
+      if(self::lang()!==self::get('language')) {
+        return self::$base_url.self::lang();
+      }  
       return self::$base_url;
     }
     return self::$base_url.self::url($str);

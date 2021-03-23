@@ -323,6 +323,10 @@ class Form
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         return '<menu-editor style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" value="'.$value.'"></menu-editor>';
       },
+      "color-input"=> function ($name, $field, $ov) {
+        $value = htmlentities($ov);
+        return '<color-input palette=\''.htmlspecialchars(json_encode(["#4F4F3C","#6F8E67","#929C77","#D4D7B2","#FFFFFF"])).'\' name="'.$name.'" value="'.$value.'"></color-input>';
+      },
       "template"=> function ($name, $field, $ov) {
         global $db;
         $html = '<select class="g-input" name="'.$name.'">';

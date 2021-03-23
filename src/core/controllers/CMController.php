@@ -266,10 +266,9 @@ class CMController extends Gila\Controller
     if (isset($_GET['id']) && $_GET['id']>0 && $gtable->can('update')) {
       $id = $_GET['id'];
     } else {
-      $id = $gtable->createRow($_GET);
+      $id = $gtable->createRow($_POST);
       if ($id===0) {
         if ($error = Table::$error) {
-          http_response_code(403);
           echo json_encode(['error'=>$error], JSON_PRETTY_PRINT);
         }
         return;

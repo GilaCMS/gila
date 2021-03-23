@@ -1,7 +1,7 @@
 
 gtableFieldDisplay.title = function(rv) {
   if(rv.publish==0) return rv.title;
-  la = 'la'
+  la = ''
   if (rv.language && rv.language!=='') la=rv.language+'/'
-  return '<a target="_blank" href="'+rv.slug+'">'+rv.title+'</a>'
+  return '<a target="_blank" href="'+la+rv.slug+'">'+rv.title+'</a>'
 }

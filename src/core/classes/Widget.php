@@ -21,7 +21,8 @@ class Widget
     global $db;
     $db->connect();
     return $db->get("SELECT * FROM widget WHERE active=1 AND area=?
-    AND (`language` IS NULL OR language=?) ORDER BY pos;", [$area, Config::lang()]);
+    AND (`language` IS NULL OR language='' OR language=?) ORDER BY pos;",
+    [$area, Config::lang()]);
   }
 
   public static function update($data)

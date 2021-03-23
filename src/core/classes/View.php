@@ -418,7 +418,7 @@ class View
         if ($div) {
           echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
           if ($widget['title']!='') {
-            echo '<div class="widget-title">'.$widget['title'].'</div>';
+            echo '<div class="widget-title">'.__($widget['title']).'</div>';
           }
           echo '<div class="widget-body">';
         }

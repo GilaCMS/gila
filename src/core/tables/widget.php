@@ -15,8 +15,8 @@ return [
     'id'=>'id',
     'tools'=>['add_popup'],
     'commands'=>['edit_widget','delete','clone'],
-    'list'=> ['id','title','widget','area','pos','active'],
-    'csv'=> ['id','title','widget','area','pos','active'],
+    'list'=> ['id','title','widget','area','pos','language','active'],
+    'csv'=> ['id','title','widget','area','pos','language','active'],
     'lang'=>'core/lang/admin/',
     'js'=>['src/core/tables/widget.js'],
     'permissions'=>[
@@ -55,7 +55,7 @@ return [
           'qtype'=>'TEXT'
         ],
         'language'=> [
-          'list'=>false,'edit'=>false,'create'=>false,
+          'edit'=>false,'create'=>false,
           'qtype'=>'VARCHAR(2) DEFAULT NULL'
         ]
     ],
