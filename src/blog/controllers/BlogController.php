@@ -196,7 +196,7 @@ class BlogController extends Gila\Controller
       View::meta('og:url', View::$canonical);
       View::meta('og:description', $r['description']);
 
-      if(!empty($r['language'])) {
+      if (!empty($r['language'])) {
         Config::lang($r['language']);
       }
       Config::canonical('blog/'.$r['id'].'/'.$r['slug']);
@@ -248,7 +248,7 @@ class BlogController extends Gila\Controller
         View::set('title', $r['title']);
         View::set('text', $r['page']);
         View::meta('description', $r['description']);
-        if(!empty($r['language'])) {
+        if (!empty($r['language'])) {
           Config::lang($r['language']);
         }
         Config::canonical($r['slug']);

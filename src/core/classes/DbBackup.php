@@ -35,7 +35,7 @@ class DbBackup
     $c = "mysqldump -u$user -p$pass $name > $file";
     shell_exec($c);
     // restore values
-    foreach($tokens as $r) {
+    foreach ($tokens as $r) {
       $db->query("UPDATE `option` SET `value`=? WHERE `option`=?;", [$r['value'], $r['option']]);
     }
   }

@@ -17,7 +17,7 @@ class Image
     $src_width = 0;
     $src_height = 0;
     $ext = pathinfo($src)['extension'] ?? null;
-    if(!self::imageExtention($ext)) {
+    if (!self::imageExtention($ext)) {
       FileManager::$sitepath = realpath(SITE_PATH);
       if ($ext=='svg' && FileManager::allowedPath($src)) {
         Config::dir(substr($file, 0, strrpos($file, '/')));
@@ -140,7 +140,7 @@ class Image
 
     foreach ($src_array as $key=>$src) {
       $ext = pathinfo($src)['extension'] ?? null;
-      if(!self::imageExtention($ext)) {
+      if (!self::imageExtention($ext)) {
         continue;
       }
       $_src = self::localPath($src);
@@ -197,7 +197,8 @@ class Image
     return [$file.'?'.$revision, $response];
   }
 
-  public static function localPath($src) {
+  public static function localPath($src)
+  {
     if (strpos($src, Config::get('base')) === 0) {
       return $src;
     }

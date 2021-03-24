@@ -19,13 +19,12 @@ class Page
     global $db;
     $publish = $published? 'publish=1 AND': '';
     $query = 'SELECT id,title,description,updated,`language`,publish,slug,template FROM `page`';
-    if (Config::lang()!==Config::get('language')) {
-      $res = $db->query("$query WHERE $publish (id=? OR (slug=? AND `language`=?));",
-      [$id, $id, Config::lang()]);
-      if ($res===false) {
-        $res = $db->query("$query WHERE $publish (id=? OR slug=?);", [$id, $id]);
-      }
-    } else {
+
+    $res = $db->query(
+      "$query WHERE $publish (id=? OR (slug=? AND `language`=?));",
+      [$id, $id, Config::lang()]
+    );
+    if ($res===false) {
       $res = $db->query("$query WHERE $publish (id=? OR slug=?);", [$id, $id]);
     }
     if ($row = mysqli_fetch_array($res)) {

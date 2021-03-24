@@ -170,9 +170,11 @@ class Theme
       if (is_array($options)) {
         Config::loadOptions();
         $optionList = [];
-        foreach ($options as $key=>$op) if ($group===null || $op['group']===$group){
-          $values[$key] = Config::get('theme.'.$key);
-          $optionList[$key] = $op;
+        foreach ($options as $key=>$op) {
+          if ($group===null || $op['group']===$group) {
+            $values[$key] = Config::get('theme.'.$key);
+            $optionList[$key] = $op;
+          }
         }
         echo Form::html($optionList, $values, 'option[', ']');
       }// else error alert
@@ -221,7 +223,9 @@ class Theme
         $json = $dir.$folder.'/package.json';
         if (file_exists($json)) {
           $data = json_decode(file_get_contents($json));
-          if(!FS_ACCESS && isset($data->mainsite) && $data->mainsite===true) continue;
+          if (!FS_ACCESS && isset($data->mainsite) && $data->mainsite===true) {
+            continue;
+          }
           @$data->title = @$data->title?? @$data->name;
           $data->package = $folder;
           $data->url = @$data->homepage?? (@$data->url?? '');

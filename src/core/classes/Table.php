@@ -681,12 +681,12 @@ class Table
     $insert_values = [];
     $binded_values = [];
     $this->event('create', $data);
-    if($data===false) {
+    if ($data===false) {
       return 0;
     }
 
     foreach ($this->table['fields'] as $field=>$value) {
-      if (isset($data[$field])) {
+      if (isset($value['qtype']) && isset($data[$field])) {
         $insert_fields[] = '`'.$field.'`';
         $insert_values[] = $data[$field];
         $binded_values[] = '?';
@@ -700,8 +700,9 @@ class Table
     } else {
       $res = $this->db->query($q);
     }
-    $id = $this->db->insert_id;
-    return $id;
+    $data['id'] = $this->db->insert_id;
+    $this->event('created', $data);
+    return $data['id'];
   }
 }
 

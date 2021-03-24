@@ -82,7 +82,9 @@ class Package
       if (!in_array($activate, $packages) ||
          Config::get('env')=='dev') {
         $pac=json_decode(file_get_contents('src/'.$activate.'/package.json'), true);
-        if(!FS_ACCESS && isset($pac['mainsite']) && $pac['mainsite']===true) return;
+        if (!FS_ACCESS && isset($pac['mainsite']) && $pac['mainsite']===true) {
+          return;
+        }
         $require = [];
         $require_op = [];
         if (isset($pac['require'])) {
@@ -356,7 +358,9 @@ class Package
         $json = $dir.$folder.'/package.json';
         if (file_exists($json)) {
           $data = json_decode(file_get_contents($json));
-          if(!FS_ACCESS && isset($data->mainsite) && $data->mainsite===true) continue;
+          if (!FS_ACCESS && isset($data->mainsite) && $data->mainsite===true) {
+            continue;
+          }
           @$data->title = @$data->title?? @$data->name;
           $data->package = $folder;
           $data->url = @$data->homepage?? (@$data->url?? '');

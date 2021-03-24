@@ -47,7 +47,8 @@ return [
         'active'=> [
           'title'=>'Active',
           'type'=>'checkbox','edit'=>true,'create'=>false,
-          'qtype'=>'INT(1) DEFAULT 1'
+          'qtype'=>'INT(1) DEFAULT 1',
+          'toggle_values'=>[0,1]
         ],
         'data'=> [
           'title'=>'Data', 'list'=>false, 'edit'=>false, 'create'=>false,

@@ -87,7 +87,7 @@ Vue.component('g-table', {
         <td v-if="table.index_rows">{{table.pagination*(page-1)+irow+1}}</td>\
         <td v-for="(field,ifield) in data.fields" v-if="showField(field)"\
         :col="ifield" :value="row[ifield]" :class="field"\
-        @keydown="inlineDataUpdate(irow, field)">\
+        @keydown="inlineDataUpdate(irow, field)" @click="clicked_cell(irow,ifield)">\
           <div v-html="display_cell(irow,ifield)"></div>\
           <div v-if="table.qactions && table.qactions[field]" class="qactions">\
             <span v-for="(com,icom) in table.qactions[field]" v-if="canUse(com)" @click="command(com,row[0])" v-html="command_label(com,true)"></span>\
@@ -327,8 +327,16 @@ Vue.component('g-table', {
       this.edititem = false
     },
     toggle_value: function(irow,ifield,v1=0,v2=1) {
-      //if(this.data.rows[irow][ifield]==0) this.data.rows[irow][ifield]=1; else this.data.rows[irow][ifield]=0;
-      //this.$forceUpdate()
+      let _this = this
+      url = 'cm/update_rows/'+this.name+'?id='+this.data.rows[irow][0]
+      if(this.data.rows[irow][ifield]==v1) v=v2; else v=v1;
+      fkey = this.data.fields[ifield]
+      data = new FormData()
+      data.append(fkey, v)
+      g.ajax({method:'post',url:url,data:data,fn:function(data) {
+        _this.data.rows[irow][ifield] = v
+        _this.$forceUpdate()
+      }})
     },
     update_row: function(row) {
       for(i=0; i<this.data.rows.length; i++) if(this.data.rows[i][0] == row[0]){
@@ -337,12 +345,12 @@ Vue.component('g-table', {
       }
     },
     clicked_cell: function(irow,ifield){
+      if (this.canUse('edit')==false) return
       fkey = this.data.fields[ifield]
       field = this.table.fields[fkey]
-      if (typeof field.type != "undefined") if(field.type=='checkbox') {
-        this.toggle_value(irow,ifield,0,1)
+      if (typeof field.toggle_values != "undefined") {
+        this.toggle_value(irow,ifield,field.toggle_values[0],field.toggle_values[1])
       }
-      // update with api
     },
     display_cell: function(irow,ifield){
       fkey = this.data.fields[ifield]

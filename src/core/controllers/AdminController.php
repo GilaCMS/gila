@@ -26,7 +26,7 @@ class AdminController extends Gila\Controller
     if ($r = Gila\Page::getByIdSlug($id)) {
       View::set('title', $r['title']);
       View::set('text', $r['page']);
-      if(!empty($r['language'])) {
+      if (!empty($r['language'])) {
         Config::lang($r['language']);
       }
       Config::canonical($r['slug']);
@@ -198,7 +198,7 @@ class AdminController extends Gila\Controller
 
   public function loginAction()
   {
-    if(Session::userId()>0) {
+    if (Session::userId()>0) {
       header('Location: '.Config::get('base').'admin');
       return;
     }
@@ -227,8 +227,8 @@ class AdminController extends Gila\Controller
       }
       $tmp_file = $_FILES['uploadfiles']['tmp_name'];
       $name = htmlentities($_FILES['uploadfiles']['name']);
-      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4'];
-      if(Config::get('allow_svg')) {
+      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4', 'webm'];
+      if (Config::get('allow_svg')) {
         $extensions[] = 'svg';
       }
       if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $extensions)) {

@@ -183,7 +183,6 @@ class RequestsTest extends TestCase
       `email` varchar(80) DEFAULT NULL,
       `pass` varchar(120) DEFAULT NULL,
       `active` tinyint(1) DEFAULT 0,
-      `reset_code` varchar(60) DEFAULT NULL,
       `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       `updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
       PRIMARY KEY (`id`),

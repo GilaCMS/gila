@@ -515,7 +515,7 @@ class View
 
     if (strpos($src, SITE_PATH.'data/') !== 0) {
       FileManager::$sitepath = realpath(SITE_PATH);
-      if(strpos($src, 'src/') === 0  || strpos($src, 'themes/') === 0 ||
+      if (strpos($src, 'src/') === 0  || strpos($src, 'themes/') === 0 ||
         !FileManager::allowedPath($src, true)) {
         return $src;
       }

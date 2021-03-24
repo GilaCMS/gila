@@ -47,17 +47,16 @@
 global $db;
 
 if ($languages = Config::get('languages')) {
-?>
+  ?>
 <div class="gm-6">
   <label class="gm-4"><?=__('Language')?></label>
   <select  id="widget_language" name="widget_language" class="gm-6 g-input">
     <?php
     echo '<option value="">*</option>';
-    foreach ($languages as $language) {
-      $sel = ($widget->language==$language?'selected':'');
-      echo '<option value="'.$language."\" $sel>".strtoupper($language).'</option>';
-    }
-    ?>
+  foreach ($languages as $language) {
+    $sel = ($widget->language==$language?'selected':'');
+    echo '<option value="'.$language."\" $sel>".strtoupper($language).'</option>';
+  } ?>
   </select>
 </div>
 <?php

@@ -44,7 +44,7 @@ View::alerts();
       <?=__($index, $permission)?>
     <?php foreach ($roles as $role) {
   echo '<td style="text-align:center">';
-  if($index==='admin' && $role[0]==='member') {
+  if ($index==='admin' && $role[0]==='member') {
     echo '';
   } else {
     echo '<input type="checkbox" name="role['.$role[0].']['.$index.']"';

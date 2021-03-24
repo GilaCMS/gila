@@ -81,7 +81,7 @@ class Session
       $session_log = new Logger(LOG_PATH.'/sessions.log');
       $session_log->info($msg, ['user_id'=>$id, 'email'=>$email]);
     }
-  } 
+  }
 
   public static function find($gsessionId)
   {
@@ -253,10 +253,10 @@ class Session
 
   public static function permissions()
   {
-    if(self::userId()===0) {
+    if (self::userId()===0) {
       return User::permissions(0);
     }
-    if(!self::key('permissions')) {
+    if (!self::key('permissions')) {
       self::key('permissions', User::permissions(self::userId()));
     }
     return self::key('permissions');

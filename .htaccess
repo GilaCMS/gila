@@ -6,10 +6,10 @@
   </FilesMatch>
 </IfModule>
 
-<IfModule mod_gzip.c>
-  mod_gzip_on       Yes
-  mod_gzip_dechunk  Yes
-  mod_gzip_item_include file  \.(html?|txt|css|js|php|pl|jpg|png|gif)$
+<IfModule mod_deflate.c>
+  <FilesMatch "\.(js|css|json|xml|txt)$">
+  SetOutputFilter DEFLATE
+  </FilesMatch>
 </IfModule>
 
 RewriteEngine On

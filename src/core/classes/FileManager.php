@@ -66,7 +66,7 @@ class FileManager
     if (!is_dir($path)) {
       $path = pathinfo($path)['dirname'];
     }
-    if($read && (strpos($path, 'src/')===0 || strpos($path, 'themes/')===0
+    if ($read && (strpos($path, 'src/')===0 || strpos($path, 'themes/')===0
       || strpos($path, 'assets/')===0)) {
       $path = substr(realpath($path), strlen(realpath('.'))+1);
       $allowedPaths = ['src', 'themes', 'assets'];

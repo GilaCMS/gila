@@ -42,8 +42,10 @@ class Menu
   {
     global $db;
     $menuLN = $menu.'.'.Config::lang();
-    $data = $db->read()->value("SELECT `data` FROM menu WHERE `menu`=? OR `menu`=? LIMIT 1;",
-    [$menuLN, $menu]);
+    $data = $db->read()->value(
+      "SELECT `data` FROM menu WHERE `menu`=? OR `menu`=? LIMIT 1;",
+      [$menuLN, $menu]
+    );
     if ($data) {
       return json_decode($data, true);
     }

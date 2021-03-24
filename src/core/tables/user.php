@@ -60,12 +60,6 @@ return [
       'title'=>'Active',
       'qtype'=>'INT(1) DEFAULT 1'
     ],
-    'reset_code'=> [ // DEPRECATED
-      'list'=>false,
-      'edit'=>false,
-      'create'=>false,
-      'qtype'=>'varchar(60)'
-    ],
     'created'=> [
       'title'=>'Created',
       'type'=>'date',
@@ -92,13 +86,13 @@ return [
     ]
   ],
   'events'=>[
-    ['create', function(&$row) {
-      if(User::getByEmail($row['email'])) {
+    ['create', function (&$row) {
+      if (User::getByEmail($row['email'])) {
         Table::$error = __('Email already in use');
         $row = false;
       }
     }],
-    ['change',function (&$row) {
+    ['change', function (&$row) {
       if (isset($row['userrole'])) {
         $roles = is_array($row['userrole'])? $row['userrole']: explode(',', $row['userrole']);
         $level = Gila\User::level(Gila\Session::userId());
@@ -109,7 +103,7 @@ return [
           }
         }
       }
-      if (isset($row['pass'])) {
+      if (isset($row['pass']) && !empty($row['pass'])) {
         if (substr($row['pass'], 0, 7) != "$2y$10$") {
           $row['pass'] = Config::hash($row['pass']);
         }

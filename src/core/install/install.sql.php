@@ -36,8 +36,8 @@ $_email = $_POST['adm_email'];
 $_pass = password_hash($_POST['adm_pass'], PASSWORD_BCRYPT);
 
 $db->query("REPLACE INTO userrole(id,userrole,`level`) VALUES(1,'Admin',10);");
-$db->query("INSERT INTO user(id,username,email,pass,active,reset_code)
-  VALUES(1,?,?,?,1,'');", [$_user,$_email,$_pass]);
+$db->query("INSERT INTO user(id,username,email,pass,active)
+  VALUES(1,?,?,?,1);", [$_user,$_email,$_pass]);
 $db->query("INSERT INTO usermeta VALUES(1,1,'role',1);");
 $db->query("INSERT INTO post(id,user_id,title,slug,description,post,publish,updated)
   VALUES(1,1,'Hello World 👋','hello_world','This is the first post. You can edit it from administration.','This is the first post',1,CURRENT_TIMESTAMP);");

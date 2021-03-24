@@ -17,7 +17,7 @@ class InstallSqlTest extends TestCase
       'post'=>['id','title','slug','description','user_id','language','publish','post','updated','created'],
       'postmeta'=>['id','post_id','vartype','value'],
       'page'=>['id','title','slug','description','template','language','publish','updated','blocks'],
-      'user'=>['id','username','email','pass','active','reset_code','created','updated'],
+      'user'=>['id','username','email','pass','active','created','updated'],
       'usermeta'=>['id','user_id','vartype','value'],
       'userrole'=>['id','userrole','level','description'],
       'widget'=>['id','widget','title','area','pos','active','data','language'],

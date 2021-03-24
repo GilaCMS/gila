@@ -76,6 +76,8 @@
   .side-image{margin:auto}
   .side-image>.col1{grid-row:1;grid-column:1;}
   .side-image>.col2{grid-row:1;grid-column:2;}
+  .side-image>img.col1{margin-left:0;}
+  .side-image>img.col2{margin-left:auto;}
 }
 @media (max-width:400px){
   .side-image{grid-template-columns: 1fr}
@@ -232,8 +234,8 @@
 
 
 section>.container{
-  padding-top: 3em;
-  padding-bottom: 3em;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
 .widget section>.container{

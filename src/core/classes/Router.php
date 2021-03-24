@@ -202,7 +202,9 @@ class Router
   public static function setPath($_p)
   {
     if ($_p!==false) {
-      if (substr($_p,-1)=='/') $_p = substr($_p,0,-1);
+      if (substr($_p, -1)=='/') {
+        $_p = substr($_p, 0, -1);
+      }
       self::$url = strip_tags($_p);
       self::$args = explode("/", self::$url);
       if (isset(self::$args[0])) {

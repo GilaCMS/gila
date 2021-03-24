@@ -62,7 +62,7 @@ foreach ($config_list as $key=>$value) {
   <?php echo Form::input('gila_user_register', ["type"=>"switch"], Config::get('user_register'), __("New users can register")) ?>
 
   <br>
-  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['auto'=>__('Automatically'),'byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Config::get('user_activation'), __("New Users activation")) ?>
+  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['byemail'=>__('Email activation link'),'byadmin'=>__('Administration'),'auto'=>__('Automatically')]], Config::get('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
     <label class="g-label gm-4"><?=__("Timezone")?></label><select name="gila_timezone" value="<?=Config::get('timezone')?>" class="gm-4">

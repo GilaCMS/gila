@@ -186,10 +186,12 @@ class Config
   public static function set($option, $value)
   {
     global $db;
-    if ($value===self::$option[$option]) return;
+    if ($value===self::$option[$option]) {
+      return;
+    }
     @$GLOBALS['config'][$option] = $value;
     @self::$option[$option] = $value;
-    if(is_array($value)) {
+    if (is_array($value)) {
       $value = json_encode($value);
     }
     $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
@@ -210,7 +212,7 @@ class Config
   public static function getArray($key)
   {
     $array = self::getOption($key, $GLOBALS['config'][$key] ?? null);
-    if(is_string($array)) {
+    if (is_string($array)) {
       return json_decode($array, true);
     }
     return $array;
@@ -329,9 +331,9 @@ class Config
       self::$base_url = htmlentities(self::$base_url);
     }
     if ($str===null) {
-      if(self::lang()!==self::get('language')) {
+      if (self::lang()!==self::get('language')) {
         return self::$base_url.self::lang();
-      }  
+      }
       return self::$base_url;
     }
     return self::$base_url.self::url($str);
@@ -347,7 +349,7 @@ class Config
         $url = substr($url, strlen($var[0])+1);
       }
     }
-    if(self::lang()!==self::get('language')) {
+    if (self::lang()!==self::get('language')) {
       $url = self::lang().'/'.$url;
     }
 
@@ -426,7 +428,7 @@ class Config
       }
     }
     if ($alt!==null) {
-      if(is_array($alt)) {
+      if (is_array($alt)) {
         return $alt[self::lang()] ?? $key;
       }
       return $alt;

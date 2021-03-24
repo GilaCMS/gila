@@ -102,18 +102,18 @@ class User
   public static function getByResetCode($rp)
   {
     global $db;
-    $user_id = $db->read()->value("SELECT user_id FROM usermeta where vartype='reset_code' and value=?;", $rp);
+    $user_id = $db->read()->value("SELECT user_id FROM usermeta WHERE vartype='reset_code' AND value=?;", $rp);
     if (!$user_id) {
       return false;
     }
-    return $db->read()->get("SELECT * FROM user where id='$user_id';")[0];
+    return $db->read()->get("SELECT * FROM user WHERE id='$user_id';")[0];
   }
 
   public static function updatePassword($id, $pass)
   {
     global $db;
     if (Event::get('validateUserPassword', true, $pass)===true) {
-      $db->query("UPDATE user SET pass=? where id=?;", [Config::hash($pass),$id]);
+      $db->query("UPDATE user SET pass=? WHERE id=?;", [Config::hash($pass),$id]);
       return true;
     } else {
       return false;
@@ -126,13 +126,13 @@ class User
     if (Session::key('user_id')==$id) {
       Session::key('user_name', $name);
     }
-    return $db->query("UPDATE user SET username=? where id=?;", [$name,$id]);
+    return $db->query("UPDATE user SET username=? WHERE id=?;", [$name,$id]);
   }
 
   public static function updateActive($id, $value)
   {
     global $db;
-    return $db->query("UPDATE user SET active=? where id=?;", [$value, $id]);
+    return $db->query("UPDATE user SET active=? WHERE id=?;", [$value, $id]);
   }
 
   public static function permissions($id)
@@ -179,5 +179,21 @@ class User
   {
     global $db;
     return $db->value("SELECT userrole.level FROM userrole WHERE id=?", $id) ?? 0;
+  }
+
+  public static function sendInvitation($data)
+  {
+    Config::addLang('core/lang/login/');
+    $baseurl = Config::base();
+    $subject = __('invite_msg_ln1').' '.$data['username'];
+    $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+    $msg = __('invite_msg_ln2')." {$data['username']}\n\n";
+    $msg .= __('invite_msg_ln3')." $baseurl\n\n";
+    $msg .= __('invite_msg_ln4')."\n";
+    $msg .= $baseurl."user/password_reset?rp=$reset_code\n\n";
+    $msg .= __('activate_msg_ln4');
+    $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+    self::meta($data['id'], 'reset_code', $reset_code);
+    new Sendmail(['email'=>$data['email'], 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
   }
 }
