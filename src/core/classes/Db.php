@@ -226,7 +226,7 @@ class Db
 
   public function value($q, $p = null)
   {
-    if ($res = $this->get($q, $p)) {
+    if ($res = $this->getOne($q, $p)) {
       return $res[0];
     }
     return null;
