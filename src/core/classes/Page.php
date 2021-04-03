@@ -21,12 +21,11 @@ class Page
     $query = 'SELECT id,title,description,updated,`language`,publish,slug,template FROM `page`';
 
     $res = $db->query(
-      "$query WHERE $publish (id=? OR (slug=? AND `language`=?));",
-      [$id, $id, Config::lang()]
+      "$query WHERE $publish (id=? OR (slug=? AND `language`=?))
+      UNION $query WHERE $publish (id=? OR slug=?);",
+      [$id, $id, Config::lang(), $id, $id]
     );
-    if ($res===false) {
-      $res = $db->query("$query WHERE $publish (id=? OR slug=?);", [$id, $id]);
-    }
+
     if ($row = mysqli_fetch_array($res)) {
       if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
         $blocks = json_decode($blocks);
@@ -40,7 +39,8 @@ class Page
   public static function getBySlug($id)
   {
     global $db;
-    $res = $db->query("SELECT id,title,updated,publish,slug FROM `page` WHERE publish=1 AND slug=?;", [$id]);
+    $res = $db->query("SELECT id,title,updated,publish,slug,`language`
+    FROM `page` WHERE publish=1 AND slug=?;", [$id]);
     if ($res) {
       return mysqli_fetch_array($res);
     }
@@ -50,7 +50,7 @@ class Page
   public static function genPublished()
   {
     global $db;
-    $ql = "SELECT id,title,slug FROM `page` WHERE publish=1;";
+    $ql = "SELECT id,title,slug,`language` FROM `page` WHERE publish=1;";
     $res = $db->query($ql);
     while ($r = mysqli_fetch_array($res)) {
       yield $r;

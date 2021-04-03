@@ -43,7 +43,8 @@ class Menu
     global $db;
     $menuLN = $menu.'.'.Config::lang();
     $data = $db->read()->value(
-      "SELECT `data` FROM menu WHERE `menu`=? OR `menu`=? LIMIT 1;",
+      "SELECT `data` FROM menu WHERE `menu`=?
+      UNION SELECT `data` FROM menu WHERE `menu`=?;",
       [$menuLN, $menu]
     );
     if ($data) {

@@ -226,8 +226,8 @@ class Db
 
   public function value($q, $p = null)
   {
-    if ($res = $this->query($q, $p)) {
-      return mysqli_fetch_row($res)[0];
+    if ($res = $this->get($q, $p)) {
+      return $res[0];
     }
     return null;
   }

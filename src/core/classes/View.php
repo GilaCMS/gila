@@ -91,7 +91,7 @@ class View
 
   public static function cssAsync($css, $uri=false)
   {
-    self::css($css, 'media="print" onload="this.media=\'all\'"');
+    self::css($css, 'rel=preload media="print" onload="this.media=\'all\'"');
   }
 
   /**
@@ -461,6 +461,9 @@ class View
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;
+      } else {
+        $pathinfo = pathinfo($src);
+        $ext = $pathinfo['extension'] ?? null;
       }
     }
 
@@ -469,7 +472,7 @@ class View
       $max = (int)$prefix;
     }
 
-    $file = self::getThumbName($src, $max, $prefix);
+    $file = self::getThumbName($src, $max, $ext, $prefix);
     if ($file===false) {
       return false;
     }
@@ -486,10 +489,12 @@ class View
     return self::$cdn_host.$file;
   }
 
-  public static function getThumbName($src, $max, $prefix = '')
+  public static function getThumbName($src, $max, $ext = null, $prefix = '')
   {
     $pathinfo = pathinfo($src);
-    $ext = $pathinfo['extension'] ?? null;
+    if ($ext===null) {
+      $ext = $pathinfo['extension'] ?? null;
+    }
     if ($ext===null || strpos($src, '?')!==false || in_array($ext, ['webm'])) {
       return $src;
     }

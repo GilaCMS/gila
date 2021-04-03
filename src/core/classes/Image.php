@@ -35,7 +35,9 @@ class Image
 
     if ($image = getimagesize($src)) {
       list($src_width, $src_height)=$image;
-      $img_type = $image[2];
+      if ($img_type!==32) {
+        $img_type = $image[2];
+      }
     }
 
     $newwidth=$max_width;
@@ -111,7 +113,7 @@ class Image
       break;
     case 2:
       imageinterlace($tmp, 1);
-      imagejpeg($tmp, $file);
+      imagejpeg($tmp, $file, 90);
       break;
     case 3:
       imagesavealpha($tmp, true);

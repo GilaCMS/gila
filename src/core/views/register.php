@@ -4,7 +4,7 @@
   <div class="gl-4 centered wrapper g-card bg-white">
     <div class="border-buttom-main_ text-align-center">
       <div>
-        <img src="<?=View::thumb(Config::get('admin_logo'))??'assets/gila-logo.png'?>" style="max-height:4em">
+        <img src="<?=View::thumb(Config::get('login_logo')??'assets/gila-logo.png')?>" style="max-height:4em">
       </div>
       <h3><?=__('Register')?></h3>
     </div>
@@ -26,8 +26,11 @@
       <?php Gila\Event::fire('recaptcha.form')?>
       <button type="submit" class="btn btn-primary btn-block"><?=__('Register')?></button>
     </form>
-    <p>
-      <a href="login"><?=__('Log In')?></a>
+    <p style="text-align:center">
+      <a href="user"><?=__('Log In')?></a>
+    </p>
+    <p style="text-align:center">
+      <?=__('_register_agree_text')?>
     </p>
   </div>
 

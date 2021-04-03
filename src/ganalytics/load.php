@@ -1,7 +1,8 @@
 <?php
 
 Event::listen('head', function () {
-  $trackingID = Config::option('ganalytics.trackingID');
+  if (Router::getController()=='blocks') return;
+  $trackingID = Config::get('ganalytics.trackingID');
   if ($trackingID=='') {
     return;
   } ?>

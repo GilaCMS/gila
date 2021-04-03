@@ -17,8 +17,11 @@ class UserController extends Gila\Controller
 
   public function indexAction()
   {
+    Config::addLang('core/lang/login/');
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
+      $url = Config::get('user_redirect');
+      $base = Config::base();
+      echo "<meta http-equiv='refresh' content='0;url=".(!empty($url)?$url:$base)."' />";
       exit;
     }
     if (Session::waitForLogin()>0) {
@@ -37,6 +40,7 @@ class UserController extends Gila\Controller
 
   public function registerAction()
   {
+    Config::addLang('core/lang/login/');
     if (Session::key('user_id')>0 || Config::get('user_register')!=1) {
       echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
       return;

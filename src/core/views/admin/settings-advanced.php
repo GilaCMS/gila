@@ -40,8 +40,8 @@
   <?php echo Form::input('gila_utk_level', ["type"=>"select","options"=>[0=>'0',1=>'1',2=>'2',3=>'3',4=>'4',5=>'5',6=>'6',7=>'7',8=>'8',9=>'9',10=>'10']], 10, __("Unique Token Key")) ?>
 
   <br>
-  <?php echo Form::input('gila_locale', ["type"=>"text","placeholder"=>"en_US.UTF-8"], null, __("Locale")) ?>
-  
+  <?php echo Form::input('gila_locale', ["type"=>"text","placeholder"=>"en_US.UTF-8"], Config::get('locale'), __("Locale")) ?>
+
   <br>
   <div>
     <a class="g-btn" style="min-width:unset" onclick="save_settings()"><?=__("Submit")?></a>

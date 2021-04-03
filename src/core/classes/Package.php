@@ -277,6 +277,8 @@ class Package
         }
       }
     }
+    include 'config.php';
+    $db = new Db($GLOBALS['config']['db']);
   }
 
   public static function copyAssets($package)

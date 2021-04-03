@@ -1,7 +1,7 @@
 
 # 3 MONTHS - unlikely to be changed
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|woff2|jpg|jpeg|png|gif|webp)$">
+  <FilesMatch "\.(css|js|woff2|jpg|jpeg|png|gif|webp|webm)$">
   Header set Cache-Control "max-age=31536000, public"
   </FilesMatch>
 </IfModule>
@@ -14,6 +14,10 @@
 
 RewriteEngine On
 
+# enforce https redirection
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
 # exclude these folders
 RewriteCond %{REQUEST_URI} !/assets/
 RewriteCond %{REQUEST_URI} !/tmp/
@@ -24,11 +28,7 @@ IndexIgnore *
 
 RewriteRule (.*)$ index.php?p=$1 [QSA,L]
 
-# enforce https redirection
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
-
-# redirect all sites
+# redirect subdomains
 # RewriteEngine On
 # RewriteCond %{REQUEST_URI} !/sites/
 # RewriteCond %{HTTP_HOST} !^example\.com
