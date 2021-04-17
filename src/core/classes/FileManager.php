@@ -58,7 +58,7 @@ class FileManager
 
   public static function allowedPath($path, $read=false)
   {
-    $allowedPaths = ['data/public','tmp','assets/uploads'];
+    $allowedPaths = ['data/public','tmp','assets'];
     if (Session::hasPrivilege('admin')) {
       $allowedPaths[] = 'log';
     }
