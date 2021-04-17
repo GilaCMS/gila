@@ -58,11 +58,14 @@ class FileManager
 
   public static function allowedPath($path, $read=false)
   {
-    $allowedPaths = ['data/public','tmp','assets'];
+    $allowedPaths = ['data/public','tmp','assets/uploads'];
     if (Session::hasPrivilege('admin')) {
       $allowedPaths[] = 'log';
     }
-    $allowedPaths[] = Config::get('media_uploads') ?? 'assets';
+    if (Config::get('media_uploads')) {
+      $allowedPaths[] = Config::get('media_uploads');
+    }
+
     if (!is_dir($path)) {
       $path = pathinfo($path)['dirname'];
     }
@@ -71,7 +74,7 @@ class FileManager
       $path = substr(realpath($path), strlen(realpath('.'))+1);
       $allowedPaths = ['src', 'themes', 'assets'];
     } else {
-      $path = substr(realpath($path), strlen(self::$sitepath)+1);
+      $path = substr(realpath(self::$sitepath.'/'.$path), strlen(realpath(self::$sitepath))+1);
     }
 
     foreach ($allowedPaths as $allowed) {
@@ -80,6 +83,8 @@ class FileManager
         return true;
       }
     }
+    
     return false;
   }
+
 }

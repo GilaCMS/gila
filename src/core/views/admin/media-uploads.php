@@ -31,7 +31,7 @@ View::script('core/lang/content/'.Config::get('language').'.js');
 
 <div id='admin-media-div'><div class='fullwidth inline-flex' style="gap:0.2em">
   <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
-  <i class='fa fa-arrow-left'></i></a>
+  &larr;</a>
   <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
 <?php if (Session::hasPrivilege('admin upload_assets')) { ?>
   <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
@@ -40,13 +40,13 @@ View::script('core/lang/content/'.Config::get('language').'.js');
 <?php } ?>
   <span class="g-group-item fullwidth" style="position:relative;padding:0">
     <input class='g-input input-filter fullwidth' style="margin:0" oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
-    <i class="fa fa-filter" style="position:absolute;margin:0.3em;right:0.3em;top:0.3em"></i>
+    <img src="assets/core/admin/filter.svg" class="img-btn" style="max-height:18px;position:absolute;margin:0.3em;right:0.3em;top:0.3em"></i>
   </span>
   <?php if (Session::hasPrivilege('admin edit_assets')) { ?>
-  <button class="btn btn-white" onclick="gallery_create('<?=$path?>')"><i class="fa fa-folder-o"></i></button>
-  <button class="btn btn-white" onclick="gallery_move_selected('<?=$path?>')"><strong>N</strong></button>
-  <button class="btn btn-white" onclick="gallery_refresh_thumb('<?=$path?>')"><i class="fa fa-refresh"></i></button>
-  <button class="btn btn-white" onclick="gallery_delete_selected('<?=$path?>')"><i class="fa fa-trash"></i></button>
+  <button class="btn btn-white" title="<?=__('Add Folder')?>" onclick="gallery_create('<?=$path?>')"><img style="min-height:16px;" src="assets/core/admin/folder-plus.svg"></button>
+  <button class="btn btn-white" title="<?=__('Rename')?>" onclick="gallery_move_selected('<?=$path?>')"><img style="min-height:16px;" src="assets/core/admin/pencil.svg"></button>
+  <button class="btn btn-white" title="<?=__('Refresh Thumbnail')?>" onclick="gallery_refresh_thumb('<?=$path?>')"><img style="min-height:16px;" src="assets/core/admin/refresh.svg"></button>
+  <button class="btn btn-white" title="<?=__('Delete')?>" onclick="gallery_delete_selected('<?=$path?>')"><img style="mi-height:16px;" src="assets/core/admin/trash.svg"></button>
   <?php } ?>
 </div>
 
@@ -77,21 +77,21 @@ foreach ($files as $file) {
       }
     }
     $filepath=$path.'/'.$file;
-    $filename=htmlentities($file);
+    $filename=htmlspecialchars($file);
     if ($type=='image') {
       $img='<img src="'.View::thumb(SITE_PATH.$filepath, 100).'">';
       echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
     }
     if ($type=='video') {
-      $img='<i class="fa fa-5x fa-film"></i>';
+      $img = '<img src="assets/core/admin/movie.svg">';
       echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-image">'.$img.'<br>'.$filename.'</div>';
     }
     if ($type=='folder') {
-      $img='<i class="fa fa-5x fa-folder-o"></i>';
+      $img = '<img src="assets/core/admin/folder.svg">';
       echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" >'.$img.'<br>'.$filename.'</div>';
     }
     if ($type=='file') {
-      $img='<i class="fa fa-4x fa-file-text-o" ></i>';
+      $img = '<img src="assets/core/admin/file.svg">';
       echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$filename.'</div>';
     }
   }

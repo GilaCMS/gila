@@ -51,5 +51,7 @@
     "_not_found": "not found",
     "_changes_updated": "Changes have been saved successfully!",
     "Use WEBP":"Use WEBP",
+    "Groups":"Groups",
+    "Roles":"Roles",
     "Permissions":"Permissions"
 }

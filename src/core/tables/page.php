@@ -43,6 +43,7 @@ return [
       'input_type'=>'textarea',
       'qtype'=>'varchar(200) DEFAULT NULL',
       'list'=>false,
+      'create'=>false,
       'group'=>'title',
       'helptext'=>'This is the text that will be displayed in the listing of the page. For better SEO, use 120-160 letters.'
     ],
@@ -64,7 +65,6 @@ return [
       'style'=>'width:8%',
       'type'=>'checkbox',
       'edit'=>true,
-      'create'=>false,
       'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'updated'=> [

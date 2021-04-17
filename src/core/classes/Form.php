@@ -108,7 +108,7 @@ class Form
         if ($type==='range') {
           $req = ' min='.($op['min']??0).' max='.($op['max']??10).' step='.($op['step']??1);
         }
-        $html .= '<input class="g-input" name="'.$name.'" type="'.$type.'"'.$req.' value="'.htmlentities($ov).'">';
+        $html .= '<input class="g-input" name="'.$name.'" type="'.$type.'"'.$req.' value="'.htmlspecialchars($ov).'">';
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
@@ -260,7 +260,8 @@ class Form
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
-          <span class="g-btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"><i class="fa fa-camera"></i></span>
+          <span class="g-btn g-group-item" onclick="open_media_gallery(\'#'.$id.'\')"> &nbsp;&#9654; </svg>
+          </span>
           <span class="g-group-item"><input class="g-input fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },

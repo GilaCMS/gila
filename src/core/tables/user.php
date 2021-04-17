@@ -17,6 +17,7 @@ return [
     'delete'=>['admin']
   ],
   'csv'=> ['id','username','email'],
+  'search_box'=>true,
   'fields'=> [
     'id'=> [
       'title'=>'ID',
@@ -27,7 +28,8 @@ return [
       'type'=>'meta',
       'input_type'=>'media2',
       'title'=>'Photo',
-      'meta_key'=>'photo'
+      'meta_key'=>'photo',
+      'create'=>false
     ],
     'username'=> [
       'title'=>'Name',
@@ -54,6 +56,14 @@ return [
       'meta_key'=>'role',
       'options'=>[],
       'qoptions'=>"SELECT `id`,`userrole` FROM userrole"
+    ],
+    'usergroup'=> [
+      'title'=>'Groups',
+      'type'=>'meta',
+      'edit'=>true,
+      'meta_key'=>'group',
+      'options'=>[],
+      'qoptions'=>["id","usergroup","usergroup"]
     ],
     'active'=> [
       'type'=>'checkbox',
@@ -83,7 +93,13 @@ return [
       'meta_key'=>'manager_id',
       'options'=>[''=>'-'],
       'qoptions'=>'SELECT `id`,`username` FROM user;'
-    ]
+    ],
+    'language'=> [
+      'list'=>false,
+      'edit'=>false,
+      'create'=>false,
+      'qtype'=>'VARCHAR(2)'
+    ],
   ],
   'events'=>[
     ['create', function (&$row) {

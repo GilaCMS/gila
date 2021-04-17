@@ -30,3 +30,9 @@ Although only from the main site he administrators can access and edit the files
 ```
 ln -s sites/sub.domain.com sites/newdomain.com
 ```
+
+**Install SSL for the new domain**
+```
+certbot --apache --redirect -d example.com -d www.example.com -m admin@example.com --agree-tos
+```
+https://www.vultr.com/docs/setup-letsencrypt-on-linux

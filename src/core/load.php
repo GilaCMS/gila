@@ -62,6 +62,7 @@ Config::content('post', 'core/tables/post.php');
 Config::content('user-post', 'core/tables/user-post.php');
 Config::content('postcategory', 'core/tables/postcategory.php');
 Config::content('user', 'core/tables/user.php');
+Config::content('usergroup', 'core/tables/usergroup.php');
 Config::content('userrole', 'core/tables/userrole.php');
 Config::content('page', 'core/tables/page.php');
 Config::content('widget', 'core/tables/widget.php');

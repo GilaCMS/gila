@@ -37,7 +37,7 @@ class Config
 
   public static function loadLang($path)
   {
-    $filepath = 'src/'.$path.self::get('language').'.json';
+    $filepath = 'src/'.$path.self::lang().'.json';
     if (file_exists($filepath)) {
       self::$langWords = @array_merge(
         self::$langWords,

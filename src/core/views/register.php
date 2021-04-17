@@ -9,7 +9,7 @@
       <h3><?=__('Register')?></h3>
     </div>
 
-    <form role="form" method="post" action="" class="g-form">
+    <form role="form" method="post" action="user/register?submited" class="g-form">
       <?=Form::hiddenInput('register')?>
       <label><?=__('Name')?></label>
       <div class="form-group">

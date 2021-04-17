@@ -52,6 +52,8 @@
     "_not_found": "no encontrado",
     "_changes_updated": "¡Los cambios se han guardado con éxito!",
     "Use WEBP":"Usar WEBP",
+    "Groups":"Grupos",
+    "Roles":"Roles",
     "Permissions":"Permisos",
     "Publish":"Publicar",
     "Delete Draft":"Rechazar cambios",

@@ -5,7 +5,7 @@ return [
   "title"=>"User Roles",
   "id"=>"id",
   'order-by'=>"updated DESC",
-  'tools'=>["add","csv"],
+  'tools'=>["add_popup","csv"],
   'csv'=>["id","userrole"],
   'lang'=>'core/lang/admin/',
   "commands"=> ["edit_popup","delete"],

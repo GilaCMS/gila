@@ -20,7 +20,7 @@ class User
   {
     global $db;
     if ($value===null) {
-      $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=? LIMIT 1;";
+      $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=? ORDER BY id DESC LIMIT 1;";
       return $db->value($ql, [$id, $meta]);
     }
     if ($multi==false) {

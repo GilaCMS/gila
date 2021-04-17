@@ -8,6 +8,10 @@ TableSchema::update(include 'src/core/tables/page.php');
 
 TableSchema::update(include 'src/core/tables/user.php');
 
+TableSchema::update(include 'src/core/tables/usergroup.php');
+
+TableSchema::update(include 'src/core/tables/userrole.php');
+
 TableSchema::update(include 'src/core/tables/user_notification.php');
 
 TableSchema::update(include 'src/core/tables/sessions.php');

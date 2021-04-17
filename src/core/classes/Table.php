@@ -346,7 +346,7 @@ class Table
           continue;
         }
         if ($this->fieldAttr($key, 'type')=='json') {
-          $value = json_encode($value);
+          $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
           $value = HtmlInput::purify($value, $allowed);
@@ -414,7 +414,11 @@ class Table
         if ($arrv) {
           foreach ($arrv as $arrv_k=>$arrv_v) {
             if ($arrv_v!='' && $arrv_v!=null) {
-              $arrv_v = strip_tags($arrv_v);
+              if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
+                $arrv_v = HtmlInput::purify($arrv_v, $allowed);
+              } else {
+                $arrv_v = strip_tags($arrv_v);
+              }
               $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`)
               VALUES(?,?,?);", [$id,$arrv_v,$vt]);
             }
@@ -633,6 +637,7 @@ class Table
 
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
+    // TODO selected meta should translate in subqueries
     $groupby = $this->groupby($args['groupby']??null);
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);

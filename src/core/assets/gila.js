@@ -67,7 +67,7 @@ gItem.prototype.last = function() {
   return this.all[this.all.length-1];
 }
 gItem.prototype.first = function() {
-  if(typeof this.all[0]!=='undefined') return null;
+  if(this.all.length===0) return null;
   return this.all[0];
 }
 

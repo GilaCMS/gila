@@ -12,7 +12,9 @@ class Sendmail
     $args['message'] = $args['message']?? "";
     if ($args['message']==="") {
       foreach (@$args['post'] as $key) {
-        $args['message'] .= "$key:\n".htmlentities($_POST[$key])."\n\n";
+        $label = is_array($key)? $key[1]: $key;
+        $value = is_array($key)? $_POST[$key[0]]: $_POST[$key];
+        $args['message'] .= "$label:\n".htmlentities($value)."\n\n";
       }
     }
     if (Event::get('sendmail', false, $args)===false) {

@@ -29,6 +29,8 @@ $db->query('CREATE TABLE IF NOT EXISTS `option` (
   PRIMARY KEY (`option`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;');
 
+TableSchema::update(include 'src/core/tables/usergroup.php');
+
 TableSchema::update(include 'src/core/tables/userrole.php');
 
 $_user = $_POST['adm_user'];

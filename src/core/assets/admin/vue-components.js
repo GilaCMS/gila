@@ -15,8 +15,8 @@ Vue.component('input-list', {
 		<img :src="imgSrc(pos[key][i])"  :onclick="\'open_media_gallery(\\\'#il\'+fkey+key+\'\\\')\'" style="width:50px;height:50px;vertical-align:middle" />\
 		<input v-model="pos[key][i]" type="hidden" :id="\'il\'+fkey+key" @input="update">\
   </span>\
-  <select v-if="isSelect(field)">\
-    <option v-for="(op,i) in field.options" :value="i">{{op}}</option>\
+  <select v-if="isSelect(field)" v-model="pos[key][i]" @change="update">\
+    <option v-for="(op,iv) in field.options" :value="iv">{{op}}</option>\
   </select>\
   <input v-if="isText(field)" v-model="pos[key][i]" @input="update"\
   :placeholder="fkey.toUpperCase()" class="g-input">\

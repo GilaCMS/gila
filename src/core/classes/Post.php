@@ -94,7 +94,8 @@ class Post
     $category = !empty($args['category'])?"AND id IN(SELECT post_id from postmeta where vartype='category' and value='{$args['category']}')":"";
     $tag = isset($args['tag'])?"AND id IN(SELECT post_id from postmeta where vartype='tag' and value='{$args['tag']}')":"";
     $user_id = isset($args['user_id'])?"AND user_id='{$args['user_id']}'":"";
-    return "publish=1 $category $tag $user_id";
+    $language = isset($args['language'])?"AND (language='{$args['language']}' OR language IS NULL)":"";
+    return "publish=1 $category $tag $user_id $language";
   }
 
   public static function search($s)

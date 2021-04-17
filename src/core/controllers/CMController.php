@@ -283,12 +283,11 @@ class CMController extends Gila\Controller
       $data = $_POST;
       if (isset($_GET['id']) && $_GET['id']>0) {
         $gtable->event('update', $data);
-      } else {
-        $gtable->event('create', $data);
       }
       $gtable->updateMeta($id);
       $gtable->updateJoins($id);
-      $res = $db->query("UPDATE {$gtable->name()}{$gtable->set($data)} WHERE {$gtable->id()}=?;", $id);
+      $set = $gtable->set($data);
+      $res = $db->query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
       if ($db->error()) {
         @$result['error'][] = $db->error();
       }

@@ -18,7 +18,7 @@
       <button type="submit" class="btn btn-primary btn-block"><?=__('Send Email')?></button>
     </form>
     <p>
-      <a href="login"><?=__('Log In')?></a>
+      <a href="user"><?=__('Log In')?></a>
     </p>
   </div>
 

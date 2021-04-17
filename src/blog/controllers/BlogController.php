@@ -63,7 +63,9 @@ class BlogController extends Gila\Controller
     }
     if ($path!='' || View::getViewFile('homepage.php')==false) {
       View::set('page', self::$page);
-      View::set('posts', Post::getPosts(['posts'=>self::$ppp,'page'=>self::$page]));
+      View::set('posts', Post::getPosts([
+        'posts'=>self::$ppp, 'page'=>self::$page, 'language'=>Config::lang()
+      ]));
       View::render('frontpage.php');
     } else {
       View::render('homepage.php');
@@ -128,7 +130,9 @@ class BlogController extends Gila\Controller
     $name = $db->value("SELECT title from postcategory WHERE id=?", $category);
     Config::canonical('blog/category/'.$category.'/'.$name.'/');
     self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
-    $posts = Post::getPosts(['posts'=>self::$ppp,'category'=>$category,'publish'=>1,'page'=>self::$page]);
+    $posts = Post::getPosts([
+      'posts'=>self::$ppp, 'category'=>$category, 'publish'=>1,
+      'language'=>Config::lang(), 'page'=>self::$page]);
     if (self::$page<1 || self::$page>self::totalPages()) {
       View::render('404.php');
       return;

@@ -35,5 +35,6 @@
     "login_error_msg": "Incorrecto correo o contraseña",
     "login_error_msg2": "Fueron muchos intentos de ese IP. Pore seguridad, intenta otra vez en pocos minutos.",
     "Show password": "Mostrar contraseña",
-    "_register_agree_text": "Al hacer clic en \"Registrar\" arriba, usted reconoce que ha leído y comprendido y acepta los <a href='privacy'> Términos y condiciones </a> y la <a href='privacy'> Política de privacidad </a>."
+    "_register_agree_text": "Al hacer clic en \"Registrar\" arriba, usted reconoce que ha leído y comprendido y acepta los <a href='es/terms'> Términos y condiciones </a> y la <a href='es/privacy'> Política de privacidad </a>.",
+    "_recaptcha_error": "Invalido reCAPTCHA. Intenta otra vez."
 }

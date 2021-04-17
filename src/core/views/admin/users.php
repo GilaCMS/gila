@@ -11,6 +11,16 @@ if (Session::hasPrivilege('admin admin_user')) {
   }];
 }
 
+if (Session::hasPrivilege('admin admin_user')) {
+  $links[] = ['Groups', function () {
+    $type = 'usergroup';
+    $src = explode('.', Config::$content[$type])[0];
+    View::set('table', $type);
+    View::set('tablesrc', $src);
+    View::renderFile('admin/content-vue.php');
+  }];
+}
+
 if (Session::hasPrivilege('admin admin_userrole')) {
   $links[] = ['Roles', function () {
     $type = 'userrole';

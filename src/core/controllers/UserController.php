@@ -42,12 +42,18 @@ class UserController extends Gila\Controller
   {
     Config::addLang('core/lang/login/');
     if (Session::key('user_id')>0 || Config::get('user_register')!=1) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base('user')."' />";
       return;
     }
     View::set('title', __('Register'));
 
-    if (Form::posted('register') && Event::get('recaptcha', true)) {
+    if ($_SERVER['REQUEST_METHOD']=='POST' && Event::get('recaptcha', true)===false) {
+      View::alert('error', __('_recaptcha_error'));
+      View::includeFile('register.php');
+      return;
+    }
+
+    if (Form::posted('register')) {
       $email = Router::request('email');
       $name = Router::request('name');
       $password = $_POST['password'];
@@ -86,7 +92,7 @@ class UserController extends Gila\Controller
   public function activateAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base('user')."' />";
       return;
     }
 
@@ -97,6 +103,7 @@ class UserController extends Gila\Controller
       } else {
         User::updateActive($ids[0], 1);
         User::metaDelete($ids[0], 'activate_code');
+        View::set('user', User::getById($ids[0]));
         View::includeFile('user-activate-success.php');
       }
       return;
@@ -107,7 +114,7 @@ class UserController extends Gila\Controller
   public function password_resetAction()
   {
     if (Session::key('user_id')>0) {
-      echo "<meta http-equiv='refresh' content='0;url=".Config::base()."' />";
+      echo "<meta http-equiv='refresh' content='0;url=".Config::base('user')."' />";
       return;
     }
     Config::addLang('core/lang/');

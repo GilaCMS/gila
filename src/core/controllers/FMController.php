@@ -103,8 +103,8 @@ class FMController extends Gila\Controller
 
   public function newfolderAction()
   {
-    if (!FileManager::allowedPath($_POST['path'])) {
-      die("Permission denied.");
+    if (!FileManager::allowedPath($this->path)) {
+      die("Permission denied.".$this->path);
     }
     mkdir(SITE_PATH.str_replace('..', '', $_POST['path']), 0755, true);
     die("Folder created successfully");
@@ -116,9 +116,9 @@ class FMController extends Gila\Controller
       die("File type is not permited");
     }
     if (!FileManager::allowedPath($this->path)) {
-      die("Permission denied.".$this->path);
+      die("Permission denied.");
     }
-    $path = htmlentities(SITE_PATH.str_replace('..', '', $_POST['path']));
+    $path = htmlspecialchars(SITE_PATH.str_replace('..', '', $_POST['path']));
     file_put_contents($path, ' ');
     die("File created successfully");
   }
@@ -182,7 +182,7 @@ class FMController extends Gila\Controller
   public function deleteAction()
   {
     if (!FileManager::allowedPath($this->relativePath)) {
-      die("Permission denied.");
+      die("Permission denied.".$this->relativePath);
     }
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("Permission denied.");
