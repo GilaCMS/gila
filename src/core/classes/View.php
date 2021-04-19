@@ -457,13 +457,12 @@ class View
       return false;
     }
 
-    if (Config::get('use_webp')) {
+    $pathinfo = pathinfo($src);
+    $ext = $pathinfo['extension'] ?? null;
+    if (Config::get('use_webp') && $ext!=='svg') {
       if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;
-      } else {
-        $pathinfo = pathinfo($src);
-        $ext = $pathinfo['extension'] ?? null;
       }
     }
 

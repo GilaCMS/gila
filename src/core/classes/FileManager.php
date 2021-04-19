@@ -69,12 +69,13 @@ class FileManager
     if (!is_dir($path)) {
       $path = pathinfo($path)['dirname'];
     }
+    if (!empty(self::$sitepath) && strpos($path, SITE_PATH)!==0) {
+      $path = self::$sitepath.'/'.$path;
+    }
+    $path = substr(realpath($path), strlen(realpath(self::$sitepath))+1);
     if ($read && (strpos($path, 'src/')===0 || strpos($path, 'themes/')===0
       || strpos($path, 'assets/')===0)) {
-      $path = substr(realpath($path), strlen(realpath('.'))+1);
       $allowedPaths = ['src', 'themes', 'assets'];
-    } else {
-      $path = substr(realpath(self::$sitepath.'/'.$path), strlen(realpath(self::$sitepath))+1);
     }
 
     foreach ($allowedPaths as $allowed) {

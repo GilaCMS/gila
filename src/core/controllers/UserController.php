@@ -47,10 +47,17 @@ class UserController extends Gila\Controller
     }
     View::set('title', __('Register'));
 
-    if ($_SERVER['REQUEST_METHOD']=='POST' && Event::get('recaptcha', true)===false) {
-      View::alert('error', __('_recaptcha_error'));
-      View::includeFile('register.php');
-      return;
+    if ($_SERVER['REQUEST_METHOD']=='POST') { 
+      if (Event::get('recaptcha', true)===false) {
+        View::alert('error', __('_recaptcha_error'));
+        View::includeFile('register.php');
+        return;
+      }
+      if ($error = Event::get('register.error', null, $_POST)) {
+        View::alert('error', $error);
+        View::includeFile('register.php');
+        return;
+      }
     }
 
     if (Form::posted('register')) {
