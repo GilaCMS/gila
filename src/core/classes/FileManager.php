@@ -69,8 +69,8 @@ class FileManager
     if (!is_dir($path)) {
       $path = pathinfo($path)['dirname'];
     }
-    if (!empty(self::$sitepath) && strpos($path, SITE_PATH)!==0) {
-      $path = self::$sitepath.'/'.$path;
+    if (!empty(SITE_PATH) && strpos($path, SITE_PATH)!==0) {
+      $path = SITE_PATH.'/'.$path;
     }
     $path = substr(realpath($path), strlen(realpath(self::$sitepath))+1);
     if ($read && (strpos($path, 'src/')===0 || strpos($path, 'themes/')===0
