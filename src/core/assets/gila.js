@@ -455,8 +455,9 @@ g.loader = function(set=true) {
   }
 }
 
-g.tr = function(x) {
+g.tr = function(x, alt=null) {
   if(typeof lang_array!='undefined' && lang_array[x]) return lang_array[x]
+  if(alt && g.language && alt[g.language]) return alt[g.language]
   return x
 }
 

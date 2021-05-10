@@ -9,7 +9,7 @@
       <h3><?=__('Register')?></h3>
     </div>
 
-    <form role="form" method="post" action="user/register?submited" class="g-form">
+    <form role="form" method="post" action="<?=Config::url('user/register?submited')?>" class="g-form">
       <?=Form::hiddenInput('register')?>
       <label><?=__('Name')?></label>
       <div class="form-group">
@@ -27,7 +27,7 @@
       <button type="submit" class="btn btn-primary btn-block"><?=__('Register')?></button>
     </form>
     <p style="text-align:center">
-      <a href="user"><?=__('Log In')?></a>
+      <a href="<?=Config::url('user')?>"><?=__('Log In')?></a>
     </p>
     <p style="text-align:center">
       <?=__('_register_agree_text')?>

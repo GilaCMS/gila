@@ -81,6 +81,12 @@ return [
       'edit'=> false,
       'create'=> false,
       'qtype'=> 'TEXT'
+    ],
+    'image'=> [
+      'list'=> false,
+      'create'=> false,
+      'type'=>'media2',
+      'qtype'=> 'VARCHAR(120)'
     ]
   ],
   'events'=>[

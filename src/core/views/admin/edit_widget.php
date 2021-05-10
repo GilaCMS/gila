@@ -16,7 +16,7 @@
     <?php
     foreach (Config::$widget_area as $value) {
       $sel = ($widget->area==$value?'selected':'');
-      echo '<option value="'.$value."\" $sel>".ucwords($value).'</option>';
+      echo '<option value="'.$value."\" $sel>".ucfirst($value).'</option>';
     }
     ?>
   </select>

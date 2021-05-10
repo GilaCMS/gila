@@ -29,7 +29,7 @@ class UserController extends Gila\Controller
     } elseif (isset($_POST['username']) && isset($_POST['password'])) {
       View::alert('error', __('login_error_msg'));
     }
-    View::set('title', __('Log In'));
+    View::set('page_title', __('Log In'));
     View::includeFile('login.php');
   }
 
@@ -45,7 +45,7 @@ class UserController extends Gila\Controller
       echo "<meta http-equiv='refresh' content='0;url=".Config::base('user')."' />";
       return;
     }
-    View::set('title', __('Register'));
+    View::set('page_title', __('Register'));
 
     if ($_SERVER['REQUEST_METHOD']=='POST') { 
       if (Event::get('recaptcha', true)===false) {
@@ -75,12 +75,12 @@ class UserController extends Gila\Controller
         if ($user_Id = User::create($email, $password, $name, $active)) {
           // success
           if (Config::get('user_activation')=='byemail') {
-            $baseurl = Config::base();
+            $baseurl = Config::base('user/activate');
             $subject = __('activate_msg_ln1').' '.$name;
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$name}\n\n";
             $msg .= __('activate_msg_ln3')." $baseurl\n\n";
-            $msg .= $baseurl."user/activate?ap=$activate_code\n\n";
+            $msg .= $baseurl."?ap=$activate_code\n\n";
             $msg .= __('activate_msg_ln4');
             $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
             User::meta($user_Id, 'activate_code', $activate_code);
@@ -128,7 +128,7 @@ class UserController extends Gila\Controller
     Config::addLang('core/lang/login/');
     $rpa = 'reset-password-attempt';
     $rpt = 'reset-password-time';
-    View::set('title', __('reset_pass'));
+    View::set('page_title', __('reset_pass'));
 
     if (isset($_GET['rp'])) {
       $r = User::getByResetCode($_GET['rp']);

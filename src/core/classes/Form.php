@@ -76,7 +76,7 @@ class Form
     self::initInputTypes();
     $type = $op['input_type']??($op['type']??'text');
     $html = '<div class="type-'.$type.'">';
-    $label = ucwords(str_replace(['-','_'], ' ', $key));
+    $label = ucfirst(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
     $label = Config::tr($label);

@@ -83,7 +83,7 @@ class BlogController extends Gila\Controller
     $title = Config::get('title');
     $link = Config::get('base');
     $description = Config::get('slogan');
-    $items = self::latestposts(20);
+    $items = Post::getLatest(20);
     include 'src/core/views/blog-feed.php';
   }
 
@@ -238,7 +238,7 @@ class BlogController extends Gila\Controller
       }
 
       if (View::getViewFile('blog-post.php')) {
-        View::render('blog-post.php');
+        View::renderFile('blog-post.php');
       } else {
         View::render('single-post.php');
       }
@@ -255,6 +255,7 @@ class BlogController extends Gila\Controller
         if (!empty($r['language'])) {
           Config::lang($r['language']);
         }
+        View::set('page_title', $r['title'].' | '.Config::get('title'));
         Config::canonical($r['slug']);
         if ($r['template']==''||$r['template']===null) {
           View::render('page.php');
@@ -299,7 +300,7 @@ class BlogController extends Gila\Controller
     return Post::getPosts($args);
   }
 
-  public static function latestposts($n = 10)
+  public static function latestposts($n = 10) //DEPRECATED
   {
     return Post::getLatest($n);
   }

@@ -34,5 +34,18 @@
     "_options_required":"These options need to be set",
     "New Users Activation": "New Users Activation",
     "Automatically": "Automatically",
-    "Email activation link": "Send activation link"
+    "Email activation link": "Send activation link",
+    "Announcement text": "Announcement text",
+    "Announcement link": "Announcement link",
+    "Announcement color": "Announcement color",
+    "Heading font": "Heading font",
+    "Heading color": "Heading color",
+    "Text font": "Text font",
+    "Text color": "Text color",
+    "Primary color": "Primary color",
+    "Assent color": "Assent color",
+    "Page background": "Page background",
+    "Page background color": "Page background color",
+    "Custom CSS": "Custom CSS",
+    "Reset values": "Reset values"
 }

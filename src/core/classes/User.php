@@ -8,8 +8,8 @@ class User
     global $db;
     if (Event::get('validateUserPassword', true, $password)===true) {
       $pass = ($password===null)? '': Config::hash($password);
-      $db->query("INSERT INTO user(email,pass,username,active)
-        VALUES(?,?,?,?);", [$email, $pass, $name, $active]);
+      $db->query("INSERT INTO user(email,pass,username,active,`language`)
+        VALUES(?,?,?,?,?);", [$email, $pass, $name, $active, Config::lang()]);
       return $db->insert_id;
     } else {
       return false;

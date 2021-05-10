@@ -3,6 +3,7 @@
   "version":"2.0.0",
   "description":"Adds the blog controller.",
   "lang":"core/lang/admin/",
+  "mainsite":true,
   "options": {
     "twitter-card": {
       "type": "select",

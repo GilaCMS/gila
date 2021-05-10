@@ -7,20 +7,22 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <title><?=$title?></title>
 <link><?=$link?></link>
 <description><?=$description?></description>
-<atom:link href="<?=Config::get('base')?>rss" rel="self" type="application/rss+xml" />
+<atom:link href="<?=Config::base($action??'feed')?>" rel="self" type="application/rss+xml" />
 <image>
   <url><?=Config::get('base')?><?=Config::get('admin_logo')??'assets/gila-logo.png'?></url>
   <title><?=$title?></title>
   <link><?=Config::get('base')?></link>
 </image>
 <?php foreach ($items as $item) {
-  $item = (object)$item; ?>
+  $item = (object)$item;
+  $lang = Config::get('language')!==$item->language? $item->language.'/': '';
+  ?>
 <item>
 <title><?=$item->title?></title>
-  <link><?=Config::get('base').'blog/'.$item->id.'/'.$item->slug?></link>
-  <guid><?=Config::get('base').'blog/'.$item->id?></guid>
+  <link><?=Config::base('blog/'.$item->id.'/'.$item->slug)?></link>
+  <guid><?=Config::base('base/blog/'.$item->id)?></guid>
   <pubDate><?=date('r', strtotime($item->updated))?></pubDate>
-  <description><![CDATA[<?=$item->post?>]]></description>
+  <description><![CDATA[<?=strtr($item->post, ["\r"=>"","\n"=>""])?>]]></description>
 </item>
 <?php
 } ?>

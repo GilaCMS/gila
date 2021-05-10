@@ -268,6 +268,12 @@ class Package
         $config = 'sites/'.$site.'/config.php';
         if (file_exists($config) && file_exists($update_file)) {
           include $config;
+          $c = $GLOBALS['config']['db'];
+          $link = mysqli_connect($c['host'], $c['user'], $c['pass'], $c['name']);
+          if ($link===false) {
+            trigger_error('Database from '.$site.' could not connect for upgrade' , E_USER_WARNING);
+            continue;
+          }
           $db = new Db($GLOBALS['config']['db']);
           if ($package==='core' ||
             in_array($package, $GLOBALS['config']['packages'])) {

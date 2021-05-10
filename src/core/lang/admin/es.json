@@ -34,5 +34,18 @@
     "_options_required": "These options need to be set",
     "New Users Activation": "Activacion de nuevos usuarios",
     "Automatically": "Automaticamente",
-    "Email activation link": "Enviar liga de activacion"
+    "Email activation link": "Enviar liga de activacion",
+    "Announcement text": "Texto del anuncio",
+    "Announcement link": "Enlace del anuncio",
+    "Announcement color": "Color del anuncio",
+    "Heading font": "Fuente del título",
+    "Heading color": "Color del título",
+    "Text font": "Tipografía del texto",
+    "Text color": "Color del texto",
+    "Primary color": "Color primario",
+    "Assent color": "Color assent",
+    "Page background": "Fondo de página",
+    "Page background color": "Color de fondo de página",
+    "Custom CSS": "CSS personalizado",
+    "Reset values": "Reajustar valores"
 }

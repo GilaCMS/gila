@@ -9,7 +9,7 @@
       <h3><?=__('reset_pass')?></h3>
     </div>
 
-    <form role="form" method="post" action="<?=Config::base()?>user/password_reset" class="g-form">
+    <form role="form" method="post" action="<?=Config::base('user/password_reset')?>" class="g-form">
       <?=Form::hiddenInput('reset_pass')?>
       <p><?=__('reset_pass_msg')?><p>
       <div class="form-group">
@@ -18,7 +18,7 @@
       <button type="submit" class="btn btn-primary btn-block"><?=__('Send Email')?></button>
     </form>
     <p>
-      <a href="user"><?=__('Log In')?></a>
+      <a href="<?=Config::base('user')?>"><?=__('Log In')?></a>
     </p>
   </div>
 

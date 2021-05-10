@@ -24,9 +24,9 @@ if (Session::waitForLogin()==0) { ?>
   <label class="helptext"><input type="checkbox" oninput="if(this.checked) pass.type='text'; else pass.type='password';"> <?=__('Show password')?></label>
 <?php } ?>
     <p style="text-align:center">
-      <a href="user/password_reset"><?=__('forgot_pass')?></a>
+      <a href="<?=Config::url('user/password_reset')?>"><?=__('forgot_pass')?></a>
       <?php if (Config::get('user_register')==1) {
-  echo '| <a href="user/register">'.__('Register').'</a>';
+  echo '| <a href="'.Config::url('user/register').'">'.__('Register').'</a>';
 }?>
     </p>
   </div>

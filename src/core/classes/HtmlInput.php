@@ -30,19 +30,22 @@ class HtmlInput
     return $value;
   }
 
-  public function DOMSanitize($value)
+  public function DOMSanitize($value, $js=true)
   {
+    // TODO: remove specific style attributes like box-sizing
     $dom = new \DOMDocument;
     $dom->loadHTML('<?xml encoding="utf-8"?>'.$value);
 
-    $tags = $dom->getElementsByTagName('script');
-    foreach (iterator_to_array($tags) as $tag) {
-      $tag->parentNode->removeChild($tag);
-    }
-    $tags = $dom->getElementsByTagName('*');
-    foreach ($tags as $tag) {
-      foreach (self::$eventAttributes as $attr) {
-        $tag->removeAttribute($attr);
+    if ($js) {
+      $tags = $dom->getElementsByTagName('script');
+      foreach (iterator_to_array($tags) as $tag) {
+        $tag->parentNode->removeChild($tag);
+      }
+      $tags = $dom->getElementsByTagName('*');
+      foreach ($tags as $tag) {
+        foreach (self::$eventAttributes as $attr) {
+          $tag->removeAttribute($attr);
+        }
       }
     }
 

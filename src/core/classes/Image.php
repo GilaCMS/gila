@@ -204,7 +204,7 @@ class Image
     if (strpos($src, Config::get('base')) === 0) {
       return $src;
     }
-    if (substr($pinfo['download_url'], 0, 8)!=='https://') {
+    if (strpos($src, 'https://') !== 0) {
       return realpath($src);
     }
     $_src = TMP_PATH.'/'.str_replace(["://",":\\\\","\\","/",":"], "_", $src);

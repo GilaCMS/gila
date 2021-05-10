@@ -84,6 +84,7 @@ class Post
     if ($res) {
       while ($r = mysqli_fetch_assoc($res)) {
         $r['url'] = Config::url('blog/'.$r['id'].'/'.$r['slug']);
+        $r['post'] = HtmlInput::DOMSanitize($r['post'], false);
         yield $r;
       }
     }
