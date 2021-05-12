@@ -103,10 +103,11 @@ class FMController extends Gila\Controller
 
   public function newfolderAction()
   {
+    $this->path = str_replace('..', '', $_POST['path']);
     if (!FileManager::allowedPath($this->path)) {
-      die("Permission denied.".$this->path);
+      die("Permission denied ".$this->path);
     }
-    mkdir(SITE_PATH.str_replace('..', '', $_POST['path']), 0755, true);
+    mkdir(SITE_PATH.$this->path, 0755, true);
     die("Folder created successfully");
   }
 
