@@ -202,7 +202,7 @@ class Form
           $id = 'radio_'.$name.'_'.$value;
           $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
           $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
-          $html .= '<label for="'.$id.$value.'">'.$display.'</label>';
+          $html .= '<label for="'.$id.$value.'">'.__($display).'</label>';
         }
         return $html . '</div>';
       },

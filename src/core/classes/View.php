@@ -11,12 +11,17 @@ class View
   public static $css = [];
   public static $part = [];
   public static $stylesheet = [];
-  public static $cdn_paths = [];
   public static $view_file = [];
   public static $parent_theme = false;
   public static $canonical;
   public static $renderer;
   public static $cdn_host = '';
+  public static $cdn_paths = [
+    'core/gila.min.js'=> 'core/gila1510.min.js',
+    'core/gila.js'=> 'core/gila1510.js',
+    'core/gila.min.css'=> 'core/gila1510.min.css',
+    'core/gila.css'=> 'core/gila1510.css'
+  ];
 
   public static function set($param, $value)
   {
@@ -33,6 +38,9 @@ class View
 
   public static function stylesheet($href)
   {
+    if (isset(self::$cdn_paths[$href])) {
+      $href = self::$cdn_paths[$href];
+    }
     if (file_exists('assets/'.$href)) {
       $href = self::$cdn_host.'assets/'.$href;
     }
@@ -77,7 +85,8 @@ class View
     }
     if (isset(self::$cdn_paths[$css])) {
       $css = self::$cdn_paths[$css];
-    } elseif (file_exists('assets/'.$css)) {
+    }
+    if (file_exists('assets/'.$css)) {
       $css = self::$cdn_host.'assets/'.$css;
     }
     if (in_array($css, self::$stylesheet)) {
@@ -108,7 +117,8 @@ class View
     }
     if (isset(self::$cdn_paths[$script])) {
       $script = self::$cdn_paths[$script];
-    } elseif (file_exists('assets/'.$script)) {
+    }
+    if (file_exists('assets/'.$script)) {
       $script = self::$cdn_host.'assets/'.$script;
     }
     echo '<script src="'.$script.'" '.$prop.'></script>';

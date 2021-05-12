@@ -1,6 +1,10 @@
 <?php
 
 return [
+  'core/gila.min.js'=> 'core/gila1510.min.js',
+  'core/gila.js'=> 'core/gila1510.js',
+  'core/gila.min.css'=> 'core/gila1510.min.css',
+  'core/gila.css'=> 'core/gila1510.css',
   'lib/jquery/jquery-3.3.1.min.js'=> 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
   'lib/bootstrap/bootstrap.min.js'=> 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
   'lib/bootstrap/bootstrap.min.css'=> 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',

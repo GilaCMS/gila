@@ -16,7 +16,7 @@ class InstallSqlTest extends TestCase
     $tableColumn = [
       'post'=>['id','title','slug','description','user_id','language','publish','post','updated','created'],
       'postmeta'=>['id','post_id','vartype','value'],
-      'page'=>['id','title','slug','description','template','language','publish','updated','blocks'],
+      'page'=>['id','title','slug','description','template','language','publish','updated','blocks','image'],
       'user'=>['id','username','email','pass','active','created','updated','language'],
       'usermeta'=>['id','user_id','vartype','value'],
       'usergroup'=>['id','usergroup','description'],
