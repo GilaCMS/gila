@@ -72,6 +72,7 @@ class FileManager
     if ($read && (strpos($path, 'src/')===0 || strpos($path, 'themes/')===0
       || strpos($path, 'assets/')===0) && strpos($path, 'assets/uploads')!==0) {
       $allowedPaths = ['src', 'themes', 'assets'];
+      $path = strtr($path, ['.'=>'']);
     } else {
       if (!empty(SITE_PATH) && strpos($path, 'sites/')!==0) {
         $path = SITE_PATH.'/'.$path;
