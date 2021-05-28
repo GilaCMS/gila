@@ -36,7 +36,9 @@ return [
       'qtype'=>'varchar(80) DEFAULT NULL',
       'alt'=>'('.Gila\Config::tr('Home').')',
       'group'=>'title',
-      'create'=>false
+      'create'=>false,
+      'helptext'=>'Leave empty if this is the homepage',
+      'helptext_es'=>'Dejar vacía si esta es la página de inicio'
     ],
     'description'=> [
       'title'=>'Description',
@@ -45,7 +47,8 @@ return [
       'list'=>false,
       'create'=>false,
       'group'=>'title',
-      'helptext'=>'This is the text that will be displayed in the listing of the page. For better SEO, use 120-160 letters.'
+      'helptext'=>'This is the text that will be displayed in the listing of the page. For better SEO, use 120-160 letters.',
+      'helptext_es'=>'Este es el texto que se mostrará en el listado de la página. Para un mejor SEO, use 120-160 letras..'
     ],
     'template'=> [
       'title'=>'Template',

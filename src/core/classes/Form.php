@@ -324,8 +324,12 @@ class Form
         return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldlist="'.$fields.'" value="'.$value.'"></input-list>';
       },
       "menu"=> function ($name, $field, $ov) {
+        global $db;
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
-        return '<menu-editor style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" value="'.$value.'"></menu-editor>';
+        $pages = $db->getOptions("SELECT id,title FROM `page`;");
+        $types = '{"page":'.json_encode($pages, JSON_UNESCAPED_UNICODE).'}';
+        $types = htmlspecialchars($types);
+        return '<menu-editor style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" value="'.$value.'" itemtypes="'.$types.'" ></menu-editor>';
       },
       "color-input"=> function ($name, $field, $ov) {
         $value = htmlentities($ov);

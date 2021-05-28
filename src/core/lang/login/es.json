@@ -3,7 +3,7 @@
     "register_error2": "El usuario no pudo ser registrado.",
     "register_success": "Usted fue registrado exitosamente",
     "register_activate_byadmin": "La administración te informara cuando se activará su cuenta",
-    "register_activate_byemail": "Recibirás un correo electrónico con un enlace de activación. Sigue ese enlace para activar tu nueva cuenta",
+    "register_activate_byemail": "Recibirás un correo electrónico con un enlace de activación. Si no lo encuentras, revisa tu carpeta de spam también. Sigue ese enlace para activar tu nueva cuenta",
     "activate_msg_ln1": "Liga de activación para",
     "activate_msg_ln2": "Hola",
     "activate_msg_ln3": "Este es la liga para activar su cuenta en",

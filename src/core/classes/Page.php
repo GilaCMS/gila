@@ -33,6 +33,21 @@ class Page
       }
       return $row;
     }
+
+    if(empty($id) && $published) {
+      $res = $db->query(
+        "$query WHERE publish=1 AND `language`=?
+        UNION $query WHERE publish=1;", [Config::lang()]
+      );
+      if ($row = mysqli_fetch_array($res)) {
+        if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
+          $blocks = json_decode($blocks);
+          $row['page'] = View::blocks($blocks, 'page_'.$row['id']);
+        }
+        return $row;
+      }
+    }
+
     return null;
   }
 
