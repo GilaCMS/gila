@@ -17,7 +17,7 @@
     <a href="admin/content/post">
       <div>
         <i class="fa fa-3x fa-pencil" style="color:<?=$palette[0]?>"></i>
-        <span>Posts</span>
+        <span><?=__('Posts', ['es'=>'Publicaciónes'])?></span>
         <div style="font-size:200%"><?=$postsC?></div>
       </div>
     </a>
@@ -26,7 +26,7 @@
     <a href="admin/users">
       <div>
         <i class="fa fa-3x fa-users" style="color:<?=$palette[1]?>"></i>
-        <span>Users</span>
+        <span><?=__('Users', ['es'=>'Usuarios'])?></span>
         <div style="font-size:200%"><?=$usersC?></div>
       </div>
     </a>
@@ -35,7 +35,7 @@
     <a href="admin/content/page">
       <div>
         <i class="fa fa-3x fa-file" style="color:<?=$palette[2]?>"></i>
-        <span>Pages</span>
+        <span><?=__('Pages', ['es'=>'Páginas'])?></span>
         <div style="font-size:200%"><?=$pagesC?></div>
       </div>
     </a>
@@ -44,7 +44,7 @@
     <a href="admin/packages">
       <div>
         <i class="fa fa-3x fa-dropbox" style="color:<?=$palette[3]?>"></i>
-        <span>Packages</span>
+        <span><?=__('Packages', ['es'=>'Paquetes'])?></span>
         <div style="font-size:200%"><?=$packagesC?></div>
       </div>
     </a>

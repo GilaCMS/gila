@@ -4,6 +4,7 @@ return [
   'name'=> 'post',
   'title'=> 'Posts',
   'pagination'=> 15,
+  'cache'=>true,
   'id'=>'id',
   'tools'=>['add_popup','csv'],
   'bulk_actions'=>['approve'],
@@ -109,12 +110,12 @@ return [
       'create'=>false,
       'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP'
     ]
-  ],
+  ]/*,
   'events'=>[
     ['change',function (&$row) {
       if ($row['slug']=='') {
         $row['slug'] = Slugify::text($row['title']);
       }
     }]
-  ]
+  ]*/
 ];
