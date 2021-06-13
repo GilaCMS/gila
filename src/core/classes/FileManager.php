@@ -5,6 +5,7 @@ namespace Gila;
 class FileManager
 {
   public static $sitepath = __DIR__;
+  const ILLEGAL_CHARACTERS = ['%','&','<','>','\\','{','}','*','?','\'','"',':','`','$','@','!','=','+','|'];
 
   public static function copy($source, $target)
   {

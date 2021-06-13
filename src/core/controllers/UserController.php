@@ -74,7 +74,8 @@ class UserController extends Gila\Controller
         $active = Config::get('user_activation')=='auto'? 1: 0;
         if ($user_Id = User::create($email, $password, $name, $active)) {
           // success
-          if (Config::get('user_activation')=='byemail') {
+          if (!Event::get('user_activation', false, ['user_id'=>$user_id]) &&
+          Config::get('user_activation')=='byemail') {
             $baseurl = Config::base('user/activate');
             $subject = __('activate_msg_ln1').' '.$name;
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
