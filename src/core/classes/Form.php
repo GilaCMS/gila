@@ -327,6 +327,9 @@ class Form
         global $db;
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         $pages = $db->getOptions("SELECT id,title FROM `page`;");
+        foreach(Config::getList('menu.pages') as $p) {
+          $pages[$p[0]] = $p[1];
+        }
         $types = '{"page":'.json_encode($pages, JSON_UNESCAPED_UNICODE).'}';
         $types = htmlspecialchars($types);
         return '<menu-editor style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" value="'.$value.'" itemtypes="'.$types.'" ></menu-editor>';

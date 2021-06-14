@@ -114,6 +114,9 @@ class Menu
           $name = $r['title'];
           return ['name'=>$name, 'url'=>$url];
         }
+        if (is_string($data['id'])) {
+          return ['name'=>__(ucfirst($data['id'])), 'url'=>Config::base($data['id'])];
+        }
       }
       if ($type=='postcategory') {
         global $db;

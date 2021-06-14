@@ -76,8 +76,9 @@ Vue.component('menu-editor', {
       return g.tr('Add') ?? 'Add'
     },
     displayType: function(type) {
-      if(type=='link') return g.tr('Link', {'es':'Linga'})
+      if(type=='link') return 'URL'
       if(type=='page') return g.tr('Page', {'es':'Pagina'})
+      if(type=='system') return g.tr('System', {'es':'Sistema'})
     },
     displayText: function() {
       return  g.tr('Title', {'es':'Titulo'})

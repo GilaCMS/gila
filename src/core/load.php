@@ -74,3 +74,5 @@ Config::addLang('core/lang/');
 if (Config::get('use_cdn')==='1') {
   View::$cdn_paths = include 'src/core/cdn_paths.php';
 }
+
+Config::addList('menu.pages', ['admin', 'Admin']);
