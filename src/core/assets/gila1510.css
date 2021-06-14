@@ -384,6 +384,7 @@ input.btn {
   font-weight: bold;
   font-size:80%;
   color:#fff;
+  user-select: none;
 }
 
 .g-screen {
