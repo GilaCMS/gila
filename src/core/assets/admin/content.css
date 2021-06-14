@@ -167,6 +167,10 @@
   text-align: left;
 }
 
+.g-table table thead td {
+  overflow: auto;
+}
+
 .g-table table td p {
   margin: 0;
 }
@@ -271,6 +275,7 @@ td[col] .g-input {
   padding: 0;
   font-size: 14px;
   text-align: left;
+  min-width: 120px;
 }
 
 .g-searchbox .g-input {

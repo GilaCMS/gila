@@ -33,6 +33,12 @@ class Cache
     return null;
   }
 
+  public static function remove($name)
+  {
+    $name = self::$cachePath.str_replace('/', '-', $name);
+    @array_map('unlink', glob($name.'*'));
+  }
+
   public static function remember($name, $time, $fn, $uniques = [])
   {
     if ($data = self::get($name, $time, $uniques)) {

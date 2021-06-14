@@ -11,11 +11,11 @@ class Menu
   {
     global $db;
     $jsonfile = LOG_PATH."/menus/$menu.json";
-    if ($data = Cache::get($menu, 86400, [Config::mt('menu')])) {
+    if ($data = Cache::get('menu--'.$menu, 86400, [Config::mt('menu')])) {
       return $data;
     }
     if ($data = $db->read()->value("SELECT `data` FROM menu WHERE `menu`=?;", [$menu])) {
-      Cache::set($menu, $data, [Config::mt('menu')]);
+      Cache::set('menu--'.$menu, $data, [Config::mt('menu')]);
       return $data;
     }
     // DEPRECATED
@@ -66,6 +66,7 @@ class Menu
   {
     $folder = Config::dir(LOG_PATH.'/menus/');
     $file = $folder.$menu.'.json';
+    Cache::set('menu--'.$menu);
     @unlink($file);
   }
 
@@ -113,6 +114,9 @@ class Menu
           $name = $r['title'];
           return ['name'=>$name, 'url'=>$url];
         }
+        if (is_string($data['id'])) {
+          return ['name'=>__(ucfirst($data['id'])), 'url'=>Config::base($data['id'])];
+        }
       }
       if ($type=='postcategory') {
         global $db;
@@ -130,9 +134,9 @@ class Menu
       }
     }
     if (self::$editableLinks && $r=Page::getBySlug($data['url'])) {
-      return ['name'=>$data['name'], 'url'=>self::$editableLinks.'/'.$r['id']];
+      return ['name'=>$data['title']??$data['name'], 'url'=>self::$editableLinks.'/'.$r['id']];
     } else {
-      return ['name'=>$data['name'], 'url'=>$data['url']??'#'];
+      return ['name'=>$data['title']??$data['name'], 'url'=>$data['url']??'#'];
     }
   }
 
@@ -142,7 +146,7 @@ class Menu
     self::$active = false;
     foreach ($items as $key => $item) {
       $url = $item['url'] ?? $item[1];
-      $label = $item['name'] ?? $item[0];
+      $label = $item['title'] ?? ($item['name']??$item[0]);
       if (isset($item['access'])) {
         if (!Session::hasPrivilege($item['access'])) {
           continue;

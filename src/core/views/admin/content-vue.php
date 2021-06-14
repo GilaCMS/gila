@@ -17,9 +17,11 @@ View::scriptAsync('core/admin/vue-components.js');
 View::script('core/vue-upload-media.js');
 View::scriptAsync('core/admin/vue-editor.js');
 View::script('lib/CodeMirror/codemirror.js');
+View::script('lib/vue/vue-select.js');
 View::scriptAsync('lib/CodeMirror/htmlmixed.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
 View::cssAsync('lib/CodeMirror/codemirror.css');
+View::cssAsync('lib/vue/vue-select.css');
 // DEPRECATED the below
 View::script('lib/jquery/jquery-3.3.1.min.js');
 View::script('lib/select2/select2.min.js');
@@ -46,6 +48,7 @@ View::css('lib/select2/select2.min.css');
 .tox .tox-menubar,.tox .tox-toolbar, .tox .tox-toolbar__overflow, .tox .tox-toolbar__primary{
   background-color: #f0f0f0;
 }
+.v-select {display:inline-block;min-width:180px}
 </style>
 
 <?php
@@ -95,7 +98,7 @@ View::widgetArea('content.'.$table);
 </div>
 
 <script>
-
+Vue.component('v-select', VueSelect.VueSelect);
 cmirror=new Array()
 mce_editor=new Array()
 var csrfToken = '<?=Form::getToken()?>'

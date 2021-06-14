@@ -20,7 +20,8 @@ class View
     'core/gila.min.js'=> 'core/gila1510.min.js',
     'core/gila.js'=> 'core/gila1510.js',
     'core/gila.min.css'=> 'core/gila1510.min.css',
-    'core/gila.css'=> 'core/gila1510.css'
+    'core/gila.css'=> 'core/gila1510.css',
+    'core/admin/media.js'=> 'core/admin/media1609.js'
   ];
 
   public static function set($param, $value)

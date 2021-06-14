@@ -215,41 +215,43 @@ class AdminController extends Gila\Controller
   public function media_uploadAction()
   {
     if (isset($_FILES['uploadfiles'])) {
-      if (isset($_FILES['uploadfiles']["error"])) {
-        if ($_FILES['uploadfiles']["error"] > 0) {
-          echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
-        }
-      }
       $upload_folder = Config::get('media_uploads') ?? 'assets';
-      $path = Router::post('path', $upload_folder);
-      if ($path[0]=='.') {
-        $path=$upload_folder;
-      }
-      $tmp_file = $_FILES['uploadfiles']['tmp_name'];
-      $name = htmlentities($_FILES['uploadfiles']['name']);
+      $uploadpath = Router::post('path', $upload_folder);
       $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4', 'webm'];
       if (Config::get('allow_svg')) {
         $extensions[] = 'svg';
       }
-      if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $extensions)) {
-        $path = SITE_PATH.$path.'/'.$name;
-        FileManager::$sitepath = realpath(SITE_PATH);
-        if (!FileManager::allowedPath($path)) {
+      if ($uploadpath[0]=='.') {
+        $uploadpath = $upload_folder;
+      }
+
+      $names = $_FILES['uploadfiles']['name'];
+      $tmp_names = $_FILES['uploadfiles']['tmp_name'];
+      $errors = $_FILES['uploadfiles']['error'];
+      FileManager::$sitepath = realpath(SITE_PATH);
+
+      for ($i=0; $i<count($tmp_names); $i++) {
+        $names[$i] = pathinfo($names[$i], PATHINFO_FILENAME).'.'.strtolower(pathinfo($names[$i], PATHINFO_EXTENSION));
+        $path = SITE_PATH.$uploadpath.'/'.$names[$i];
+        if (isset($errors[$i]) && $errors[$i] > 0) {
+          echo "Error: ".$errors[$i]."</div>";
+        } elseif (!in_array(strtolower(pathinfo($names[$i], PATHINFO_EXTENSION)), $extensions)) {
+          echo "<div class='alert error'>Error: not a media file!</div>";
+        } elseif(file_exists($path)) {
+          echo "<div class='alert error'>File with same name already exists!</div>";
+        } elseif (!FileManager::allowedPath($path)) {
           echo "<div class='alert error'>Error: incorrect path!</div>";
+        } elseif (!move_uploaded_file($tmp_names[$i], $path)) {
+          echo "<div class='alert error'>Error: could not upload file!</div>";
+        } else {
+          $maxWidth = Config::get('maxImgWidth') ?? 0;
+          $maxHeight = Config::get('maxImgHeight') ?? 0;
+          if ($maxWidth>0 && $maxHeight>0) {
+            Image::makeThumb($path, $path, $maxWidth, $maxHeight);
+          }
         }
-        if (!move_uploaded_file($tmp_file, $path)) {
-          echo "Error: could not upload file!<br>";
-        }
-        $maxWidth = Config::get('maxImgWidth') ?? 0;
-        $maxHeight = Config::get('maxImgHeight') ?? 0;
-        if ($maxWidth>0 && $maxHeight>0) {
-          Image::makeThumb($path, $path, $maxWidth, $maxHeight);
-        }
-      } else {
-        echo "<div class='alert error'>Error: not a media file!</div>";
       }
     }
-
     self::mediaAction();
   }
 

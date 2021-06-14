@@ -50,7 +50,8 @@ View::script('core/lang/content/'.Config::get('language').'.js');
   <?php } ?>
 </div>
 
-<div class='g-gal wrapper gap-8px' style='background:white;'>
+<div class='g-gal wrapper gap-8px' style='background:white;'
+ondrop='gallery_drop_files(event);' ondragover='event.preventDefault();'>
 
 <?php
 foreach ($files as $file) {

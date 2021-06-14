@@ -3,6 +3,7 @@
     "Search": "Buscar",
     "Submit": "Enviar",
     "Name": "Nombre",
+    "Fullname": "Nombre completo",
     "Title": "Título",
     "Description": "Descripción",
     "Thumbnail": "Miniatura",
@@ -105,5 +106,7 @@
     "Send": "Enviar",
     "Other": "Otro",
     "All": "Todo",
-    "Contact": "Contacto"
+    "Contact": "Contacto",
+    "Contact Us": "Contactanos",
+    "About": "Sobre"
 }

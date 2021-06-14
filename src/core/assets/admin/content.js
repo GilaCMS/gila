@@ -39,7 +39,9 @@ Vue.component('g-table', {
             </div>\
             <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
               <label>&nbsp;{{field_label(sb)}}</label>\
-              <select v-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch(true)">\
+              <v-select v-if="table.fields[sb].voptions" v-model="filter[sb]" :options="table.fields[sb].voptions" \
+                label="text" :reduce="item => item.id" placeholder="" @input="runsearch(true)"/>\
+              <select v-else-if="table.fields[sb].options" v-model="filter[sb]" class="g-input" @change="runsearch(true)">\
                 <option value="" selected>-</option>\
                 <option v-for="(opt,iopt) in table.fields[sb].options" :value="iopt">{{opt}}</option>\
               </select>\
@@ -122,9 +124,19 @@ Vue.component('g-table', {
     if(!this.gfilter) {
       this.gfilter='[]'
     }
+    table = JSON.parse(this.gtable)
+    for(i in table.fields) if(typeof table.fields[i].options!=='undefined'
+    && Object.keys(table.fields[i].options).length>8) {
+      o = Object.entries(table.fields[i].options);
+      table.fields[i].voptions = []
+      for(j in o) {
+        table.fields[i].voptions.push({id:o[j][0], text:o[j][1]})
+      }
+    }
+
     return {
     name: this.gtype,
-    table: JSON.parse(this.gtable),
+    table: table,
     permissions: JSON.parse(this.permissions),
     data:{
       fields: JSON.parse(this.gfields),

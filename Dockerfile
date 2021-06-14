@@ -5,7 +5,7 @@ RUN apt-get -y install apache2
 
 ENV TZ=America/Mexico_City
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get -y install php php-json php-mysql php-mbstring php-zip php-gd
+RUN apt-get -y install php php-json php-mysql php-mbstring php-zip php-gd php-xml
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html/
@@ -16,7 +16,7 @@ COPY log log
 COPY sites sites
 COPY data data
 COPY tmp tmp
-COPY robots.txt robits.txt
+COPY robots.txt robots.txt
 COPY config.default.php config.default.php
 COPY .htaccess .htaccess
 COPY index.php index.php

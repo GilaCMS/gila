@@ -42,7 +42,27 @@ function _e(phrase)
 
 function gallery_upload_files() {
   let fm=new FormData()
-  fm.append('uploadfiles', g.el('upload_files').files[0]);
+  for(i in g.el('upload_files').files) if(!isNaN(i)) {
+    fm.append('uploadfiles['+i+']', g.el('upload_files').files[i]);
+  }
+  fm.append('formToken', g.el('upload_files').getAttribute('data-csrf'));
+  fm.append('path', g.el('upload_files').getAttribute('data-path'));
+  fm.append('g_response', 'content');
+  g.loader()
+  g.ajax({url:"admin/media_upload",method:'POST',data:fm, fn: function (gal){
+    g.loader(false)
+    g('#admin-media-div').parent().html(gal)
+  }})
+}
+function gallery_drop_files(e) {
+  let fm=new FormData()
+  e.stopPropagation(); // Stops some browsers from redirecting.
+  var files = e.dataTransfer.files;
+  e.preventDefault();
+  for (var i = 0, f; f = files[i]; i++) {
+    fm.append('uploadfiles['+i+']', f);
+  }
+
   fm.append('formToken', g.el('upload_files').getAttribute('data-csrf'));
   fm.append('path', g.el('upload_files').getAttribute('data-path'));
   fm.append('g_response', 'content');
@@ -56,23 +76,23 @@ function gallery_move_selected(path) {
     selected = g('.g-selected').all[0]
     if(selected) {
         old_path = selected.getAttribute('data-path')
-        new_path = prompt(_e('_new_filepath'), old_path);
+        new_path = prompt(g.tr('_new_filepath'), old_path);
         if(new_path != null) {
           csrfToken=g.el('upload_files').getAttribute('data-csrf')
           g.post('fm/move', {newpath:new_path, path:old_path, formToken:csrfToken}, function(msg){
-              if(msg=='') msg=_e('_file_saved')
+              if(msg=='') msg=g.tr('_file_saved')
               alert(msg);
               update_gallery_body(path);
           })
         }
     } else {
-        alert(_e('_select_file'))
+        alert(g.tr('_select_file'))
     }
 }
 
 function gallery_create(path) {
   path += '/'
-  new_path = prompt(_e('_new_folder'), '');
+  new_path = prompt(g.tr('_new_folder'), '');
   if(new_path != null) {
     g.loader()
     csrfToken=g.el('upload_files').getAttribute('data-csrf')
@@ -94,13 +114,12 @@ function gallery_delete_selected(path) {
         csrfToken=g.el('upload_files').getAttribute('data-csrf')
         g.post('fm/delete', 'path='+filepath+'&formToken='+csrfToken,function(msg){
           g.loader(false)
-          if(msg=='') msg=_e('_file_deleted')
-          alert(msg);
+          if(msg!=='') alert(msg);
           update_gallery_body(path);
         })
       }
   } else {
-    alert(_e('_select_file'))
+    alert(g.tr('_select_file'))
   }
 }
 
@@ -119,7 +138,7 @@ function gallery_refresh_thumb(path) {
       })
     }
   } else {
-    alert(_e('_select_file'))
+    alert(g.tr('_select_file'))
   }
 }
 
@@ -146,7 +165,7 @@ function open_media_gallery(mpi, mici) {
   media_path_input = mpi;
   media_image_caption_input = mici;
   g.post("admin/media","g_response=content",function(gal){
-        g.dialog({title:_e('_gallery'),body:gal,buttons:'select_media_path',type:'modal',id:'media_dialog',class:'large'})
+        g.dialog({title:g.tr('_gallery'),body:gal,buttons:'select_media_path',type:'modal',id:'media_dialog',class:'large'})
     })
 }
 

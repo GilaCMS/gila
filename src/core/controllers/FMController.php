@@ -57,7 +57,8 @@ class FMController extends Gila\Controller
         }
 
         $newfile = [
-        'name'=> $file, 'size'=> $stat['size'],
+        'name'=> str_replace(FileManager::ILLEGAL_CHARACTERS, '', $file),
+        'size'=> $stat['size'],
         'mtime'=> date("Y-m-d H:i:s", $stat['mtime']),
         'mode'=> $stat['mode'], 'ext'=> $extension
       ];
@@ -136,6 +137,9 @@ class FMController extends Gila\Controller
         !FileManager::allowedPath($this->relativePath)) {
       die("Permission denied");
     }
+    if ($_POST['newpath']!==str_replace(FileManager::ILLEGAL_CHARACTERS, '', $_POST['newpath'])) {
+      die("Special characters are not accepted in filename!");
+    }
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("User dont have permision to edit files");
     }
@@ -169,12 +173,17 @@ class FMController extends Gila\Controller
       $name = [$name];
     }
     for ($i=0; $i<count($tmp_file); $i++) {
+      $name[$i] = pathinfo($name[$i], PATHINFO_FILENAME).'.'.strtolower(pathinfo($name[$i], PATHINFO_EXTENSION));
       if(file_exists(SITE_PATH.$path.'/'.$name[$i])) {
         die("Error: File with same name already exists!");
       }
       if (!FileManager::allowedFileType($name[$i])) {
-        die("Error: File type {$name[$i]} is not accepted!");
+        die("Error: File type is not accepted!");
       }
+      if ($name[$i]!==str_replace(FileManager::ILLEGAL_CHARACTERS, '', $name[$i])) {
+        die("Error: Special characters are not accepted in filename!");
+      }
+
       if (!move_uploaded_file($tmp_file[$i], SITE_PATH.$path.'/'.$name[$i])) {
         die("Error: could not upload file!");
       }
