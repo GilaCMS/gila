@@ -110,12 +110,12 @@ return [
       'create'=>false,
       'qtype'=>'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP'
     ]
-  ]/*,
+  ],
   'events'=>[
     ['change',function (&$row) {
       if ($row['slug']=='') {
         $row['slug'] = Slugify::text($row['title']);
       }
     }]
-  ]*/
+  ]
 ];
