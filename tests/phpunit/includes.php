@@ -15,6 +15,7 @@ define('TMP_PATH', 'tmp');
 define('CONFIG_PHP', 'config.php');
 define('FS_ACCESS', true);
 
+Gila\Config::dir(LOG_PATH.'/cacheItem/');
 Gila\Session::$data['permissions'] = ['admin'];
 $db = new Gila\Db("127.0.0.1", "g_user", "password", "g_db");
 

@@ -4,7 +4,6 @@ return [
   'name'=> 'post',
   'title'=> 'Posts',
   'pagination'=> 15,
-  'cache'=>true,
   'id'=>'id',
   'tools'=>['add_popup','csv'],
   'bulk_actions'=>['approve'],
