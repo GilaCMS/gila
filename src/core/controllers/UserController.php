@@ -71,17 +71,17 @@ class UserController extends Gila\Controller
         View::alert('error', __('register_error1'));
       } else {
         // register the user
-        $active = Config::get('user_activation')=='auto'? 1: 0;
-        if ($user_Id = User::create($email, $password, $name, $active)) {
+        if ($user_Id = User::create($email, $password, $name)) {
           // success
-          if (!Event::get('user_activation', false, ['user_id'=>$user_id]) &&
+          if (!Event::get('user_activation.email', false, ['user_id'=>$user_id]) &&
           Config::get('user_activation')=='byemail') {
-            $baseurl = Config::base('user/activate');
+            $baseurl = Config::base();
+            $baseactivate = Config::base('user/activate');
             $subject = __('activate_msg_ln1').' '.$name;
             $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
             $msg = __('activate_msg_ln2')." {$name}\n\n";
-            $msg .= __('activate_msg_ln3')." $baseurl\n\n";
-            $msg .= $baseurl."?ap=$activate_code\n\n";
+            $msg .= __('activate_msg_ln3')." {$_SERVER['HTTP_HOST']}\n\n";
+            $msg .= $baseactivate."?ap=$activate_code\n\n";
             $msg .= __('activate_msg_ln4');
             $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
             User::meta($user_Id, 'activate_code', $activate_code);
@@ -167,20 +167,25 @@ class UserController extends Gila\Controller
     $_SESSION['rpa'] = $_SESSION['rpa'] ?? 0;
     $_SESSION['rpt'] = $_SESSION['rpt'] ?? time();
 
-    if (Form::posted('reset_pass') && $r && ($_SESSION['rpa']<200 || $_SESSION['rpt']+3600<time())) {
+    if (Form::posted('reset_pass') && $r && $r['active']==1
+      && ($_SESSION['rpa']<200 || $_SESSION['rpt']+3600<time())) {
       $_SESSION['rpa']++;
       $_SESSION['rpt'] = time();
-
-      $baseurl = Config::base();
-      $subject = __('reset_msg_ln1').' '.$r['username'];
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
-      $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
-      $msg .= __('reset_msg_ln3')." $baseurl\n\n";
-      $msg .= $baseurl."user/password_reset?rp=$reset_code\n\n";
-      $msg .= __('reset_msg_ln4');
-      $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
       User::meta($r['id'], 'reset_code', $reset_code);
-      new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+
+      if(!Event::get('user_password_reset.email', false,
+      ['user_id'=>$r['id'], 'reset_code'=>$reset_code])) {
+        $baseurl = Config::base();
+        $basereset = Config::base('user/password_reset');
+        $subject = __('reset_msg_ln1').' '.$r['username'];
+        $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
+        $msg .= __('reset_msg_ln3')." $baseurl\n\n";
+        $msg .= $basereset."?rp=$reset_code\n\n";
+        $msg .= __('reset_msg_ln4');
+        $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+        new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+      }
     }
     @session_commit();
 

@@ -3,7 +3,7 @@ namespace Gila;
 
 class User
 {
-  public static function create($email, $password, $name = '', $active = 1)
+  public static function create($email, $password, $name = '', $active = 0)
   {
     global $db;
     if (Event::get('validateUserPassword', true, $password)===true) {
@@ -184,16 +184,20 @@ class User
   public static function sendInvitation($data)
   {
     Config::addLang('core/lang/login/');
-    $baseurl = Config::base();
-    $subject = __('invite_msg_ln1').' '.$data['username'];
     $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+    self::meta($data['id'], 'reset_code', $reset_code);
+    if(Event::get('user_invite.email', false,
+    ['data'=>$data, 'reset_code'=>$reset_code])) return;
+
+    $baseurl = Config::base();
+    $basereset = Config::base('user/password_reset');
+    $subject = __('invite_msg_ln1').' '.$data['username'];
     $msg = __('invite_msg_ln2')." {$data['username']}\n\n";
     $msg .= __('invite_msg_ln3')." $baseurl\n\n";
     $msg .= __('invite_msg_ln4')."\n";
-    $msg .= $baseurl."user/password_reset?rp=$reset_code\n\n";
+    $msg .= $baseurl."?rp=$reset_code\n\n";
     $msg .= __('activate_msg_ln4');
     $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
-    self::meta($data['id'], 'reset_code', $reset_code);
     new Sendmail(['email'=>$data['email'], 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
   }
 }

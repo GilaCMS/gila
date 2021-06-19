@@ -16,7 +16,7 @@ function dl_btn($param, $class, $text)
   return "<a onclick='addon_download(\"$param\")' class='g-btn $class'>$text</a>";
 }
 
-if (Package::check4updates()) {
+if (FS_ACCESS && Package::check4updates()) {
   $upgrated = 0;
   $upgrateList = json_decode(file_get_contents(LOG_PATH.'/packages2update.json'), true);
   $upgrateN = count($upgrateList);
@@ -91,7 +91,7 @@ foreach ($packages as $pkey=>$p) {
     $table .= (@$p->author?'<i class="fa fa-user addon-i"></i> '.$p->author:'');
     $table .= (@$p->url?'<i class="fa fa-link addon-i"></i> <a href="'.$p->url.'" target="_blank">'.$p->url.'</a>':'');
     $table .= (isset($p->contact)?' <i class="fa fa-envelope addon-i"</i> '.$p->contact:'');
-    if (isset($p->require)) {
+    if (FS_ACCESS && isset($p->require)) {
       $table .= "<br>Requires: ";
       foreach ($p->require as $req=>$ver) {
         $table .= $req."($ver) ";
@@ -103,7 +103,7 @@ foreach ($packages as $pkey=>$p) {
     // Buttons
     if (file_exists('src/'.$p->package)) {
       if (in_array($p->package, Config::getArray('packages')) || $p->package=='core') {
-        if (Config::get('env')=='dev') {
+        if (FS_ACCESS && Config::get('env')=='dev') {
           $table .= " <a onclick='addon_activate(\"{$p->package}\")' class='g-btn primary'><i class='fa fa-refresh'></i></a>";
         }
         if ($p->package!='core') {

@@ -385,6 +385,7 @@ input.btn {
   font-size:80%;
   color:#fff;
   user-select: none;
+  vertical-align: top;
 }
 
 .g-screen {

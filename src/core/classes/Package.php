@@ -422,7 +422,7 @@ class Package
   public static function check4updates()
   {
     if (Config::get('check4updates')==0) {
-      return;
+      return false;
     }
     $now = new DateTime("now");
     if (Config::get('checked4updates')===null) {

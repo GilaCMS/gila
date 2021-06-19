@@ -6,6 +6,8 @@
 <div style="margin:auto;max-width:700px;margin-top:10%;min-height:2em;background-color:white">
 <?=$text?>
 </div>
-<?php View::scriptAsync("core/gila.min.js")?>
+<footer></footer>
+<style><?=htmlentities(Config::get('theme.css'))?></style>
+<?=View::script('core/gila.min.js');?>
 </body>
 </html>

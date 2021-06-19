@@ -153,8 +153,8 @@ class FMController extends Gila\Controller
 
   public function uploadAction()
   {
-    if (!FileManager::allowedPath($this->relativePath)) {
-      die("Permission denied.");
+    if (!FileManager::allowedPath($_POST['path'])) {
+      die("Incorrect path.");
     }
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('upload_assets')) {
       die("Permission denied.");
@@ -194,8 +194,8 @@ class FMController extends Gila\Controller
 
   public function deleteAction()
   {
-    if (!FileManager::allowedPath($this->relativePath)) {
-      die("Permission denied.".$this->relativePath);
+    if (!FileManager::allowedPath($_POST['path'])) {
+      die("Incorecct path.");
     }
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("Permission denied.");

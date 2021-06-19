@@ -326,9 +326,6 @@ section>.container{
   gap:1em;
 }
 
-.componentarea{
-  overflow:hidden;
-}
 .componentarea img{
   display:block;
 }
