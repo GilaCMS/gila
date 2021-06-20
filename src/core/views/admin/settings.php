@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::set('check4updates', $_POST['gila_check4updates']);
   Config::set('user_register', $_POST['gila_user_register']);
   Config::set('user_activation', $_POST['gila_user_activation']);
-  Config::set('use_cdn', $_POST['gila_use_cdn']);
   Config::set('use_webp', $_POST['gila_webp']);
   Config::set('maxImgWidth', $_POST['gila_maxImgWidth']);
   Config::set('maxImgHeight', $_POST['gila_maxImgHeight']);

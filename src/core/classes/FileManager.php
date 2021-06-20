@@ -90,5 +90,4 @@ class FileManager
 
     return false;
   }
-
 }

@@ -174,7 +174,7 @@ class FMController extends Gila\Controller
     }
     for ($i=0; $i<count($tmp_file); $i++) {
       $name[$i] = pathinfo($name[$i], PATHINFO_FILENAME).'.'.strtolower(pathinfo($name[$i], PATHINFO_EXTENSION));
-      if(file_exists(SITE_PATH.$path.'/'.$name[$i])) {
+      if (file_exists(SITE_PATH.$path.'/'.$name[$i])) {
         die("Error: File with same name already exists!");
       }
       if (!FileManager::allowedFileType($name[$i])) {

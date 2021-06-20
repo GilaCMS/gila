@@ -15,8 +15,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 </image>
 <?php foreach ($items as $item) {
   $item = (object)$item;
-  $lang = Config::get('language')!==$item->language? $item->language.'/': '';
-  ?>
+  $lang = Config::get('language')!==$item->language? $item->language.'/': ''; ?>
 <item>
 <title><?=$item->title?></title>
   <link><?=Config::base('blog/'.$item->id.'/'.$item->slug)?></link>

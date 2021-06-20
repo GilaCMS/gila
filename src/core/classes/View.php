@@ -144,9 +144,6 @@ class View
   */
   public static function getThemePath()
   {
-    if ($gpt = Router::request('g_preview_theme')) {
-      return 'themes/'.$gpt;
-    }
     return 'themes/'.Config::get('theme');
   }
 
@@ -515,7 +512,7 @@ class View
 
     if ($src[0]==='$') {
       if (substr($src, 1, 2)=='p=') {
-        $file = 'assets/themes/'.($_GET['g_preview_theme']??Config::get('theme')).'/'.substr($src, 3);
+        $file = 'assets/themes/'.Config::get('theme').'/'.substr($src, 3);
         if (!file_exists($file)) {
           $file='assets/core/photo.png';
         }

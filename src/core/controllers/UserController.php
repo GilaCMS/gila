@@ -47,7 +47,7 @@ class UserController extends Gila\Controller
     }
     View::set('page_title', __('Register'));
 
-    if ($_SERVER['REQUEST_METHOD']=='POST') { 
+    if ($_SERVER['REQUEST_METHOD']=='POST') {
       if (Event::get('recaptcha', true)===false) {
         View::alert('error', __('_recaptcha_error'));
         View::includeFile('register.php');
@@ -174,8 +174,11 @@ class UserController extends Gila\Controller
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       User::meta($r['id'], 'reset_code', $reset_code);
 
-      if(!Event::get('user_password_reset.email', false,
-      ['user_id'=>$r['id'], 'reset_code'=>$reset_code])) {
+      if (!Event::get(
+        'user_password_reset.email',
+        false,
+        ['user_id'=>$r['id'], 'reset_code'=>$reset_code]
+      )) {
         $baseurl = Config::base();
         $basereset = Config::base('user/password_reset');
         $subject = __('reset_msg_ln1').' '.$r['username'];

@@ -237,7 +237,7 @@ class AdminController extends Gila\Controller
           echo "Error: ".$errors[$i]."</div>";
         } elseif (!in_array(strtolower(pathinfo($names[$i], PATHINFO_EXTENSION)), $extensions)) {
           echo "<div class='alert error'>Error: not a media file!</div>";
-        } elseif(file_exists($path)) {
+        } elseif (file_exists($path)) {
           echo "<div class='alert error'>File with same name already exists!</div>";
         } elseif (!FileManager::allowedPath($path)) {
           echo "<div class='alert error'>Error: incorrect path!</div>";

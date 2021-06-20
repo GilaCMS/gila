@@ -34,10 +34,11 @@ class Page
       return $row;
     }
 
-    if(empty($id) && $published) {
+    if (empty($id) && $published) {
       $res = $db->query(
         "$query WHERE publish=1 AND `language`=?
-        UNION $query WHERE publish=1;", [Config::lang()]
+        UNION $query WHERE publish=1;",
+        [Config::lang()]
       );
       if ($row = mysqli_fetch_array($res)) {
         if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {

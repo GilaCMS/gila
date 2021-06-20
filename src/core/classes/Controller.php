@@ -6,6 +6,7 @@ class Controller
 {
   public static function admin()
   {
+    @header("X-Frame-Options: SAMEORIGIN");
     if (Session::userId()===0) {
       Config::addLang('core/lang/login/');
       if (Session::waitForLogin()>0) {

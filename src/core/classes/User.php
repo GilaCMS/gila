@@ -186,8 +186,13 @@ class User
     Config::addLang('core/lang/login/');
     $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
     self::meta($data['id'], 'reset_code', $reset_code);
-    if(Event::get('user_invite.email', false,
-    ['data'=>$data, 'reset_code'=>$reset_code])) return;
+    if (Event::get(
+      'user_invite.email',
+      false,
+      ['data'=>$data, 'reset_code'=>$reset_code]
+    )) {
+      return;
+    }
 
     $baseurl = Config::base();
     $basereset = Config::base('user/password_reset');

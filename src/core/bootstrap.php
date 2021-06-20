@@ -11,7 +11,8 @@ function timeDebug($txt)
 {
   global $starttime;
   $end = microtime(true);
-  printf("<br>".$txt." %.6f seconds.", $end - $starttime);
+  $log = new Logger(LOG_PATH.'/timeDebug.log');
+  $log->log($_GET['p'] ?? '', $txt);
   $starttime = $end;
 }
 
@@ -104,12 +105,15 @@ function __($key, $alt = null)
   return Config::tr($key, $alt);
 }
 
-$theme = Router::request('g_preview_theme', Config::get('theme'));
+$theme = Config::get('theme');
+if (isset($_GET['g_preview_theme']) && Session::hasPrivilege('admin')) {
+  $theme = strtr($_GET['g_preview_theme'], ['.'=>'','\\'=>'','/'=>'']);
+}
 if (file_exists("themes/$theme/load.php")) {
   include "themes/$theme/load.php";
 }
 if ($cors = Config::getArray('cors')) {
-  foreach ($corls as $url) {
+  foreach ($cors as $url) {
     @header('Access-Control-Allow-Origin: '.$url);
   }
 }
