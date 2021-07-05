@@ -11,7 +11,6 @@
 }
 
 .g-table table thead tr {
-  background: #e5e5e5;
   color: #000;
   padding: 6px 12px;
 }
@@ -168,7 +167,7 @@
 }
 
 .g-table table thead td {
-  overflow: auto;
+  overflow: visible;
 }
 
 .g-table table td p {

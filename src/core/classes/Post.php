@@ -116,6 +116,7 @@ class Post
   public static function categories()
   {
     global $db;
-    return $db->get("SELECT id,title FROM postcategory;");
+    return $db->read()->get("SELECT id,title FROM postcategory;");
   }
+
 }

@@ -6,6 +6,11 @@ class Menu
 {
   private static $active = false;
   public static $editableLinks = false;
+  public static $liClass = '';
+  public static $liActive = '';
+  public static $ulClass = 'dropdown-menu';
+  public static $aClass = '';
+  public static $iClass = '';
 
   public static function getContents($menu)
   {
@@ -152,10 +157,9 @@ class Menu
           continue;
         }
       }
+      $icon = self::$iClass;
       if (isset($item['icon'])) {
-        $icon = 'fa-'.$item['icon'];
-      } else {
-        $icon='';
+        $icon .= ' fa-'.$item['icon'];
       }
       $url = ($url=='#')? 'javascript:void(0)': htmlentities($url);
       $badge = "";
@@ -165,28 +169,33 @@ class Menu
           $badge = " <span class=\"g-badge\">$c</span>";
         }
       }
-      $liClass = '';
+      $liClass = self::$liClass;
+      $aClass = self::$aClass;
       if (isset($item['children'])) {
-        $liClass .= 'dropdown';
-        $childrenHtml = "<ul class=\"dropdown-menu\">";
+        $liClass .= ' dropdown';
+        $childrenHtml = '<ul class="'.self::$ulClass.'">';
         $childrenHtml .= self::getHtml($item['children'], $base);
         $childrenHtml .= "</ul>";
+        $ddIcon = '<i class="fas fa-angle-left right"></i>';
 
         if (self::$active===true) {
           self::$active = false;
-          $liClass .= ' active';
+          $liClass .= ' '.self::$liActive;//' active';
         }
       } else {
         $childrenHtml = '';
+        $ddIcon = '';
       }
       if ($url==$base) {
         self::$active = true;
         $liClass .= ' active';
+        $aClass .= ' active';
       }
       $liClass = $liClass!==''? ' class="'.$liClass.'"': '';
-      $html .= "<li$liClass><a href='".$url."'><i class='fa {$icon}'></i>";
-      $html .= " <span>".Config::tr($label)."</span>$badge</a>";
-      $html .= $childrenHtml."</li>";
+      $aClass = $aClass!==''? ' class="'.$aClass.'"': '';
+      $html .= "<li$liClass><a$aClass href='".$url."'><i class='fa {$icon}'></i>";
+      $html .= '<p>'.Config::tr($label).$badge.$ddIcon.'</p></a>';
+      $html .= $childrenHtml.'</li>';
     }
     return $html;
   }
@@ -195,5 +204,14 @@ class Menu
   {
     global $db;
     return $db->getList("SELECT `menu` FROM `menu`;");
+  }
+
+  public static function bootstrap()
+  {
+    self::$liClass = 'nav-item';
+    self::$liActive = 'menu-open';
+    self::$ulClass = 'nav nav-treeview';
+    self::$aClass = 'nav-link';
+    self::$iClass = 'nav-icon fas';  
   }
 }

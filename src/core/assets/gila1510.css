@@ -903,7 +903,32 @@ input.btn {
   from{opacity:0}
   to{opacity:1}
 }
+@keyframes fade-out{
+  from{opacity:1}
+  to{opacity:0}
+}
 @keyframes expand{
   from{transform: scale(0.7);}
   to{transform: scale(1);}
+}
+
+.g-snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+.g-snackbar.show {
+  visibility: visible;
+  animation: fade-in 0.5s, move-up 0.5s, fade-out 0.5s 2.5s;
 }

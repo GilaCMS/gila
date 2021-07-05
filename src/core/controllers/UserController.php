@@ -47,54 +47,11 @@ class UserController extends Gila\Controller
     }
     View::set('page_title', __('Register'));
 
-    if ($_SERVER['REQUEST_METHOD']=='POST') {
-      if (Event::get('recaptcha', true)===false) {
-        View::alert('error', __('_recaptcha_error'));
-        View::includeFile('register.php');
-        return;
-      }
-      if ($error = Event::get('register.error', null, $_POST)) {
-        View::alert('error', $error);
-        View::includeFile('register.php');
-        return;
-      }
-    }
-
-    if (Form::posted('register')) {
-      $email = Router::request('email');
-      $name = Router::request('name');
-      $password = $_POST['password'];
-
-      if ($name != $_POST['name']) {
-        View::alert('error', __('register_error2'));
-      } elseif (User::getByEmail($email) || $email != $_POST['email']) {
-        View::alert('error', __('register_error1'));
-      } else {
-        // register the user
-        if ($user_Id = User::create($email, $password, $name)) {
-          // success
-          if (!Event::get('user_activation.email', false, ['user_id'=>$user_id]) &&
-          Config::get('user_activation')=='byemail') {
-            $baseurl = Config::base();
-            $baseactivate = Config::base('user/activate');
-            $subject = __('activate_msg_ln1').' '.$name;
-            $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
-            $msg = __('activate_msg_ln2')." {$name}\n\n";
-            $msg .= __('activate_msg_ln3')." {$_SERVER['HTTP_HOST']}\n\n";
-            $msg .= $baseactivate."?ap=$activate_code\n\n";
-            $msg .= __('activate_msg_ln4');
-            $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
-            User::meta($user_Id, 'activate_code', $activate_code);
-            new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
-          }
-          View::includeFile('user-register-success.php');
-          return;
-        } else {
-          View::alert('error', __('register_error2'));
-        }
-      }
-    }
-    View::includeFile('register.php');
+    if (Form::posted('register') && User::register($_POST)) {
+      View::includeFile('user-register-success.php');
+    } else {
+      View::includeFile('register.php');
+    }    
   }
 
   public function activateAction()

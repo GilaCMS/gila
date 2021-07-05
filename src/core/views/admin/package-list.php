@@ -78,7 +78,7 @@ foreach ($packages as $pkey=>$p) {
 
     // Title & version
     $title = $p->title??$p->package;
-    $table .= '<td style="min-width:50%;"><b>'.$title.' '.(isset($p->version)?$p->version:'').'</b>';
+    $table .= '<td style="min-width:50%;"><b onclick="g.snackbar(\'Hola mundo!\')">'.$title.' '.(isset($p->version)?$p->version:'').'</b>';
 
     // Description
     $desc = __($p->package.':desc');

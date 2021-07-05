@@ -363,6 +363,17 @@ g.alert = function(html,type,callback) {
   g.dialog({body:icon+'<h2>'+html+'</h2>',class:'small text-align-center',escape:false,buttons:buttons,foot:foot,type:'modal'});
 }
 
+g.snackbar = function(html) {
+  if(typeof gSnackbar!=='undefined') {
+    gSnackbar.remove();
+    clearInterval(gSnackbarInterval);
+  }
+  g(document.body).append('<div class="g-snackbar show" id="gSnackbar">'+html+'</div>');
+  gSnackbarInterval = setInterval(function(){
+    gSnackbar.className = gSnackbar.className.replace("show", "");
+    clearInterval(gSnackbarInterval);
+  }, 3000);
+}
 
 var g_requiredGroup = new Array();
 var g_baseUrl = "res/";

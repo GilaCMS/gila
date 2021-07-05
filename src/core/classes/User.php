@@ -194,7 +194,7 @@ class User
       return;
     }
 
-    $baseurl = Config::base();
+    $baseurl = Config::get('title');
     $basereset = Config::base('user/password_reset');
     $subject = __('invite_msg_ln1').' '.$data['username'];
     $msg = __('invite_msg_ln2')." {$data['username']}\n\n";
@@ -204,5 +204,50 @@ class User
     $msg .= __('activate_msg_ln4');
     $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
     new Sendmail(['email'=>$data['email'], 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+  }
+
+  public static function register($data)
+  {
+    if (Event::get('recaptcha', true)===false) {
+      View::alert('error', __('_recaptcha_error'));
+      return false;
+    }
+    if ($error = Event::get('register.error', null, $data)) {
+      View::alert('error', $error);
+      return false;
+    }
+
+    $email = Router::request('email');
+    $name = Router::request('name');
+    $password = $data['password'];
+
+    if ($name != $data['name']) {
+      View::alert('error', __('register_error2'));
+    } elseif (User::getByEmail($email) || $email != $data['email']) {
+      View::alert('error', __('register_error1'));
+    } else {
+      // register the user
+      if ($user_Id = User::create($email, $password, $name)) {
+        // success
+        if (!Event::get('user_activation.email', false, ['user_id'=>$user_id]) &&
+        Config::get('user_activation')=='byemail') {
+          $baseurl = Config::base();
+          $baseactivate = Config::base('user/activate');
+          $subject = __('activate_msg_ln1').' '.$name;
+          $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+          $msg = __('activate_msg_ln2')." {$name}\n\n";
+          $msg .= __('activate_msg_ln3').' '.Config::get('title')."\n\n";
+          $msg .= $baseactivate."?ap=$activate_code\n\n";
+          $msg .= __('activate_msg_ln4');
+          $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+          User::meta($user_Id, 'activate_code', $activate_code);
+          new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+        }
+        return true;
+      } else {
+        View::alert('error', __('register_error2'));
+      }
+    }
+    return false;
   }
 }

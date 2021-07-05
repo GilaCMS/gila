@@ -57,7 +57,7 @@ class Db
     if ($this->profiling) {
       $res = $this->link->query('SHOW profiles;');
       if ($r=mysqli_fetch_row($res)) {
-        $line = date("Y-m-d H:i:s").', '.$r[1].', '.$r[2]."\n";
+        $line = date("Y-m-d H:i:s").', '.$r[1]. ', "'.strtr($r[2], ['"'=>'\\"'])."\"\n";
         file_put_contents($this->profiling.'/db.'.$this->dbhost.'.log', $line, FILE_APPEND);
       }
     }

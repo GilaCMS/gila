@@ -62,4 +62,12 @@ class Event
     }
     return $default;
   }
+
+  public static function log($type, $data)
+  {
+    global $db;
+    $db->query("INSERT INTO event_log(`type`,user_id,`data`) VALUES(?,?,?)", [
+      $type, Session::userId(), json_encode($data)
+    ]);  
+  }
 }

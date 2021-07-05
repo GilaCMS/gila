@@ -62,7 +62,7 @@ class Session
         self::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
       } else {
         @$_SESSION['failed_attempts'][] = time();
-        $session_log = new Logger(LOG_PATH.'/login.failed.log');
+        $session_log = new Gila\Logger(LOG_PATH.'/login.failed.log');
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
       session_commit();
@@ -78,8 +78,7 @@ class Session
     self::commit();
     self::$user_id = $id;
     if ($msg!==null) {
-      $session_log = new Logger(LOG_PATH.'/sessions.log');
-      $session_log->info($msg, ['user_id'=>$id, 'email'=>$email]);
+      Event::log('user.login');
     }
   }
 
@@ -209,8 +208,7 @@ class Session
   public static function destroy()
   {
     if (self::userId()>0) {
-      $session_log = new Logger(LOG_PATH.'/sessions.log');
-      $session_log->info('End', ['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
+      Event::log('user.logout');
     }
     self::remove($_COOKIE['GSESSIONID']);
   }
