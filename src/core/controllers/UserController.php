@@ -157,21 +157,31 @@ class UserController extends Gila\Controller
     header('Content-Type: application/json');
     if (!isset($_POST['email']) || !isset($_POST['password'])) {
       http_response_code(400);
-      echo '{"error":"Credencials missing"}';
+      echo '{"success":false, "ewrror":"'.__('login_error_msg').'"}';
       return;
     }
     $usr = User::getByEmail($_POST['email']);
     if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
-      $token = User::meta($usr['id'], 'token');
-      if ($token) {
-        echo '{"token":"'.$token.'"}';
-        return;
-      } else {
-        echo '{"error":"There is not token set for this account"}';
+      $token = '';
+      $user_agent = $_SERVER['HTTP_USER_AGENT']??'';
+      $ip = $_SERVER['REMOTE_ADDR']??'';
+      while (strlen($token) < 60) {
+        $token .= hash('sha512', uniqid(true));
       }
+      $token = substr($token, 0, 60);
+      Session::create($usr['id'], $token, $ip, $user_agent);
+      Session::user($usr['id'], $usr['username'], $usr['email']);
+      echo json_encode([
+        'success'=>true,
+        'id'=>$usr['id'],
+        'username'=>$usr['username'],
+        'token'=>$token
+      ], JSON_UNESCAPED_UNICODE);
+      return;
+    } else {
+      http_response_code(401);
+      echo '{"success":false, "error":"'.__('login_error_msg').'"}';
     }
-    http_response_code(401);
-    echo '{"error":"Credencials are not valid"}';
   }
 
   public function logoutAction()
@@ -181,7 +191,11 @@ class UserController extends Gila\Controller
       return;
     }
     Session::destroy();
-    echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
+    if (Session::$token) {
+      echo '{"success":true}';
+    } else {
+      echo "<meta http-equiv='refresh' content='0;url=".Config::get('base')."' />";
+    }
   }
 
   public function uploadImageAction()
@@ -193,7 +207,7 @@ class UserController extends Gila\Controller
     if (isset($_FILES['uploadfiles'])) {
       if (isset($_FILES['uploadfiles']["error"])) {
         if ($_FILES['uploadfiles']["error"] > 0) {
-          echo "Error: " . $_FILES['uploadfiles']['error'] . "<br>";
+          echo '{"success":false,"msg":"'.$_FILES['uploadfiles']['error'].'"}';
         }
       }
 
@@ -222,7 +236,7 @@ class UserController extends Gila\Controller
         }
         echo '{"success":true,"image":"'.htmlentities($target).'"}';
       } else {
-        echo '{"success":false,"msg":"Not a media file"}';
+        echo '{"success":false,"error":"Not a media file"}';
       }
     }
   }

@@ -7,6 +7,7 @@ class Session
   private static $started = false;
   private static $user_id;
   public static $data;
+  public static $token = null;
 
   public static function start()
   {
@@ -18,15 +19,15 @@ class Session
 
     // token authentication
     if (!isset($_COOKIE['GSESSIONID'])) {
-      $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
-      if ($token) {
-        $usr = User::getByMeta('token', $token);
+      self::$token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
+      if (self::$token) {
+        $usr = User::getByMeta('token', self::$token);
         if ($usr) {
           self::$user_id = $usr['id'];
         }
+        $_COOKIE['GSESSIONID'] = self::$token;
       }
       self::login();
-      return;
     }
 
     // verify that session is in database
@@ -132,7 +133,8 @@ class Session
       'user_id'=>$userId, 'gsessionid'=>$gsessionId,
       'ip_address'=>$ip, 'user_agent'=>$user_agent
     ]);
-    $ql = "INSERT into sessions (user_id, gsessionid, ip_address, user_agent) VALUES (?,?,?,?);";
+    self::$sessionId = $gsessionId;
+    $ql = "INSERT INTO `sessions` (user_id, gsessionid, ip_address, user_agent) VALUES(?,?,?,?);";
     $db->query($ql, [$userId, $gsessionId, $ip, $user_agent]);
   }
 
@@ -175,7 +177,7 @@ class Session
   {
     global $db;
     $ql = "UPDATE sessions SET data=?, updated=NOW() WHERE gsessionid=?;";
-    $db->query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']]);
+    $db->query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']??self::$token]);
   }
 
   public static function unsetKey($key)

@@ -7,7 +7,7 @@ return [
   'fields'=>[
     'id'=>[],
     'user_id'=>[
-      'qtype'=>'INT'
+      'qtype'=>'INT(11) UNSIGNED'
     ],
     'gsessionid'=>[
       'qtype'=>'VARCHAR(120)'
