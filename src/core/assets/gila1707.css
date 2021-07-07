@@ -688,8 +688,8 @@ input.btn {
 
 .g-nav li.open>.dropdown-menu{display:block;}
 .open>.dropdown-menu{display:block;}
-.g-nav li.dropdown>a:after{content:' \25BE';}
-.dropdown-toggle:after{content:' \25BE';}
+/*.g-nav li.dropdown>a:after{content:' \25BE';}
+.dropdown-toggle:after{content:' \25BE';}*/
 .g-nav.vertical li.dropdown>a:after{float:right;content:' \25B8';}
 
 .g-nav li>ul, .dropdown-menu{ background-color:#fff; }

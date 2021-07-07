@@ -133,7 +133,7 @@ class Session
       'user_id'=>$userId, 'gsessionid'=>$gsessionId,
       'ip_address'=>$ip, 'user_agent'=>$user_agent
     ]);
-    self::$sessionId = $gsessionId;
+    self::$token = $gsessionId;
     $ql = "INSERT INTO `sessions` (user_id, gsessionid, ip_address, user_agent) VALUES(?,?,?,?);";
     $db->query($ql, [$userId, $gsessionId, $ip, $user_agent]);
   }

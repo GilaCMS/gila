@@ -11,6 +11,7 @@ class Menu
   public static $ulClass = 'dropdown-menu';
   public static $aClass = '';
   public static $iClass = '';
+  public static $ddIcon = ' &#9662;';
 
   public static function getContents($menu)
   {
@@ -107,7 +108,7 @@ class Menu
         return $children;
       }
       if ($type=='dir') {
-        return ['name'=>$data['name']??'', 'url'=>$data['url']??'#',
+        return ['name'=>$data['title']??($data['name']??''), 'url'=>'#',
         'children'=>$children];
       }
       if ($type=='page') {
@@ -176,7 +177,7 @@ class Menu
         $childrenHtml = '<ul class="'.self::$ulClass.'">';
         $childrenHtml .= self::getHtml($item['children'], $base);
         $childrenHtml .= "</ul>";
-        $ddIcon = '<i class="fas fa-angle-left right"></i>';
+        $ddIcon = self::$ddIcon;
 
         if (self::$active===true) {
           self::$active = false;
@@ -193,7 +194,10 @@ class Menu
       }
       $liClass = $liClass!==''? ' class="'.$liClass.'"': '';
       $aClass = $aClass!==''? ' class="'.$aClass.'"': '';
-      $html .= "<li$liClass><a$aClass href='".$url."'><i class='fa {$icon}'></i>";
+      $html .= "<li$liClass><a$aClass href='".$url."'>";
+      if(!empty($icon)) {
+        $html .= "<i class='fa {$icon}'></i>";
+      }
       $html .= '<p>'.Config::tr($label).$badge.$ddIcon.'</p></a>';
       $html .= $childrenHtml.'</li>';
     }
@@ -212,6 +216,7 @@ class Menu
     self::$liActive = 'menu-open';
     self::$ulClass = 'nav nav-treeview';
     self::$aClass = 'nav-link';
-    self::$iClass = 'nav-icon fas';  
+    self::$iClass = 'nav-icon fas';
+    self::$ddIcon = '<i class="fas fa-angle-left right"></i>';
   }
 }
