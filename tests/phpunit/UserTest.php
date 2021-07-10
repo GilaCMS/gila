@@ -2,6 +2,7 @@
 
 include __DIR__.'/includes.php';
 include_once __DIR__.'/../../src/core/classes/User.php';
+include __DIR__.'/../../src/core/classes/Controller.php';
 use PHPUnit\Framework\TestCase;
 use Gila\User;
 use Gila\Router;
@@ -20,6 +21,7 @@ class UserTest extends TestCase
 	}
 
 	public function test_auth(){
+		Router::controller('user', 'core/controllers/UserController');
 		$_POST = ['email'=>'test_create@email.com', 'password'=>'123'];
 		$response = json_decode($this->request('user/auth', 'POST'), true);
 		$this->assertTrue($response['success']);
