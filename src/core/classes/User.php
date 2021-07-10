@@ -8,6 +8,9 @@ class User
     global $db;
     if (Event::get('validateUserPassword', true, $password)===true) {
       $pass = ($password===null)? '': Config::hash($password);
+      if ($db->value("SELECT COUNT(*) FROM user WHERE email=?", [$email])>0) {
+        return false;
+      }
       $db->query("INSERT INTO user(email,pass,username,active,`language`)
         VALUES(?,?,?,?,?);", [$email, $pass, $name, $active, Config::lang()]);
       return $db->insert_id;
