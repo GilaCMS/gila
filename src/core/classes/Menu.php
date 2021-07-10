@@ -11,7 +11,8 @@ class Menu
   public static $ulClass = 'dropdown-menu';
   public static $aClass = '';
   public static $iClass = '';
-  public static $ddIcon = ' &#9662;';
+  public static $ddIcon = '';
+  public static $span = true;
 
   public static function getContents($menu)
   {
@@ -198,7 +199,11 @@ class Menu
       if(!empty($icon)) {
         $html .= "<i class='fa {$icon}'></i>";
       }
-      $html .= '<p>'.Config::tr($label).$badge.$ddIcon.'</p></a>';
+      if (self::$span) {
+        $html .= '<span>'.Config::tr($label).$badge.$ddIcon.'</span></a>';
+      } else {
+        $html .= '<p>'.Config::tr($label).$badge.$ddIcon.'</p></a>';
+      }
       $html .= $childrenHtml.'</li>';
     }
     return $html;
@@ -218,5 +223,6 @@ class Menu
     self::$aClass = 'nav-link';
     self::$iClass = 'nav-icon fas';
     self::$ddIcon = '<i class="fas fa-angle-left right"></i>';
+    self::$span = false;
   }
 }

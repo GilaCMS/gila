@@ -19,8 +19,8 @@ class View
   public static $cdn_paths = [
     'core/gila.min.js'=> 'core/gila1510.js',
     'core/gila.js'=> 'core/gila1510.js',
-    'core/gila.min.css'=> 'core/gila1707.css',
-    'core/gila.css'=> 'core/gila1707.css',
+    'core/gila.min.css'=> 'core/gila1510.css',
+    'core/gila.css'=> 'core/gila1510.css',
     'core/admin/media.js'=> 'core/admin/media1609.js'
   ];
 

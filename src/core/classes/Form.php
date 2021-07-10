@@ -303,7 +303,10 @@ class Form
         return $html . '</select>';
       },
       "checkbox"=> function ($name, $field, $ov) {
-        return self::$input_type['switch']($name, $field, $ov);
+        return self::$input_type['switch']($name, $field, $ov); //DEPRECATED
+      },
+      "check_box"=> function ($name, $field, $ov) {
+        return '<input type=checkbox name="'.$name.'" '.($ov==1?'checked':'').' value=1 '.$req.'>';
       },
       "switch"=> function ($name, $field, $ov) {
         if ($ov==1) {

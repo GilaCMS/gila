@@ -24,14 +24,13 @@ class Session
         $usr = User::getByMeta('token', self::$token);
         if ($usr) {
           self::$user_id = $usr['id'];
+          return;
         }
-        $_COOKIE['GSESSIONID'] = self::$token;
       }
-      self::login();
     }
 
     // verify that session is in database
-    if ($session = self::find($_COOKIE['GSESSIONID'])) {
+    if ($session = self::find($_COOKIE['GSESSIONID']??self::$token)) {
       // refresh every minute
       self::$user_id = $session['user_id'];
       self::$data = json_decode($session['data']??'[]', true);
@@ -45,7 +44,7 @@ class Session
           self::destroy();
         }
       }
-    } else {
+    } else if(isset($_COOKIE['GSESSIONID'])) {
       setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time()-1, '/');
     }
 
@@ -63,7 +62,7 @@ class Session
         self::user($usr['id'], $usr['username'], $usr['email'], 'Log In');
       } else {
         @$_SESSION['failed_attempts'][] = time();
-        $session_log = new Gila\Logger(LOG_PATH.'/login.failed.log');
+        $session_log = new Logger(LOG_PATH.'/login.failed.log');
         $session_log->log($_SERVER['REQUEST_URI'], htmlentities($_POST['username']));
       }
       session_commit();
@@ -212,7 +211,7 @@ class Session
     if (self::userId()>0) {
       Event::log('user.logout');
     }
-    self::remove($_COOKIE['GSESSIONID']);
+    self::remove($_COOKIE['GSESSIONID']??self::$token);
   }
 
   public static function waitForLogin()

@@ -198,7 +198,7 @@ class User
     $basereset = Config::base('user/password_reset');
     $subject = __('invite_msg_ln1').' '.$data['username'];
     $msg = __('invite_msg_ln2')." {$data['username']}\n\n";
-    $msg .= __('invite_msg_ln3')." $baseurl\n\n";
+    $msg .= __('invite_msg_ln3').' '.Config::get('title')."\n\n";
     $msg .= __('invite_msg_ln4')."\n";
     $msg .= $baseurl."?rp=$reset_code\n\n";
     $msg .= __('activate_msg_ln4');

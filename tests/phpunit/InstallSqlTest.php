@@ -27,7 +27,8 @@ class InstallSqlTest extends TestCase
       'user_notification'=>['id','user_id','type','details','url','unread','created'],
       'sessions'=>['id','user_id','gsessionid','ip_address','user_agent','updated','data'],
       'menu'=>['id','menu','data'],
-      'tableschema'=>['id','name','data']
+      'tableschema'=>['id','name','data'],
+      'event_log'=>['id','created','type','user_id','data']
     ];
 
     $tables = $db->get('SHOW TABLES');

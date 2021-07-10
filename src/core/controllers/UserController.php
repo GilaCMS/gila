@@ -24,6 +24,7 @@ class UserController extends Gila\Controller
       echo "<meta http-equiv='refresh' content='0;url=".(!empty($url)?$url:$base)."' />";
       exit;
     }
+    @header("X-Frame-Options: SAMEORIGIN");
     if (Session::waitForLogin()>0) {
       View::alert('error', __('login_error_msg2'));
     } elseif (isset($_POST['username']) && isset($_POST['password'])) {
@@ -140,7 +141,7 @@ class UserController extends Gila\Controller
         $basereset = Config::base('user/password_reset');
         $subject = __('reset_msg_ln1').' '.$r['username'];
         $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
-        $msg .= __('reset_msg_ln3')." $baseurl\n\n";
+        $msg .= __('reset_msg_ln3').' '.Config::get('title')."\n\n";
         $msg .= $basereset."?rp=$reset_code\n\n";
         $msg .= __('reset_msg_ln4');
         $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
