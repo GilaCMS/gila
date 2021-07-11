@@ -271,7 +271,7 @@ class Package
           $c = $GLOBALS['config']['db'];
           $link = mysqli_connect($c['host'], $c['user'], $c['pass'], $c['name']);
           if ($link===false) {
-            trigger_error('Database from '.$site.' could not connect for upgrade' , E_USER_WARNING);
+            trigger_error('Database from '.$site.' could not connect for upgrade', E_USER_WARNING);
             continue;
           }
           $db = new Db($GLOBALS['config']['db']);
@@ -422,7 +422,7 @@ class Package
   public static function check4updates()
   {
     if (Config::get('check4updates')==0) {
-      return;
+      return false;
     }
     $now = new DateTime("now");
     if (Config::get('checked4updates')===null) {

@@ -303,7 +303,10 @@ class Form
         return $html . '</select>';
       },
       "checkbox"=> function ($name, $field, $ov) {
-        return self::$input_type['switch']($name, $field, $ov);
+        return self::$input_type['switch']($name, $field, $ov); //DEPRECATED
+      },
+      "check_box"=> function ($name, $field, $ov) {
+        return '<input type=checkbox name="'.$name.'" '.($ov==1?'checked':'').' value=1 '.$req.'>';
       },
       "switch"=> function ($name, $field, $ov) {
         if ($ov==1) {
@@ -327,7 +330,7 @@ class Form
         global $db;
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         $pages = $db->getOptions("SELECT id,title FROM `page`;");
-        foreach(Config::getList('menu.pages') as $p) {
+        foreach (Config::getList('menu.pages') as $p) {
           $pages[$p[0]] = $p[1];
         }
         $types = '{"page":'.json_encode($pages, JSON_UNESCAPED_UNICODE).'}';

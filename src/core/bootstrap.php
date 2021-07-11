@@ -5,13 +5,15 @@ use Gila\Router;
 use Gila\Event;
 use Gila\Db;
 use Gila\Session;
+use Gila\Logger;
 
 $starttime = microtime(true);
 function timeDebug($txt)
 {
   global $starttime;
   $end = microtime(true);
-  printf("<br>".$txt." %.6f seconds.", $end - $starttime);
+  $log = new Logger(LOG_PATH.'/timeDebug.log');
+  $log->log(round($end-$starttime, 6), $txt, ['uri'=>$_GET['p']??'']);
   $starttime = $end;
 }
 
@@ -104,12 +106,16 @@ function __($key, $alt = null)
   return Config::tr($key, $alt);
 }
 
-$theme = Router::request('g_preview_theme', Config::get('theme'));
+$theme = Config::get('theme');
+if (isset($_GET['g_preview_theme']) && Session::hasPrivilege('admin')) {
+  $gtheme = strtr($_GET['g_preview_theme'], ['.'=>'','\\'=>'','/'=>'']);
+  if (file_exists('themes/'.$gtheme)) $theme = $gtheme;
+}
 if (file_exists("themes/$theme/load.php")) {
   include "themes/$theme/load.php";
 }
 if ($cors = Config::getArray('cors')) {
-  foreach ($corls as $url) {
+  foreach ($cors as $url) {
     @header('Access-Control-Allow-Origin: '.$url);
   }
 }

@@ -170,7 +170,7 @@ class CMController extends Gila\Controller
           $str="";
         }
         if (!is_numeric($str)) {
-          if($str[0]=='='||$str[0]=='-'||$str[0]=='+'||$str[0]=='@') {
+          if ($str[0]=='='||$str[0]=='-'||$str[0]=='+'||$str[0]=='@') {
             $str = '\''.$str;
           }
           $str = '"' . strtr($str, ['"'=>'""']) . '"';

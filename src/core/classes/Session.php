@@ -7,6 +7,7 @@ class Session
   private static $started = false;
   private static $user_id;
   public static $data;
+  public static $token = null;
 
   public static function start()
   {
@@ -18,19 +19,18 @@ class Session
 
     // token authentication
     if (!isset($_COOKIE['GSESSIONID'])) {
-      $token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
-      if ($token) {
-        $usr = User::getByMeta('token', $token);
+      self::$token = $_REQUEST['token'] ?? ($_SERVER['HTTP_TOKEN'] ?? null);
+      if (self::$token) {
+        $usr = User::getByMeta('token', self::$token);
         if ($usr) {
           self::$user_id = $usr['id'];
+          return;
         }
       }
-      self::login();
-      return;
     }
 
     // verify that session is in database
-    if ($session = self::find($_COOKIE['GSESSIONID'])) {
+    if ($session = self::find($_COOKIE['GSESSIONID']??self::$token)) {
       // refresh every minute
       self::$user_id = $session['user_id'];
       self::$data = json_decode($session['data']??'[]', true);
@@ -38,13 +38,15 @@ class Session
         $usr = User::getById($session['user_id']);
         if ($usr['active']===1) {
           self::user($usr['id'], $usr['username'], $usr['email']);
-          self::updateCookie();
+          if(isset($_COOKIE['GSESSIONID'])) {
+            self::updateCookie();
+          }
           return;
         } else {
           self::destroy();
         }
       }
-    } else {
+    } else if(isset($_COOKIE['GSESSIONID'])) {
       setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time()-1, '/');
     }
 
@@ -78,8 +80,7 @@ class Session
     self::commit();
     self::$user_id = $id;
     if ($msg!==null) {
-      $session_log = new Logger(LOG_PATH.'/sessions.log');
-      $session_log->info($msg, ['user_id'=>$id, 'email'=>$email]);
+      Event::log('user.login');
     }
   }
 
@@ -133,7 +134,8 @@ class Session
       'user_id'=>$userId, 'gsessionid'=>$gsessionId,
       'ip_address'=>$ip, 'user_agent'=>$user_agent
     ]);
-    $ql = "INSERT into sessions (user_id, gsessionid, ip_address, user_agent) VALUES (?,?,?,?);";
+    self::$token = $gsessionId;
+    $ql = "INSERT INTO `sessions` (user_id, gsessionid, ip_address, user_agent) VALUES(?,?,?,?);";
     $db->query($ql, [$userId, $gsessionId, $ip, $user_agent]);
   }
 
@@ -176,7 +178,7 @@ class Session
   {
     global $db;
     $ql = "UPDATE sessions SET data=?, updated=NOW() WHERE gsessionid=?;";
-    $db->query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']]);
+    $db->query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']??self::$token]);
   }
 
   public static function unsetKey($key)
@@ -209,10 +211,9 @@ class Session
   public static function destroy()
   {
     if (self::userId()>0) {
-      $session_log = new Logger(LOG_PATH.'/sessions.log');
-      $session_log->info('End', ['user_id'=>self::userId(), 'email'=>self::key('user_email')]);
+      Event::log('user.logout');
     }
-    self::remove($_COOKIE['GSESSIONID']);
+    self::remove($_COOKIE['GSESSIONID']??self::$token);
   }
 
   public static function waitForLogin()

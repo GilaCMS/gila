@@ -647,6 +647,15 @@ gtableCommand['edit_popup'] = {
   }
 }
 
+gtableCommand['edit_blocks'] = {
+  fa: "pencil",
+  label: "Blocks",
+  permission: "update",
+  fn: function(table,id){
+    window.location.href = 'blocks/editor/'+table.name+'/'+id
+  }
+};
+
 g.dialog.buttons.popup_update = {title:'Update', fn:function(btn){
   form = g('.gila-popup form').last()
   form.getElementsByTagName("BUTTON")[0].click()

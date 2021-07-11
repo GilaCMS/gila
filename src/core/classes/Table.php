@@ -86,7 +86,7 @@ class Table
       $p['delete'] = ['admin'];
     }
 
-    if(isset($this->table['cache']) && $this->table['cache']==true) {
+    if (isset($this->table['cache']) && $this->table['cache']==true) {
       Cache::set('tableschema--'.$content, json_encode($this->table));
     }
     self::$tableList[$content] = $this->table;

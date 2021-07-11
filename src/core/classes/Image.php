@@ -120,7 +120,7 @@ class Image
       imagepng($tmp, $file, 6);
       break;
     case 32:
-      imagewebp($tmp, $file);
+      imagewebp($tmp, $file, 90);
       break;
     }
   }

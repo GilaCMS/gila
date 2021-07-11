@@ -46,6 +46,12 @@ class Config
     }
   }
 
+  public static function class($class, $path)
+  {
+    global $classMap;
+    $classMap[$class] = $path;
+  }
+
   public static function addList($list, $el)
   {
     @$GLOBALS['list'][$list][] = $el;

@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::set('check4updates', $_POST['gila_check4updates']);
   Config::set('user_register', $_POST['gila_user_register']);
   Config::set('user_activation', $_POST['gila_user_activation']);
-  Config::set('use_cdn', $_POST['gila_use_cdn']);
   Config::set('use_webp', $_POST['gila_webp']);
   Config::set('maxImgWidth', $_POST['gila_maxImgWidth']);
   Config::set('maxImgHeight', $_POST['gila_maxImgHeight']);
@@ -62,7 +61,7 @@ foreach ($config_list as $key=>$value) {
   <?php echo Form::input('gila_user_register', ["type"=>"switch"], Config::get('user_register'), __("New users can register")) ?>
 
   <br>
-  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['byemail'=>__('Email activation link'),'byadmin'=>__('Administration'),'auto'=>__('Automatically')]], Config::get('user_activation'), __("New Users activation")) ?>
+  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Config::get('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
     <label class="g-label gm-4"><?=__("Timezone")?></label><select name="gila_timezone" value="<?=Config::get('timezone')?>" class="gm-4">

@@ -23,6 +23,8 @@ TableSchema::update(include 'src/core/tables/menu.php');
 
 TableSchema::update(include 'src/core/tables/tableschema.php');
 
+TableSchema::update(include 'src/core/tables/event_log.php');
+
 $db->query('CREATE TABLE IF NOT EXISTS `option` (
   `option` varchar(80) NOT NULL,
   `value` text DEFAULT NULL,

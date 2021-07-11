@@ -134,6 +134,7 @@ class BlogController extends Gila\Controller
       'posts'=>self::$ppp, 'category'=>$category, 'publish'=>1,
       'language'=>Config::lang(), 'page'=>self::$page]);
     if (self::$page<1 || self::$page>self::totalPages()) {
+      Cache::page('404_blogcategory'.Config::lang(), max(86400, $cacheTime));
       View::render('404.php');
       return;
     }
@@ -174,7 +175,8 @@ class BlogController extends Gila\Controller
     $cacheTime = Config::option('blog.cache');
     Config::canonical('blog/'.$id);
     if (Session::userId()==0 && $cacheTime > 0) {
-      Cache::page('blog/post'.$id, $cacheTime, [Config::mt('post')]);
+      $uniques = [Config::mt('post'), Config::mt('postcategory'), Config::mt('page')];
+      Cache::page('blog_'.Config::lang().$id, $cacheTime, $uniques);
     }
     Router::$action = "post";
 
@@ -264,6 +266,7 @@ class BlogController extends Gila\Controller
         }
       } else {
         http_response_code(404);
+        Cache::page('404_blog'.Config::lang(), max(86400, $cacheTime));
         View::render('404.php');
       }
     }

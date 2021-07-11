@@ -153,8 +153,8 @@ class FMController extends Gila\Controller
 
   public function uploadAction()
   {
-    if (!FileManager::allowedPath($this->relativePath)) {
-      die("Permission denied.");
+    if (!FileManager::allowedPath($_POST['path'])) {
+      die("Incorrect path.");
     }
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('upload_assets')) {
       die("Permission denied.");
@@ -174,7 +174,7 @@ class FMController extends Gila\Controller
     }
     for ($i=0; $i<count($tmp_file); $i++) {
       $name[$i] = pathinfo($name[$i], PATHINFO_FILENAME).'.'.strtolower(pathinfo($name[$i], PATHINFO_EXTENSION));
-      if(file_exists(SITE_PATH.$path.'/'.$name[$i])) {
+      if (file_exists(SITE_PATH.$path.'/'.$name[$i])) {
         die("Error: File with same name already exists!");
       }
       if (!FileManager::allowedFileType($name[$i])) {
@@ -194,8 +194,8 @@ class FMController extends Gila\Controller
 
   public function deleteAction()
   {
-    if (!FileManager::allowedPath($this->relativePath)) {
-      die("Permission denied.".$this->relativePath);
+    if (!FileManager::allowedPath($_POST['path'])) {
+      die("Incorecct path.");
     }
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("Permission denied.");

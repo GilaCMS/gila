@@ -52,9 +52,6 @@ View::css('lib/select2/select2.min.css');
 </style>
 
 <?php
-$pages_path = [];
-$templates = [];
-
 foreach ($t['js'] as $js) {
   echo "<script>".file_get_contents($js)."</script>";
 }
@@ -62,24 +59,6 @@ foreach ($t['css'] as $css) {
   View::css($css);
 }
 
-$pages_path[] = View::getThemePath().'/pages/';
-if (View::$parent_theme) {
-  $pages_path[] = 'themes/'.View::$parent_theme.'/templates/';
-}
-$pages_path = array_merge($pages_path, Config::packages());
-$pages_path[] = 'src/core/templates/';
-foreach ($pages_path as $path) {
-  if (file_exists($path)) {
-    $pages = scandir($path);
-    foreach ($pages as $page) {
-      if ($page[0]!='.') {
-        $templates[] = [
-        'title'=>$page, 'url'=>$path.$page
-      ];
-      }
-    }
-  }
-}
 // read the url query and add it in filters
 $tableFilters = is_array($t['filters']) ? array_merge($t['filters'], $_GET) : $_GET;
 unset($tableFilters['p']);

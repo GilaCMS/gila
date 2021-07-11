@@ -252,4 +252,9 @@ class Router
     }
     return false;
   }
+
+  public static function oki()
+  {
+    echo 'oook';
+  }
 }

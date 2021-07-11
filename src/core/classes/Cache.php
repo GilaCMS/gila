@@ -4,14 +4,14 @@ namespace Gila;
 
 class Cache
 {
-  public static $page_name;
-  public static $uniques;
+  public static $page_name = '';
+  public static $uniques = [];
   public static $cachePath = LOG_PATH.'/cacheItem/';
 
   public static function set($name, $data, $uniques = [])
   {
     $name = self::$cachePath.str_replace('/', '-', $name);
-    $caching_file = $name.'__'.implode('__', $uniques);
+    $caching_file = $name.'_'.implode('_', $uniques);
     return file_put_contents($caching_file, $data);
   }
 
@@ -21,7 +21,7 @@ class Cache
       $uniques = [$uniques];
     }
     $name = self::$cachePath.str_replace('/', '-', $name);
-    $caching_file = $name.'__'.implode('__', $uniques);
+    $caching_file = $name.'_'.implode('_', $uniques);
 
     if (file_exists($caching_file) && filemtime($caching_file)+$time>time()) {
       return file_get_contents($caching_file);
@@ -67,17 +67,20 @@ class Cache
         }
       }
       echo $data;
+      timeDebug('cached');
       exit;
     }
     ob_start();
     self::$page_name = $name;
     self::$uniques = $uniques;
+    self::$cachePath = realpath(LOG_PATH.'/cacheItem').'/';
 
     register_shutdown_function(function () {
-      $out2 = ob_get_contents();
-      if (!self::set(self::$page_name, $out2, self::$uniques)) {
-        trigger_error("Could not save cache: ".self::$page_name, E_USER_WARNING);
+      if (http_response_code()===404) {
+        if (strpos(self::$page_name, '404')!==0) return;
       }
+      $out2 = ob_get_contents();
+      self::set(self::$page_name, $out2, self::$uniques??[]);
     });
   }
 }
