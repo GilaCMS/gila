@@ -158,7 +158,7 @@ class UserController extends Gila\Controller
     header('Content-Type: application/json');
     if (!isset($_POST['email']) || !isset($_POST['password'])) {
       http_response_code(400);
-      echo '{"success":false, "ewrror":"'.__('login_error_msg').'"}';
+      echo '{"success":false, "error":"'.__('login_error_msg').'"}';
       return;
     }
     $usr = User::getByEmail($_POST['email']);
