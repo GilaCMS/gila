@@ -45,6 +45,8 @@ class InstallSqlTest extends TestCase
     $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM user'));
     $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM userrole'));
     $this->assertEquals(4, $db->value('SELECT COUNT(*) FROM widget'));
+    $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM post'));
+    $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM `page`'));
     $json = $db->value('SELECT blocks FROM `page` WHERE id=1');
     $this->assertEquals(json_decode($json, true)[0]['_type'], 'text');
   }

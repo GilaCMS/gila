@@ -93,6 +93,7 @@ class Logger
   public function log($level, $message, array $context = [])
   {
     if ($this->file != null) {
+      @date_default_timezone_set(Config::get('timezone'));
       $line = date("Y-m-d H:i:s").','.$level.','.$message.','.json_encode($context, true)."\n";
       @file_put_contents($this->file, $line, FILE_APPEND);
     }
@@ -131,6 +132,7 @@ class Logger
         $context['country'] = $country;
       }
     }
+    @date_default_timezone_set(Config::get('timezone'));
     $stat_log = new Logger(LOG_PATH.'/stats/'.date("Y-m-d").'.'.$type.'.log');
     $stat_log->log($value ?? Router::$url, $_SERVER['REMOTE_ADDR']??'', $context);
   }

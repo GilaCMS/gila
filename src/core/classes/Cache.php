@@ -77,7 +77,9 @@ class Cache
 
     register_shutdown_function(function () {
       if (http_response_code()===404) {
-        if (strpos(self::$page_name, '404')!==0) return;
+        if (strpos(self::$page_name, '404')!==0) {
+          return;
+        }
       }
       $out2 = ob_get_contents();
       self::set(self::$page_name, $out2, self::$uniques??[]);

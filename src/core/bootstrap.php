@@ -109,7 +109,9 @@ function __($key, $alt = null)
 $theme = Config::get('theme');
 if (isset($_GET['g_preview_theme']) && Session::hasPrivilege('admin')) {
   $gtheme = strtr($_GET['g_preview_theme'], ['.'=>'','\\'=>'','/'=>'']);
-  if (file_exists('themes/'.$gtheme)) $theme = $gtheme;
+  if (file_exists('themes/'.$gtheme)) {
+    $theme = $gtheme;
+  }
 }
 if (file_exists("themes/$theme/load.php")) {
   include "themes/$theme/load.php";
