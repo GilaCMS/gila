@@ -93,7 +93,7 @@ class TableTest extends TestCase
       'title'=>'Table2',
       'commands'=>['add','edit','delete']
     ];      
-    $tableExtended = Table::extend_recursive($table1, $table2);
+    $tableExtended = Gila\Table::extend_recursive($table1, $table2);
     $this->assertEquals($table3, $tableExtended);
   }
 }

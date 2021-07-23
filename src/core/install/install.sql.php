@@ -43,7 +43,7 @@ $db->query("REPLACE INTO userrole(id,userrole,`level`) VALUES(1,'Admin',10);");
 $db->query("INSERT INTO user(id,username,email,pass,active)
   VALUES(1,?,?,?,1);", [$_user,$_email,$_pass]);
 $db->query("INSERT INTO usermeta VALUES(1,1,'role',1);");
-$db->query("INSERT INTO post(id,user_id,title,slug,`description`,post,publish,`language`)
+$db->query("INSERT INTO post(id,`user_id`,title,slug,`description`,post,publish,`language`)
   VALUES(1,1,'Hello World 👋','hello_world','This is the first post','This is the first post. You can edit it from administration',1,'en');");
 $db->query("INSERT INTO page(id,title,slug,blocks,publish,template,`language`)
   VALUES(1,'About','about','[{\"_type\":\"text\",\"text\":\"This is a page to describe your website. You can edit this text in page editor\"}]',1,'','en');");
