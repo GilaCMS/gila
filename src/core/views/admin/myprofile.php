@@ -17,7 +17,7 @@ $user = User::getById($user_id);
 View::alerts();
 
 if (Router::post('submit-btn')==='submited' && isset($_POST['user_about'])) {
- $db->query("UPDATE user SET about=? WHERE id=?;", [$_POST['user_about'], $user_id]);
+  $db->query("UPDATE user SET about=? WHERE id=?;", [$_POST['user_about'], $user_id]);
 }
 ?>
 
@@ -92,7 +92,7 @@ if (Router::post('submit-btn')==='submited' && isset($_POST['user_about'])) {
     </div>
     </form>
 
-    <?php if(User::level(Session::userId())>=Config::get('utk_level')) { ?>
+    <?php if (User::level(Session::userId())>=Config::get('utk_level')) { ?>
     <form method="post" action="admin/profile" class="g-form">
 
     <br><div>

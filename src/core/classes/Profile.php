@@ -11,8 +11,10 @@ class Profile
 
     if (Router::post('submit-btn')==='submited') {
       User::updateName($user_id, strip_tags($_POST['gila_username']));
-      if (isset($_POST['meta'])) foreach ($_POST['meta'] as $meta=>$metavalue) {
-        User::meta($user_id, $meta, strip_tags($metavalue));
+      if (isset($_POST['meta'])) {
+        foreach ($_POST['meta'] as $meta=>$metavalue) {
+          User::meta($user_id, $meta, strip_tags($metavalue));
+        }
       }
       if ($_POST['gila_photo']==null) {
         User::metaDelete($user_id, 'photo');
