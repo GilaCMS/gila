@@ -9,8 +9,17 @@
 <?=View::script('core/admin/vue-components.js')?>
 <?=View::script('core/vue-upload-media.js')?>
 <?=View::script('core/admin/media.js')?>
+<?=View::css('core/admin/vue-editor.css');?>
+<?=View::script('core/admin/vue-editor.js');?>
+<?php
+global $db;
+$user = User::getById($user_id);
+View::alerts();
 
-<?php View::alerts(); ?>
+if (Router::post('submit-btn')==='submited' && isset($_POST['user_about'])) {
+ $db->query("UPDATE user SET about=? WHERE id=?;", [$_POST['user_about'], $user_id]);
+}
+?>
 
 <div class="gm-grid">
 
@@ -35,7 +44,7 @@
 
     <br><div>
     <label class="gm-6"><?=__('Twitter Account')?></label>
-    <input name='twitter_account' value="<?=$twitter_account?>" class="gm-6" />
+    <input name='meta[twitter_account]' value="<?=$twitter_account?>" class="gm-6" />
     </div>
 
     <br><div>
@@ -43,13 +52,16 @@
       class="btn btn-primary"><?=__('Update Profile')?></button>
     </div>
 
-    <p><?=__('Permissions')?>:
-    <ul><?php
+    <?php
     $allPermissions = Profile::getAllPermissions();
-    foreach (Gila\Session::permissions() as $per) {
-      echo '<li>'.Config::tr($per, $allPermissions[$per]);
+    if (!empty($allPermissions)) {
+      echo '<br>'.__('Permissions').'<ul>';
+      foreach (Gila\Session::permissions() as $per) {
+        echo '<li>'.Config::tr($per, $allPermissions[$per]);
+      }
+      echo '</ul>';
     }
-    ?></ul></p>
+    ?>
 
     </form>
   </div>
@@ -60,7 +72,7 @@
     <form method="post" action="admin/profile" class="g-form">
     <h2 class="text-align-center"><?=__('Security')?></h2>
     <br><div>
-    <label class="gm-6"><?=('Password')?></label>
+    <label class="gm-6"><?=__('Password')?></label>
     <input name="old_pass" type="password" class="gm-6" />
     </div>
 
@@ -80,6 +92,7 @@
     </div>
     </form>
 
+    <?php if(User::level(Session::userId())>=Config::get('utk_level')) { ?>
     <form method="post" action="admin/profile" class="g-form">
 
     <br><div>
@@ -96,6 +109,7 @@
     </div>
 
     </form>
+    <?php } ?>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 
 return [
   "name"=>"usergroup",
-  "title"=>"User Groups",
+  "title"=>"Groups",
   "id"=>"id",
   'order-by'=>"updated DESC",
   'tools'=>["add_popup","csv"],
@@ -15,6 +15,7 @@ return [
     'update'=>['admin','admin_user'],
     'delete'=>['admin','admin_user']
   ],
+  'search_box'=>true,
   "fields"=>[
     "id"=>[
       'title'=>"ID",

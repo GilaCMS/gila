@@ -21,9 +21,8 @@ class Page
     $query = 'SELECT id,title,description,updated,`language`,publish,slug,template FROM `page`';
 
     $res = $db->query(
-      "$query WHERE $publish (id=? OR (slug=? AND `language`=?))
-      UNION $query WHERE $publish (id=? OR slug=?);",
-      [$id, $id, Config::lang(), $id, $id]
+      "$query WHERE $publish (id=? OR (slug=? AND `language`=?))",
+      [$id, $id, Config::lang()]
     );
 
     if ($row = mysqli_fetch_array($res)) {
