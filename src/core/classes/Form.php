@@ -84,7 +84,7 @@ class Form
       $label='&nbsp;';
     }
     if (@$op['required'] === true) {
-      $label .= ' *';
+      $label .= '<span class="required-field"> *</span>';
     }
 
     $html .= '<div class="g-label">'.$label;

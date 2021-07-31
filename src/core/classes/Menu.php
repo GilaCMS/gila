@@ -115,6 +115,9 @@ class Menu
       if ($type=='page') {
         if ($r=Page::getById(@$data['id'])) {
           $url = $r['slug'];
+          if (Config::lang()!==Config::get('language')) {
+            $url = Config::lang().'/'.$url;
+          }
           if (self::$editableLinks) {
             $url = self::$editableLinks.'/'.$r['id'];
           }

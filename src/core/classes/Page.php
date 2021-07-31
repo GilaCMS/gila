@@ -31,6 +31,18 @@ class Page
         $row['page'] = View::blocks($blocks, 'page_'.$row['id']);
       }
       return $row;
+    } else {
+      $res = $db->query(
+        "$query WHERE $publish (id=? OR slug=?)",
+        [$id, $id]
+      );
+      if ($row = mysqli_fetch_array($res)) {
+        if ($blocks = $db->value("SELECT blocks FROM `page` WHERE id=?;", [$row['id']])) {
+          $blocks = json_decode($blocks);
+          $row['page'] = View::blocks($blocks, 'page_'.$row['id']);
+        }
+        return $row;
+      }
     }
 
     if (empty($id) && $published) {
