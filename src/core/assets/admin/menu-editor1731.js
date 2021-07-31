@@ -71,12 +71,11 @@ Vue.component('menu-editor', {
       tmp = this.pos[x]
       this.pos[x] = this.pos[y]
       this.pos[y] = tmp
-      console.log(tmp)
       this.update()
+      this.$forceUpdate()
     },
     updateFolder: function(param) {
       this.pos[param[0]].children=param[1]
-      console.log(JSON.stringify(this.pos))
       this.ivalue = JSON.stringify(this.pos)
     },
     update: function() {
@@ -84,7 +83,6 @@ Vue.component('menu-editor', {
         this.$emit('event', [this.index, this.pos])
         return
       }
-      console.log(JSON.stringify(this.pos))
       this.ivalue = JSON.stringify(this.pos)
     },
     beforeCreate: function(){

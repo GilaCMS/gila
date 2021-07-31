@@ -68,6 +68,6 @@ class Event
     global $db;
     $db->query("INSERT INTO event_log(`type`,user_id,`data`) VALUES(?,?,?)", [
       $type, Session::userId(), json_encode($data)
-    ]);  
+    ]);
   }
 }

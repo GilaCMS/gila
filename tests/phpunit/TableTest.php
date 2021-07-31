@@ -73,4 +73,27 @@ class TableTest extends TestCase
     $post = $db->value('SELECT post from post WHERE id=1;');
     $this->assertEquals('<p>Post</p>', $post);
   }
+
+  public function test_extend_recursive()
+  {
+    $table1 = [
+      'name'=>'table',
+      'title'=>'Table1',
+      'commands'=>['add','edit']
+    ];
+    $table2 = [
+      'name'=>'table',
+      'extends'=>'package/table/table.php',
+      'title'=>'Table2',
+      'commands'=>['delete']
+    ];
+    $table3 = [
+      'name'=>'table',
+      'extends'=>'package/table/table.php',
+      'title'=>'Table2',
+      'commands'=>['add','edit','delete']
+    ];      
+    $tableExtended = Gila\Table::extend_recursive($table1, $table2);
+    $this->assertEquals($table3, $tableExtended);
+  }
 }

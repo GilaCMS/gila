@@ -52,7 +52,7 @@ class UserController extends Gila\Controller
       View::includeFile('user-register-success.php');
     } else {
       View::includeFile('register.php');
-    }    
+    }
   }
 
   public function activateAction()

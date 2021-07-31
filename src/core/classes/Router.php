@@ -149,7 +149,7 @@ class Router
   * @param $key (string) Parameter's name
   * @return null if the parameter is not set
   */
-  public static function post($key, $default=null)
+  public static function post($key, $default=null) // DEPRECATED
   {
     return isset($_POST[$key])?$_POST[$key]:$default;
   }
@@ -240,7 +240,7 @@ class Router
             @http_response_code(403);
           } else {
             array_shift($matches);
-            call_user_func_array($route[1], $matches);
+            @call_user_func_array($route[1], $matches);
           }
           return true;
         }

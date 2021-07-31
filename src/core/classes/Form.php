@@ -84,10 +84,22 @@ class Form
       $label='&nbsp;';
     }
     if (@$op['required'] === true) {
-      $label .= ' *';
+      $label .= '<span class="required-field"> *</span>';
     }
 
     $html .= '<div class="g-label">'.$label;
+
+    if ($type && $type=='check_box') {
+      $req = isset($op['required'])? ' required':'';
+      $html .= '<label><input type=checkbox name="'.$name.'" '.($ov==1?'checked':'').' value=1 '.$req.'>';
+      $html .= ' <span>'.$label.'</span></label>';
+      if (isset($op['helptext'])) {
+        $helptext = $op['helptext_'.Config::lang()] ?? Config::tr($op['helptext']);
+        $html .= '<br><span style="font-weight:400;font-size:90%">'.$helptext.'</span>';
+      }
+      return $html.'</div>';
+    }
+
     if (isset($op['helptext'])) {
       $helptext = $op['helptext_'.Config::lang()] ?? Config::tr($op['helptext']);
       $html .= '<br><span style="font-weight:400;font-size:90%">'.$helptext.'</span>';

@@ -2,6 +2,7 @@
 .device-pill{background: var(--main-a-color); border-radius:6px; padding:8px; display:inline-block;margin:8px;opacity:0.8}
 .device-pill .close {cursor:pointer}
 .device-pill.selected {opacity:1}
+.device-pill img {width:20px}
 </style>
 <?=View::script('lib/vue/vue.min.js')?>
 <?=View::script('core/admin/vue-components.js')?>
@@ -21,11 +22,12 @@
   }
   ?>
 <div class="wrapper" id="currentDevices">
-  <h3>You are connected with these devices</h3>
+  <h3><?=__('You are connected with these devices', ['es'=>'Estas conectado con esos dispositivos'])?></h3>
   <div v-for="(s,i) in sessions" v-bind:class="{'device-pill':true,selected:s.current}">
-    <img :src="'src/core/assets/'+iconFile(s.device)">{{s.os}} | {{s.browser}} | IP: {{s.ip}}
-    <span v-if="s.current">(this)</span>
-    <i v-else class="close" @click="removeDevice(i)">&times;</i>
+    <img :src="'src/core/assets/'+iconFile(s.device)">
+    {{s.os}} | {{s.browser}} | IP: {{s.ip}}
+    <span v-if="s.current"></span>
+    <span v-else class="close" @click="removeDevice(i)">&times;</span>
   </div>
 </div>
 
@@ -44,7 +46,6 @@ var connectedDevicesApp = new Vue({
           if(data.error) {
             alert(data.error);
           } else {
-            alert("Your account now is disconnected from that device");
             _this.sessions = data
           }
         })

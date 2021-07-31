@@ -38,7 +38,7 @@ class Session
         $usr = User::getById($session['user_id']);
         if ($usr['active']===1) {
           self::user($usr['id'], $usr['username'], $usr['email']);
-          if(isset($_COOKIE['GSESSIONID'])) {
+          if (isset($_COOKIE['GSESSIONID'])) {
             self::updateCookie();
           }
           return;
@@ -46,7 +46,7 @@ class Session
           self::destroy();
         }
       }
-    } else if(isset($_COOKIE['GSESSIONID'])) {
+    } elseif (isset($_COOKIE['GSESSIONID'])) {
       setcookie('GSESSIONID', $_COOKIE['GSESSIONID'], time()-1, '/');
     }
 

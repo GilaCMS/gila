@@ -284,6 +284,7 @@ class AdminController extends Gila\Controller
     View::set('twitter_account', User::meta($user_id, 'twitter_account'));
     View::set('token', User::meta($user_id, 'token'));
     View::set('user_photo', User::meta($user_id, 'photo'));
+    View::set('user_id', $user_id);
     View::renderAdmin('admin/myprofile.php');
   }
 

@@ -118,5 +118,4 @@ class Post
     global $db;
     return $db->read()->get("SELECT id,title FROM postcategory;");
   }
-
 }

@@ -30,6 +30,13 @@ class UserNotification
     return $db->value("SELECT COUNT(*) FROM user_notification WHERE user_id=? AND unread=1 AND type=? ORDER BY created DESC", [$user_id, $type]);
   }
 
+  public static function countNewByType()
+  {
+    global $db;
+    $user_id = Session::userId();
+    return $db->getAssoc("SELECT type,COUNT(*) AS new FROM user_notification WHERE user_id=? AND unread=1 ORDER BY created DESC", [$user_id]);
+  }
+
   public static function setRead($id)
   {
     global $db;

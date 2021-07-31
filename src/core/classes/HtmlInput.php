@@ -5,7 +5,7 @@ class HtmlInput
 {
   public static $eventAttributes;
 
-  public function purify($value, $allowed_tags=false)
+  public static function purify($value, $allowed_tags=false)
   {
     if ($allowed_tags===false) {
       return strip_tags($value);
@@ -30,7 +30,7 @@ class HtmlInput
     return $value;
   }
 
-  public function DOMSanitize($value, $js=true)
+  public static function DOMSanitize($value, $js=true)
   {
     // TODO: remove specific style attributes like box-sizing
     $dom = new \DOMDocument;

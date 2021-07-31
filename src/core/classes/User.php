@@ -72,6 +72,22 @@ class User
     return $db->getList("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';", [$value]);
   }
 
+  public static function getIdsWithPermission($permission)
+  {
+    global $db;
+    $rp = Config::getArray('permissions');
+    $roles = [];
+    foreach ($rp as $role=>$row) {
+      foreach ($row as $perm) {
+        if ($permission==$perm && !in_array($role, $role)) {
+          $roles[] = $role;
+        }
+      }
+    }
+    $values = implode(',', $roles);
+    return $db->getList("SELECT user_id FROM usermeta WHERE value IN({$values}) AND vartype='role';");
+  }
+
   public static function getByMeta($key, $value)
   {
     global $db;
@@ -175,7 +191,8 @@ class User
   public static function level($id)
   {
     global $db;
-    return $db->value("SELECT MAX(userrole.level) FROM userrole,usermeta WHERE userrole.id=usermeta.value AND usermeta.user_id=?", $id) ?? 0;
+    return $db->value("SELECT MAX(userrole.level) FROM userrole,usermeta
+    WHERE userrole.id=usermeta.value AND usermeta.vartype='role' AND usermeta.user_id=?", $id) ?? 0;
   }
 
   public static function roleLevel($id)

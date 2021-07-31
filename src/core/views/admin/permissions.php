@@ -25,11 +25,7 @@ $checked = Gila\Config::getArray('permissions');
 View::alerts();
 ?>
 <br>
-<form action="<?=Gila\Config::url('admin/users', ['tab'=>2])?>" method="POST">
-<button class="g-btn" name="submit" value="true">
-  <i class="fa fa-save"></i> <?=__('Submit')?>
-</button>
-<br>
+<form action="<?=Gila\Config::url('admin/users', ['tab'=>3])?>" method="POST">
 
 <style>table th:nth-child(2),table th:nth-child(2){font-weight: lighter;}</style>
 <table id="tbl-permissions" class="g-table">
@@ -57,4 +53,10 @@ View::alerts();
   </tr>
   <?php } ?>
 </table>
+
+<br>
+<button class="g-btn" name="submit" value="true">
+  <?=__('Save')?>
+</button>
+
 </form>

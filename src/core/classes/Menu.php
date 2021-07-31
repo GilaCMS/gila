@@ -115,6 +115,9 @@ class Menu
       if ($type=='page') {
         if ($r=Page::getById(@$data['id'])) {
           $url = $r['slug'];
+          if (Config::lang()!==Config::get('language')) {
+            $url = Config::lang().'/'.$url;
+          }
           if (self::$editableLinks) {
             $url = self::$editableLinks.'/'.$r['id'];
           }
@@ -196,7 +199,7 @@ class Menu
       $liClass = $liClass!==''? ' class="'.$liClass.'"': '';
       $aClass = $aClass!==''? ' class="'.$aClass.'"': '';
       $html .= "<li$liClass><a$aClass href='".$url."'>";
-      if(!empty($icon)) {
+      if (!empty($icon)) {
         $html .= "<i class='fa {$icon}'></i>";
       }
       if (self::$span) {
@@ -222,7 +225,7 @@ class Menu
     self::$ulClass = 'nav nav-treeview';
     self::$aClass = 'nav-link';
     self::$iClass = 'nav-icon fas';
-    self::$ddIcon = '<i class="fas fa-angle-left right"></i>';
+    self::$ddIcon = '<i class="fa fa-angle-left right"></i>';
     self::$span = false;
   }
 }

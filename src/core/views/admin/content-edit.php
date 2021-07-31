@@ -19,7 +19,9 @@ View::script('core/admin/vue-components.js');
 
 <style>
 .type-textarea label,.type-paragraph label{width:100%}
-.type-tinymce,.type-textarea,.type-paragraph,.type-media-gallery{grid-column:1/-1}
+.type-tinymce,.type-textarea,.type-paragraph,.type-media-gallery,.type-list{
+  grid-column:1/-1
+}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
 </style>
 

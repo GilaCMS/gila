@@ -2,7 +2,7 @@
 
 return [
   "name"=>"userrole",
-  "title"=>"User Roles",
+  "title"=>"Roles",
   "id"=>"id",
   'order-by'=>"updated DESC",
   'tools'=>["add_popup","csv"],
@@ -15,6 +15,7 @@ return [
     'update'=>['admin','admin_userrole'],
     'delete'=>['admin','admin_userrole']
   ],
+  'search_box'=>true,
   "fields"=>[
     "id"=>[
       'title'=>"ID",

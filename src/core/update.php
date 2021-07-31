@@ -26,3 +26,6 @@ TableSchema::update(include 'src/core/tables/event_log.php');
 
 Config::dir(LOG_PATH.'/stats');
 Config::dir(LOG_PATH.'/cacheItem');
+
+global $db;
+$db->query("UPDATE `page` SET language=? WHERE language IS NULL;", [Config::lang()]);
