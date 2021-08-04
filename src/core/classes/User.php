@@ -13,7 +13,9 @@ class User
       }
       $db->query("INSERT INTO user(email,pass,username,active,`language`)
         VALUES(?,?,?,?,?);", [$email, $pass, $name, $active, Config::lang()]);
-      return $db->insert_id;
+      $userId = $db->insert_id;
+      Event::fire('User::create', ['userId'=>$userId]);
+      return $userId;
     } else {
       return false;
     }

@@ -243,6 +243,9 @@ class Router
             @call_user_func_array($route[1], $matches);
           }
           return true;
+        } elseif (self::$method == 'OPTIONS') {
+          @http_response_code(200);
+          return true;
         }
       }
     }

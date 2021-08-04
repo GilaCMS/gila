@@ -153,8 +153,8 @@ class Form
     self::$input_type = [
       "select"=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';
-        foreach ($field['options'] as $value=>$name) {
-          $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.$name.'</option>';
+        foreach ($field['options'] as $value=>$option) {
+          $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.__($option).'</option>';
         }
         return $html . '</select>';
       },
@@ -208,21 +208,15 @@ class Form
         return $html . '</div>';
       },
       "animation"=> function ($name, $field, $ov) {
-        $html = '<div class="g-radio g-input" style="padding: var(--main-padding) 0; width: max-content;">';
         $options = [''=>'None','fade-in'=>'Fade','expand'=>'Expand','move-left'=>'Left','move-right'=>'Right','move-up'=>'Up','move-down'=>'Down'];
-        foreach ($options as $value=>$display) {
-          $id = 'radio_'.$name.'_'.$value;
-          $html .= '<input name="'.$name.'" type="radio" value="'.$value.'"';
-          $html .= ($value==$ov?' checked':'').' id="'.$id.$value.'">';
-          $html .= '<label for="'.$id.$value.'">'.__($display).'</label>';
-        }
-        return $html . '</div>';
+        $field['options'] = $options;
+        return self::$input_type['select']($name, $field, $ov); //DEPRECATED
       },
       "postcategory"=> function ($name, $field, $ov) {
         global $db;
         $html = '<select class="g-input" name="'.$name.'">';
         $res=$db->get('SELECT id,title FROM postcategory;');
-        $html .= '<option value=""'.(''==$ov?' selected':'').'>'.'[All]'.'</option>';
+        $html .= '<option value=""'.(''==$ov?' selected':'').'>*</option>';
         foreach ($res as $r) {
           $html .= '<option value="'.$r[0].'"'.($r[0]==$ov?' selected':'').'>'.$r[1].'</option>';
         }
@@ -318,7 +312,9 @@ class Form
         return self::$input_type['switch']($name, $field, $ov); //DEPRECATED
       },
       "check_box"=> function ($name, $field, $ov) {
-        return '<input type=checkbox name="'.$name.'" '.($ov==1?'checked':'').' value=1 '.$req.'>';
+        $value = $field['value']??1;
+        $checked = $ov==$value?'checked':'';
+        return "<input type=checkbox name='$name' $checked value='$value' $req>";
       },
       "switch"=> function ($name, $field, $ov) {
         if ($ov==1) {

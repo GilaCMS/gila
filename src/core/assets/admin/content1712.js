@@ -38,6 +38,7 @@ Vue.component('g-table', {
               </select>\
             </div>\
             <div v-if="table[\'search_boxes\']" v-for="sb in table[\'search_boxes\']" class="g-searchbox">\
+              <div v-if="displaySearchBox(sb)">\
               <label>&nbsp;{{field_label(sb)}}</label>\
               <v-select v-if="table.fields[sb].voptions" v-model="filter[sb]" :options="table.fields[sb].voptions" \
                 label="text" :reduce="item => item.id" placeholder="" @input="runsearch(true)"/>\
@@ -54,6 +55,7 @@ Vue.component('g-table', {
                 <div v-else style="position:relative;display:inline-block">\
                   <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
                 </div>\
+              </div>\
               </div>\
             </div>\
           </div>\
@@ -281,6 +283,15 @@ Vue.component('g-table', {
         this.pushState()
       }
       this.load_page()
+    },
+    displaySearchBox: function(key) {
+      if (typeof this.table.fields[key].conditions!='undefined') {
+        for (i in this.table.fields[key].conditions) {
+          if (this.filter[i]==this.table.fields[key].conditions[i]) return true;
+        }
+        return false;
+      }
+      return true;
     },
     gotoPage: function(p) {
       this.page = p
