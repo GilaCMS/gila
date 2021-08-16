@@ -200,7 +200,7 @@ class FMController extends Gila\Controller
     if (!Session::hasPrivilege('admin') && !Session::hasPrivilege('edit_assets')) {
       die("Permission denied.");
     }
-    if (!unlink($this->path) && !rmdir($this->path)) {
+    if (!unlink($_POST['path']) && !rmdir($_POST['path'])) {
       ob_clean();
       echo "File could not be deleted.";
     }

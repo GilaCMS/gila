@@ -7,8 +7,7 @@ return [
   'id'=>'id',
   'tools'=>['add_popup'],
   'csv'=> ['id','title','slug','updated','publish'],
-  'commands'=> ['blocks','delete','clone'],
-  'qactions'=> ['title'=>['edit_popup','blocks','delete']],
+  'commands'=> ['blocks','page_seo','delete','clone'],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish'],
   'js'=>['src/core/tables/page.js','src/core/assets/admin/blocks_btn.js'],
@@ -29,7 +28,8 @@ return [
     'title'=> [
       'title'=>'Title',
       'qtype'=>'varchar(80) DEFAULT NULL',
-      'group'=>'title'
+      'group'=>'title',
+      'required'=>true
     ],
     'slug'=> [
       'title'=>'Route',
@@ -68,6 +68,7 @@ return [
       'style'=>'width:8%',
       'type'=>'checkbox',
       'edit'=>true,
+      'default'=>1,
       'qtype'=>'INT(1) DEFAULT NULL'
     ],
     'updated'=> [

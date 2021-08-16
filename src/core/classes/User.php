@@ -216,7 +216,7 @@ class User
       return;
     }
 
-    $baseurl = Config::get('title');
+    $baseurl = Config::base();
     $basereset = Config::base('user/password_reset');
     $subject = __('invite_msg_ln1').' '.$data['username'];
     $msg = __('invite_msg_ln2')." {$data['username']}\n\n";

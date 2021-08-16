@@ -125,7 +125,8 @@ class Menu
           return ['name'=>$name, 'url'=>$url];
         }
         if (is_string($data['id'])) {
-          return ['name'=>__(ucfirst($data['id'])), 'url'=>Config::base($data['id'])];
+          $prefix = (Config::lang()!==Config::get('language'))? '/'.Config::lang(): '';
+          return ['name'=>__(ucfirst($data['id'])), 'url'=>$prefix.'/'.$data['id']];
         }
       }
       if ($type=='postcategory') {

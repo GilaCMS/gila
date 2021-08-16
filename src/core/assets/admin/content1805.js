@@ -267,7 +267,7 @@ Vue.component('g-table', {
         if(typeof gtableCommand[com].label=='undefined') return '<a>'+_e(com)+'</a>'
         return '<a>'+_e(gtableCommand[com].label)+'</a>';
       }
-      return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'"></i>'
+      return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'" title="'+_e(gtableCommand[com].label)+'"></i>'
     },
     canUse: function(com) {
       if(gtableCommand[com] && gtableCommand[com].permission && this.permissions) {
@@ -416,6 +416,12 @@ Vue.component('g-table', {
         return '<i style="color:green" class="fa fa-check fa-2x"></i>'
       } else {
         return '<i style="color:red" class="fa fa-remove fa-2x"></i>'
+      }
+
+      if(displayType=='color') {
+        return '<svg viewBox="0 0 40 40" style="width:28px;vertical-align: middle;">\
+        <circle stroke="lightgrey" stroke-width=1 fill="'+displayValue+'" r="15" cx="20" cy="20"/>\
+        </svg>'
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
@@ -735,7 +741,7 @@ gtableCommand['clone'] = {
 
 gtableCommand['delete'] = {
   fa: "trash-o",
-  label: "Delete",
+  label: _e("Delete"),
   permission: 'delete',
   fn: function(table,id) {
     let _this = table
