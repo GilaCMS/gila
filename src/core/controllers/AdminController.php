@@ -246,7 +246,8 @@ class AdminController extends Gila\Controller
         } else {
           $maxWidth = Config::get('maxImgWidth') ?? 0;
           $maxHeight = Config::get('maxImgHeight') ?? 0;
-          if ($maxWidth>0 && $maxHeight>0) {
+          $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+          if ($maxWidth>0 && $maxHeight>0 && $ext!='gif') {
             Image::makeThumb($path, $path, $maxWidth, $maxHeight);
           }
         }

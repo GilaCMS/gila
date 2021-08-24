@@ -86,21 +86,6 @@ class Config
   }
 
   /**
-  * Make changes of a field of content type
-  * @param $key (string) Name of content type
-  * @param $field (string) Index of the field
-  * @param $table (Assoc array) Value of the field
-  * DEPRECATED @see self::contentInit()
-  */
-  public static function contentField($key, $field, $table)
-  {
-    if (!isset(self::$contentField[$key])) {
-      self::$contentField[$key] = [];
-    }
-    self::$contentField[$key][$field] = $table;
-  }
-
-  /**
   * Make changes in a content type when it is initialized
   * @param $key (string) Name of content type
   * @param $init (function) Funtion to run

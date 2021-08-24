@@ -587,7 +587,7 @@ function transformClassComponents() {
     x=textareas[i].name
     cmirror[x]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
   }
-  
+
   textareas=g('.tinymce').all
   mce_editor=[]
   if(tinymce!=='undefined') tinymce.remove() //remove all tinymce editors

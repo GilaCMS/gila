@@ -277,21 +277,7 @@ section>.container{
   padding:0;  
 }
 
-.colors-invert, .colors-dark {
-  background: #444;
-}
-.colors-black {
-  background: #000;
-}
-.colors-hcolor {
-  background: var(--hcolor);
-}
-.colors-primary {
-  background: var(--main-primary-color);
-}
-.colors-acolor {
-  background: var(--main-a-color);
-}
+
 .fill-invert, .fill-dark {
   fill: #444;
 }
@@ -307,14 +293,7 @@ section>.container{
 .fill-acolor {
   fill: var(--main-a-color);
 }
-.colors-invert, .colors-invert *,
-.colors-dark, .colors-dark *,
-.colors-black,.colors-black *,
-.colors-black,.colors-primary *,
-.colors-black,.colors-acolor *,
-.colors-hcolor, .colors-hcolor * {
-  color:#fff;
-}
+
 .section-subheading{
   margin:0;
 }

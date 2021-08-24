@@ -188,11 +188,6 @@ class Session
     self::commit();
   }
 
-  private static function md5($key) // DEPRECATED
-  {
-    return $key;
-  }
-
   /**
   * Returns user id
   * @return int User's id. 0 if user is not logged in.

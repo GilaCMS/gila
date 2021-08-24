@@ -34,7 +34,7 @@ class HtmlInput
   {
     // TODO: remove specific style attributes like box-sizing
     $dom = new \DOMDocument;
-    $dom->loadHTML('<?xml encoding="utf-8"?>'.$value);
+    @$dom->loadHTML('<?xml encoding="utf-8"?>'.$value);
 
     if ($js) {
       $tags = $dom->getElementsByTagName('script');

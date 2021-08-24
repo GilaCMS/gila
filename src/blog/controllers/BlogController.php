@@ -210,10 +210,12 @@ class BlogController extends Gila\Controller
       if ($r['img']) {
         View::set('img', $r['img']);
         View::meta('og:image', $r['img']);
-        View::meta('twitter:image:src', Config::base($r['img']));
+        $twitterImgSrc = substr($r['img'],0,7)=='assets/'?Config::get('base').$r['img']:$r['img'];
+        View::meta('twitter:image:src', $twitterImgSrc);
       } elseif (Config::get('og-image')) {
         View::meta('og:image', Config::get('og-image'));
-        View::meta('twitter:image:src', Config::base(Config::get('og-image')));
+        $twitterImgSrc = substr($r['img'],0,7)=='assets/'?Config::get('base').$r['og-img']:$r['og-img'];
+        View::meta('twitter:image:src', $twitterImgSrc);
       } else {
         View::set('img', '');
       }
@@ -301,11 +303,6 @@ class BlogController extends Gila\Controller
   {
     $args['page'] = self::$page;
     return Post::getPosts($args);
-  }
-
-  public static function latestposts($n = 10) //DEPRECATED
-  {
-    return Post::getLatest($n);
   }
 
   public static function posts($args = [])

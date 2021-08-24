@@ -494,6 +494,9 @@ class Table
               if ($subkey === 'inset') {
                 $filters[] = "FIND_IN_SET($subvalue, $key)>0";
               }
+              if ($subkey === 'not') {
+                $filters[] = "`$key`!='$subvalue'";
+              }
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {
             $key = $this->getColumnKey($key, false);
