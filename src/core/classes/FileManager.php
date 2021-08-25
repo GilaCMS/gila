@@ -42,7 +42,7 @@ class FileManager
     $filetypes = [
       'txt','json','css','pdf','twig','csv','tsv','log',
       'png','jpg','jpeg','gif','webp','ico',
-      'avi','webm','mp4','mkv','ogg'
+      'avi','webm','mp4','mkv','ogg','mp3'
     ];
     if (is_dir($path)) {
       return true;

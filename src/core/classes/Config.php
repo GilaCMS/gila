@@ -9,7 +9,6 @@ class Config
   public static $widget_area = [];
   public static $option = [];
   public static $content;
-  public static $contentField;
   public static $contentInit = [];
   public static $mt;
   public static $base_url;
@@ -197,12 +196,15 @@ class Config
   */
   public static function get($key)
   {
-    return self::getOption($key, $GLOBALS['config'][$key] ?? null);
+    if (!empty(self::$option[$option])) {
+      return self::$option[$option];
+    }
+    return $default;
   }
 
   public static function getArray($key)
   {
-    $array = self::getOption($key, $GLOBALS['config'][$key] ?? null);
+    $array = self::get($key, $GLOBALS['config'][$key] ?? null);
     if (is_string($array)) {
       return json_decode($array, true);
     }
@@ -219,7 +221,7 @@ class Config
 
   public static function option($option, $default='')  //DEPRECATED
   {
-    return self::getOption($option, $default);
+    return self::get($option, $default);
   }
 
   /**
@@ -230,10 +232,7 @@ class Config
   */
   public static function getOption($option, $default='')
   {
-    if (isset(self::$option[$option]) && self::$option[$option]!='') {
-      return self::$option[$option];
-    }
-    return $default;
+    return self::get($key, $GLOBALS['config'][$key] ?? null);
   }
   public static function loadOptions()
   {

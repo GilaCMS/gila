@@ -75,7 +75,7 @@ foreach ($files as $file) {
         }
       }
     }
-    $vidx = ['avi','webm','mp4','mkv'];
+    $vidx = ['avi','webm','mp4','mkv','mp3'];
     if ($pinf = pathinfo(SITE_PATH.$file)) {
       if ($ext = @$pinf['extension']) {
         if (in_array(strtolower($ext), $vidx)) {

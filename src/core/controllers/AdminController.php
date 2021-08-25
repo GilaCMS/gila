@@ -217,7 +217,7 @@ class AdminController extends Gila\Controller
     if (isset($_FILES['uploadfiles'])) {
       $upload_folder = Config::get('media_uploads') ?? 'assets';
       $uploadpath = Router::post('path', $upload_folder);
-      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4', 'webm'];
+      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4', 'webm', 'mp3'];
       if (Config::get('allow_svg')) {
         $extensions[] = 'svg';
       }
