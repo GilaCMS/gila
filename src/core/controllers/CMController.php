@@ -433,7 +433,7 @@ class CMController extends Gila\Controller
       $res = $db->get($ql)[0];
       echo Form::html($gtable->getFields('edit'), $res);
     } else {
-      echo Form::html($gtable->getFields('create'));
+      echo Form::html($gtable->getFields('create'), $_GET);
     }
 
     $child_id = '<span id="edit_popup_child"></span>';

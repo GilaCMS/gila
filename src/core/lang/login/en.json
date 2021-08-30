@@ -38,6 +38,7 @@
     "Send Email": "Send Email",
     "login_error_msg": "Wrong email or password",
     "login_error_msg2": "Too many failed tries made from this IP. For security reasons, please try again in a minute. If you dont remember your password follow the instructions how to reset it.",
+    "login_error_inactive": "This account is not active",
     "Show password": "Show password",
     "_register_agree_text": "By clicking \"Register\" above, you acknowledge that you have read and understood, and agree to website's <a href='terms'>Terms & Conditions</a> and <a href='privacy'>Privacy Policy</a>.",
     "_recaptcha_error": "Could not validate reCAPTCHA. Please try again."

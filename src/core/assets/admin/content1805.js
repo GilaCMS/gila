@@ -769,7 +769,8 @@ gtableTool['add'] = {
     let _this = table
     _this.edititem = 'new'
     _this.edit_html = "Loading..."
-    g.get('cm/edit_form/'+_this.name, function(data){
+    if(typeof _this.filters=='undefined') _this.filters=''
+    g.get('cm/edit_form/'+_this.name+_this.filters, function(data){
       _this.edit_html = data
     })
   }
@@ -795,7 +796,8 @@ gtableTool['add_popup'] = {
   label: _e("New"),
   permission: 'create',
   fn: function(table) {
-    href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
+    if(typeof table.filters=='undefined') table.filters=''
+    href='cm/edit_form/'+table.name+table.filters+'?callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_add'})
       formId = '#'+table.name+'-edit-item-form'

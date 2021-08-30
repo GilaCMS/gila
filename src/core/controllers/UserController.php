@@ -28,7 +28,12 @@ class UserController extends Gila\Controller
     if (Session::waitForLogin()>0) {
       View::alert('error', __('login_error_msg2'));
     } elseif (isset($_POST['username']) && isset($_POST['password'])) {
-      View::alert('error', __('login_error_msg'));
+      $usr = User::getByEmail($_POST['username']);
+      $error = __('login_error_msg');
+      if ($usr && $usr['active']==0 && password_verify($_POST['password'], $usr['pass'])) {
+        $error =  __('login_error_inactive', $error);
+      }
+      View::alert('error', $error);
     }
     View::set('page_title', __('Log In'));
     View::includeFile('login.php');
@@ -131,14 +136,15 @@ class UserController extends Gila\Controller
       $_SESSION['rpt'] = time();
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       User::meta($r['id'], 'reset_code', $reset_code);
+      $basereset = Config::base('user/password_reset');
+      $reset_url = $basereset."?rp=$reset_code\n\n";
 
       if (!Event::get(
         'user_password_reset.email',
         false,
-        ['user_id'=>$r['id'], 'reset_code'=>$reset_code]
+        ['user'=>$r, 'reset_code'=>$reset_code, 'reset_url'=>$reset_url]
       )) {
         $baseurl = Config::base();
-        $basereset = Config::base('user/password_reset');
         $subject = __('reset_msg_ln1').' '.$r['username'];
         $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
         $msg .= __('reset_msg_ln3').' '.Config::get('title')."\n\n";

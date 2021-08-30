@@ -196,15 +196,15 @@ class Config
   */
   public static function get($key)
   {
-    if (!empty(self::$option[$option])) {
-      return self::$option[$option];
+    if (isset(self::$option[$key])) {
+      return self::$option[$key];
     }
-    return $default;
+    return $GLOBALS['config'][$key] ?? null;
   }
 
   public static function getArray($key)
   {
-    $array = self::get($key, $GLOBALS['config'][$key] ?? null);
+    $array = self::get($key);
     if (is_string($array)) {
       return json_decode($array, true);
     }
@@ -221,7 +221,7 @@ class Config
 
   public static function option($option, $default='')  //DEPRECATED
   {
-    return self::get($option, $default);
+    return self::get($option) ?? $default;
   }
 
   /**
@@ -232,7 +232,7 @@ class Config
   */
   public static function getOption($option, $default='')
   {
-    return self::get($key, $GLOBALS['config'][$key] ?? null);
+    return self::get($option);
   }
   public static function loadOptions()
   {
