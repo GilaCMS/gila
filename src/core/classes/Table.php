@@ -47,7 +47,7 @@ class Table
         if (is_array($field['qoptions'])) {
           $o = $field['qoptions'];
           $optionTable = new Table($o[2]);
-          $res = $optionTable->getRows($o[3]??[], ['select'=>[$o[0],$o[1]]]);
+          $res = $optionTable->getRows($o[3]??[], ['select'=>[$o[0],$o[1]],'limit'=>false]);
           foreach ($res as $r) {
             $field['options'][$r[$o[0]]] = $r[$o[1]];
           }
@@ -493,6 +493,9 @@ class Table
               }
               if ($subkey === 'inset') {
                 $filters[] = "FIND_IN_SET($subvalue, $key)>0";
+              }
+              if ($subkey === 'not') {
+                $filters[] = "`$key`!='$subvalue'";
               }
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {

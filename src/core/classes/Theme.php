@@ -171,7 +171,8 @@ class Theme
         Config::loadOptions();
         $optionList = [];
         foreach ($options as $key=>$op) {
-          if ($group===null || $op['group']===$group) {
+          if ($group===null || $op['group']===$group || 
+          (is_array($op['group']) && in_array($group, $op['group']))) {
             $values[$key] = Config::get('theme.'.$key);
             $optionList[$key] = $op;
           }

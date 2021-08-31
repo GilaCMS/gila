@@ -146,13 +146,17 @@ class BlocksController extends Gila\Controller
     $content = $idArray[0];
     $id = $idArray[1];
     $pos = (int)$idArray[2];
+    $html = $_POST['html']??null;
     $widgets = self::readBlocks($content, $id)??[];
     $new = ['_type'=>$_POST['type']];
     $type = strtr($_POST['type'], ['/'=>'','\\'=>'','.'=>'']);
     $fields = Gila\Widget::getFields($type);
-    foreach ($fields as $key=>$field) {
+    foreach ($fields as $key=>$field) if(!is_numeric($key)) {
       if (isset($field['default'])) {
         $new[$key] = $field['default'];
+      }
+      if ($key=='text' && $html!=null) {
+        $new[$key] = '<div>'.$html.'</div>';
       }
     }
     array_splice($widgets, $pos, 0, [$new]);

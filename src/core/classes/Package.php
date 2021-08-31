@@ -392,6 +392,15 @@ class Package
     if (!in_array('core', $packages)) {
       $packages = array_merge(['core'], $packages);
     }
+    Config::$option=[];
+    $db->connect();
+    $res = $db->get('SELECT `option`,`value` FROM `option`;');
+    foreach ($res as $r) {
+      Config::$option[$r[0]] = $r[1];
+    }
+    $db->close();
+    $contents .= "\n\nConfig::\$option = ".var_export(Config::$option, true).";\n";
+
     foreach ($packages as $package) {
       $handle = @fopen("src/$package/load.php", "r");
       if ($handle) {
@@ -406,15 +415,6 @@ class Package
         // error op
       }
     }
-    Config::$option=[];
-    $db->connect();
-    $res = $db->get('SELECT `option`,`value` FROM `option`;');
-    foreach ($res as $r) {
-      Config::$option[$r[0]] = $r[1];
-    }
-    $db->close();
-
-    $contents .= "\n\nConfig::\$option = ".var_export(Config::$option, true).";\n";
 
     file_put_contents($file, $contents);
   }

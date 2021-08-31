@@ -47,17 +47,18 @@ class TableSchema
     // ADD COLUMNS
     foreach ($table['fields'] as $fkey=>$field) {
       if (isset($field['qtype']) && $fkey!=$id) {
+        $qtype = $field['qtype'];
         $column = $field['qname']??$fkey;
         if (strpos($column, '(') !== false) {
           continue;
         }
         if (!isset($dfields[$fkey])) {
-          $q = "ALTER TABLE $tname ADD $column {$field['qtype']};";
+          $q = "ALTER TABLE $tname ADD `$column` {$qtype};";
           $db->query($q);
         } else {
           $_type = $dfields[$fkey]['type'];
           if ($_type != substr($field['qtype'], 0, strlen($_type))) {
-            $q = "ALTER TABLE $tname MODIFY $column {$field['qtype']};";
+            $q = "ALTER TABLE $tname MODIFY `$column` {$qtype};";
             $db->query($q);
           }
         }

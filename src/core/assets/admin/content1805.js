@@ -267,7 +267,7 @@ Vue.component('g-table', {
         if(typeof gtableCommand[com].label=='undefined') return '<a>'+_e(com)+'</a>'
         return '<a>'+_e(gtableCommand[com].label)+'</a>';
       }
-      return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'"></i>'
+      return '<i class="fa fa-2x fa-'+gtableCommand[com].fa+'" title="'+_e(gtableCommand[com].label)+'"></i>'
     },
     canUse: function(com) {
       if(gtableCommand[com] && gtableCommand[com].permission && this.permissions) {
@@ -416,6 +416,12 @@ Vue.component('g-table', {
         return '<i style="color:green" class="fa fa-check fa-2x"></i>'
       } else {
         return '<i style="color:red" class="fa fa-remove fa-2x"></i>'
+      }
+
+      if(displayType=='color') {
+        return '<svg viewBox="0 0 40 40" style="width:28px;vertical-align: middle;">\
+        <circle stroke="lightgrey" stroke-width=1 fill="'+displayValue+'" r="15" cx="20" cy="20"/>\
+        </svg>'
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
@@ -581,7 +587,7 @@ function transformClassComponents() {
     x=textareas[i].name
     cmirror[x]=CodeMirror.fromTextArea(textareas[i],{lineNumbers:true,mode:'javascript'});
   }
-  
+
   textareas=g('.tinymce').all
   mce_editor=[]
   if(tinymce!=='undefined') tinymce.remove() //remove all tinymce editors
@@ -735,7 +741,7 @@ gtableCommand['clone'] = {
 
 gtableCommand['delete'] = {
   fa: "trash-o",
-  label: "Delete",
+  label: _e("Delete"),
   permission: 'delete',
   fn: function(table,id) {
     let _this = table
@@ -763,7 +769,8 @@ gtableTool['add'] = {
     let _this = table
     _this.edititem = 'new'
     _this.edit_html = "Loading..."
-    g.get('cm/edit_form/'+_this.name, function(data){
+    if(typeof _this.filters=='undefined') _this.filters=''
+    g.get('cm/edit_form/'+_this.name+_this.filters, function(data){
       _this.edit_html = data
     })
   }
@@ -789,7 +796,8 @@ gtableTool['add_popup'] = {
   label: _e("New"),
   permission: 'create',
   fn: function(table) {
-    href='cm/edit_form/'+table.name+'?callback=g_form_popup_update';
+    if(typeof table.filters=='undefined') table.filters=''
+    href='cm/edit_form/'+table.name+table.filters+'?callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_add'})
       formId = '#'+table.name+'-edit-item-form'

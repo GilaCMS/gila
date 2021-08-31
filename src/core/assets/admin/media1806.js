@@ -161,12 +161,17 @@ g.dialog.buttons.select_media_path = {
     }
   }
 }
+
+var open_media_gallery_clicked = false
 function open_media_gallery(mpi, mici) {
   media_path_input = mpi;
   media_image_caption_input = mici;
+  if(open_media_gallery_clicked) return;
+  open_media_gallery_clicked = true;
   g.post("admin/media","g_response=content",function(gal){
-        g.dialog({title:g.tr('_gallery'),body:gal,buttons:'select_media_path',type:'modal',id:'media_dialog',class:'large'})
-    })
+    open_media_gallery_clicked = false;
+    g.dialog({title:g.tr('_gallery'),body:gal,buttons:'select_media_path',type:'modal',id:'media_dialog',class:'large'})
+  })
 }
 
 function filter_files(query,value) {

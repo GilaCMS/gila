@@ -28,7 +28,7 @@ class Profile
       $usr = User::getById($user_id);
       $pass = $_POST['new_pass'];
       if (password_verify($_POST['old_pass'], $usr['pass'])) {
-        if (strlen($pass) > 4) {
+        if (strlen($pass) > 5) {
           if ($pass===$_POST['new_pass2']) {
             if (User::updatePassword($user_id, $pass)) {
               View::alert('success', __('_changes_updated'));

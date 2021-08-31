@@ -10,7 +10,6 @@ return [
   'approve'=>['publish','1'],
   'csv'=> ['id','title','slug','user_id','updated','publish','post'],
   'commands'=> ['edit_popup','delete','clone'],
-  'qactions'=> ['title'=>['edit_popup','delete']],
   'lang'=>'core/lang/admin/',
   'qkeys'=>['slug','publish','user_id'],
   'meta_table'=>['postmeta', 'post_id', 'vartype', 'value'],
@@ -39,10 +38,12 @@ return [
     ],
     'title'=> [
       'title'=>'Title',
-      'qtype'=>'varchar(80) DEFAULT NULL'
+      'qtype'=>'varchar(80) DEFAULT NULL',
+      'required'=>true
     ],
     'slug'=> [
       'list'=>false,
+      'create'=>false,
       'qtype'=>'varchar(80) CHARACTER SET latin1 DEFAULT NULL'
     ],
     'description'=> [

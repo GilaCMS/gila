@@ -17,6 +17,7 @@ var lang_array={
   "No": "No",
   "Add": "Añadir",
   "Create": "Crear",
+  "Edit": "Editar",
   "Delete": "Eliminar",
   "Approve": "Aprovar",
   "Delete registry?": "Eliminar registro?",

@@ -12,7 +12,7 @@ class Cache
   {
     $name = self::$cachePath.str_replace('/', '-', $name);
     $caching_file = $name.'_'.implode('_', $uniques);
-    return file_put_contents($caching_file, $data);
+    return @file_put_contents($caching_file, $data);
   }
 
   public static function get($name, $time = 3600, $uniques = [])

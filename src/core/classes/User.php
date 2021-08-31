@@ -14,7 +14,7 @@ class User
       $db->query("INSERT INTO user(email,pass,username,active,`language`)
         VALUES(?,?,?,?,?);", [$email, $pass, $name, $active, Config::lang()]);
       $userId = $db->insert_id;
-      Event::fire('User::create', ['userId'=>$userId]);
+      Event::fire('self::create', ['userId'=>$userId]);
       return $userId;
     } else {
       return false;
@@ -52,7 +52,7 @@ class User
   {
     global $db;
     if ($values===null) {
-      $ql = "SELECT value FROM usermeta where user_id=? and vartype=?;";
+      $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=?;";
       return $db->read()->getList($ql, [$id, $meta]);
     }
 
@@ -81,7 +81,7 @@ class User
     $roles = [];
     foreach ($rp as $role=>$row) {
       foreach ($row as $perm) {
-        if ($permission==$perm && !in_array($role, $role)) {
+        if ($permission==$perm && !in_array($role, $roles)) {
           $roles[] = $role;
         }
       }
@@ -163,7 +163,7 @@ class User
     if ($id === 0) {
       return [];
     }
-    $roles = User::metaList($id, 'role');
+    $roles = self::metaList($id, 'role');
     foreach ($roles as $role) {
       if (isset($rp[$role])) {
         foreach ($rp[$role] as $perm) {
@@ -216,7 +216,7 @@ class User
       return;
     }
 
-    $baseurl = Config::get('title');
+    $baseurl = Config::base();
     $basereset = Config::base('user/password_reset');
     $subject = __('invite_msg_ln1').' '.$data['username'];
     $msg = __('invite_msg_ln2')." {$data['username']}\n\n";
@@ -243,13 +243,18 @@ class User
     $name = Router::request('name');
     $password = $data['password'];
 
+    if (strlen($password)<6) {
+      View::alert('alert', __('New password too small'));
+      return false;
+    }
+
     if ($name != $data['name']) {
       View::alert('error', __('register_error2'));
-    } elseif (User::getByEmail($email) || $email != $data['email']) {
+    } elseif (self::getByEmail($email) || $email != $data['email']) {
       View::alert('error', __('register_error1'));
     } else {
       // register the user
-      if ($user_Id = User::create($email, $password, $name)) {
+      if ($user_Id = self::create($email, $password, $name)) {
         // success
         if (!Event::get('user_activation.email', false, ['user_id'=>$user_id]) &&
         Config::get('user_activation')=='byemail') {
@@ -262,7 +267,7 @@ class User
           $msg .= $baseactivate."?ap=$activate_code\n\n";
           $msg .= __('activate_msg_ln4');
           $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
-          User::meta($user_Id, 'activate_code', $activate_code);
+          self::meta($user_Id, 'activate_code', $activate_code);
           new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
         }
         return true;

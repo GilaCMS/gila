@@ -104,7 +104,7 @@ script{display:none!important}
 
 .pad{padding:var(--main-padding)}
 .container{padding:0 16px;margin:auto;position:relative}
-.fluid{max-width:unset;}
+.container-fluid.fluid{max-width:unset;}
 
 .gap-0px>*{padding:0px}
 .gap-1px>*{padding:1px}
@@ -478,6 +478,9 @@ input.btn {
 @media only screen and (min-width:1200px){
   .container{
     max-width:1200px;
+  }
+  .container-fluid,.fluid{
+    max-width:unset;
   }
 }
 

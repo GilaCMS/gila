@@ -9,7 +9,6 @@ class Config
   public static $widget_area = [];
   public static $option = [];
   public static $content;
-  public static $contentField;
   public static $contentInit = [];
   public static $mt;
   public static $base_url;
@@ -83,21 +82,6 @@ class Config
   public static function content($key, $path)
   {
     self::$content[$key] = $path;
-  }
-
-  /**
-  * Make changes of a field of content type
-  * @param $key (string) Name of content type
-  * @param $field (string) Index of the field
-  * @param $table (Assoc array) Value of the field
-  * DEPRECATED @see self::contentInit()
-  */
-  public static function contentField($key, $field, $table)
-  {
-    if (!isset(self::$contentField[$key])) {
-      self::$contentField[$key] = [];
-    }
-    self::$contentField[$key][$field] = $table;
   }
 
   /**
@@ -212,12 +196,15 @@ class Config
   */
   public static function get($key)
   {
-    return self::getOption($key, $GLOBALS['config'][$key] ?? null);
+    if (isset(self::$option[$key])) {
+      return self::$option[$key];
+    }
+    return $GLOBALS['config'][$key] ?? null;
   }
 
   public static function getArray($key)
   {
-    $array = self::getOption($key, $GLOBALS['config'][$key] ?? null);
+    $array = self::get($key);
     if (is_string($array)) {
       return json_decode($array, true);
     }
@@ -234,7 +221,7 @@ class Config
 
   public static function option($option, $default='')  //DEPRECATED
   {
-    return self::getOption($option, $default);
+    return self::get($option) ?? $default;
   }
 
   /**
@@ -245,10 +232,7 @@ class Config
   */
   public static function getOption($option, $default='')
   {
-    if (isset(self::$option[$option]) && self::$option[$option]!='') {
-      return self::$option[$option];
-    }
-    return $default;
+    return self::get($option);
   }
   public static function loadOptions()
   {

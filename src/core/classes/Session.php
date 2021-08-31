@@ -34,7 +34,7 @@ class Session
       // refresh every minute
       self::$user_id = $session['user_id'];
       self::$data = json_decode($session['data']??'[]', true);
-      if (strtotime($session['updated'])+60>time()) {
+      if (strtotime($session['updated'])+60<time()) {
         $usr = User::getById($session['user_id']);
         if ($usr['active']===1) {
           self::user($usr['id'], $usr['username'], $usr['email']);
@@ -177,7 +177,7 @@ class Session
   public static function commit()
   {
     global $db;
-    $ql = "UPDATE sessions SET data=?, updated=NOW() WHERE gsessionid=?;";
+    $ql = "UPDATE `sessions` SET `data`=?, updated=NOW() WHERE gsessionid=?;";
     $db->query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']??self::$token]);
   }
 
@@ -186,11 +186,6 @@ class Session
     self::start();
     unset(self::$data[$key]);
     self::commit();
-  }
-
-  private static function md5($key) // DEPRECATED
-  {
-    return $key;
   }
 
   /**

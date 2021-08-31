@@ -217,7 +217,7 @@ class AdminController extends Gila\Controller
     if (isset($_FILES['uploadfiles'])) {
       $upload_folder = Config::get('media_uploads') ?? 'assets';
       $uploadpath = Router::post('path', $upload_folder);
-      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4', 'webm'];
+      $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4', 'webm', 'mp3'];
       if (Config::get('allow_svg')) {
         $extensions[] = 'svg';
       }
@@ -246,7 +246,8 @@ class AdminController extends Gila\Controller
         } else {
           $maxWidth = Config::get('maxImgWidth') ?? 0;
           $maxHeight = Config::get('maxImgHeight') ?? 0;
-          if ($maxWidth>0 && $maxHeight>0) {
+          $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+          if ($maxWidth>0 && $maxHeight>0 && $ext!='gif') {
             Image::makeThumb($path, $path, $maxWidth, $maxHeight);
           }
         }

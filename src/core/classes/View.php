@@ -19,11 +19,12 @@ class View
   public static $cdn_paths = [
     'core/gila.min.js'=> 'core/gila1510.js',
     'core/gila.js'=> 'core/gila1510.js',
-    'core/gila.min.css'=> 'core/gila1510.css',
-    'core/gila.css'=> 'core/gila1510.css',
+    'core/gila.min.css'=> 'core/gila1811.css',
+    'core/gila.css'=> 'core/gila1811.css',
     'core/widgets.css'=> 'core/widgets1721.css',
-    'core/admin/media.js'=> 'core/admin/media1609.js',
-    'core/admin/content.js'=> 'core/admin/content1712.js'
+    'core/admin/media.js'=> 'core/admin/media1806.js',
+    'core/admin/content.js'=> 'core/admin/content1805.js',
+    'core/admin/content.css'=> 'core/admin/content1823.css'
   ];
 
   public static function set($param, $value)
@@ -470,7 +471,7 @@ class View
     $pathinfo = pathinfo($src);
     $ext = $pathinfo['extension'] ?? null;
     if (Config::get('use_webp') && $ext!=='svg') {
-      if (strpos($_SERVER['HTTP_ACCEPT'], 'image/webp')!==false) {
+      if (strpos($_SERVER['HTTP_ACCEPT']??'', 'image/webp')!==false) {
         $ext = 'webp';
         $type = IMG_WEBP;
       }

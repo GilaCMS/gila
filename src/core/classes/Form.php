@@ -87,6 +87,11 @@ class Form
       $label .= '<span class="required-field"> *</span>';
     }
 
+    if ($type && $type=='hidden') {
+      $value = !empty($ov)? 'value="'.htmlspecialchars($ov).'"': '';
+      return '<input type="hidden" name="'.$name.'" '.$value.'>';
+    }
+
     $html .= '<div class="g-label">'.$label;
 
     if ($type && $type=='check_box') {
