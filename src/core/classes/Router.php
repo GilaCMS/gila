@@ -56,8 +56,8 @@ class Router
     $action_fn = $action.'Action';
     $action_m = $action_fn.ucwords(self::$method);
 
-    if (isset(Config::$before[$controller][$action])) {
-      foreach (Config::$before[$controller][$action] as $fn) {
+    if (isset(Router::$before[$controller][$action])) {
+      foreach (Router::$before[$controller][$action] as $fn) {
         $fn();
       }
     }

@@ -463,6 +463,7 @@ class Table
     }
 
     foreach ($fields as $key=>$value) {
+      if (isset($this->table['fields'][$key]['options']) && $value=='null') continue;
       if (!is_numeric($key)) {
         if (array_key_exists($key, $this->table['fields'])) {
           if (is_array($value)) {

@@ -387,19 +387,11 @@ class Package
   {
     global $db;
     $file = LOG_PATH.'/load.php';
-    $contents = '<?php';
+    $contents = '';
     $packages = Config::packages();
     if (!in_array('core', $packages)) {
       $packages = array_merge(['core'], $packages);
     }
-    Config::$option=[];
-    $db->connect();
-    $res = $db->get('SELECT `option`,`value` FROM `option`;');
-    foreach ($res as $r) {
-      Config::$option[$r[0]] = $r[1];
-    }
-    $db->close();
-    $contents .= "\n\nConfig::\$option = ".var_export(Config::$option, true).";\n";
 
     foreach ($packages as $package) {
       $handle = @fopen("src/$package/load.php", "r");
@@ -416,7 +408,16 @@ class Package
       }
     }
 
-    file_put_contents($file, $contents);
+    Config::$option=[];
+    $db->connect();
+    $res = $db->get('SELECT `option`,`value` FROM `option`;');
+    foreach ($res as $r) {
+      Config::$option[$r[0]] = $r[1];
+    }
+    $db->close();
+    $options = "Config::\$option = ".var_export(Config::$option, true).";\n\n";
+
+    file_put_contents($file, "<?php\n\n".$options.$contents);
   }
 
   public static function check4updates()

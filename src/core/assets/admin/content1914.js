@@ -710,6 +710,7 @@ function g_form_popup_update() {
       edit_popup_app.id = _this.data.rows[0][0]
       if(typeof _this.table.children!='undefined') setTimeout(function(){
         document.getElementById("edit_popup_child").scrollIntoView();
+        g("button[data-id='popup_add']").remove()
       }, 100)
     } else {
       _this.update_row(data.rows[0])

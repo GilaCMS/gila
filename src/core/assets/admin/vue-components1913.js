@@ -97,7 +97,7 @@ Vue.component('input-list', {
 
 Vue.component('input-media', {
   template: '<div class="pointer:hover shadow:hover;" \
-  style="background:var(--main-input-color);width:120px;height:120px;max-width:100%;max-height:100%;display: grid;\
+  style="background:var(--main-input-color);width:90px;height:90px;max-width:100%;max-height:100%;display: grid;\
   justify-content:center; align-content:center; position:relative;min-width:50px;overflow: hidden;" \
   :onclick="\'open_media_gallery(\\\'#imd\'+idByName()+\'\\\')\'">\
 <img v-if="!value" src="assets/core/camera.svg" style="width:50px;margin:auto">\
@@ -139,8 +139,8 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
 
 Vue.component('input-gallery', {
   template: '<div style="display: grid; gap: 0.5em; width: 100%;\
-  grid-template-columns: repeat(auto-fit,minmax(50px,120px));\
-  grid-template-rows: repeat(auto-fit, 120px);">\
+  grid-template-columns: repeat(auto-fit,minmax(50px,90px));\
+  grid-template-rows: repeat(auto-fit, 90px);">\
   <input-media v-for="(src,i) in sources" :value="src" :name="name+\'[\'+i+\']\'">\
 </div>',
   props: ['name','value'],

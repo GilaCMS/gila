@@ -173,7 +173,7 @@ class Config
   * @param $option (string) Name of the attribute
   * @param $value (optional) The value to set
   */
-  public static function set($option, $value)
+  public static function set($option, $value, $save=true)
   {
     global $db;
     if ($value===self::$option[$option]) {
@@ -184,6 +184,7 @@ class Config
     if (is_array($value)) {
       $value = json_encode($value);
     }
+    if ($save==false) return;
     $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
     ON DUPLICATE KEY UPDATE `value`=?;", [$option, $value, $value]);
     @unlink(LOG_PATH.'/load.php');

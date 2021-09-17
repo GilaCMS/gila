@@ -35,6 +35,9 @@ class FileManager
     } else {
       @unlink($target);
     }
+    Cache::set('fsize', function () {
+      return FileManager::getUploadsSize();
+    });
   }
 
   public static function allowedFileType($path)
@@ -89,5 +92,21 @@ class FileManager
     }
 
     return false;
+  }
+
+  public static function getUploadsSize() {
+    $path = Config::get('media_uploads') ?? 'assets';
+    return self::getDirectorySize($path);
+  }
+
+  public static function getDirectorySize($path) {
+    $bytestotal = 0;
+    $path = realpath($path);
+    if(self::allowedPath($path, true) && file_exists($path)){
+      foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS)) as $file){
+        $bytestotal += $file->getSize();
+      }
+    }
+    return $bytestotal;
   }
 }

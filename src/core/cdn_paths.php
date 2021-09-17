@@ -1,8 +1,8 @@
 <?php
 
 return [
-  'core/gila.min.js'=> 'core/gila1510.min.js',
-  'core/gila.js'=> 'core/gila1510.js',
+  'core/gila.min.js'=> 'core/gila1914.js',
+  'core/gila.js'=> 'core/gila1914.js',
   'core/gila.min.css'=> 'core/gila1811.min.css',
   'core/gila.css'=> 'core/gila1811.css',
   'core/widgets.css'=> 'core/widgets1721.css',
