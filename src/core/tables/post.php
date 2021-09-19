@@ -55,24 +55,24 @@ return [
     'user_id'=> [
       'title'=>'User',
       'type'=>'select',
-      'qoptions'=>"SELECT id, username FROM user",
+      'qoptions'=>'SELECT id, username FROM user',
       'qtype'=>'int(11) unsigned DEFAULT NULL',
       'list'=>false
     ],
-    "categories"=>[
+    'categories'=>[
       'edit'=>true,
       'type'=>'meta',
       'meta_key'=>'category',
-      "title"=>"Categories",
-      "qoptions"=>"SELECT id,title FROM postcategory;"
+      'title'=>'Categories',
+      'qoptions'=>['id','title','postcategory']
     ],
-    "tags"=>[
+    'tags'=>[
       'list'=>false,
       'edit'=>true,
       'type'=>'meta',
       'meta_csv'=>true,
       'meta_key'=>'tag',
-      "title"=>"Tags"
+      'title'=>'Tags'
     ],
     'language'=> [
       'type'=>'language',
@@ -112,7 +112,7 @@ return [
     ]
   ],
   'events'=>[
-    ['change',function (&$row) {
+    ['change', function (&$row) {
       if ($row['slug']=='') {
         $row['slug'] = Slugify::text($row['title']);
       }

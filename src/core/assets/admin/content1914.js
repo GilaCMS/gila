@@ -962,9 +962,10 @@ function upload_csv_file() {
   table = g.el('g_file_to_upload').getAttribute('data-table');
   g.loader()
   g.ajax({url:"cm/upload_csv/"+table, method:'POST', data:fm, fn:function(data){
+    data = JSON.parse(data)
     app.$refs.gtable.load_page()
     g.loader(false)
-    g('.gila-darkscreen').remove();
+    if (data.error) alert(data.error)
   }})
 }
 

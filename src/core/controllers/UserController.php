@@ -75,6 +75,7 @@ class UserController extends Gila\Controller
         User::updateActive($ids[0], 1);
         User::metaDelete($ids[0], 'activate_code');
         View::set('user', User::getById($ids[0]));
+        View::set('login_link', User::level($ids[0])>0? 'admin': 'user');
         View::includeFile('user-activate-success.php');
       }
       return;
@@ -102,6 +103,7 @@ class UserController extends Gila\Controller
         $idUser=$r[0];
         User::updatePassword($idUser, $_POST['pass']);
         User::metaDelete($idUser, 'reset_code');
+        View::set('login_link', User::level($idUser)>0? 'admin': 'user');
         View::includeFile('user-change-success.php');
       } else {
         @session_start();
