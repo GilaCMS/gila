@@ -230,7 +230,7 @@ class CMController extends Gila\Controller
           if ($_field = $gtable->getTable()['copy_from_src'] && !empty($data[$_field])) {
             $src = $data[$_field];
             $pathinfo = pathinfo($src);
-            $ext = strtolow($pathinfo['extension']) ?? 'png';
+            $ext = strtolower($pathinfo['extension']) ?? 'png';
             if (!in_array($ext, ['jpg','jpeg','webp','png'])) break;
             $file = 'assets/uploads/'.time().'.'.$ext;
             copy($src, $file);

@@ -51,7 +51,7 @@ class Table
           foreach($res as $el) $field['options'][$el[$o[0]]] = $el[$o[1]];
         } else {
           $res = $this->db->getOptions($field['qoptions']);
-          if (isset($field['options'])) {
+          if (!empty($field['options'])) {
             $field['options'] = array_merge($field['options'], $res);
           } else {
             $field['options'] = $res;
