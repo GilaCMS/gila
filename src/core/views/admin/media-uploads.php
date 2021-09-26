@@ -101,11 +101,11 @@ foreach ($files as $file) {
 }
 echo "</div>";
 if ($total = Config::get('media_uploads_limit')) {
-  $size = Cache::remember('fsize', 10, function () {
+  $size = Cache::remember('fsize', 8000, function () {
     return FileManager::getUploadsSize();
   });
   $mb = round($size/(1024*1024), 1);
-  echo '<progress value="'.$mb.'" max="'.$total.'"> '.round(100*$mb/$total).'% </progress>';
-  echo ' <span>'.round(100*$mb/$total).'% from '.$total.' MB used</span>';
+  echo '<progress value="'.$mb.'" max="'.$total.'"> '.round(100*$size/$total).'% </progress>';
+  echo ' <span>'.round(100*$size/$total).'% from '.$total.' MB used</span>';
 }
 echo "</div><!--admin-media-div-->";

@@ -95,14 +95,17 @@ class FileManager
   }
 
   public static function getUploadsSize() {
-    $path = Config::get('media_uploads') ?? 'assets';
+    $path = Config::get('media_uploads') ?? 'assets/uploads';
     return self::getDirectorySize($path);
   }
 
   public static function getDirectorySize($path) {
     $bytestotal = 0;
-    $path = realpath($path);
     if(self::allowedPath($path, true) && file_exists($path)){
+      if (!empty(SITE_PATH) && strpos($path, 'sites/')!==0) {
+        $path = SITE_PATH.'/'.$path;
+      }
+      $path = realpath($path);
       foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS)) as $file){
         $bytestotal += $file->getSize();
       }
