@@ -111,8 +111,8 @@ class Session
     $_COOKIE['GSESSIONID'] = $gsession;
     self::updateCookie();
 
-    $user_agent = $_SERVER['HTTP_USER_AGENT'];
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $user_agent = $_SERVER['HTTP_USER_AGENT']??'';
+    $ip = $_SERVER['REMOTE_ADDR']??'';
     self::create($userId, $gsession, $ip, $user_agent);
   }
 

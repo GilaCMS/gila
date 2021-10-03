@@ -231,7 +231,9 @@ class CMController extends Gila\Controller
             $src = $data[$_field];
             $pathinfo = pathinfo($src);
             $ext = strtolower($pathinfo['extension']) ?? 'png';
-            if (!in_array($ext, ['jpg','jpeg','webp','png'])) break;
+            if (!in_array($ext, ['jpg','jpeg','webp','png'])) {
+              break;
+            }
             $file = 'assets/uploads/'.time().'.'.$ext;
             copy($src, $file);
             $data[$_field] = $file;

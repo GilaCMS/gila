@@ -48,7 +48,9 @@ class Table
           $o = $field['qoptions'];
           $optionTable = new Table($o[2]);
           $res = $optionTable->getRows($o[3]??[], ['select'=>[$o[0],$o[1]],'limit'=>false]);
-          foreach($res as $el) $field['options'][$el[$o[0]]] = $el[$o[1]];
+          foreach ($res as $el) {
+            $field['options'][$el[$o[0]]] = $el[$o[1]];
+          }
         } else {
           $res = $this->db->getOptions($field['qoptions']);
           if (!empty($field['options'])) {
@@ -343,7 +345,7 @@ class Table
     if ($fields===null) {
       $fields=$_POST;
     }
-    if (isset($this->table['filters'])) {
+    if (isset($this->table['filters']) &&!isset($this->table['override_filters'])) {
       foreach ($this->table['filters'] as $k=>$f) {
         if (isset($fields[$k])) {
           $fields[$k]=$f;
@@ -418,7 +420,7 @@ class Table
             $arrv = [$value];
           } elseif ($value!==null) {
             $arrv = explode(",", $value);
-            //foreach($arrv as &$el) if (is_numeric($el)) $el = (int)$el; 
+            //foreach($arrv as &$el) if (is_numeric($el)) $el = (int)$el;
           }
         } else {
           $arrv = $value;
@@ -467,7 +469,9 @@ class Table
     }
 
     foreach ($fields as $key=>$value) {
-      if (isset($this->table['fields'][$key]['options']) && $value=='null') continue;
+      if (isset($this->table['fields'][$key]['options']) && $value=='null') {
+        continue;
+      }
       if (!is_numeric($key)) {
         if (array_key_exists($key, $this->table['fields'])) {
           if (is_array($value)) {

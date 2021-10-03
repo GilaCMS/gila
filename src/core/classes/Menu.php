@@ -39,11 +39,15 @@ class Menu
   {
     global $db;
     $menuLN = $menu.'.'.Config::lang();
-    $data = $db->read()->value(
-      "SELECT `data` FROM menu WHERE `menu`=?
-      UNION SELECT `data` FROM menu WHERE `menu`=?;",
-      [$menuLN, $menu]
-    );
+    $data =  Cache::remember($menuLN.'_data', 259200, function ($u) {
+      global $db;
+      return $db->read()->value(
+        "SELECT `data` FROM menu WHERE `menu`=?
+        UNION SELECT `data` FROM menu WHERE `menu`=?;",
+        [$u[1], $u[2]]
+      );
+    }, [Config::mt('menu'),$menuLN, $menu]);
+
     if ($data) {
       return json_decode($data, true);
     }
@@ -164,13 +168,14 @@ class Menu
 
         if (self::$active===true) {
           self::$active = false;
-          $liClass .= ' '.self::$liActive;//' active';
+          $liClass .= ' '.self::$liActive;
         }
       } else {
         $childrenHtml = '';
         $ddIcon = '';
       }
-      if ($url==$base) {
+      $current = !empty($base)? $base: $_SERVER['REQUEST_URI'];
+      if (trim($url, '/')==trim($current, '/')) {
         self::$active = true;
         $liClass .= ' active';
         $aClass .= ' active';

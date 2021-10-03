@@ -27,7 +27,11 @@ class HtmlInput
     $tD = 'javascript&#8282;';
     $value = strtr($value, ['javascript&#x3a;'=>$tD,'javascript&#58;'=>$tD,'javascript&colon;'=>$tD,'javascript:'=>$tD]);
     $meta_tags = self::getMetaTags($value);
-    if(isset($meta_tags['refresh'])) foreach($meta_tags['refresh'] as $content) $value=strtr($value, [$content=>'']);
+    if (isset($meta_tags['refresh'])) {
+      foreach ($meta_tags['refresh'] as $content) {
+        $value=strtr($value, [$content=>'']);
+      }
+    }
 
     return $value;
   }
@@ -78,7 +82,7 @@ class HtmlInput
 [^>]*>
 
 ~ix';
-    if(preg_match_all($pattern, $str, $out)) {
+    if (preg_match_all($pattern, $str, $out)) {
       return array_fill_keys($out[1], $out[2]);
     }
     return array();

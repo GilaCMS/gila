@@ -184,7 +184,9 @@ class Config
     if (is_array($value)) {
       $value = json_encode($value);
     }
-    if ($save==false) return;
+    if ($save==false) {
+      return;
+    }
     $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
     ON DUPLICATE KEY UPDATE `value`=?;", [$option, $value, $value]);
     @unlink(LOG_PATH.'/load.php');

@@ -80,6 +80,11 @@
 .photo-portrait__item{
   width:210px;height:280px
 }
+.photo-portrait__arc{
+  width:210px;height:280px;
+  border-top-right-radius: 260px;
+  border-top-right-radius: 260px;
+}
 .photo-portrait__sm{
   width:135px;height:180px
 }
@@ -311,6 +316,15 @@ section>.container{
 @media (min-width:401px){
   .grid__4c2c{
     grid-template-columns: 1fr 1fr;
+  }
+  .grid__3c1c{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width:601px){
+  .grid__3c1c{
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 

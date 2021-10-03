@@ -97,10 +97,10 @@ Vue.component('input-list', {
 
 Vue.component('input-media', {
   template: '<div class="pointer:hover shadow:hover;" \
-  style="background:var(--main-input-color);width:90px;height:90px;max-width:100%;max-height:100%;display: grid;\
+  style="background:var(--main-input-color);width:70px;height:70px;max-width:100%;max-height:100%;display: grid;\
   justify-content:center; align-content:center; position:relative;min-width:50px;overflow: hidden;" \
   :onclick="\'open_media_gallery(\\\'#imd\'+idByName()+\'\\\')\'">\
-<img v-if="!value" src="assets/core/camera.svg" style="width:50px;margin:auto">\
+<img v-if="!value" src="assets/core/camera.svg" style="width:30px;margin:auto">\
 <img v-if="value" :src="imgSrc(value)" style="max-width:100%;margin:auto">\
 <svg v-if="value" height="28" width="28" @click.stop="value=null;return false;"\
 style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
@@ -139,8 +139,8 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
 
 Vue.component('input-gallery', {
   template: '<div style="display: grid; gap: 0.5em; width: 100%;\
-  grid-template-columns: repeat(auto-fit,minmax(50px,90px));\
-  grid-template-rows: repeat(auto-fit, 90px);">\
+  grid-template-columns: repeat(auto-fit,minmax(50px,70px));\
+  grid-template-rows: repeat(auto-fit, 70px);">\
   <input-media v-for="(src,i) in sources" :value="src" :name="name+\'[\'+i+\']\'">\
 </div>',
   props: ['name','value'],

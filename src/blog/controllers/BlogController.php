@@ -153,7 +153,7 @@ class BlogController extends Gila\Controller
     global $db;
     $user_id = Router::param('author', 1);
     Config::canonical('author/'.$user_id);
-    $res = $db->get("SELECT username,id from user WHERE id=? OR username=?", [$user_id,$user_id]);
+    $res = $db->read()->get("SELECT username,id from user WHERE id=? OR username=?", [$user_id,$user_id]);
     if ($res) {
       View::set('author', $res[0][0]);
       View::set('page_title', $res[0][0].' | '.Config::get('title'));
@@ -186,7 +186,7 @@ class BlogController extends Gila\Controller
     if (($r = Post::getByIdSlug($postId)) && ($r['publish']==1)) {
       $id = $r['id'];
       if (!$r['user_id']) {
-        $r['user_id'] = $db->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
+        $r['user_id'] = $db->read()->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
       }
       $user_id = $r['user_id'];
       View::set('author_id', $user_id);
@@ -210,11 +210,11 @@ class BlogController extends Gila\Controller
       if ($r['img']) {
         View::set('img', $r['img']);
         View::meta('og:image', $r['img']);
-        $twitterImgSrc = substr($r['img'],0,7)=='assets/'?Config::get('base').$r['img']:$r['img'];
+        $twitterImgSrc = substr($r['img'], 0, 7)=='assets/'?Config::get('base').$r['img']:$r['img'];
         View::meta('twitter:image:src', $twitterImgSrc);
       } elseif (Config::get('og-image')) {
         View::meta('og:image', Config::get('og-image'));
-        $twitterImgSrc = substr($r['img'],0,7)=='assets/'?Config::get('base').$r['og-img']:$r['og-img'];
+        $twitterImgSrc = substr($r['img'], 0, 7)=='assets/'?Config::get('base').$r['og-img']:$r['og-img'];
         View::meta('twitter:image:src', $twitterImgSrc);
       } else {
         View::set('img', '');
@@ -247,7 +247,7 @@ class BlogController extends Gila\Controller
         View::render('single-post.php');
       }
     } else {
-      if ($category = $db->value('SELECT id FROM postcategory WHERE slug=?', $id)) {
+      if ($category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?', $id)) {
         $this->categoryAction($category);
         return;
       }

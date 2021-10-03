@@ -246,6 +246,10 @@ button:hover{
   text-transform: none;
   font-weight: unset;
 }
+.gila-popup .btn-white{
+  background-color:#fff; border:1px solid var(--main-border-color); color:var(--main-color)!important
+}
+
 .btn:hover, .g-btn:hover,.gila-popup .g-btn:hover{
   color:#fff;
   opacity:0.9;

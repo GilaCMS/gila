@@ -151,12 +151,14 @@ class BlocksController extends Gila\Controller
     $new = ['_type'=>$_POST['type']];
     $type = strtr($_POST['type'], ['/'=>'','\\'=>'','.'=>'']);
     $fields = Gila\Widget::getFields($type);
-    foreach ($fields as $key=>$field) if(!is_numeric($key)) {
-      if (isset($field['default'])) {
-        $new[$key] = $field['default'];
-      }
-      if ($key=='text' && $html!=null) {
-        $new[$key] = '<div>'.$html.'</div>';
+    foreach ($fields as $key=>$field) {
+      if (!is_numeric($key)) {
+        if (isset($field['default'])) {
+          $new[$key] = $field['default'];
+        }
+        if ($key=='text' && $html!=null) {
+          $new[$key] = '<div>'.$html.'</div>';
+        }
       }
     }
     array_splice($widgets, $pos, 0, [$new]);

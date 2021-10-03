@@ -195,7 +195,7 @@ class Form
         if (is_string($ov)) {
           $ov = explode(',', $ov);
         }
-        $getOptions = $db->get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
+        $getOptions = $db->read()->get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
         foreach ($getOptions as $op) {
           $options[$op[0]] = $op[1];
         }
