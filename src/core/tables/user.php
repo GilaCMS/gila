@@ -107,7 +107,7 @@ return [
         Table::$error = __('Email already in use');
         $row = false;
       }
-      if (!filter_var($args['email'], FILTER_VALIDATE_EMAIL)) {
+      if (!filter_var($row['email'], FILTER_VALIDATE_EMAIL)) {
         Table::$error = __('Wrong email format');
         $row = false;
       }

@@ -710,6 +710,7 @@ function g_form_popup_update() {
       edit_popup_app.id = _this.data.rows[0][0]
       if(typeof _this.table.children!='undefined') setTimeout(function(){
         document.getElementById("edit_popup_child").scrollIntoView();
+        g("button[data-id='popup_add']").remove()
       }, 100)
     } else {
       _this.update_row(data.rows[0])
@@ -961,9 +962,10 @@ function upload_csv_file() {
   table = g.el('g_file_to_upload').getAttribute('data-table');
   g.loader()
   g.ajax({url:"cm/upload_csv/"+table, method:'POST', data:fm, fn:function(data){
+    data = JSON.parse(data)
     app.$refs.gtable.load_page()
     g.loader(false)
-    g('.gila-darkscreen').remove();
+    if (data.error) alert(data.error)
   }})
 }
 

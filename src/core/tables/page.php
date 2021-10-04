@@ -94,9 +94,16 @@ return [
     ]
   ],
   'events'=>[
-    ['create',function (&$row) {
+    ['create', function (&$row) {
       if ($row['slug']=='') {
         $row['slug'] = Slugify::text($row['title']);
+      }
+    }],
+    ['change', function (&$row) {
+      global $db;
+      $query = "SELECT id FROM `page` WHERE publish=1 AND slug=? AND title!=? AND `language`=?";
+      if ($row['publish']==1 && $other=$db->getOne($query, [$row['slug'], $row['title'], $row['language']])) {
+        Table::$error = __('Another page has the same path')." (ID:{$other['id']})";
       }
     }]
   ]

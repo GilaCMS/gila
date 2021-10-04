@@ -246,6 +246,10 @@ button:hover{
   text-transform: none;
   font-weight: unset;
 }
+.gila-popup .btn-white{
+  background-color:#fff; border:1px solid var(--main-border-color); color:var(--main-color)!important
+}
+
 .btn:hover, .g-btn:hover,.gila-popup .g-btn:hover{
   color:#fff;
   opacity:0.9;
@@ -706,7 +710,7 @@ input.btn {
 
 .g-tabs{
   background:inherit;
-  border-bottom:1px solid var(--main-border-color);;
+  border-bottom:1px solid var(--main-border-color);
 }
 .g-tabs>li{
   background:inherit;
@@ -715,17 +719,18 @@ input.btn {
 
 .g-tabs>li.active,
 .g-tabs>li:hover{
-  color: var(--main-a-color);
   border-bottom:3px solid var(--main-a-color);
   transition:all 0s;
   margin-bottom:-1px;
 }
-.g-tabs>li.active a,
-.g-tabs>li:hover a{
-  color: var(--main-a-color);
+.g-tabs a{
+  color: var(--main-color);
+  opacity:0.6;
 }
-.g-tabs>li>a{
-  color: var(--main-color)
+.g-tabs>li.active>a,
+.g-tabs>li>a:hover{
+  color: var(--main-color);
+  opacity:1;
 }
 .tab-content>*{
   display:none;

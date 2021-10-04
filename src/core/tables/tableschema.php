@@ -32,7 +32,7 @@ return [
     ]
   ],
   'events'=>[
-    ['change',function (&$row) {
+    ['change', function (&$row) {
       TableSchema::update(json_decode($row['data'], true));
     }]
   ]

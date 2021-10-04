@@ -14,7 +14,7 @@ class User
       $db->query("INSERT INTO user(email,pass,username,active,`language`)
         VALUES(?,?,?,?,?);", [$email, $pass, $name, $active, Config::lang()]);
       $userId = $db->insert_id;
-      Event::fire('self::create', ['userId'=>$userId]);
+      Event::fire('User::create', ['userId'=>$userId]);
       return $userId;
     } else {
       return false;
@@ -207,22 +207,22 @@ class User
   {
     Config::addLang('core/lang/login/');
     $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+    $baseurl = Config::base('user/password_reset');
+    $reset_url = $baseurl.'?rp='.$reset_code;
     self::meta($data['id'], 'reset_code', $reset_code);
     if (Event::get(
       'user_invite.email',
       false,
-      ['data'=>$data, 'reset_code'=>$reset_code]
+      ['user'=>$data, 'reset_code'=>$reset_code, 'reset_url'=>$reset_url]
     )) {
       return;
     }
 
-    $baseurl = Config::base();
-    $basereset = Config::base('user/password_reset');
     $subject = __('invite_msg_ln1').' '.$data['username'];
     $msg = __('invite_msg_ln2')." {$data['username']}\n\n";
     $msg .= __('invite_msg_ln3').' '.Config::get('title')."\n\n";
     $msg .= __('invite_msg_ln4')."\n";
-    $msg .= $baseurl."?rp=$reset_code\n\n";
+    $msg .= $reset_url."\n\n";
     $msg .= __('activate_msg_ln4');
     $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
     new Sendmail(['email'=>$data['email'], 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
@@ -254,21 +254,26 @@ class User
       View::alert('error', __('register_error1'));
     } else {
       // register the user
-      if ($user_Id = self::create($email, $password, $name)) {
+      if ($userId = self::create($email, $password, $name)) {
         // success
-        if (!Event::get('user_activation.email', false, ['user_id'=>$user_id]) &&
-        Config::get('user_activation')=='byemail') {
-          $baseurl = Config::base();
-          $baseactivate = Config::base('user/activate');
-          $subject = __('activate_msg_ln1').' '.$name;
+        if (Config::get('user_activation')=='byemail') {
           $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
-          $msg = __('activate_msg_ln2')." {$name}\n\n";
-          $msg .= __('activate_msg_ln3').' '.Config::get('title')."\n\n";
-          $msg .= $baseactivate."?ap=$activate_code\n\n";
-          $msg .= __('activate_msg_ln4');
-          $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
-          self::meta($user_Id, 'activate_code', $activate_code);
-          new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+          $baseactivate = Config::base('user/activate');
+          $activate_url = $baseactivate.'?ap='.$activate_code;
+          $data = [
+            'user'=>['id'=>$userId, 'username'=>$name, 'email'=>$email],
+            'activate_code'=>$activate_code, 'activate_url'=>$activate_url
+          ];
+          if (!Event::get('user_activation.email', false, $data)) {
+            $subject = __('activate_msg_ln1').' '.$name;
+            $msg = __('activate_msg_ln2')." {$name}\n\n";
+            $msg .= __('activate_msg_ln3').' '.Config::get('title')."\n\n";
+            $msg .= $activate_url."\n\n";
+            $msg .= __('activate_msg_ln4');
+            $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
+            new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
+          }
+          self::meta($userId, 'activate_code', $activate_code);
         }
         return true;
       } else {

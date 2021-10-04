@@ -308,7 +308,7 @@ g.dialog = function(p){
       btn = g.dialog.buttons[btni];
       if(typeof btn.class=='undefined') btn.class='default';
       if(typeof btn.fn=='undefined') btn.fn='';
-      buttons+='<button class="g-btn '+btn.class+'" onclick="g.dialog.buttons.'+btni+'.fn(this)">'+g.tr(btn.title)+'</button> ';
+      buttons+='<button data-id="'+btni+'" class="g-btn '+btn.class+'" onclick="g.dialog.buttons.'+btni+'.fn(this)">'+g.tr(btn.title)+'</button> ';
     }
   }
   p.foot=buttons+p.foot;

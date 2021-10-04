@@ -12,6 +12,7 @@ class TableTest extends TestCase
   {
     global $db;
     Gila\Config::content('post', 'core/tables/post.php');
+    Gila\Config::content('postcategory', 'core/tables/postcategory.php');
     $Table = new Gila\Table('post');
     $this->assertEquals('post', $Table->name());
     $this->assertEquals('id', $Table->id());
@@ -33,6 +34,7 @@ class TableTest extends TestCase
   public function test_where()
   {
     Gila\Config::content('post', 'core/tables/post.php');
+    Gila\Config::content('postcategory', 'core/tables/postcategory.php');
     $Table = new Gila\Table('post');
 
     $this->assertEquals(" WHERE `id`>10", $Table->where(['id'=>['gt'=>10]]));
@@ -51,6 +53,7 @@ class TableTest extends TestCase
   {
     global $db;
     Gila\Config::content('post', 'core/tables/post.php');
+    Gila\Config::content('postcategory', 'core/tables/postcategory.php');
     $Table = new Gila\Table('post');
 
     $db->query("DELETE FROM postmeta WHERE vartype IN('fruit','color')");
@@ -64,6 +67,7 @@ class TableTest extends TestCase
   {
     global $db;
     Gila\Config::content('post', 'core/tables/post.php');
+    Gila\Config::content('postcategory', 'core/tables/postcategory.php');
     $Table = new Gila\Table('post');
     $data = ['post'=>'<p><script>alert("xss")</script>Post</p>','slug'=>'post1'];
 

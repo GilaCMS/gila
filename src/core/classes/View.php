@@ -17,14 +17,15 @@ class View
   public static $renderer;
   public static $cdn_host = '';
   public static $cdn_paths = [
-    'core/gila.min.js'=> 'core/gila1510.js',
-    'core/gila.js'=> 'core/gila1510.js',
+    'core/gila.min.js'=> 'core/gila1914.js',
+    'core/gila.js'=> 'core/gila1914.js',
     'core/gila.min.css'=> 'core/gila1811.css',
     'core/gila.css'=> 'core/gila1811.css',
-    'core/widgets.css'=> 'core/widgets1721.css',
+    'core/widgets.css'=> 'core/widgets1001.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
-    'core/admin/content.js'=> 'core/admin/content1805.js',
-    'core/admin/content.css'=> 'core/admin/content1823.css'
+    'core/admin/content.js'=> 'core/admin/content1914.js',
+    'core/admin/content.css'=> 'core/admin/content1003.css',
+    'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
 
   public static function set($param, $value)
@@ -84,8 +85,23 @@ class View
   */
   public static function css($css, $prop='')
   {
+    if ($href = self::cssPath($css)) {
+      echo '<link rel="stylesheet" href="'.$href.'" '.$prop.'>';
+    }
+  }
+
+  public static function cssAsync($css, $uri=false)
+  {
+    if ($href = self::cssPath($css)) {
+      echo '<script>function loadCSS(f){var c=document.createElement("link");c.rel="stylesheet";c.href=f;document.getElementsByTagName("head")[0].appendChild(c);}</script>';
+      echo '<script>loadCSS("'.$href.'");</script>';
+    }
+  }
+
+  public static function cssPath($css)
+  {
     if (in_array($css, self::$css)) {
-      return;
+      return null;
     }
     if (isset(self::$cdn_paths[$css])) {
       $css = self::$cdn_paths[$css];
@@ -94,17 +110,12 @@ class View
       $css = self::$cdn_host.'assets/'.$css;
     }
     if (in_array($css, self::$stylesheet)) {
-      return;
+      return null;
     }
 
     self::$css[]=$css;
     self::$stylesheet[]=$css;
-    echo '<link rel="stylesheet" href="'.$css.'" '.$prop.'>';
-  }
-
-  public static function cssAsync($css, $uri=false)
-  {
-    self::css($css, 'rel=preload media="print" onload="this.media=\'all\'"');
+    return $css;
   }
 
   /**

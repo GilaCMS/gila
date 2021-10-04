@@ -80,6 +80,11 @@
 .photo-portrait__item{
   width:210px;height:280px
 }
+.photo-portrait__arc{
+  width:210px;height:280px;
+  border-top-right-radius: 260px;
+  border-top-right-radius: 260px;
+}
 .photo-portrait__sm{
   width:135px;height:180px
 }
@@ -98,6 +103,7 @@
 .gallery-item{
   background-size: cover;
   background-position: center;
+  max-width:100%;
 }
 
 .side-image{
@@ -303,4 +309,43 @@ section>.container{
   grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
   min-height: 2em;
   gap:1em;
+}
+.columnarea>div{
+  height: 100%;
+}
+@media (min-width:401px){
+  .grid__4c2c{
+    grid-template-columns: 1fr 1fr;
+  }
+  .grid__3c1c{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width:601px){
+  .grid__3c1c{
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width:801px){
+  .grid__2c{
+    grid-template-columns: 1fr 1fr;
+  }
+  .grid__4c,.grid__4c2c{
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .grid__bricks>div:nth-child(2),.grid__bricks>div:nth-child(3),
+  .grid__bricks>div:nth-child(6),.grid__bricks>div:nth-child(7){
+    grid-column: span 2;
+  }
+  .grid__1f{
+    grid-template-columns: 1fr 1.618fr;
+  }
+  .grid__f1{
+    grid-template-columns: 1.618fr 1fr;
+  }
+  .grid__first-fluid>div:nth-child(1){
+    grid-column: 1/-1;
+  }
 }

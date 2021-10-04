@@ -55,49 +55,61 @@ ondrop='gallery_drop_files(event);' ondragover='event.preventDefault();'>
 
 <?php
 foreach ($files as $file) {
-  if ($file[0]!='.') if (is_dir(SITE_PATH.$path.'/'.$file)) {
-    $filepath=$path.'/'.$file;
-    $filename=htmlspecialchars($file);
-    $type='folder';
-    $img = '<img src="assets/core/admin/folder.svg">';
-    echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" >'.$img.'<br>'.$filename.'</div>';
+  if ($file[0]!='.') {
+    if (is_dir(SITE_PATH.$path.'/'.$file)) {
+      $filepath=$path.'/'.$file;
+      $filename=htmlspecialchars($file);
+      $type='folder';
+      $img = '<img src="assets/core/admin/folder.svg">';
+      echo '<div data-path="'.$filepath.'" class="gal-path gal-'.$type.'" >'.$img.'<br>'.$filename.'</div>';
+    }
   }
 }
 
 foreach ($files as $file) {
-  if ($file[0]!='.') if (!is_dir(SITE_PATH.$path.'/'.$file)) {
-    $type='file';
-    $imgx = ['jpg','jpeg','png','gif','svg','webp'];
-    if ($pinf = pathinfo(SITE_PATH.$file)) {
-      if ($ext = @$pinf['extension']) {
-        if (in_array(strtolower($ext), $imgx)) {
-          $type='image';
+  if ($file[0]!='.') {
+    if (!is_dir(SITE_PATH.$path.'/'.$file)) {
+      $type='file';
+      $imgx = ['jpg','jpeg','png','gif','svg','webp'];
+      if ($pinf = pathinfo(SITE_PATH.$file)) {
+        if ($ext = @$pinf['extension']) {
+          if (in_array(strtolower($ext), $imgx)) {
+            $type='image';
+          }
         }
       }
-    }
-    $vidx = ['avi','webm','mp4','mkv','mp3'];
-    if ($pinf = pathinfo(SITE_PATH.$file)) {
-      if ($ext = @$pinf['extension']) {
-        if (in_array(strtolower($ext), $vidx)) {
-          $type='video';
+      $vidx = ['avi','webm','mp4','mkv','mp3'];
+      if ($pinf = pathinfo(SITE_PATH.$file)) {
+        if ($ext = @$pinf['extension']) {
+          if (in_array(strtolower($ext), $vidx)) {
+            $type='video';
+          }
         }
       }
-    }
-    $filepath=$path.'/'.$file;
-    $filename=htmlspecialchars($file);
-    if ($type=='image') {
-      $img='<img src="'.View::thumb(SITE_PATH.$filepath, 100).'">';
-      echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
-    }
-    if ($type=='video') {
-      $img = '<img src="assets/core/admin/movie.svg">';
-      echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-image">'.$img.'<br>'.$filename.'</div>';
-    }
-    if ($type=='file') {
-      $img = '<img src="assets/core/admin/file.svg">';
-      echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$filename.'</div>';
+      $filepath=$path.'/'.$file;
+      $filename=htmlspecialchars($file);
+      if ($type=='image') {
+        $img='<img src="'.View::thumb(SITE_PATH.$filepath, 100).'">';
+        echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'">'.$img.'<br>'.$filename.'</div>';
+      }
+      if ($type=='video') {
+        $img = '<img src="assets/core/admin/movie.svg">';
+        echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-image">'.$img.'<br>'.$filename.'</div>';
+      }
+      if ($type=='file') {
+        $img = '<img src="assets/core/admin/file.svg">';
+        echo '<div data-path="'.SITE_PATH.$filepath.'" class="gal-path gal-'.$type.'" style="opacity:0.4">'.$img.'<br>'.$filename.'</div>';
+      }
     }
   }
 }
 echo "</div>";
+if ($total = Config::get('media_uploads_limit')) {
+  $size = Cache::remember('fsize', 8000, function () {
+    return FileManager::getUploadsSize();
+  });
+  $mb = round($size/(1024*1024), 1);
+  echo '<progress value="'.$mb.'" max="'.$total.'"> '.round(100*$size/$total).'% </progress>';
+  echo ' <span>'.round(100*$size/$total).'% from '.$total.' MB used</span>';
+}
 echo "</div><!--admin-media-div-->";

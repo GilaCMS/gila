@@ -7,7 +7,7 @@
       </div>
       <h3><?=__('reset_pass')?></h3>
     </div>
-    <form role="form" method="post" action="" class="g-form">
+    <form method="post" action="" class="g-form">
       <?=Form::hiddenInput('new_pass')?>
       <p><?=__('reset_submit_pass')?><p>
       <div class="form-group">

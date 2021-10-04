@@ -202,34 +202,63 @@ class CMController extends Gila\Controller
     $lines = 0;
     $filename = $_FILES["file"]["tmp_name"];
     $fields = $gtable->fields('upload_csv');
-    $quest = "";
     $nfields = count($fields);
-    $fields = implode(',', $fields);
-    for ($i=0; $i<$nfields; $i++) {
-      if ($i>0) {
-        $quest .= ',';
-      }
-      $quest .= '?';
-    }
+    $idField = $gtable->id();
+    $inserted = 0;
     if (@$_FILES["file"]["size"] > 0) {
       $file = fopen($filename, "r");
       while (($row = fgetcsv($file, 10000, ",")) !== false) {
         $lines++;
         if ($lines==1) {
+          $fieldIndex = array_flip($row);
+          $columns = $row;
           continue;
         }
         if (count($row)<$nfields) {
           continue;
         }
-        $ql = "REPLACE INTO {$gtable->name()} ($fields) VALUES($quest);";
-        echo $ql.'\n';
-        echo implode(',', $row);
-        if ($db->query($ql, $row)) {
-          $inserted++;
+        $values = [];
+        $rowFields = [];
+        foreach ($columns as $key) {
+          if ($key!=$idField || !empty($row[$fieldIndex[$key]])) {
+            $rowFields[] = $key;
+            $values[] = $row[$fieldIndex[$key]];
+            $data[$key] = $row[$fieldIndex[$key]];
+          }
+        }
+        if (empty($row[$fieldIndex[$idField]])) {
+          if ($_field = $gtable->getTable()['copy_from_src'] && !empty($data[$_field])) {
+            $src = $data[$_field];
+            $pathinfo = pathinfo($src);
+            $ext = strtolower($pathinfo['extension']) ?? 'png';
+            if (!in_array($ext, ['jpg','jpeg','webp','png'])) {
+              break;
+            }
+            $file = 'assets/uploads/'.time().'.'.$ext;
+            copy($src, $file);
+            $data[$_field] = $file;
+          }
+          $id = $gtable->createRow($data);
+          echo $id.',';
+        } else {
+          $id = $row[$fieldIndex[$idField]];
+          $set = $gtable->set($data);
+          if ($error = Table::$error) {
+            die('{"success":false, "error":"'.$error.'"}');
+          }
+          $db->query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
+          if ($db->error()) {
+            die('{"success":false, "error":"'.$db->error().'"}');
+          }
+        }
+        if ($id) {
+          $gtable->updateMeta($id, $data);
+          $gtable->updateJoins($id, $data);
         }
       }
       fclose($file);
     }
+    echo '{"success":true}';
   }
 
   public function group_rowsAction()
@@ -290,6 +319,9 @@ class CMController extends Gila\Controller
       $gtable->updateMeta($id);
       $gtable->updateJoins($id);
       $set = $gtable->set($data);
+      if ($error = Table::$error) {
+        die('{"success":false, "error":"'.$error.'"}');
+      }
       $res = $db->query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
       if ($db->error()) {
         @$result['error'][] = $db->error();

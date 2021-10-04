@@ -75,6 +75,7 @@ class UserController extends Gila\Controller
         User::updateActive($ids[0], 1);
         User::metaDelete($ids[0], 'activate_code');
         View::set('user', User::getById($ids[0]));
+        View::set('login_link', User::level($ids[0])>0? 'admin': 'user');
         View::includeFile('user-activate-success.php');
       }
       return;
@@ -102,6 +103,7 @@ class UserController extends Gila\Controller
         $idUser=$r[0];
         User::updatePassword($idUser, $_POST['pass']);
         User::metaDelete($idUser, 'reset_code');
+        View::set('login_link', User::level($idUser)>0? 'admin': 'user');
         View::includeFile('user-change-success.php');
       } else {
         @session_start();
@@ -137,7 +139,7 @@ class UserController extends Gila\Controller
       $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
       User::meta($r['id'], 'reset_code', $reset_code);
       $basereset = Config::base('user/password_reset');
-      $reset_url = $basereset."?rp=$reset_code\n\n";
+      $reset_url = $basereset.'?rp='.$reset_code;
 
       if (!Event::get(
         'user_password_reset.email',
@@ -148,7 +150,7 @@ class UserController extends Gila\Controller
         $subject = __('reset_msg_ln1').' '.$r['username'];
         $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
         $msg .= __('reset_msg_ln3').' '.Config::get('title')."\n\n";
-        $msg .= $basereset."?rp=$reset_code\n\n";
+        $msg .= $reset_url."\n\n";
         $msg .= __('reset_msg_ln4');
         $headers = "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
         new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);

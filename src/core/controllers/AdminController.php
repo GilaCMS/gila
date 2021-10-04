@@ -214,6 +214,12 @@ class AdminController extends Gila\Controller
 
   public function media_uploadAction()
   {
+    if ($total = Config::get('media_uploads_limit')) {
+      $size = Cache::remember('fsize', 8000, function () {
+        return FileManager::getUploadsSize();
+      });
+      $total = $total*1024*1024;
+    }
     if (isset($_FILES['uploadfiles'])) {
       $upload_folder = Config::get('media_uploads') ?? 'assets';
       $uploadpath = Router::post('path', $upload_folder);
@@ -243,6 +249,8 @@ class AdminController extends Gila\Controller
           echo "<div class='alert error'>Error: incorrect path!</div>";
         } elseif (!move_uploaded_file($tmp_names[$i], $path)) {
           echo "<div class='alert error'>Error: could not upload file!</div>";
+        } elseif ($total && filesize($tmp_names[$i])+$size>$total) {
+          echo "<div class='alert error'>Error: No space available to upload!</div>";
         } else {
           $maxWidth = Config::get('maxImgWidth') ?? 0;
           $maxHeight = Config::get('maxImgHeight') ?? 0;

@@ -9,7 +9,7 @@
       <h3><?=__('reset_pass')?></h3>
     </div>
 
-    <form role="form" method="post" action="<?=Config::base('user/password_reset')?>" class="g-form">
+    <form method="post" action="<?=Config::base('user/password_reset')?>" class="g-form">
       <?=Form::hiddenInput('reset_pass')?>
       <p><?=__('reset_pass_msg')?><p>
       <div class="form-group">

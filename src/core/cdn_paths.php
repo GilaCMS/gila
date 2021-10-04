@@ -1,11 +1,11 @@
 <?php
 
 return [
-  'core/gila.min.js'=> 'core/gila1510.min.js',
-  'core/gila.js'=> 'core/gila1510.js',
+  'core/gila.min.js'=> 'core/gila1914.js',
+  'core/gila.js'=> 'core/gila1914.js',
   'core/gila.min.css'=> 'core/gila1811.min.css',
   'core/gila.css'=> 'core/gila1811.css',
-  'core/widgets.css'=> 'core/widgets1721.css',
+  'core/widgets.css'=> 'core/widgets1925.css',
   'core/admin/media.js'=> 'core/admin/media1806.js',
   'lib/jquery/jquery-3.3.1.min.js'=> 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
   'lib/bootstrap/bootstrap.min.js'=> 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',

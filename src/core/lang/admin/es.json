@@ -47,9 +47,10 @@
     "Page background": "Fondo de página",
     "Page background color": "Color de fondo de página",
     "Custom CSS": "CSS personalizado",
-    "Reset values": "Reajustar valores",
+    "Reset values": "Restablecer valores",
     "Background image":"Imagen de fondo",
     "Background color": "Color de fondo",
+    "Background color (scroll)": "Color de fondo (scroll)",
     "Background color opacity": "Opacidad del color de fondo",
     "Background position": "Posición de fondo",
     "Background attachment": "Adjunto de fondo",
@@ -98,5 +99,9 @@
     "Circle SM":"Circular SM",
     "Category":"Categoria",
     "Min height":"Altura min",
-    "Address":"Dirección"
+    "Address":"Dirección",
+    "Logo align": "Alinear logo",
+    "Logo size": "Altura de logo",
+    "Menu align": "Alinear menu",
+    "Title color": "Color de título"
 }

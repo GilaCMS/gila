@@ -15,9 +15,9 @@ class UserNotification
     global $db;
     $user_id = Session::userId();
     if (empty($type)) {
-      return $db->get("SELECT * FROM user_notification WHERE user_id=? AND unread=1 ORDER BY created DESC", [$user_id]);
+      return $db->read()->get("SELECT * FROM user_notification WHERE user_id=? AND unread=1 ORDER BY created DESC", [$user_id]);
     }
-    return $db->get("SELECT * FROM user_notification WHERE user_id=? AND unread=1 AND type=? ORDER BY created DESC", [$user_id, $type]);
+    return $db->read()->get("SELECT * FROM user_notification WHERE user_id=? AND unread=1 AND type=? ORDER BY created DESC", [$user_id, $type]);
   }
 
   public static function countNew($type = null)

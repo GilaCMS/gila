@@ -80,13 +80,11 @@ class Post
       FROM post
       WHERE $where
       ORDER BY id DESC LIMIT $start_from,$ppp";
-    $res = $db->read()->query($ql);
-    if ($res) {
-      while ($r = mysqli_fetch_assoc($res)) {
-        $r['url'] = Config::url('blog/'.$r['id'].'/'.$r['slug']);
-        $r['post'] = HtmlInput::DOMSanitize($r['post'], false);
-        yield $r;
-      }
+    $rows = $db->read()->get($ql);
+    foreach ($rows as $r) {
+      $r['url'] = Config::url('blog/'.$r['id'].'/'.$r['slug']);
+      $r['post'] = HtmlInput::DOMSanitize($r['post'], false);
+      yield $r;
     }
   }
 

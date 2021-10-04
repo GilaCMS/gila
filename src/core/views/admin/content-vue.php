@@ -11,7 +11,7 @@ View::css('core/admin/content.css');
 View::css('core/admin/vue-editor.css');
 View::script('lib/vue/vue.min.js');
 View::script('core/admin/content.js');
-View::scriptAsync('core/lang/content/'.Config::get('language').'.js');
+View::script('core/lang/content/'.Config::get('language').'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
 View::script('core/vue-upload-media.js');
@@ -22,10 +22,6 @@ View::scriptAsync('lib/CodeMirror/htmlmixed.js');
 View::scriptAsync('lib/CodeMirror/javascript.js');
 View::cssAsync('lib/CodeMirror/codemirror.css');
 View::cssAsync('lib/vue/vue-select.css');
-// DEPRECATED the below
-View::script('lib/jquery/jquery-3.3.1.min.js');
-View::script('lib/select2/select2.min.js');
-View::css('lib/select2/select2.min.css');
 ?>
 <style>.CodeMirror{max-height:300px;border:1px solid var(--main-border-color);width:100%}</style>
 <?=View::scriptAsync("lib/tinymce5/tinymce.min.js")?>
@@ -33,7 +29,7 @@ View::css('lib/select2/select2.min.css');
 <style>
 .type-textarea label{width:100%}
 .type-tinymce{min-height:250px;margin-bottom:20px}
-.type-tinymce,.type-textarea,.type-media-gallery,.type-list{grid-column:1/-1}
+.type-tinymce,.type-textarea,.type-list{grid-column:1/-1}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
 @media only screen and (min-width:700px){
   #user-post-edit-item-form>div,

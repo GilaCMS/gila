@@ -17,18 +17,11 @@ class Menu
   public static function getContents($menu)
   {
     global $db;
-    $jsonfile = LOG_PATH."/menus/$menu.json";
     if ($data = Cache::get('menu--'.$menu, 86400, [Config::mt('menu')])) {
       return $data;
     }
     if ($data = $db->read()->value("SELECT `data` FROM menu WHERE `menu`=?;", [$menu])) {
       Cache::set('menu--'.$menu, $data, [Config::mt('menu')]);
-      return $data;
-    }
-    // DEPRECATED
-    if (file_exists($jsonfile)) {
-      $data = file_get_contents($jsonfile);
-      self::setContents($menu, $data);
       return $data;
     }
 
@@ -38,9 +31,6 @@ class Menu
   public static function setContents($menu, $data)
   {
     global $db;
-    $folder = Config::dir(LOG_PATH.'/menus/');
-    $file = $folder.$menu.'.json';
-    @unlink($file); // DEPRECATED
     Config::setMt('menu');
     $db->query("REPLACE INTO menu(`menu`,`data`) VALUES(?,?);", [$menu, $data]);
   }
@@ -49,32 +39,24 @@ class Menu
   {
     global $db;
     $menuLN = $menu.'.'.Config::lang();
-    $data = $db->read()->value(
-      "SELECT `data` FROM menu WHERE `menu`=?
-      UNION SELECT `data` FROM menu WHERE `menu`=?;",
-      [$menuLN, $menu]
-    );
+    $data =  Cache::remember($menuLN.'_data', 259200, function ($u) {
+      global $db;
+      return $db->read()->value(
+        "SELECT `data` FROM menu WHERE `menu`=?
+        UNION SELECT `data` FROM menu WHERE `menu`=?;",
+        [$u[1], $u[2]]
+      );
+    }, [Config::mt('menu'),$menuLN, $menu]);
+
     if ($data) {
       return json_decode($data, true);
     }
-    // DEPRECATED
-    $fileLN = LOG_PATH.'/menus/'.$menu.'.'.Config::lang().'.json';
-    $file = LOG_PATH.'/menus/'.$menu.'.json';
-    if (file_exists($fileLN)) {
-      return json_decode(file_get_contents($fileLN), true);
-    } elseif (file_exists($file)) {
-      return json_decode(file_get_contents($file), true);
-    } else {
-      return self::defaultData();
-    }
+    return self::defaultData();
   }
 
   public static function remove($menu)
   {
-    $folder = Config::dir(LOG_PATH.'/menus/');
-    $file = $folder.$menu.'.json';
     Cache::set('menu--'.$menu);
-    @unlink($file);
   }
 
   public static function defaultData()
@@ -124,7 +106,7 @@ class Menu
           $name = $r['title'];
           return ['name'=>$name, 'url'=>$url];
         }
-        if (is_string($data['id'])) {
+        if (is_string($data['id']) && !is_numeric($data['id'])) {
           $prefix = (Config::lang()!==Config::get('language'))? '/'.Config::lang(): '';
           return ['name'=>__(ucfirst($data['id'])), 'url'=>$prefix.'/'.$data['id']];
         }
@@ -186,13 +168,14 @@ class Menu
 
         if (self::$active===true) {
           self::$active = false;
-          $liClass .= ' '.self::$liActive;//' active';
+          $liClass .= ' '.self::$liActive;
         }
       } else {
         $childrenHtml = '';
         $ddIcon = '';
       }
-      if ($url==$base) {
+      $current = !empty($base)? $base: $_SERVER['REQUEST_URI'];
+      if (trim($url, '/')==trim($current, '/')) {
         self::$active = true;
         $liClass .= ' active';
         $aClass .= ' active';
