@@ -22,7 +22,10 @@
   }
   ?>
 <div class="wrapper" id="currentDevices">
-  <h3><?=__('You are connected with these devices', ['es'=>'Estas conectado con esos dispositivos'])?></h3>
+  <h3><?=__('You are connected with these devices', [
+    'es'=>'Estas conectado con esos dispositivos',
+    'el'=>'Είσαι συνδεδεμένος/η με αυτές τις συσκευές'
+    ])?></h3>
   <div v-for="(s,i) in sessions" v-bind:class="{'device-pill':true,selected:s.current}">
     <img :src="'src/core/assets/'+iconFile(s.device)">
     {{s.os}} | {{s.browser}} | IP: {{s.ip}}

@@ -8,5 +8,7 @@
   "Change Password":"Αλλαγή κωδικού",
   "New passwords do not match":"Οι νέοι κωδικοί δεν ταιριάζουν",
   "New password too small":"Ο νέος κωδικός είναι πολύ μικρός",
-  "Password incorrect":"Λάθος κωδικός"
+  "Password incorrect":"Λάθος κωδικός",
+  "Personal Information":"Προσωπικές πληροφορίες",
+  "Security":"Ασφάλεια"
 }
