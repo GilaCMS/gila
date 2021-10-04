@@ -6,7 +6,7 @@ if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptch
 ?>
 <section>
 <div class="container">
-<form role="form" method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form">
+<form method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form">
   <?=Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php View::alerts() ?>
   <label><?=__("Name")?></label>

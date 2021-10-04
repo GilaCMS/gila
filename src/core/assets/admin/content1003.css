@@ -353,7 +353,8 @@ td[col] .g-input {
 
 .edititem {
   border: 1px solid lightgrey;
-  border-left: 4px solid lightgreen;
+  border-left: 3px solid lightgreen;
+  border-left-color: var(--admin-primary-color);
   padding: 0.5em;
   padding-left: 1.5em;
 }
@@ -402,6 +403,9 @@ td[col] .g-input {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.g-table .g-table .g-table-head {
+  margin: 0;
 }
 
 .g-table .com-btn {
