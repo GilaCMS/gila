@@ -279,7 +279,7 @@ class Form
       "key"=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<div class="g-group">
-          <span class="btn g-group-item" onclick="open_select_from_table(\'#'.$id.'\',\''.$field['table'].'\',\''.$field['title'].'\')"><i class="fa fa-key"></i></span>
+          <span class="btn g-group-item" onclick="open_select_row(\'#'.$id.'\',\''.$field['table'].'\',\''.$field['title'].'\')"><i class="fa fa-key"></i></span>
           <span class="g-group-item"><input class="fullwidth" value="'.($ov??0).'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },

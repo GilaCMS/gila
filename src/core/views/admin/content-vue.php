@@ -45,6 +45,7 @@ View::cssAsync('lib/vue/vue-select.css');
   background-color: #f0f0f0;
 }
 .v-select {display:inline-block;min-width:180px}
+#select_row_dialog .body{padding:0}
 </style>
 
 <?php

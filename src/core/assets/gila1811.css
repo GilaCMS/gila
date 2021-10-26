@@ -53,7 +53,7 @@ script{display:none!important}
 #media_dialog .g-selected{
   background-color:var(--admin-primary-color)!important;
 }
-#media_dialog .g-gal *, .g-group-item{
+#media_dialog *, .g-group-item{
   font: 14px Arial,sans-serif;
 }
 #media_dialog * {
@@ -105,6 +105,7 @@ script{display:none!important}
 .pad{padding:var(--main-padding)}
 .container{padding:0 16px;margin:auto;position:relative}
 .container-fluid.fluid{max-width:unset;}
+.container-boxed{padding:16px;margin:auto;position:relative}
 
 .gap-0px>*{padding:0px}
 .gap-1px>*{padding:1px}
@@ -240,6 +241,7 @@ button:hover{
   opacity:1;
   vertical-align: middle;
   font-weight: bold;
+  text-decoration:none;
 }
 .gila-popup .g-btn {
   background:var(--admin-primary-color);
@@ -480,7 +482,7 @@ input.btn {
   .g-nav.hover li:hover>ul{display:block;}
 }
 @media only screen and (min-width:1200px){
-  .container{
+  .container,.container-boxed{
     max-width:1200px;
   }
   .container-fluid,.fluid{

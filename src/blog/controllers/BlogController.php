@@ -183,7 +183,7 @@ class BlogController extends Gila\Controller
     $args = explode('/', $id);
     $postId = $args[0]==='blog'? $args[1]: $args[0];
 
-    if (($r = Post::getByIdSlug($postId)) && ($r['publish']==1)) {
+    if (Post::inCachedList($postId) && ($r = Post::getByIdSlug($postId)) && ($r['publish']==1)) {
       $id = $r['id'];
       if (!$r['user_id']) {
         $r['user_id'] = $db->read()->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
@@ -247,11 +247,11 @@ class BlogController extends Gila\Controller
         View::render('single-post.php');
       }
     } else {
-      if ($category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?', $id)) {
+      if (!empty($postId) && $category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $id)) {
         $this->categoryAction($category);
         return;
       }
-  
+
       if ($r = Page::getByIdSlug($id)) {
         View::set('title', $r['title']);
         View::set('text', $r['page']);

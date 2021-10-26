@@ -109,7 +109,7 @@ Vue.component('g-table', {
     <tfoot v-if="table.pagination">\
       <tr>\
         <td colspan="100">\
-          <ul class="pagination g-pagination">\
+          <ul class="pagination g-pagination g-table-pagination">\
             <li v-for="p in pagination()" :class="(p==page?\'active\':\'\')" @click="gotoPage(p)" v-html="p"></li>\
           </ul>\
         </td>\
@@ -425,12 +425,15 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
-        src = 'lzld/thumb?src='+cv+'&media_thumb=80'
+        src = 'lzld/thumb?src='+cv+'&media_thumb=70'
         if (cv.startsWith('https:') || cv.startsWith('http:')) {
           src = cv
         }
-        return '<img src="'+src+'" style="max-width:80px"></img>'
+        return '<img src="'+src+'" style="max-height:35px;max-width:50px;"></img>'
       } else {
+        if (field.media_placeholder) {
+          return '<img src="'+field.media_placeholder+'" style="max-height:35px;max-width:50px;opacity:0.5"></img>'
+        }
         return '';
       }
 
@@ -464,14 +467,17 @@ Vue.component('g-table', {
           return field.options[cv]
         }
         let resp = ''
-        let csv = cv.split(',')
-        for(i=0;i<csv.length;i++)  if(typeof field.options[csv[i]] != "undefined") {
-          resp += field.options[csv[i]]+'<br>'
-        } else resp += csv[i]+'<br>'
+        if(typeof cv=='string') {
+          let csv = cv.split(',')
+          for(i=0;i<csv.length;i++)  if(typeof field.options[csv[i]] != "undefined") {
+            resp += field.options[csv[i]]+'<br>'
+          } else resp += csv[i]+'<br>'
+        }
         return resp
       }
 
       if(field.inline_edit) {
+        if (displayValue==null) displayValue=''
         return '<div contenteditable="true" data-field="'+fkey+'">'+displayValue+'</div>';
       }
       return displayValue;
@@ -653,10 +659,13 @@ gtableCommand['edit_popup'] = {
     g.get(href,function(data){
       g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       formId = '#'+table.name+'-edit-item-form'
-      edit_popup_app = new Vue({
-        el: formId,
-        data: {id:irow}
-      })
+      textarea = g('#gila-popup textarea').first()
+      if (!textarea || !textarea.innerHTML.includes('{{')) {
+        edit_popup_app = new Vue({
+          el: formId,
+          data: {id:irow}
+        })
+      }
       transformClassComponents()
       console.log(formId+' input')
       g(formId+' input').all[1].focus()
@@ -798,14 +807,17 @@ gtableTool['add_popup'] = {
   permission: 'create',
   fn: function(table) {
     if(typeof table.filters=='undefined') table.filters=''
-    href='cm/edit_form/'+table.name+table.filters+'?callback=g_form_popup_update';
+    href='cm/edit_form/'+table.name+'?callback=g_form_popup_update'+table.filters;
     g.get(href,function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_add'})
       formId = '#'+table.name+'-edit-item-form'
-      edit_popup_app = new Vue({
-        el: formId,
-        data: {id:0}
-      })
+      textarea = g('#gila-popup textarea').first()
+      if (!textarea || !textarea.innerHTML.includes('{{')) {
+        edit_popup_app = new Vue({
+          el: formId,
+          data: {id:0}
+        })
+      }
       transformClassComponents()
       g(formId+' input').all[1].focus()
     })
@@ -939,8 +951,11 @@ g.dialog.buttons.select_path_post = {
 }
 g.dialog.buttons.select_row_source = {
   title:'Select', fn: function() {
-    let v = g('#selected-row').attr('value')
-    alert(v);
+    let v = g('tr.selected>.id').attr('value')
+    el = g(input_select_row).all[0]
+    el.value = v
+    console.log(v)
+    console.log(select_popup_app)
     g('#select_row_dialog').parent().remove();
   }
 }
@@ -950,12 +965,26 @@ function open_gallery_post() {
     g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog','z-index':99999})
   })
 }
-function open_select_row(row,table,name) {
-  input_select_row = row;
+var open_select_row_clicked = false
+function open_select_row(rid,table,name) {
+  input_select_row = rid;
+  if(open_select_row_clicked) return;
+  open_select_row_clicked = true;
+
+  g.loader()
   g.post("cm/select_row/"+table,"",function(gal){
+    open_select_row_clicked = false;
+    g.loader(false)
     g.dialog({title:_e(name),body:gal,buttons:'select_row_source',type:'modal',id:'select_row_dialog',class:'large'})
+    divId = '#gtable_select_row'
+    select_popup_app = new Vue({
+      el: divId,
+      data: {}
+    })
+    transformClassComponents()
   })
 }
+
 function upload_csv_file() {
   let fm = new FormData()
   fm.append('file', g.el('g_file_to_upload').files[0]);

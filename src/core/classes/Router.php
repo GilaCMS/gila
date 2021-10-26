@@ -244,7 +244,7 @@ class Router
           }
           return true;
         } elseif (self::$method == 'OPTIONS') {
-          @http_response_code(200);
+          @http_response_code(204);
           return true;
         }
       }

@@ -91,7 +91,7 @@
 .gallery--grid{
   display: grid;
   grid-gap: 1em;
-  grid-template-columns: repeat(auto-fit,360px);
+  grid-template-columns: repeat(auto-fit, minmax(160px,300px));
   justify-content: center;
 }
 .gallery--grid-portrait{
@@ -104,6 +104,7 @@
   background-size: cover;
   background-position: center;
   max-width:100%;
+  margin:auto;
 }
 
 .side-image{
@@ -277,6 +278,7 @@
 section>.container{
   padding-top: 1em;
   padding-bottom: 1em;
+  overflow:hidden;
 }
 
 .widget section>.container{

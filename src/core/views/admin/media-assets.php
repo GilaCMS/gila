@@ -66,8 +66,7 @@ if ($path=='src') {
     $files[$i] = $path.'/'.$files[$i];
   } ?>
 <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
-&larr;</a>
-<span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
+&larr; <?=$uppath?></a>
 <span class="g-group-item" style="position:relative;">
   <input class='g-input input-filter' oninput="filter_files('.gal-path',this.value)" placeholder="filter"/>
   <img src="assets/core/admin/filter.svg" class="img-btn" style="max-height:18px;position:absolute;margin:0.3em;right:0.3em;top:0">

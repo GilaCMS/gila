@@ -23,8 +23,8 @@ class View
     'core/gila.css'=> 'core/gila1811.css',
     'core/widgets.css'=> 'core/widgets1001.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
-    'core/admin/content.js'=> 'core/admin/content1914.js',
-    'core/admin/content.css'=> 'core/admin/content1003.css',
+    'core/admin/content.js'=> 'core/admin/content1022.js',
+    'core/admin/content.css'=> 'core/admin/content1022.css',
     'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
 
@@ -76,7 +76,7 @@ class View
   */
   public static function cssInline($css)
   {
-    echo '<style>'.file_get_contents($css).'</style>';
+    return '<style>'.file_get_contents(self::cssPath($css)).'</style>';
   }
 
   /**
@@ -231,7 +231,7 @@ class View
   {
     if (isset(self::$renderer)) {
       $renderer = self::$renderer;
-      if ($renderer($filename, $package, View::$part)) {
+      if ($renderer($filename, $package, self::$part)) {
         return true;
       }
     }
@@ -407,7 +407,7 @@ class View
         $html .= "<div id='w$key' class='block-head' data-pos='$key' data-type='{$b->_type}'>";
       }
       $b->widget_id = $prefixId.'_'.$key;
-      $html .= View::getWidgetBody($b->_type, $b);
+      $html .= self::getWidgetBody($b->_type, $b);
       if ($anchors) {
         $html .= "</div>";
       }

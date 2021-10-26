@@ -242,8 +242,9 @@ class User
     $email = Router::request('email');
     $name = Router::request('name');
     $password = $data['password'];
+    Config::addLang('core/lang/myprofile/');
 
-    if (strlen($password)<6) {
+    if (strlen($password)<5) {
       View::alert('alert', __('New password too small'));
       return false;
     }
