@@ -28,7 +28,8 @@ class InstallSqlTest extends TestCase
       'sessions'=>['id','user_id','gsessionid','ip_address','user_agent','updated','data'],
       'menu'=>['id','menu','data'],
       'tableschema'=>['id','name','data'],
-      'event_log'=>['id','created','type','user_id','data']
+      'event_log'=>['id','created','type','user_id','data'],
+      'redirect'=>['id','from_slug','to_slug','active']
     ];
 
     $tables = $db->get('SHOW TABLES');
