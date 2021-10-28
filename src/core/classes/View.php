@@ -21,7 +21,7 @@ class View
     'core/gila.js'=> 'core/gila1914.js',
     'core/gila.min.css'=> 'core/gila1811.css',
     'core/gila.css'=> 'core/gila1811.css',
-    'core/widgets.css'=> 'core/widgets1001.css',
+    'core/widgets.css'=> 'core/widgets1027.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
     'core/admin/content.js'=> 'core/admin/content1022.js',
     'core/admin/content.css'=> 'core/admin/content1022.css',

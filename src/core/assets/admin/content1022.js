@@ -628,8 +628,8 @@ gtableTool = Array()
 gtableFieldDisplay = Array()
 
 gtableCommand['edit'] = {
-  fa: "pencil",
-  label: "Edit",
+  fa: 'pencil',
+  label: 'Edit',
   fn: function(table,irow){
     let _this = table
     _this.edititem = irow
@@ -644,16 +644,16 @@ gtableCommand['edit'] = {
 }
 
 gtableCommand['edit_page'] = {
-  fa: "pencil",
-  label: "Edit",
+  fa: 'pencil',
+  label: 'Edit',
   fn: function(table,irow){
     window.location.href = 'admin/content/'+table.name+'/'+irow
   }
 }
 
 gtableCommand['edit_popup'] = {
-  fa: "pencil",
-  label: "Edit",
+  fa: 'pencil',
+  label: 'Edit',
   fn: function(table,irow) {
     href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
@@ -674,9 +674,9 @@ gtableCommand['edit_popup'] = {
 }
 
 gtableCommand['edit_blocks'] = {
-  fa: "pencil",
-  label: "Blocks",
-  permission: "update",
+  fa: 'pencil',
+  label: 'Edit',
+  permission: 'update',
   fn: function(table,id){
     window.location.href = 'blocks/editor/'+table.name+'/'+id
   }
@@ -786,8 +786,8 @@ gtableTool['add'] = {
   }
 }
 gtableTool['add_row'] = {
-  fa: "plus",
-  label: _e("New"),
+  fa: 'plus',
+  label: _e('New'),
   permission: 'create',
   fn: function(table) {
     let _this
@@ -802,8 +802,8 @@ gtableTool['add_row'] = {
   }
 }
 gtableTool['add_popup'] = {
-  fa: "plus",
-  label: _e("New"),
+  fa: 'plus',
+  label: _e('New'),
   permission: 'create',
   fn: function(table) {
     if(typeof table.filters=='undefined') table.filters=''
@@ -824,20 +824,20 @@ gtableTool['add_popup'] = {
   }
 }
 gtableTool['csv'] = {
-  fa: "arrow-down", label: "Csv",
+  fa: 'arrow-down', label: 'Csv',
   fn: function(table) {
     window.location.href = 'cm/csv/'+table.name+'?'+table.query;
   }
 }
 gtableTool['log_selected'] = {
-  fa: "arrow-down", label: "Log",
+  fa: 'arrow-down', label: 'Log',
   fn: function(table) {
     console.log(table.selected_rows);
   }
 }
 gtableTool['delete'] = {
-  fa: "arrow-down",
-  label: _e("Delete"),
+  fa: 'arrow-down',
+  label: _e('Delete'),
   permission: 'delete',
   fn: function(table) {
     let _this = table
@@ -853,9 +853,9 @@ gtableTool['delete'] = {
   }
 }
 gtableTool['uploadcsv'] = {
-  fa: "arrow-up",
+  fa: 'arrow-up',
   permission: 'create',
-  label: _e("Upload")+" CSV",
+  label: _e('Upload')+' CSV',
   fn: function(table) {
     bodyMsg = "<h3>1. "+_e('_uploadcsv_step1')+'</h3>'
     bodyMsg += " <a href='cm/get_empty_csv/"+table.name+"'>"+_e('Download')+"</a>"
@@ -868,7 +868,7 @@ gtableTool['uploadcsv'] = {
 }
 gtableTool['upload_csv'] = gtableTool['uploadcsv']
 gtableTool['addfrom'] = {
-  fa: "plus", label: _e("New from"),
+  fa: 'plus', label: _e('New from'),
   fn: function(table) {
     let _table
     _table = table.table
@@ -880,7 +880,7 @@ gtableTool['addfrom'] = {
   }
 }
 gtableTool['approve'] = {
-  fa: "check", label: _e("Approve"),
+  fa: 'check', label: _e('Approve'),
   fn: function(table) {
     if(typeof table.table.approve=='undefined') {
       alert('table[approve] is not set')

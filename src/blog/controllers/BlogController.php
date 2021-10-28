@@ -267,6 +267,11 @@ class BlogController extends Gila\Controller
           View::renderFile('page--'.$r['template'].'.php');
         }
       } else {
+        if ($to = Gila\Page::redirect($id)) {
+          http_response_code(301);
+          header('Location: '.Config::base($to));
+          exit;
+        }    
         http_response_code(404);
         Cache::page('404_blog'.Config::lang(), max(86400, $cacheTime));
         View::render('404.php');

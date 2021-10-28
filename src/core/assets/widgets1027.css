@@ -312,9 +312,7 @@ section>.container{
   min-height: 2em;
   gap:1em;
 }
-.columnarea>div{
-  height: 100%;
-}
+
 @media (min-width:401px){
   .grid__4c2c{
     grid-template-columns: 1fr 1fr;
@@ -331,7 +329,7 @@ section>.container{
 }
 
 @media (min-width:801px){
-  .grid__2c{
+  .grid__2c,.grid__1_1v,.grid__1v_1{
     grid-template-columns: 1fr 1fr;
   }
   .grid__4c,.grid__4c2c{
@@ -349,5 +347,12 @@ section>.container{
   }
   .grid__first-fluid>div:nth-child(1){
     grid-column: 1/-1;
+  }
+  .grid__1v_1>div:nth-child(1),
+  .grid__1_1v>div:nth-child(2),
+  .grid__1v_1_1>div:nth-child(1),
+  .grid__1_1v_1>div:nth-child(2),
+  .grid__1_1_1v>div:nth-child(3){
+    grid-row: span 10;
   }
 }

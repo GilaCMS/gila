@@ -21,6 +21,7 @@ Config::$amenu = [
     ['Posts','admin/content/post','icon'=>'pencil','access'=>'admin editor'],
     ['Categories','admin/content/postcategory','icon'=>'bars','access'=>'admin editor'],
     ['Media','admin/media','icon'=>'image','access'=>'admin editor'],
+    ['Redirects','admin/content/redirect','icon'=>'external-link','access'=>'admin'],
   ]],
   'admin'=>['Administration','#','icon'=>'wrench','access'=>'admin editor','children'=>[
     ['Users','admin/users','icon'=>'users','access'=>'admin admin_user admin_userrole admin_permissions'],
@@ -68,6 +69,7 @@ Config::content('page', 'core/tables/page.php');
 Config::content('widget', 'core/tables/widget.php');
 Config::content('tableschema', 'core/tables/tableschema.php');
 Config::content('menu', 'core/tables/menu.php');
+Config::content('redirect', 'core/tables/redirect.php');
 
 Config::addLang('core/lang/');
 
