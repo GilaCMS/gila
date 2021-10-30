@@ -273,6 +273,7 @@ class AdminController extends Gila\Controller
   public function mediaAction()
   {
     View::renderAdmin('admin/media.php');
+    echo '<style>.media-tabs-side{display:none}</style>';
   }
 
 

@@ -221,7 +221,7 @@ class Db
 
   public function error()
   {
-    return mysqli_error($this->link);
+    return mysqli_error($this->link)??false;
   }
 
   public function value($q, $p = null)
