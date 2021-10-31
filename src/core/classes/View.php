@@ -12,6 +12,7 @@ class View
   public static $part = [];
   public static $stylesheet = [];
   public static $view_file = [];
+  public static $view_path = [];
   public static $parent_theme = false;
   public static $canonical;
   public static $renderer;
@@ -276,7 +277,8 @@ class View
       }
     }
 
-    $spath = 'src/'.$package.'/views/'.$file;
+    $viewsFolder = self::$view_path[$package]??'src/'.$package.'/views/';
+    $spath = $viewsFolder.$file;
     if (file_exists($spath)) {
       return $spath;
     }
@@ -292,6 +294,11 @@ class View
   public static function setViewFile($file, $package)
   {
     self::$view_file[$file] = $package;
+  }
+
+  public static function setViewPath($package, $path)
+  {
+    self::$view_file[$package] = $path;
   }
 
   /**
