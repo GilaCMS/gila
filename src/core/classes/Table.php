@@ -366,7 +366,7 @@ class Table
           $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
-          $purify = $this->fieldAttr($key,'purify') ?? true;
+          $purify = $this->table['fields'][$key]['purify'] ?? true;
           if ($purify===true) {
             $value = $value = HtmlInput::purify($value, $allowed);
           }
