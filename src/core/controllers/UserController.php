@@ -19,9 +19,9 @@ class UserController extends Gila\Controller
   {
     Config::addLang('core/lang/login/');
     if (Session::key('user_id')>0) {
-      $url = Config::get('user_redirect');
-      $base = Config::base();
-      echo "<meta http-equiv='refresh' content='0;url=".(!empty($url)?$url:$base)."' />";
+      $url = Config::get('user_redirect')??'';
+      $base = Config::base($url);
+      echo "<meta http-equiv='refresh' content='0;url=".$base."' />";
       exit;
     }
     @header("X-Frame-Options: SAMEORIGIN");

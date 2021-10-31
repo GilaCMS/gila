@@ -109,7 +109,7 @@ Vue.component('g-table', {
     <tfoot v-if="table.pagination">\
       <tr>\
         <td colspan="100">\
-          <ul class="pagination g-pagination">\
+          <ul class="pagination g-pagination g-table-pagination">\
             <li v-for="p in pagination()" :class="(p==page?\'active\':\'\')" @click="gotoPage(p)" v-html="p"></li>\
           </ul>\
         </td>\
@@ -425,12 +425,15 @@ Vue.component('g-table', {
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
-        src = 'lzld/thumb?src='+cv+'&media_thumb=80'
+        src = 'lzld/thumb?src='+cv+'&media_thumb=70'
         if (cv.startsWith('https:') || cv.startsWith('http:')) {
           src = cv
         }
-        return '<img src="'+src+'" style="max-width:80px"></img>'
+        return '<img src="'+src+'" style="max-height:35px;max-width:50px;"></img>'
       } else {
+        if (field.media_placeholder) {
+          return '<img src="'+field.media_placeholder+'" style="max-height:35px;max-width:50px;opacity:0.5"></img>'
+        }
         return '';
       }
 
@@ -464,14 +467,17 @@ Vue.component('g-table', {
           return field.options[cv]
         }
         let resp = ''
-        let csv = cv.split(',')
-        for(i=0;i<csv.length;i++)  if(typeof field.options[csv[i]] != "undefined") {
-          resp += field.options[csv[i]]+'<br>'
-        } else resp += csv[i]+'<br>'
+        if(typeof cv=='string') {
+          let csv = cv.split(',')
+          for(i=0;i<csv.length;i++)  if(typeof field.options[csv[i]] != "undefined") {
+            resp += field.options[csv[i]]+'<br>'
+          } else resp += csv[i]+'<br>'
+        }
         return resp
       }
 
       if(field.inline_edit) {
+        if (displayValue==null) displayValue=''
         return '<div contenteditable="true" data-field="'+fkey+'">'+displayValue+'</div>';
       }
       return displayValue;
@@ -622,8 +628,8 @@ gtableTool = Array()
 gtableFieldDisplay = Array()
 
 gtableCommand['edit'] = {
-  fa: "pencil",
-  label: "Edit",
+  fa: 'pencil',
+  label: 'Edit',
   fn: function(table,irow){
     let _this = table
     _this.edititem = irow
@@ -638,25 +644,28 @@ gtableCommand['edit'] = {
 }
 
 gtableCommand['edit_page'] = {
-  fa: "pencil",
-  label: "Edit",
+  fa: 'pencil',
+  label: 'Edit',
   fn: function(table,irow){
     window.location.href = 'admin/content/'+table.name+'/'+irow
   }
 }
 
 gtableCommand['edit_popup'] = {
-  fa: "pencil",
-  label: "Edit",
+  fa: 'pencil',
+  label: 'Edit',
   fn: function(table,irow) {
     href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
     g.get(href,function(data){
       g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
       formId = '#'+table.name+'-edit-item-form'
-      edit_popup_app = new Vue({
-        el: formId,
-        data: {id:irow}
-      })
+      textarea = g('#gila-popup textarea').first()
+      if (!textarea || !textarea.innerHTML.includes('{{')) {
+        edit_popup_app = new Vue({
+          el: formId,
+          data: {id:irow}
+        })
+      }
       transformClassComponents()
       console.log(formId+' input')
       g(formId+' input').all[1].focus()
@@ -665,9 +674,9 @@ gtableCommand['edit_popup'] = {
 }
 
 gtableCommand['edit_blocks'] = {
-  fa: "pencil",
-  label: "Blocks",
-  permission: "update",
+  fa: 'pencil',
+  label: 'Edit',
+  permission: 'update',
   fn: function(table,id){
     window.location.href = 'blocks/editor/'+table.name+'/'+id
   }
@@ -777,8 +786,8 @@ gtableTool['add'] = {
   }
 }
 gtableTool['add_row'] = {
-  fa: "plus",
-  label: _e("New"),
+  fa: 'plus',
+  label: _e('New'),
   permission: 'create',
   fn: function(table) {
     let _this
@@ -793,39 +802,42 @@ gtableTool['add_row'] = {
   }
 }
 gtableTool['add_popup'] = {
-  fa: "plus",
-  label: _e("New"),
+  fa: 'plus',
+  label: _e('New'),
   permission: 'create',
   fn: function(table) {
     if(typeof table.filters=='undefined') table.filters=''
-    href='cm/edit_form/'+table.name+table.filters+'?callback=g_form_popup_update';
+    href='cm/edit_form/'+table.name+'?callback=g_form_popup_update'+table.filters;
     g.get(href,function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_add'})
       formId = '#'+table.name+'-edit-item-form'
-      edit_popup_app = new Vue({
-        el: formId,
-        data: {id:0}
-      })
+      textarea = g('#gila-popup textarea').first()
+      if (!textarea || !textarea.innerHTML.includes('{{')) {
+        edit_popup_app = new Vue({
+          el: formId,
+          data: {id:0}
+        })
+      }
       transformClassComponents()
       g(formId+' input').all[1].focus()
     })
   }
 }
 gtableTool['csv'] = {
-  fa: "arrow-down", label: "Csv",
+  fa: 'arrow-down', label: 'Csv',
   fn: function(table) {
     window.location.href = 'cm/csv/'+table.name+'?'+table.query;
   }
 }
 gtableTool['log_selected'] = {
-  fa: "arrow-down", label: "Log",
+  fa: 'arrow-down', label: 'Log',
   fn: function(table) {
     console.log(table.selected_rows);
   }
 }
 gtableTool['delete'] = {
-  fa: "arrow-down",
-  label: _e("Delete"),
+  fa: 'arrow-down',
+  label: _e('Delete'),
   permission: 'delete',
   fn: function(table) {
     let _this = table
@@ -841,9 +853,9 @@ gtableTool['delete'] = {
   }
 }
 gtableTool['uploadcsv'] = {
-  fa: "arrow-up",
+  fa: 'arrow-up',
   permission: 'create',
-  label: _e("Upload")+" CSV",
+  label: _e('Upload')+' CSV',
   fn: function(table) {
     bodyMsg = "<h3>1. "+_e('_uploadcsv_step1')+'</h3>'
     bodyMsg += " <a href='cm/get_empty_csv/"+table.name+"'>"+_e('Download')+"</a>"
@@ -856,7 +868,7 @@ gtableTool['uploadcsv'] = {
 }
 gtableTool['upload_csv'] = gtableTool['uploadcsv']
 gtableTool['addfrom'] = {
-  fa: "plus", label: _e("New from"),
+  fa: 'plus', label: _e('New from'),
   fn: function(table) {
     let _table
     _table = table.table
@@ -868,7 +880,7 @@ gtableTool['addfrom'] = {
   }
 }
 gtableTool['approve'] = {
-  fa: "check", label: _e("Approve"),
+  fa: 'check', label: _e('Approve'),
   fn: function(table) {
     if(typeof table.table.approve=='undefined') {
       alert('table[approve] is not set')
@@ -939,8 +951,11 @@ g.dialog.buttons.select_path_post = {
 }
 g.dialog.buttons.select_row_source = {
   title:'Select', fn: function() {
-    let v = g('#selected-row').attr('value')
-    alert(v);
+    let v = g('tr.selected>.id').attr('value')
+    el = g(input_select_row).all[0]
+    el.value = v
+    console.log(v)
+    console.log(select_popup_app)
     g('#select_row_dialog').parent().remove();
   }
 }
@@ -950,12 +965,26 @@ function open_gallery_post() {
     g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog','z-index':99999})
   })
 }
-function open_select_row(row,table,name) {
-  input_select_row = row;
+var open_select_row_clicked = false
+function open_select_row(rid,table,name) {
+  input_select_row = rid;
+  if(open_select_row_clicked) return;
+  open_select_row_clicked = true;
+
+  g.loader()
   g.post("cm/select_row/"+table,"",function(gal){
+    open_select_row_clicked = false;
+    g.loader(false)
     g.dialog({title:_e(name),body:gal,buttons:'select_row_source',type:'modal',id:'select_row_dialog',class:'large'})
+    divId = '#gtable_select_row'
+    select_popup_app = new Vue({
+      el: divId,
+      data: {}
+    })
+    transformClassComponents()
   })
 }
+
 function upload_csv_file() {
   let fm = new FormData()
   fm.append('file', g.el('g_file_to_upload').files[0]);

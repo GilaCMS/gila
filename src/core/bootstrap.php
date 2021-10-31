@@ -57,7 +57,7 @@ spl_autoload_register(function ($class) {
   } elseif (in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
     // DEPRECATED
     $d = debug_backtrace()[1];
-    trigger_error("Use namespace: Gila\\$class (".$d['file'].' line '.$d['line'].')', E_USER_WARNING);
+    error_log("Use namespace: Gila\\$class (".$d['file'].' line '.$d['line'].')', 3, 'log/error.log');
     require_once 'src/core/classes/'.substr($class, 12).'.php';
     class_alias('Gila\\'.substr($class, 12), strtr($class, ['/'=>'\\']));
   }

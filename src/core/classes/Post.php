@@ -116,4 +116,15 @@ class Post
     global $db;
     return $db->read()->get("SELECT id,title FROM postcategory;");
   }
+
+
+  public static function inCachedList($id)
+  {
+    $array = Cache::remember('post_cache_list', 86400, function ($u) {
+      global $db;
+      $ql="SELECT id FROM post WHERE publish=1 UNION SELECT slug FROM post WHERE publish=1";
+      return json_encode($db->getList($ql));
+    }, [Config::mt('post')]);
+    return (in_array($id, json_decode($array, true)));
+  }
 }

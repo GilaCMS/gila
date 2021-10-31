@@ -314,13 +314,14 @@ td[col] .g-input {
   float: right;
 }
 
-.g-pagination li {
+.g-pagination li,
+.g-table-pagination li {
   list-style-type: none;
   border: 1px solid #ccc;
   display: inline-block;
 }
-
-.g-pagination a {
+.g-pagination a,
+.g-table-pagination a {
   padding: 6px 8px;
   color: #666;
   border: 0;
@@ -329,8 +330,8 @@ td[col] .g-input {
   cursor: pointer;
   text-align: center;
 }
-
-.g-pagination .active a {
+.g-pagination .active a,
+.g-table-pagination .active a {
   color: white;
   background: steelblue;
 }
@@ -353,7 +354,7 @@ td[col] .g-input {
 
 .edititem {
   border: 1px solid lightgrey;
-  border-left: 3px solid lightgreen;
+  border-left: 4px solid lightgreen;
   border-left-color: var(--admin-primary-color);
   padding: 0.5em;
   padding-left: 1.5em;
@@ -375,7 +376,8 @@ td[col] .g-input {
 
 .g-table .g-table, .g-form .g-table  {
   border: 1px solid lightgrey;
-  border-left: 4px solid lightgreen;
+  border-left: 2px solid lightgreen;
+  border-left-color: var(--admin-primary-color);
   margin-top: 2em;
   grid-column: 1/-1;
 }
@@ -404,7 +406,7 @@ td[col] .g-input {
   justify-content: space-between;
   align-items: center;
 }
-.g-table .g-table .g-table-head {
+.g-table table .g-table-head {
   margin: 0;
 }
 

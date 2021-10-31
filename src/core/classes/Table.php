@@ -285,6 +285,9 @@ class Table
         $_orders[] = $o[0].' '.$o[1];
       }
     }
+    if (isset($this->table['orderby'])) {
+      $_orders[] = $this->table['orderby'];
+    }
 
     $by = $_orders!==[] ? implode(',', $_orders) : $this->id().' DESC';
     return " ORDER BY $by";
@@ -363,7 +366,10 @@ class Table
           $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
-          $value = HtmlInput::purify($value, $allowed);
+          $purify = $this->table['fields'][$key]['purify'] ?? true;
+          if ($purify===true) {
+            $value = $value = HtmlInput::purify($value, $allowed);
+          }
         } else {
           $value = strip_tags($value);
         }
@@ -664,6 +670,9 @@ class Table
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
     $res = $db->read()->getAssoc("SELECT $select
       FROM {$this->name()}$where$groupby$orderby$limit;");
+    if ($error = $db->error()) {
+      self::$error = $error;
+    }
     return $res;
   }
 

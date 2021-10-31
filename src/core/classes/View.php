@@ -12,6 +12,7 @@ class View
   public static $part = [];
   public static $stylesheet = [];
   public static $view_file = [];
+  public static $view_path = [];
   public static $parent_theme = false;
   public static $canonical;
   public static $renderer;
@@ -21,10 +22,10 @@ class View
     'core/gila.js'=> 'core/gila1914.js',
     'core/gila.min.css'=> 'core/gila1811.css',
     'core/gila.css'=> 'core/gila1811.css',
-    'core/widgets.css'=> 'core/widgets1001.css',
+    'core/widgets.css'=> 'core/widgets1027.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
-    'core/admin/content.js'=> 'core/admin/content1914.js',
-    'core/admin/content.css'=> 'core/admin/content1003.css',
+    'core/admin/content.js'=> 'core/admin/content1022.js',
+    'core/admin/content.css'=> 'core/admin/content1022.css',
     'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
 
@@ -76,7 +77,7 @@ class View
   */
   public static function cssInline($css)
   {
-    echo '<style>'.file_get_contents($css).'</style>';
+    return '<style>'.file_get_contents(self::cssPath($css)).'</style>';
   }
 
   /**
@@ -231,7 +232,7 @@ class View
   {
     if (isset(self::$renderer)) {
       $renderer = self::$renderer;
-      if ($renderer($filename, $package, View::$part)) {
+      if ($renderer($filename, $package, self::$part)) {
         return true;
       }
     }
@@ -276,7 +277,8 @@ class View
       }
     }
 
-    $spath = 'src/'.$package.'/views/'.$file;
+    $viewsFolder = self::$view_path[$package]??'src/'.$package.'/views/';
+    $spath = $viewsFolder.$file;
     if (file_exists($spath)) {
       return $spath;
     }
@@ -292,6 +294,11 @@ class View
   public static function setViewFile($file, $package)
   {
     self::$view_file[$file] = $package;
+  }
+
+  public static function setViewPath($package, $path)
+  {
+    self::$view_file[$package] = $path;
   }
 
   /**
@@ -407,7 +414,7 @@ class View
         $html .= "<div id='w$key' class='block-head' data-pos='$key' data-type='{$b->_type}'>";
       }
       $b->widget_id = $prefixId.'_'.$key;
-      $html .= View::getWidgetBody($b->_type, $b);
+      $html .= self::getWidgetBody($b->_type, $b);
       if ($anchors) {
         $html .= "</div>";
       }

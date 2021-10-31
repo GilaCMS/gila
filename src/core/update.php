@@ -24,6 +24,8 @@ TableSchema::update(include 'src/core/tables/tableschema.php');
 
 TableSchema::update(include 'src/core/tables/event_log.php');
 
+TableSchema::update(include 'src/core/tables/redirect.php');
+
 Config::dir(LOG_PATH.'/stats');
 Config::dir(LOG_PATH.'/cacheItem');
 

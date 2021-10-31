@@ -38,6 +38,12 @@ class AdminController extends Gila\Controller
       return;
     }
 
+    if ($to = Gila\Page::redirect($id)) {
+      http_response_code(301);
+      header('Location: '.Config::base($to));
+      exit;
+    }
+
     if (Router::param('action', 1)) {
       http_response_code(404);
       View::renderAdmin('404.php');
@@ -240,7 +246,7 @@ class AdminController extends Gila\Controller
         $names[$i] = pathinfo($names[$i], PATHINFO_FILENAME).'.'.strtolower(pathinfo($names[$i], PATHINFO_EXTENSION));
         $path = SITE_PATH.$uploadpath.'/'.$names[$i];
         if (isset($errors[$i]) && $errors[$i] > 0) {
-          echo "Error: ".$errors[$i]."</div>";
+          echo "Error: ".FileManager::uploadError($errors[$i])."</div>";
         } elseif (!in_array(strtolower(pathinfo($names[$i], PATHINFO_EXTENSION)), $extensions)) {
           echo "<div class='alert error'>Error: not a media file!</div>";
         } elseif (file_exists($path)) {
@@ -267,6 +273,7 @@ class AdminController extends Gila\Controller
   public function mediaAction()
   {
     View::renderAdmin('admin/media.php');
+    echo '<style>.media-tabs-side{display:none}</style>';
   }
 
 

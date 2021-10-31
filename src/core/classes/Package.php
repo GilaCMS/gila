@@ -271,7 +271,9 @@ class Package
           $c = $GLOBALS['config']['db'];
           $link = mysqli_connect($c['host'], $c['user'], $c['pass'], $c['name']);
           if ($link===false) {
-            trigger_error('Database from '.$site.' could not connect for upgrade', E_USER_WARNING);
+            $error = 'Database from '.$site.' could not connect for upgrade';
+            trigger_error($error, E_USER_WARNING);
+            error_log($error, 3, 'log/error.log');
             continue;
           }
           $db = new Db($GLOBALS['config']['db']);

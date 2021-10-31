@@ -4,6 +4,7 @@ use Gila\Config;
 use Gila\Form;
 use Gila\Session;
 use Gila\Router;
+use Gila\Table;
 
 /**
 * Lists content types and shows grid content data
@@ -138,6 +139,9 @@ class CMController extends Gila\Controller
     $res = $gtable->getRows($filters, array_merge($args, ['select'=>$result['fields']]));
     foreach ($res as $r) {
       $result['rows'][] = array_values($r);
+    }
+    if ($error = Table::$error) {
+      $result['error'] = $error;
     }
     $result['startIndex'] = $gtable->startIndex($args);
     $result['totalRows'] = $gtable->totalRows($filters);
@@ -378,8 +382,8 @@ class CMController extends Gila\Controller
       }
       $fieldStr =  implode(',', $fields);
       $q = "INSERT INTO {$gtable->name()}($fieldStr) SELECT $fieldStr FROM {$gtable->name()} x WHERE {$gtable->id()}=?;";
-      $res = $db->query($q, $_POST['id']);
-      $id = $db->insert_id;
+      $res = $db->getAssoc("SELECT $fieldStr FROM {$gtable->name()} WHERE {$gtable->id()}=?;", $_POST['id'])[0];
+      $id = $gtable->createRow($res);
       if ($id===0) {
         echo '{"error":"Row could not be created"}';
         exit;
@@ -480,5 +484,40 @@ class CMController extends Gila\Controller
     }
 
     echo '</div></form>';
+  }
+
+  public function select_rowAction()
+  {
+    $t = htmlentities($this->table);
+    $gtable = new Table($t, $this->permissions);
+    if (!$gtable->can('read')) {
+      return;
+    }
+
+    echo '<div id="gtable_select_row"><g-table ';
+    echo 'gtable="'.htmlentities(json_encode($gtable->getTable())).'" ';
+    echo 'gfields="'.htmlentities(json_encode($gtable->fields('list'))).'" ';
+    echo 'gtype="'.$this->table.'">';
+    echo '</g-table>';
+    echo '</div>';
+  }
+
+  public function open_tableAction()
+  {
+    $t = htmlentities($this->table);
+    $gtable = new Table($t, $this->permissions);
+    if (!$gtable->can('read')) {
+      return;
+    }
+
+    echo '<div id="gtable_open_table"><g-table ';
+    echo 'gtable="'.htmlentities(json_encode($gtable->getTable())).'" ';
+    echo 'gfields="'.htmlentities(json_encode($gtable->fields('list'))).'" ';
+    if (isset($_POST)) {
+      echo 'gfilters="&'.htmlentities(http_build_query($_POST)).'" ';
+    }
+    echo 'gtype="'.$this->table.'">';
+    echo '</g-table>';
+    echo '</div>';
   }
 }

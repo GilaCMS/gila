@@ -68,19 +68,6 @@ class Profile
     return substr($token, 0, 160);
   }
 
-  public static function getPermissions($user_id) // DEPRECATED
-  {
-    $allPermissions = self::getAllPermissions();
-    $userPermissions = User::permissions($user_id);
-    $permissions = [];
-    foreach ($allPermissions as $key=>$txt) {
-      if (in_array($key, $userPermissions)) {
-        $permissions[$key] = $txt;
-      }
-    }
-    return $permissions;
-  }
-
   public static function getAllPermissions()
   {
     $permissions = [];

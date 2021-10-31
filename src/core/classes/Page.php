@@ -84,4 +84,12 @@ class Page
     }
     return;
   }
+
+  public static function redirect($id)
+  {
+    global $db;
+    $to = $db->value("SELECT `to_slug` FROM redirect WHERE active=1 AND `from_slug`=?;", [$id]);
+    return $to;
+  }
+
 }
