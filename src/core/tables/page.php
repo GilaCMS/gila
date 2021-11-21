@@ -27,13 +27,13 @@ return [
     ],
     'title'=> [
       'title'=>'Title',
-      'qtype'=>'varchar(80) DEFAULT NULL',
+      'qtype'=>'VARCHAR(80) DEFAULT NULL',
       'group'=>'title',
       'required'=>true
     ],
     'slug'=> [
       'title'=>'Route',
-      'qtype'=>'varchar(80) DEFAULT NULL',
+      'qtype'=>'VARCHAR(80) DEFAULT NULL',
       'alt'=>'('.Gila\Config::tr('Home').')',
       'group'=>'title',
       'create'=>false,
@@ -43,7 +43,7 @@ return [
     'description'=> [
       'title'=>'Description',
       'input_type'=>'textarea',
-      'qtype'=>'varchar(200) DEFAULT NULL',
+      'qtype'=>'VARCHAR(200) DEFAULT NULL',
       'list'=>false,
       'create'=>false,
       'group'=>'title',
@@ -57,7 +57,7 @@ return [
       'edit'=>true,
       'create'=>false,
       'list'=>false,
-      'qtype'=>'varchar(30) DEFAULT NULL'
+      'qtype'=>'VARCHAR(30) DEFAULT NULL'
     ],
     'language'=> [
       'type'=>'language',

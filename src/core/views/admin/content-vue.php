@@ -11,7 +11,7 @@ View::css('core/admin/content.css');
 View::css('core/admin/vue-editor.css');
 View::script('lib/vue/vue.min.js');
 View::script('core/admin/content.js');
-View::script('core/lang/content/'.Config::get('language').'.js');
+View::script('core/lang/content/'.Config::lang().'.js');
 View::scriptAsync('core/admin/media.js');
 View::scriptAsync('core/admin/vue-components.js');
 View::script('core/vue-upload-media.js');
@@ -62,6 +62,9 @@ unset($tableFilters['p']);
 unset($tableFilters['page']);
 View::widgetArea('content.'.$table);
 ?>
+<script>
+g.language = '<?=Config::lang()?>';
+</script>
 <div id="vue-table">
   <g-table gtype="<?=$table?>" ref="gtable"
   gtable="<?=htmlspecialchars(json_encode($t))?>"

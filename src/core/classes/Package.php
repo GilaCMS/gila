@@ -271,14 +271,16 @@ class Package
           $c = $GLOBALS['config']['db'];
           $link = mysqli_connect($c['host'], $c['user'], $c['pass'], $c['name']);
           if ($link===false) {
-            $error = 'Database from '.$site.' could not connect for upgrade';
+            $error = "Database from $site could not connect for upgrade\n";
             trigger_error($error, E_USER_WARNING);
             error_log($error, 3, 'log/error.log');
             continue;
           }
           $db = new Db($GLOBALS['config']['db']);
+          $packages = $db->value("SELECT `value` FROM `option` WHERE `option`='packages';");
+          $packages = $packages? json_decode($packages, true): $GLOBALS['config']['packages'];
           if ($package==='core' ||
-            in_array($package, $GLOBALS['config']['packages'])) {
+            in_array($package, $packages)) {
             include $update_file;
           }
         }

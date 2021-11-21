@@ -133,7 +133,7 @@ class Table
     }
 
     if ($ext = $this->table['extends']??null) {
-      $baseTable = include 'src/'.$ext;
+      $baseTable = include 'src/'.(Config::$content[$ext]??$ext);
       $this->table = self::extend_recursive($baseTable, $this->table);
     }
 
@@ -363,6 +363,7 @@ class Table
           continue;
         }
         if ($this->fieldAttr($key, 'type')=='json') {
+          if (empty($value)) $value = [];
           $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
@@ -482,34 +483,34 @@ class Table
         if (array_key_exists($key, $this->table['fields'])) {
           if (is_array($value)) {
             $key = $this->getColumnKey($key, false);
-            foreach ($value as $subkey=>$subvalue) {
-              $subvalue = $this->db->res($subvalue);
-              if (isset(self::$basicOps[$subkey])) {
-                $filters[] = $key . self::$basicOps[$subkey] . $subvalue;
+            foreach ($value as $_key=>$_value) {
+              $subvalue = $this->db->res($_value);
+              if (isset(self::$basicOps[$_key])) {
+                $filters[] = $key . self::$basicOps[$_key] . $subvalue;
                 continue;
               }
-              if ($subkey === 'gts') {
+              if ($_key === 'gts') {
                 $filters[] = "$key>'$subvalue'";
               }
-              if ($subkey === 'lts') {
+              if ($_key === 'lts') {
                 $filters[] = "$key<'$subvalue'";
               }
-              if ($subkey === 'begin') {
+              if ($_key === 'begin') {
                 $filters[] = "$key like '$subvalue%'";
               }
-              if ($subkey === 'end') {
+              if ($_key === 'end') {
                 $filters[] = "$key like '%$subvalue'";
               }
-              if ($subkey === 'has') {
+              if ($_key === 'has') {
                 $filters[] = "$key like '%$subvalue%'";
               }
-              if ($subkey === 'in') {
+              if ($_key === 'in') {
                 $filters[] = "$key IN($subvalue)";
               }
-              if ($subkey === 'inset') {
+              if ($_key === 'inset') {
                 $filters[] = "FIND_IN_SET($subvalue, $key)>0";
               }
-              if ($subkey === 'not') {
+              if ($_key === 'not') {
                 $filters[] = "`$key`!='$subvalue'";
               }
             }
@@ -537,11 +538,13 @@ class Table
       }
     }
 
-    if (isset($fields["search"])) {
-      $value = $this->db->res($fields["search"]);
+    if (isset($fields['search'])) {
+      $value = $this->db->res($fields['search']);
       $search_filter = [];
-      foreach ($this->table['fields'] as $key=>$field) {
-        if (!isset($field['qcolumn']) && !isset($field['meta_key']) && !isset($field['metatype'])) {
+      foreach ($this->getFields('search') as $key=>$field) {
+        if (isset($field['qcolumn'])) {
+          $search_filter[] = $field['qcolumn']." LIKE '%{$value}%'";
+        } elseif (!isset($field['meta_key']) && !isset($field['metatype'])) {
           $search_filter[] = "$key LIKE '%{$value}%'";
         }
       }
@@ -595,7 +598,7 @@ class Table
   public function getFields($output = '')
   {
     if ($output==='') {
-      return $this->table->fields;
+      return $this->table['fields'];
     }
     $fields = [];
     foreach ($this->fields($output) as $fkey) {
@@ -664,7 +667,6 @@ class Table
 
     $where = $this->where($filters);
     $select = isset($args['select']) ? $this->select($args['select']) : $this->select();
-    // TODO selected meta should translate in subqueries
     $groupby = $this->groupby($args['groupby']??null);
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);

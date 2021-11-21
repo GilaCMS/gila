@@ -24,8 +24,8 @@ class View
     'core/gila.css'=> 'core/gila1811.css',
     'core/widgets.css'=> 'core/widgets1027.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
-    'core/admin/content.js'=> 'core/admin/content1022.js',
-    'core/admin/content.css'=> 'core/admin/content1022.css',
+    'core/admin/content.js'=> 'core/admin/content1120.js',
+    'core/admin/content.css'=> 'core/admin/content1102.css',
     'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
 

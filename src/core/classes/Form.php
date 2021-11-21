@@ -129,7 +129,8 @@ class Form
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"'.$placeholder.$req.'>';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"
+onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' && event.ctrlKey) event.preventDefault()" '.$placeholder.$req.'>';
       }
     } else {
       $req = $op['required']? ' required':'';
@@ -167,10 +168,11 @@ class Form
         if (@$field['meta-csv']==true || @$field['meta_csv']==true) {
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
-        if (is_string($ov)) {
+        if (is_string($ov)&&$ov!='[]'&&!json_decode($ov)) {
           $ov = explode(',', $ov);
         }
-        $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
+        $encoded = !is_string($ov)? json_encode($ov??[],JSON_UNESCAPED_UNICODE): $ov;
+        $html = '<g-multiselect value="'.htmlspecialchars($encoded).'"';
         return $html.= 'options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
       "keywords"=> function ($name, $field, $ov) {

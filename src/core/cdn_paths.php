@@ -7,7 +7,7 @@ return [
   'core/gila.css'=> 'core/gila1811.css',
   'core/widgets.css'=> 'core/widgets1027.css',
   'core/admin/media.js'=> 'core/admin/media1806.js',
-  'core/admin/content.js'=> 'core/admin/content1022.js',
+  'core/admin/content.js'=> 'core/admin/content1120.js',
   'lib/jquery/jquery-3.3.1.min.js'=> 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js',
   'lib/bootstrap/bootstrap.min.js'=> 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
   'lib/bootstrap/bootstrap.min.css'=> 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
