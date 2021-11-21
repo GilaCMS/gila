@@ -29,10 +29,11 @@ View::script('core/admin/media.js');
 View::script('core/lang/content/'.Config::get('language').'.js');
 ?>
 
-<div id='admin-media-div'><div class='fullwidth inline-flex' style="gap:0.2em">
-  <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
-  &larr;</a>
-  <span class='g-group-item' style="padding:var(--main-padding)"><?=$path?></span>
+<div id='admin-media-div'><div class='fullwidth' style="gap:0.2em;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));align-items:center">
+  <span class='g-group-item' style="padding:var(--main-padding)">
+    <a class='btn btn-white g-group-item' id='fm-goup' data-path='<?=$uppath?>' <?=$disabled?>>
+    &larr; <?=$path?></a>
+  </span>
 <?php if (Session::hasPrivilege('admin upload_assets')) { ?>
   <input type='file' class='g-group-item g-input fullwidth' id='upload_files'
   accept="image/*,video/*,audio/*" onchange='gallery_upload_files()'
@@ -43,10 +44,12 @@ View::script('core/lang/content/'.Config::get('language').'.js');
     <img src="assets/core/admin/filter.svg" class="img-btn" style="max-height:18px;position:absolute;margin:0.3em;right:0.3em;top:0.3em"></i>
   </span>
   <?php if (Session::hasPrivilege('admin edit_assets')) { ?>
+  <span style="display:flex;height:min-content">
   <button class="btn btn-white" title="<?=__('Add Folder')?>" onclick="gallery_create('<?=$path?>')"><img style="min-height:16px;" src="assets/core/admin/folder-plus.svg"></button>
   <button class="btn btn-white" title="<?=__('Rename')?>" onclick="gallery_move_selected('<?=$path?>')"><img style="min-height:16px;" src="assets/core/admin/pencil.svg"></button>
   <button class="btn btn-white" title="<?=__('Refresh Thumbnail')?>" onclick="gallery_refresh_thumb('<?=$path?>')"><img style="min-height:16px;" src="assets/core/admin/refresh.svg"></button>
   <button class="btn btn-white" title="<?=__('Delete')?>" onclick="gallery_delete_selected('<?=$path?>')"><img style="mi-height:16px;" src="assets/core/admin/trash.svg"></button>
+  </span>
   <?php } ?>
 </div>
 

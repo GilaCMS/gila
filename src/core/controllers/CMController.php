@@ -137,6 +137,12 @@ class CMController extends Gila\Controller
     $result['fields'] = $gtable->fields($fieldlist);
     $result['rows'] = [];
     $res = $gtable->getRows($filters, array_merge($args, ['select'=>$result['fields']]));
+
+    foreach ($gtable->getFields($fieldlist) as $key=>$field) if (isset($field['parseInt'])) {
+      foreach ($res as &$r) {
+        $r[$key] = (int)$r[$key];
+      }
+    }
     foreach ($res as $r) {
       $result['rows'][] = array_values($r);
     }

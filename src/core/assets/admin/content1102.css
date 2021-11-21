@@ -85,6 +85,10 @@
 .g-table table th {
   border-bottom: 1px solid #bbb;
 }
+.g-table .td-com {
+  display:flex;
+  grid:4px;
+}
 
 .g-dialog {
   width: auto !important;
@@ -412,7 +416,6 @@ td[col] .g-input {
 
 .g-table .com-btn {
   cursor: pointer;
-  margin-right:6px;
   opacity: 0.8;
 }
 

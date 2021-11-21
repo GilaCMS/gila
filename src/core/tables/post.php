@@ -38,25 +38,25 @@ return [
     ],
     'title'=> [
       'title'=>'Title',
-      'qtype'=>'varchar(80) DEFAULT NULL',
+      'qtype'=>'VARCHAR(80) DEFAULT NULL',
       'required'=>true
     ],
     'slug'=> [
       'list'=>false,
       'create'=>false,
-      'qtype'=>'varchar(80) CHARACTER SET latin1 DEFAULT NULL'
+      'qtype'=>'VARCHAR(80) CHARACTER SET latin1 DEFAULT NULL'
     ],
     'description'=> [
       'title'=>'Description',
       'list'=>false,
       'input_type'=>'textarea',
-      'qtype'=>'varchar(200)'
+      'qtype'=>'VARCHAR(200)'
     ],
     'user_id'=> [
       'title'=>'User',
       'type'=>'select',
       'qoptions'=>'SELECT id, username FROM user',
-      'qtype'=>'int(11) unsigned DEFAULT NULL',
+      'qtype'=>'INT(11) UNSIGNED DEFAULT NULL',
       'list'=>false
     ],
     'categories'=>[

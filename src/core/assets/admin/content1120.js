@@ -1,5 +1,6 @@
 rootVueGTables = []
 edit_popup_app = null
+table_page_loading = null
 
 Vue.component('g-table', {
   template: '<div class="g-table">\
@@ -27,13 +28,15 @@ Vue.component('g-table', {
           <div>\
             <div class="g-table-title" v-html="table.title"></div>\
             <div v-if="table[\'search-box\'] || table[\'search_box\']" class="g-searchbox">\
-              <input v-model="search" class=" g-input" @keydown="if($event.which == \'9\') runsearch()"\
-              @keyup="if($event.which == \'8\' || $event.keyCode) runsearch()" :autofocus="table[\'search_box_autofocus\']"\
+              <input v-model="search" class=" g-input"\
+              @keydown="if($event.which!=\'86\' && $event.which!=\'88\' && $event.which!=\'67\' && $event.ctrlKey) $event.preventDefault()"\
+              @keyup="if($event.which == \'8\' || $event.keyCode) if($event.which!==\'13\') runsearch()"\
+              :autofocus="table[\'search_box_autofocus\']"\
               @keypress="if($event.which == \'13\') runsearch(true)" value="" type="text" style="padding-left:28px">\
               <svg height="24" width="24" style="position:absolute;left:0.3em;top:0.6em" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
             </div>\
             <div v-if="table.group" style="position:relative;display:inline-block" class="g-searchbox">\
-              <select v-model="group" class="g-input" @change="runsearch()">\
+              <select v-model="group" class="g-input" @change="runsearch(true)">\
                 <option v-for="g in table.group" :value="g">{{field_label(g)}}</option>\
               </select>\
             </div>\
@@ -50,7 +53,7 @@ Vue.component('g-table', {
                 <input class="g-input" v-model="filter[sb]" @change="runsearch(true)" type="date">\
               </div>\
               <div v-else style="position:relative;display:inline-block">\
-                <input class="g-input" v-model="filter[sb]" @keyup="if($event.which == \'8\' || $event.keyCode) runsearch()"\
+                <input class="g-input" v-model="filter[sb]" @keyup="if($event.which == \'8\' || $event.keyCode) if($event.which !== \'13\') runsearch()"\
                 @keypress="if($event.which == \'13\') runsearch(true)" value="" type="text">\
                 <div v-else style="position:relative;display:inline-block">\
                   <svg height="24" width="24" style="position:absolute;right:8px;top:8px" viewBox="0 0 28 28"><circle cx="12" cy="12" r="8" stroke="#929292" stroke-width="3" fill="none"></circle><line x1="17" y1="17" x2="24" y2="24" style="stroke:#929292;stroke-width:3"></line></svg>\
@@ -163,7 +166,8 @@ Vue.component('g-table', {
     intervalUpdate: null,
     irowSelected: null,
     basePath: this.base ?? null,
-    indexRow: 0
+    indexRow: 0,
+    keysPressed: 0
   }},
   updated: function() {
     if(this.edititem==0) return;
@@ -179,6 +183,7 @@ Vue.component('g-table', {
       if(a.page) this.page=a.page
       if(a.order) this.order=a.order
       if(a.group) this.group=a.group
+      if(a.load && a.load==true) g.loader()
       if(typeof this.filters=='undefined') this.filters=''
       order = ''
       for (x in this.order) {
@@ -187,10 +192,12 @@ Vue.component('g-table', {
       search = this.search ? '&search='+this.search: '';
       group = this.group ? '&groupby='+this.group: '';
       for(fkey in this.filter) {
+        if (fkey=='search') continue
         if(this.filter[fkey]!=='') search += '&'+fkey+'='+this.filter[fkey]
       }
       g.get('cm/list_rows/'+this.name+'?page='+this.page+this.filters+order+group+search,function(data){
         data = JSON.parse(data)
+        g.loader(false)
         _data.rows=data.rows
         _data.totalRows=data.totalRows
         if(typeof lazyImgLoad!='undefined') {
@@ -280,9 +287,17 @@ Vue.component('g-table', {
     },
     runsearch: function(pushState = false) {
       if(pushState==true) {
-        this.pushState()
+        this.gotoPage(1)
+      } else {
+        this.keysPressed++
+        setTimeout(function(table){
+          table.keysPressed--
+          if (table.keysPressed==0) {
+            table.page = 1
+            table.load_page({loader:true})
+          }
+        }, 300, this)
       }
-      this.load_page()
     },
     displaySearchBox: function(key) {
       if (typeof this.table.fields[key].conditions!='undefined') {
@@ -302,6 +317,7 @@ Vue.component('g-table', {
       if(this.basePath) {
         search = this.search ? '&search='+this.search: '';
         for(fkey in this.filter) {
+          if (fkey=='search') continue
           if(this.filter[fkey]!=='') search += '&'+fkey+'='+this.filter[fkey]
         }
         order = ''
@@ -364,7 +380,10 @@ Vue.component('g-table', {
     update_row: function(row) {
       for(i=0; i<this.data.rows.length; i++) if(this.data.rows[i][0] == row[0]){
         this.data.rows[i] = row;
-        this.$forceUpdate()
+      }
+      this.$forceUpdate()
+      for(i=0; i<rootVueGTables.length; i++) if (rootVueGTables[i].name!=this.name) {
+        rootVueGTables[i].load_page()
       }
     },
     clicked_cell: function(irow,ifield){
@@ -412,6 +431,14 @@ Vue.component('g-table', {
         displayType = field.type;
       }
 
+      if(typeof gtableDisplayType[displayType]!='undefined') {
+        for(let i=0;i<this.data.fields.length ;i++) {
+          f = this.data.fields[i]
+          rv[f] = rv[i]
+        }
+        return gtableDisplayType[displayType](rv);
+      }
+
       if(displayType=='checkbox') if(cv==1){
         return '<i style="color:green" class="fa fa-check fa-2x"></i>'
       } else {
@@ -422,6 +449,35 @@ Vue.component('g-table', {
         return '<svg viewBox="0 0 40 40" style="width:28px;vertical-align: middle;">\
         <circle stroke="lightgrey" stroke-width=1 fill="'+displayValue+'" r="15" cx="20" cy="20"/>\
         </svg>'
+      }
+
+      if(displayType=='date' && !isNaN(cv)) {
+        var a = new Date(displayValue * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = a.getMonth()+1;
+        var date = a.getDate();
+        return year+'-'+month+'-'+date
+      }
+      if(displayType=='datetime' && !isNaN(cv)) {
+        var a = new Date(displayValue * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = a.getMonth()+1;
+        var date = a.getDate();
+        var h = a.getHours();
+        var m = a.getMinutes();
+        var s = a.getSeconds();
+        return year+'-'+month+'-'+date+' '+h.substr(-2)+':'+m.substr(-2) + ':' + s.substr(-2);
+      }
+
+
+      if(displayType=='money') {
+        lf = field.number_format??'es-MX'
+        currency = field.currency??'MXN'
+        console.log(lf,currency)
+        displayValue = new Intl.NumberFormat(lf, { style: 'currency', currency: currency }).format(displayValue);
+        return '<div style="text-align:right">'+displayValue+'</div>';
       }
 
       if(displayType=='media') if(cv!=null && cv.length>0) {
@@ -455,7 +511,7 @@ Vue.component('g-table', {
       }
 
       if(displayType=='text') if (rv.text) if (rv.text.length>100) {
-        return rv.text.substring(0, 97)+"...";
+        return rv.text.substring(0, 97)+'...';
       }
 
 
@@ -554,7 +610,10 @@ Vue.component('g-table', {
         setTimeout(function(){lazyImgLoad();}, 150);
       }
     }
-    if(this.data.rows.length==0) this.load_page({page:1})
+    if(this.data.rows.length==0) {
+      this.page=1;
+      this.load_page()
+    }
     rootVueGTables.push(this)
 
     this.intervalUpdate = setInterval(function(_this){
@@ -572,7 +631,7 @@ Vue.component('g-table', {
 
         url = 'cm/update_rows/'+_this.name+'?id='+id
         g.ajax({method:'post',url:url,data:data,fn:function(data) {
-          console.log("Saved #"+id);
+          console.log('Saved #'+id);
           tr = g('tr[row-id="'+irow+'"] td').all
           for(j=0; j<tr.length; j++) {
             tr[j].animate([{background:'lightgreen'},{background:'inherit'}], {duration:600})
@@ -623,11 +682,13 @@ function readFromClassComponents() {
   return values
 }
 
+
 gtableCommand = Array()
 gtableTool = Array()
 gtableFieldDisplay = Array()
+gtableDisplayType = Array()
 
-gtableCommand['edit'] = {
+gtableCommand.edit = {
   fa: 'pencil',
   label: 'Edit',
   fn: function(table,irow){
@@ -642,16 +703,14 @@ gtableCommand['edit'] = {
     })
   }
 }
-
-gtableCommand['edit_page'] = {
+gtableCommand.edit_page = {
   fa: 'pencil',
   label: 'Edit',
   fn: function(table,irow){
     window.location.href = 'admin/content/'+table.name+'/'+irow
   }
 }
-
-gtableCommand['edit_popup'] = {
+gtableCommand.edit_popup = {
   fa: 'pencil',
   label: 'Edit',
   fn: function(table,irow) {
@@ -667,20 +726,54 @@ gtableCommand['edit_popup'] = {
         })
       }
       transformClassComponents()
-      console.log(formId+' input')
       g(formId+' input').all[1].focus()
     })
   }
 }
-
-gtableCommand['edit_blocks'] = {
+gtableCommand.edit_blocks = {
   fa: 'pencil',
   label: 'Edit',
   permission: 'update',
   fn: function(table,id){
     window.location.href = 'blocks/editor/'+table.name+'/'+id
   }
-};
+}
+gtableCommand.clone = {
+  fa: "copy",
+  label: "Clone",
+  permission: 'create',
+  fn: function(table,id) {
+    let _this
+    _this = table
+    _this.edit_html = "Loading..."
+    g.post('cm/insert_row/'+_this.name, 'id='+id+'&formToken='+csrfToken, function(data){
+      data = JSON.parse(data)
+      _this.data.rows.unshift(data.rows[0])
+    })
+  }
+}
+gtableCommand.delete = {
+  fa: "trash-o",
+  label: _e("Delete"),
+  permission: 'delete',
+  fn: function(table,id) {
+    let _this = table
+    let _id = id
+    data = new FormData()
+    data.append('id',id)
+    data.append('formToken',csrfToken)
+    if(confirm(_e("Delete registry?"))) g.ajax({
+      url: 'cm/delete?t='+_this.name,
+      data: data,
+      method: 'post',
+      fn: function(data) {
+        for(i=0;i<_this.data.rows.length;i++) if(_this.data.rows[i][0] == _id) {
+          _this.data.rows.splice(i,1)
+        }
+      }
+    });
+  }
+}
 
 g.dialog.buttons.popup_update = {title:'Update', fn:function(btn){
   form = g('.gila-popup form').last()
@@ -708,6 +801,8 @@ function g_form_popup_update() {
   } else {
     url = 'cm/update_rows/'+t+'?id='+id
   }
+
+
   g.ajax({method:'post',url:url,data:data,fn:function(data) {
     data = JSON.parse(data)
     if (data.error) {
@@ -721,6 +816,9 @@ function g_form_popup_update() {
         document.getElementById("edit_popup_child").scrollIntoView();
         g("button[data-id='popup_add']").remove()
       }, 100)
+      for(i=0; i<rootVueGTables.length; i++) if(rootVueGTables[i].name != _this.name) {
+        rootVueGTables[i].load_page()
+      }
     } else {
       _this.update_row(data.rows[0])
     }
@@ -734,45 +832,28 @@ function g_form_popup_update() {
 } 
 
 
-gtableCommand['clone'] = {
-  fa: "copy",
-  label: "Clone",
-  permission: 'create',
-  fn: function(table,id) {
-    let _this
-    _this = table
-    _this.edit_html = "Loading..."
-    g.post('cm/insert_row/'+_this.name, 'id='+id+'&formToken='+csrfToken, function(data){
-      data = JSON.parse(data)
-      _this.data.rows.unshift(data.rows[0])
+
+gtableTool.edit = {
+  fa: "pencil", label: _e("Edit"),
+  permission: 'update',
+  fn: function(table) {
+    let _this = table
+    ids = table.selected_rows.join()
+    url = 'cm/edit_form/'+_this.name+'?id='+ids+'&callback=g_form_popup_update'
+    g.get(url, function(data){
+      g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+      formId = '#'+table.name+'-edit-item-form'
+
+      edit_popup_app = new Vue({
+        el: formId,
+        data: {id:ids}
+      })
+      transformClassComponents()
+      g(formId+' input').all[1].focus()  
     })
   }
 }
-
-gtableCommand['delete'] = {
-  fa: "trash-o",
-  label: _e("Delete"),
-  permission: 'delete',
-  fn: function(table,id) {
-    let _this = table
-    let _id = id
-    data = new FormData()
-    data.append('id',id)
-    data.append('formToken',csrfToken)
-    if(confirm(_e("Delete registry?"))) g.ajax({
-      url: "cm/delete?t="+_this.name,
-      data: data,
-      method: 'post',
-      fn: function(data) {
-        for(i=0;i<_this.data.rows.length;i++) if(_this.data.rows[i][0] == _id) {
-          _this.data.rows.splice(i,1)
-        }
-      }
-    });
-  }
-}
-
-gtableTool['add'] = {
+gtableTool.add = {
   fa: "plus", label: _e("New"),
   permission: 'create',
   fn: function(table) {
@@ -785,14 +866,14 @@ gtableTool['add'] = {
     })
   }
 }
-gtableTool['add_row'] = {
+gtableTool.add_row = {
   fa: 'plus',
   label: _e('New'),
   permission: 'create',
   fn: function(table) {
     let _this
     _this = table
-    _this.edit_html = _e("Loading")+"..."
+    _this.edit_html = _e("Loading")+'...'
     g.post('cm/insert_row/'+_this.name, _this.query,function(data){
       data = JSON.parse(data)
       if(typeof _this.data.rows=='undefined') {
@@ -801,14 +882,14 @@ gtableTool['add_row'] = {
     })
   }
 }
-gtableTool['add_popup'] = {
+gtableTool.add_popup = {
   fa: 'plus',
   label: _e('New'),
   permission: 'create',
   fn: function(table) {
     if(typeof table.filters=='undefined') table.filters=''
-    href='cm/edit_form/'+table.name+'?callback=g_form_popup_update'+table.filters;
-    g.get(href,function(data){
+    href = 'cm/edit_form/'+table.name+'?callback=g_form_popup_update'+table.filters;
+    g.get(href, function(data){
       g.dialog({title:g.tr('New Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_add'})
       formId = '#'+table.name+'-edit-item-form'
       textarea = g('#gila-popup textarea').first()
@@ -823,26 +904,26 @@ gtableTool['add_popup'] = {
     })
   }
 }
-gtableTool['csv'] = {
+gtableTool.csv = {
   fa: 'arrow-down', label: 'Csv',
   fn: function(table) {
     window.location.href = 'cm/csv/'+table.name+'?'+table.query;
   }
 }
-gtableTool['log_selected'] = {
+gtableTool.log_selected = {
   fa: 'arrow-down', label: 'Log',
   fn: function(table) {
     console.log(table.selected_rows);
   }
 }
-gtableTool['delete'] = {
+gtableTool.delete = {
   fa: 'arrow-down',
   label: _e('Delete'),
   permission: 'delete',
   fn: function(table) {
     let _this = table
     if(confirm(_e("Delete registries?"))) g.ajax({
-      url: "cm/delete?t="+_this.name,
+      url: 'cm/delete?t='+_this.name,
       data: {id:table.selected_rows.join()},
       method: 'post',
       fn: function(data) {
@@ -852,34 +933,34 @@ gtableTool['delete'] = {
     });
   }
 }
-gtableTool['uploadcsv'] = {
+gtableTool.uploadcsv = {
   fa: 'arrow-up',
   permission: 'create',
   label: _e('Upload')+' CSV',
   fn: function(table) {
-    bodyMsg = "<h3>1. "+_e('_uploadcsv_step1')+'</h3>'
-    bodyMsg += " <a href='cm/get_empty_csv/"+table.name+"'>"+_e('Download')+"</a>"
-    bodyMsg += "<h3>2. "+_e('_uploadcsv_step2')+'</h3>'
+    bodyMsg = '<h3>1. '+_e('_uploadcsv_step1')+'</h3>'
+    bodyMsg += " <a href='cm/get_empty_csv/"+table.name+"'>"+_e('Download')+'</a>'
+    bodyMsg += '<h3>2. '+_e('_uploadcsv_step2')+'</h3>'
     bodyMsg += "<br><input type='file' id='g_file_to_upload' data-table='"+table.name+"'>"
-    bodyMsg += "<h3>3. "+_e('_uploadcsv_step3')+'</h3>'
-    bodyMsg += " <span class='g-btn' onclick='upload_csv_file()'>"+_e('Upload')+"</span>"
-    g.dialog({title:_e("Upload")+" CSV", body:bodyMsg, buttons:'',type:'modal', class:'large', id:'select_row_dialog'})
+    bodyMsg += '<h3>3. '+_e('_uploadcsv_step3')+'</h3>'
+    bodyMsg += " <span class='g-btn' onclick='upload_csv_file()'>"+_e('Upload')+'</span>'
+    g.dialog({title:_e("Upload")+' CSV', body:bodyMsg, buttons:'',type:'modal', class:'large', id:'select_row_dialog'})
   }
 }
-gtableTool['upload_csv'] = gtableTool['uploadcsv']
-gtableTool['addfrom'] = {
+gtableTool.upload_csv = gtableTool.uploadcsv
+gtableTool.addfrom = {
   fa: 'plus', label: _e('New from'),
   fn: function(table) {
     let _table
     _table = table.table
     g.post('cm/select_row/'+_table.tool.addfrom[0],
-      "list="+_table.tool.addfrom[1]+'&formToken='+csrfToken, function(gal){
+      'list='+_table.tool.addfrom[1]+'&formToken='+csrfToken, function(gal){
       g.dialog({title:_e("Select"),body:gal,buttons:'select_row_source',type:'modal',class:'large',id:'select_row_dialog'})
       app.table_to_insert = _table.name
     })
   }
 }
-gtableTool['approve'] = {
+gtableTool.approve = {
   fa: 'check', label: _e('Approve'),
   fn: function(table) {
     if(typeof table.table.approve=='undefined') {
@@ -890,7 +971,7 @@ gtableTool['approve'] = {
     data = {}
     data[table.table.approve[0]] = table.table.approve[1]
     g.ajax({
-      url: "cm/update_rows?t="+_this.name+'&id='+table.selected_rows.join(),
+      url: 'cm/update_rows?t='+_this.name+'&id='+table.selected_rows.join(),
       data: data,
       method: 'post',
       fn: function(data) {
@@ -961,8 +1042,8 @@ g.dialog.buttons.select_row_source = {
 }
 
 function open_gallery_post() {
-  g.post("admin/media","g_response=content"+'&formToken='+csrfToken,function(gal){ 
-    g.dialog({title:"Media gallery",body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog','z-index':99999})
+  g.post('admin/media','g_response=content&formToken='+csrfToken,function(gal){ 
+    g.dialog({title:'Media gallery',body:gal,buttons:'select_path_post',type:'modal',class:'large',id:'media_dialog','z-index':99999})
   })
 }
 var open_select_row_clicked = false
@@ -972,7 +1053,7 @@ function open_select_row(rid,table,name) {
   open_select_row_clicked = true;
 
   g.loader()
-  g.post("cm/select_row/"+table,"",function(gal){
+  g.post('cm/select_row/'+table,'',function(gal){
     open_select_row_clicked = false;
     g.loader(false)
     g.dialog({title:_e(name),body:gal,buttons:'select_row_source',type:'modal',id:'select_row_dialog',class:'large'})
@@ -990,10 +1071,10 @@ function upload_csv_file() {
   fm.append('file', g.el('g_file_to_upload').files[0]);
   table = g.el('g_file_to_upload').getAttribute('data-table');
   g.loader()
-  g.ajax({url:"cm/upload_csv/"+table, method:'POST', data:fm, fn:function(data){
-    data = JSON.parse(data)
-    app.$refs.gtable.load_page()
+  g.ajax({url:'cm/upload_csv/'+table, method:'POST', data:fm, fn:function(data){
     g.loader(false)
+    app.$refs.gtable.load_page()
+    data = JSON.parse(data)
     if (data.error) alert(data.error)
   }})
 }
