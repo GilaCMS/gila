@@ -431,7 +431,6 @@ class Table
             $arrv = [$value];
           } elseif ($value!==null) {
             $arrv = json_decode($value, true) ?? explode(",", $value);
-            //foreach($arrv as &$el) if (is_numeric($el)) $el = (int)$el;
           }
         } else {
           $arrv = $value;

@@ -372,7 +372,7 @@ class Config
   * Loads all load files from packages
   */
   public static function load()
-  { //TODO Package::load($package);
+  {
     include_once "src/core/load.php";
     foreach (self::packages() as $package) {
       if (file_exists("src/$package/load.php")) {

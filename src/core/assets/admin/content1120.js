@@ -724,10 +724,10 @@ gtableCommand.edit_popup = {
         formValues = JSON.parse(g(formId).all[0].dataset.values)
       }
       if (!textarea || !textarea.innerHTML.includes('{{')) {
-        //edit_popup_app = new Vue({
-        //  el: formId,
-        //  data: {id:irow,formValue:formValues}
-        //})
+        edit_popup_app = new Vue({
+          el: formId,
+          data: {id:irow,formValue:formValues}
+        })
       }
       transformClassComponents()
       g(formId+' input').all[1].focus()
