@@ -157,14 +157,26 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
     }
 
     self::$input_type = [
-      "select"=> function ($name, $field, $ov) {
+      'select'=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';
         foreach ($field['options'] as $value=>$option) {
           $html .= '<option value="'.$value.'"'.($value==$ov?' selected':'').'>'.__($option).'</option>';
         }
         return $html . '</select>';
       },
-      "meta"=> function ($name, $field, $ov) {
+      'v-select-multiple'=> function ($name, $field, $ov) {
+        $x = rand(1, 100000);
+        $html = '<input type="hidden" name="'.$name.'" id="vueSM'.$x.'">';
+        $html .= '<v-select multiple v-model="formValue.'.$name.'"';
+        $html .= ' @input="vueSM'.$x.'.value=JSON.stringify(formValue.'.$name.')"';
+        $options = [];
+        foreach($field['options'] as $key=>$label) {
+          $options[] = ['code'=>(string)$key, 'label'=>(string)$label];
+        }
+        $html .= ' :reduce="op=>op.code" :options=\''.json_encode($options).'\' />';
+        return $html;
+      },
+      'meta'=> function ($name, $field, $ov) {
         if (@$field['meta-csv']==true || @$field['meta_csv']==true) {
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
@@ -173,16 +185,16 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         }
         $encoded = !is_string($ov)? json_encode($ov??[],JSON_UNESCAPED_UNICODE): $ov;
         $html = '<g-multiselect value="'.htmlspecialchars($encoded).'"';
-        return $html.= 'options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
+        return $html.= ' options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
-      "keywords"=> function ($name, $field, $ov) {
+      'keywords'=> function ($name, $field, $ov) {
         if (is_string($ov)) {
           $ov = explode(',', $ov);
         }
         $html = '<input-keywords value="'.htmlspecialchars(json_encode($ov??[])).'"';
         return $html.= ' name="'.$name.'">';
       },
-      "select2"=> function ($name, $field, $ov) { //DEPRECATED
+      'select2'=> function ($name, $field, $ov) { //DEPRECATED
         if (is_string($ov)) {
           $ov = explode(',', $ov);
         }
@@ -192,7 +204,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         }
         return $html . '</select>';
       },
-      "role"=> function ($name, $field, $ov) {
+      'role'=> function ($name, $field, $ov) {
         global $db;
         if (is_string($ov)) {
           $ov = explode(',', $ov);
@@ -204,7 +216,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $html = '<g-multiselect value="'.htmlspecialchars(json_encode($ov??[])).'"';
         return $html.= 'options="'.htmlspecialchars(json_encode($options)).'" name="'.$name.'">';
       },
-      "radio"=> function ($name, $field, $ov) {
+      'radio'=> function ($name, $field, $ov) {
         $html = '<div class="g-radio g-input" style="padding: var(--main-padding) 0; width: max-content;">';
         foreach ($field['options'] as $value=>$display) {
           $id = 'radio_'.$name.'_'.$value;
@@ -214,12 +226,12 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         }
         return $html . '</div>';
       },
-      "animation"=> function ($name, $field, $ov) {
+      'animation'=> function ($name, $field, $ov) {
         $options = [''=>'None','fade-in'=>'Fade','expand'=>'Expand','move-left'=>'Left','move-right'=>'Right','move-up'=>'Up','move-down'=>'Down'];
         $field['options'] = $options;
         return self::$input_type['select']($name, $field, $ov); //DEPRECATED
       },
-      "postcategory"=> function ($name, $field, $ov) {
+      'postcategory'=> function ($name, $field, $ov) {
         global $db;
         $html = '<select class="g-input" name="'.$name.'">';
         $res=$db->get('SELECT id,title FROM postcategory;');
@@ -229,24 +241,24 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         }
         return $html . '</select>';
       },
-      "comments"=> function ($name, $field, $ov) {
+      'comments'=> function ($name, $field, $ov) {
         $form = isset($field['content'])? ' form="'.$field['content'].'-edit-item-form"': '';
         return '<input-comments name="'.$name.'" fieldname="'.$field['fieldname'].'" username="'.Session::key('user_name').'" value="'.htmlspecialchars($ov??'[]').'"'.$form.'>';
       },
-      "media2"=> function ($name, $field, $ov) {
+      'media2'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<input-media name="'.$name.'" value="'.$ov.'">';
       },
-      "upload-media"=> function ($name, $field, $ov) {
+      'upload-media'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
-        return '<input-media-upload name="'.$name.'" value="'.$ov.'">';
+        return '<input-upload-media name="'.$name.'" value="'.$ov.'">';
       },
-      "tree-select"=> function ($name, $field, $ov) {
+      'tree-select'=> function ($name, $field, $ov) {
         return '<tree-select name="'.$name.'" value="'.$ov.'" data='.json_encode($field['data']).'>';
       },
-      "palette"=> function ($name, $field, $ov) {
+      'palette'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         if (empty($ov)) {
           $ov = json_encode(end($field['palettes']));
@@ -257,7 +269,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $labels = $field['labels']? htmlspecialchars(json_encode($field['labels'])): '';
         return '<color-palette name="'.$name.'" value="'.$ov.'" palettes="'.$pal.'" labels="'.$labels.'">';
       },
-      "media-gallery"=> function ($name, $field, $ov) {
+      'media-gallery'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         if (!is_array(json_decode($ov, true))) {
           $ov = explode(',', $ov);
@@ -269,7 +281,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $ov = htmlspecialchars($ov);
         return '<input-gallery name="'.$name.'" value="'.$ov.'">';
       },
-      "media"=> function ($name, $field, $ov) {
+      'media'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         $ov = htmlspecialchars($ov);
         return '<div class="g-group">
@@ -278,34 +290,34 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
           <span class="g-group-item"><input class="g-input fullwidth" value="'.$ov.'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
-      "key"=> function ($name, $field, $ov) {
+      'key'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<div class="g-group">
           <span class="btn g-group-item" onclick="open_select_row(\'#'.$id.'\',\''.$field['table'].'\',\''.$field['title'].'\')"><i class="fa fa-key"></i></span>
           <span class="g-group-item"><input class="fullwidth" value="'.($ov??0).'" id="'.$id.'" name="'.$name.'"><span>
         </span></span></div>';
       },
-      "textarea"=> function ($name, $field, $ov) {
+      'textarea'=> function ($name, $field, $ov) {
         return '<textarea class="g-input fullwidth" name="'.$name.'" style="resize:vertical;">'.htmlspecialchars($ov).'</textarea>';
       },
-      "codemirror"=> function ($name, $field, $ov) {
+      'codemirror'=> function ($name, $field, $ov) {
         return '<textarea class="g-input fullwidth codemirror-js" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
-      "tinymce"=> function ($name, $field, $ov) {
+      'tinymce'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
-      "paragraph"=> function ($name, $field, $ov) {
+      'paragraph'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<textarea class="g-input fullwidth tinymce" id="'.$id.'" name="'.$name.'">'.htmlspecialchars($ov).'</textarea>';
       },
-      "vue-editor"=> function ($name, $field, $ov) {
+      'vue-editor'=> function ($name, $field, $ov) {
         $id = 'm_'.str_replace(['[',']'], '_', $name);
         return '<vue-editor id="'.$id.'" name="'.$name.'" text="'.htmlentities($ov).'"></vue-editor>';
       },
-      "language"=> function ($name, $field, $ov) {
+      'language'=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';
-        $res = include 'src/core/lang/languages.php';
+        $res = include __DIR__.'/../lang/languages.php';
         $ov = $ov??Config::lang();
         $list = Config::get('languages');
         foreach ($res as $key=>$r) {
@@ -315,15 +327,15 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         }
         return $html . '</select>';
       },
-      "checkbox"=> function ($name, $field, $ov) {
+      'checkbox'=> function ($name, $field, $ov) {
         return self::$input_type['switch']($name, $field, $ov); //DEPRECATED
       },
-      "check_box"=> function ($name, $field, $ov) {
+      'check_box'=> function ($name, $field, $ov) {
         $value = $field['value']??1;
         $checked = $ov==$value?'checked':'';
         return "<input type=checkbox name='$name' $checked value='$value' $req>";
       },
-      "switch"=> function ($name, $field, $ov) {
+      'switch'=> function ($name, $field, $ov) {
         if ($ov==1) {
           $checked=["","checked"];
         } else {
@@ -336,12 +348,12 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         </div>
         ';
       },
-      "list"=> function ($name, $field, $ov) {
+      'list'=> function ($name, $field, $ov) {
         $fields = htmlspecialchars(json_encode($field['fields']));
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldlist="'.$fields.'" value="'.$value.'"></input-list>';
       },
-      "menu"=> function ($name, $field, $ov) {
+      'menu'=> function ($name, $field, $ov) {
         global $db;
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
         $pages = $db->getOptions("SELECT id,title FROM `page`;");
@@ -352,12 +364,12 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $types = htmlspecialchars($types);
         return '<menu-editor style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" value="'.$value.'" itemtypes="'.$types.'" ></menu-editor>';
       },
-      "color-input"=> function ($name, $field, $ov) {
+      'color-input'=> function ($name, $field, $ov) {
         $value = htmlentities($ov);
         $palette = $field['palette'] ?? [];
         return '<color-input palette=\''.htmlspecialchars(json_encode($palette)).'\' name="'.$name.'" value="'.$value.'"></color-input>';
       },
-      "template"=> function ($name, $field, $ov) {
+      'template'=> function ($name, $field, $ov) {
         global $db;
         $html = '<select class="g-input" name="'.$name.'">';
         $templates = View::getTemplates($field['template']);

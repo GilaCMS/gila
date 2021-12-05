@@ -80,11 +80,11 @@ class BlogController extends Gila\Controller
   */
   public function feedAction()
   {
-    $title = Config::get('title');
-    $link = Config::get('base');
-    $description = Config::get('slogan');
-    $items = Post::getLatest(20);
-    include 'src/core/views/blog-feed.php';
+    View::set('title', Config::get('title'));
+    View::set('link', Config::get('base'));
+    View::set('description', Config::get('slogan'));
+    View::set('items', Post::getLatest(20));
+    View::renderFile('blog-feed.php');
   }
 
   /**
@@ -247,12 +247,7 @@ class BlogController extends Gila\Controller
         View::render('single-post.php');
       }
     } else {
-      if (!empty($postId) && $category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $id)) {
-        $this->categoryAction($category);
-        return;
-      }
-
-      if ($r = Page::getByIdSlug($id)) {
+      if (Page::inCachedList($id) && $r = Page::getByIdSlug($id)) {
         View::set('title', $r['title']);
         View::set('text', $r['page']);
         View::meta('description', $r['description']);
@@ -275,6 +270,11 @@ class BlogController extends Gila\Controller
         http_response_code(404);
         Cache::page('404_blog'.Config::lang(), max(86400, $cacheTime));
         View::render('404.php');
+      }
+
+      if (!empty($postId) && $category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $id)) {
+        $this->categoryAction($category);
+        return;
       }
     }
     if (http_response_code()==200) {

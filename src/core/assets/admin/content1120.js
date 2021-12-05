@@ -714,15 +714,19 @@ gtableCommand.edit_popup = {
   fa: 'pencil',
   label: 'Edit',
   fn: function(table,irow) {
-    href='cm/edit_form/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
-    g.get(href,function(data){
-      g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:data,type:'modal',buttons:'popup_update'})
+    href='cm/edit_form2/'+table.name+'?id='+irow+'&callback=g_form_popup_update';
+    g.get(href,function(response){
+      g.dialog({title:g.tr('Edit Registry'), class:'lightscreen large',body:response,type:'modal',buttons:'popup_update'})
       formId = '#'+table.name+'-edit-item-form'
       textarea = g('#gila-popup textarea').first()
+      formValues = []
+      if (typeof g(formId).all[0].dataset.values!='undefined') {
+        formValues = JSON.parse(g(formId).all[0].dataset.values)
+      }
       if (!textarea || !textarea.innerHTML.includes('{{')) {
         edit_popup_app = new Vue({
           el: formId,
-          data: {id:irow}
+          data: {id:irow,formValue:formValues}
         })
       }
       transformClassComponents()

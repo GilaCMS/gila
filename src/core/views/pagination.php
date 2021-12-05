@@ -1,4 +1,4 @@
-<ul class="g-nav pagination">
+<ul class="g-nav g-pagination pagination">
 <?php
   $url = htmlspecialchars(explode('?', Router::path())[0]);
   if (!isset($page)) {

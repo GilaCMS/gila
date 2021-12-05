@@ -27,7 +27,7 @@
     'el'=>'Είσαι συνδεδεμένος/η με αυτές τις συσκευές'
     ])?></h3>
   <div v-for="(s,i) in sessions" v-bind:class="{'device-pill':true,selected:s.current}">
-    <img :src="'src/core/assets/'+iconFile(s.device)">
+    <img :src="'assets/core/'+iconFile(s.device)">
     {{s.os}} | {{s.browser}} | IP: {{s.ip}}
     <span v-if="s.current"></span>
     <span v-else class="close" @click="removeDevice(i)">&times;</span>
