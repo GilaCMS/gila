@@ -30,6 +30,7 @@ pre{background-color:var(--main-input-color); padding:8px; border:1px solid var(
 
 img{max-width:100%;height:auto}
 script{display:none!important}
+img.lazy{animation: fade-in 0.3s,}
 
 
 .centered{

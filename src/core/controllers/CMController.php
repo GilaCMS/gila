@@ -461,35 +461,52 @@ class CMController extends Gila\Controller
       return;
     }
     $callback = Router::param("callback") ?? $t.'_action';
-
+    $html = '';
     $id = Router::param("id", 2);
     $id = (int)$id;
-    echo '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
-    echo ' action="javascript:'.$callback.'()"><button style="position:absolute;top:-1000px"></button>';
-    echo '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
-    echo 'justify-content: space-around;gap:0.8em">';
-    echo Form::hiddenInput();
+
     if ($id>0) {
       $fields = $gtable->fields('edit');
       $ql = "SELECT {$gtable->select($fields)} FROM {$gtable->name()}{$gtable->where($_GET)};";
       $res = $db->get($ql)[0];
-      echo Form::html($gtable->getFields('edit'), $res);
+      $getFields = $gtable->getFields('edit');
+      $values = $res;
     } else {
-      echo Form::html($gtable->getFields('create'), $_GET);
+      $getFields = $gtable->getFields('create');
+      $values = $values;
     }
+    $fieldValues = [];
+    foreach($getFields as $key=>$field) {
+      if (isset($field['type']) && $field['type']=='meta') {
+        $fieldValues[$key] = explode(',',$values[$key]);
+      }
+    }
+    $html .= '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
+    $html .= ' action="javascript:'.$callback.'()" data-values=\''.htmlentities(json_encode($fieldValues, JSON_UNESCAPED_UNICODE)).'\'>';
+    $html .= '<button style="position:absolute;top:-1000px"></button>';
+    $html .= '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
+    $html .= 'justify-content: space-around;gap:0.8em">';
+    $html .= Form::hiddenInput();
+    $html .= Form::html($getFields, $values);
 
     $child_id = '<span id="edit_popup_child"></span>';
     foreach ($gtable->getTable()['children']??[] as $ckey=>$child) {
-      echo $child_id;
+      $html .= $child_id;
       $child_id = "";
-      echo '<g-table v-if="id>0" gtype="'.$ckey.'" gchild=1 ';
-      echo 'gtable="'.htmlentities(json_encode($child['table'])).'" ';
-      echo 'gfields="'.htmlentities(json_encode($child['list'])).'" ';
-      echo ':gfilters="\'&amp;'.$child['parent_id'].'=\'+id">';
-      echo '</g-table>';
+      $html .= '<g-table v-if="id>0" gtype="'.$ckey.'" gchild=1 ';
+      $html .= 'gtable="'.htmlentities(json_encode($child['table'])).'" ';
+      $html .= 'gfields="'.htmlentities(json_encode($child['list'])).'" ';
+      $html .= ':gfilters="\'&amp;'.$child['parent_id'].'=\'+id">';
+      $html .= '</g-table>';
     }
 
-    echo '</div></form>';
+    $html .= '</div></form>';
+    echo $html;
+  }
+
+  public function edit_form2Action()
+  {
+    $this->edit_formAction();
   }
 
   public function select_rowAction()

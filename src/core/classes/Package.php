@@ -53,7 +53,8 @@ class Package
   public static function config($package)
   {
     if (!isset(self::$config[$package])) {
-      self::$config[$package] = json_decode(file_get_contents('src/'.$package.'/package.json'), true);
+      $path = 'src/'.$package.'/package.json';
+      self::$config[$package] = json_decode(file_get_contents($path), true);
     }
     return self::$config[$package];
   }

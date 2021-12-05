@@ -461,8 +461,13 @@ class View
     Event::fire($area);
   }
 
-  public static function getWidgetArea($area)
+  public static function getWidgetArea($area, $cache=null)
   {
+    if ($cache) {
+      return Cache::remember('widgetArea.'.$area, $cache, function ($u) {
+        return View::getWidgetArea($area);
+      }, [Config::mt('widget'), $area]);
+    }
     ob_start();
     self::widgetArea($area);
     $html = ob_get_contents();

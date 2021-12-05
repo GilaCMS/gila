@@ -90,7 +90,7 @@ class Router
     return self::$controller;
   }
 
-  public static function getAction($ctrClass = null):string
+  public static function getAction($ctrClass = ''):string
   {
     if (isset(self::$action)) {
       return self::$action;

@@ -92,4 +92,13 @@ class Page
     return $to;
   }
 
+  public static function inCachedList($id)
+  {
+    $array = Cache::remember('page_cache_list', 86400, function ($u) {
+      global $db;
+      $ql="SELECT slug FROM `page` WHERE publish=1";
+      return json_encode($db->getList($ql));
+    }, [Config::mt('page')]);
+    return (in_array($id, json_decode($array, true)));
+  }
 }

@@ -44,6 +44,11 @@ View::cssAsync('lib/vue/vue-select.css');
 .tox .tox-menubar,.tox .tox-toolbar, .tox .tox-toolbar__overflow, .tox .tox-toolbar__primary{
   background-color: #f0f0f0;
 }
+.g-form .vs__search{
+  background: inherit;
+  border: inherit;
+  padding: inherit;
+}
 .v-select {display:inline-block;min-width:180px}
 #select_row_dialog .body{padding:0}
 </style>

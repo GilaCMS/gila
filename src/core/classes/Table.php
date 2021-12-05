@@ -366,6 +366,10 @@ class Table
           if (empty($value)) $value = [];
           $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
+        if ($this->fieldAttr($key, 'type')=='time' && is_string($value)) {
+          date_default_timezone_set(Config::get('timezone'));
+          $value = strtotime($value);
+        }
         if ($allowed = $this->fieldAttr($key, 'allow_tags')) {
           $purify = $this->table['fields'][$key]['purify'] ?? true;
           if ($purify===true) {
@@ -426,7 +430,7 @@ class Table
           if (@$this->table['fields'][$key]['values'] === 1) {
             $arrv = [$value];
           } elseif ($value!==null) {
-            $arrv = explode(",", $value);
+            $arrv = json_decode($value, true) ?? explode(",", $value);
             //foreach($arrv as &$el) if (is_numeric($el)) $el = (int)$el;
           }
         } else {
