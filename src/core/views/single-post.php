@@ -1,12 +1,11 @@
 <div class="row" style="">
 <div class="gm-9">
-  <h1><?=$title?></h1>
-      <span class="meta">Posted by <a href="<?=Config::url('blog/author/'.$author_id)?>"><?=htmlentities($author)?></a> on <?=date('F j, Y', strtotime($updated))?></span>
-  <hr>
-
   <!-- Post Content nl2br($text) -->
   <article>
-      <?=$text?>
+    <h1><?=$title?></h1>
+        <span class="meta">Posted by <a href="<?=Config::url('blog/author/'.$author_id)?>"><?=htmlentities($author)?></a> on <?=date('F j, Y', strtotime($updated))?></span>
+    <hr>
+    <?=$text?>
   </article>
   <?php View::widgetArea('post.after'); ?>
 </div>

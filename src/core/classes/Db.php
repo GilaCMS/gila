@@ -43,6 +43,9 @@ class Db
       Event::fire('Db::connect_error');
       exit;
     }
+    $this->link->query('SET @@session.time_zone="-06:00";');
+    //set_default_timezone('-6:00');
+    Event::fire('Db::connect');
     if ($this->profiling) {
       $this->link->query('SET profiling=1;');
     }

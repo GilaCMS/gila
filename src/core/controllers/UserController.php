@@ -136,7 +136,7 @@ class UserController extends Gila\Controller
       && ($_SESSION['rpa']<200 || $_SESSION['rpt']+3600<time())) {
       $_SESSION['rpa']++;
       $_SESSION['rpt'] = time();
-      $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+      $reset_code = bin2hex(random_bytes(50));
       User::meta($r['id'], 'reset_code', $reset_code);
       $basereset = Config::base('user/password_reset');
       $reset_url = $basereset.'?rp='.$reset_code;

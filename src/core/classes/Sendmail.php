@@ -11,7 +11,7 @@ class Sendmail
       return;
     }
     $args['subject'] = $args['subject']?? "Message from ".Config::get('base');
-    $args['headers'] = $args['headers']?? "From: GilaCMS <noreply@{$_SERVER['HTTP_HOST']}>";
+    $args['headers'] = $args['headers']?? "From: ".Config::get('title')." <noreply@{$_SERVER['HTTP_HOST']}>";
     $args['message'] = $args['message']?? "";
     if ($args['message']==="") {
       foreach (@$args['post'] as $key) {

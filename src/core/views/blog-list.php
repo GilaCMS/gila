@@ -1,3 +1,23 @@
+<style>
+.g-pagination li {
+  list-style-type: none;
+  border: 1px solid #ccc;
+  display: inline-block;
+}
+.g-pagination a {
+  padding: 6px 8px;
+  color: var(--main-a-color);
+  border: 0;
+  font: 15px Arial;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+.g-pagination .active a {
+  color: white;
+  background: var(--main-a-color);
+}
+</style>
 
 <!-- Posts -->
 <div class="row wrapper">
