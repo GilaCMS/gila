@@ -34,11 +34,15 @@ View::cssAsync('lib/vue/vue-select.css');
 @media only screen and (min-width:700px){
   #user-post-edit-item-form>div,
   #post-edit-item-form>div{
-    /*grid-template-columns: 2fr 1fr!important;*/
+    grid-template-columns: 2fr 2fr 2fr 1fr 1fr 1fr!important;
     min-height:60vh;
   }
+  #user-post-edit-item-form>div>div,
+  #post-edit-item-form>div>div{
+    grid-column:span 3;
+  }
   .gila-popup #user-post-edit-item-form .type-tinymce,
-  .gila-popup #post-edit-item-form .type-tinymce{grid-column:1/5;grid-row:1/20}
+  .gila-popup #post-edit-item-form .type-tinymce{grid-column:1/4;grid-row:1/20}
 }
 .tox .tox-menubar,.tox .tox-toolbar, .tox .tox-toolbar__overflow, .tox .tox-toolbar__primary{
   background-color: #f0f0f0;
