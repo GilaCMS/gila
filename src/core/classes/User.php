@@ -206,7 +206,7 @@ class User
   public static function sendInvitation($data)
   {
     Config::addLang('core/lang/login/');
-    $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+    $reset_code = bin2hex(random_bytes(50));
     $baseurl = Config::base('user/password_reset');
     $reset_url = $baseurl.'?rp='.$reset_code;
     self::meta($data['id'], 'reset_code', $reset_code);
@@ -255,10 +255,11 @@ class User
       View::alert('error', __('register_error1'));
     } else {
       // register the user
-      if ($userId = self::create($email, $password, $name)) {
+      $active = Config::get('user_activation')=='auto'? 1: 0;
+      if ($userId = self::create($email, $password, $name, $active)) {
         // success
         if (Config::get('user_activation')=='byemail') {
-          $activate_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+          $activate_code = bin2hex(random_bytes(50));
           $baseactivate = Config::base('user/activate');
           $activate_url = $baseactivate.'?ap='.$activate_code;
           $data = [

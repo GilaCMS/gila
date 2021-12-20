@@ -266,13 +266,13 @@ class BlogController extends Gila\Controller
           http_response_code(301);
           header('Location: '.Config::base($to));
           exit;
-        }    
+        }
         http_response_code(404);
         Cache::page('404_blog'.Config::lang(), max(86400, $cacheTime));
         View::render('404.php');
       }
 
-      if (!empty($postId) && $category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $id)) {
+      if ($category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $postId)) {
         $this->categoryAction($category);
         return;
       }

@@ -75,7 +75,8 @@ class UserController extends Gila\Controller
         User::updateActive($ids[0], 1);
         User::metaDelete($ids[0], 'activate_code');
         View::set('user', User::getById($ids[0]));
-        View::set('login_link', User::level($ids[0])>0? 'admin': 'user');
+        View::set('login_link', User::level($ids[0])>0? 'admin': '');
+        Session::setCookie($ids[0]);
         View::includeFile('user-activate-success.php');
       }
       return;
@@ -136,7 +137,7 @@ class UserController extends Gila\Controller
       && ($_SESSION['rpa']<200 || $_SESSION['rpt']+3600<time())) {
       $_SESSION['rpa']++;
       $_SESSION['rpt'] = time();
-      $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+      $reset_code = bin2hex(random_bytes(50));
       User::meta($r['id'], 'reset_code', $reset_code);
       $basereset = Config::base('user/password_reset');
       $reset_url = $basereset.'?rp='.$reset_code;

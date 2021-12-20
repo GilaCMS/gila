@@ -363,7 +363,9 @@ class Table
           continue;
         }
         if ($this->fieldAttr($key, 'type')=='json') {
-          if (empty($value)) $value = [];
+          if (empty($value)) {
+            $value = [];
+          }
           $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
         if ($this->fieldAttr($key, 'type')=='time' && is_string($value)) {

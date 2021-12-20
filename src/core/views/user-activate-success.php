@@ -8,7 +8,7 @@
         </div>
         <h3><?=__('activate_success')?></h3>
       </div>
-      <a class="btn btn-success btn-block" href="<?=Config::url($login_link??'user')?>"><?=__('Log In')?></a>
+      <a class="btn btn-success btn-block" href="<?=Config::url($login_link??'user')?>"><?=__('Continue')?></a>
     </div>
   </div>
 

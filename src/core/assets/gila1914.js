@@ -425,7 +425,6 @@ g.loadJS = function(res, callback = function(){return }) {
   if(typeof res.wjs == 'undefined') url = g_baseUrl+res.js; else url = res.wjs;
 
   var script = document.createElement("script")
-  script.type = "text/javascript";
 
   if(res.loaded == true){
     callback();

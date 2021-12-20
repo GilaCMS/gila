@@ -39,11 +39,7 @@ class Form
     if ($v = @$_SESSION['_t'.$name]) {
       return $v;
     }
-    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = '';
-    for ($p = strlen($gsession); $p < 15; $p++) {
-      $gsession .= $chars[mt_rand(0, 32)];
-    }
+    $gsession = bin2hex(random_bytes(32));
     $_SESSION['_t'.$name] = $gsession;
     @session_commit();
     return $gsession;
@@ -76,6 +72,9 @@ class Form
     self::initInputTypes();
     $type = $op['input_type']??($op['type']??'text');
     $html = '<div class="type-'.$type.'">';
+    if (isset($op['input_style'])) {
+      $html = '<div class="type-'.$type.'" style="'.$op['input_style'].'">';  
+    }
     $label = ucfirst(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
@@ -170,7 +169,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $html .= '<v-select multiple v-model="formValue.'.$name.'"';
         $html .= ' @input="vueSM'.$x.'.value=JSON.stringify(formValue.'.$name.')"';
         $options = [];
-        foreach($field['options'] as $key=>$label) {
+        foreach ($field['options'] as $key=>$label) {
           $options[] = ['code'=>(string)$key, 'label'=>(string)$label];
         }
         $html .= ' :reduce="op=>op.code" :options=\''.json_encode($options).'\' />';
@@ -183,7 +182,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         if (is_string($ov)&&$ov!='[]'&&!json_decode($ov)) {
           $ov = explode(',', $ov);
         }
-        $encoded = !is_string($ov)? json_encode($ov??[],JSON_UNESCAPED_UNICODE): $ov;
+        $encoded = !is_string($ov)? json_encode($ov??[], JSON_UNESCAPED_UNICODE): $ov;
         $html = '<g-multiselect value="'.htmlspecialchars($encoded).'"';
         return $html.= ' options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
