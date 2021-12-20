@@ -72,6 +72,9 @@ class Form
     self::initInputTypes();
     $type = $op['input_type']??($op['type']??'text');
     $html = '<div class="type-'.$type.'">';
+    if (isset($op['input_style'])) {
+      $html = '<div class="type-'.$type.'" style="'.$op['input_style'].'">';  
+    }
     $label = ucfirst(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;

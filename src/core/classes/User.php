@@ -255,7 +255,8 @@ class User
       View::alert('error', __('register_error1'));
     } else {
       // register the user
-      if ($userId = self::create($email, $password, $name)) {
+      $active = Config::get('user_activation')=='auto'? 1: 0;
+      if ($userId = self::create($email, $password, $name, $active)) {
         // success
         if (Config::get('user_activation')=='byemail') {
           $activate_code = bin2hex(random_bytes(50));

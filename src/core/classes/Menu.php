@@ -127,9 +127,9 @@ class Menu
       }
     }
     if (self::$editableLinks && $r=Page::getBySlug($data['url'])) {
-      return ['name'=>$data['title']??$data['name'], 'url'=>self::$editableLinks.'/'.$r['id']];
+      return ['type'=>$data['type'], 'name'=>$data['title']??$data['name'], 'url'=>self::$editableLinks.'/'.$r['id']];
     } else {
-      return ['name'=>$data['title']??$data['name'], 'url'=>$data['url']??'#'];
+      return ['type'=>$data['type'], 'name'=>$data['title']??$data['name'], 'url'=>$data['url']??'#'];
     }
   }
 
@@ -180,6 +180,9 @@ class Menu
         $liClass .= ' active';
         $aClass .= ' active';
       }
+      if ($item['type']=='btn') $aClass .= ' g-btn btn btn-primary';
+      if ($item['type']=='btn2') $aClass .= ' g-btn btn btn-secondary';
+
       $liClass = $liClass!==''? ' class="'.$liClass.'"': '';
       $aClass = $aClass!==''? ' class="'.$aClass.'"': '';
       $html .= "<li$liClass><a$aClass href='".$url."'>";
