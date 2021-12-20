@@ -439,3 +439,13 @@ td[col] .g-input {
 .pagination>li.active {
   background: lightgray;
 }
+
+.edit-item-form {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(60px,105px));
+  justify-content: space-around;
+  gap:0.8em;
+}
+.edit-item-form>div {
+  grid-column: span 3;
+}

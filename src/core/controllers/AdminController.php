@@ -7,6 +7,7 @@ use Gila\Session;
 use Gila\Router;
 use Gila\Package;
 use Gila\Widget;
+use Gila\Response;
 
 class AdminController extends Gila\Controller
 {
@@ -29,7 +30,8 @@ class AdminController extends Gila\Controller
       if (!empty($r['language'])) {
         Config::lang($r['language']);
       }
-      Config::canonical($r['slug']);
+      Config::canonical(Config::base($r['slug']));
+      View::set('page_title', $r['title'].' | '.Config::get('title'));
       if ($r['template']==''||$r['template']===null) {
         View::renderFile('page.php');
       } else {
@@ -228,7 +230,7 @@ class AdminController extends Gila\Controller
     }
     if (isset($_FILES['uploadfiles'])) {
       $upload_folder = Config::get('media_uploads') ?? 'assets';
-      $uploadpath = Router::post('path', $upload_folder);
+      $uploadpath = Request::post('path', $upload_folder);
       $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'ogg', 'mkv', 'mp4', 'webm', 'mp3'];
       if (Config::get('allow_svg')) {
         $extensions[] = 'svg';
@@ -252,7 +254,7 @@ class AdminController extends Gila\Controller
         } elseif (file_exists($path)) {
           echo "<div class='alert error'>File with same name already exists!</div>";
         } elseif (!FileManager::allowedPath($path)) {
-          echo "<div class='alert error'>Error: incorrect path!</div>";
+          echo "<div class='alert error'>Error: incorrect path $path</div>";
         } elseif (!move_uploaded_file($tmp_names[$i], $path)) {
           echo "<div class='alert error'>Error: could not upload file!</div>";
         } elseif ($total && filesize($tmp_names[$i])+$size>$total) {
@@ -273,7 +275,9 @@ class AdminController extends Gila\Controller
   public function mediaAction()
   {
     View::renderAdmin('admin/media.php');
-    echo '<style>.media-tabs-side{display:none}</style>';
+    if (!isset($_POST['g_response'])) {
+      echo '<style>.media-tabs-side{display:none}</style>';
+    }
   }
 
 
@@ -359,8 +363,7 @@ class AdminController extends Gila\Controller
           }
         } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
           Gila\Menu::remove($menu);
-          echo json_encode(["msg"=>__('_changes_updated')]);
-          exit;
+          Response::success(["msg"=>__('_changes_updated')]);
         }
       }
     }

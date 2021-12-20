@@ -12,12 +12,8 @@
         }
     ],
     "require": {
-        "php": ">=7.2.0",
-        "google/cloud-translate": "^1.10",
-        "google/cloud-storage": "^1.23"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^7"
+        "php": "^8.0",
+        "twilio/sdk": "^6.34"
     },
     "autoload": {
         "psr-4": {

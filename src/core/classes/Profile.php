@@ -9,7 +9,7 @@ class Profile
       return;
     }
 
-    if (Router::post('submit-btn')==='submited') {
+    if (Request::post('submit-btn')==='submited') {
       User::updateName($user_id, strip_tags($_POST['gila_username']));
       if (isset($_POST['meta'])) {
         foreach ($_POST['meta'] as $meta=>$metavalue) {
@@ -24,7 +24,7 @@ class Profile
       View::alert('success', __('_changes_updated'));
     }
 
-    if (Router::post('submit-btn')=='password') {
+    if (Request::post('submit-btn')=='password') {
       $usr = User::getById($user_id);
       $pass = $_POST['new_pass'];
       if (password_verify($_POST['old_pass'], $usr['pass'])) {
@@ -44,7 +44,7 @@ class Profile
       }
     }
 
-    if (Router::post('token')==='generate') {
+    if (Request::post('token')==='generate') {
       $token = self::generateToken();
       while (count(User::getIdsByMeta('token', $token)) > 0) {
         $token = self::generateToken();
@@ -53,7 +53,7 @@ class Profile
       View::alert('success', __('_changes_updated'));
     }
 
-    if (Router::post('token')==='delete') {
+    if (Request::post('token')==='delete') {
       User::meta($user_id, 'token', '');
       View::alert('success', __('_changes_updated'));
     }
@@ -61,11 +61,8 @@ class Profile
 
   public static function generateToken()
   {
-    $token = '';
-    while (strlen($token) < 160) {
-      $token .= hash('sha512', uniqid(true));
-    }
-    return substr($token, 0, 160);
+    $token = substr(bin2hex(random_bytes(160)), 0, 160);
+    return $token;
   }
 
   public static function getAllPermissions()

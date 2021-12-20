@@ -39,11 +39,7 @@ class Form
     if ($v = @$_SESSION['_t'.$name]) {
       return $v;
     }
-    $chars = 'bcdfghjklmnprstvwxzaeiou123467890';
-    $gsession = '';
-    for ($p = strlen($gsession); $p < 15; $p++) {
-      $gsession .= $chars[mt_rand(0, 32)];
-    }
+    $gsession = substr(bin2hex(random_bytes(32)), 0, 32);
     $_SESSION['_t'.$name] = $gsession;
     @session_commit();
     return $gsession;
@@ -76,6 +72,9 @@ class Form
     self::initInputTypes();
     $type = $op['input_type']??($op['type']??'text');
     $html = '<div class="type-'.$type.'">';
+    if (isset($op['input_style'])) {
+      $html = '<div class="type-'.$type.'" style="'.$op['input_style'].'">';  
+    }
     $label = ucfirst(str_replace(['-','_'], ' ', $key));
     $label = isset($op['label'])?$op['label']:$label;
     $label = isset($op['title'])?$op['title']:$label;
@@ -170,7 +169,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $html .= '<v-select multiple v-model="formValue.'.$name.'"';
         $html .= ' @input="vueSM'.$x.'.value=JSON.stringify(formValue.'.$name.')"';
         $options = [];
-        foreach($field['options'] as $key=>$label) {
+        foreach ($field['options'] as $key=>$label) {
           $options[] = ['code'=>(string)$key, 'label'=>(string)$label];
         }
         $html .= ' :reduce="op=>op.code" :options=\''.json_encode($options).'\' />';
@@ -180,10 +179,15 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         if (@$field['meta-csv']==true || @$field['meta_csv']==true) {
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
-        if (is_string($ov)&&$ov!='[]'&&!json_decode($ov)) {
+        if (is_string($ov)) {
           $ov = explode(',', $ov);
+        } else {
+          $ov = json_decode($ov);
         }
-        $encoded = !is_string($ov)? json_encode($ov??[],JSON_UNESCAPED_UNICODE): $ov;
+        if (!is_array($ov)) {
+          $ov = empty($ov)? []: [$ov];
+        }
+        $encoded = !is_string($ov)? json_encode($ov??[], JSON_UNESCAPED_UNICODE): $ov;
         $html = '<g-multiselect value="'.htmlspecialchars($encoded).'"';
         return $html.= ' options="'.htmlspecialchars(json_encode($field['options'])).'" name="'.$name.'">';
       },
@@ -195,14 +199,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         return $html.= ' name="'.$name.'">';
       },
       'select2'=> function ($name, $field, $ov) { //DEPRECATED
-        if (is_string($ov)) {
-          $ov = explode(',', $ov);
-        }
-        $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
-        foreach ($field['options'] as $value=>$name) {
-          $html .= '<option value="'.$value.'"'.(in_array($value, $ov)?' selected':'').'>'.$name.'</option>';
-        }
-        return $html . '</select>';
+        return self::$input_type['v-select-multiple']($name, $field, $ov);
       },
       'role'=> function ($name, $field, $ov) {
         global $db;
@@ -319,7 +316,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $html = '<select class="g-input" name="'.$name.'">';
         $res = include __DIR__.'/../lang/languages.php';
         $ov = $ov??Config::lang();
-        $list = Config::get('languages');
+        $list = Config::getArray('languages')??[];
         foreach ($res as $key=>$r) {
           if ($key==$ov||in_array($key, $list)||$key==Config::lang()) {
             $html .= '<option value="'.$key.'"'.($key==$ov?' selected':'').'>'.$r.'</option>';

@@ -44,14 +44,14 @@ class Widget
     $title = HtmlInput::purify($data['widget_title']);
 
     $db->query(
-      "UPDATE widget SET data=?,area=?,pos=?,title=?,active=?,language=? WHERE id=?",
+      "UPDATE widget SET data=?,area=?,pos=?,title=?,active=?,`language`=? WHERE id=?",
       [$widget_data, $data['widget_area'], $data['widget_pos']??0, $title,
       $data['widget_active']??0, $data['widget_language']??'NULL', $data['widget_id']]
     );
 
     $r = $db->get("SELECT * FROM widget WHERE id=?", [$data['widget_id']])[0];
-    return json_encode(['fields'=>['id','title','widget','area','pos','active'],
-      'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['active']]],
+    return json_encode(['fields'=>['id','title','widget','area','pos','language','active'],
+      'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['language'],$r['active']]],
       'totalRows'=>1]);
   }
 

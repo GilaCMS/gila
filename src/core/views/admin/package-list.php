@@ -171,9 +171,8 @@ if (FS_ACCESS) {
 <script>
 function addon_activate(p){
   g.loader()
-  g.post('admin/packages?g_response=content', 'activate='+p, function(data) {
+  g.postJSON('admin/packages?g_response=content', {activate:p}, function(response) {
     g.loader(false)
-    response = JSON.parse(data)
     if(response.success==true) {
       g.alert("<?=__('_package_activated')?>",'success','location.reload(true)');
     } else {

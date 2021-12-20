@@ -232,13 +232,19 @@ g.ajax = function(args) {
   _fn = args.fn
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4) {
-      if(typeof args.type!='undefined'||args.type=='json') {
-        this.responseText = JSON.parse(this.responseText);
+      response = this.responseText
+      if(typeof args.type != 'undefined' && args.type == 'json') {
+        console.log(args.type)
+        if (response=='') {
+          response = [];
+        } else {
+          response = JSON.parse(this.responseText);
+        }
       }
       if (this.status > 199 && this.status < 300) {
-        if(args.fn) args.fn(this.responseText);
+        if(args.fn) args.fn(response);
       } else {
-        if(args.error) args.error(this.responseText);
+        if(args.error) args.error(response);
       }
     }
   };
@@ -255,21 +261,25 @@ g.ajax = function(args) {
   xhttp.send(args.data);
 }
 
-g.post = function(path,params,fn) {
-  g.ajax({url:path,method:'POST',header:"application/x-www-form-urlencoded",data:params,fn:fn})
+g.post = function(path,params,fn,error=null) {
+  g.ajax({url:path,method:'POST',header:"application/x-www-form-urlencoded",data:params,fn:fn,error:error})
 }
-g.postForm = function(formName,fn) {
-  let el = document.getElementById(formName);
+g.postForm = function(formId,fn,error=null) {
+  let el = document.getElementById(formId);
   let fm = new FormData(el);
-  g.ajax({url:el.action,method:'POST',data:fm,fn:fn})
+  g.ajax({url:el.action,method:'POST',data:fm,fn:fn,error:error})
 }
 
-g.get = function(path,fn){
-  g.ajax({url:path,method:'GET',fn:fn})
+g.get = function(path,fn,error=null){
+  g.ajax({url:path,method:'GET',fn:fn,error:error})
 }
 
-g.postJSON = function(path,params,fn){
-  g.ajax({url:path,method:'POST',header:"application/x-www-form-urlencoded",data:params,fn:fn,type:'json'})
+g.postJSON = function(path,data,fn,error=null){
+  g.ajax({url:path,method:'POST',header:'application/json',data:data,fn:fn,type:'json',error:error})
+}
+
+g.getJSON = function(path,fn,error=null){
+  g.ajaxJson({url:path,method:'GET',fn:fn,error:error,header:'application/json',type:'json'})
 }
 
 g.popup = function(html,col){
@@ -347,14 +357,26 @@ g.dialog.buttons.ok = {title:'Ok',fn:function(e){
   g.closeModal()
 }};
 
+g.iconsVersion='1'
+g.icon = {
+  '2': {
+    success: '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="60" height="60" viewBox="0 0 24 24" stroke-width="3" stroke="#00b341" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>',
+    error: '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="60" height="60" viewBox="0 0 24 24" stroke-width="3" stroke="#ff2825" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>',
+    warning: '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-triangle" width="60" height="60" viewBox="0 0 24 24" stroke-width="3" stroke="#ff9300" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>',
+    notice: '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-circle" width="60" height="60" viewBox="0 0 24 24" stroke-width="3" stroke="#00abfb" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>',
+  },
+  '1': {
+    success: "<i class=\'fa fa-check-circle-o fa-5x\' aria-hidden=\'true\' style=\'color:green\'></i><br>",
+    error: "<i class=\'fa fa-times-circle-o fa-5x\' aria-hidden=\'true\' style=\'color:red\'></i><br>",
+    warning: "<i class=\'fa fa-exclamation-triangle fa-5x\' aria-hidden=\'true\' style=\'color:yellow\'></i><br>",
+    notice: "<i class=\'fa fa-exclamation-circle fa-5x\' aria-hidden=\'true\' style=\'color:blue\'></i><br>",
+  }
+}
 
 g.alert = function(html,type,callback) {
   foot=''; buttons='ok'; icon='';
   if (typeof type !== 'undefined') {
-    if (type=='success') icon="<i class=\'fa fa-check-circle-o fa-5x\' aria-hidden=\'true\' style=\'color:green\'></i><br>";
-    if (type=='error') icon="<i class=\'fa fa-times-circle-o fa-5x\' aria-hidden=\'true\' style=\'color:red\'></i><br>";
-    if (type=='warning') icon="<i class=\'fa fa-exclamation-triangle fa-5x\' aria-hidden=\'true\' style=\'color:yellow\'></i><br>";
-    if (type=='notice') icon="<i class=\'fa fa-exclamation-circle fa-5x\' aria-hidden=\'true\' style=\'color:blue\'></i><br>";
+    icon = g.icon[g.iconsVersion][type]
   }
   if (typeof callback !== 'undefined') {
     foot="<a class='btn' onclick='g(\"#gila-darkscreen\").remove();"+callback+"'>OK</a>";
@@ -425,7 +447,6 @@ g.loadJS = function(res, callback = function(){return }) {
   if(typeof res.wjs == 'undefined') url = g_baseUrl+res.js; else url = res.wjs;
 
   var script = document.createElement("script")
-  script.type = "text/javascript";
 
   if(res.loaded == true){
     callback();

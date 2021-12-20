@@ -56,4 +56,5 @@ jobs:
       - run: ./vendor/bin/phpunit tests/phpunit/CacheTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/UserTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/SessionTest.php
+      - run: ./vendor/bin/phpunit tests/phpunit/RequestTest.php
       - run: ./vendor/bin/phpunit tests/phpunit/requests.php

@@ -23,7 +23,16 @@ class BlogController extends Gila\Controller
     self::$page = (int)($_GET['page']??1);
     self::$ppp = 12;
     self::$totalPosts = null;
-    View::set('page_title', Config::get('title'));
+    $page_title = __('Blog');
+    if (Config::lang()!==Config::get('language')) {
+      $page_title .= ' ('.strtoupper(Config::lang()).')';
+    }
+    if (isset($_GET['page'])) {
+      Config::addLang('core/lang/');
+      $page_title .= ' - '.__('Page').' '.(int)$_GET['page'];
+    }
+    $page_title .= ' | '.Config::get('title');
+    View::set('page_title', $page_title);
     View::set('page', self::$page);
   }
 
@@ -56,16 +65,23 @@ class BlogController extends Gila\Controller
     }
 
     $path = Router::getPath();
-    Config::canonical('');
-    if ($path=='' && $r = Page::getByIdSlug('')) {
+    Config::canonical('blog');
+    if (self::$page>1) {
+      Config::canonical('blog?page='.self::$page);
+    }
+    if ($path=='' && Page::inCachedList('')) {
       $this->postShow('');
       return;
     }
     if ($path!='' || View::getViewFile('homepage.php')==false) {
       View::set('page', self::$page);
-      View::set('posts', Post::getPosts([
-        'posts'=>self::$ppp, 'page'=>self::$page, 'language'=>Config::lang()
-      ]));
+      $args = ['posts'=>self::$ppp, 'page'=>self::$page, 'language'=>Config::lang()];
+      View::set('posts', Post::getPosts($args));
+      $totalpages = ceil((Post::total($args))/12);
+      View::set('totalpages', $totalpages);
+      if ($totalpages<self::$page && self::$page>1) {
+        http_response_code(404);
+      }
       View::render('frontpage.php');
     } else {
       View::render('homepage.php');
@@ -83,19 +99,22 @@ class BlogController extends Gila\Controller
     View::set('title', Config::get('title'));
     View::set('link', Config::get('base'));
     View::set('description', Config::get('slogan'));
-    View::set('items', Post::getLatest(20));
+    View::set('items', Post::getLatest(1000));
     View::renderFile('blog-feed.php');
   }
 
   /**
   * Displays posts with a specific tag
   */
-  public function tagAction($tag)
+  public function tagAction($tag='')
   {
     $tag = htmlentities($tag);
     Config::canonical('tag/'.$tag);
-    self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
-    $posts = Post::getPosts(['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page]);
+    $args = [
+      'posts'=>self::$ppp, 'tag'=>$tag, 'language'=>Config::lang(), 'page'=>self::$page
+    ];
+    $totalpages = ceil((Post::total($args))/12);
+    $posts = Post::getPosts($args);
     if (self::$page<1 || self::$page>self::totalPages()) {
       View::render('404.php');
       return;
@@ -104,6 +123,10 @@ class BlogController extends Gila\Controller
     View::set('tag', $tag);
     View::set('page', self::$page);
     View::set('posts', $posts);
+    View::set('totalpages', $totalpages);
+    if ($totalpages<self::$page && self::$page>1) {
+      http_response_code(404);
+    }
     View::render('blog-tag.php');
   }
 
@@ -128,20 +151,26 @@ class BlogController extends Gila\Controller
       $category = $db->value('SELECT id FROM postcategory WHERE slug=?', $category);
     }
     $name = $db->value("SELECT title from postcategory WHERE id=?", $category);
-    Config::canonical('blog/category/'.$category.'/'.$name.'/');
-    self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
-    $posts = Post::getPosts([
+    Config::canonical('blog/category/'.$category.'/'.$name.'?page='.self::$page);
+    $args = [
       'posts'=>self::$ppp, 'category'=>$category, 'publish'=>1,
-      'language'=>Config::lang(), 'page'=>self::$page]);
+      'language'=>Config::lang(), 'page'=>self::$page
+    ];
+    $totalpages = ceil((Post::total($args))/12);
+    $posts = Post::getPosts($args);
     if (self::$page<1 || self::$page>self::totalPages()) {
       Cache::page('404_blogcategory'.Config::lang(), max(86400, $cacheTime));
       View::render('404.php');
       return;
     }
     View::set('categoryName', $name);
-    View::set('page_title', $name);
+    View::set('page_title', $name.' | '.Config::get('title'));
     View::set('page', self::$page);
     View::set('posts', $posts);
+    View::set('totalpages', $totalpages);
+    if ($totalpages<self::$page) {
+      http_response_code(404);
+    }
     View::render('blog-category.php');
   }
 
@@ -196,11 +225,15 @@ class BlogController extends Gila\Controller
       View::set('text', $r['post']);
       View::set('id', $r['id']);
       View::set('updated', $r['updated']);
+      View::set('created', $r['created']);
+      View::set('description', $r['description']);
+      View::set('post', $r);
 
       View::meta('og:title', $r['title']);
       View::meta('og:type', 'website');
       View::meta('og:url', View::$canonical);
       View::meta('og:description', $r['description']);
+      View::meta('description', $r['description']);
 
       if (!empty($r['language'])) {
         Config::lang($r['language']);
@@ -222,6 +255,7 @@ class BlogController extends Gila\Controller
 
       if ($r['tags']) {
         View::meta('keywords', $r['tags']);
+        View::set('keywords', $r['tags']);
       }
 
       if ($value = Config::option('blog.twitter-card')) {
@@ -266,13 +300,13 @@ class BlogController extends Gila\Controller
           http_response_code(301);
           header('Location: '.Config::base($to));
           exit;
-        }    
+        }
         http_response_code(404);
         Cache::page('404_blog'.Config::lang(), max(86400, $cacheTime));
         View::render('404.php');
       }
 
-      if (!empty($postId) && $category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $id)) {
+      if ($category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $postId)) {
         $this->categoryAction($category);
         return;
       }

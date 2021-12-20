@@ -144,17 +144,22 @@ class Config
     self::$amenu[$key]['children'][]=$item;
   }
 
-  public static function config($key, $value = null) // DEPRECATED
+  public static function loadEnv()
   {
-    if ($value!==null) {
-      self::set($key, $value);
-    } else {
-      return self::get($key);
+    $lines = file('.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+      if (strpos(trim($line), '#') === 0) {
+        continue;
+      }
+      $a = explode('=', $line, 2);
+      $key = trim($a[0]);
+      $value = trim($a[1]);
+      if (!array_key_exists($key, $_SERVER)) {
+        putenv(sprintf('%s=%s', $key, $value));
+        $_ENV[$key] = $value;
+        $_SERVER[$key] = $value;
+      }
     }
-  }
-  public static function setConfig($key, $value) // DEPRECATED
-  {
-    self::set($key, $value);
   }
 
   public static function lang($lang=null)
@@ -176,7 +181,7 @@ class Config
   public static function set($option, $value, $save=true)
   {
     global $db;
-    if ($value===self::$option[$option]) {
+    if ($value===self::$option[$option]??null) {
       return;
     }
     @$GLOBALS['config'][$option] = $value;
@@ -202,7 +207,7 @@ class Config
     if (isset(self::$option[$key])) {
       return self::$option[$key];
     }
-    return $GLOBALS['config'][$key] ?? null;
+    return $_SERVER[$key] ?? ($GLOBALS['config'][$key] ?? null);
   }
 
   public static function getArray($key)
@@ -339,7 +344,9 @@ class Config
     } else {
       $var = explode('/', $url);
       if ($var[0]!='admin' && self::get('default-controller') === $var[0]) {
-        $url = substr($url, strlen($var[0])+1);
+        if (!Page::inCachedList('')) {
+          $url = substr($url, strlen($var[0])+1);
+        }
       }
     }
     if (self::lang()!==self::get('language')) {
@@ -383,6 +390,9 @@ class Config
     $db->connect();
     self::loadOptions();
     $db->close();
+    if (file_exists('.env')) {
+      self::loadEnv();
+    }
   }
 
   /**

@@ -8,13 +8,13 @@
         </div>
         <h3><?=__('register_success')?></h3>
       </div>
-      <?php if (Config::get('user_activation')=='auto') { ?>
+      <?php if (Config::get('user_activation')=='auto') : ?>
         <a class="btn btn-success btn-block" href="<?=Config::url('user')?>"><?=__('Log In')?></a>
-      <?php } elseif (Config::get('user_activation')=='byemail') { ?>
+      <?php elseif (Config::get('user_activation')=='byemail') : ?>
         <p><?=__('register_activate_byemail')?></p>
-      <?php } else { ?>
+      <?php else : ?>
         <p><?=__('register_activate_byadmin')?></p>
-      <?php } ?>
+      <?php endif; ?>
     </div>
   </div>
 

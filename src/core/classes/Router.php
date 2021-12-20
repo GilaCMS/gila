@@ -116,14 +116,38 @@ class Router
     return self::$action;
   }
 
-  public static function get($string, $fn = null) // DEPRECATED
-  {
-    return self::param($string, $fn);
-  }
-
   public static function add($string, $fn, $method = 'GET', $permission = null)
   {
     self::$route[] = [$string, $fn, $method, $permission];
+  }
+
+  public static function get($string, $fn, $permission = null)
+  {
+    self::add($string, $fn, 'GET', $permission);
+  }
+
+  public static function post($string, $fn, $permission = null)
+  {
+    self::add($string, $fn, 'POST', $permission);
+  }
+
+  public static function auth($callback, $permission = null)
+  {
+    if (Session::userId()>0) {
+      if ($permission===null || Session::hasPrivilege($permission)) {
+        $callback();
+      }
+    }
+  }
+
+  public static function admin($callback, $permission = null)
+  {
+    if (User::level(Session::userId())>0) {
+      if ($permission===null || Session::hasPrivilege($permission)) {
+        @header("X-Frame-Options: SAMEORIGIN");
+        $callback();
+      }
+    }
   }
 
   /**
@@ -143,15 +167,6 @@ class Router
     } else {
       return null;
     }
-  }
-  /**
-  * Returns the value of a post parameter
-  * @param $key (string) Parameter's name
-  * @return null if the parameter is not set
-  */
-  public static function post($key, $default=null) // DEPRECATED
-  {
-    return isset($_POST[$key])?$_POST[$key]:$default;
   }
 
   public static function request($key, $default=null)

@@ -25,6 +25,7 @@ class UserController extends Gila\Controller
       exit;
     }
     @header("X-Frame-Options: SAMEORIGIN");
+    @header('X-Robots-Tag: noindex, nofollow');
     if (Session::waitForLogin()>0) {
       View::alert('error', __('login_error_msg2'));
     } elseif (isset($_POST['username']) && isset($_POST['password'])) {
@@ -35,7 +36,7 @@ class UserController extends Gila\Controller
       }
       View::alert('error', $error);
     }
-    View::set('page_title', __('Log In'));
+    View::set('page_title', __('Log In').' |'.Config::get('title'));
     View::includeFile('login.php');
   }
 
@@ -51,7 +52,7 @@ class UserController extends Gila\Controller
       echo "<meta http-equiv='refresh' content='0;url=".Config::base('user')."' />";
       return;
     }
-    View::set('page_title', __('Register'));
+    View::set('page_title', __('Register').' |'.Config::get('title'));
 
     if (Form::posted('register') && User::register($_POST)) {
       View::includeFile('user-register-success.php');
@@ -75,7 +76,8 @@ class UserController extends Gila\Controller
         User::updateActive($ids[0], 1);
         User::metaDelete($ids[0], 'activate_code');
         View::set('user', User::getById($ids[0]));
-        View::set('login_link', User::level($ids[0])>0? 'admin': 'user');
+        View::set('login_link', User::level($ids[0])>0? 'admin': '');
+        Session::setCookie($ids[0]);
         View::includeFile('user-activate-success.php');
       }
       return;
@@ -136,7 +138,7 @@ class UserController extends Gila\Controller
       && ($_SESSION['rpa']<200 || $_SESSION['rpt']+3600<time())) {
       $_SESSION['rpa']++;
       $_SESSION['rpt'] = time();
-      $reset_code = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 50);
+      $reset_code = substr(bin2hex(random_bytes(50)), 0, 50);
       User::meta($r['id'], 'reset_code', $reset_code);
       $basereset = Config::base('user/password_reset');
       $reset_url = $basereset.'?rp='.$reset_code;
@@ -171,13 +173,9 @@ class UserController extends Gila\Controller
     }
     $usr = User::getByEmail($_POST['email']);
     if ($usr && $usr['active']==1 && password_verify($_POST['password'], $usr['pass'])) {
-      $token = '';
       $user_agent = $_SERVER['HTTP_USER_AGENT']??'';
       $ip = $_SERVER['REMOTE_ADDR']??'';
-      while (strlen($token) < 60) {
-        $token .= hash('sha512', uniqid(true));
-      }
-      $token = substr($token, 0, 60);
+      $token = substr(bin2hex(random_bytes(60)), 0, 60);
       Session::create($usr['id'], $token, $ip, $user_agent);
       Session::user($usr['id'], $usr['username'], $usr['email']);
       echo json_encode([
@@ -227,11 +225,8 @@ class UserController extends Gila\Controller
 
       if (in_array($ext, ["jpg","jpeg","png","gif","webp"])) {
         do {
-          $code = '';
-          while (strlen($code) < 120) {
-            $code .= hash('sha512', uniqid(true));
-          }
-          $target = $path.substr($code, 0, 120).'.'.$ext;
+          $code = substr(bin2hex(random_bytes(80)), 0, 80);
+          $target = $path.$code.'.'.$ext;
         } while (file_exists($target));
 
         if (!move_uploaded_file($tmp_file, $target)) {

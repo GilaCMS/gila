@@ -6,11 +6,11 @@ class Theme
 {
   public function __construct()
   {
-    $activate = Router::post('activate');
+    $activate = Request::post('activate');
     if ($activate) {
       self::activate($activate);
     }
-    $download = Router::post('download');
+    $download = Request::post('download');
     if ($download) {
       self::download($download);
     }
@@ -18,7 +18,7 @@ class Theme
     if ($save_options) {
       self::saveOptions($save_options);
     }
-    $options = Router::post('options');
+    $options = Request::post('options');
     if ($options) {
       self::options($options);
     }
@@ -53,7 +53,7 @@ class Theme
           self::copyAssets($activate);
           Package::updateLoadFile();
           View::alert('success', __('_theme_selected'));
-          echo '{"success":true}';
+          Response::success();
         } else {
           echo __('_packages_required').':';
           foreach ($require as $k=>$r) {
@@ -96,8 +96,7 @@ class Theme
       $localfile = 'themes/'.$download.'.zip';
 
       if (!copy($file, $localfile)) {
-        echo '{"error":"'.__('_theme_not_downloaded').'"}';
-        exit;
+        Response::error(__('_theme_not_downloaded'));
       }
       if ($zip->open($localfile) === true) {
         $previousFolder = LOG_PATH.'/previous-themes/';
@@ -136,7 +135,7 @@ class Theme
           echo '<meta http-equiv="refresh" content="2;url='.Config::base().'/admin/themes" />';
         }
       } else {
-        echo '{"error":"'.__('_theme_not_downloaded').'"}';
+        Response::error(__('_theme_not_downloaded'));
       }
       exit;
     }
@@ -157,7 +156,7 @@ class Theme
   */
   public static function options($options)
   {
-    $group = Router::post('group')??null;
+    $group = Request::post('group')??null;
     if (file_exists('themes/'.$options)) {
       echo '<form id="theme_options_form" class="g-form"><input id="theme_id" value="'.$options.'" type="hidden">';
       $pack = $options;

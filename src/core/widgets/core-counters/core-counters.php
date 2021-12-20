@@ -5,10 +5,8 @@
   $pagesC = $db->value('SELECT count(*) from page;');
   $usersC = $db->value('SELECT count(*) from user;');
   $db->close();
-  $packagesC = count(Config::get('packages'));
-  $palette = Config::get('admin_palette')? json_decode(Config::get('admin_palette'), true): [
-    'forestgreen','cornflowerblue','coral','orchid'
-  ];
+  $packagesC = count(Config::getArray('packages'));
+  $palette = Config::getArray('admin_palette') ?? ['forestgreen','cornflowerblue','coral','orchid'];
 ?>
 <div class='core-counters-grid'>
 <?=View::css('core/widgets.css')?>

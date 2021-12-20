@@ -19,4 +19,3 @@
   if (Gila\Config::get('favicon')) {
     echo '<link rel="icon" type="image/png" href="'.Gila\Config::get('favicon').'">';
   }
-?>

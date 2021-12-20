@@ -76,7 +76,7 @@ class Post
     $ql = "SELECT id,title,description,slug,SUBSTRING(post,1,300) as post,created,updated,user_id,
       (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img,
       (SELECT GROUP_CONCAT('{', CONCAT('\"',value,'\":\"',title,'\"'), '}' SEPARATOR ',') FROM postmeta,postcategory p WHERE post_id=post.id AND vartype='category' AND value=p.id) as categories,
-      (SELECT username FROM user WHERE post.user_id=id) as author
+      (SELECT username FROM user WHERE post.user_id=id) as author, `language`
       FROM post
       WHERE $where
       ORDER BY id DESC LIMIT $start_from,$ppp";

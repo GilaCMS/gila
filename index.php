@@ -1,7 +1,7 @@
 <?php
 /*!
  * Gila CMS
- * Copyright 2017-21 Vasileios Zoumpourlis
+ * Copyright 2017-22 Vasileios Zoumpourlis
  * Licensed under BSD 3-Clause License
  */
 

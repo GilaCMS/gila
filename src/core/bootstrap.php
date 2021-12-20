@@ -88,6 +88,7 @@ if (!@include LOG_PATH.'/load.php') {
   Config::load();
   Package::updateLoadFile();
 }
+@include SITE_PATH.'/load.php';
 
 if (Config::get('env') == 'dev') {
   error_reporting(E_ALL);

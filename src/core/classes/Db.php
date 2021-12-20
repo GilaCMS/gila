@@ -43,6 +43,9 @@ class Db
       Event::fire('Db::connect_error');
       exit;
     }
+    $this->link->query('SET @@session.time_zone="-06:00";');
+    //set_default_timezone('-6:00');
+    Event::fire('Db::connect');
     if ($this->profiling) {
       $this->link->query('SET profiling=1;');
     }
@@ -244,5 +247,20 @@ class Db
       $this->replica = &$this;
     }
     return $this->replica;
+  }
+
+  public function create($table, $data)
+  {
+    $fields = [];
+    $values = [];
+    foreach ($data as $f=>$v) {
+      $fields[] = '`'.$f.'`';
+      $values[] = '"'.$this->res($v).'"';
+    }
+    $fields = implode(',', $fields);
+    $values = implode(',', $values);
+    $q = "INSERT INTO $table($fields) VALUES($values);";
+    $this->query($q);
+    return $this->insert_id ?? null;
   }
 }

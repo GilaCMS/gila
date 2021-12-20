@@ -14,10 +14,12 @@ Vue.component('menu-editor', {
   <option value="link">{{displayType(\'link\')}}</option>\
   <option v-for="(type,i) in types" :value="i">{{displayType(i)}}</option>\
   <option v-if="name" value="dir">{{displayType(\'dir\')}}</option>\
+  <option v-if="name" value="btn">{{displayType(\'btn\')}}</option>\
+  <option v-if="name" value="btn2">{{displayType(\'btn2\')}}</option>\
   </select></span>\
-  <span v-if="row.type==\'link\'||row.type==\'dir\'"><input v-model="row.title" @input="update"  :placeholder="displayText()"></span>\
-  <span v-if="row.type==\'link\'"><input v-model="row.url" @input="update" placeholder="Url"></span>\
-  <span v-if="row.type!=\'link\'&&row.type!=\'dir\'">\
+  <span v-if="hasTitle(row.type)"><input v-model="row.title" @input="update"  :placeholder="displayText()"></span>\
+  <span v-if="hasURL(row.type)"><input v-model="row.url" @input="update" placeholder="Url"></span>\
+  <span v-if="typeof types[row.type]!=\'undefined\'">\
     <select v-model="row.id"  @change="update">\
     <option v-if="types[row.type]" v-for="(option,i) in types[row.type]" :value="i">{{option}}</option>\
     </select></span>\
@@ -25,11 +27,12 @@ Vue.component('menu-editor', {
   <menu-editor  @event="updateFolder" :i="key" :itemtypes="itemtypes" :value=\'JSON.stringify(row.children)\'></div>\
 </td>\
 <td>\
-  <span @click="removeEl(key)" style="cursor:pointer;padding:0.5em 0.5em;color:black">&times;</span>\
+  <span @click="removeEl(key)" style="cursor:pointer;padding:0.4em;color:#444;font-size:150%">&times;</span>\
 </td>\
 </tr>\
 </tbody></table>\
-<span @click="add()" class="btn btn-secondary" style="padding:0.3em 0.3em;">+ {{addTxt()}}</span>\
+<span @click="add()" class="btn"\
+style="padding:0.3em;font-family: inherit;color: inherit;background: inherit;">+ {{addTxt()}}</span>\
 <input v-if="name" v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',
@@ -97,9 +100,19 @@ Vue.component('menu-editor', {
       if(type=='page') return g.tr('Page', {'es':'Pagina'})
       if(type=='system') return g.tr('System', {'es':'Sistema'})
       if(type=='dir') return g.tr('Folder', {'es':'Carpeta'})
+      if(type=='btn') return g.tr('Button A', {'es':'Botón A'})
+      if(type=='btn2') return g.tr('Button B', {'es':'Botón B'})
     },
     displayText: function() {
       return  g.tr('Title', {'es':'Titulo'})
+    },
+    hasTitle: function(type) {
+      if(type=='link'||type=='btn'||type=='btn2'||type=='dir') return true
+      return false
+    },
+    hasURL: function(type) {
+      if(type=='link'||type=='btn'||type=='btn2') return true
+      return false
     }
   }
 })

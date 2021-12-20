@@ -10,6 +10,7 @@ data/*
 data/uploads/*
 assets/uploads/*
 .idea
+.env
 
 vendor/
 node_modules/

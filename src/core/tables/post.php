@@ -115,6 +115,7 @@ return [
     ['change', function (&$row) {
       if ($row['slug']=='') {
         $row['slug'] = Slugify::text($row['title']);
+        $row['tags'] = array_map('trim',explode($row['tags']));
       }
     }]
   ]

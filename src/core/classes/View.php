@@ -8,6 +8,7 @@ class View
   private static $scriptAsync = [];
   private static $meta = [];
   private static $alert = [];
+  private static $onrender = false;
   public static $css = [];
   public static $part = [];
   public static $stylesheet = [];
@@ -18,20 +19,29 @@ class View
   public static $renderer;
   public static $cdn_host = '';
   public static $cdn_paths = [
-    'core/gila.min.js'=> 'core/gila1914.js',
-    'core/gila.js'=> 'core/gila1914.js',
-    'core/gila.min.css'=> 'core/gila1811.css',
-    'core/gila.css'=> 'core/gila1811.css',
+    'core/gila.min.js'=> 'core/gila2224.min.js',
+    'core/gila.js'=> 'core/gila2224.js',
+    'core/gila.min.css'=> 'core/gila1501.css',
+    'core/gila.css'=> 'core/gila1501.css',
     'core/widgets.css'=> 'core/widgets1027.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
-    'core/admin/content.js'=> 'core/admin/content1120.js',
-    'core/admin/content.css'=> 'core/admin/content1102.css',
+    'core/admin/content.js'=> 'core/admin/content0112.js',
+    'core/admin/content.css'=> 'core/admin/content1215.css',
     'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
 
-  public static function set($param, $value)
+  public static function set($param, $value=null)
   {
-    self::$part[$param]=$value;
+    if (is_array($param)) {
+      self::$part = array_merge(self::$part, $param);
+    } else {
+      self::$part[$param]=$value;
+    }
+  }
+
+  public static function get($param)
+  {
+    return self::$part[$param]??null;
   }
 
   /**
@@ -197,13 +207,14 @@ class View
       exit;
     }
 
-    if (Router::request('g_response')==='content') {
-      self::renderFile($file, $package);
+    if (self::$onrender || Router::request('g_response')==='content') {
+      self::includeFile($file, $package);
       return;
+    } else {
+      self::includeFile('header.php');
+      self::renderFile($file, $package);
+      self::includeFile('footer.php');
     }
-    self::includeFile('header.php');
-    self::renderFile($file, $package);
-    self::includeFile('footer.php');
   }
 
   public static function head($head = true)
@@ -230,6 +241,10 @@ class View
 
   public static function includeFile($filename, $package='core')
   {
+    self::$onrender = true;
+    if (substr($filename, -4)=='.php') {
+      $filename = substr($filename, 0, -4);
+    }
     if (isset(self::$renderer)) {
       $renderer = self::$renderer;
       if ($renderer($filename, $package, self::$part)) {
@@ -241,13 +256,8 @@ class View
       $$key = $value;
     }
 
-    $file = self::getViewFile($filename, $package);
-    if ($file) {
-      if ($filename === 'header.php' || $filename  === 'footer.php') {
-        include_once $file;
-      } else {
-        include $file;
-      }
+    if ($file = self::getViewFile($filename, $package)) {
+      include $file;
       return true;
     }
     return false;
@@ -260,6 +270,9 @@ class View
   */
   public static function getViewFile($file, $package = 'core')
   {
+    if (substr($file, -4)!='.php') {
+      $file .= '.php';
+    }
     if (isset(self::$view_file[$file])) {
       return 'src/'.self::$view_file[$file].'/views/'.$file;
     }
@@ -441,8 +454,8 @@ class View
         }
 
         $widget_id = json_decode($widget['id']);
-        $widget_data = json_decode($widget['data']);
-        @$widget_data->widget_id = $widget_id;
+        $widget_data = json_decode($widget['data'], true);
+        $widget_data['widget_id'] = $widget_id;
 
         if ($div) {
           echo '<div class="widget widget-'.$widget['widget'].'" data-id="'.$widget_id.'">';
@@ -570,7 +583,7 @@ class View
         return false;
       }
       do {
-        $basename = substr(hash('sha1', uniqid(true)), 0, 30);
+        $basename = substr(bin2hex(random_bytes(30)), 0, 30);
         $file = TMP_PATH.'/'.$basename.'-'.$max.'.'.$ext;
         $thumbs[$key] = $file;
       } while (strlen($basename) < 30 || file_exists($file));

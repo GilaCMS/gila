@@ -90,8 +90,16 @@ return [
       'list'=> false,
       'create'=> false,
       'type'=>'media2',
-      'qtype'=> 'VARCHAR(120)'
-    ]
+      'qtype'=> 'VARCHAR(200)'
+    ],
+    //'meta'=> [
+    //  'list'=> false,
+    //  'type'=>'list',
+    //  'fields'=>[
+    //    'content'=>[],
+    //    'value'=>[]
+    //  ]
+    //]
   ],
   'events'=>[
     ['create', function (&$row) {
@@ -101,8 +109,9 @@ return [
     }],
     ['change', function (&$row) {
       global $db;
-      $query = "SELECT id FROM `page` WHERE publish=1 AND slug=? AND title!=? AND `language`=?";
-      if ($row['publish']==1 && $other=$db->getOne($query, [$row['slug'], $row['title'], $row['language']])) {
+      $id = $row['id'] ?? $_GET['id'];
+      $query = "SELECT id FROM `page` WHERE publish=1 AND slug=? AND id!=? AND `language`=?;";
+      if ($row['publish']==1 && $other=$db->getOne($query, [$row['slug'], $id, $row['language']])) {
         Table::$error = __('Another page has the same path')." (ID:{$other['id']})";
       }
     }]

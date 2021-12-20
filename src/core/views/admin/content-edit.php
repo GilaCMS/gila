@@ -19,7 +19,7 @@ View::script('core/admin/vue-components.js');
 
 <style>
 .type-textarea label,.type-paragraph label{width:100%}
-.type-tinymce,.type-textarea,.type-paragraph,.type-list{
+.type-tinymce,.type-paragraph,.type-list{
   grid-column:1/-1
 }
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
@@ -117,7 +117,7 @@ function updateRegistry(){
 Save
 </button>
 
-<?=View::script('core/gila.min.js');?>
+<?=View::script('core/gila.js');?>
 <script>
 var app = new Vue({
   el: '#<?=$table?>-edit-item-form'

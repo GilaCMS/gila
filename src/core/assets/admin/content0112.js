@@ -189,7 +189,7 @@ Vue.component('g-table', {
       for (x in this.order) {
         order = order+'&orderby['+x+']='+this.order[x]
       }
-      search = this.search ? '&search='+this.search: '';
+      search = this.search ? '&search='+encodeURIComponent(this.search): '';
       group = this.group ? '&groupby='+this.group: '';
       for(fkey in this.filter) {
         if (fkey=='search') continue
@@ -315,7 +315,7 @@ Vue.component('g-table', {
     },
     pushState: function() {
       if(this.basePath) {
-        search = this.search ? '&search='+this.search: '';
+        search = this.search ? '&search='+encodeURIComponent(this.search): '';
         for(fkey in this.filter) {
           if (fkey=='search') continue
           if(this.filter[fkey]!=='') search += '&'+fkey+'='+this.filter[fkey]
@@ -510,7 +510,7 @@ Vue.component('g-table', {
       </svg> <span style="vertical-align: middle;">'+displayValue+'</span></div>'
       }
 
-      if(displayType=='text') if (rv.text) if (rv.text.length>100) {
+      if(displayType=='text' & rv.text && rv.text.length>100) {
         return rv.text.substring(0, 97)+'...';
       }
 
@@ -536,7 +536,10 @@ Vue.component('g-table', {
         if (displayValue==null) displayValue=''
         return '<div contenteditable="true" data-field="'+fkey+'">'+displayValue+'</div>';
       }
-      return displayValue;
+      if (displayValue && typeof displayValue=='string' && displayValue.length>0) {
+        displayValue = displayValue.replace(/ /g, '\u00a0')
+      }
+      return displayValue
     },
     showField: function(field) {
       if(typeof this.table.fields[field].show=='undefined') return true

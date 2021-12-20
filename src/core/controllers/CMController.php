@@ -17,6 +17,7 @@ class CMController extends Gila\Controller
 
   public function __construct()
   {
+    @header('X-Robots-Tag: noindex, noffolow', true);
     $this->permissions = Session::permissions();
     $this->table = Router::param("t", 1);
     if (!Table::exist($this->table)) {
@@ -138,9 +139,11 @@ class CMController extends Gila\Controller
     $result['rows'] = [];
     $res = $gtable->getRows($filters, array_merge($args, ['select'=>$result['fields']]));
 
-    foreach ($gtable->getFields($fieldlist) as $key=>$field) if (isset($field['parseInt'])) {
-      foreach ($res as &$r) {
-        $r[$key] = (int)$r[$key];
+    foreach ($gtable->getFields($fieldlist) as $key=>$field) {
+      if (isset($field['parseInt'])) {
+        foreach ($res as &$r) {
+          $r[$key] = (int)$r[$key];
+        }
       }
     }
     foreach ($res as $r) {
@@ -268,7 +271,7 @@ class CMController extends Gila\Controller
       }
       fclose($file);
     }
-    echo '{"success":true}';
+    Response::success();
   }
 
   public function group_rowsAction()
@@ -391,7 +394,7 @@ class CMController extends Gila\Controller
       $res = $db->getAssoc("SELECT $fieldStr FROM {$gtable->name()} WHERE {$gtable->id()}=?;", $_POST['id'])[0];
       $id = $gtable->createRow($res);
       if ($id===0) {
-        echo '{"error":"Row could not be created"}';
+        Response::error('Row could not be created');
         exit;
       }
 
@@ -476,16 +479,15 @@ class CMController extends Gila\Controller
       $values = $values;
     }
     $fieldValues = [];
-    foreach($getFields as $key=>$field) {
+    foreach ($getFields as $key=>$field) {
       if (isset($field['type']) && $field['type']=='meta') {
-        $fieldValues[$key] = explode(',',$values[$key]);
+        $fieldValues[$key] = explode(',', $values[$key]);
       }
     }
     $html .= '<form id="'.$t.'-edit-item-form" data-table="'.$t.'" data-id="'.$id.'" class="g-form"';
     $html .= ' action="javascript:'.$callback.'()" data-values=\''.htmlentities(json_encode($fieldValues, JSON_UNESCAPED_UNICODE)).'\'>';
     $html .= '<button style="position:absolute;top:-1000px"></button>';
-    $html .= '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,340px));';
-    $html .= 'justify-content: space-around;gap:0.8em">';
+    $html .= '<div class="edit-item-form">';
     $html .= Form::hiddenInput();
     $html .= Form::html($getFields, $values);
 

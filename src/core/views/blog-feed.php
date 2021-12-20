@@ -13,9 +13,9 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
   <title><?=$title?></title>
   <link><?=Config::get('base')?></link>
 </image>
-<?php foreach ($items as $item) {
+<?php foreach ($items as $item) if (Config::lang()==$item['language']) :
   $item = (object)$item;
-  $lang = Config::get('language')!==$item->language? $item->language.'/': ''; ?>
+?>
 <item>
 <title><?=$item->title?></title>
   <link><?=Config::base('blog/'.$item->id.'/'.$item->slug)?></link>
@@ -23,7 +23,6 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
   <pubDate><?=date('r', strtotime($item->updated))?></pubDate>
   <description><![CDATA[<?=strtr($item->post, ["\r"=>"","\n"=>""])?>]]></description>
 </item>
-<?php
-} ?>
+<?php endif; ?>
 </channel>
 </rss>

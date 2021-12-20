@@ -18,7 +18,7 @@
       <button type="submit" class="btn btn-primary btn-block"><?=__('Send Email')?></button>
     </form>
     <p>
-      <a href="<?=Config::base('user')?>"><?=__('Log In')?></a>
+      <a href="<?=Config::base('user')?>" rel="nofollow"><?=__('Log In')?></a>
     </p>
   </div>
 

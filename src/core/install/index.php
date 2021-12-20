@@ -17,7 +17,7 @@ if (isset($_GET['step'])) {
 }
 
 $configfile = CONFIG_PHP;
-$required_php = "7";
+$required_php = "8";
 $required_ext = ['mysqli','zip','mysqlnd','json','gd','mbstring'];
 
 if (file_exists($configfile)) {
