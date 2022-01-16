@@ -16,7 +16,7 @@ global $db;
 $user = User::getById($user_id);
 View::alerts();
 
-if (Router::post('submit-btn')==='submited' && isset($_POST['user_about'])) {
+if (Request::post('submit-btn')==='submited' && isset($_POST['user_about'])) {
   $db->query("UPDATE user SET about=? WHERE id=?;", [$_POST['user_about'], $user_id]);
 }
 ?>

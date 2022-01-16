@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   Config::set('timezone', $_POST['gila_timezone']);
   Config::set('language', $_POST['gila_language']);
   Config::set('admin_logo', $_POST['gila_admin_logo']);
+  Config::set('login_logo', $_POST['gila_login_logo']);
   Config::set('admin_theme', $_POST['gila_admin_theme']??'');
   Config::set('favicon', $_POST['gila_favicon']);
   Config::set('env', $_POST['gila_env']);
@@ -61,7 +62,7 @@ foreach ($config_list as $key=>$value) {
   <?php echo Form::input('gila_user_register', ["type"=>"switch"], Config::get('user_register'), __("New users can register")) ?>
 
   <br>
-  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['byemail'=>__('Email activation link'),'byadmin'=>__('Administration')]], Config::get('user_activation'), __("New Users activation")) ?>
+  <?php echo Form::input('gila_user_activation', ["type"=>"select","options"=>['byemail'=>__('Email activation link'),'byadmin'=>__('Administration'),'auto'=>__('Auto')]], Config::get('user_activation'), __("New Users activation")) ?>
 
   <br><div class="gm-12">
     <label class="g-label gm-4"><?=__("Timezone")?></label><select name="gila_timezone" value="<?=Config::get('timezone')?>" class="gm-4">
@@ -91,6 +92,14 @@ foreach ($config_list as $key=>$value) {
     <span class="g-group">
       <span class="btn g-group-item" onclick="open_media_gallery('#m_admin_logo')"><i class="fa fa-image"></i></span>
       <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::get('admin_logo')?>" id="m_admin_logo" name="gila_admin_logo"></span>
+    </span></div>
+  </div>
+
+  <br><div class="gm-12">
+    <label class="g-label gm-4"><?=__("Login Logo")?></label><div class="gm-4" style="display:inline-flex">
+    <span class="g-group">
+      <span class="btn g-group-item" onclick="open_media_gallery('#m_login_logo')"><i class="fa fa-image"></i></span>
+      <span class="g-group-item"><input class="fullwidth g-input" value="<?=Config::get('login_logo')?>" id="m_login_logo" name="gila_login_logo"></span>
     </span></div>
   </div>
 

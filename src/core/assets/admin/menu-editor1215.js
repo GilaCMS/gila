@@ -27,11 +27,12 @@ Vue.component('menu-editor', {
   <menu-editor  @event="updateFolder" :i="key" :itemtypes="itemtypes" :value=\'JSON.stringify(row.children)\'></div>\
 </td>\
 <td>\
-  <span @click="removeEl(key)" style="cursor:pointer;padding:0.5em 0.5em;color:black">&times;</span>\
+  <span @click="removeEl(key)" style="cursor:pointer;padding:0.4em;color:#444;font-size:150%">&times;</span>\
 </td>\
 </tr>\
 </tbody></table>\
-<span @click="add()" class="btn btn-secondary" style="padding:0.3em 0.3em;">+ {{addTxt()}}</span>\
+<span @click="add()" class="btn"\
+style="padding:0.3em;font-family: inherit;color: inherit;background: inherit;">+ {{addTxt()}}</span>\
 <input v-if="name" v-model="ivalue" type="hidden" :name="name" >\
 </div>\
 ',

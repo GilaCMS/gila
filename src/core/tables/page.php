@@ -91,6 +91,14 @@ return [
       'create'=> false,
       'type'=>'media2',
       'qtype'=> 'VARCHAR(120)'
+    ],
+    'meta'=> [
+      'list'=> false,
+      'type'=>'list',
+      'fields'=>[
+        'content'=>[],
+        'value'=>[]
+      ]
     ]
   ],
   'events'=>[

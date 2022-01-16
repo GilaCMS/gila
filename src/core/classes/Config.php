@@ -339,7 +339,9 @@ class Config
     } else {
       $var = explode('/', $url);
       if ($var[0]!='admin' && self::get('default-controller') === $var[0]) {
-        $url = substr($url, strlen($var[0])+1);
+        if (!Page::inCachedList('')) {
+          $url = substr($url, strlen($var[0])+1);
+        }
       }
     }
     if (self::lang()!==self::get('language')) {

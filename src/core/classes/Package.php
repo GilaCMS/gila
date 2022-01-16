@@ -11,11 +11,11 @@ class Package
   public function __construct()
   {
     ob_end_clean();
-    $activate = Router::post('activate');
+    $activate = Request::post('activate');
     if ($activate) {
       self::activate($activate);
     }
-    $deactivate = Router::post('deactivate');
+    $deactivate = Request::post('deactivate');
     if ($deactivate) {
       self::deactivate($deactivate);
     }
@@ -23,11 +23,11 @@ class Package
     if ($save_options) {
       self::saveOptions($save_options);
     }
-    $options = Router::post('options');
+    $options = Request::post('options');
     if ($options) {
       self::options($options);
     }
-    $download = Router::post('download');
+    $download = Request::post('download');
     if (Config::get('test')=='1') {
       $download = Router::request('test', $download);
     }
@@ -44,7 +44,7 @@ class Package
         echo '{"success":false}';
       }
     }
-    $html = Router::post('html');
+    $html = Request::post('html');
     if ($html) {
       self::display($html);
     }

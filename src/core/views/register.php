@@ -27,7 +27,7 @@
       <button type="submit" class="btn btn-primary btn-block"><?=__('Register')?></button>
     </form>
     <p style="text-align:center">
-      <a href="<?=Config::url('user')?>"><?=__('Log In')?></a>
+      <a href="<?=Config::url('user')?>" rel="nofollow"><?=__('Log In')?></a>
     </p>
     <p style="text-align:center">
       <?=__('_register_agree_text')?>

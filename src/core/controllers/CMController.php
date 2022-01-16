@@ -17,6 +17,7 @@ class CMController extends Gila\Controller
 
   public function __construct()
   {
+    @header('X-Robots-Tag: noindex, noffolow', true);
     $this->permissions = Session::permissions();
     $this->table = Router::param("t", 1);
     if (!Table::exist($this->table)) {

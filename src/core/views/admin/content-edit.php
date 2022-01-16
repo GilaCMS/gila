@@ -19,7 +19,7 @@ View::script('core/admin/vue-components.js');
 
 <style>
 .type-textarea label,.type-paragraph label{width:100%}
-.type-tinymce,.type-textarea,.type-paragraph,.type-list{
+.type-tinymce,.type-paragraph,.type-list{
   grid-column:1/-1
 }
 .mce-tinymce.mce-container.mce-panel{display:inline-block}

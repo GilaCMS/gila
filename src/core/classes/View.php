@@ -18,13 +18,13 @@ class View
   public static $renderer;
   public static $cdn_host = '';
   public static $cdn_paths = [
-    'core/gila.min.js'=> 'core/gila1914.js',
-    'core/gila.js'=> 'core/gila1914.js',
-    'core/gila.min.css'=> 'core/gila1811.css',
-    'core/gila.css'=> 'core/gila1811.css',
+    'core/gila.min.js'=> 'core/gila1914.min.js',
+    'core/gila.js'=> 'core/gila1914.min.js',
+    'core/gila.min.css'=> 'core/gila1501.css',
+    'core/gila.css'=> 'core/gila1501.css',
     'core/widgets.css'=> 'core/widgets1027.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
-    'core/admin/content.js'=> 'core/admin/content1120.js',
+    'core/admin/content.js'=> 'core/admin/content0112.js',
     'core/admin/content.css'=> 'core/admin/content1215.css',
     'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
@@ -570,7 +570,7 @@ class View
         return false;
       }
       do {
-        $basename = substr(hash('sha1', uniqid(true)), 0, 30);
+        $basename = substr(bin2hex(random_bytes(30)), 0, 30);
         $file = TMP_PATH.'/'.$basename.'-'.$max.'.'.$ext;
         $thumbs[$key] = $file;
       } while (strlen($basename) < 30 || file_exists($file));

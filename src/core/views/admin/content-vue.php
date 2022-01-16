@@ -28,8 +28,8 @@ View::cssAsync('lib/vue/vue-select.css');
 
 <style>
 .type-textarea label{width:100%}
-.type-tinymce{min-height:250px;margin-bottom:20px}
-.type-tinymce,.type-textarea,.type-list{grid-column:1/-1}
+.edit-item-form>.type-tinymce{min-height:300px;margin-bottom:20px}
+.edit-item-form>.type-tinymce,.edit-item-form>.type-list{grid-column:1/-1}
 .mce-tinymce.mce-container.mce-panel{display:inline-block}
 @media only screen and (min-width:700px){
   #user-post-edit-item-form>div,
