@@ -38,10 +38,10 @@ class Package
           echo __('_package_downloaded').'. Redirecting...';
           exit;
         } else {
-          echo '{"success":true}';
+          Response::success();
         }
       } else {
-        echo '{"success":false}';
+        Response::error();
       }
     }
     $html = Request::post('html');
@@ -143,9 +143,9 @@ class Package
     }
 
     if (isset($error)) {
-      echo '{"success":false,"error":"'.$error.'"}';
+      Response::error($error);
     } else {
-      echo '{"success":true}';
+      Response::success();
     }
   }
 
@@ -175,7 +175,7 @@ class Package
       }
       Config::set('packages', $packages);
       self::updateLoadFile();
-      echo '{"success":true}';
+      Response::success();
     }
   }
 

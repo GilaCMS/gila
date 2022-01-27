@@ -117,7 +117,7 @@ function updateRegistry(){
 Save
 </button>
 
-<?=View::script('core/gila.min.js');?>
+<?=View::script('core/gila.js');?>
 <script>
 var app = new Vue({
   el: '#<?=$table?>-edit-item-form'

@@ -29,9 +29,13 @@ class View
     'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
 
-  public static function set($param, $value)
+  public static function set($param, $value=null)
   {
-    self::$part[$param]=$value;
+    if (is_array($param)) {
+      self::$part = array_merge(self::$part, $param);
+    } else {
+      self::$part[$param]=$value;
+    }
   }
 
   /**

@@ -5,6 +5,7 @@ return [
   'Gila\\Controller'=> 'src/core/classes/Controller.php',
   'Gila\\Db'=> 'src/core/classes/Db.php',
   'Gila\\DB'=> 'src/core/classes/DB.php',
+  'Gila\\Email'=> 'src/core/classes/Email.php',
   'Gila\\Event'=> 'src/core/classes/Event.php',
   'Gila\\FileManager'=> 'src/core/classes/FileManager.php',
   'Gila'=> 'src/core/classes/Config.php',

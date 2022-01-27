@@ -6,7 +6,9 @@ namespace Gila;
 
 class Request
 {
-  static public function validate($args)
+  static private $errors = []; 
+
+  static public function validate($args, $autoexit=false)
   {
     if (empty($_POST)) {
       $_POST = json_decode(file_get_contents("php://input"));
@@ -14,6 +16,13 @@ class Request
 
     foreach ($args as $key=>$rules) {
       self::validateParam($key, $rules);
+    }
+
+    if ($autoexit && !empty(self::$errors)) {
+      Response::json([
+        'success'=>false,
+        'error'=>self::$errors[0]
+      ]);
     }
   }
 
@@ -28,17 +37,17 @@ class Request
   }
 
   static public function validateParam($key, $rules) {
-    $rules = explode('|', $rules);
-    $value = self::post($key);
+    if (is_string($rules)) {
+      $rules = explode('|', $rules);
+    }
+    $value = $_REQUEST[$key] ?? null;
     foreach ($rules as $rule) {
-      if ($rule==='required' && $value===null) Response::json([
-        'success' => false,
-        'message' => __("Field $key is required")
-      ]);
-      if ($rule==='email' && filter_var($value, FILTER_VALIDATE_EMAIL)) Response::json([
-        'success' => false,
-        'message' => __("Field $key is not an email format")
-      ]);
+      if ($rule==='required' && $value===null) {
+        self::$errors[] = __("Field $key is required");
+      }
+      if ($rule==='email' && filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        self::$errors[] = __("Field $key is not an email");
+      }
     }
   }
 }

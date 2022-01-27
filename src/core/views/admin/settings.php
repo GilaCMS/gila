@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['gila_admin_palette'])) {
     Config::set('admin_palette', $_POST['gila_admin_palette']);
   }
-  echo '{"success":true}';
+  Response::success();
   return;
 }
 View::script('lib/vue/vue.min.js');

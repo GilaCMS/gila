@@ -69,7 +69,7 @@ class BlogController extends Gila\Controller
     if (self::$page>1) {
       Config::canonical('blog?page='.self::$page);
     }
-    if ($path=='' && $r = Page::getByIdSlug('')) {
+    if ($path=='' && Page::inCachedList('')) {
       $this->postShow('');
       return;
     }

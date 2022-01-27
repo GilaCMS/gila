@@ -53,7 +53,7 @@ class Theme
           self::copyAssets($activate);
           Package::updateLoadFile();
           View::alert('success', __('_theme_selected'));
-          echo '{"success":true}';
+          Response::success();
         } else {
           echo __('_packages_required').':';
           foreach ($require as $k=>$r) {

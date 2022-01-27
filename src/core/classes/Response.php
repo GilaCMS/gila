@@ -4,7 +4,7 @@
 */
 namespace Gila;
 
-class Request
+class Response
 {
   static public function json($args, $code=200)
   {
@@ -20,10 +20,10 @@ class Request
     exit;
   }
 
-  static public function error($message, $code=401)
+  static public function error($message='', $code=401)
   {
     @http_response_code($code);
-    echo json_encode(['success'=>false, 'message'=>$message]);
+    echo json_encode(['success'=>false, 'error'=>$message]);
     exit;
   }
 
