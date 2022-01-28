@@ -48,6 +48,10 @@ class Request
       if ($rule==='email' && filter_var($value, FILTER_VALIDATE_EMAIL)) {
         self::$errors[] = __("Field $key is not an email");
       }
+      if ($rule==='numeric' && !is_numeric($value)) {
+        self::$errors[] = __("Field $key is not a number");
+      }
     }
+    return $value;
   }
 }
