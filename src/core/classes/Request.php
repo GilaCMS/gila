@@ -10,12 +10,13 @@ class Request
 
   static public function validate($args, $autoexit=false)
   {
+    $data = [];
     if (empty($_POST)) {
       $_POST = json_decode(file_get_contents("php://input"));
     }
 
     foreach ($args as $key=>$rules) {
-      self::validateParam($key, $rules);
+      $data[$key] = self::validateParam($key, $rules);
     }
 
     if ($autoexit && !empty(self::$errors)) {
@@ -24,6 +25,7 @@ class Request
         'error'=>self::$errors[0]
       ]);
     }
+    return $data;
   }
 
   static public function get($key)
