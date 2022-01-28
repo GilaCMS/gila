@@ -40,7 +40,7 @@ class Request
     if (is_string($rules)) {
       $rules = explode('|', $rules);
     }
-    $value = $_REQUEST[$key] ?? null;
+    $value = $_REQUEST[$key] ?? ($_POST[$key] ?? null);
     foreach ($rules as $rule) {
       if ($rule==='required' && $value===null) {
         self::$errors[] = __("Field $key is required");

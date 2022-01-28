@@ -20,10 +20,10 @@ class RequestTest extends TestCase
       'two'=>'required',
     ]);
 
-    $this->assertEquals($data, [
+    $this->assertEquals([
       'one'=>1,
       'two'=>'two',
-    ]);
+    ], $data);
   }
 
 }
