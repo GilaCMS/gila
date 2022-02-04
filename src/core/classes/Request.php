@@ -8,7 +8,7 @@ class Request
 {
   static private $errors = []; 
 
-  static public function validate($args, $autoexit=false)
+  static public function validate($args, $autoexit=true)
   {
     $data = [];
     if (empty($_POST)) {
@@ -43,15 +43,37 @@ class Request
       $rules = explode('|', $rules);
     }
     $value = $_REQUEST[$key] ?? ($_POST[$key] ?? null);
-    foreach ($rules as $rule) {
-      if ($rule==='required' && $value===null) {
-        self::$errors[] = __("Field $key is required");
+
+    foreach ($rules as $line) {
+      $array = explode(':', $line);
+      $rule = $array[0];
+      $p = $array[1] ?? [];
+      if ($rule==='required' && empty($value)) {
+        self::$errors[] = __("$key is required");
+      }
+      if ($rule==='date' && strtotime($value)===false) {
+        self::$errors[] = __("$key is not a valid date");
       }
       if ($rule==='email' && filter_var($value, FILTER_VALIDATE_EMAIL)) {
-        self::$errors[] = __("Field $key is not an email");
+        self::$errors[] = __("$key is not an email");
+      }
+      if ($rule==='email' && filter_var($value, FILTER_VALIDATE_URL)) {
+        self::$errors[] = __("$key is not a valid url");
       }
       if ($rule==='numeric' && !is_numeric($value)) {
-        self::$errors[] = __("Field $key is not a number");
+        self::$errors[] = __("$key is not a number");
+      }
+      if ($rule==='unique') {
+        $table = $db->res($p[0]);
+        $field = $db->res($key);
+        if (0 < $db->value("SELECT COUNT(*) FROM $table WHERE $field=?", [$value])) {
+          self::$errors[] = __("$key value already exists");
+        }
+      }
+      if ($rule==='int') if (!is_numeric($value)) {
+        self::$errors[] = __("$key is not a number");
+      } else {
+        $value = (int)$value;
       }
     }
     return $value;

@@ -13,10 +13,10 @@ class Response
     exit;
   }
 
-  static public function success($args, $code=200)
+  static public function success($args=[], $code=200)
   {
     @http_response_code($code);
-    echo json_encode(merge_array(['success'=>true], $args));
+    echo json_encode(array_merge(['success'=>true], $args));
     exit;
   }
 

@@ -144,17 +144,22 @@ class Config
     self::$amenu[$key]['children'][]=$item;
   }
 
-  public static function config($key, $value = null) // DEPRECATED
+  public static function loadEnv($file)
   {
-    if ($value!==null) {
-      self::set($key, $value);
-    } else {
-      return self::get($key);
+    $lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+      if (strpos(trim($line), '#') === 0) {
+          continue;
+      }
+      [$name, $value] = explode('=', $line, 2);
+      $name = trim($name);
+      $value = trim($value);
+      if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+        putenv(sprintf('%s=%s', $name, $value));
+        $_ENV[$name] = $value;
+        $_SERVER[$name] = $value;
+      }
     }
-  }
-  public static function setConfig($key, $value) // DEPRECATED
-  {
-    self::set($key, $value);
   }
 
   public static function lang($lang=null)
@@ -176,7 +181,7 @@ class Config
   public static function set($option, $value, $save=true)
   {
     global $db;
-    if ($value===self::$option[$option]) {
+    if ($value===self::$option[$option]??null) {
       return;
     }
     @$GLOBALS['config'][$option] = $value;
@@ -202,7 +207,7 @@ class Config
     if (isset(self::$option[$key])) {
       return self::$option[$key];
     }
-    return $GLOBALS['config'][$key] ?? null;
+    return $_SERVER[$key] ?? ($GLOBALS['config'][$key] ?? null);
   }
 
   public static function getArray($key)

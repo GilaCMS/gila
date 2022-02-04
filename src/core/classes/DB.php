@@ -241,4 +241,19 @@ class DB
     }
     return self::$replica;
   }
+
+  static public function create($table, $data)
+  {
+    $fields = [];
+    $values = [];
+    foreach ($data as $f=>$v) {
+      $fields[] = '`'.$f.'`';
+      $values[] = '"'.self::res($v).'"';
+    }
+    $fields = implode(',', $fields);
+    $values = implode(',', $values);
+
+    self::query("INSERT INTO $table($fields) VALUES($values);");
+    return self::$insert_id ?? null;
+  }
 }

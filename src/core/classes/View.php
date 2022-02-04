@@ -38,6 +38,11 @@ class View
     }
   }
 
+  public static function get($param)
+  {
+    return self::$part[$param]??null;
+  }
+
   /**
   * Set a meta value
   */
@@ -234,6 +239,9 @@ class View
 
   public static function includeFile($filename, $package='core')
   {
+    if (substr($filename, -4)=='.php') {
+      $filename = substr($filename, 0, -4);
+    }
     if (isset(self::$renderer)) {
       $renderer = self::$renderer;
       if ($renderer($filename, $package, self::$part)) {
@@ -247,7 +255,7 @@ class View
 
     $file = self::getViewFile($filename, $package);
     if ($file) {
-      if ($filename === 'header.php' || $filename  === 'footer.php') {
+      if (in_array($filename, ['header.php', 'footer.php', 'header', 'footer'])) {
         include_once $file;
       } else {
         include $file;
@@ -264,6 +272,9 @@ class View
   */
   public static function getViewFile($file, $package = 'core')
   {
+    if (substr($file, -4)!='.php') {
+      $file .= '.php';
+    }
     if (isset(self::$view_file[$file])) {
       return 'src/'.self::$view_file[$file].'/views/'.$file;
     }

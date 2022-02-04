@@ -248,4 +248,19 @@ class Db
     }
     return $this->replica;
   }
+
+  public function create($table, $data)
+  {
+    $fields = [];
+    $values = [];
+    foreach ($data as $f=>$v) {
+      $fields[] = '`'.$f.'`';
+      $values[] = '"'.$this->res($v).'"';
+    }
+    $fields = implode(',', $fields);
+    $values = implode(',', $values);
+    $q = "INSERT INTO $table($fields) VALUES($values);";
+    $this->query($q);
+    return $this->insert_id ?? null;
+  }
 }

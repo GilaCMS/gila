@@ -110,8 +110,9 @@ class BlogController extends Gila\Controller
   {
     $tag = htmlentities($tag);
     Config::canonical('tag/'.$tag);
-    self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
-    $args = ['posts'=>self::$ppp,'tag'=>$tag,'page'=>self::$page];
+    $args = [
+      'posts'=>self::$ppp, 'tag'=>$tag, 'language'=>Config::lang(), 'page'=>self::$page
+    ];
     $totalpages = ceil((Post::total($args))/12);
     $posts = Post::getPosts($args);
     if (self::$page<1 || self::$page>self::totalPages()) {
@@ -151,7 +152,6 @@ class BlogController extends Gila\Controller
     }
     $name = $db->value("SELECT title from postcategory WHERE id=?", $category);
     Config::canonical('blog/category/'.$category.'/'.$name.'?page='.self::$page);
-    self::$totalPosts = Post::total(['category'=>$category,'publish'=>1]);
     $args = [
       'posts'=>self::$ppp, 'category'=>$category, 'publish'=>1,
       'language'=>Config::lang(), 'page'=>self::$page
@@ -225,6 +225,9 @@ class BlogController extends Gila\Controller
       View::set('text', $r['post']);
       View::set('id', $r['id']);
       View::set('updated', $r['updated']);
+      View::set('created', $r['created']);
+      View::set('description', $r['description']);
+      View::set('post', $r);
 
       View::meta('og:title', $r['title']);
       View::meta('og:type', 'website');
