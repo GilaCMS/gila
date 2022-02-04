@@ -39,7 +39,7 @@ class Form
     if ($v = @$_SESSION['_t'.$name]) {
       return $v;
     }
-    $gsession = bin2hex(random_bytes(32));
+    $gsession = substr(bin2hex(random_bytes(32)), 0, 32);
     $_SESSION['_t'.$name] = $gsession;
     @session_commit();
     return $gsession;
@@ -179,8 +179,13 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         if (@$field['meta-csv']==true || @$field['meta_csv']==true) {
           return '<input class="g-input" placeholder="values seperated by comma" name="'.$name.'" value="'.htmlspecialchars($ov).'"/>';
         }
-        if (is_string($ov)&&$ov!='[]'&&!json_decode($ov)) {
+        if (is_string($ov)) {
           $ov = explode(',', $ov);
+        } else {
+          $ov = json_decode($ov);
+        }
+        if (!is_array($ov)) {
+          $ov = empty($ov)? []: [$ov];
         }
         $encoded = !is_string($ov)? json_encode($ov??[], JSON_UNESCAPED_UNICODE): $ov;
         $html = '<g-multiselect value="'.htmlspecialchars($encoded).'"';
@@ -194,14 +199,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         return $html.= ' name="'.$name.'">';
       },
       'select2'=> function ($name, $field, $ov) { //DEPRECATED
-        if (is_string($ov)) {
-          $ov = explode(',', $ov);
-        }
-        $html = '<select class="g-input select2" multiple name="'.$name.'[]">';
-        foreach ($field['options'] as $value=>$name) {
-          $html .= '<option value="'.$value.'"'.(in_array($value, $ov)?' selected':'').'>'.$name.'</option>';
-        }
-        return $html . '</select>';
+        return self::$input_type['v-select-multiple']($name, $field, $ov);
       },
       'role'=> function ($name, $field, $ov) {
         global $db;

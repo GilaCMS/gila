@@ -11,6 +11,6 @@
     </div>
 <div class="row gap-16px bordered box-shadow g-form bg-white">
 	<a class="gl-12 g-btn success" href="<?=$GLOBALS['config']['base']?>" target="_blank">Visit the website</a>
-	<a class="gl-12 g-btn" href="<?=$GLOBALS['config']['base']?>?c=admin" target="_blank">Login to admin panel</a>
+	<a class="gl-12 g-btn" href="<?=$GLOBALS['config']['base']?>/admin" target="_blank">Login to admin panel</a>
 </div>
 </div>

@@ -197,7 +197,7 @@ foreach (Widget::getList('page') as $k=>$w) {
 content_blocks = <?=json_encode($content_blocks)?>;
 base_url = "<?=Config::get('base')?>"
 g_tinymce_options.document_base_url = "<?=Config::get('base')?>"
-g_tinymce_options.height = 210;
+g_tinymce_options.height = 420;
 //g_tinymce_options.menubar = false
 //g_tinymce_options.toolbar = 'formatselect bold italic | bullist numlist outdent indent | link image media emoticons code table | alignleft aligncenter alignright alignjustify'
 

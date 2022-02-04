@@ -14,6 +14,10 @@
 
 RewriteEngine On
 
+# redirect www to no-www
+# RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+# RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
 # enforce https redirection
 # RewriteCond %{HTTPS} off
 # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]

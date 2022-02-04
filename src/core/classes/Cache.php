@@ -67,7 +67,6 @@ class Cache
         }
       }
       echo $data;
-      timeDebug('cached');
       exit;
     }
     ob_start();

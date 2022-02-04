@@ -1,8 +1,11 @@
 <ul class="g-nav g-pagination pagination">
 <?php
   $url = htmlspecialchars(explode('?', Router::path())[0]);
+  if (Config::lang()!==Config::get('language')) {
+    $url = Config::lang().'/'.$url;
+  }
   $page = $_GET['page']??1;
-  $totalpages = ceil((Post::total())/12);
+  $totalpages = $totalpages??ceil((Post::total())/12);
   if ($page>5) {
     echo '<li><a href="'.$url.'?page=1">1</a></li>';
   }

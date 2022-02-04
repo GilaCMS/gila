@@ -3,6 +3,8 @@ namespace Gila;
 
 class User
 {
+  private static $user = [];
+
   public static function create($email, $password, $name = '', $active = 0)
   {
     global $db;
@@ -113,11 +115,10 @@ class User
   public static function getById($id)
   {
     global $db;
-    $res = $db->read()->get("SELECT * FROM user WHERE id=?", $id);
-    if ($res) {
-      return $res[0];
+    if (!isset(self::$user[$id])) {
+      self::$user[$id] = $db->read()->getOne("SELECT * FROM user WHERE id=?", $id);
     }
-    return false;
+    return self::$user[$id];
   }
 
   public static function getByResetCode($rp)
@@ -206,7 +207,7 @@ class User
   public static function sendInvitation($data)
   {
     Config::addLang('core/lang/login/');
-    $reset_code = bin2hex(random_bytes(50));
+    $reset_code = substr(bin2hex(random_bytes(50)), 0, 50);
     $baseurl = Config::base('user/password_reset');
     $reset_url = $baseurl.'?rp='.$reset_code;
     self::meta($data['id'], 'reset_code', $reset_code);
@@ -259,7 +260,7 @@ class User
       if ($userId = self::create($email, $password, $name, $active)) {
         // success
         if (Config::get('user_activation')=='byemail') {
-          $activate_code = bin2hex(random_bytes(50));
+          $activate_code = substr(bin2hex(random_bytes(50)), 0, 50);
           $baseactivate = Config::base('user/activate');
           $activate_url = $baseactivate.'?ap='.$activate_code;
           $data = [

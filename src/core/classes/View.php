@@ -18,20 +18,29 @@ class View
   public static $renderer;
   public static $cdn_host = '';
   public static $cdn_paths = [
-    'core/gila.min.js'=> 'core/gila1914.js',
-    'core/gila.js'=> 'core/gila1914.js',
-    'core/gila.min.css'=> 'core/gila1811.css',
-    'core/gila.css'=> 'core/gila1811.css',
+    'core/gila.min.js'=> 'core/gila1914.min.js',
+    'core/gila.js'=> 'core/gila1914.min.js',
+    'core/gila.min.css'=> 'core/gila1501.css',
+    'core/gila.css'=> 'core/gila1501.css',
     'core/widgets.css'=> 'core/widgets1027.css',
     'core/admin/media.js'=> 'core/admin/media1806.js',
-    'core/admin/content.js'=> 'core/admin/content1120.js',
+    'core/admin/content.js'=> 'core/admin/content0112.js',
     'core/admin/content.css'=> 'core/admin/content1215.css',
     'core/admin/vue-components.js'=> 'core/admin/vue-components1001.js'
   ];
 
-  public static function set($param, $value)
+  public static function set($param, $value=null)
   {
-    self::$part[$param]=$value;
+    if (is_array($param)) {
+      self::$part = array_merge(self::$part, $param);
+    } else {
+      self::$part[$param]=$value;
+    }
+  }
+
+  public static function get($param)
+  {
+    return self::$part[$param]??null;
   }
 
   /**
@@ -230,6 +239,9 @@ class View
 
   public static function includeFile($filename, $package='core')
   {
+    if (substr($filename, -4)=='.php') {
+      $filename = substr($filename, 0, -4);
+    }
     if (isset(self::$renderer)) {
       $renderer = self::$renderer;
       if ($renderer($filename, $package, self::$part)) {
@@ -243,7 +255,7 @@ class View
 
     $file = self::getViewFile($filename, $package);
     if ($file) {
-      if ($filename === 'header.php' || $filename  === 'footer.php') {
+      if (in_array($filename, ['header.php', 'footer.php', 'header', 'footer'])) {
         include_once $file;
       } else {
         include $file;
@@ -260,6 +272,9 @@ class View
   */
   public static function getViewFile($file, $package = 'core')
   {
+    if (substr($file, -4)!='.php') {
+      $file .= '.php';
+    }
     if (isset(self::$view_file[$file])) {
       return 'src/'.self::$view_file[$file].'/views/'.$file;
     }
@@ -570,7 +585,7 @@ class View
         return false;
       }
       do {
-        $basename = substr(hash('sha1', uniqid(true)), 0, 30);
+        $basename = substr(bin2hex(random_bytes(30)), 0, 30);
         $file = TMP_PATH.'/'.$basename.'-'.$max.'.'.$ext;
         $thumbs[$key] = $file;
       } while (strlen($basename) < 30 || file_exists($file));

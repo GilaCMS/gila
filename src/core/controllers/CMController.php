@@ -17,6 +17,7 @@ class CMController extends Gila\Controller
 
   public function __construct()
   {
+    @header('X-Robots-Tag: noindex, noffolow', true);
     $this->permissions = Session::permissions();
     $this->table = Router::param("t", 1);
     if (!Table::exist($this->table)) {
@@ -270,7 +271,7 @@ class CMController extends Gila\Controller
       }
       fclose($file);
     }
-    echo '{"success":true}';
+    Response::success();
   }
 
   public function group_rowsAction()
@@ -393,7 +394,7 @@ class CMController extends Gila\Controller
       $res = $db->getAssoc("SELECT $fieldStr FROM {$gtable->name()} WHERE {$gtable->id()}=?;", $_POST['id'])[0];
       $id = $gtable->createRow($res);
       if ($id===0) {
-        echo '{"error":"Row could not be created"}';
+        Response::error('Row could not be created');
         exit;
       }
 

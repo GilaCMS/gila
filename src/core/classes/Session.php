@@ -101,11 +101,7 @@ class Session
   public static function setCookie($userId)
   {
     do {
-      $gsession = '';
-      while (strlen($gsession) < 60) {
-        $gsession .= hash('sha512', uniqid(true));
-      }
-      $gsession = substr($gsession, 0, 60);
+      $gsession = substr(bin2hex(random_bytes(60)), 0, 60);
     } while (self::find($gsession)!==null);
 
     $_COOKIE['GSESSIONID'] = $gsession;
