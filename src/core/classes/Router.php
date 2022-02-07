@@ -131,6 +131,25 @@ class Router
     self::add($string, $fn, 'POST', $permission);
   }
 
+  public static function auth($callback, $permission = null)
+  {
+    if (Session::userId()>0) {
+      if ($permission===null || Session::hasPrivilege($permission)) {
+        $callback();
+      }
+    }
+  }
+
+  public static function admin($callback, $permission = null)
+  {
+    if (User::level(Session::userId())>0) {
+      if ($permission===null || Session::hasPrivilege($permission)) {
+        @header("X-Frame-Options: SAMEORIGIN");
+        $callback();
+      }
+    }
+  }
+
   /**
   * Returns a get parameter value
   * @param $key (string) Parameter's name

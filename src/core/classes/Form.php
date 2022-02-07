@@ -316,7 +316,7 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         $html = '<select class="g-input" name="'.$name.'">';
         $res = include __DIR__.'/../lang/languages.php';
         $ov = $ov??Config::lang();
-        $list = Config::get('languages');
+        $list = Config::getArray('languages')??[];
         foreach ($res as $key=>$r) {
           if ($key==$ov||in_array($key, $list)||$key==Config::lang()) {
             $html .= '<option value="'.$key.'"'.($key==$ov?' selected':'').'>'.$r.'</option>';
