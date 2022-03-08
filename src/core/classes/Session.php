@@ -55,7 +55,7 @@ class Session
 
   public static function login()
   {
-    if (Form::posted('login') && isset($_POST['username']) && isset($_POST['password']) && self::waitForLogin()===0) {
+    if (isset($_POST['username']) && isset($_POST['password']) && self::waitForLogin()<1) {
       @session_start();
       $usr = User::getByEmail($_POST['username']);
       if ($usr && $usr['active']===1 && password_verify($_POST['password'], $usr['pass'])) {

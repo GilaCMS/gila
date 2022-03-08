@@ -146,11 +146,10 @@ class BlogController extends Gila\Controller
   */
   public function categoryAction($category)
   {
-    global $db;
     if (!is_numeric($category)) {
-      $category = $db->value('SELECT id FROM postcategory WHERE slug=?', $category);
+      $category = DB::value('SELECT id FROM postcategory WHERE slug=?', $category);
     }
-    $name = $db->value("SELECT title from postcategory WHERE id=?", $category);
+    $name = DB::value("SELECT title from postcategory WHERE id=?", $category);
     Config::canonical('blog/category/'.$category.'/'.$name.'?page='.self::$page);
     $args = [
       'posts'=>self::$ppp, 'category'=>$category, 'publish'=>1,
@@ -179,10 +178,9 @@ class BlogController extends Gila\Controller
   */
   public function authorAction()
   {
-    global $db;
     $user_id = Router::param('author', 1);
     Config::canonical('author/'.$user_id);
-    $res = $db->read()->get("SELECT username,id from user WHERE id=? OR username=?", [$user_id,$user_id]);
+    $res = DB::get("SELECT username,id from user WHERE id=? OR username=?", [$user_id,$user_id]);
     if ($res) {
       View::set('author', $res[0][0]);
       View::set('page_title', $res[0][0].' | '.Config::get('title'));
@@ -200,7 +198,6 @@ class BlogController extends Gila\Controller
   */
   public function postShow($id=null)
   {
-    global $db;
     $cacheTime = Config::option('blog.cache');
     Config::canonical('blog/'.$id);
     if (Session::userId()==0 && $cacheTime > 0) {
@@ -215,7 +212,7 @@ class BlogController extends Gila\Controller
     if (Post::inCachedList($postId) && ($r = Post::getByIdSlug($postId)) && ($r['publish']==1)) {
       $id = $r['id'];
       if (!$r['user_id']) {
-        $r['user_id'] = $db->read()->value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
+        $r['user_id'] = DB::value("SELECT user_id FROM post WHERE id=? OR slug=?", [$id,$id]);
       }
       $user_id = $r['user_id'];
       View::set('author_id', $user_id);
@@ -306,7 +303,7 @@ class BlogController extends Gila\Controller
         View::render('404.php');
       }
 
-      if ($category = $db->read()->value('SELECT id FROM postcategory WHERE slug=?;', $postId)) {
+      if ($category = DB::value('SELECT id FROM postcategory WHERE slug=?;', $postId)) {
         $this->categoryAction($category);
         return;
       }

@@ -128,8 +128,8 @@ class Form
       } else {
         $placeholder = isset($op['placeholder'])? ' placeholder="'.$op['placeholder'].'"': '';
         $req = isset($op['required'])? ' required':'';
-        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'"
-onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' && event.ctrlKey) event.preventDefault()" '.$placeholder.$req.'>';
+        $ctrlPrevent = $op['ctrlPrevent']? ' onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' && event.ctrlKey) event.preventDefault()"': '';
+        $html .= '<input class="g-input" name="'.$name.'" value="'.htmlspecialchars($ov).'" '.$ctrlPrevent.$placeholder.$req.'>';
       }
     } else {
       $req = $op['required']? ' required':'';
@@ -202,11 +202,10 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         return self::$input_type['v-select-multiple']($name, $field, $ov);
       },
       'role'=> function ($name, $field, $ov) {
-        global $db;
         if (is_string($ov)) {
           $ov = explode(',', $ov);
         }
-        $getOptions = $db->read()->get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
+        $getOptions = DB::get("SELECT `id`,`userrole` FROM userrole WHERE `level`<=".User::level(Session::userId()));
         foreach ($getOptions as $op) {
           $options[$op[0]] = $op[1];
         }
@@ -229,7 +228,6 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         return self::$input_type['select']($name, $field, $ov); //DEPRECATED
       },
       'postcategory'=> function ($name, $field, $ov) {
-        global $db;
         $html = '<select class="g-input" name="'.$name.'">';
         $res=$db->get('SELECT id,title FROM postcategory;');
         $html .= '<option value=""'.(''==$ov?' selected':'').'>*</option>';
@@ -351,9 +349,8 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         return '<input-list style="width:100%;border:1px solid var(--main-border-color);" name="'.$name.'" fieldlist="'.$fields.'" value="'.$value.'"></input-list>';
       },
       'menu'=> function ($name, $field, $ov) {
-        global $db;
         $value = json_decode($ov) ? htmlspecialchars($ov) : '[]';
-        $pages = $db->getOptions("SELECT id,title FROM `page`;");
+        $pages = DB::getOptions("SELECT id,title FROM `page`;");
         foreach (Config::getList('menu.pages') as $p) {
           $pages[$p[0]] = $p[1];
         }
@@ -367,7 +364,6 @@ onkeydown="if(event.which!=\'86\' && event.which!=\'88\' && event.which!=\'67\' 
         return '<color-input palette=\''.htmlspecialchars(json_encode($palette)).'\' name="'.$name.'" value="'.$value.'"></color-input>';
       },
       'template'=> function ($name, $field, $ov) {
-        global $db;
         $html = '<select class="g-input" name="'.$name.'">';
         $templates = View::getTemplates($field['template']);
         $html .= '<option value=""'.(''==$ov?' selected':'').'>'.'[Default]'.'</option>';

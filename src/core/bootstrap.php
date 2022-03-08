@@ -3,7 +3,8 @@
 use Gila\Config;
 use Gila\Router;
 use Gila\Event;
-use Gila\Db;
+use Gila\DbClass;
+use Gila\DB;
 use Gila\Session;
 use Gila\Logger;
 
@@ -82,7 +83,8 @@ if (Config::getArray('trusted_domains') &&
   header('Location: '.Config::get('base').substr($_SERVER['REQUEST_URI'], 1));
 }
 
-$db = new Db($GLOBALS['config']['db']);
+$db = new DbClass($GLOBALS['config']['db']);
+DB::set($GLOBALS['config']['db']);
 
 if (!@include LOG_PATH.'/load.php') {
   Config::load();

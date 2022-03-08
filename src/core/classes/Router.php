@@ -172,7 +172,10 @@ class Router
   public static function request($key, $default=null)
   {
     $r = $_REQUEST[$key] ?? $default;
-    return @strip_tags($r);
+    if (is_string($r)) {
+      return @strip_tags($r);
+    }
+    return $r;
   }
 
   public static function path()

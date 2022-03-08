@@ -269,6 +269,22 @@ g.postForm = function(formId,fn,error=null) {
   let fm = new FormData(el);
   g.ajax({url:el.action,method:'POST',data:fm,fn:fn,error:error})
 }
+g.validateForm = function(formId) {
+  let el = document.getElementById(formId);
+  const re = /\S+@\S+\.\S+/
+  errors = []
+  elements = el.elements
+  console.log(elements)
+  for (i in elements) if (typeof elements[i].name!=='undefined') {
+    if (elements[i].required) {
+      errors[elements.name] = g.tr('This field is required')
+    }
+    if (elements[i].type=='email' && !re.test(elements[i].value)) {
+      errors[elements.name] = g.tr('Not an email format')
+    }
+  }
+  return errors
+}
 
 g.get = function(path,fn,error=null){
   g.ajax({url:path,method:'GET',fn:fn,error:error})
@@ -300,11 +316,9 @@ g.dialog = function(p){
   if(p.id!='gila-popup') {
     closeModal = 'g.closeModal(\''+p.id+'\')'
   }
+  closebtn = '<span class="closebtn" onclick="'+closeModal+'">×</span>';
   if(p.type=='modal') {
-    closebtn = '<span class="closebtn" onclick="'+closeModal+'">×</span>';
     document.body.style.overflowY = 'hidden'
-  } else {
-    closebtn = '<span class="closebtn" onclick="'+closeModal+'">×</span>';
   }
 
   if(p.title!='') p.title='<div class="title">'+p.title+'</div>'; else p.title='<div>&nbsp;</div>';
@@ -328,7 +342,7 @@ g.dialog = function(p){
   }
 
   append='<div id=\''+p.id+'\' class="'+p.class+' gila-popup">'+closebtn+p.title+p.img+p.body+p.foot+'</div>';
-  if(p.type=='modal') {
+  if(p.type=='modal'||p.type=='alert') {
     dsbg = '<div style="position:absolute;left:0;top:0;right:0;bottom:0" onclick="'+closeModal+'"></div>';
     if(p['z-index'] != 'undefined') zindex = 'style="z-index:'+p['z-index']+'"'; else zindex='';
     g(document.body).append('<div class=\'gila-darkscreen\''+zindex+'>'+dsbg+append+'</div>');
@@ -382,7 +396,7 @@ g.alert = function(html,type,callback) {
     foot="<a class='btn' onclick='g(\"#gila-darkscreen\").remove();"+callback+"'>OK</a>";
     buttons='';
   }
-  g.dialog({body:icon+'<h2>'+html+'</h2>',class:'small text-align-center',escape:false,buttons:buttons,foot:foot,type:'modal'});
+  g.dialog({body:icon+'<h2>'+html+'</h2>',class:'small text-align-center',escape:false,buttons:buttons,foot:foot,type:'alert'});
 }
 
 g.snackbar = function(html) {

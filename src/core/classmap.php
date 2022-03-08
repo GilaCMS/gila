@@ -3,7 +3,7 @@
 return [
   'Gila\\Cache'=> 'src/core/classes/Cache.php',
   'Gila\\Controller'=> 'src/core/classes/Controller.php',
-  'Gila\\Db'=> 'src/core/classes/Db.php',
+  'Gila\\DbClass'=> 'src/core/classes/DbClass.php',
   'Gila\\DB'=> 'src/core/classes/DB.php',
   'Gila\\Email'=> 'src/core/classes/Email.php',
   'Gila\\Event'=> 'src/core/classes/Event.php',

@@ -60,6 +60,7 @@ return [
       'qtype'=>'VARCHAR(30) DEFAULT NULL'
     ],
     'language'=> [
+      'title'=>'Language',
       'type'=>'language',
       'qtype'=>'VARCHAR(2) DEFAULT NULL'
     ],
@@ -92,14 +93,6 @@ return [
       'type'=>'media2',
       'qtype'=> 'VARCHAR(200)'
     ],
-    //'meta'=> [
-    //  'list'=> false,
-    //  'type'=>'list',
-    //  'fields'=>[
-    //    'content'=>[],
-    //    'value'=>[]
-    //  ]
-    //]
   ],
   'events'=>[
     ['create', function (&$row) {

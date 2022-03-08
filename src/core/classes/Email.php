@@ -12,8 +12,6 @@ class Email
 
   public static function send($args)
   {
-    global $db;
-
     $args['email'] = $args['email']?? Config::get('admin_email');
     if (!filter_var($args['email'], FILTER_VALIDATE_EMAIL)) {
       return;
@@ -30,7 +28,7 @@ class Email
     if (isset($args['template_id'])) {
       $tid = $args['template_id'];
       if (!isset(self::$template[$tid])) {
-        $temp = $db->getOne("SELECT * FROM `template` WHERE id=?;", [$tid]);
+        $temp = DB::getOne("SELECT * FROM `template` WHERE id=?;", [$tid]);
         $blocks = json_decode($temp['blocks'], true);
         $html = View::blocks($blocks, 'template_'.$tid);
         self::$template[$tid] = [
@@ -80,8 +78,7 @@ class Email
 
   public static function templateId($event)
   {
-    global $db;
-    $id = $db->value(
+    $id = DB::value(
       "SELECT id FROM template WHERE `event`=? AND active=1 AND `language`=?;",
       [$event, Config::lang()]
     )??null;

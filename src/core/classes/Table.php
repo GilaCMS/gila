@@ -377,7 +377,7 @@ class Table
           if ($purify===true) {
             $value = $value = HtmlInput::purify($value, $allowed);
           }
-        } else {
+        } else if(is_string($value)) {
           $value = strip_tags($value);
         }
         if (in_array($this->fieldAttr($key, 'type'), ['joins','meta'])) {
@@ -717,13 +717,15 @@ class Table
   public function createRow($data = [])
   {
     if ($this->can('create') === false) {
-      return false;
+      self::$error = 'Missing permission to create';
+      return 0;
     }
     $insert_fields = [];
     $insert_values = [];
     $binded_values = [];
     $this->event('create', $data);
     if ($data===false) {
+      echo 'aa';
       return 0;
     }
 

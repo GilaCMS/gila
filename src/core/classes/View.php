@@ -7,8 +7,8 @@ class View
   private static $script = [];
   private static $scriptAsync = [];
   private static $meta = [];
-  private static $alert = [];
   private static $onrender = false;
+  public static $alert = [];
   public static $css = [];
   public static $part = [];
   public static $stylesheet = [];
@@ -19,7 +19,7 @@ class View
   public static $renderer;
   public static $cdn_host = '';
   public static $cdn_paths = [
-    'core/gila.min.js'=> 'core/gila2224.min.js',
+    'core/gila.min.js'=> 'core/gila2224.js',
     'core/gila.js'=> 'core/gila2224.js',
     'core/gila.min.css'=> 'core/gila1501.css',
     'core/gila.css'=> 'core/gila1501.css',
@@ -257,7 +257,11 @@ class View
     }
 
     if ($file = self::getViewFile($filename, $package)) {
-      include $file;
+      if (in_array($filename, ['header.php','footer.php','header','footer'])) {
+        include_once $file;
+      } else {
+        include $file;
+      }
       return true;
     }
     return false;

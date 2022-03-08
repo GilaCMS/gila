@@ -13,9 +13,9 @@ class User
       if ($db->value("SELECT COUNT(*) FROM user WHERE email=?", [$email])>0) {
         return false;
       }
-      $db->query("INSERT INTO user(email,pass,username,active,`language`)
-        VALUES(?,?,?,?,?);", [$email, $pass, $name, $active, Config::lang()]);
-      $userId = $db->insert_id;
+      $userId = $db->create('user', [
+        'email'=>$email,'pass'=>$pass,'username'=>$name,'active'=>$active,'language'=>Config::lang()
+      ]);
       Event::fire('User::create', ['userId'=>$userId]);
       return $userId;
     } else {
@@ -160,7 +160,7 @@ class User
   public static function permissions($id)
   {
     $response = [];
-    $rp = Config::getArray('permissions');
+    $rp = Config::getArray('permissions')??[];
     if ($id === 0) {
       return [];
     }
@@ -280,7 +280,8 @@ class User
         }
         return true;
       } else {
-        View::alert('error', __('register_error2'));
+        View::alert('error', 'user is '.$userId);
+        // View::alert('error', __('register_error2'));
       }
     }
     return false;

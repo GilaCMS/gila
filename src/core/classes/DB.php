@@ -6,24 +6,32 @@ namespace Gila;
 
 class DB
 {
-  private $dbhost;
-  private $user;
-  private $pass;
-  private $dsch;
-  private $connected = false;
-  private $link;
-  public $insert_id;
-  public $result;
-  public $profiling = '';
-  public $replicas = [];
-  private $replica;
+  private static $dbhost;
+  private static $user;
+  private static $pass;
+  private static $dbname;
+  private static $connected = false;
+  private static $link;
+  private static $replica;
+  public static $insert_id;
+  public static $result;
+  public static $profiling = '';
+  public static $replicas = [];
 
-  static public function add($host, $user, $pass, $dsch)
+  static public function set($host = 'localhost', $user = 'root', $pass = '', $dbname = '')
   {
-    self::$dbhost = $host;
-    self::$user = $user;
-    self::$pass = $pass;
-    self::$dsch = $dsch;
+    self::close();
+    if (is_array($host)) {
+      self::$dbhost = $host['host'];
+      self::$user = $host['user'];
+      self::$pass = $host['pass'];
+      self::$dbname = $host['name'];
+    } else {
+      self::$dbhost = $host;
+      self::$user = $user;
+      self::$pass = $pass;
+      self::$dbname = $dbname;
+    }
   }
 
   static public function connect()
@@ -31,7 +39,7 @@ class DB
     if (self::$connected) {
       return;
     }
-    self::$link = mysqli_connect(self::$dbhost, self::$user, self::$pass, self::$dsch);
+    self::$link = mysqli_connect(self::$dbhost, self::$user, self::$pass, self::$dbname);
     if (self::$link===false) {
       Event::fire('Db::connect_error');
       exit;
@@ -64,7 +72,7 @@ class DB
   static public function query($q, $args = null)
   {
     if (!self::$connected) {
-      self::$connect();
+      self::connect();
     }
 
     if ($args === null) {
@@ -115,7 +123,7 @@ class DB
   static public function res($v)
   {
     if (!self::$connected) {
-      self::$connect();
+      self::connect();
     }
     return mysqli_real_escape_string(self::$link, $v);
   }
@@ -123,21 +131,11 @@ class DB
   static public function multi_query($q)
   {
     if (!self::$connected) {
-      self::$connect();
+      self::connect();
     }
     $res = self::$link->multi_query($q);
     self::close();
     return $res;
-  }
-
-  static public function insert($table, $params = [])
-  {
-    if (!self::$connected) {
-      self::$connect();
-    }
-    $cols = implode(", ", array_keys($params));
-    $vals = implode(", ", $params);
-    self::$link->query("INSERT INTO $table($cols) VALUES($vals)");
   }
 
   static public function get($q, $args = null)
@@ -235,11 +233,8 @@ class DB
     }
     $count = count(self::$replicas);
     if ($count>0) {
-      self::$replica = new Db(self::$replicas[rand(0, $count-1)]);
-    } else {
-      self::$replica = &$this;
+      self::$replica = rand(0, $count-1);
     }
-    return self::$replica;
   }
 
   static public function create($table, $data)

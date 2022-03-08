@@ -277,7 +277,7 @@ class Package
             error_log($error, 3, 'log/error.log');
             continue;
           }
-          $db = new Db($GLOBALS['config']['db']);
+          DB::set($GLOBALS['config']['db']);
           $packages = $db->value("SELECT `value` FROM `option` WHERE `option`='packages';");
           $packages = $packages? json_decode($packages, true): $GLOBALS['config']['packages'];
           if ($package==='core' ||
@@ -289,7 +289,7 @@ class Package
       }
     }
     include 'config.php';
-    $db = new Db($GLOBALS['config']['db']);
+    DB::set($GLOBALS['config']['db']);
   }
 
   public static function copyAssets($package)

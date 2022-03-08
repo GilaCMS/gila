@@ -180,7 +180,6 @@ class Config
   */
   public static function set($option, $value, $save=true)
   {
-    global $db;
     if ($value===self::$option[$option]??null) {
       return;
     }
@@ -192,7 +191,7 @@ class Config
     if ($save==false) {
       return;
     }
-    $db->query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
+    DB::query("INSERT INTO `option`(`option`,`value`) VALUES(?,?)
     ON DUPLICATE KEY UPDATE `value`=?;", [$option, $value, $value]);
     @unlink(LOG_PATH.'/load.php');
   }
@@ -244,8 +243,7 @@ class Config
   }
   public static function loadOptions()
   {
-    global $db;
-    $res = $db->get('SELECT `option`,`value` FROM `option`;');
+    $res = DB::get('SELECT `option`,`value` FROM `option`;');
     foreach ($res as $r) {
       self::$option[$r[0]] = $r[1];
     }
@@ -380,18 +378,19 @@ class Config
   */
   public static function load()
   {
-    include_once "src/core/load.php";
-    foreach (self::packages() as $package) {
-      if (file_exists("src/$package/load.php")) {
-        include_once "src/$package/load.php";
-      }
-    }
+    global $db;
     self::$option=[];
     $db->connect();
     self::loadOptions();
     $db->close();
     if (file_exists('.env')) {
       self::loadEnv();
+    }
+    include_once "src/core/load.php";
+    foreach (self::packages() as $package) {
+      if (file_exists("src/$package/load.php")) {
+        include_once "src/$package/load.php";
+      }
     }
   }
 

@@ -49,6 +49,7 @@ class Request
 
   static public function post($key)
   {
+    self::load();
     return $_POST[$key] ?? null;
   }
 
@@ -59,41 +60,58 @@ class Request
   }
 
   static public function validateParam($key, $rules) {
+    global $db;
     if (is_string($rules)) {
       $rules = explode('|', $rules);
     }
-    $value = self::value($key);
+    $value = self::key($key);
 
     foreach ($rules as $line) {
-      $array = explode(':', $line);
+      [$part1, $err] = explode('?', $line);
+      $array = explode(':', $part1);
       $rule = $array[0];
       $p = $array[1] ?? [];
       if ($rule==='required' && empty($value)) {
-        self::$errors[] = __("$key is required");
+        self::$errors[] = $err ?? __("$key is required");
       }
       if ($rule==='date' && strtotime($value)===false) {
-        self::$errors[] = __("$key is not a valid date");
+        self::$errors[] = $err ?? __("$key is not a valid date");
       }
       if ($rule==='email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-        self::$errors[] = __("$key is not an email");
+        self::$errors[] = $err ?? __("$key is not an email");
       }
       if ($rule==='url' && !filter_var($value, FILTER_VALIDATE_URL)) {
-        self::$errors[] = __("$key is not a valid url");
+        self::$errors[] = $err ?? __("$key is not a valid url");
       }
       if ($rule==='numeric' && !is_numeric($value)) {
-        self::$errors[] = __("$key is not a number");
+        self::$errors[] = $err ?? __("$key is not a number");
       }
       if ($rule==='unique') {
         $table = $db->res($p[0]);
         $field = $db->res($key);
         if (0 < $db->value("SELECT COUNT(*) FROM $table WHERE $field=?", [$value])) {
-          self::$errors[] = __("$key value already exists");
+          self::$errors[] = $err ?? __("$key value already exists");
         }
       }
       if ($rule==='int') if (!is_numeric($value)) {
-        self::$errors[] = __("$key is not a number");
+        self::$errors[] = $err ?? __("$key is not a number");
       } else {
         $value = (int)$value;
+      }
+      if ($rule==='min' && $value<$p[0]) {
+        self::$errors[] = $err ?? __("$key must be al least {$p[0]}");
+      }
+      if ($rule==='max' && $value>$p[0]) {
+        self::$errors[] = $err ?? __("$key should be maximun {$p[0]}");
+      }
+      if ($rule==='minlength' && strlen($value)<$p[0]) {
+        self::$errors[] = $err ?? __("$key length must be al least {$p[0]}");
+      }
+      if ($rule==='maxlength' && strlen($value)>$p[0]) {
+        self::$errors[] = $err ?? __("$key length should be maximun {$p[0]}");
+      }
+      if ($rule==='length' && strlen($value)!=$p[0]) {
+        self::$errors[] = $err ?? __("$key length should be {$p[0]}");
       }
     }
     return $value;

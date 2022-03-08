@@ -313,10 +313,7 @@ class CMController extends Gila\Controller
     } else {
       $id = $gtable->createRow($_POST);
       if ($id===0) {
-        if ($error = Table::$error) {
-          echo json_encode(['error'=>$error], JSON_PRETTY_PRINT);
-        }
-        return;
+        Response::error(Table::$error ?? '', 200);
       }
     }
 
@@ -333,7 +330,7 @@ class CMController extends Gila\Controller
       $gtable->updateJoins($id);
       $set = $gtable->set($data);
       if ($error = Table::$error) {
-        die('{"success":false, "error":"'.$error.'"}');
+        Response::error($error, 200);
       }
       $res = $db->query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
       if ($db->error()) {
@@ -346,7 +343,7 @@ class CMController extends Gila\Controller
       }
     }
     Config::setMt($gtable->name());
-    echo json_encode($result, JSON_PRETTY_PRINT);
+    echo json_encode($result);
   }
 
   public function empty_rowAction()
@@ -414,7 +411,7 @@ class CMController extends Gila\Controller
     } else {
       $id = $gtable->createRow($data);
       if ($id===0) {
-        echo "Row was not created. Does this table exist?";
+        Response::error("Row was not created. Does this table exist?");
         exit;
       } else {
         $q = "UPDATE {$gtable->name()} {$gtable->set($data)} WHERE {$gtable->id()}=?;";

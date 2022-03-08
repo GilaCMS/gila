@@ -7,12 +7,11 @@ class MenuItemTypes
 
   public static function defaultData()
   {
-    global $db;
     $data = (object) array('type'=>'menu','children' => []);
     $data->children[] = ['type'=>'link','url'=>'','name'=>__('Home')];
 
     $ql = "SELECT id,title FROM postcategory;";
-    $pages = $db->get($ql);
+    $pages = DB::get($ql);
     foreach ($pages as $p) {
       $data->children[] = ['type'=>"postcategory",'id'=>$p[0]];
     }
@@ -50,7 +49,6 @@ class MenuItemTypes
 
   public static function initItemTypes()
   {
-    global $db;
     $pages = Page::genPublished();
     $pageOptions = "";
     foreach ($pages as $p) {
@@ -58,7 +56,7 @@ class MenuItemTypes
     }
 
     $ql = "SELECT id,title FROM postcategory;";
-    $cats = $db->get($ql);
+    $cats = DB::get($ql);
     $postcategoryOptions = "";
     foreach ($cats as $p) {
       $postcategoryOptions .= "<option value=\"{$p[0]}\">{$p[1]}</option>";

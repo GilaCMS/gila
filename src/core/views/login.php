@@ -11,7 +11,7 @@
 <?php
 if (Session::waitForLogin()==0) { ?>
   <form method="post" action="" class="g-form">
-    <?=Form::hiddenInput('login')?>
+    <?php Form::hiddenInput('login') ?>
     <div class="form-group">
       <input class="form-control fullwidth" placeholder="E-mail" name="username" type="email" autofocus>
     </div>

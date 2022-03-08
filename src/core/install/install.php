@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 $configfile = CONFIG_PHP;
-include_once __DIR__."/../classes/Db.php";
+include_once __DIR__."/../classes/DbClass.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $keys = ['adm_email', 'base_url', 'db_name','db_user'];
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     echo "</div>";
   } else {
-    $db = new Gila\Db($host, $db_user, $db_pass, $db_name);
+    $db = new Gila\DbClass($host, $db_user, $db_pass, $db_name);
     include __DIR__."/install.sql.php";
     // create config.php
     $filedata = file_get_contents('config.default.php');

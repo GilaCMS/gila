@@ -16,11 +16,10 @@ class Menu
 
   public static function getContents($menu)
   {
-    global $db;
     if ($data = Cache::get('menu--'.$menu, 86400, [Config::mt('menu')])) {
       return $data;
     }
-    if ($data = $db->read()->value("SELECT `data` FROM menu WHERE `menu`=?;", [$menu])) {
+    if ($data = DB::value("SELECT `data` FROM menu WHERE `menu`=?;", [$menu])) {
       Cache::set('menu--'.$menu, $data, [Config::mt('menu')]);
       return $data;
     }
@@ -30,18 +29,15 @@ class Menu
 
   public static function setContents($menu, $data)
   {
-    global $db;
     Config::setMt('menu');
-    $db->query("REPLACE INTO menu(`menu`,`data`) VALUES(?,?);", [$menu, $data]);
+    DB::query("REPLACE INTO menu(`menu`,`data`) VALUES(?,?);", [$menu, $data]);
   }
 
   public static function getData($menu)
   {
-    global $db;
     $menuLN = $menu.'.'.Config::lang();
     $data =  Cache::remember($menuLN.'_data', 259200, function ($u) {
-      global $db;
-      return $db->read()->value(
+      return DB::value(
         "SELECT `data` FROM menu WHERE `menu`=?
         UNION SELECT `data` FROM menu WHERE `menu`=?;",
         [$u[1], $u[2]]
@@ -61,11 +57,10 @@ class Menu
 
   public static function defaultData()
   {
-    global $db;
     $widget_data = (object) array('type'=>'menu','children' => []);
     $widget_data->children[] = ['type'=>'link','url'=>'','name'=>__('Home')];
     $ql = "SELECT id,title FROM postcategory;";
-    $pages = $db->get($ql);
+    $pages = DB::get($ql);
     foreach ($pages as $p) {
       $widget_data->children[] = ['type'=>"postcategory",'id'=>$p[0]];
     }
@@ -112,9 +107,8 @@ class Menu
         }
       }
       if ($type=='postcategory') {
-        global $db;
         $ql = "SELECT id,title,slug FROM postcategory WHERE id=?;";
-        $res = $db->query($ql, @$data['id']);
+        $res = DB::query($ql, @$data['id']);
         while ($r=mysqli_fetch_array($res)) {
           $url = "category/".$r[0].'/'.$r[2];
           $name = $r[1];
@@ -201,8 +195,7 @@ class Menu
 
   public static function getList()
   {
-    global $db;
-    return $db->getList("SELECT `menu` FROM `menu`;");
+    return DB::getList("SELECT `menu` FROM `menu`;");
   }
 
   public static function bootstrap()
