@@ -18,7 +18,7 @@ class DB
   public static $profiling = '';
   public static $replicas = [];
 
-  static public function set($host = 'localhost', $user = 'root', $pass = '', $dbname = '')
+  static public function set($host = 'localhost', $user = 'root', $pass = '123', $dbname = 'Kal')
   {
     self::close();
     if (is_array($host)) {
