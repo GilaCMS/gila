@@ -66,11 +66,14 @@ class Request
     }
     $value = self::key($key);
 
+    if (!in_array('required', $rules) && empty($value)) {
+      return $value;
+    }
+
     foreach ($rules as $line) {
-      [$part1, $err] = explode('?', $line);
-      $array = explode(':', $part1);
-      $rule = $array[0];
-      $p = $array[1] ?? [];
+      [$part1, $err] = explode('??', $line);
+      [$rule, $params] = explode(':', $part1);
+      $p = explode(',', $params[1] ?? '');
       if ($rule==='required' && empty($value)) {
         self::$errors[] = $err ?? __("$key is required");
       }
@@ -85,6 +88,18 @@ class Request
       }
       if ($rule==='numeric' && !is_numeric($value)) {
         self::$errors[] = $err ?? __("$key is not a number");
+      }
+      if ($rule==='match' && preg_match($params, $value)>0) {
+        self::$errors[] = $err ?? __("$key does not match the pattern");
+      }
+      if ($rule==='strip_tags' && strip_tags($value, $params)!=$value) {
+        self::$errors[] = $err ?? __("$key has tags that are not allowed");
+      }
+      if ($rule==='boolean') {
+        $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        if ($value === null) {
+          self::$errors[] = $err ?? __("$key value is not boolean");
+        }
       }
       if ($rule==='unique') {
         $table = $db->res($p[0]);

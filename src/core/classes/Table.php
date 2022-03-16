@@ -683,6 +683,10 @@ class Table
     return $res;
   }
 
+  public function get($args = []) {
+    return $this->getRows($args['where']??[], $args);
+  }
+
   public function getRowsIndexed($filters = [], $args = [])
   {
     $rows = $this->getRows($filters, $args);

@@ -114,6 +114,9 @@ class DB
         $stmt->execute();
         self::$insert_id = self::$link->insert_id;
         self::$result = $stmt->get_result();
+        if (self::$link->error) {
+          error_log('DB: '.self::$link->error, 3, 'log/error.log');
+        }
       } else {
         self::$result = false;
       }
@@ -186,6 +189,9 @@ class DB
     $res = self::query($q, $args);
     self::close();
     if ($res) {
+      if ($res === true) {
+        return [];
+      }
       while ($r=mysqli_fetch_assoc($res)) {
         $arr[]=$r;
       }
