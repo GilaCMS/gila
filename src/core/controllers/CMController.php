@@ -334,12 +334,14 @@ class CMController extends Gila\Controller
       }
       $res = $db->query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
       if ($db->error()) {
-        @$result['error'][] = $db->error();
+        $result['error'][] = $db->error();
       }
-      $gen = $db->gen("SELECT {$gtable->select()} FROM {$gtable->name()} WHERE {$gtable->id()}=?;", $id);
+      $q = "SELECT {$gtable->select()} FROM {$gtable->name()} WHERE {$gtable->id()}=?;";
+      $gen = $db->gen($q, $id);
+      $result['rows'] = [];
 
       foreach ($gen as $r) {
-        @$result['rows'][] = $r;
+        $result['rows'][] = $r;
       }
     }
     Config::setMt($gtable->name());

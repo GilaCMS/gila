@@ -33,6 +33,7 @@ tests/performance
 !src/gila_fb_comments/
 !src/ganalytics/
 !src/featured_grid/
+!src/mysql-chart/
 !src/reCAPTCHA/
 !src/.htaccess
 !sites/.htaccess
