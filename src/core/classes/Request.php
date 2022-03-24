@@ -73,7 +73,7 @@ class Request
     foreach ($rules as $line) {
       [$part1, $err] = explode('??', $line);
       [$rule, $params] = explode(':', $part1);
-      $p = explode(',', $params[1] ?? '');
+      $p = explode(',', $params ?? '');
       if ($rule==='required' && empty($value)) {
         self::$errors[] = $err ?? __("$key is required");
       }
