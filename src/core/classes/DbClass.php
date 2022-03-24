@@ -55,7 +55,7 @@ class DbClass
 
   public function execute($q, $args = null)
   {
-    DB::execute($q, $args);
+    return DB::execute($q, $args);
   }
 
   public function res($v)
@@ -80,7 +80,7 @@ class DbClass
 
   public function gen($q, $args = null)
   {
-    DB::gen($q, $args);
+    return DB::gen($q, $args);
   }
 
   public function getRows($q, $args = null)

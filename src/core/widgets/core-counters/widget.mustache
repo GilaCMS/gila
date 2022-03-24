@@ -1,0 +1,62 @@
+<div class='core-counters-grid'>
+{{#isAdmin}}
+  <div>
+    <a href="admin/content/post">
+      <div>
+        <i class="fa fa-3x fa-pencil" style="color:{{palette.0}}"></i>
+        <span>{{postsText}}</span>
+        <div style="font-size:200%">{{postsC}}</div>
+      </div>
+    </a>
+  </div>
+  <div>
+    <a href="admin/users">
+      <div>
+        <i class="fa fa-3x fa-users" style="color:{{palette.1}}"></i>
+        <span>{{usersText}}</span>
+        <div style="font-size:200%">{{usersC}}</div>
+      </div>
+    </a>
+  </div>
+  <div>
+    <a href="admin/content/page">
+      <div>
+        <i class="fa fa-3x fa-file" style="color:{{palette.2}}"></i>
+        <span>{{pagesText}}</span>
+        <div style="font-size:200%">{{pagesC}}</div>
+      </div>
+    </a>
+  </div>
+  <div>
+    <a href="admin/packages">
+      <div>
+        <i class="fa fa-3x fa-dropbox" style="color:{{palette.3}}"></i>
+        <span>{{packagesText}}</span>
+        <div style="font-size:200%">{{packagesC}}</div>
+      </div>
+    </a>
+  </div>
+{{/isAdmin}}
+{{^isAdmin}}
+  {{#isEditor}}
+  <div class='gm-6 wrapper'>
+    <a href="admin/content/post">
+      <div>
+        <i class="fa fa-3x fa-pencil" style="color:{{palette.0}}"></i>
+        <span>{{postsText}}</span>
+        <div style="font-size:200%" style="color:{{palette.0}}">{{postsC}}</div>
+      </div>
+    </a>
+  </div>
+  <div class='gm-6 wrapper'>
+    <a href="admin/content/page">
+      <div>
+        <i class="fa fa-3x fa-file" style="color:{{palette.2}}"></i>
+        <span>{{pagesText}}</span>
+        <div style="font-size:200%" style="color:{{palette.2}}">{{pagesC}}</div>
+      </div>
+    </a>
+  </div>
+  {{/isEditor}}
+{{/isAdmin}}
+</div>

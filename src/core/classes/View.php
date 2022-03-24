@@ -1,6 +1,7 @@
 <?php
 
 namespace Gila;
+use Mustache_Engine;
 
 class View
 {
@@ -513,7 +514,7 @@ class View
     if (Config::get('use_webp') && $ext!=='svg') {
       if (strpos($_SERVER['HTTP_ACCEPT']??'', 'image/webp')!==false) {
         $ext = 'webp';
-        $type = IMG_WEBP;
+        $type = 32;
       }
     }
 
