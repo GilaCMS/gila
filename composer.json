@@ -7,13 +7,17 @@
         {
             "name": "Vasileios Zoumpourlis",
             "email": "v.zuburlis@gmail.com",
-            "homepage": "https://zuburlis.com",
+            "homepage": "https://lampcoder.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.0",
-        "twilio/sdk": "^6.34"
+        "twilio/sdk": "^6.34",
+        "mustache/mustache": "~2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.3.0"
     },
     "autoload": {
         "psr-4": {

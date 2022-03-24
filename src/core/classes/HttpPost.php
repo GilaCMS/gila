@@ -16,7 +16,7 @@ class HttpPost
     }
     $content_type = $args['type'] ?? ($prefix[$name]['type']?? 'json');
     $ignore_error = $args['ignore_errors'] ?? ($prefix[$name]['ignore_errors']?? true);
-    $header = $args['header'] ?? ($prefix[$name]['header']?? []);
+    $headers = $args['headers'] ?? ($prefix[$name]['headers']?? []);
     if ($_data = @self::$prefix[$name]['data']) {
       $data = array_merge($_data, $data);
     }
@@ -28,14 +28,17 @@ class HttpPost
       $url = $_url.$url;
     }
     $header_str = '';
-    foreach ($header as $k=>$h) {
+    foreach ($headers as $k=>$h) {
       $header_str .= $k.': '.$h."\r\n";
+    }
+    if (!isset($headers['content-type'])) {
+      $header_str = "Content-type: application/$content_type\r\n".$header_str;
     }
 
     $options = [
       'http' => [
         'method'  => $args['method']??'POST',
-        'header'  => "Content-type: application/$content_type\r\n".$header_str,
+        'header'  => $header_str,
         'content' => ($content_type==='json'? json_encode($data): http_build_query($data)),
         'ignore_errors' => $ignore_error
       ]
