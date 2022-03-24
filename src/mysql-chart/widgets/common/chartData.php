@@ -23,6 +23,11 @@ if ($palette = Config::get('admin_palette')) {
 }
 
 if ($data['data']=='array') {
+  foreach ($data['chartData']['datasets'] as $i=>$ds) {
+    if(!isset($ds['backgroundColor'])) {
+      $data['chartData']['datasets'][$i]['backgroundColor'] = $chartColors;
+    }
+  }
   return $data['chartData'];
 }
 
