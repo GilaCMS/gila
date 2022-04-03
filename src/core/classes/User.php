@@ -240,8 +240,8 @@ class User
       return false;
     }
 
-    $email = Request::key('email');
-    $name = Request::key('name');
+    $email = $data['email'] ?? Request::key('email');
+    $name = $data['name'] ?? Request::key('name');
     $password = $data['password'];
     Config::addLang('core/lang/myprofile/');
 

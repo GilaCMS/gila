@@ -16,7 +16,7 @@ class HttpPost
     }
     $content_type = $args['type'] ?? ($prefix[$name]['type']?? 'json');
     $ignore_error = $args['ignore_errors'] ?? ($prefix[$name]['ignore_errors']?? true);
-    $headers = $args['headers'] ?? ($prefix[$name]['headers']?? []);
+    $headers = $args['headers'] ?? ($args['header'] ?? ($prefix[$name]['headers']?? []));
     if ($_data = @self::$prefix[$name]['data']) {
       $data = array_merge($_data, $data);
     }
@@ -47,6 +47,7 @@ class HttpPost
     $context = stream_context_create($options);
     $this->body = file_get_contents($url, false, $context);
     $this->header = $http_response_header;
+    error_log('context: '.$context.'?');
   }
 
   public function body()

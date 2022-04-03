@@ -61,19 +61,23 @@ class Request
 
   static public function validateParam($key, $rules) {
     global $db;
+    $value = self::key($key);
+    return self::validateValue($value, $rules);
+  }
+
+  static public function validateValue($value, $rules) {
     if (is_string($rules)) {
       $rules = explode('|', $rules);
     }
-    $value = self::key($key);
 
-    if (!in_array('required', $rules) && empty($value)) {
+    if (empty($value) && in_array('nullable', $rules)) {
       return $value;
     }
 
     foreach ($rules as $line) {
       [$part1, $err] = explode('??', $line);
       [$rule, $params] = explode(':', $part1);
-      $p = explode(',', $params[1] ?? '');
+      $p = explode(',', $params ?? '');
       if ($rule==='required' && empty($value)) {
         self::$errors[] = $err ?? __("$key is required");
       }
@@ -102,9 +106,9 @@ class Request
         }
       }
       if ($rule==='unique') {
-        $table = $db->res($p[0]);
-        $field = $db->res($key);
-        if (0 < $db->value("SELECT COUNT(*) FROM $table WHERE $field=?", [$value])) {
+        $table = DB::res($p[0]);
+        $field = DB::res($key);
+        if (0 < DB::value("SELECT COUNT(*) FROM $table WHERE $field=?", [$value])) {
           self::$errors[] = $err ?? __("$key value already exists");
         }
       }

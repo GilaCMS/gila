@@ -5,6 +5,7 @@ use Gila\Form;
 use Gila\Session;
 use Gila\Router;
 use Gila\Table;
+use Gila\Response;
 
 /**
 * Lists content types and shows grid content data
@@ -318,7 +319,8 @@ class CMController extends Gila\Controller
     }
 
     $result = [];
-    $ids = explode(',', $id);
+    $ids = explode(',', (string)$id);
+    $result['ids'] = $ids;
     $result['fields'] = $gtable->fields();
 
     foreach ($ids as $id) {
@@ -332,18 +334,14 @@ class CMController extends Gila\Controller
       if ($error = Table::$error) {
         Response::error($error, 200);
       }
-      $res = $db->query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
+      $res = DB::query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
       if ($db->error()) {
         $result['error'][] = $db->error();
       }
       $q = "SELECT {$gtable->select()} FROM {$gtable->name()} WHERE {$gtable->id()}=?;";
-      $gen = $db->gen($q, $id);
-      $result['rows'] = [];
-
-      foreach ($gen as $r) {
-        $result['rows'][] = $r;
-      }
+      $result['rows'] = DB::get($q, [$id]);  
     }
+
     Config::setMt($gtable->name());
     echo json_encode($result);
   }

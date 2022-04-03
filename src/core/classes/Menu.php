@@ -36,7 +36,7 @@ class Menu
   public static function getData($menu)
   {
     $menuLN = $menu.'.'.Config::lang();
-    $data =  Cache::remember($menuLN.'_data', 259200, function ($u) {
+    $data =  Cache::remember($menuLN.'_data', 100, function ($u) {
       return DB::value(
         "SELECT `data` FROM menu WHERE `menu`=?
         UNION SELECT `data` FROM menu WHERE `menu`=?;",
