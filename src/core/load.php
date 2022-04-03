@@ -56,6 +56,9 @@ Config::widgets([
   'search'=>'core/widgets/search',
   'tag'=>'core/widgets/tag',
   'html'=>'core/widgets/html',
+  'carousel'=>'core/widgets/carousel',
+  'carousel-posts'=>'core/widgets/carousel-posts',
+  'carousel-pages'=>'core/widgets/carousel-pages',
 ]);
 Config::$widget_area=['dashboard'];
 
