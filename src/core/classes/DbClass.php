@@ -11,7 +11,7 @@ class DbClass
   private $pass;
   private $dsch;
   private $connected = false;
-  private $link;
+  public $link;
   public $insert_id;
   public $result;
   public $profiling = '';
@@ -46,6 +46,7 @@ class DbClass
   public function query($q, $args = null)
   {
     return DB::query($q, $args);
+    $this->insert_id = DB::$insert_id;
   }
 
   public function log($folder = false)

@@ -30,7 +30,7 @@ if ($widget_data->show_thumbnails == 1) {
 
 foreach ($posts as $key=>$r) {
   echo "<li>";
-  echo "<a href='".Config::base('blog/'.$r['id'].'/'.$r['slug'])."'>";
+  echo "<a class='text-decoration-none' href='".Config::base('blog/'.$r['id'].'/'.$r['slug'])."'>";
   if ($widget_data->show_thumbnails == 1) {
     if ($stacked[$key]!==false) {
       if ($img=View::thumb($r['img'], 100)) {

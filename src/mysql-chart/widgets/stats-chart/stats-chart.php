@@ -1,7 +1,7 @@
 <?=View::script('assets/mysql-chart/chartjs/Chart.bundle.min.js')?>
 <?php
 global $db;
-$wid = $widget_data->widget_id;
+$wid = $data['widget_id'];
 $canvas_id = 'wdgt'.$wid.'cnvs';
 $ctx = 'wdgt'.$wid.'ctx';
 $chart = 'wdgt'.$wid.'chart';
@@ -19,8 +19,8 @@ $dataOptions = ['web'=>'Page Views'];
 foreach (Config::getList('chartjs-stat') as $item) {
   $dataOptions[$item['type']] = $item['label'];
 }
-$dataKey = $widget_data->data ?? 'web';
-$dataGroup = $widget_data->group ?? null;
+$dataKey = $data['data'] ?? 'web';
+$dataGroup = $data['group'] ?? null;
 $dataLabel = $dataOptions[$dataKey];
 ?>
 <style>.widget-stats-chart{grid-column: span 2;}</style>
@@ -111,10 +111,10 @@ window.addEventListener("load",function(event) {
 		options: {
 			responsive: true,
       legend: {
-        <?=($widget_data->legend==''?'display:false':'position:"'.$widget_data->legend.'"')?>
+        <?=($data['legend']==''?'display:false':'position:"'.$data['legend'].'"')?>
       },
 			title: {
-				<?=($widget_data->title==''?'display:false':'display: true,text:"'.$widget_data->title.'"')?>
+				<?=($data['title']==''?'display:false':'display: true,text:"'.$data['title'].'"')?>
 			},
 			tooltips: {
 				mode: 'index',

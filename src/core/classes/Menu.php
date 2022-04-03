@@ -31,6 +31,8 @@ class Menu
   {
     Config::setMt('menu');
     DB::query("REPLACE INTO menu(`menu`,`data`) VALUES(?,?);", [$menu, $data]);
+    $menuLN = $menu.'.'.Config::lang();
+    Cache::remove($menuLN.'_data');
   }
 
   public static function getData($menu)

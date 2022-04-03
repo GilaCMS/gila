@@ -16,11 +16,11 @@ window.addEventListener("load",function(event) {
             responsive: true,
             scaleOverride: true,
             legend: {
-                <?=($widget_data->legend==''?'display:false':'position:"'.$widget_data->legend.'"')?>
+                <?=($data['legend']==''?'display:false':'position:"'.$data['legend'].'"')?>
             },
             title: {
                 display: true,
-                text: '<?=$widget_data->title?>'
+                text: '<?=$data['title']?>'
             },
 			scales: {
 				yAxes: [{

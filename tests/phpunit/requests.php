@@ -30,24 +30,22 @@ class RequestsTest extends TestCase
 
   public static function setUpBeforeClass()
   {
-    global $db;
     self::createUserTable();
     $pass = Config::hash("password");
-    $db->query(
+    DB::query(
       "INSERT INTO user SET email=?, pass=?, active=1;",
       ["test_login_auth@email.com", Config::hash("password")]
     );
-    $uid = $db->insert_id;
-    $db->query("INSERT INTO usermeta SET `value`='ABC', user_id=?, `vartype`='token';", [$uid]);
-    $db->query("INSERT INTO usermeta SET `value`=1, user_id=?, `vartype`='role';", [$uid]);
+    $uid = DB::$insert_id;
+    DB::query("INSERT INTO usermeta SET `value`='ABC', user_id=?, `vartype`='token';", [$uid]);
+    DB::query("INSERT INTO usermeta SET `value`=1, user_id=?, `vartype`='role';", [$uid]);
     self::$userId = $uid;
   }
 
   public static function tearDownAfterClass()
   {
-    global $db;
-    $db->query("DELETE FROM user WHERE email='test_login_auth@email.com';");
-    $db->query("DELETE FROM usermeta WHERE user_id=?;", self::$userId);
+    DB::query("DELETE FROM user WHERE email='test_login_auth@email.com';");
+    DB::query("DELETE FROM usermeta WHERE user_id=?;", self::$userId);
   }
 
   public function test_login_auth()
@@ -61,7 +59,6 @@ class RequestsTest extends TestCase
 
   public function test_register()
   {
-    global $db;
     Router::controller('user', 'core/controllers/UserController');
     Session::user(0);
     $email = "test_register@email.com";
@@ -72,53 +69,52 @@ class RequestsTest extends TestCase
     $_POST['password'] = "pass";
     $GLOBALS['config']['user_activation'] = 'byadmin';
     $GLOBALS['config']['user_register'] = 0;
-    $db->query('DELETE FROM user WHERE email=?;', $email);
+    DB::query('DELETE FROM user WHERE email=?;', $email);
 
     $this->request('user/register', 'POST');
-    $uid = $db->value('SELECT id from user WHERE email=?;', $email);
+    $uid = DB::value('SELECT id from user WHERE email=?;', $email);
     $this->assertNull($uid);
 
     $GLOBALS['config']['user_register'] = 1;
     $this->request('user/register', 'POST');
-    $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
+    $active = DB::value('SELECT active FROM user WHERE email=?;', $email);
     $this->assertEquals(0, $active);
-    $db->query('DELETE FROM user WHERE email=?;', $email);
+    DB::query('DELETE FROM user WHERE email=?;', $email);
 
     $_REQUEST['name'] = "Register Test<script>alert(0)</script>";
     $_POST['name'] = "Register Test<script>alert(0)</script>";
     $this->request('user/register', 'POST');
-    $uid = $db->value('SELECT id from user WHERE email=?;', $email);
+    $uid = DB::value('SELECT id from user WHERE email=?;', $email);
     $this->assertNull($uid);
 
     $_REQUEST['name'] = "Register Test";
     $_POST['name'] = "Register Test";
     $GLOBALS['config']['user_activation'] = 'auto';
     $this->request('user/register', 'POST');
-    $active = $db->value('SELECT active FROM user WHERE email=?;', $email);
+    $active = DB::value('SELECT active FROM user WHERE email=?;', $email);
     $this->assertEquals(1, $active);
-    $db->query('DELETE FROM user WHERE email=?;', $email);
+    DB::query('DELETE FROM user WHERE email=?;', $email);
 
     $GLOBALS['config']['user_activation'] = 'byemail';
     $this->request('user/register', 'POST');
-    $uid = $db->value('SELECT id FROM user WHERE email=?;', $email);
-    $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
+    $uid = DB::value('SELECT id FROM user WHERE email=?;', $email);
+    $active = DB::value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(0, $active);
 
     $_GET['ap'] = 'wrongcode';
     $this->request('user/activate', 'GET');
-    $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
+    $active = DB::value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(0, $active);
 
-    $_GET['ap'] = $db->value('SELECT `value` FROM usermeta WHERE 
+    $_GET['ap'] = DB::value('SELECT `value` FROM usermeta WHERE 
       vartype="activate_code" AND user_id=?;', $uid);
     $this->request('user/activate', 'GET');
-    $active = $db->value('SELECT active FROM user WHERE id=?;', $uid);
+    $active = DB::value('SELECT active FROM user WHERE id=?;', $uid);
     $this->assertEquals(1, $active);
   }
 
   public function test_blocks()
   {
-    global $db;
     Router::controller('blocks', 'core/controllers/BlocksController');
     Config::widgets([
       'html'=>'core/widgets/html',
@@ -128,8 +124,8 @@ class RequestsTest extends TestCase
     Session::user(self::$userId, 'Test', 'test@mail.com');
     $_POST = ['id'=>'page_1'];
     $response = $this->request('blocks/discard');
-    $db->query('REPLACE INTO `page` SET id=1;');
-    $db->query('UPDATE `page` SET blocks=\'\' WHERE id=1;');
+    DB::query('REPLACE INTO `page` SET id=1;');
+    DB::query('UPDATE `page` SET blocks=\'\' WHERE id=1;');
 
     $_GET = ['id'=>'new', 'type'=>'html'];
     $response = $this->request('blocks/edit');
@@ -170,14 +166,13 @@ class RequestsTest extends TestCase
 
     $_POST = ['id'=>'page_1'];
     $response = $this->request('blocks/save', 'POST');
-    $blocks = $db->value('SELECT blocks FROM page WHERE id=1;');
+    $blocks = DB::value('SELECT blocks FROM page WHERE id=1;');
     $this->assertEquals('[{"text":"<p>Something<\/p>","_type":"html"}]', $blocks);
   }
 
   public static function createUserTable()
   {
-    global $db;
-    $db->query('CREATE TABLE IF NOT EXISTS `user` (
+    DB::query('CREATE TABLE IF NOT EXISTS `user` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `username` varchar(80) DEFAULT NULL,
       `email` varchar(80) DEFAULT NULL,
@@ -189,7 +184,7 @@ class RequestsTest extends TestCase
       KEY `email` (`email`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     
-    $db->query('CREATE TABLE IF NOT EXISTS `usermeta` (
+    DB::query('CREATE TABLE IF NOT EXISTS `usermeta` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `user_id` int(11) DEFAULT NULL,
       `vartype` varchar(80) DEFAULT NULL,
