@@ -12,7 +12,7 @@ class InstallGila extends TestCase
     $db_pass = "password";
     $email = "admin@mail.com";
     $pass = "password";
-    $base = "http://127.0.0.1/";
+    $base = "http://localhost/";
 
     $default_opts = array(
             'http'=>array(

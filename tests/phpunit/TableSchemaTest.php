@@ -11,8 +11,7 @@ class TableSchemaTest extends TestCase
 {
   public function test_update()
   {
-    global $db;
-    $db->query('DROP TABLE test_sc;');
+    DB::query('DROP TABLE test_sc;');
 
     TableSchema::update([
       'name'=> 'test_sc',
@@ -22,7 +21,7 @@ class TableSchemaTest extends TestCase
         ]
       ]
     ]);
-    $describe = $db->getRows('DESCRIBE test_sc;');
+    $describe = DB::getRows('DESCRIBE test_sc;');
     $this->assertEquals('id', $describe[0][0]);
     $this->assertEquals('varchar(40)', $describe[1][1]);
     $this->assertEquals(null, $describe[1][3]);
@@ -36,7 +35,7 @@ class TableSchemaTest extends TestCase
         ]
       ]
     ]);
-    $describe = $db->getRows('DESCRIBE test_sc;');
+    $describe = DB::getRows('DESCRIBE test_sc;');
     $this->assertEquals('int(4)', $describe[1][1]);
     $this->assertEquals('MUL', $describe[1][3]);
   }

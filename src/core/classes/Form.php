@@ -229,7 +229,7 @@ class Form
       },
       'postcategory'=> function ($name, $field, $ov) {
         $html = '<select class="g-input" name="'.$name.'">';
-        $res=$db->get('SELECT id,title FROM postcategory;');
+        $res = DB::get('SELECT id,title FROM postcategory;');
         $html .= '<option value=""'.(''==$ov?' selected':'').'>*</option>';
         foreach ($res as $r) {
           $html .= '<option value="'.$r[0].'"'.($r[0]==$ov?' selected':'').'>'.$r[1].'</option>';

@@ -7,13 +7,12 @@ class User
 
   public static function create($email, $password, $name = '', $active = 0)
   {
-    global $db;
     if (Event::get('validateUserPassword', true, $password)===true) {
       $pass = ($password===null)? '': Config::hash($password);
-      if ($db->value("SELECT COUNT(*) FROM user WHERE email=?", [$email])>0) {
+      if (DB::value("SELECT COUNT(*) FROM user WHERE email=?", [$email])>0) {
         return false;
       }
-      $userId = $db->create('user', [
+      $userId = DB::create('user', [
         'email'=>$email,'pass'=>$pass,'username'=>$name,'active'=>$active,'language'=>Config::lang()
       ]);
       Event::fire('User::create', ['userId'=>$userId]);
@@ -25,37 +24,34 @@ class User
 
   public static function meta($id, $meta, $value = null, $multi = false)
   {
-    global $db;
     if ($value===null) {
       $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=? ORDER BY id DESC LIMIT 1;";
-      return $db->value($ql, [$id, $meta]);
+      return DB::value($ql, [$id, $meta]);
     }
     if ($multi==false) {
-      if ($db->value("SELECT COUNT(*) FROM usermeta WHERE user_id=? AND vartype=?;", [$id, $meta])) {
+      if (DB::value("SELECT COUNT(*) FROM usermeta WHERE user_id=? AND vartype=?;", [$id, $meta])) {
         $ql = "UPDATE usermeta SET `value`=? WHERE user_id=? AND vartype=?;";
-        return $db->query($ql, [$value, $id, $meta]);
+        return DB::query($ql, [$value, $id, $meta]);
       }
     }
     $ql = "INSERT INTO usermeta(user_id,vartype,`value`) VALUES(?,?,?);";
-    return $db->query($ql, [$id, $meta, $value]);
+    return DB::query($ql, [$id, $meta, $value]);
   }
 
   public static function metaDelete($id, $meta, $value=null)
   {
-    global $db;
     if ($value===null) {
-      $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=?", [$id, $meta]);
+      DB::query("DELETE FROM usermeta WHERE user_id=? AND vartype=?", [$id, $meta]);
     } else {
-      $db->query("DELETE FROM usermeta WHERE user_id=? AND vartype=? AND `value`=?", [$id, $meta, $value]);
+      DB::query("DELETE FROM usermeta WHERE user_id=? AND vartype=? AND `value`=?", [$id, $meta, $value]);
     }
   }
 
   public static function metaList($id, $meta, $values = null)
   {
-    global $db;
     if ($values===null) {
       $ql = "SELECT `value` FROM usermeta where user_id=? and vartype=?;";
-      return $db->read()->getList($ql, [$id, $meta]);
+      return DB::getList($ql, [$id, $meta]);
     }
 
     if (!is_array($values)) {
@@ -65,20 +61,18 @@ class User
     self::metaDelete($id, $meta);
     foreach ($values as $value) {
       $ql = "INSERT INTO usermeta(user_id,vartype,value) VALUES(?,?,?);";
-      $db->query($ql, [$id, $meta, $value]);
+      DB::query($ql, [$id, $meta, $value]);
     }
     return true;
   }
 
   public static function getIdsByMeta($vartype, $value)
   {
-    global $db;
-    return $db->getList("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';", [$value]);
+    return DB::getList("SELECT user_id FROM usermeta WHERE value=? AND vartype='$vartype';", [$value]);
   }
 
   public static function getIdsWithPermission($permission)
   {
-    global $db;
     $rp = Config::getArray('permissions');
     $roles = [];
     foreach ($rp as $role=>$row) {
@@ -89,13 +83,12 @@ class User
       }
     }
     $values = implode(',', $roles);
-    return $db->getList("SELECT user_id FROM usermeta WHERE value IN({$values}) AND vartype='role';");
+    return DB::getList("SELECT user_id FROM usermeta WHERE value IN({$values}) AND vartype='role';");
   }
 
   public static function getByMeta($key, $value)
   {
-    global $db;
-    $res = $db->read()->get("SELECT * FROM user WHERE id=(SELECT user_id FROM usermeta WHERE vartype=? AND value=? LIMIT 1)", [$key, $value]);
+    $res = DB::get("SELECT * FROM user WHERE id=(SELECT user_id FROM usermeta WHERE vartype=? AND value=? LIMIT 1)", [$key, $value]);
     if ($res) {
       return $res[0];
     }
@@ -104,8 +97,7 @@ class User
 
   public static function getByEmail($email)
   {
-    global $db;
-    $res = $db->read()->get("SELECT * FROM user WHERE email=?", $email);
+    $res = DB::get("SELECT * FROM user WHERE email=?", $email);
     if ($res) {
       return $res[0];
     }
@@ -114,28 +106,25 @@ class User
 
   public static function getById($id)
   {
-    global $db;
     if (!isset(self::$user[$id])) {
-      self::$user[$id] = $db->read()->getOne("SELECT * FROM user WHERE id=?", $id);
+      self::$user[$id] = DB::getOne("SELECT * FROM user WHERE id=?", $id);
     }
     return self::$user[$id];
   }
 
   public static function getByResetCode($rp)
   {
-    global $db;
-    $user_id = $db->read()->value("SELECT user_id FROM usermeta WHERE vartype='reset_code' AND value=?;", $rp);
+    $user_id = DB::value("SELECT user_id FROM usermeta WHERE vartype='reset_code' AND value=?;", $rp);
     if (!$user_id) {
       return false;
     }
-    return $db->read()->get("SELECT * FROM user WHERE id='$user_id';")[0];
+    return DB::get("SELECT * FROM user WHERE id='$user_id';")[0];
   }
 
   public static function updatePassword($id, $pass)
   {
-    global $db;
     if (Event::get('validateUserPassword', true, $pass)===true) {
-      $db->query("UPDATE user SET pass=? WHERE id=?;", [Config::hash($pass),$id]);
+      DB::query("UPDATE user SET pass=? WHERE id=?;", [Config::hash($pass),$id]);
       return true;
     } else {
       return false;
@@ -144,17 +133,15 @@ class User
 
   public static function updateName($id, $name)
   {
-    global $db;
     if (Session::key('user_id')==$id) {
       Session::key('user_name', $name);
     }
-    return $db->query("UPDATE user SET username=? WHERE id=?;", [$name,$id]);
+    return DB::query("UPDATE user SET username=? WHERE id=?;", [$name,$id]);
   }
 
   public static function updateActive($id, $value)
   {
-    global $db;
-    return $db->query("UPDATE user SET active=? WHERE id=?;", [$value, $id]);
+    return DB::query("UPDATE user SET active=? WHERE id=?;", [$value, $id]);
   }
 
   public static function permissions($id)
@@ -182,7 +169,6 @@ class User
 
   public static function logoutFromDevice($n)
   {
-    global $db;
     $sessions = Session::findByUserId(Session::userId());
     if (!isset($sessions[$n])) {
       return false;
@@ -193,15 +179,13 @@ class User
 
   public static function level($id)
   {
-    global $db;
-    return $db->value("SELECT MAX(userrole.level) FROM userrole,usermeta
+    return DB::value("SELECT MAX(userrole.level) FROM userrole,usermeta
     WHERE userrole.id=usermeta.value AND usermeta.vartype='role' AND usermeta.user_id=?", $id) ?? 0;
   }
 
   public static function roleLevel($id)
   {
-    global $db;
-    return $db->value("SELECT userrole.level FROM userrole WHERE id=?", $id) ?? 0;
+    return DB::value("SELECT userrole.level FROM userrole WHERE id=?", $id) ?? 0;
   }
 
   public static function sendInvitation($data)

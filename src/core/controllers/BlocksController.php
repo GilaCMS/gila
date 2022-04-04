@@ -5,6 +5,7 @@ use Gila\Config;
 use Gila\View;
 use Gila\Event;
 use Gila\Router;
+use Gila\DB;
 
 class BlocksController extends Gila\Controller
 {
@@ -22,7 +23,6 @@ class BlocksController extends Gila\Controller
 
   public function indexAction()
   {
-    global $db;
     $table = Router::request('t');
     $id = Router::param('id', 2);
     $widgets = self::readBlocks($table, $id);
@@ -30,7 +30,7 @@ class BlocksController extends Gila\Controller
       View::renderAdmin('404.php');
       return;
     }
-    $title = $db->value("SELECT title FROM $table WHERE id=?;", [$id]);
+    $title = DB::value("SELECT title FROM $table WHERE id=?;", [$id]);
     View::set('contentType', $table);
     View::set('id', $id);
     View::set('isDraft', self::$draft);
@@ -57,7 +57,6 @@ class BlocksController extends Gila\Controller
 
   public function editAction()
   {
-    global $db;
     if ($id = Router::param('id', 2)) {
       $idArray = explode('_', $id);
       View::set('widget_id', $id);
@@ -72,7 +71,6 @@ class BlocksController extends Gila\Controller
 
   public function updateAction()
   {
-    global $db;
     $id = $_POST['widget_id'];
     $idArray = explode('_', $id);
     $content = $idArray[0];
@@ -96,7 +94,6 @@ class BlocksController extends Gila\Controller
 
   public function posAction()
   {
-    global $db;
     $rid = $_POST['id'];
     $idArray = explode('_', $rid);
     $content = $idArray[0];
@@ -140,7 +137,6 @@ class BlocksController extends Gila\Controller
 
   public function createAction()
   {
-    global $db;
     $rid = $_POST['id'];
     $idArray = explode('_', $rid);
     $content = $idArray[0];
@@ -168,7 +164,6 @@ class BlocksController extends Gila\Controller
 
   public function deleteAction()
   {
-    global $db;
     $rid = $_POST['id'];
     $idArray = explode('_', $rid);
     $content = $idArray[0];
@@ -232,14 +227,13 @@ class BlocksController extends Gila\Controller
 
   public static function readBlocks($content, $id)
   {
-    global $db;
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
     if (file_exists($draftFile)) {
       $json = file_get_contents($draftFile);
       self::$draft = true;
     } else {
-      $content = $db->res($content);
-      $json = $db->value("SELECT blocks FROM `$content` WHERE id=?;", [$id]);
+      $content = DB::res($content);
+      $json = DB::value("SELECT blocks FROM `$content` WHERE id=?;", [$id]);
       self::$draft = false;
     }
     return json_decode($json, true)??[];
@@ -256,14 +250,13 @@ class BlocksController extends Gila\Controller
 
   public static function saveBlocks($content, $id, $blocks)
   {
-    global $db;
     $return = [];
     foreach ($blocks as $w) {
       if ($w!==null) {
         $return[] = $w;
       }
     }
-    $db->query("UPDATE $content SET `blocks`=? WHERE id=?;", [json_encode($return), $id]);
+    DB::query("UPDATE $content SET `blocks`=? WHERE id=?;", [json_encode($return), $id]);
     $draftFile = LOG_PATH.'/blocks/'.$content.$id.'.json';
     unlink($draftFile);
   }

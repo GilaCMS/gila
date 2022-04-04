@@ -1,6 +1,7 @@
 <ul class="nav navbar-nav navbar-right">
 <?php
 use Gila\Page;
+use Gila\DB;
 
 $menu_items = $menu_data['children'];
 
@@ -25,7 +26,6 @@ foreach ($menu_items as $mi) {
 
 function menu_item($mi)
 {
-  global $db;
   $url = isset($mi['url'])?$mi['url']:(Router::path().'#');
   $name = isset($mi['name'])?$mi['name']:'';
 
@@ -37,7 +37,7 @@ function menu_item($mi)
   }
   if ($mi['type']=='postcategory') {
     $ql = "SELECT id,title FROM postcategory WHERE id=?;";
-    $res = $db->query($ql, @$mi['id']);
+    $res = DB::query($ql, @$mi['id']);
     while ($r=mysqli_fetch_array($res)) {
       $url = "category/".$r[0];
       $name = $r[1];

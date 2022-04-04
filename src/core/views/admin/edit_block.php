@@ -2,7 +2,6 @@
 <form id="widget_options_form" class="g-form">
 <input type="hidden" value="<?=$widget_id?>" id='widget_id' name='widget_id'>
 <?php
-global $db;
 $widget_data = [];
 $fields = Gila\Widget::getFields($type);
 

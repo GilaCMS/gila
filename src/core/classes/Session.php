@@ -86,16 +86,14 @@ class Session
 
   public static function find($gsessionId)
   {
-    global $db;
-    $res = $db->read()->get("SELECT * FROM sessions
+    $res = DB::get("SELECT * FROM sessions
     WHERE gsessionid=? LIMIT 1;", [$gsessionId]);
     return $res[0] ?? null;
   }
 
   public static function findByUserId($userId)
   {
-    global $db;
-    return $db->read()->get("SELECT * FROM sessions WHERE user_id=?;", [$userId]);
+    return DB::get("SELECT * FROM sessions WHERE user_id=?;", [$userId]);
   }
 
   public static function setCookie($userId)
@@ -125,21 +123,19 @@ class Session
 
   public static function create($userId, $gsessionId, $ip, $user_agent)
   {
-    global $db;
     Event::fire('Session::create', [
       'user_id'=>$userId, 'gsessionid'=>$gsessionId,
       'ip_address'=>$ip, 'user_agent'=>$user_agent
     ]);
     self::$token = $gsessionId;
     $ql = "INSERT INTO `sessions` (user_id, gsessionid, ip_address, user_agent) VALUES(?,?,?,?);";
-    $db->query($ql, [$userId, $gsessionId, $ip, $user_agent]);
+    DB::query($ql, [$userId, $gsessionId, $ip, $user_agent]);
   }
 
   public static function remove($gsessionId)
   {
-    global $db;
     $ql = "DELETE FROM sessions WHERE gsessionid=?;";
-    $db->query($ql, [$gsessionId]);
+    DB::query($ql, [$gsessionId]);
   }
 
   public static function define($vars)
@@ -172,9 +168,8 @@ class Session
 
   public static function commit()
   {
-    global $db;
     $ql = "UPDATE `sessions` SET `data`=?, updated=NOW() WHERE gsessionid=?;";
-    $db->query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']??self::$token]);
+    DB::query($ql, [json_encode(self::$data), $_COOKIE['GSESSIONID']??self::$token]);
   }
 
   public static function unsetKey($key)

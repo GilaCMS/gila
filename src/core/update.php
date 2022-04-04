@@ -1,4 +1,5 @@
 <?php
+use Gila\DB;
 
 $ctp = __DIR__.'/tables/';
 
@@ -31,5 +32,4 @@ TableSchema::update(include $ctp.'redirect.php');
 Config::dir(LOG_PATH.'/stats');
 Config::dir(LOG_PATH.'/cacheItem');
 
-global $db;
-$db->query("UPDATE `page` SET language=? WHERE language IS NULL;", [Config::lang()]);
+DB::query("UPDATE `page` SET language=? WHERE language IS NULL;", [Config::lang()]);
