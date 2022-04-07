@@ -12,12 +12,11 @@
 <?=View::css('core/admin/vue-editor.css');?>
 <?=View::script('core/admin/vue-editor.js');?>
 <?php
-global $db;
 $user = User::getById($user_id);
 View::alerts();
 
 if (Request::post('submit-btn')==='submited' && isset($_POST['user_about'])) {
-  $db->query("UPDATE user SET about=? WHERE id=?;", [$_POST['user_about'], $user_id]);
+  DB::query("UPDATE user SET about=? WHERE id=?;", [$_POST['user_about'], $user_id]);
 }
 ?>
 

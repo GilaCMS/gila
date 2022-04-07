@@ -22,7 +22,6 @@ if ($palette = Config::get('admin_palette')) {
 }
 
 if ($data['query']!='') {
-  global $db;
   $labels = [];
   $datasets = [];
   $data = [];
@@ -33,14 +32,14 @@ if ($data['query']!='') {
   $dataArray = [];
 
   if ($data['data']=='mysql') {
-      $db->query('SET SESSION TRANSACTION READ ONLY;');
-      $res = $db->query($data['query']);
-      $db->query->close();
+      Gila\DB::query('SET SESSION TRANSACTION READ ONLY;');
+      $res = Gila\DB::query($data['query']);
+      Gila\DB::query->close();
     if ($res) {
       while ($r = mysqli_fetch_array($res)) {
         $dataArray[] = $r;
       }
-    } elseif ($error = $db->error()) {
+    } elseif ($error = Gila\DB::error()) {
       echo "Mysql error: $error";
     }
   } elseif ($data['type']=='json') {

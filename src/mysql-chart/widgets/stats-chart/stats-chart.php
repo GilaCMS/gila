@@ -1,6 +1,5 @@
 <?=View::script('assets/mysql-chart/chartjs/Chart.bundle.min.js')?>
 <?php
-global $db;
 $wid = $data['widget_id'];
 $canvas_id = 'wdgt'.$wid.'cnvs';
 $ctx = 'wdgt'.$wid.'ctx';

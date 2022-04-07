@@ -1,6 +1,5 @@
 <?=View::script('assets/mysql-chart/chartjs/Chart.bundle.min.js')?>
 <?php
-global $db;
 $wid = $data['widget_id'];
 $canvas_id = 'wdgt'.$wid.'cnvs';
 $ctx = 'wdgt'.$wid.'ctx';
@@ -25,5 +24,5 @@ if (isset($queries[$data['data']])) {
   $data['data'] = 'mysql';
 }
 
-$db->query('SET SESSION TRANSACTION READ ONLY;');
+Gila\DB::query('SET SESSION TRANSACTION READ ONLY;');
 include __DIR__.'/../common/chart.'.$data['type'].'.php';

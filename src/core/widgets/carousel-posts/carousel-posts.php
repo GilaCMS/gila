@@ -1,6 +1,5 @@
 <?php 
-global $db;
-$posts = $db->get("SELECT id,description,title,slug,SUBSTRING(post,1,300) as post,
+$posts = DB::get("SELECT id,description,title,slug,SUBSTRING(post,1,300) as post,
 (SELECT value FROM postmeta WHERE post_id=post.id AND vartype='thumbnail') as img
 FROM post ORDER BY id DESC LIMIT ?",[$data['items-to-show']]);
 ?>

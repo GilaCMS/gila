@@ -1,11 +1,10 @@
 <?php
-global $db;
 
 // load all permissions
 $permissions = Gila\Profile::getAllPermissions();
 
 // load all user groups
-$roles = array_merge([['member','*']], $db->get("SELECT id,userrole FROM userrole;"));
+$roles = array_merge([['member','*']], Gila\DB::get("SELECT id,userrole FROM userrole;"));
 
 // update permissions if form submited
 if (isset($_POST['submit']) && isset($_POST['role'])) {

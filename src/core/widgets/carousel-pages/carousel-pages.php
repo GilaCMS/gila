@@ -1,6 +1,5 @@
 <?php 
-global $db;
-$pages = $db->get("SELECT * FROM `page` ORDER BY id DESC LIMIT ?",[$data['items-to-show']]);
+$pages = DB::get("SELECT * FROM `page` ORDER BY id DESC LIMIT ?",[$data['items-to-show']]);
 ?>
 <?=View::script('lib/bootstrap5/bootstrap.bundle.min.js')?>
 <?=View::cssAsync('lib/bootstrap5/bootstrap.min.css')?>

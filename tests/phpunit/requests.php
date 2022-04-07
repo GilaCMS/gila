@@ -18,6 +18,8 @@ use Gila\Session;
 use Gila\Package;
 use Gila\Table;
 use Gila\TableSchema;
+use Gila\DB;
+
 
 $GLOBALS['config']['db']['name'] = 'g_db';
 Event::listen('sendmail', function ($x) {

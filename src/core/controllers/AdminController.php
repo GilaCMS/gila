@@ -56,7 +56,6 @@ class AdminController extends Gila\Controller
 
   public function dashboardAction()
   {
-    global $db;
     $wfolders=['log','themes','src','tmp','assets','data'];
     foreach ($wfolders as $wf) {
       if (is_writable($wf)==false) {

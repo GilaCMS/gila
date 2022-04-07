@@ -6,6 +6,7 @@ include __DIR__.'/../../src/core/classes/Table.php';
 include __DIR__.'/../../src/core/classes/TableSchema.php';
 use PHPUnit\Framework\TestCase;
 use Gila\TableSchema;
+use Gila\DB;
 
 class TableSchemaTest extends TestCase
 {

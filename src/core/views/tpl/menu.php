@@ -23,8 +23,6 @@ foreach ($menu_items as $mi) {
 
 function menu_item($mi, $tag='')
 {
-  global $db;
-
   $url = isset($mi['url'])?$mi['url']:(Router::path().'#');
   $name = isset($mi['name'])?$mi['name']:'';
 
@@ -36,7 +34,7 @@ function menu_item($mi, $tag='')
   }
   if ($mi['type']=='postcategory') {
     $ql = "SELECT id,title,slug FROM postcategory WHERE id=?;";
-    $res = $db->query($ql, @$mi['id']);
+    $res = DB::query($ql, @$mi['id']);
     while ($r=mysqli_fetch_array($res)) {
       $url = "category/".$r[0].'/'.$r[2];
       $name = $r[1];

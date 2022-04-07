@@ -668,7 +668,6 @@ class Table
 
   public function getRows($filters = [], $args = [])
   {
-    global $db;
     if (!$this->can('read')) {
       return [];
     }
@@ -678,9 +677,9 @@ class Table
     $groupby = $this->groupby($args['groupby']??null);
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
-    $res = $db->read()->getAssoc("SELECT $select
+    $res = DB::getAssoc("SELECT $select
       FROM {$this->name()}$where$groupby$orderby$limit;");
-    if ($error = $db->error()) {
+    if ($error = DB::error()) {
       self::$error = $error;
     }
     if (isset($this->getTable()['children'])) {
@@ -697,6 +696,21 @@ class Table
 
   public function get($args = []) {
     return $this->getRows($args['where']??[], $args);
+  }
+
+  public function getPage($args = []) {
+    $page = $args['page'] ?? $_REQUEST['page'];
+    $items = $this->getRows($args['where']??[], $args);
+
+    $where = $this->where($filters);
+    $groupby = $this->groupby($args['groupby']??null);
+    $total = DB::value("SELECT COUNT(*) FROM {$this->name()}$where$groupby;");
+    $ppp = $this->table['pagination'] ?? 25;
+    return [
+      'items'=>$items,
+      'page'=>$page,
+      'totalPages'=>ceil($total/$ppp),
+    ];
   }
 
   public function getRowsIndexed($filters = [], $args = [])

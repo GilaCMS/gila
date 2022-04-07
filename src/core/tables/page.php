@@ -101,10 +101,9 @@ return [
       }
     }],
     ['change', function (&$row) {
-      global $db;
       $id = $row['id'] ?? $_GET['id'];
       $query = "SELECT id FROM `page` WHERE publish=1 AND slug=? AND id!=? AND `language`=?;";
-      if ($row['publish']==1 && $other=$db->getOne($query, [$row['slug'], $id, $row['language']])) {
+      if ($row['publish']==1 && $other=DB::getOne($query, [$row['slug'], $id, $row['language']])) {
         Table::$error = __('Another page has the same path')." (ID:{$other['id']})";
       }
     }]

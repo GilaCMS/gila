@@ -2,6 +2,7 @@
 include __DIR__.'/includes.php';
 include_once __DIR__.'/../../src/core/classes/User.php';
 use PHPUnit\Framework\TestCase;
+use Gila\DB;
 
 class InstallSqlTest extends TestCase
 {

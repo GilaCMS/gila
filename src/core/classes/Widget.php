@@ -5,22 +5,19 @@ class Widget
 {
   public static function getById($id)
   {
-    global $db;
-    $res = $db->query("SELECT * FROM widget WHERE id=?", $id);
+    $res = DB::query("SELECT * FROM widget WHERE id=?", $id);
     return mysqli_fetch_object($res);
   }
 
   public static function getByWidget($w)
   {
-    global $db;
-    return $db->query("SELECT * FROM widget WHERE widget=?", $w);
+    return DB::query("SELECT * FROM widget WHERE widget=?", $w);
   }
 
   public static function getActiveByArea($area)
   {
-    global $db;
-    $db->connect();
-    return $db->get(
+    DB::connect();
+    return DB::get(
       "SELECT * FROM widget WHERE active=1 AND area=?
     AND (`language` IS NULL OR language='' OR language=?) ORDER BY pos;",
       [$area, Config::lang()]
@@ -29,7 +26,6 @@ class Widget
 
   public static function update($data)
   {
-    global $db;
     $widget = self::getById($data['widget_id']);
     $fields = self::getFields($widget->widget);
 
@@ -43,13 +39,13 @@ class Widget
     $widget_data = isset($data['option']) ? json_encode($data['option']) : '[]';
     $title = HtmlInput::purify($data['widget_title']);
 
-    $db->query(
+    DB::query(
       "UPDATE widget SET data=?,area=?,pos=?,title=?,active=?,`language`=? WHERE id=?",
       [$widget_data, $data['widget_area'], $data['widget_pos']??0, $title,
       $data['widget_active']??0, $data['widget_language']??'NULL', $data['widget_id']]
     );
 
-    $r = $db->get("SELECT * FROM widget WHERE id=?", [$data['widget_id']])[0];
+    $r = DB::get("SELECT * FROM widget WHERE id=?", [$data['widget_id']])[0];
     return json_encode(['fields'=>['id','title','widget','area','pos','language','active'],
       'rows'=>[[$r['id'],$r['title'],$r['widget'],$r['area'],$r['pos'],$r['language'],$r['active']]],
       'totalRows'=>1]);

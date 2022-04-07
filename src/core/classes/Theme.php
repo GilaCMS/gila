@@ -190,7 +190,6 @@ class Theme
   */
   public static function saveOptions($theme)
   {
-    global $db;
     $jsonFile = 'themes/'.$theme.'/package.json';
     if (file_exists($jsonFile)) {
       $data = json_decode(file_get_contents($jsonFile), true);
@@ -199,7 +198,7 @@ class Theme
           $allowed = $data['options'][$key]['allow_tags'] ?? false;
           $value = HtmlInput::purify($value, $allowed);
           $ql="INSERT INTO `option`(`option`,`value`) VALUES(?, ?) ON DUPLICATE KEY UPDATE `value`=?;";
-          $db->query($ql, ['theme.'.$key, $value,$value]);
+          DB::query($ql, ['theme.'.$key, $value,$value]);
         }
       }
       @unlink(LOG_PATH.'/load.php');
