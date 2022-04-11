@@ -8,6 +8,8 @@ class InstallSqlTest extends TestCase
 {
   public function test_installSql()
   {
+    $_POST['adm_user'] = 'Admin';
+    $_POST['adm_email'] = 'admin@example.com';
     include 'src/core/install/install.sql.php';
 
     $tableColumn = [
