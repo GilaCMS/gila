@@ -22,14 +22,14 @@ class Log
 
     $end = microtime(true);
     $log = new Logger(LOG_PATH.'/timeDebug.log');
-    $log->log(round($end-self::$starttime, 6), $txt, ['uri'=>$_GET['p']??'']);
+    $log->log(round($end-self::$starttime, 6), $point, ['uri'=>$_GET['p']??'']);
     self::$starttime = $end;  
   }
 
   public static function debug($message, array $context = [])
   {
     $log = new Logger(LOG_PATH.'/debug.log');
-    $log->debug($txt, ['uri'=>$_GET['p']??'']);
+    $log->debug($message, $context);
   }
 
 }

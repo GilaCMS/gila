@@ -324,16 +324,16 @@ class View
   * @param menu (string) Name of the menu. Default=mainmenu
   * @param tpl  (string) Optional. The view template to generate html
   */
-  public static function menu($menu='mainmenu', $tpl='tpl/menu.php')
+  public static function menu($menu='mainmenu')
   {
     $menu_data = Menu::getData($menu);
     $items = Menu::convert($menu_data);
     echo Menu::getHtml($items);
   }
 
-  public static function widget($id, $widget_exp=null)
+  public static function widget($id)
   {
-    global $db,$widget_data;
+    global $widget_data;
     if ($res = Widget::getById($id)) {
       $widget_data = json_decode($res[0]->data);
       $type = $res[0]->widget;

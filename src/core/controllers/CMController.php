@@ -12,7 +12,6 @@ use Gila\Response;
 */
 class CMController extends Gila\Controller
 {
-  private $contenttype;
   private $table;
   private $permissions;
 
@@ -166,7 +165,6 @@ class CMController extends Gila\Controller
     if (!$gtable->can('read')) {
       return;
     }
-    $result = [];
 
     // filename to be downloaded
     $filename = $this->table. date('Y-m-d') . ".csv";
@@ -403,7 +401,6 @@ class CMController extends Gila\Controller
       }
       foreach ($joinFields as $field) {
         list($jtable, $this_id, $other_id) = $gtable->getTable()['fields'][$field]['join_table'];
-        $post_id = $db->res($_POST['id']);
         $q = "INSERT INTO {$jtable}({$this_id},{$other_id}) SELECT $id,{$other_id}
         FROM {$jtable} x WHERE {$this_id}=?;";
         $res = $db->query($q, [$_POST['id']]);

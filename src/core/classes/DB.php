@@ -71,7 +71,6 @@ class DB
 
   static public function query($q, $args = null)
   {
-    global $db;
     if (!self::$connected) {
       self::connect();
     }
@@ -83,7 +82,6 @@ class DB
       $res = self::$result;
     }
     self::$insert_id = self::$link->insert_id;
-    $db->insert_id = self::$link->insert_id;
     return $res;
 }
 

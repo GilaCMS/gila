@@ -261,6 +261,9 @@ class Package
 
   public static function updateSites($package)
   {
+    if (!file_exists('sites')) {
+      return;
+    }
     $sites = scandir('sites');
     $update_file = 'src/'.$package.'/update.php';
     foreach ($sites as $site) {

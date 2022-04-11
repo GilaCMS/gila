@@ -171,7 +171,6 @@ style="position:absolute;right:0;top:0" viewBox="0 0 28 28">\
       g.ajax({url:"user/uploadImage",method:'POST',data:fm, fn: function (data){
         data = JSON.parse(data)
         g.loader(false)
-        console.log(data.image)
        _iUploadMedia.value = data.image
       }})
     }

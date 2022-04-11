@@ -19,7 +19,7 @@ define('FS_ACCESS', true);
 Gila\Config::dir(LOG_PATH.'/cacheItem/');
 Gila\Session::$data['permissions'] = ['admin'];
 $db = new Gila\DbClass("127.0.0.1", "g_user", "password", "g_db");
-DB::set(['host'=>"127.0.0.1", 'user'=>"g_user", 'pass'=>"password", 'name'=>"g_db"]);
+Gila\DB::set(['host'=>"127.0.0.1", 'user'=>"g_user", 'pass'=>"password", 'name'=>"g_db"]);
 
 $GLOBALS['lang'] = [];
 function __($key, $alt = null)

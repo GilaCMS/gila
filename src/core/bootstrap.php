@@ -13,7 +13,7 @@ function timeDebug($txt)
   Gila\Log::time($txt);
 }
 
-$site_folder = 'sites/'.$_SERVER['HTTP_HOST'];
+$site_folder = 'sites/'.($_SERVER['HTTP_HOST']??'');
 if (file_exists($site_folder)) {
   define('SITE_PATH', $site_folder.'/');
   define('LOG_PATH', $site_folder.'/log');

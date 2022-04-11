@@ -14,8 +14,7 @@
   <?=View::cssAsync('core/gila.min.css')?>
   <?=View::cssAsync('core/admin/vue-editor.css');?>
   <?php
-  global $db;
-  $pageTitle = $db->value("SELECT title FROM `page` WHERE id=?;", $id);
+  $pageTitle = DB::value("SELECT title FROM `page` WHERE id=?;", $id);
   ?>
   <style>body{padding:0;margin:0;}.fa-d{font-size:120%;margin:auto 5px}
   .g-nav>li>a:hover{background:inherit}.g-nav li a{padding:16px 8px}

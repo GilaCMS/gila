@@ -76,7 +76,6 @@ class Menu
 
   public static function convert($data)
   {
-    $items = [];
     if ($type = $data['type']) {
       if (isset($data['children'])) {
         $children = [];

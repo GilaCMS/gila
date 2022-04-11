@@ -12,7 +12,6 @@ class DbClass
   private $dsch;
   private $connected = false;
   public $link;
-  public $insert_id;
   public $result;
   public $profiling = '';
   public $replicas = [];
@@ -46,7 +45,6 @@ class DbClass
   public function query($q, $args = null)
   {
     return DB::query($q, $args);
-    $this->insert_id = DB::$insert_id;
   }
 
   public function log($folder = false)

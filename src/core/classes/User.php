@@ -261,6 +261,7 @@ class User
             new Sendmail(['email'=>$email, 'subject'=>$subject, 'message'=>$msg, 'headers'=>$headers]);
           }
           self::meta($userId, 'activate_code', $activate_code);
+          Event::log('user_activation.email');
         }
         return true;
       } else {

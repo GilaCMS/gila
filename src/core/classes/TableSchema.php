@@ -8,24 +8,18 @@ class TableSchema
   {
     $gtable = new Table($name);
     $table = $gtable->getTable();
-    // IF TABLE EXISTS
-    $tables = DB::getList("SHOW TABLES;");
-    $tableExists = in_array($tname, $tables);
     // UPDATE/CREATE TABLE
-    self::update($table);
-    // INITIAL ROWS
-    if ($tableExists === false) {
-      foreach ($initRows as $row) {
-        $gtable->createRow($row);
-      }
-    }
+    self::update($table, $initRows);
   }
 
-  public static function update($table)
+  public static function update($table, $initRows = [])
   {
     $tname = $table['name'];
     $id = $table['id'] ?? 'id';
 
+    // IF TABLE EXISTS
+    $tables = DB::getList("SHOW TABLES;");
+    $tableExists = in_array($tname, $tables);
     // CREATE TABLE
     $qtype = $table['fields'][$id]['qtype'] ?? 'INT NOT NULL AUTO_INCREMENT';
     $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
@@ -82,6 +76,13 @@ class TableSchema
         `{$m[3]}` varchar(255) DEFAULT NULL,
         PRIMARY KEY (`id`),  KEY `{$m[1]}` (`{$m[1]}`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
       DB::query($q);
+    }
+
+    // INITIAL ROWS
+    if ($tableExists === false) {
+      foreach ($initRows as $row) {
+        $gtable->createRow($row);
+      }
     }
   }
 }

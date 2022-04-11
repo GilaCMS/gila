@@ -7,7 +7,7 @@ class Page
   {
     $res = DB::query("SELECT id,title,description,updated,`language`,publish,slug,template FROM `page` WHERE id=?;", [$id]);
     if ($res) {
-      return $r = mysqli_fetch_array($res);
+      return mysqli_fetch_array($res);
     }
     return null;
   }

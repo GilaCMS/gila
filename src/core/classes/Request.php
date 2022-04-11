@@ -60,7 +60,6 @@ class Request
   }
 
   static public function validateParam($key, $rules) {
-    global $db;
     $value = self::key($key);
     return self::validateValue($value, $rules);
   }

@@ -16,10 +16,10 @@ class Event
   */
   public static function listen($event, $handler)
   {
-    if (!isset(Event::$handlers[$event])) {
-      Event::$handlers[$event] = [];
+    if (!isset(self::$handlers[$event])) {
+      self::$handlers[$event] = [];
     }
-    Event::$handlers[$event][] = $handler;
+    self::$handlers[$event][] = $handler;
   }
 
   /**
@@ -30,8 +30,8 @@ class Event
   public static function fire($event, $params = null)
   {
     $response = false;
-    if (isset(Event::$handlers[$event])) {
-      foreach (Event::$handlers[$event] as $handler) {
+    if (isset(self::$handlers[$event])) {
+      foreach (self::$handlers[$event] as $handler) {
         if ($params === null) {
           $handler();
         } else {
@@ -53,11 +53,11 @@ class Event
   */
   public static function get($event, $default, $params = null)
   {
-    if (isset(Event::$handlers[$event])) {
+    if (isset(self::$handlers[$event])) {
       if ($params === null) {
-        return Event::$handlers[$event][0]();
+        return self::$handlers[$event][0]();
       } else {
-        return Event::$handlers[$event][0]($params);
+        return self::$handlers[$event][0]($params);
       }
     }
     return $default;
