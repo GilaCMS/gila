@@ -273,11 +273,11 @@ class Config
     if (is_array($arg)) {
       $array = [];
       foreach ($arg as $a) {
-        $array[] = self::$mt[$a];
+        $array[] = self::$mt[$a] ?? 0;
       }
       return $array;
     } else {
-      return self::$mt[$arg];
+      return self::$mt[$arg] ?? 0;
     }
   }
 
