@@ -10,6 +10,7 @@ class InstallSqlTest extends TestCase
   {
     $_POST['adm_user'] = 'Admin';
     $_POST['adm_email'] = 'admin@example.com';
+    $_POST['adm_pass'] = 'password';
     include 'src/core/install/install.sql.php';
 
     $tableColumn = [
