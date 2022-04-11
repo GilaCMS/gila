@@ -4,7 +4,7 @@ include __DIR__.'/includes.php';
 use PHPUnit\Framework\TestCase;
 use Gila\Config;
 
-class ClassGila extends TestCase
+class ConfigTest extends TestCase
 {
   public function test_addLang()
   {

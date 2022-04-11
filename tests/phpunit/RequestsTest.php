@@ -30,7 +30,7 @@ class RequestsTest extends TestCase
 {
   protected static $userId;
 
-  public static function setUpBeforeClass()
+  public static function setUpBeforeClass():void
   {
     self::createUserTable();
     $pass = Config::hash("password");
@@ -44,7 +44,7 @@ class RequestsTest extends TestCase
     self::$userId = $uid;
   }
 
-  public static function tearDownAfterClass()
+  public static function tearDownAfterClass():void
   {
     DB::query("DELETE FROM user WHERE email='test_login_auth@email.com';");
     DB::query("DELETE FROM usermeta WHERE user_id=?;", self::$userId);
