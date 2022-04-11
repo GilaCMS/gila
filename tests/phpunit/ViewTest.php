@@ -7,7 +7,7 @@ use Gila\FileManager;
 use Gila\View;
 use Gila\Config;
 
-class ClassView extends TestCase
+class ViewTest extends TestCase
 {
   public function test_getWidgetBody()
   {
