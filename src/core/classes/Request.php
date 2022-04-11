@@ -77,8 +77,8 @@ class Request
       $part = explode('??', $line);
       $err = $part[1] ?? null;
       $part1 = explode(':', $part[0]);
-      $rule = $part[0];
-      $params = $part[1] ?? '';
+      $rule = $part1[0];
+      $params = $part1[1] ?? '';
       $p = explode(',', $params);
 
       if ($rule==='required' && empty($value)) {
