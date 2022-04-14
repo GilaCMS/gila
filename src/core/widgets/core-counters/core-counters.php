@@ -1,10 +1,9 @@
 <?php
-  global $db;
-  $db->connect();
-  $data['postsC'] = $db->value('SELECT count(*) from post;');
-  $data['pagesC'] = $db->value('SELECT count(*) from page;');
-  $data['usersC'] = $db->value('SELECT count(*) from user;');
-  $db->close();
+  DB::connect();
+  $data['postsC'] = DB::value('SELECT count(*) from post;');
+  $data['pagesC'] = DB::value('SELECT count(*) from page;');
+  $data['usersC'] = DB::value('SELECT count(*) from user;');
+  DB::close();
   $data['packagesC'] = count(Config::getArray('packages'));
   $data['palette'] = Config::getArray('admin_palette') ?? ['forestgreen','cornflowerblue','coral','orchid'];
   $data['isAdmin'] = Session::hasPrivilege('admin');

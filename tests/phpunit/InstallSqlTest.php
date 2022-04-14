@@ -2,15 +2,15 @@
 include __DIR__.'/includes.php';
 include_once __DIR__.'/../../src/core/classes/User.php';
 use PHPUnit\Framework\TestCase;
+use Gila\DB;
 
 class InstallSqlTest extends TestCase
 {
   public function test_installSql()
   {
-    global $db;
-    $_user='Admin';
-    $_email='admin@mail.com';
-    $_pass='password';
+    $_POST['adm_user'] = 'Admin';
+    $_POST['adm_email'] = 'admin@example.com';
+    $_POST['adm_pass'] = 'password';
     include 'src/core/install/install.sql.php';
 
     $tableColumn = [
@@ -32,23 +32,23 @@ class InstallSqlTest extends TestCase
       'redirect'=>['id','from_slug','to_slug','active']
     ];
 
-    $tables = $db->get('SHOW TABLES');
+    $tables = DB::get('SHOW TABLES');
     $this->assertEquals(count($tableColumn), count($tables));
 
     foreach ($tables as $table) {
       $tableName = $table[0];
-      $columns = $db->get('DESCRIBE '.$tableName);
+      $columns = DB::get('DESCRIBE '.$tableName);
       foreach ($columns as $c=>$column) {
         $this->assertEquals($tableColumn[$tableName][$c], $column[0]);
       }
     }
 
-    $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM user'));
-    $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM userrole'));
-    $this->assertEquals(4, $db->value('SELECT COUNT(*) FROM widget'));
-    $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM `page`'));
-    $this->assertEquals(1, $db->value('SELECT COUNT(*) FROM `post`'));
-    $json = $db->value('SELECT blocks FROM `page` WHERE id=1');
+    $this->assertEquals(1, DB::value('SELECT COUNT(*) FROM user'));
+    $this->assertEquals(1, DB::value('SELECT COUNT(*) FROM userrole'));
+    $this->assertEquals(4, DB::value('SELECT COUNT(*) FROM widget'));
+    $this->assertEquals(1, DB::value('SELECT COUNT(*) FROM `page`'));
+    $this->assertEquals(1, DB::value('SELECT COUNT(*) FROM `post`'));
+    $json = DB::value('SELECT blocks FROM `page` WHERE id=1');
     $this->assertEquals(json_decode($json, true)[0]['_type'], 'text');
   }
 }

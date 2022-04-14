@@ -5,13 +5,13 @@ use Gila\Form;
 use Gila\Session;
 use Gila\Router;
 use Gila\Table;
+use Gila\Response;
 
 /**
 * Lists content types and shows grid content data
 */
 class CMController extends Gila\Controller
 {
-  private $contenttype;
   private $table;
   private $permissions;
 
@@ -165,7 +165,6 @@ class CMController extends Gila\Controller
     if (!$gtable->can('read')) {
       return;
     }
-    $result = [];
 
     // filename to be downloaded
     $filename = $this->table. date('Y-m-d') . ".csv";
@@ -318,7 +317,8 @@ class CMController extends Gila\Controller
     }
 
     $result = [];
-    $ids = explode(',', $id);
+    $ids = explode(',', (string)$id);
+    $result['ids'] = $ids;
     $result['fields'] = $gtable->fields();
 
     foreach ($ids as $id) {
@@ -332,18 +332,14 @@ class CMController extends Gila\Controller
       if ($error = Table::$error) {
         Response::error($error, 200);
       }
-      $res = $db->query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
+      $res = DB::query("UPDATE {$gtable->name()}{$set} WHERE {$gtable->id()}=?;", $id);
       if ($db->error()) {
         $result['error'][] = $db->error();
       }
       $q = "SELECT {$gtable->select()} FROM {$gtable->name()} WHERE {$gtable->id()}=?;";
-      $gen = $db->gen($q, $id);
-      $result['rows'] = [];
-
-      foreach ($gen as $r) {
-        $result['rows'][] = $r;
-      }
+      $result['rows'] = DB::get($q, [$id]);  
     }
+
     Config::setMt($gtable->name());
     echo json_encode($result);
   }
@@ -405,7 +401,6 @@ class CMController extends Gila\Controller
       }
       foreach ($joinFields as $field) {
         list($jtable, $this_id, $other_id) = $gtable->getTable()['fields'][$field]['join_table'];
-        $post_id = $db->res($_POST['id']);
         $q = "INSERT INTO {$jtable}({$this_id},{$other_id}) SELECT $id,{$other_id}
         FROM {$jtable} x WHERE {$this_id}=?;";
         $res = $db->query($q, [$_POST['id']]);

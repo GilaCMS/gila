@@ -1,6 +1,5 @@
 <?php
 global $chartColors;
-global $db;
 
 $chartColors = [
     'rgb(255, 99, 132)',
@@ -42,12 +41,12 @@ if ($data['query']!='') {
   $dataArray = [];
 
   if ($data['data']=='mysql') {
-    $res = $db->query($data['query']);
+    $res = Gila\DB::query($data['query']);
     if ($res) {
       while ($r=mysqli_fetch_array($res)) {
         $dataArray[] = $r;
       }
-    } elseif ($error = $db->error()) {
+    } elseif ($error = Gila\DB::error()) {
       echo "Mysql error: $error";
     }
   } elseif ($data['data']=='json') {

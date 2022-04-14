@@ -16,6 +16,7 @@ class Slugify
 }
 
 Slugify::$rules = [
+  ' '=>'-',
   'أ'=>'a',
   'ب'=>'b',
   'ت'=>'t',

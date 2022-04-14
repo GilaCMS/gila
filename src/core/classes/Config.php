@@ -180,7 +180,7 @@ class Config
   */
   public static function set($option, $value, $save=true)
   {
-    if ($value===self::$option[$option]??null) {
+    if ($value===(self::$option[$option]??null)) {
       return;
     }
     @$GLOBALS['config'][$option] = $value;
@@ -243,7 +243,9 @@ class Config
   }
   public static function loadOptions()
   {
+    DB::connect();
     $res = DB::get('SELECT `option`,`value` FROM `option`;');
+    DB::close();
     foreach ($res as $r) {
       self::$option[$r[0]] = $r[1];
     }
@@ -271,11 +273,11 @@ class Config
     if (is_array($arg)) {
       $array = [];
       foreach ($arg as $a) {
-        $array[] = self::$mt[$a];
+        $array[] = self::$mt[$a] ?? 0;
       }
       return $array;
     } else {
-      return self::$mt[$arg];
+      return self::$mt[$arg] ?? 0;
     }
   }
 
@@ -378,11 +380,8 @@ class Config
   */
   public static function load()
   {
-    global $db;
     self::$option=[];
-    $db->connect();
     self::loadOptions();
-    $db->close();
     if (file_exists('.env')) {
       self::loadEnv();
     }

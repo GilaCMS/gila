@@ -79,6 +79,7 @@ class UserController extends Gila\Controller
         View::set('login_link', User::level($ids[0])>0? 'admin': '');
         Session::setCookie($ids[0]);
         View::includeFile('user-activate-success.php');
+        Event::log('user.activation');
       }
       return;
     }
@@ -148,7 +149,6 @@ class UserController extends Gila\Controller
         false,
         ['user'=>$r, 'reset_code'=>$reset_code, 'reset_url'=>$reset_url]
       )) {
-        $baseurl = Config::base();
         $subject = __('reset_msg_ln1').' '.$r['username'];
         $msg = __('reset_msg_ln2')." {$r['username']}\n\n";
         $msg .= __('reset_msg_ln3').' '.Config::get('title')."\n\n";

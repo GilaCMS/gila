@@ -31,12 +31,14 @@ class Menu
   {
     Config::setMt('menu');
     DB::query("REPLACE INTO menu(`menu`,`data`) VALUES(?,?);", [$menu, $data]);
+    $menuLN = $menu.'.'.Config::lang();
+    Cache::remove($menuLN.'_data');
   }
 
   public static function getData($menu)
   {
     $menuLN = $menu.'.'.Config::lang();
-    $data =  Cache::remember($menuLN.'_data', 259200, function ($u) {
+    $data =  Cache::remember($menuLN.'_data', 100, function ($u) {
       return DB::value(
         "SELECT `data` FROM menu WHERE `menu`=?
         UNION SELECT `data` FROM menu WHERE `menu`=?;",
@@ -74,7 +76,6 @@ class Menu
 
   public static function convert($data)
   {
-    $items = [];
     if ($type = $data['type']) {
       if (isset($data['children'])) {
         $children = [];

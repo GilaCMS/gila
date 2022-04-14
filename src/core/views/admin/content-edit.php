@@ -26,7 +26,6 @@ View::script('core/admin/vue-components.js');
 </style>
 
 <?php
-global $db;
 $pnk = new Table($table, Gila\Session::permissions());
 $t = $pnk->getTable();
 $pages_path = [];
@@ -62,7 +61,7 @@ $fields = $pnk->fields('edit');
 echo '<form id="'.$table.'-edit-item-form" data-table="'.$table.'" data-id="'.$id.'" class="g-form"><div>';
 if ($id) {
   $ql = "SELECT {$pnk->select($fields)} FROM {$pnk->name()} WHERE id=$id;";
-  $res = $db->get($ql)[0];
+  $res = DB::get($ql)[0];
   echo Form::html($pnk->getFields('edit'), $res);
 } else {
   echo Form::html($pnk->getFields('edit'));

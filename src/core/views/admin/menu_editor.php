@@ -58,8 +58,6 @@
 <?php
 use Gila\Page;
 
-global $db;
-
 $itemTypes = MenuItemTypes::getItemTypes();
 ?>
 

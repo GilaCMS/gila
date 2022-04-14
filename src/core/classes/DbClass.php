@@ -11,8 +11,7 @@ class DbClass
   private $pass;
   private $dsch;
   private $connected = false;
-  private $link;
-  public $insert_id;
+  public $link;
   public $result;
   public $profiling = '';
   public $replicas = [];

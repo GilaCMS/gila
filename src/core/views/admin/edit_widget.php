@@ -44,7 +44,6 @@
 </div>
 
 <?php
-global $db;
 
 if ($languages = Config::get('languages')) {
   ?>
@@ -62,7 +61,7 @@ if ($languages = Config::get('languages')) {
 <?php
 }
 
-$widget_data = json_decode($db->value("SELECT data FROM widget WHERE id=? LIMIT 1;", $widget->id));
+$widget_data = json_decode(Gila\DB::value("SELECT data FROM widget WHERE id=? LIMIT 1;", $widget->id));
 $fields = Gila\Widget::getFields($widget->widget);
 
 if (isset($fields)) {

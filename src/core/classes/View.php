@@ -324,16 +324,16 @@ class View
   * @param menu (string) Name of the menu. Default=mainmenu
   * @param tpl  (string) Optional. The view template to generate html
   */
-  public static function menu($menu='mainmenu', $tpl='tpl/menu.php')
+  public static function menu($menu='mainmenu')
   {
     $menu_data = Menu::getData($menu);
     $items = Menu::convert($menu_data);
     echo Menu::getHtml($items);
   }
 
-  public static function widget($id, $widget_exp=null)
+  public static function widget($id)
   {
-    global $db,$widget_data;
+    global $widget_data;
     if ($res = Widget::getById($id)) {
       $widget_data = json_decode($res[0]->data);
       $type = $res[0]->widget;
@@ -405,7 +405,14 @@ class View
     } else {
       $data = &$widget_data;
     }
+
+    $pathLines = [
+      'diagonal'=>'<path d="M0,90 l700,-90 v90 h-700" />',
+      'waves'=>'<path d="M0,10 c80,-22 240,0 350,18 c90,17 260,8 350,-20 v83 h-700" />'
+    ];
+    @include 'src/core/views/tpl/open-section.php';
     @include $widget_file;
+    @include 'src/core/views/tpl/close-section.php';
   }
 
   public static function getWidgetBody($type, $widget_data=null, $widget_file=null)

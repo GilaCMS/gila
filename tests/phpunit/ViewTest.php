@@ -7,13 +7,13 @@ use Gila\FileManager;
 use Gila\View;
 use Gila\Config;
 
-class ClassView extends TestCase
+class ViewTest extends TestCase
 {
   public function test_getWidgetBody()
   {
     Config::widgets(['paragraph'=>'core/widgets/paragraph']);
     $html = View::getWidgetBody('paragraph', ['text'=>'Hello world']);
-    $this->assertEquals('<section>Hello world</section>', $html);
+    $this->assertTrue(strpos($html, 'Hello world')>0);
   }
 
   public function test_getThumbName()

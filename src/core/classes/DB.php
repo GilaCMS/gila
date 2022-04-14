@@ -77,13 +77,13 @@ class DB
 
     if ($args === null) {
       $res = self::$link->query($q);
-      self::$insert_id = self::$link->insert_id;
-      return $res;
     } else {
       self::execute($q, $args);
-      return self::$result;
+      $res = self::$result;
     }
-  }
+    self::$insert_id = self::$link->insert_id;
+    return $res;
+}
 
   static public function log($folder = false)
   {
@@ -256,5 +256,11 @@ class DB
 
     self::query("INSERT INTO $table($fields) VALUES($values);");
     return self::$insert_id ?? null;
+  }
+
+  static public function table($name)
+  {
+    $table = new Table($name);
+    return $table;
   }
 }

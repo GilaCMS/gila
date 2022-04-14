@@ -1,6 +1,6 @@
 <?=View::script('lib/bootstrap5/bootstrap.bundle.min.js')?>
 <?=View::cssAsync('lib/bootstrap5/bootstrap.min.css')?>
-<div id="MyCarousel" class="carousel slide <?= ($data['carousel-full-width']=='1')?'position-absolute w-100 start-0':'' ?>" data-bs-ride="carousel">
+<div id="MyCarousel" class="carousel slide my-5 <?= ($data['carousel-full-width']=='1')?'position-absolute w-100 start-0':'' ?>" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <?php if (isset($data['items'])) {
       foreach (json_decode($data['items']) as $i => $item) { ?>
@@ -11,14 +11,14 @@
   <div class="carousel-inner">
     <?php if (isset($data['items'])) {
       foreach (json_decode($data['items']) as $i => $item) { ?>
-        <div class="carousel-item <?= $i==0?'active':'' ?>" data-bs-interval="<?=( (!$data['duration-in-secons']=='')?intval($data['duration-in-secons'])*1000:5000) ?>">
+        <div class="carousel-item <?= $i==0?'active':'' ?>" data-bs-interval="<?=( ($data['duration-in-seconds']>0)?intval($data['duration-in-seconds'])*1000:5000) ?>">
           <div class="d-block w-100" style="height:<?=(isset($data['carousel-size'])?intval($data['carousel-size'])*10:50).'vh'?>; background-image: url(<?=htmlentities(View::thumb($item[0], 300))?>); background-repeat: no-repeat; background-size:cover;"> </div>
           <div class="carousel-caption d-none d-md-block <?=( isset($data['text-align'])?'text-'.$data['text-align']:'') ?>" style="height: <?=( isset($data['vertical-align'])?(($data['vertical-align'])*10).'%':'') ?>">
             <?php if (isset($item[1])) { ?>
-              <h5 style="<?= isset($data['color-text'])?'color:'.$data['color-text']:'color:white' ?>;font-size:<?= (($data['title-font-size'])?$data['title-font-size'].'px':'40px') ?>" ><?= $item[1] ?></h5>
+              <h2 class="h2" style="color:<?=$data['color-text']??'white'?>"><?= $item[1] ?></h2>
             <?php } ?>
             <?php if (isset($item[2])) { ?>
-              <p style="<?= isset($data['color-text'])?'color:'.$data['color-text']:'color:white' ?>;font-size:<?= (($data['description-font-size'])?$data['description-font-size'].'px':'25px') ?>"><?= $item[2] ?></p>
+              <p class="h4" style="color:<?=$data['color-text']??'white'?>"><?= $item[2] ?></p>
             <?php } ?>
             <?php if (!($item[3])=='') { ?>
               <a class="btn btn-success" style="font-size:<?= (isset($data['button-font-size'])?$data['button-font-size'].'px':'24px') ?>" href="<?= $item[3] ?>"><?= $data['button-title'] ?></a>

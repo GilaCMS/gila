@@ -261,7 +261,9 @@ class Package
 
   public static function updateSites($package)
   {
-    global $db;
+    if (!file_exists('sites')) {
+      return;
+    }
     $sites = scandir('sites');
     $update_file = 'src/'.$package.'/update.php';
     foreach ($sites as $site) {
@@ -278,7 +280,7 @@ class Package
             continue;
           }
           DB::set($GLOBALS['config']['db']);
-          $packages = $db->value("SELECT `value` FROM `option` WHERE `option`='packages';");
+          $packages = DB::value("SELECT `value` FROM `option` WHERE `option`='packages';");
           $packages = $packages? json_decode($packages, true): $GLOBALS['config']['packages'];
           if ($package==='core' ||
             in_array($package, $packages)) {
@@ -307,7 +309,6 @@ class Package
   public static function options($package)
   {
     if (file_exists('src/'.$package)) {
-      global $db;
       echo '<form id="addon_options_form" class="g-form">';
       echo '<input id="addon_id" value="'.$package.'" type="hidden">';
       $pack=$package;
@@ -335,7 +336,6 @@ class Package
   */
   public static function saveOptions($package)
   {
-    global $db;
     $jsonFile = 'src/'.$package.'/package.json';
     if (file_exists($jsonFile)) {
       $data = json_decode(file_get_contents($jsonFile), true);
@@ -347,7 +347,7 @@ class Package
             $value = HtmlInput::purify($value, $allowed);
           }
           $ql="INSERT INTO `option`(`option`,`value`) VALUES(?,?) ON DUPLICATE KEY UPDATE `value`=?;";
-          $db->query($ql, [$package.'.'.$key, $value, $value]);
+          DB::query($ql, [$package.'.'.$key, $value, $value]);
         }
       }
       @unlink(LOG_PATH.'/load.php');
@@ -390,7 +390,6 @@ class Package
   */
   public static function updateLoadFile()
   {
-    global $db;
     $file = LOG_PATH.'/load.php';
     $contents = '';
     $packages = Config::packages();
@@ -414,12 +413,12 @@ class Package
     }
 
     Config::$option=[];
-    $db->connect();
-    $res = $db->get('SELECT `option`,`value` FROM `option`;');
+    DB::connect();
+    $res = DB::get('SELECT `option`,`value` FROM `option`;');
     foreach ($res as $r) {
       Config::$option[$r[0]] = $r[1];
     }
-    $db->close();
+    DB::close();
     $options = "Config::\$option = ".var_export(Config::$option, true).";\n";
     if (file_exists('.env')) {
       $options = "Config::loadEnv();\n\n";

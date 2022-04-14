@@ -6,7 +6,7 @@ return [
     ],
     'carousel-full-width'=>[
       'type'=>'radio',
-      'options'=>[0=>'No',1=>'Si'],
+      'options'=>[0=>'No',1=>'Yes'],
       'default'=>0
     ],
     'items'=>[
@@ -20,22 +20,15 @@ return [
         'url (opcional)'=>[],
       ],
     ],
-    'duration-in-secons'=>[
-      'type'=>'text',
+    'duration-in-seconds'=>[
+      'type'=>'number',
+      'default'=>3
     ],
     'button-title'=>[
       'type'=>'text',
     ],
     'color-text'=>[
       'type'=>'color',
-    ],
-    'title-font-size'=>[
-      'type'=>'select',
-      'options'=>['12'=>'Small','24'=>'Normal','56'=>'big']
-    ],
-    'description-font-size'=>[
-      'type'=>'select',
-      'options'=>['12'=>'Small','24'=>'Normal','56'=>'big']
     ],
     'button-font-size'=>[
       'type'=>'select',

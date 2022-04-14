@@ -158,7 +158,6 @@ class BlogController extends Gila\Controller
     $totalpages = ceil((Post::total($args))/12);
     $posts = Post::getPosts($args);
     if (self::$page<1 || self::$page>self::totalPages()) {
-      Cache::page('404_blogcategory'.Config::lang(), max(86400, $cacheTime));
       View::render('404.php');
       return;
     }

@@ -52,9 +52,9 @@ class Table
             $field['options'][$el[$o[0]]] = $el[$o[1]];
           }
         } else {
-          $res = $this->db->getOptions($field['qoptions']);
+          $res = DB::getOptions($field['qoptions']);
           if (!empty($field['options'])) {
-            $field['options'] = array_merge($field['options'], $res);
+            $field['options'] = array_replace($field['options'], $res);
           } else {
             $field['options'] = $res;
           }
@@ -383,6 +383,9 @@ class Table
         if (in_array($this->fieldAttr($key, 'type'), ['joins','meta'])) {
           continue;
         }
+        if ($rules = $this->fieldAttr($key, 'rules')) {
+          $value = Request::validateValue($value, $rules);
+        }
 
         if ($value==='') {
           if ($def = $this->fieldAttr($key, 'default')) {
@@ -665,7 +668,6 @@ class Table
 
   public function getRows($filters = [], $args = [])
   {
-    global $db;
     if (!$this->can('read')) {
       return [];
     }
@@ -675,16 +677,40 @@ class Table
     $groupby = $this->groupby($args['groupby']??null);
     $orderby = isset($args['orderby']) ? $this->orderby($args['orderby']) : $this->orderby();
     $limit = isset($args['limit']) ? $this->limit($args['limit']) : $this->limitPage($args);
-    $res = $db->read()->getAssoc("SELECT $select
+    $res = DB::getAssoc("SELECT $select
       FROM {$this->name()}$where$groupby$orderby$limit;");
-    if ($error = $db->error()) {
+    if ($error = DB::error()) {
       self::$error = $error;
+    }
+    if (isset($this->getTable()['children'])) {
+      foreach ($this->getTable()['children'] as $key=>$child) if (in_array($key, $select)) {
+        $table = new Table($key);
+        $filter = [$child['parent_id']=>$id];
+        foreach ($res as $row) {
+          $row[$key] = $table->getRows($filter);
+        }
+      }
     }
     return $res;
   }
 
   public function get($args = []) {
     return $this->getRows($args['where']??[], $args);
+  }
+
+  public function getPage($args = []) {
+    $page = $args['page'] ?? $_REQUEST['page'];
+    $items = $this->getRows($args['where']??[], $args);
+
+    $where = $this->where($filters);
+    $groupby = $this->groupby($args['groupby']??null);
+    $total = DB::value("SELECT COUNT(*) FROM {$this->name()}$where$groupby;");
+    $ppp = $this->table['pagination'] ?? 25;
+    return [
+      'items'=>$items,
+      'page'=>$page,
+      'totalPages'=>ceil($total/$ppp),
+    ];
   }
 
   public function getRowsIndexed($filters = [], $args = [])
@@ -744,11 +770,11 @@ class Table
     $binded = implode(',', $binded_values);
     $q = "INSERT INTO {$this->name()}($fnames) VALUES($binded);";
     if (!empty($insert_values)) {
-      $res = $this->db->query($q, $insert_values);
+      $res = DB::query($q, $insert_values);
     } else {
-      $res = $this->db->query($q);
+      $res = DB::query($q);
     }
-    $data['id'] = $this->db->insert_id;
+    $data['id'] = DB::$insert_id;
     $this->event('created', $data);
     return $data['id'];
   }

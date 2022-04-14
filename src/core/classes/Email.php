@@ -49,8 +49,8 @@ class Email
       $args['message'] = $args['html'];
     }
 
-    if ($args['message']==="") {
-      foreach (@$args['post'] as $key) {
+    if ($args['message']==="" && is_array($args['post'])) {
+      foreach ($args['post'] as $key) {
         $label = is_array($key)? $key[1]: $key;
         $value = is_array($key)? $_POST[$key[0]]: $_POST[$key];
         $args['message'] .= "$label:\n".htmlentities($value)."\n\n";

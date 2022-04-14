@@ -8,17 +8,12 @@ use Gila\DB;
 use Gila\Session;
 use Gila\Logger;
 
-$starttime = microtime(true);
 function timeDebug($txt)
 {
-  global $starttime;
-  $end = microtime(true);
-  $log = new Logger(LOG_PATH.'/timeDebug.log');
-  $log->log(round($end-$starttime, 6), $txt, ['uri'=>$_GET['p']??'']);
-  $starttime = $end;
+  Gila\Log::time($txt);
 }
 
-$site_folder = 'sites/'.$_SERVER['HTTP_HOST'];
+$site_folder = 'sites/'.($_SERVER['HTTP_HOST']??'');
 if (file_exists($site_folder)) {
   define('SITE_PATH', $site_folder.'/');
   define('LOG_PATH', $site_folder.'/log');

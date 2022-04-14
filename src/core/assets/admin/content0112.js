@@ -217,7 +217,6 @@ Vue.component('g-table', {
         step = Math.sign(this.irowSelected - irow)
         for(i=irow+step; i!=this.irowSelected+step; i+=step) {
           row_id = this.data.rows[i][0]
-          console.log(row_id)
           index2 = this.selected_rows.indexOf(row_id)
           if(index === -1) {
             if(index2===-1) {
@@ -344,7 +343,9 @@ Vue.component('g-table', {
       } else {
         url = 'cm/update_rows/'+this.name+'?id='+irow
       }
+      g.loader()
       g.ajax({method:'post',url:url,data:data,fn:function(data) {
+        g.loader(false)
         data = JSON.parse(data)
         if (data.error) {
           alert(data.error)

@@ -16,14 +16,6 @@ return [
     'color-text'=>[
       'type'=>'color',
     ],
-    'title-font-size'=>[
-      'type'=>'select',
-      'options'=>['12'=>'Small','24'=>'Normal','56'=>'big']
-    ],
-    'description-font-size'=>[
-      'type'=>'select',
-      'options'=>['12'=>'Small','24'=>'Normal','56'=>'big']
-    ],
     'button-font-size'=>[
       'type'=>'select',
       'options'=>['12'=>'Small','18'=>'Normal','25'=>'big']

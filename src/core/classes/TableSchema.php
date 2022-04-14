@@ -6,35 +6,27 @@ class TableSchema
 {
   public function __construct($name, $initRows = [])
   {
-    global $db;
     $gtable = new Table($name);
     $table = $gtable->getTable();
-    // IF TABLE EXISTS
-    $tables = $db->getList("SHOW TABLES;");
-    $tableExists = in_array($tname, $tables);
     // UPDATE/CREATE TABLE
-    self::update($table);
-    // INITIAL ROWS
-    if ($tableExists === false) {
-      foreach ($initRows as $row) {
-        $gtable->createRow($row);
-      }
-    }
+    self::update($table, $initRows);
   }
 
-  public static function update($table)
+  public static function update($table, $initRows = [])
   {
-    global $db;
     $tname = $table['name'];
     $id = $table['id'] ?? 'id';
 
+    // IF TABLE EXISTS
+    $tables = DB::getList("SHOW TABLES;");
+    $tableExists = in_array($tname, $tables);
     // CREATE TABLE
     $qtype = $table['fields'][$id]['qtype'] ?? 'INT NOT NULL AUTO_INCREMENT';
     $q = "CREATE TABLE IF NOT EXISTS $tname($id $qtype,PRIMARY KEY (`$id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-    $db->query($q);
+    DB::query($q);
 
     // DESCRIBE
-    $rows = $db->getRows("DESCRIBE $tname;");
+    $rows = DB::getRows("DESCRIBE $tname;");
     $dfields = [];
     foreach ($rows as $row) {
       $dfields[$row[0]] = [
@@ -54,12 +46,12 @@ class TableSchema
         }
         if (!isset($dfields[$fkey])) {
           $q = "ALTER TABLE $tname ADD `$column` {$qtype};";
-          $db->query($q);
+          DB::query($q);
         } else {
           $_type = $dfields[$fkey]['type'];
           if ($_type != substr($field['qtype'], 0, strlen($_type))) {
             $q = "ALTER TABLE $tname MODIFY `$column` {$qtype};";
-            $db->query($q);
+            DB::query($q);
           }
         }
       }
@@ -70,7 +62,7 @@ class TableSchema
       foreach ($table['qkeys'] as $key) {
         if (empty($dfields[$key]['key'])) {
           $q = "ALTER TABLE $tname ADD KEY `$key` (`$key`);";
-          $db->query($q);
+          DB::query($q);
         }
       }
     }
@@ -83,7 +75,14 @@ class TableSchema
         `{$m[2]}` varchar(80) DEFAULT NULL,
         `{$m[3]}` varchar(255) DEFAULT NULL,
         PRIMARY KEY (`id`),  KEY `{$m[1]}` (`{$m[1]}`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
-      $db->query($q);
+      DB::query($q);
+    }
+
+    // INITIAL ROWS
+    if ($tableExists === false) {
+      foreach ($initRows as $row) {
+        $gtable->createRow($row);
+      }
     }
   }
 }
