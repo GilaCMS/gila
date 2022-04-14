@@ -1,3 +1,5 @@
+<?=View::script('lib/bootstrap5/bootstrap.bundle.min.js')?>
+<?=View::cssAsync('lib/bootstrap5/bootstrap.min.css')?>
 <ul class="g-nav vertical">
 <?php
 

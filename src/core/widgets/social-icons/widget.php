@@ -21,5 +21,5 @@ return [
     'soundcloud'=>[],
     'rss'=>[]
   ],
-  'keys'=>'widget'
+  'keys'=>'widget,page'
 ];
