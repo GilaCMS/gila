@@ -82,7 +82,7 @@ class HttpPost
   }
 }
 
-class_alias('HttpPost', 'gpost');
+
 /* Examples
 new HttpPost('https://hooks.slack.com/services/xxxxxxxx',['text'=>"Slack bot msg"]);
  */
