@@ -63,10 +63,10 @@ class Event
     return $default;
   }
 
-  public static function log($type, $data=[])
+  public static function log($type, $userId=null, $data=[])
   {
     DB::query("INSERT INTO event_log(`type`,user_id,`data`) VALUES(?,?,?)", [
-      $type, Session::userId(), json_encode($data)
+      $type, $userId??Session::userId(), json_encode($data)
     ]);
   }
 }

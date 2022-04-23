@@ -8,11 +8,6 @@ use Gila\DB;
 use Gila\Session;
 use Gila\Logger;
 
-function timeDebug($txt)
-{
-  Gila\Log::time($txt);
-}
-
 $site_folder = 'sites/'.($_SERVER['HTTP_HOST']??'');
 if (file_exists($site_folder)) {
   define('SITE_PATH', $site_folder.'/');
@@ -33,35 +28,7 @@ if (!isset($_GET['p'])) {
 }
 
 ini_set("error_log", "log/error.log");
-
-$classMap = include __DIR__.'/classmap.php';
-
-spl_autoload_register(function ($class) {
-  global $classMap;
-  if (isset($classMap[$class])) {
-    require_once $classMap[$class];
-    return true;
-  }
-
-  $class = strtr($class, ['\\'=>'/', '__'=>'-']);
-
-  if (file_exists('src/core/classes/'.$class.'.php')) {
-    require_once 'src/core/classes/'.$class.'.php';
-    class_alias('Gila\\'.$class, $class);
-  } elseif (file_exists('src/'.$class.'.php')) {
-    require_once 'src/'.$class.'.php';
-  } elseif (in_array($class, ['core/models/Post', 'core/models/Page', 'core/models/Widget', 'core/models/User', 'core/models/Profile'])) {
-    // DEPRECATED
-    $d = debug_backtrace()[1];
-    error_log("Use namespace: Gila\\$class (".$d['file'].' line '.$d['line'].')', 3, 'log/error.log');
-    require_once 'src/core/classes/'.substr($class, 12).'.php';
-    class_alias('Gila\\'.substr($class, 12), strtr($class, ['/'=>'\\']));
-  }
-});
-
-if (file_exists('vendor/autoload.php')) {
-  include_once 'vendor/autoload.php';
-}
+include_once __DIR__.'/autoload.php';
 
 $GLOBALS['config'] = [];
 @include_once CONFIG_PHP;
