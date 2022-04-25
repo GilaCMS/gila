@@ -1,6 +1,6 @@
 <?=View::script('lib/bootstrap5/bootstrap.bundle.min.js')?>
 <?=View::cssAsync('lib/bootstrap5/bootstrap.min.css')?>
-<ul class="g-nav vertical">
+<ul class="list-group">
 <?php
 
 if (!@class_exists('blog')) {
@@ -31,7 +31,7 @@ if ($widget_data->show_thumbnails == 1) {
 
 
 foreach ($posts as $key=>$r) {
-  echo "<li>";
+  echo "<li style='list-style:none'>";
   echo "<a class='text-decoration-none' href='".Config::base('blog/'.$r['id'].'/'.$r['slug'])."'>";
   if ($widget_data->show_thumbnails == 1) {
     if ($stacked[$key]!==false) {
