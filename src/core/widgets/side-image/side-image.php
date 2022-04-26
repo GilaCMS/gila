@@ -1,3 +1,13 @@
+<?php
+  $latte = new Latte\Engine;
+  $latte->setTempDirectory(__DIR__."/../../latteTemp");
+  $params = [
+    'data' => $widget_data,
+    'img' => View::thumb($widget_data->image, 600),
+  ];
+  // render to output
+  $latte->render(__DIR__.'/widget.latte', $params);
+?>
 <?=View::script('lib/bootstrap5/bootstrap.bundle.min.js')?>
 <?=View::cssAsync('lib/bootstrap5/bootstrap.min.css')?>
 <style>
@@ -12,9 +22,4 @@
     .side-image{grid-template-columns: 1fr}
   }
 </style>
-<section>
-  <div class="container side-image">
-    <img src="<?=View::thumb($widget_data->image, 600)?>" style="max-height:600px;margin:auto;" class="<?=($widget_data->side==0?'col1':'col2')?>">
-    <div data-inline="text" class="<?=($widget_data->side==0?'col2':'col1')?>"><?=$widget_data->text?></div>
-  </div>
-</section>
+

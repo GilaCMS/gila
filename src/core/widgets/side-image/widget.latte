@@ -1,0 +1,6 @@
+<section>
+  <div class="container side-image">
+    <img src="{$img}" style="max-height:600px;margin:auto;" class="{($data->side==0?'col1':'col2')}">
+    <div data-inline="text" class="{($data->side==0?'col2':'col1')}">{$data->text|noescape}</div>
+  </div>
+</section>

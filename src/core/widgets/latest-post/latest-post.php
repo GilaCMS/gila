@@ -30,7 +30,7 @@ if ($widget_data->show_thumbnails == 1) {
 }
 
 
-foreach ($posts as $key=>$r) {
+/* foreach ($posts as $key=>$r) {
   echo "<li style='list-style:none'>";
   echo "<a class='text-decoration-none' href='".Config::base('blog/'.$r['id'].'/'.$r['slug'])."'>";
   if ($widget_data->show_thumbnails == 1) {
@@ -46,6 +46,19 @@ foreach ($posts as $key=>$r) {
     }
   }
   echo "{$r['title']}</a></li>";
-}
+} */
+
+$latte = new Latte\Engine;
+$latte->setTempDirectory(__DIR__."/../../latteTemp");
+$params = [
+  'widget_data' => $widget_data,
+  'posts' => $posts,
+  'stacked' => $stacked,
+];
+// render to output
+$latte->render(__DIR__.'/widget.latte', $params);
+
 ?>
+
+
 </ul>

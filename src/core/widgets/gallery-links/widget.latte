@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+    {foreach $imgs0 as $i => $img}
+      {if ($link0[$i])}
+        <a href="{$link0[$i]}">
+      {/if}
+          <img src="{$img}" alt="{$caption0[i]}" class="w-100 shadow-1-strong rounded mb-4">
+      {if ($link0)}
+        </a>
+      {/if}
+    {/foreach}
+  </div>
+  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+    {foreach $imgs1 as $i => $img}
+      {if ($link1[$i])}
+        <a href="{$link1[$i]}">
+      {/if}
+          <img src="{$img}" alt="{$caption1[i]}" class="w-100 shadow-1-strong rounded mb-4">
+      {if ($link1)}
+        </a>
+      {/if}
+    {/foreach}
+  </div>
+  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+    {foreach $imgs2 as $i => $img}
+      {if ($link2[$i])}
+        <a href="{$link2[$i]}">
+      {/if}
+          <img src="{$img}" alt="{$caption2[i]}" class="w-100 shadow-1-strong rounded mb-4">
+      {if ($link2)}
+        </a>
+      {/if}
+    {/foreach}
+  </div>
+</div>

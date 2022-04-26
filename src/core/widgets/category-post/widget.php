@@ -11,5 +11,5 @@ return [
       "type"=>"postcategory"
     ]
     ],
-    'keys'=>'widget'
+    'keys'=>'widget,page'
 ];

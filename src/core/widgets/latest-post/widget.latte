@@ -1,0 +1,21 @@
+<ul class="list-group">
+  {foreach $posts as $key=>$r}
+    <li style='list-style:none'>
+      <a class='text-decoration-none' href="{Config::base('blog/'.$r['id'].'/'.$r['slug'])}">
+      {if ($widget_data->show_thumbnails == 1)}
+        {if ($stacked[$key]!==false)}
+          {if ($img=View::thumb($r['img'], 100)) }
+            <img src='$img' style='float:left;margin-right:6px'>
+          { else }
+            <div style='width:80px;height:40px;float:left;margin-right:6px'></div>
+          {/if}
+        {else}
+          $i = $stacked[$key];
+          <div style='background:url({$stacked_file}) 0 -{$i["top"]}px; width:{$i["width"]}px; height:{$i["height"]}px; float:left; margin-right:6px'></div>
+        {/if}
+      {/if}
+      {$r['title']}
+      </a>
+    </li>
+  {/foreach}
+</ul>

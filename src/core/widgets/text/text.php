@@ -1,3 +1,9 @@
-<section>
-<div class="text-block container"><?=$data['text']?></div>
-</section>
+<?php
+  $latte = new Latte\Engine;
+  $latte->setTempDirectory(__DIR__."/../../latteTemp");
+  $params = [
+    'data' => $data,
+  ];
+  // render to output
+  $latte->render(__DIR__.'/widget.latte', $params);
+?>

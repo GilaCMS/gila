@@ -1,0 +1,11 @@
+<ul class="list-group list-group-horizontal">
+  {foreach $social_ as $s}
+    {if strlen($widget_data->$s)>0}
+      <li class="list-group-item me-2 bg-dark social-{$s}">
+        <a href="{htmlentities($widget_data->$s)}" class='link-light' target="_blank">
+          <i class='fa fa-{$social_icons[$s]??$s}' aria-hidden='true'></i>
+        </a>
+      </li>
+    {/if}
+  {/foreach}
+</ul>

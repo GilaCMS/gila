@@ -33,7 +33,20 @@ foreach (Gila\Post::getPosts(
   }
   echo "</div></li>";
 }
-
+$latte = new Latte\Engine;
+  $latte->setTempDirectory(__DIR__."/../../latteTemp");
+  $imgs = [];
+  $posts = Gila\Post::getPosts(['posts'=>$widget_data->n_post, 'category'=>$widget_data->category]);
+  foreach ($posts as $key=>$r){
+    array_push($imgs, View::thumb($r['img'], 400));
+  }
+  $params = [
+    'widget_data' => $widget_data,
+    'imgs' => $imgs,
+    'posts' => Gila\Post::getPosts(['posts'=>$widget_data->n_post, 'category'=>$widget_data->category])
+  ];
+  // render to output
+  //$latte->render(__DIR__.'/widget.latte', $params);
 ?>
 </ul>
 </section>
