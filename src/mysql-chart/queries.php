@@ -1,6 +1,6 @@
 <?php
 
-Config::addList('chartjs-query', [
+Gila\Config::addList('chartjs-query', [
   'label' => 'Posts: Categories Published',
   'query' => 'SELECT
 (SELECT title FROM postcategory x WHERE x.id=postmeta.`value`) a,
@@ -11,8 +11,8 @@ WHERE  vartype="category"
 GROUP BY a,b;'
 ]);
 
-if (in_array('shop', Config::packages())) {
-  Config::addList('chartjs-query', [
+if (in_array('shop', Gila\Config::packages())) {
+  Gila\Config::addList('chartjs-query', [
     'label' => __('Shop: Inventory status', ['es'=>'Estado de inventario']),
     'query' => 'SELECT
 (SELECT title FROM shop_category x WHERE x.id=shop_productmeta.metavalue) a,

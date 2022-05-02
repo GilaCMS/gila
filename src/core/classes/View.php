@@ -19,6 +19,7 @@ class View
   public static $canonical;
   public static $renderer;
   public static $cdn_host = '';
+  public static $blockSections = true;
   public static $cdn_paths = [
     'core/gila.min.js'=> 'core/gila2224.js',
     'core/gila.js'=> 'core/gila2224.js',
@@ -404,6 +405,11 @@ class View
       $data = (array)$widget_data;
     } else {
       $data = &$widget_data;
+    }
+
+    if (self::$blockSections===false) {
+      @include $widget_file;
+      return;
     }
 
     $pathLines = [
