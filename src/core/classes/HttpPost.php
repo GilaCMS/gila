@@ -47,7 +47,6 @@ class HttpPost
     $context = stream_context_create($options);
     $this->body = file_get_contents($url, false, $context);
     $this->header = $http_response_header;
-    error_log('context: '.$context.'?');
   }
 
   public function body()
@@ -83,7 +82,7 @@ class HttpPost
   }
 }
 
-class_alias('HttpPost', 'gpost');
+
 /* Examples
 new HttpPost('https://hooks.slack.com/services/xxxxxxxx',['text'=>"Slack bot msg"]);
  */
