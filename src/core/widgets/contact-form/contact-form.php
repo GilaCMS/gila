@@ -8,20 +8,20 @@ if (Form::posted('contact-form'.$widget_data->widget_id) && Event::get('recaptch
 ?>
 <section>
 <div class="container">
-<form method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="g-form">
+<form method="post" action="<?=$_SERVER['REQUEST_URI']?>" class="">
   <?=Form::hiddenInput('contact-form'.$widget_data->widget_id)?>
   <?php View::alerts() ?>
   <div class="mb-3">
     <label><?=__("Name")?></label>
-    <input name="name" class="form-control g-input" required/>
+    <input name="name" class="form-control" required/>
   </div>
   <div class="mb-3">
     <label><?=__("E-mail")?></label>
-    <input name="email" class="form-control g-input" type="email" required/>
+    <input name="email" class="form-control" type="email" required/>
   </div>
   <div class="mb-3">
     <label><?=__("Subject")?></label>
-    <textarea name="message" class="form-control g-input" required></textarea>
+    <textarea name="message" class="form-control" required></textarea>
   </div>
   <?php Event::fire('recaptcha.form')?>
   <input type="submit" class="btn btn-primary w-100 text-white" value="<?=__('Send')?>">

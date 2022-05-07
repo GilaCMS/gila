@@ -6,7 +6,6 @@ class Table
 {
   private $table;
   private $permissions;
-  private $db;
   public static $error = null;
   public static $tableList = [];
   public static $basicOps = [
@@ -15,8 +14,6 @@ class Table
 
   public function __construct($content, $permissions = ['admin'])
   {
-    global $db;
-    $this->db = &$db;
     $this->permissions = $permissions;
 
     if (isset(self::$tableList[$content])) {
@@ -99,11 +96,10 @@ class Table
 
   public static function exist($table)
   {
-    global $db;
     if (isset(Config::$content[$table])) {
       return true;
     }
-    if ($db->read()->value("SELECT id FROM tableschema WHERE `name`=?;", [$table])) {
+    if (DB::value("SELECT id FROM tableschema WHERE `name`=?;", [$table])) {
       return true;
     }
     return false;
@@ -111,15 +107,13 @@ class Table
 
   public function loadSchema($content)
   {
-    global $db;
-
     if (isset(Config::$content[$content])) {
       $path = 'src/'.Config::$content[$content];
     } elseif (file_exists($content)) {
       $path = $content;
     } else {
       $path = 'src'.$content;
-      if ($json = $db->read()->value("SELECT `data` FROM tableschema WHERE `name`=?;", [$content])) {
+      if ($json = DB::value("SELECT `data` FROM tableschema WHERE `name`=?;", [$content])) {
         $this->table = json_decode($json, true);
         $path = null;
       }
@@ -225,7 +219,7 @@ class Table
       $qcolumn .= "WHERE {$mt[1]}=$this_id AND {$mt[0]}.{$mt[2]}='{$vt}')";
       return $qcolumn.($select? ' as '.$value: '');
     }
-    return '`'.$this->db->res($value).'`';
+    return '`'.DB::res($value).'`';
   }
 
   public function selectsum($groupby)
@@ -271,7 +265,7 @@ class Table
 
     if ($orders) {
       foreach ($orders as $key=>$order) {
-        $order = $this->db->res($order);
+        $order = DB::res($order);
         $o = is_numeric($key) ? explode('_', $order) : [$key, $order];
         if (!array_key_exists($o[0], $this->table['fields'])) {
           continue;
@@ -318,7 +312,7 @@ class Table
     } elseif ($limit===false) {
       return '';
     }
-    return $this->db->res(" LIMIT $limit");
+    return DB::res(" LIMIT $limit");
   }
 
   public function limitPage($args)
@@ -412,9 +406,9 @@ class Table
       if (@$this->table['fields'][$key]['type'] === 'joins') {
         $jt = $this->table['fields'][$key]["join_table"]??$this->table['fields'][$key]["jt"];
         $arrv = explode(",", $value);
-        $this->db->query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`=?;", [$id]);
+        DB::query("DELETE FROM {$jt[0]} WHERE `{$jt[1]}`=?;", [$id]);
         foreach ($arrv as $arrv_k=>$arrv_v) {
-          $this->db->query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`)
+          DB::query("INSERT INTO {$jt[0]}(`{$jt[1]}`,`{$jt[2]}`)
           VALUES(?,?);", [$id,$arrv_v]);
         }
         continue;
@@ -440,7 +434,7 @@ class Table
         } else {
           $arrv = $value;
         }
-        $this->db->query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`=? AND `{$mt[2]}`=?;", [$id,$vt]);
+        DB::query("DELETE FROM {$mt[0]} WHERE `{$mt[1]}`=? AND `{$mt[2]}`=?;", [$id,$vt]);
         if ($arrv) {
           foreach ($arrv as $arrv_k=>$arrv_v) {
             if ($arrv_v!='' && $arrv_v!=null) {
@@ -449,7 +443,7 @@ class Table
               } else {
                 $arrv_v = strip_tags($arrv_v);
               }
-              $this->db->query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`)
+              DB::query("INSERT INTO {$mt[0]}(`{$mt[1]}`,`{$mt[3]}`,`{$mt[2]}`)
               VALUES(?,?,?);", [$id,$arrv_v,$vt]);
             }
           }
@@ -492,7 +486,7 @@ class Table
           if (is_array($value)) {
             $key = $this->getColumnKey($key, false);
             foreach ($value as $_key=>$_value) {
-              $subvalue = $this->db->res($_value);
+              $subvalue = DB::res($_value);
               if (isset(self::$basicOps[$_key])) {
                 $filters[] = $key . self::$basicOps[$_key] . $subvalue;
                 continue;
@@ -527,7 +521,7 @@ class Table
             if ($value==null) {
               $filters[] = "$key IS NULL";
             } else {
-              $value = $this->db->res($value);
+              $value = DB::res($value);
               $filters[] = "FIND_IN_SET($value, $key)>0";
             }
           } else {
@@ -538,7 +532,7 @@ class Table
             if ($value==null) {
               $filters[] = "$ckey IS NULL";
             } else {
-              $value = $this->db->res($value);
+              $value = DB::res($value);
               $filters[] = "$ckey='$value'";
             }
           }
@@ -547,7 +541,7 @@ class Table
     }
 
     if (isset($fields['search'])) {
-      $value = $this->db->res($fields['search']);
+      $value = DB::res($fields['search']);
       $search_filter = [];
       foreach ($this->getFields('search') as $key=>$field) {
         if (isset($field['qcolumn'])) {
@@ -642,17 +636,16 @@ class Table
 
   public function getMeta($id, $type = null)
   {
-    global $db;
     if (!isset($this->table['meta_table'])) {
       return null;
     }
     $m = $this->table['meta_table'];
     if ($type!==null) {
-      return $db->getList("SELECT {$m[3]} FROM {$m[0]}
+      return DB::getList("SELECT {$m[3]} FROM {$m[0]}
         WHERE {$m[1]}=? AND $m[2]=?;", [$id, $type]);
     } else {
       $list = [];
-      $gen = $db->read()->gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
+      $gen = DB::gen("SELECT {$m[2]},{$m[3]} FROM {$m[0]} WHERE {$m[1]}=?;", $id);
       foreach ($gen as $row) {
         @$list[$row[0]][] = $row[1];
       }
@@ -729,19 +722,18 @@ class Table
 
   public function totalRows(&$filters = [])
   {
-    global $db;
     if (!$this->can('read')) {
       return;
     }
     $where = $this->where($filters);
-    $res = $db->read()->value("SELECT COUNT(*) FROM {$this->name()}$where;");
+    $res = DB::value("SELECT COUNT(*) FROM {$this->name()}$where;");
     return (int)$res;
   }
 
   public function deleteRow($id)
   {
     $this->event('delete', $id);
-    $res = $this->db->query("DELETE FROM {$this->name()} WHERE {$this->id()}=?;", $id);
+    $res = DB::query("DELETE FROM {$this->name()} WHERE {$this->id()}=?;", $id);
   }
 
   public function createRow($data = [])
@@ -755,7 +747,6 @@ class Table
     $binded_values = [];
     $this->event('create', $data);
     if ($data===false) {
-      echo 'aa';
       return 0;
     }
 
