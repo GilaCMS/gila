@@ -1,0 +1,22 @@
+<section>
+<ul class="vertical five-post">
+
+  {foreach $posts as $key=>$r}
+    <li>
+    <a href='{$href}'>
+    {if $key==0}
+      {if $imgs[$r]}
+        <img src='{$img}'>
+      {/if}
+    { elseif $imgs[$r]}
+      <img src='{$img}'>
+    {/if}
+      </a><div><a href='{$href}' class='post-title'>{$r['title']}</a>
+    {if $key==0}
+      <br>{$r['description']??$r['post']};
+    {/if}
+    </div></li>
+  {/foreach}
+
+</ul>
+</section>

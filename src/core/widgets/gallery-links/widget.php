@@ -14,5 +14,5 @@ return [
       'default'=>'[]'
     ]
   ],
-  'keys'=>'widget'
+  'keys'=>'widget,page'
 ];
