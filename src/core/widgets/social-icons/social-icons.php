@@ -8,10 +8,13 @@ $social_icons = ['newsletter'=>'envelope'];
 
 foreach ($social_ as $s) {
   if (isset($widget_data->$s)) {
-    if ($widget_data->$s!='') {
-      $icon = $social_icons[$s] ?? $s;
-      echo "<li class=\"social-{$s}\"><a href=\"".htmlentities($widget_data->$s)."\" target=\"_blank\"><i class='fa fa-{$icon}' aria-hidden='true'></i></a></li>";
-    }
+    if ($widget_data->$s != '') {
+      $icon = $social_icons[$s] ?? $s; ?>
+      <li class="list-group-item me-2 bg-dark social-<?=$s?>">
+        <a class='link-light' href="<?=htmlentities($widget_data->$s)?>" target="_blank">
+        <i class='fa fa-<?=$icon?>' aria-hidden='true'></i></a>
+      </li>
+<?php }
   }
 }
 

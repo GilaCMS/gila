@@ -7,8 +7,11 @@ class FileManager
   public static $sitepath = __DIR__;
   const ILLEGAL_CHARACTERS = ['%','&','<','>','\\','{','}','*','?','\'','"',':','`','$','@','!','=','+','|'];
 
-  public static function copy($source, $target)
+  public static function copy($source, $target, $rnd=false)
   {
+    if ($rnd) {
+      $target = self::genName($source, $target);
+    }
     if (is_dir($source)) {
       $target = Config::dir($target);
       $files = scandir($source);
@@ -20,6 +23,18 @@ class FileManager
     } else {
       copy($source, $target);
     }
+    return $target;
+  }
+
+  public static function genName($src, $target)
+  {
+    $pathinfo = pathinfo($src);
+    $ext = $pathinfo['extension'] ? '.'.$pathinfo['extension'] : '';
+    do {
+      $basename = substr(bin2hex(random_bytes(30)), 0, 30);
+      $file = $target.'/'.$basename.$ext;
+    } while (strlen($basename) < 30 || file_exists($file));
+    return $file;
   }
 
   public static function delete($target)
