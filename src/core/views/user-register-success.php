@@ -1,8 +1,8 @@
 <?php View::includeFile('user-login-header.php');?>
 
-  <div class="gl-4 centered">
-    <div class="g-form wrapper g-card bg-white">
-      <div class="border-buttom-main_ text-align-center">
+  <div class="vh-100 h-100 d-flex justify-content-center align-items-center">
+    <div class="col-5 border border-2 p-5 rounded">
+      <div class="text-center">
         <div>
           <i class="fa fa-5x fa-check" style="color:green"></i>
         </div>
