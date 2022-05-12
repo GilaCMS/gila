@@ -11,6 +11,7 @@
   <title><?=$page_title??Gila\Config::get('title')?></title>
 
   <?=Gila\View::css('core/gila.min.css')?>
+  <?=View::cssAsync('lib/bootstrap5/bootstrap.min.css')?>
   <?=Gila\View::css('lib/font-awesome/css/font-awesome.min.css')?>
 </head>
 

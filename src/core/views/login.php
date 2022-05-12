@@ -4,7 +4,7 @@
     <div class="col-5 border border-2 p-5 rounded">
       <div class="text-center">
         <div>
-          <img src="<?=View::thumb(Config::get('login_logo'))??'assets/gila-logo.png'?>" style="max-height:4em">
+          <img src="<?=View::thumb(Config::get('login_logo')??'assets/gila-logo.png')?>" style="max-height:4em">
         </div>
         <h3><?=__('Log In')?></h3>
       </div>
