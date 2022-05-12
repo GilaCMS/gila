@@ -513,7 +513,7 @@ class Table
                 $filters[] = "FIND_IN_SET($subvalue, $key)>0";
               }
               if ($_key === 'not') {
-                $filters[] = "`$key`!='$subvalue'";
+                $filters[] = "$key!='$subvalue'";
               }
             }
           } elseif (@$this->table['fields'][$key]['type']=='meta') {
