@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "</div>";
   } else {
     $db = new Gila\DbClass($host, $db_user, $db_pass, $db_name);
+    DB::set($host, $db_user, $db_pass, $db_name);
     include __DIR__."/install.sql.php";
     // create config.php
     $filedata = file_get_contents('config.default.php');
